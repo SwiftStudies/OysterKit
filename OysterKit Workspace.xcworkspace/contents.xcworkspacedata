@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:Examples/Hello World/Hello World.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:iOS/OysterKit/OysterKit iOS.xcodeproj">
    </FileRef>
    <FileRef
