@@ -24,26 +24,8 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-
-
 import XCTest
 import OysterKit
-
-func token(name:String,chars:String?=nil)->Token{
-    var actualChars:String
-    
-    if chars{
-        actualChars = chars!
-    } else {
-        actualChars = name
-    }
-    
-    return Token(name: name, withCharacters: actualChars)
-}
-
-func char(chars:String)->TokenizationState{
-    return Char(from:chars)
-}
 
 class OysterKitTests: XCTestCase {
     
@@ -121,22 +103,87 @@ class OysterKitTests: XCTestCase {
             )
         )
         
-        println("\n"+tokenizer.description())
-        
         tokenizer.tokenize("xyxz")
         
         XCTAssert(tokenizer.tokenize("xyxz") == [token("xy"),token("xz")])
     }
     
-    func testRepeatFixed(){
+    func testSequence1(){
+        let expectedResults = [token("done",chars:"xyz")]
+        
+        tokenizer.branch(
+            sequence(char("x"),char("y"),char("z").token("done")),
+            OysterKit.eot
+        )
+        
+        XCTAssert(tokenizer.tokenize("xyz") == expectedResults)
+    }
+
+    func testSequence2(){
+        let expectedResults = [token("done",chars:"xyz")]
+        
+        tokenizer.branch(
+            char("x").sequence(char("y"),char("z").token("done")),
+            OysterKit.eot
+        )
+        
+        XCTAssert(tokenizer.tokenize("xyz") == expectedResults)
+    }
+    
+    
+    func testRepeat2HexDigits(){
+        //Test for 2
+        tokenizer.branch(
+            Repeat(state:OysterKit.hexDigit, min:2,max:2).token("xx"),
+            OysterKit.eot
+        )
+        
+        XCTAssert(tokenizer.tokenize("AF") == [token("xx",chars:"AF")])
+        XCTAssert(tokenizer.tokenize("A") != [token("xx",chars:"A")])
+        XCTAssert(tokenizer.tokenize("AF00") == [token("xx",chars:"AF"),token("xx",chars:"00")])
+    }
+    
+    func testRepeat4HexDigits(){
+        tokenizer.branch(
+            Repeat(state:OysterKit.hexDigit, min:4,max:4).token("xx"),
+            OysterKit.eot
+        )
+        
+        XCTAssert(tokenizer.tokenize("AF00") == [token("xx",chars:"AF00")])
+    }
+    
+    
+    func testRepeatXYFixed1(){
+
+        println("\n\n\n BEGIN FIXED REPEAT TEST")
+        
         tokenizer.branch(
             Repeat(state:char("x").sequence(char("y").token("xy")),min:3,max:3).token("xyxyxy")
         )
 
+        println("\n"+tokenizer.description())
         dump(tokenizer, with: "xyxyxy")
         
         XCTAssert(tokenizer.tokenize("xyxyxy") == [token("xyxyxy")])
+        println("END FIXED REPEAT TEST\n\n\n")
     }
+    
+    func testRepeatXYFixed2(){
+        println("\n\n\n BEGIN FIXED REPEAT TEST")
+        tokenizer.branch(
+            Repeat(state:Branch().branch(
+                sequence(char("x"),char("y").token("xyxyxy"))
+                ),min:3,max:3),
+            OysterKit.eot
+        )
+        
+        dump(tokenizer, with: "xyxyxy")
+        
+        XCTAssert(tokenizer.tokenize("xyxyxy") == [token("xyxyxy")])
+        
+        println("END FIXED REPEAT TEST\n\n\n")
+    }
+    
     
     func testSimpleString(){
         tokenizer.branch(
@@ -170,5 +217,63 @@ class OysterKitTests: XCTestCase {
         )
         
         XCTAssert(tokenizer.tokenize(tougherTest) == [token("float",chars:"1.5"), token("blank",chars:" "), token("word",chars:"Nasty"), token("blank",chars:" "), token("word",chars:"example"), token("blank",chars:" "), token("word",chars:"with"), token("blank",chars:" "), token("integer",chars:"-10"), token("blank",chars:" "), token("word",chars:"or"), token("blank",chars:" "), token("float",chars:"10.5"), token("blank",chars:" "), token("word",chars:"maybe"), token("blank",chars:" "), token("word",chars:"even"), token("blank",chars:" "), token("float",chars:"1.0e-10"), token("blank",chars:" "), token("quoted-string",chars:"\""), token("character",chars:"G"), token("character",chars:"r"), token("character",chars:"e"), token("character",chars:"a"), token("character",chars:"t"), token("character",chars:" "), token("inline",chars:"\\("), token("word",chars:"variableName"), token("inline",chars:")"), token("character",chars:" "), token("character",chars:"\\t"), token("character",chars:" "), token("character",chars:"🐨"), token("character",chars:" "), token("character",chars:"\\\""), token("character",chars:"N"), token("character",chars:"e"), token("character",chars:"s"), token("character",chars:"t"), token("character",chars:"e"), token("character",chars:"d"), token("character",chars:"\\\""), token("character",chars:" "), token("character",chars:"q"), token("character",chars:"u"), token("character",chars:"o"), token("character",chars:"t"), token("character",chars:"e"), token("quoted-string",chars:"\""), token("punct",chars:"!"), ])
+    }
+    
+    func testRegexCharacter(){
+        class HexCharacterStart : Branch{
+            init(){
+                super.init()
+                branch(
+                    Repeat(state: OysterKit.hexDigit, min:2,max:2).token("character"),
+                    Char(from: "{").sequence(
+                        Repeat(state: OysterKit.hexDigit, min: 4, max: 4),
+                        Char(from: "}").token("character")
+                    )
+                )
+            }
+            
+            override func consume(character: UnicodeScalar, controller: TokenizationController) -> TokenizationStateChange {
+                if controller.capturedCharacters()+"\(character)" == "\\x"{
+                    //If the current state + the new character is \x we should enter this state
+                    return TokenizationStateChange.None
+                } else if controller.capturedCharacters() == "\\x"{
+                    //Otherwise if we already have the prefix see if we can transition to another state
+                    return super.consume(character, controller: controller)
+                }
+                
+                //Finally fail
+                return TokenizationStateChange.Error(errorToken: Token.ErrorToken(forString: controller.describeCaptureState(), problemDescription: "Expected FF for ASCII or for unicode {FFFF} (F represents any hex digit)"))
+            }
+            
+        }
+        
+        let escapedControlCodes = "\\vrnt"
+        let escapedAnchorCharacters = "AzZbB"
+        let escapedRegexSyntax = "[]()|?.*+{}"
+        let escapedCharacterClasses = "sSdDwW"
+        
+        var regexCharacterTokenizer = Tokenizer()
+        
+        let singleAnchors = Branch().branch(
+            Char(from:"^").token("character"),
+            Char(from:"$").token("character")
+            )
+        
+        let escapedAnchors = Char(from:"\\").branch(
+            Char(from:escapedControlCodes+escapedAnchorCharacters+escapedRegexSyntax+escapedCharacterClasses).token("character"),
+            Char(from:"x").branch(
+                HexCharacterStart()
+            )
+        )
+        
+        tokenizer.branch(
+            OysterKit.eot,
+            singleAnchors,
+            escapedAnchors
+        )
+        
+        let regexTest = "$^\\b\\B\\A\\z\\Z\\t\\n\\r\\\\\\[\\s\\x0a\\x{acd3}$^$"
+        
+        XCTAssert(tokenizer.tokenize(regexTest).count == 18)
     }
 }

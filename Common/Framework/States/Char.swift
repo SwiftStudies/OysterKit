@@ -35,11 +35,13 @@ class Char : Branch{
     
     init(from:String){
         self.allowedCharacters = from
+        super.init()
     }
     
     init(except:String){
         self.inverted = true
         self.allowedCharacters = except
+        super.init()
     }
         
     func newSetByMergingWith(otherCharacterSet:Char)->Char{

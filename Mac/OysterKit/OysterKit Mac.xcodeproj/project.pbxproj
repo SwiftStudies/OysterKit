@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4221038219601B40001148F5 /* OysterKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 4221038119601B40001148F5 /* OysterKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4221038819601B40001148F5 /* OysterKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4221037C19601B40001148F5 /* OysterKit.framework */; };
+		425EBD9D196549EA00A1C232 /* TestingSupportFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425EBD9C196549EA00A1C232 /* TestingSupportFunctions.swift */; };
 		427BB02C196248770006829F /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB01E196248770006829F /* Token.swift */; };
 		427BB02D196248770006829F /* TokenizationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB01F196248770006829F /* TokenizationController.swift */; };
 		427BB02E196248770006829F /* TokenizationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB020196248770006829F /* TokenizationState.swift */; };
@@ -156,6 +157,7 @@
 		4221038119601B40001148F5 /* OysterKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OysterKit.h; sourceTree = "<group>"; };
 		4221038719601B40001148F5 /* OysterKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OysterKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4221038D19601B40001148F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		425EBD9C196549EA00A1C232 /* TestingSupportFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TestingSupportFunctions.swift; path = Tests/TestingSupportFunctions.swift; sourceTree = "<group>"; };
 		427BB01E196248770006829F /* Token.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Token.swift; path = Base/Token.swift; sourceTree = "<group>"; };
 		427BB01F196248770006829F /* TokenizationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenizationController.swift; sourceTree = "<group>"; };
 		427BB020196248770006829F /* TokenizationState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenizationState.swift; sourceTree = "<group>"; };
@@ -233,6 +235,7 @@
 		4221038B19601B40001148F5 /* OysterKitTests */ = {
 			isa = PBXGroup;
 			children = (
+				425EBD9C196549EA00A1C232 /* TestingSupportFunctions.swift */,
 				427BB0881962CB690006829F /* OysterKitTests.swift */,
 				4221038C19601B40001148F5 /* Supporting Files */,
 			);
@@ -458,6 +461,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				425EBD9D196549EA00A1C232 /* TestingSupportFunctions.swift in Sources */,
 				427BB0891962CB690006829F /* OysterKitTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
