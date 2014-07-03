@@ -41,14 +41,14 @@ import Foundation
 }
 @infix func == (left: Array<Token>, right: Array<Token>) -> Bool {
     if left.count != right.count {
-        println("Counts don't match")
+//        println("Counts don't match")
         return false
     }
     
     for i in 0..left.count{
         println("Does "+left[i].description()+" == "+right[i].description())
         if left[i] != right[i]{
-            println("\t NO IT DOESN'T")
+//            println("\t NO IT DOESN'T")
             return false
         }
     }
