@@ -24,51 +24,31 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+import OysterKit
 
-
-import Foundation
-
-//
-// Creates a sequence from the first state to the last state, returning the first
-// state
-//
-func sequence(states:TokenizationState...)->TokenizationState{
+func token(name:String,chars:String?=nil)->Token{
+    var actualChars:String
     
-    for i in 1..states.count {
-        states[i-1].branch(states[i])
+    if chars{
+        actualChars = chars!
+    } else {
+        actualChars = name
     }
     
-    return states[0]
+    return Token(name: name, withCharacters: actualChars)
 }
 
-//
-// Token equality
-//
-// Tokens are considered equal if they have the same name and characters
-//
-@infix func == (left: Token, right: Token) -> Bool {
-    return (left.name == right.name) && (left.characters == right.characters)
+func char(chars:String)->TokenizationState{
+    return Char(from:chars)
 }
-@infix func != (left: Token, right: Token) -> Bool {
-    return !(left == right)
-}
-@infix func == (left: Array<Token>, right: Array<Token>) -> Bool {
-    if left.count != right.count {
-//        println("Counts don't match")
-        return false
-    }
+
+func printAsTest(tokenizer:Tokenizer, string:String, variableName:String){
+    //tokenizer.tokenize("xyxz") == [token("xy"),token("xz")])
     
-    for i in 0..left.count{
-//        println("Does "+left[i].description()+" == "+right[i].description())
-        if left[i] != right[i]{
-//            println("\t NO IT DOESN'T")
-            return false
-        }
+    print("\nXCTAssert(tokenizer.tokenize(\(variableName)) == [")
+    tokenizer.tokenize(string){(token:Token)->Bool in
+        print("token(\""+token.name+"\",chars:\""+token.characters+"\"), ")
+        return true
     }
-
-    return true
+    print("])")
 }
-@infix func != (left: Array<Token>, right: Array<Token>) -> Bool {
-    return !(left == right)
-}
-

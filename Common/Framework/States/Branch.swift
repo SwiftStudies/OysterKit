@@ -33,6 +33,11 @@ class Branch : TokenizationState {
     var branches = Array<TokenizationState>() //All states that can be transitioned to
     
     init(){
+        
+    }
+    
+    init(states:Array<TokenizationState>){
+        branches = states
     }
     
     //currently stateless

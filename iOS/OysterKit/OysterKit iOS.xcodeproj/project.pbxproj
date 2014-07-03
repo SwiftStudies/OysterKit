@@ -26,6 +26,7 @@
 		4247FF6019653C7900CCE286 /* Char.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247FF5019653C7900CCE286 /* Char.swift */; };
 		4247FF6119653C7900CCE286 /* Delimited.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247FF5119653C7900CCE286 /* Delimited.swift */; };
 		4247FF6219653C7900CCE286 /* Repeat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247FF5219653C7900CCE286 /* Repeat.swift */; };
+		425EBD9F19654A3E00A1C232 /* TestingSupportFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425EBD9E19654A3E00A1C232 /* TestingSupportFunctions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +62,7 @@
 		4247FF5019653C7900CCE286 /* Char.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Char.swift; sourceTree = "<group>"; };
 		4247FF5119653C7900CCE286 /* Delimited.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Delimited.swift; sourceTree = "<group>"; };
 		4247FF5219653C7900CCE286 /* Repeat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Repeat.swift; sourceTree = "<group>"; };
+		425EBD9E19654A3E00A1C232 /* TestingSupportFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TestingSupportFunctions.swift; path = ../../../Mac/OysterKit/OysterKitTests/Tests/TestingSupportFunctions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +123,7 @@
 		4221036519601B11001148F5 /* OysterKitTests */ = {
 			isa = PBXGroup;
 			children = (
+				425EBD9E19654A3E00A1C232 /* TestingSupportFunctions.swift */,
 				4247FF3A19653C1800CCE286 /* OysterKitTests.swift */,
 				4221036619601B11001148F5 /* Supporting Files */,
 			);
@@ -330,6 +333,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				425EBD9F19654A3E00A1C232 /* TestingSupportFunctions.swift in Sources */,
 				4247FF3B19653C1800CCE286 /* OysterKitTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
