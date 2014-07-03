@@ -24,13 +24,12 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-
-
 import Foundation
 
 class Repeat : BranchingController{
     let minimumRepeats = 1
     let maximumRepeats : Int?
+    let countedToken : String?
     
     var  repeats = 0
     let  repeatingState:TokenizationState
@@ -39,10 +38,28 @@ class Repeat : BranchingController{
         self.minimumRepeats = min
         self.maximumRepeats = max
         self.repeatingState = state
+        self.countedToken = nil
 
         //Initialise super class
         super.init()
+        
+        self._privateCreateHandler()
+    }
+    
+    //Should be private
+    func _privateCreateHandler(){
         self.handler = {(token:Token)->Bool in
+            if let countTokensCalled:String = self.countedToken{
+                if token.name == countTokensCalled {
+                    self.repeats++
+                }
+            } else {
+                self.repeats++
+            }
+
+            //Start from scratch next time around
+            self.currentState = self.repeatingState
+            
             return true
         }
     }
@@ -94,7 +111,9 @@ class Repeat : BranchingController{
             return manageExitFromState(character, controller: controller)
         }
         
+        let beforeConsumptionRepeats = repeats
         let consumptionResult = currentState!.consume(character, controller: self)
+        let tokenEncountered = beforeConsumptionRepeats != repeats
         
         switch consumptionResult{
         case .Error(let subErrorToken):
@@ -106,13 +125,14 @@ class Repeat : BranchingController{
             
             return manageExitFromState(character, controller: controller)
         case .Exit:
-            repeats++
             currentState = repeatingState
             //Have we hit the repeat limit
             if maximumRepeats && repeats == maximumRepeats{
                 return manageExitFromState(character, controller: controller)
             }
+                        
             return consume(character, controller: controller)
+
         case .Transition(let newState):
             currentState = newState
             fallthrough

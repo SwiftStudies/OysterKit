@@ -51,6 +51,8 @@ class OysterKitTests: XCTestCase {
         println("\n")
     }
     
+
+    
     //Tests basic chaining
     func testXY(){
         tokenizer.sequence(char("x"),char("y").token("xy"))
@@ -95,18 +97,20 @@ class OysterKitTests: XCTestCase {
     
     func testNestedBranch(){
         tokenizer.branch(
-            Branch().branch(
+            Branch(states: [
                 char("x").branch(
                     char("y").token("xy"),
                     char("z").token("xz")
                 )
-            )
+            ])
         )
         
         tokenizer.tokenize("xyxz")
         
         XCTAssert(tokenizer.tokenize("xyxz") == [token("xy"),token("xz")])
     }
+    
+    
     
     func testSequence1(){
         let expectedResults = [token("done",chars:"xyz")]
@@ -152,15 +156,14 @@ class OysterKitTests: XCTestCase {
         XCTAssert(tokenizer.tokenize("AF00") == [token("xx",chars:"AF00")])
     }
     
-    
     func testRepeatXYFixed1(){
-
+        
         println("\n\n\n BEGIN FIXED REPEAT TEST")
         
         tokenizer.branch(
             Repeat(state:char("x").sequence(char("y").token("xy")),min:3,max:3).token("xyxyxy")
         )
-
+        
         println("\n"+tokenizer.description())
         dump(tokenizer, with: "xyxyxy")
         
@@ -169,7 +172,6 @@ class OysterKitTests: XCTestCase {
     }
     
     func testRepeatXYFixed2(){
-        println("\n\n\n BEGIN FIXED REPEAT TEST")
         tokenizer.branch(
             Repeat(state:Branch().branch(
                 sequence(char("x"),char("y").token("xyxyxy"))
@@ -179,9 +181,7 @@ class OysterKitTests: XCTestCase {
         
         dump(tokenizer, with: "xyxyxy")
         
-        XCTAssert(tokenizer.tokenize("xyxyxy") == [token("xyxyxy")])
-        
-        println("END FIXED REPEAT TEST\n\n\n")
+        XCTAssert(tokenizer.tokenize("xyxyxy") == [token("xyxyxy")])        
     }
     
     
