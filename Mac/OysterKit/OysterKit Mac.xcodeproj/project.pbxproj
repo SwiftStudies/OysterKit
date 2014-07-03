@@ -1,0 +1,742 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		4221038219601B40001148F5 /* OysterKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 4221038119601B40001148F5 /* OysterKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4221038819601B40001148F5 /* OysterKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4221037C19601B40001148F5 /* OysterKit.framework */; };
+		427BB02C196248770006829F /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB01E196248770006829F /* Token.swift */; };
+		427BB02D196248770006829F /* TokenizationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB01F196248770006829F /* TokenizationController.swift */; };
+		427BB02E196248770006829F /* TokenizationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB020196248770006829F /* TokenizationState.swift */; };
+		427BB02F196248770006829F /* Tokenizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB021196248770006829F /* Tokenizer.swift */; };
+		427BB030196248770006829F /* BranchingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB023196248770006829F /* BranchingController.swift */; };
+		427BB031196248770006829F /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB025196248770006829F /* Parser.swift */; };
+		427BB032196248770006829F /* OysterKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB026196248770006829F /* OysterKit.swift */; };
+		427BB033196248770006829F /* Branch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB028196248770006829F /* Branch.swift */; };
+		427BB034196248770006829F /* Delimited.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB029196248770006829F /* Delimited.swift */; };
+		427BB035196248770006829F /* Repeat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB02A196248770006829F /* Repeat.swift */; };
+		427BB036196248770006829F /* Char.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB02B196248770006829F /* Char.swift */; };
+		427BB03A196249300006829F /* OperatorToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB039196249300006829F /* OperatorToken.swift */; };
+		427BB03E19624B220006829F /* NumberToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB03D19624B220006829F /* NumberToken.swift */; };
+		427BB04019624BEE0006829F /* RPNParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB03F19624BEE0006829F /* RPNParser.swift */; };
+		427BB04219624BF50006829F /* SYExpressionParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB04119624BF50006829F /* SYExpressionParser.swift */; };
+		427BB0891962CB690006829F /* OysterKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB0881962CB690006829F /* OysterKitTests.swift */; };
+		427BB09A1962FB450006829F /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB0991962FB450006829F /* Operators.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		4221038919601B40001148F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4221037319601B40001148F5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4221037B19601B40001148F5;
+			remoteInfo = OysterKit;
+		};
+		422103B319602EAC001148F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4221037319601B40001148F5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4221037B19601B40001148F5;
+			remoteInfo = OysterKit;
+		};
+		422103B519602EAC001148F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4221037319601B40001148F5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4221037B19601B40001148F5;
+			remoteInfo = OysterKit;
+		};
+		422103E4196030CF001148F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4221037319601B40001148F5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4221037B19601B40001148F5;
+			remoteInfo = OysterKit;
+		};
+		422103E6196030E2001148F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4221037319601B40001148F5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4221037B19601B40001148F5;
+			remoteInfo = OysterKit;
+		};
+		422103EA1960317C001148F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4221037319601B40001148F5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4221037B19601B40001148F5;
+			remoteInfo = OysterKit;
+		};
+		422103EE1960319A001148F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4221037319601B40001148F5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4221037B19601B40001148F5;
+			remoteInfo = OysterKit;
+		};
+		422103F0196031B6001148F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4221037319601B40001148F5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4221037B19601B40001148F5;
+			remoteInfo = OysterKit;
+		};
+		422103F219603241001148F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4221037319601B40001148F5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4221037B19601B40001148F5;
+			remoteInfo = OysterKit;
+		};
+		422103F41960324A001148F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4221037319601B40001148F5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4221037B19601B40001148F5;
+			remoteInfo = OysterKit;
+		};
+		422103F619603258001148F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4221037319601B40001148F5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4221037B19601B40001148F5;
+			remoteInfo = OysterKit;
+		};
+		422103F819603264001148F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4221037319601B40001148F5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4221037B19601B40001148F5;
+			remoteInfo = OysterKit;
+		};
+		42210413196039B1001148F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4221037319601B40001148F5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4221037B19601B40001148F5;
+			remoteInfo = OysterKit;
+		};
+		427BB07D1962CA100006829F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4221037319601B40001148F5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4221037B19601B40001148F5;
+			remoteInfo = OysterKit;
+		};
+		427BB07F1962CA100006829F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4221037319601B40001148F5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4221037B19601B40001148F5;
+			remoteInfo = OysterKit;
+		};
+		427BB0821962CAC00006829F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4221037319601B40001148F5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4221037B19601B40001148F5;
+			remoteInfo = OysterKit;
+		};
+		427BF085196039E100323E70 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4221037319601B40001148F5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4221037B19601B40001148F5;
+			remoteInfo = OysterKit;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		4221037C19601B40001148F5 /* OysterKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OysterKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4221038019601B40001148F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4221038119601B40001148F5 /* OysterKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OysterKit.h; sourceTree = "<group>"; };
+		4221038719601B40001148F5 /* OysterKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OysterKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4221038D19601B40001148F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		427BB01E196248770006829F /* Token.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Token.swift; path = Base/Token.swift; sourceTree = "<group>"; };
+		427BB01F196248770006829F /* TokenizationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenizationController.swift; sourceTree = "<group>"; };
+		427BB020196248770006829F /* TokenizationState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenizationState.swift; sourceTree = "<group>"; };
+		427BB021196248770006829F /* Tokenizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tokenizer.swift; sourceTree = "<group>"; };
+		427BB023196248770006829F /* BranchingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BranchingController.swift; sourceTree = "<group>"; };
+		427BB025196248770006829F /* Parser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
+		427BB026196248770006829F /* OysterKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OysterKit.swift; sourceTree = "<group>"; };
+		427BB028196248770006829F /* Branch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Branch.swift; sourceTree = "<group>"; };
+		427BB029196248770006829F /* Delimited.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Delimited.swift; sourceTree = "<group>"; };
+		427BB02A196248770006829F /* Repeat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Repeat.swift; sourceTree = "<group>"; };
+		427BB02B196248770006829F /* Char.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Char.swift; sourceTree = "<group>"; };
+		427BB039196249300006829F /* OperatorToken.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OperatorToken.swift; path = Base/OperatorToken.swift; sourceTree = "<group>"; };
+		427BB03D19624B220006829F /* NumberToken.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NumberToken.swift; path = Base/NumberToken.swift; sourceTree = "<group>"; };
+		427BB03F19624BEE0006829F /* RPNParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPNParser.swift; sourceTree = "<group>"; };
+		427BB04119624BF50006829F /* SYExpressionParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SYExpressionParser.swift; sourceTree = "<group>"; };
+		427BB0881962CB690006829F /* OysterKitTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OysterKitTests.swift; path = Tests/OysterKitTests.swift; sourceTree = "<group>"; };
+		427BB0991962FB450006829F /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		4221037819601B40001148F5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4221038419601B40001148F5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4221038819601B40001148F5 /* OysterKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		4221037219601B40001148F5 = {
+			isa = PBXGroup;
+			children = (
+				427BB01C196248770006829F /* Framework */,
+				4221037E19601B40001148F5 /* OysterKit */,
+				4221038B19601B40001148F5 /* OysterKitTests */,
+				4221037D19601B40001148F5 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		4221037D19601B40001148F5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4221037C19601B40001148F5 /* OysterKit.framework */,
+				4221038719601B40001148F5 /* OysterKitTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4221037E19601B40001148F5 /* OysterKit */ = {
+			isa = PBXGroup;
+			children = (
+				4221038119601B40001148F5 /* OysterKit.h */,
+				4221037F19601B40001148F5 /* Supporting Files */,
+			);
+			path = OysterKit;
+			sourceTree = "<group>";
+		};
+		4221037F19601B40001148F5 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				4221038019601B40001148F5 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		4221038B19601B40001148F5 /* OysterKitTests */ = {
+			isa = PBXGroup;
+			children = (
+				427BB0881962CB690006829F /* OysterKitTests.swift */,
+				4221038C19601B40001148F5 /* Supporting Files */,
+			);
+			path = OysterKitTests;
+			sourceTree = "<group>";
+		};
+		4221038C19601B40001148F5 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				4221038D19601B40001148F5 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		427BB01C196248770006829F /* Framework */ = {
+			isa = PBXGroup;
+			children = (
+				427BB026196248770006829F /* OysterKit.swift */,
+				427BB0981962FA950006829F /* Tokens */,
+				427BB01D196248770006829F /* Base */,
+				427BB022196248770006829F /* Controllers */,
+				427BB024196248770006829F /* Parsing */,
+				427BB027196248770006829F /* States */,
+			);
+			name = Framework;
+			path = ../../Common/Framework;
+			sourceTree = "<group>";
+		};
+		427BB01D196248770006829F /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				427BB01F196248770006829F /* TokenizationController.swift */,
+				427BB020196248770006829F /* TokenizationState.swift */,
+				427BB021196248770006829F /* Tokenizer.swift */,
+				427BB0991962FB450006829F /* Operators.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		427BB022196248770006829F /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				427BB023196248770006829F /* BranchingController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		427BB024196248770006829F /* Parsing */ = {
+			isa = PBXGroup;
+			children = (
+				427BB025196248770006829F /* Parser.swift */,
+				427BB03F19624BEE0006829F /* RPNParser.swift */,
+				427BB04119624BF50006829F /* SYExpressionParser.swift */,
+			);
+			path = Parsing;
+			sourceTree = "<group>";
+		};
+		427BB027196248770006829F /* States */ = {
+			isa = PBXGroup;
+			children = (
+				427BB028196248770006829F /* Branch.swift */,
+				427BB02B196248770006829F /* Char.swift */,
+				427BB02A196248770006829F /* Repeat.swift */,
+				427BB029196248770006829F /* Delimited.swift */,
+			);
+			path = States;
+			sourceTree = "<group>";
+		};
+		427BB0981962FA950006829F /* Tokens */ = {
+			isa = PBXGroup;
+			children = (
+				427BB01E196248770006829F /* Token.swift */,
+				427BB039196249300006829F /* OperatorToken.swift */,
+				427BB03D19624B220006829F /* NumberToken.swift */,
+			);
+			name = Tokens;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		4221037919601B40001148F5 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4221038219601B40001148F5 /* OysterKit.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		4221037B19601B40001148F5 /* OysterKit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4221039219601B40001148F5 /* Build configuration list for PBXNativeTarget "OysterKit" */;
+			buildPhases = (
+				4221037719601B40001148F5 /* Sources */,
+				4221037819601B40001148F5 /* Frameworks */,
+				4221037919601B40001148F5 /* Headers */,
+				4221037A19601B40001148F5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OysterKit;
+			productName = OysterKit;
+			productReference = 4221037C19601B40001148F5 /* OysterKit.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		4221038619601B40001148F5 /* OysterKitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4221039519601B40001148F5 /* Build configuration list for PBXNativeTarget "OysterKitTests" */;
+			buildPhases = (
+				4221038319601B40001148F5 /* Sources */,
+				4221038419601B40001148F5 /* Frameworks */,
+				4221038519601B40001148F5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4221038A19601B40001148F5 /* PBXTargetDependency */,
+				422103B419602EAC001148F5 /* PBXTargetDependency */,
+				422103B619602EAC001148F5 /* PBXTargetDependency */,
+				422103E5196030CF001148F5 /* PBXTargetDependency */,
+				422103E7196030E2001148F5 /* PBXTargetDependency */,
+				422103EB1960317C001148F5 /* PBXTargetDependency */,
+				422103EF1960319A001148F5 /* PBXTargetDependency */,
+				422103F1196031B6001148F5 /* PBXTargetDependency */,
+				422103F319603241001148F5 /* PBXTargetDependency */,
+				422103F51960324A001148F5 /* PBXTargetDependency */,
+				422103F719603258001148F5 /* PBXTargetDependency */,
+				422103F919603264001148F5 /* PBXTargetDependency */,
+				42210414196039B1001148F5 /* PBXTargetDependency */,
+				427BF086196039E100323E70 /* PBXTargetDependency */,
+				427BB07E1962CA100006829F /* PBXTargetDependency */,
+				427BB0801962CA100006829F /* PBXTargetDependency */,
+				427BB0831962CAC00006829F /* PBXTargetDependency */,
+			);
+			name = OysterKitTests;
+			productName = OysterKitTests;
+			productReference = 4221038719601B40001148F5 /* OysterKitTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		4221037319601B40001148F5 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0600;
+				ORGANIZATIONNAME = "RED When Excited Limited";
+				TargetAttributes = {
+					4221037B19601B40001148F5 = {
+						CreatedOnToolsVersion = 6.0;
+					};
+					4221038619601B40001148F5 = {
+						CreatedOnToolsVersion = 6.0;
+						TestTargetID = 4221037B19601B40001148F5;
+					};
+				};
+			};
+			buildConfigurationList = 4221037619601B40001148F5 /* Build configuration list for PBXProject "OysterKit Mac" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 4221037219601B40001148F5;
+			productRefGroup = 4221037D19601B40001148F5 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				4221037B19601B40001148F5 /* OysterKit */,
+				4221038619601B40001148F5 /* OysterKitTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		4221037A19601B40001148F5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4221038519601B40001148F5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		4221037719601B40001148F5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				427BB03E19624B220006829F /* NumberToken.swift in Sources */,
+				427BB02D196248770006829F /* TokenizationController.swift in Sources */,
+				427BB02F196248770006829F /* Tokenizer.swift in Sources */,
+				427BB032196248770006829F /* OysterKit.swift in Sources */,
+				427BB035196248770006829F /* Repeat.swift in Sources */,
+				427BB036196248770006829F /* Char.swift in Sources */,
+				427BB034196248770006829F /* Delimited.swift in Sources */,
+				427BB031196248770006829F /* Parser.swift in Sources */,
+				427BB04219624BF50006829F /* SYExpressionParser.swift in Sources */,
+				427BB09A1962FB450006829F /* Operators.swift in Sources */,
+				427BB02C196248770006829F /* Token.swift in Sources */,
+				427BB033196248770006829F /* Branch.swift in Sources */,
+				427BB030196248770006829F /* BranchingController.swift in Sources */,
+				427BB04019624BEE0006829F /* RPNParser.swift in Sources */,
+				427BB03A196249300006829F /* OperatorToken.swift in Sources */,
+				427BB02E196248770006829F /* TokenizationState.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4221038319601B40001148F5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				427BB0891962CB690006829F /* OysterKitTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4221038A19601B40001148F5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4221037B19601B40001148F5 /* OysterKit */;
+			targetProxy = 4221038919601B40001148F5 /* PBXContainerItemProxy */;
+		};
+		422103B419602EAC001148F5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4221037B19601B40001148F5 /* OysterKit */;
+			targetProxy = 422103B319602EAC001148F5 /* PBXContainerItemProxy */;
+		};
+		422103B619602EAC001148F5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4221037B19601B40001148F5 /* OysterKit */;
+			targetProxy = 422103B519602EAC001148F5 /* PBXContainerItemProxy */;
+		};
+		422103E5196030CF001148F5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4221037B19601B40001148F5 /* OysterKit */;
+			targetProxy = 422103E4196030CF001148F5 /* PBXContainerItemProxy */;
+		};
+		422103E7196030E2001148F5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4221037B19601B40001148F5 /* OysterKit */;
+			targetProxy = 422103E6196030E2001148F5 /* PBXContainerItemProxy */;
+		};
+		422103EB1960317C001148F5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4221037B19601B40001148F5 /* OysterKit */;
+			targetProxy = 422103EA1960317C001148F5 /* PBXContainerItemProxy */;
+		};
+		422103EF1960319A001148F5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4221037B19601B40001148F5 /* OysterKit */;
+			targetProxy = 422103EE1960319A001148F5 /* PBXContainerItemProxy */;
+		};
+		422103F1196031B6001148F5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4221037B19601B40001148F5 /* OysterKit */;
+			targetProxy = 422103F0196031B6001148F5 /* PBXContainerItemProxy */;
+		};
+		422103F319603241001148F5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4221037B19601B40001148F5 /* OysterKit */;
+			targetProxy = 422103F219603241001148F5 /* PBXContainerItemProxy */;
+		};
+		422103F51960324A001148F5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4221037B19601B40001148F5 /* OysterKit */;
+			targetProxy = 422103F41960324A001148F5 /* PBXContainerItemProxy */;
+		};
+		422103F719603258001148F5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4221037B19601B40001148F5 /* OysterKit */;
+			targetProxy = 422103F619603258001148F5 /* PBXContainerItemProxy */;
+		};
+		422103F919603264001148F5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4221037B19601B40001148F5 /* OysterKit */;
+			targetProxy = 422103F819603264001148F5 /* PBXContainerItemProxy */;
+		};
+		42210414196039B1001148F5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4221037B19601B40001148F5 /* OysterKit */;
+			targetProxy = 42210413196039B1001148F5 /* PBXContainerItemProxy */;
+		};
+		427BB07E1962CA100006829F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4221037B19601B40001148F5 /* OysterKit */;
+			targetProxy = 427BB07D1962CA100006829F /* PBXContainerItemProxy */;
+		};
+		427BB0801962CA100006829F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4221037B19601B40001148F5 /* OysterKit */;
+			targetProxy = 427BB07F1962CA100006829F /* PBXContainerItemProxy */;
+		};
+		427BB0831962CAC00006829F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4221037B19601B40001148F5 /* OysterKit */;
+			targetProxy = 427BB0821962CAC00006829F /* PBXContainerItemProxy */;
+		};
+		427BF086196039E100323E70 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4221037B19601B40001148F5 /* OysterKit */;
+			targetProxy = 427BF085196039E100323E70 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		4221039019601B40001148F5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				METAL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		4221039119601B40001148F5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				METAL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		4221039319601B40001148F5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = OysterKit/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		4221039419601B40001148F5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = OysterKit/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		4221039619601B40001148F5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = OysterKitTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				METAL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		4221039719601B40001148F5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = OysterKitTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				METAL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4221037619601B40001148F5 /* Build configuration list for PBXProject "OysterKit Mac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4221039019601B40001148F5 /* Debug */,
+				4221039119601B40001148F5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4221039219601B40001148F5 /* Build configuration list for PBXNativeTarget "OysterKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4221039319601B40001148F5 /* Debug */,
+				4221039419601B40001148F5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4221039519601B40001148F5 /* Build configuration list for PBXNativeTarget "OysterKitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4221039619601B40001148F5 /* Debug */,
+				4221039719601B40001148F5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 4221037319601B40001148F5 /* Project object */;
+}
