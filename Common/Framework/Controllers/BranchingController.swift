@@ -73,12 +73,16 @@ class BranchingController : Branch,TokenizationController {
     
     func holdToken(newToken: Token) {
         mostRecentToken = newToken
-        println("Holding token: "+newToken.description())
+        if __okDebug {
+            println("Holding token: "+newToken.description())
+        }
     }
 
     func clearToken() {
         if (mostRecentToken){
-            println("Token was cleared "+mostRecentToken!.description());
+            if __okDebug {
+                println("Token was cleared "+mostRecentToken!.description());
+            }
             mostRecentToken = nil
         }
     }
@@ -113,9 +117,13 @@ class BranchingController : Branch,TokenizationController {
                 if mostRecentToken {
                     //This needs to check for an actual terminate token
                     if (mostRecentToken is Token.EndOfTransmissionToken){
-                        println("Ignoring end of transmission")
+                        if __okDebug {
+                            println("Ignoring end of transmission")
+                        }
                     } else {
-                        println("Sending token: "+mostRecentToken!.description())
+                        if __okDebug {
+                            println("Sending token: "+mostRecentToken!.description())                            
+                        }
                         handler!(token: mostRecentToken!)
                     }
                     mostRecentToken = nil

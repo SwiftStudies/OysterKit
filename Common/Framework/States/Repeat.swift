@@ -47,11 +47,15 @@ class Repeat : BranchingController{
     override func holdToken(newToken: Token){
         if let countTokensCalled:String = self.countedToken{
             if newToken.name == countTokensCalled {
-                println("Counted "+newToken.description())
+                if __okDebug {
+                    println("Counted "+newToken.description())
+                }
                 self.repeats++
             }
         } else {
-            println("Counted "+newToken.description())
+            if __okDebug{
+                println("Counted "+newToken.description())                
+            }
             self.repeats++
         }
         
