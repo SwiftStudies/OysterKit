@@ -77,8 +77,8 @@ class Delimited : Branch{
         
         consumedFirstDelimiter = !consumedFirstDelimiter
         
-        emitToken(controller, token: createToken(controller, capturedCharacters: controller.capturedCharacters()+"\(controller.currentCharacter())"))
-        
+        emitToken(controller, token: createToken(controller, useCurrentCharacter: true))
+                
         return TokenizationStateChange.Exit(consumedCharacter: true)
     }
     

@@ -141,10 +141,10 @@ class Branch : TokenizationState {
         return Token.ErrorToken(forString: controller.describeCaptureState(), problemDescription: "Illegal character")
     }
     
-    func createToken(controller:TokenizationController,capturedCharacters:String?=nil)->Token?{
-        var useCharacters:String = capturedCharacters ? capturedCharacters! : controller.capturedCharacters()
-        
-        if let token = tokenGenerator?(state: self,capturedCharacteres: useCharacters){
+    
+    func createToken(controller:TokenizationController, useCurrentCharacter:Bool)->Token?{
+        var useCharacters = useCurrentCharacter ? controller.capturedCharacters()+"\(controller.currentCharacter())" : controller.capturedCharacters()
+        if let token = tokenGenerator?(state:self, capturedCharacteres:useCharacters){
             return token
         }
         

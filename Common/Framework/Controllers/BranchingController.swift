@@ -122,7 +122,7 @@ class BranchingController : Branch,TokenizationController {
                         }
                     } else {
                         if __okDebug {
-                            println("Sending token: "+mostRecentToken!.description())                            
+                            println("Sending token: "+mostRecentToken!.description())
                         }
                         handler!(token: mostRecentToken!)
                     }
