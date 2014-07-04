@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:Mac/Tokenizer/Tokenizer/Tokenizer.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:Examples/Hello World/Hello World.xcodeproj">
    </FileRef>
    <FileRef

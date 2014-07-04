@@ -1,0 +1,426 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		42146BED1966DD4E009BA88A /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42146BEC1966DD4E009BA88A /* main.swift */; };
+		42146BEF1966DD4E009BA88A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42146BEE1966DD4E009BA88A /* AppDelegate.swift */; };
+		42146BF11966DD4E009BA88A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 42146BF01966DD4E009BA88A /* Images.xcassets */; };
+		42146BF41966DD4E009BA88A /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 42146BF21966DD4E009BA88A /* MainMenu.xib */; };
+		42146C001966DD4E009BA88A /* TokenizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42146BFF1966DD4E009BA88A /* TokenizerTests.swift */; };
+		42146C131966DF72009BA88A /* OysterKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42146C121966DF72009BA88A /* OysterKit.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		42146BFA1966DD4E009BA88A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 42146BDF1966DD4E009BA88A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 42146BE61966DD4E009BA88A;
+			remoteInfo = Tokenizer;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		42146BE71966DD4E009BA88A /* Tokenizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tokenizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		42146BEB1966DD4E009BA88A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		42146BEC1966DD4E009BA88A /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		42146BEE1966DD4E009BA88A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		42146BF01966DD4E009BA88A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		42146BF31966DD4E009BA88A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		42146BF91966DD4E009BA88A /* TokenizerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TokenizerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		42146BFE1966DD4E009BA88A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		42146BFF1966DD4E009BA88A /* TokenizerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenizerTests.swift; sourceTree = "<group>"; };
+		42146C121966DF72009BA88A /* OysterKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OysterKit.framework; path = "../../../../../../../../Library/Developer/Xcode/DerivedData/OysterKit_Workspace-fbjhgmtukhbwijfrgdbagumdmmcc/Build/Products/Debug/OysterKit.framework"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		42146BE41966DD4E009BA88A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42146C131966DF72009BA88A /* OysterKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42146BF61966DD4E009BA88A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		42146BDE1966DD4E009BA88A = {
+			isa = PBXGroup;
+			children = (
+				42146C121966DF72009BA88A /* OysterKit.framework */,
+				42146BE91966DD4E009BA88A /* Tokenizer */,
+				42146BFC1966DD4E009BA88A /* TokenizerTests */,
+				42146BE81966DD4E009BA88A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		42146BE81966DD4E009BA88A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				42146BE71966DD4E009BA88A /* Tokenizer.app */,
+				42146BF91966DD4E009BA88A /* TokenizerTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		42146BE91966DD4E009BA88A /* Tokenizer */ = {
+			isa = PBXGroup;
+			children = (
+				42146BEE1966DD4E009BA88A /* AppDelegate.swift */,
+				42146BF01966DD4E009BA88A /* Images.xcassets */,
+				42146BF21966DD4E009BA88A /* MainMenu.xib */,
+				42146BEA1966DD4E009BA88A /* Supporting Files */,
+			);
+			path = Tokenizer;
+			sourceTree = "<group>";
+		};
+		42146BEA1966DD4E009BA88A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				42146BEB1966DD4E009BA88A /* Info.plist */,
+				42146BEC1966DD4E009BA88A /* main.swift */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		42146BFC1966DD4E009BA88A /* TokenizerTests */ = {
+			isa = PBXGroup;
+			children = (
+				42146BFF1966DD4E009BA88A /* TokenizerTests.swift */,
+				42146BFD1966DD4E009BA88A /* Supporting Files */,
+			);
+			path = TokenizerTests;
+			sourceTree = "<group>";
+		};
+		42146BFD1966DD4E009BA88A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				42146BFE1966DD4E009BA88A /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		42146BE61966DD4E009BA88A /* Tokenizer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 42146C031966DD4E009BA88A /* Build configuration list for PBXNativeTarget "Tokenizer" */;
+			buildPhases = (
+				42146BE31966DD4E009BA88A /* Sources */,
+				42146BE41966DD4E009BA88A /* Frameworks */,
+				42146BE51966DD4E009BA88A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Tokenizer;
+			productName = Tokenizer;
+			productReference = 42146BE71966DD4E009BA88A /* Tokenizer.app */;
+			productType = "com.apple.product-type.application";
+		};
+		42146BF81966DD4E009BA88A /* TokenizerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 42146C061966DD4E009BA88A /* Build configuration list for PBXNativeTarget "TokenizerTests" */;
+			buildPhases = (
+				42146BF51966DD4E009BA88A /* Sources */,
+				42146BF61966DD4E009BA88A /* Frameworks */,
+				42146BF71966DD4E009BA88A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				42146BFB1966DD4E009BA88A /* PBXTargetDependency */,
+			);
+			name = TokenizerTests;
+			productName = TokenizerTests;
+			productReference = 42146BF91966DD4E009BA88A /* TokenizerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		42146BDF1966DD4E009BA88A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0600;
+				ORGANIZATIONNAME = "Swift Studies";
+				TargetAttributes = {
+					42146BE61966DD4E009BA88A = {
+						CreatedOnToolsVersion = 6.0;
+					};
+					42146BF81966DD4E009BA88A = {
+						CreatedOnToolsVersion = 6.0;
+						TestTargetID = 42146BE61966DD4E009BA88A;
+					};
+				};
+			};
+			buildConfigurationList = 42146BE21966DD4E009BA88A /* Build configuration list for PBXProject "Tokenizer" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 42146BDE1966DD4E009BA88A;
+			productRefGroup = 42146BE81966DD4E009BA88A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				42146BE61966DD4E009BA88A /* Tokenizer */,
+				42146BF81966DD4E009BA88A /* TokenizerTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		42146BE51966DD4E009BA88A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42146BF11966DD4E009BA88A /* Images.xcassets in Resources */,
+				42146BF41966DD4E009BA88A /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42146BF71966DD4E009BA88A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		42146BE31966DD4E009BA88A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42146BEF1966DD4E009BA88A /* AppDelegate.swift in Sources */,
+				42146BED1966DD4E009BA88A /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42146BF51966DD4E009BA88A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42146C001966DD4E009BA88A /* TokenizerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		42146BFB1966DD4E009BA88A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 42146BE61966DD4E009BA88A /* Tokenizer */;
+			targetProxy = 42146BFA1966DD4E009BA88A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		42146BF21966DD4E009BA88A /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				42146BF31966DD4E009BA88A /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		42146C011966DD4E009BA88A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				METAL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		42146C021966DD4E009BA88A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				METAL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		42146C041966DD4E009BA88A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/OysterKit_Workspace-fbjhgmtukhbwijfrgdbagumdmmcc/Build/Products/Debug",
+				);
+				INFOPLIST_FILE = Tokenizer/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		42146C051966DD4E009BA88A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/OysterKit_Workspace-fbjhgmtukhbwijfrgdbagumdmmcc/Build/Products/Debug",
+				);
+				INFOPLIST_FILE = Tokenizer/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		42146C071966DD4E009BA88A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Tokenizer.app/Contents/MacOS/Tokenizer";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = TokenizerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				METAL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+			};
+			name = Debug;
+		};
+		42146C081966DD4E009BA88A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Tokenizer.app/Contents/MacOS/Tokenizer";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = TokenizerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				METAL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		42146BE21966DD4E009BA88A /* Build configuration list for PBXProject "Tokenizer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42146C011966DD4E009BA88A /* Debug */,
+				42146C021966DD4E009BA88A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		42146C031966DD4E009BA88A /* Build configuration list for PBXNativeTarget "Tokenizer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42146C041966DD4E009BA88A /* Debug */,
+				42146C051966DD4E009BA88A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		42146C061966DD4E009BA88A /* Build configuration list for PBXNativeTarget "TokenizerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42146C071966DD4E009BA88A /* Debug */,
+				42146C081966DD4E009BA88A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 42146BDF1966DD4E009BA88A /* Project object */;
+}
