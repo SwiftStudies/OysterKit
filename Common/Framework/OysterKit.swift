@@ -26,6 +26,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Foundation
 
+let __okDebug = false
+
 //Should be private and class variables
 let decimalDigitString = "0123456789"
 let hexDigitString = decimalDigitString+"ABCDEFabcdef"
