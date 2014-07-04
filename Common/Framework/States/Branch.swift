@@ -29,6 +29,9 @@ import Foundation
 
 
 class Branch : TokenizationState {
+    
+
+    
     var tokenGenerator : TokenCreationBlock?
     var branches = Array<TokenizationState>() //All states that can be transitioned to
     
@@ -70,13 +73,12 @@ class Branch : TokenizationState {
     func consume(character:UnicodeScalar, controller:TokenizationController) -> TokenizationStateChange{
         for branch in branches{
             if (branch.couldEnterWithCharacter(character, controller: controller)){
-                return TokenizationStateChange.Transition(newState: branch)
+                return TokenizationStateChange.Transition(newState: branch, consumedCharacter:false)
             }
             
         }
-        
-        //No branch could actually consume the character
-        return TokenizationStateChange.Error(errorToken: Token.ErrorToken(forString: controller.describeCaptureState(), problemDescription: "Illegal character"));
+
+        return TokenizationStateChange.Exit(consumedCharacter: false)
     }
     
     func branch(toStates: TokenizationState...) -> TokenizationState {
@@ -97,16 +99,16 @@ class Branch : TokenizationState {
     }
 
     func token(emitToken: String) -> TokenizationState {
-        tokenGenerator = {(state:TokenizationState, controller:TokenizationController)->Token in
-            return Token(name: emitToken, withCharacters: controller.capturedCharacters())
+        tokenGenerator = {(state:TokenizationState, capturedCharacters:String)->Token in
+            return Token(name: emitToken, withCharacters: capturedCharacters)
         }
         
         return self
     }
     
     func token(emitToken: Token) -> TokenizationState {
-        tokenGenerator = {(state:TokenizationState, controller:TokenizationController)->Token in
-            return Token(name: emitToken.name, withCharacters: controller.capturedCharacters())
+        tokenGenerator = {(state:TokenizationState, capturedCharacters:String)->Token in
+            return Token(name: emitToken.name, withCharacters: capturedCharacters)
         }
 
         return self
@@ -118,20 +120,41 @@ class Branch : TokenizationState {
         return self
     }
     
+    func selfSatisfiedBranchOutOfStateTransition(consumedCharacter:Bool, controller:TokenizationController, withToken:Token?)->TokenizationStateChange{
+        emitToken(controller, token: withToken)
 
-    
+        if branches.count == 0 {
+            return TokenizationStateChange.Exit(consumedCharacter: consumedCharacter)
+        } else {
+            var transientState = Branch(states: self.branches)
+            
+            //If we can either enter the transient state or we did consume the character
+            if transientState.couldEnterWithCharacter(controller.currentCharacter(),controller: controller) || consumedCharacter{
+                return TokenizationStateChange.Transition(newState: transientState, consumedCharacter: consumedCharacter)
+            }
+
+            return TokenizationStateChange.Exit(consumedCharacter: consumedCharacter)
+        }
+    }
     
     func errorToken(controller:TokenizationController) -> Token{
         return Token.ErrorToken(forString: controller.describeCaptureState(), problemDescription: "Illegal character")
     }
     
-    func generateToken(controller:TokenizationController) -> Token?{
-
-        if let token = tokenGenerator?(state: self,controller: controller){
+    func createToken(controller:TokenizationController,capturedCharacters:String?=nil)->Token?{
+        var useCharacters:String = capturedCharacters ? capturedCharacters! : controller.capturedCharacters()
+        
+        if let token = tokenGenerator?(state: self,capturedCharacteres: useCharacters){
             return token
         }
         
-        return errorToken(controller)
+        return nil
+    }
+    
+    func emitToken(controller:TokenizationController,token:Token?){
+        if let emittableToken = token {
+            controller.holdToken(emittableToken)
+        }
     }
     
     func description()->String {

@@ -30,7 +30,6 @@ import Foundation
 class Char : Branch{
     let allowedCharacters : String
     
-    var firstCharacter = true
     var inverted = false
     
     init(from:String){
@@ -57,48 +56,16 @@ class Char : Branch{
         return inverted
     }
     
-    override func reset() {
-        firstCharacter = true
-        super.reset()
-    }
-    
     override func couldEnterWithCharacter(character: UnicodeScalar, controller: TokenizationController) -> Bool {
         return isAllowed(character)
     }
     
     override func consume(character: UnicodeScalar, controller: TokenizationController) -> TokenizationStateChange {
-        if firstCharacter{
-            if isAllowed(character){
-                firstCharacter = false
-                //We will exit or branch next time
-                return TokenizationStateChange.None
-            } else {
-                return TokenizationStateChange.Error(errorToken: Token.ErrorToken(forString: controller.describeCaptureState(),problemDescription: "Expected one of "+allowedCharacters))
-            }
+        if isAllowed(character){
+            let token = createToken(controller, capturedCharacters: controller.capturedCharacters()+"\(controller.currentCharacter())")
+            return selfSatisfiedBranchOutOfStateTransition(true, controller: controller, withToken: token)
         } else {
-            //If we have other transitions, continue so we can fall through next time
-            if branches.count == 0{
-                //If we are token creating, create one
-                if let token = generateToken(controller){
-                    controller.processToken(token)
-                    return TokenizationStateChange.Exit
-                }
-                //We can't branch, we can't create a token, all we can do is exit
-                return TokenizationStateChange.Exit
-            }
-            
-            let branchTransition = super.consume(character,controller: controller)
-            switch branchTransition{
-            case .Error:
-                if let token = generateToken(controller){
-                    controller.processToken(token)
-                    return TokenizationStateChange.Exit
-                } else {
-                    return branchTransition
-                }
-            default:
-                return branchTransition
-            }
+            return selfSatisfiedBranchOutOfStateTransition(false, controller: controller, withToken: nil)
         }
     }
     

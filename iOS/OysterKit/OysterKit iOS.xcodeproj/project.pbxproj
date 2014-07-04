@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4200A1831965C09C008056C5 /* standardTokensTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4200A1821965C09C008056C5 /* standardTokensTest.swift */; };
 		4221035C19601B11001148F5 /* OysterKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 4221035B19601B11001148F5 /* OysterKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4221036219601B11001148F5 /* OysterKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4221035619601B11001148F5 /* OysterKit.framework */; };
-		4247FF3B19653C1800CCE286 /* OysterKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247FF3A19653C1800CCE286 /* OysterKitTests.swift */; };
 		4247FF5319653C7900CCE286 /* NumberToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247FF4019653C7900CCE286 /* NumberToken.swift */; };
 		4247FF5419653C7900CCE286 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247FF4119653C7900CCE286 /* Operators.swift */; };
 		4247FF5519653C7900CCE286 /* OperatorToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247FF4219653C7900CCE286 /* OperatorToken.swift */; };
@@ -27,6 +27,11 @@
 		4247FF6119653C7900CCE286 /* Delimited.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247FF5119653C7900CCE286 /* Delimited.swift */; };
 		4247FF6219653C7900CCE286 /* Repeat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247FF5219653C7900CCE286 /* Repeat.swift */; };
 		425EBD9F19654A3E00A1C232 /* TestingSupportFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425EBD9E19654A3E00A1C232 /* TestingSupportFunctions.swift */; };
+		4267D6991965ADA100AF442F /* stateTestBranch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4267D6941965ADA100AF442F /* stateTestBranch.swift */; };
+		4267D69A1965ADA100AF442F /* stateTestChar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4267D6951965ADA100AF442F /* stateTestChar.swift */; };
+		4267D69B1965ADA100AF442F /* stateTestDelimeter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4267D6961965ADA100AF442F /* stateTestDelimeter.swift */; };
+		4267D69C1965ADA100AF442F /* stateTestRepeat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4267D6971965ADA100AF442F /* stateTestRepeat.swift */; };
+		4267D69D1965ADA100AF442F /* tokenizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4267D6981965ADA100AF442F /* tokenizerTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,12 +45,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4200A1821965C09C008056C5 /* standardTokensTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = standardTokensTest.swift; path = ../../../Mac/OysterKit/OysterKitTests/Tests/standardTokensTest.swift; sourceTree = "<group>"; };
 		4221035619601B11001148F5 /* OysterKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OysterKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4221035A19601B11001148F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4221035B19601B11001148F5 /* OysterKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OysterKit.h; sourceTree = "<group>"; };
 		4221036119601B11001148F5 /* OysterKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OysterKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4221036719601B11001148F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4247FF3A19653C1800CCE286 /* OysterKitTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OysterKitTests.swift; path = ../../../Mac/OysterKit/OysterKitTests/Tests/OysterKitTests.swift; sourceTree = "<group>"; };
 		4247FF4019653C7900CCE286 /* NumberToken.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NumberToken.swift; path = Base/NumberToken.swift; sourceTree = "<group>"; };
 		4247FF4119653C7900CCE286 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
 		4247FF4219653C7900CCE286 /* OperatorToken.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OperatorToken.swift; path = Base/OperatorToken.swift; sourceTree = "<group>"; };
@@ -63,6 +68,11 @@
 		4247FF5119653C7900CCE286 /* Delimited.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Delimited.swift; sourceTree = "<group>"; };
 		4247FF5219653C7900CCE286 /* Repeat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Repeat.swift; sourceTree = "<group>"; };
 		425EBD9E19654A3E00A1C232 /* TestingSupportFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TestingSupportFunctions.swift; path = ../../../Mac/OysterKit/OysterKitTests/Tests/TestingSupportFunctions.swift; sourceTree = "<group>"; };
+		4267D6941965ADA100AF442F /* stateTestBranch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = stateTestBranch.swift; path = ../../../Mac/OysterKit/OysterKitTests/Tests/stateTestBranch.swift; sourceTree = "<group>"; };
+		4267D6951965ADA100AF442F /* stateTestChar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = stateTestChar.swift; path = ../../../Mac/OysterKit/OysterKitTests/Tests/stateTestChar.swift; sourceTree = "<group>"; };
+		4267D6961965ADA100AF442F /* stateTestDelimeter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = stateTestDelimeter.swift; path = ../../../Mac/OysterKit/OysterKitTests/Tests/stateTestDelimeter.swift; sourceTree = "<group>"; };
+		4267D6971965ADA100AF442F /* stateTestRepeat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = stateTestRepeat.swift; path = ../../../Mac/OysterKit/OysterKitTests/Tests/stateTestRepeat.swift; sourceTree = "<group>"; };
+		4267D6981965ADA100AF442F /* tokenizerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = tokenizerTests.swift; path = ../../../Mac/OysterKit/OysterKitTests/Tests/tokenizerTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,8 +133,13 @@
 		4221036519601B11001148F5 /* OysterKitTests */ = {
 			isa = PBXGroup;
 			children = (
+				4200A1821965C09C008056C5 /* standardTokensTest.swift */,
+				4267D6941965ADA100AF442F /* stateTestBranch.swift */,
+				4267D6951965ADA100AF442F /* stateTestChar.swift */,
+				4267D6961965ADA100AF442F /* stateTestDelimeter.swift */,
+				4267D6971965ADA100AF442F /* stateTestRepeat.swift */,
+				4267D6981965ADA100AF442F /* tokenizerTests.swift */,
 				425EBD9E19654A3E00A1C232 /* TestingSupportFunctions.swift */,
-				4247FF3A19653C1800CCE286 /* OysterKitTests.swift */,
 				4221036619601B11001148F5 /* Supporting Files */,
 			);
 			path = OysterKitTests;
@@ -333,8 +348,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4200A1831965C09C008056C5 /* standardTokensTest.swift in Sources */,
+				4267D69A1965ADA100AF442F /* stateTestChar.swift in Sources */,
+				4267D69C1965ADA100AF442F /* stateTestRepeat.swift in Sources */,
 				425EBD9F19654A3E00A1C232 /* TestingSupportFunctions.swift in Sources */,
-				4247FF3B19653C1800CCE286 /* OysterKitTests.swift in Sources */,
+				4267D69D1965ADA100AF442F /* tokenizerTests.swift in Sources */,
+				4267D6991965ADA100AF442F /* stateTestBranch.swift in Sources */,
+				4267D69B1965ADA100AF442F /* stateTestDelimeter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

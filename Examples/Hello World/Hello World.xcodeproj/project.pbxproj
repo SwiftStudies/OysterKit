@@ -25,6 +25,13 @@
 			remoteGlobalIDString = 4221038719601B40001148F5;
 			remoteInfo = OysterKitTests;
 		};
+		42AAB55D19667EFB00EDC57F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 425EBD92196543FF00A1C232 /* OysterKit Mac.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 4221037B19601B40001148F5;
+			remoteInfo = OysterKit;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -104,6 +111,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				42AAB55E19667EFB00EDC57F /* PBXTargetDependency */,
 			);
 			name = "Hello World";
 			productName = "Hello World";
@@ -174,6 +182,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		42AAB55E19667EFB00EDC57F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = OysterKit;
+			targetProxy = 42AAB55D19667EFB00EDC57F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		425EBD8D196543F000A1C232 /* Debug */ = {
@@ -284,6 +300,7 @@
 				425EBD91196543F000A1C232 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -31,8 +31,10 @@ typealias TokenHandler = (token: Token) -> Bool
 
 protocol TokenizationController {
     func capturedCharacters()->String
+    func currentCharacter()->UnicodeScalar
     func describeCaptureState()->String
-    func processToken(newToken:Token)
+    func holdToken(newToken:Token)
+    func clearToken()
     
     func push(newContext:Array<TokenizationState>)
     func pop()

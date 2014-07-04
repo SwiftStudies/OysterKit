@@ -52,3 +52,12 @@ func printAsTest(tokenizer:Tokenizer, string:String, variableName:String){
     }
     print("])")
 }
+
+func dump(izer:Tokenizer,with:String){
+    println("\nTokenizing "+with)
+    izer.tokenize(with){(token:Token)->Bool in
+        println("\t"+token.description())
+        return true
+    }
+    println("\n")
+}

@@ -33,8 +33,6 @@ class Delimited : Branch{
     
     var consumedFirstDelimiter = false
 
-    var generateTokenAndExit = false
-    
     var delimetedStates:Array<TokenizationState>
 
     init(open:String,close:String,states:TokenizationState...){
@@ -45,7 +43,7 @@ class Delimited : Branch{
         //Initialise super class
         super.init()
         self.delimetedStates.unshare()
-        self.delimetedStates.append(self)
+        self.delimetedStates.insert(self, atIndex: 0)
     }
     
     init(delimiter:String,states:TokenizationState...){
@@ -70,25 +68,18 @@ class Delimited : Branch{
     }
     
     override func consume(character: UnicodeScalar, controller: TokenizationController) -> TokenizationStateChange {
-        if generateTokenAndExit{
-            generateTokenAndExit = false
-
-            if let token = generateToken(controller) {
-                controller.processToken(token)
-            }
-            
-            if consumedFirstDelimiter{
-                controller.pop()
-            } else {
-                controller.push(self.delimetedStates)
-            }
-            consumedFirstDelimiter = !consumedFirstDelimiter
-            
-            return TokenizationStateChange.Exit
+        
+        if consumedFirstDelimiter {
+            controller.pop()
+        } else {
+            controller.push(self.delimetedStates)
         }
         
-        generateTokenAndExit = true
-        return TokenizationStateChange.None
+        consumedFirstDelimiter = !consumedFirstDelimiter
+        
+        emitToken(controller, token: createToken(controller, capturedCharacters: controller.capturedCharacters()+"\(controller.currentCharacter())"))
+        
+        return TokenizationStateChange.Exit(consumedCharacter: true)
     }
     
     override func description() -> String {

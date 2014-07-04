@@ -52,7 +52,9 @@ class OysterKit{
     }
     
     class var eot:TokenizationState{
-        return Char(from:"\u0004").token("end")
+        return Char(from:"\u0004").token(){ (state:TokenizationState, capturedCharacters:String)->Token in 
+            return Token.EndOfTransmissionToken()
+        }
     }
     
     class var blank:TokenizationState{

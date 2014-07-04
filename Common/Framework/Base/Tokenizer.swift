@@ -32,8 +32,14 @@ import Foundation
 class Tokenizer : BranchingController {
     
     //Implementation specific
-    func tokenize(character:UnicodeScalar){
-        consume(character, controller: self)
+    func tokenize(character:UnicodeScalar)->Bool{
+        let branchingControllerResult = consume(character, controller: self)
+        switch branchingControllerResult {
+        case .Exit:
+            return false
+        default:
+            return true
+        }
     }
     
     func tokenize(string: String, newToken: TokenHandler) {
@@ -49,7 +55,9 @@ class Tokenizer : BranchingController {
                 return
             }
             tokenizing = character
-            tokenize(character)
+            if !tokenize(character){
+                return
+            }
         }
     }
     
