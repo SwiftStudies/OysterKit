@@ -34,6 +34,7 @@ class BranchingController : Branch,TokenizationController {
     var inStartingState = true
     var tokenizing : UnicodeScalar?
     var error:Bool = false
+    var mostRecentToken:Token?
     
     var contexts = Array<Array<TokenizationState>>()
 
@@ -53,20 +54,38 @@ class BranchingController : Branch,TokenizationController {
     func capturedCharacters() -> String {
         return storedCharacters
     }
-        
+    
+    func currentCharacter() -> UnicodeScalar {
+        if tokenizing {
+            return tokenizing!
+        } else {
+            var eotS : UnicodeScalar?
+            for eot in "\x04".unicodeScalars {
+                eotS = eot
+            }
+            return eotS!
+        }
+    }
+            
     func describeCaptureState() -> String {
         return storedCharacters+"▷\(tokenizing)◁"
     }
     
-    func processToken(newToken: Token) {
-        handler!(token:newToken)        
+    func holdToken(newToken: Token) {
+        mostRecentToken = newToken
+        println("Holding token: "+newToken.description())
+    }
+
+    func clearToken() {
+        if (mostRecentToken){
+            println("Token was cleared "+mostRecentToken!.description());
+            mostRecentToken = nil
+        }
     }
     
     func push(newContext: Array<TokenizationState>) {
         contexts.append(branches)
         branches = newContext
-        currentState = self
-        
     }
     
     func pop() {
@@ -87,27 +106,43 @@ class BranchingController : Branch,TokenizationController {
         
         
         switch consumptionResult!{
-            case .Error(let errorToken):
-                processToken(errorToken)
-                error = true
-            case .Exit:
+            case .Exit(let exitCondition):
+                if inStartingState {
+                    return consumptionResult!
+                }
+                if mostRecentToken {
+                    //This needs to check for an actual terminate token
+                    if (mostRecentToken is Token.EndOfTransmissionToken){
+                        println("Ignoring end of transmission")
+                    } else {
+                        println("Sending token: "+mostRecentToken!.description())
+                        handler!(token: mostRecentToken!)
+                    }
+                    mostRecentToken = nil
+                }
                 currentState = self
-                return consume(character, controller:controller)
-            case .Transition(let newState):
+                if !exitCondition.consumedCharacter {
+                    return consume(character, controller:controller)
+                }
+                return TokenizationStateChange.None
+            case .Transition(let newState, let consumedCharacter):
                 currentState = newState
-                return consume(character, controller: controller)
+                if !consumedCharacter {
+                    return consume(character, controller: controller)
+                }
+                fallthrough
             case .None:
                 storedCharacters += "\(character)"
                 return TokenizationStateChange.None
         }
         
-        return TokenizationStateChange.None
     }
     
     override func reset(){
         inStartingState = true
         storedCharacters = ""
         tokenizing = nil
+        mostRecentToken = nil
         super.reset()
     }
     

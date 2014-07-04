@@ -1,0 +1,82 @@
+//
+//  stateTestBranch.swift
+//  OysterKit Mac
+//
+//  Created by Nigel Hughes on 03/07/2014.
+//  Copyright (c) 2014 RED When Excited Limited. All rights reserved.
+//
+
+import XCTest
+import OysterKit
+
+class stateTestBranch: XCTestCase {
+    var tokenizer = Tokenizer()
+    
+    override func setUp() {
+        super.setUp()
+        // Put setup code here. This method is called before the invocation of each test method in the class.
+        tokenizer = Tokenizer()
+    }
+    
+    override func tearDown() {
+        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        super.tearDown()
+    }
+
+    func testBranch(){
+        tokenizer.branch(
+            char("x").branch(
+                char("y").token("xy"),
+                char("z").token("xz")
+            ),
+            OysterKit.eot
+        )
+                
+        XCTAssert(tokenizer.tokenize("xyxz") == [token("xy"),token("xz")])
+    }
+    
+    func testNestedBranch(){
+        tokenizer.branch(
+            Branch(states: [
+                char("x").branch(
+                    char("y").token("xy"),
+                    char("z").token("xz")
+                )
+                ])
+        )
+        
+        XCTAssert(tokenizer.tokenize("xyxz") == [token("xy"),token("xz")])
+    }
+    
+    func testXY(){
+        tokenizer.sequence(char("x"),char("y").token("xy"))
+        tokenizer.branch(OysterKit.eot)
+        
+        XCTAssert(tokenizer.tokenize("xy") == [token("xy")], "Chained results do not match")
+    }
+    
+    
+    func testSequence1(){
+        let expectedResults = [token("done",chars:"xyz")]
+        
+        tokenizer.branch(
+            sequence(char("x"),char("y"),char("z").token("done")),
+            OysterKit.eot
+        )
+        
+        XCTAssert(tokenizer.tokenize("xyz") == expectedResults)
+    }
+    
+    func testSequence2(){
+        let expectedResults = [token("done",chars:"xyz")]
+        
+        tokenizer.branch(
+            char("x").sequence(char("y"),char("z").token("done")),
+            OysterKit.eot
+        )
+        
+        XCTAssert(tokenizer.tokenize("xyz") == expectedResults)
+    }
+
+
+}

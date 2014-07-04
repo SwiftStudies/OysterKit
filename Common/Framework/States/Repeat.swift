@@ -41,27 +41,25 @@ class Repeat : BranchingController{
         self.countedToken = nil
 
         //Initialise super class
-        super.init()
-        
-        self._privateCreateHandler()
+        super.init()        
     }
     
-    //Should be private
-    func _privateCreateHandler(){
-        self.handler = {(token:Token)->Bool in
-            if let countTokensCalled:String = self.countedToken{
-                if token.name == countTokensCalled {
-                    self.repeats++
-                }
-            } else {
+    override func holdToken(newToken: Token){
+        if let countTokensCalled:String = self.countedToken{
+            if newToken.name == countTokensCalled {
+                println("Counted "+newToken.description())
                 self.repeats++
             }
-
-            //Start from scratch next time around
-            self.currentState = self.repeatingState
-            
-            return true
+        } else {
+            println("Counted "+newToken.description())
+            self.repeats++
         }
+        
+        return
+    }
+    
+    override func clearToken() {
+        println("Token stacking not currently supported by repeat, use a specific counted token name instead")
     }
     
     override func didEnter() {
@@ -70,36 +68,21 @@ class Repeat : BranchingController{
     }
     
     override func couldEnterWithCharacter(character: UnicodeScalar, controller: TokenizationController) -> Bool {
-        
         return repeatingState.couldEnterWithCharacter(character, controller: self)
     }
     
-    func validBranchingState(character: UnicodeScalar, controller: TokenizationController)->TokenizationStateChange?{
-        for branch in branches{
-            if branch.couldEnterWithCharacter(character, controller: controller){
-                let validBranchTransition = branch.consume(character, controller: controller)
-                switch validBranchTransition{
-                case .Error,.Exit,.Transition:
-                    return validBranchTransition
-                case .None:
-                    return TokenizationStateChange.Transition(newState: branch)
-                }
-            }
+    func ungracefulExit(controller:TokenizationController, consumedCharacter:Bool)->TokenizationStateChange{
+        //Regardless of the reason, if I have not crossed the number of minimum repeats I should generate an error
+        if repeats < minimumRepeats {
+            return TokenizationStateChange.Exit(consumedCharacter: consumedCharacter)
         }
-        return nil
-    }
-    
-    func manageExitFromState(character:UnicodeScalar, controller:TokenizationController) -> TokenizationStateChange{
-
-        //Can I consume this character as a branch?
-        if let validBranch = validBranchingState(character, controller: controller){
-            return validBranch
+        
+        //Otherwise create a deferred transition, if it was an error I haven't consumed the current character
+        //if it wasn't then I have
+        if !consumedCharacter {
+            return selfSatisfiedBranchOutOfStateTransition(false, controller: controller, withToken: createToken(controller, capturedCharacters: controller.capturedCharacters()))
         } else {
-            //if not, create a token if I can
-            if let token = generateToken(controller){
-                controller.processToken(token)
-            }
-            return TokenizationStateChange.Exit
+            return selfSatisfiedBranchOutOfStateTransition(true, controller: controller, withToken: createToken(controller, capturedCharacters: controller.capturedCharacters()+"\(controller.currentCharacter())"))
         }
         
     }
@@ -107,34 +90,33 @@ class Repeat : BranchingController{
     override func consume(character: UnicodeScalar, controller: TokenizationController) -> TokenizationStateChange {
         tokenizing = character
         
-        if maximumRepeats && maximumRepeats == repeats{
-            return manageExitFromState(character, controller: controller)
-        }
-        
         let beforeConsumptionRepeats = repeats
         let consumptionResult = currentState!.consume(character, controller: self)
         let tokenEncountered = beforeConsumptionRepeats != repeats
         
-        switch consumptionResult{
-        case .Error(let subErrorToken):
-            if repeats < minimumRepeats{
-                let oldDescription = subErrorToken.errorToken.description()
-                let newError = Token.ErrorToken(forString: controller.describeCaptureState(), problemDescription: "Expected at least \(minimumRepeats) repeats, "+subErrorToken.errorToken.description())
-                return TokenizationStateChange.Error(errorToken: newError)
+        if tokenEncountered{
+            if maximumRepeats && maximumRepeats == repeats {
+                //Hit the limit, create the token which may be deferred if I can branch and move on
+                let token = createToken(controller, capturedCharacters: controller.capturedCharacters()+"\(controller.currentCharacter())")
+                return selfSatisfiedBranchOutOfStateTransition(true, controller: controller, withToken: token)
             }
             
-            return manageExitFromState(character, controller: controller)
-        case .Exit:
+            //Reset and look for another
             currentState = repeatingState
-            //Have we hit the repeat limit
-            if maximumRepeats && repeats == maximumRepeats{
-                return manageExitFromState(character, controller: controller)
-            }
-                        
-            return consume(character, controller: controller)
+            storedCharacters = ""
+            
+            return TokenizationStateChange.None
+        }
+        
+        switch consumptionResult{
+        case .Exit(let exitCondition):
 
-        case .Transition(let newState):
+            return ungracefulExit(controller, consumedCharacter:exitCondition)
+        case .Transition(let newState, let consumedCharacter):
             currentState = newState
+            if !consumedCharacter {
+                return consume(character,controller: controller)
+            }
             fallthrough
         case .None:
             storedCharacters += "\(character)"

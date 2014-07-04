@@ -60,7 +60,7 @@ class OperatorToken : Token{
         }
     }
     
-    class func createToken(state:TokenizationState,controller:TokenizationController)->Token{
-        return OperatorToken(characters: controller.capturedCharacters())
+    class func createToken(state:TokenizationState,capturedCharacters:String)->Token{
+        return OperatorToken(characters: capturedCharacters)
     }
 }

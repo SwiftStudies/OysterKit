@@ -44,6 +44,12 @@ class Token{
         return "\(name) '\(characters)'"
     }
     
+    class EndOfTransmissionToken : Token {
+        init(){
+            super.init(name: "End of Transmission",withCharacters: "")
+        }
+    }
+    
     class ErrorToken: Token{
         let problem : String
         

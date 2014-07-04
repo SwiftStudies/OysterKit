@@ -32,11 +32,11 @@ enum TokenizationStateChange{
     //No state change requried
     case None
     //Leave this state
-    case Exit
+    case Exit(consumedCharacter:Bool)
     //Leave this state, and there was an error
-    case Error(errorToken:Token.ErrorToken)
+//    case Error(errorToken:Token.ErrorToken)
     //Move to this new state
-    case Transition(newState:TokenizationState)
+    case Transition(newState:TokenizationState,consumedCharacter:Bool)
 }
 
 
@@ -66,6 +66,6 @@ protocol TokenizationState{
     func description()->String
 }
 
-typealias   TokenCreationBlock = ((state:TokenizationState,controller:TokenizationController)->Token)
+typealias   TokenCreationBlock = ((state:TokenizationState,capturedCharacteres:String)->Token)
 
 

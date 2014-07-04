@@ -66,7 +66,7 @@ class NumberToken : Token{
         return "number = \(numericValue)"
     }
     
-    class func createToken(state:TokenizationState,controller:TokenizationController)->Token{
-        return NumberToken(usingString:controller.capturedCharacters())
+    class func createToken(state:TokenizationState,capturedCharacters:String)->Token{
+        return NumberToken(usingString:capturedCharacters)
     }
 }
