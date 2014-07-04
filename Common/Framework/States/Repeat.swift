@@ -83,12 +83,7 @@ class Repeat : BranchingController{
         
         //Otherwise create a deferred transition, if it was an error I haven't consumed the current character
         //if it wasn't then I have
-        if !consumedCharacter {
-            return selfSatisfiedBranchOutOfStateTransition(false, controller: controller, withToken: createToken(controller, capturedCharacters: controller.capturedCharacters()))
-        } else {
-            return selfSatisfiedBranchOutOfStateTransition(true, controller: controller, withToken: createToken(controller, capturedCharacters: controller.capturedCharacters()+"\(controller.currentCharacter())"))
-        }
-        
+        return selfSatisfiedBranchOutOfStateTransition(consumedCharacter, controller: controller, withToken: createToken(controller, useCurrentCharacter: consumedCharacter))
     }
     
     override func consume(character: UnicodeScalar, controller: TokenizationController) -> TokenizationStateChange {
@@ -101,7 +96,7 @@ class Repeat : BranchingController{
         if tokenEncountered{
             if maximumRepeats && maximumRepeats == repeats {
                 //Hit the limit, create the token which may be deferred if I can branch and move on
-                let token = createToken(controller, capturedCharacters: controller.capturedCharacters()+"\(controller.currentCharacter())")
+                let token = createToken(controller, useCurrentCharacter: true)
                 return selfSatisfiedBranchOutOfStateTransition(true, controller: controller, withToken: token)
             }
             

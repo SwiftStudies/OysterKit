@@ -62,8 +62,7 @@ class Char : Branch{
     
     override func consume(character: UnicodeScalar, controller: TokenizationController) -> TokenizationStateChange {
         if isAllowed(character){
-            let token = createToken(controller, capturedCharacters: controller.capturedCharacters()+"\(controller.currentCharacter())")
-            return selfSatisfiedBranchOutOfStateTransition(true, controller: controller, withToken: token)
+            return selfSatisfiedBranchOutOfStateTransition(true, controller: controller, withToken: createToken(controller, useCurrentCharacter: true))
         } else {
             return selfSatisfiedBranchOutOfStateTransition(false, controller: controller, withToken: nil)
         }
