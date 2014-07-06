@@ -82,7 +82,31 @@ class Delimited : Branch{
         return TokenizationStateChange.Exit(consumedCharacter: true)
     }
     
-    override func description() -> String {
-        return "Delimited \(openingDelimiter)-\(closingDelimiter) with states "
+    func escapeDelimiter(delimiter:String)->String {
+        if delimiter == "'" {
+            return "\\'"
+        }
+        return delimiter
     }
+    
+    override func serialize(indentation: String) -> String {
+        var output = ""
+        
+        output+="<'\(escapeDelimiter(openingDelimiter))',"
+        
+        output += "{"
+        var first = true
+        
+        var subStates = Array(delimetedStates[0..self.delimetedStates.endIndex-1])
+        output += serializeStateArray(indentation+"\t", states: subStates)
+        
+        output+="}"
+
+        if openingDelimiter != closingDelimiter {
+            output+=",'\(closingDelimiter)'"
+        }
+        
+        return output+">"+serializeBranches(indentation+"\t")
+    }
+
 }

@@ -120,6 +120,61 @@ class Branch : TokenizationState {
         return self
     }
     
+    func serializeStateArray(indentation:String, states:Array<TokenizationState>)->String{
+        if states.count == 1 {
+            return states[0].serialize(indentation)
+        }
+        var output = ""
+        var first = true
+        for state in states {
+            if !first {
+                output+=","
+            } else {
+                first = false
+            }
+            output+="\n"
+            output+=indentation+state.serialize(indentation)
+        }
+        
+        return output
+    }
+    
+    func serializeBranches(indentation:String)->String{
+        if branches.count == 1  {
+            return "."+branches[0].serialize(indentation)
+        } else if tokenGenerator {
+            if let token = tokenGenerator?(state: self,capturedCharacteres: ""){
+                return "->"+token.name
+            }
+        } else if branches.count == 0 {
+            return ""
+        }
+        
+        
+        var output = ".{"
+        var first = true
+        for branch in branches {
+            if !first {
+                output+=","
+            } else {
+                first = false
+            }
+            output+="\n"
+            output+=indentation+branch.serialize(indentation)
+        }
+        return output+"}\n"
+    }
+    
+    func serialize(indentation:String)->String{
+        var output = "{"+serializeStateArray(indentation+"\t",states: branches)+"}"
+        
+        if branches.count > 1 {
+            output+="\n"
+        }
+        
+        return output
+    }
+    
     func selfSatisfiedBranchOutOfStateTransition(consumedCharacter:Bool, controller:TokenizationController, withToken:Token?)->TokenizationStateChange{
         emitToken(controller, token: withToken)
 
@@ -157,8 +212,7 @@ class Branch : TokenizationState {
         }
     }
     
-    func description()->String {
-        return "Branch"
+    var description:String {
+        return serialize("")
     }
-    
 }

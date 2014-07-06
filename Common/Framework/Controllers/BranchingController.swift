@@ -71,14 +71,14 @@ class BranchingController : Branch,TokenizationController {
     func holdToken(newToken: Token) {
         mostRecentToken = newToken
         if __okDebug {
-            println("Holding token: "+newToken.description())
+            println("Holding token: "+newToken.description)
         }
     }
 
     func clearToken() {
         if (mostRecentToken){
             if __okDebug {
-                println("Token was cleared "+mostRecentToken!.description());
+                println("Token was cleared "+mostRecentToken!.description);
             }
             mostRecentToken = nil
         }
@@ -119,7 +119,7 @@ class BranchingController : Branch,TokenizationController {
                         }
                     } else {
                         if __okDebug {
-                            println("Sending token: "+mostRecentToken!.description())
+                            println("Sending token: "+mostRecentToken!.description)
                         }
                         handler!(token: mostRecentToken!)
                     }
@@ -143,6 +143,13 @@ class BranchingController : Branch,TokenizationController {
         
     }
     
+    override func serialize(indentation: String) -> String {
+        var output = "{"
+        var first = true
+        output+=serializeStateArray(indentation+"\t", states: branches)
+        return output+"\n}"
+    }
+    
     override func reset(){
         inStartingState = true
         storedCharacters = ""
@@ -150,8 +157,5 @@ class BranchingController : Branch,TokenizationController {
         mostRecentToken = nil
         super.reset()
     }
-    
-    override func description() -> String {
-        return "Controller"
-    }
+
 }

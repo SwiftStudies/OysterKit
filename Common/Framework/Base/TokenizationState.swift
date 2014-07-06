@@ -40,7 +40,7 @@ enum TokenizationStateChange{
 }
 
 
-protocol TokenizationState{
+protocol TokenizationState : Printable{
     //
     // Tokenization
     //
@@ -63,7 +63,10 @@ protocol TokenizationState{
     func token(emitToken:String)->TokenizationState
     func token(with:TokenCreationBlock)->TokenizationState
     
-    func description()->String
+    //
+    // Output
+    //
+    func serialize(indentation:String)->String
 }
 
 typealias   TokenCreationBlock = ((state:TokenizationState,capturedCharacteres:String)->Token)

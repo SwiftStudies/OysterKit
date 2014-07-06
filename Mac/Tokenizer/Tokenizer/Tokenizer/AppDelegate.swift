@@ -47,14 +47,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationDidFinishLaunching(aNotification: NSNotification?) {
         // Insert code here to initialize your application
-        inputTextView.okDelegate.tokenizer.branch(
-            OysterKit.number,
-            OysterKit.word,
-            OysterKit.blanks,
-            OysterKit.punctuation,
-            OysterKit.eot
-        )
-        
+        inputTextView.automaticQuoteSubstitutionEnabled = false
+        inputTextView.automaticSpellingCorrectionEnabled = false
+        inputTextView.automaticDashSubstitutionEnabled = false
     }
     
 
@@ -67,13 +62,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 // Working around compiler crash with NSTextViewDelegate
 //
 class TextViewDelegate: NSObject {
-    var tokenizer = Tokenizer()
     
     var tokenizationString:String = ""
     
-    
     func change(textView: NSTextView!){
         if textView.string != tokenizationString {
+/*            var tokenizer = Tokenizer()
+            tokenizer.branch(
+                OysterKit.number,
+                OysterKit.word,
+                OysterKit.blanks,
+                OysterKit.punctuation,
+                OysterKit.eot)*/
+            var tokenizer = TokenizerFile()
+            
             tokenizationString = textView.string
             let tokens = tokenizer.tokenize(tokenizationString)
             
@@ -84,6 +86,8 @@ class TextViewDelegate: NSObject {
             
             let appDel:AppDelegate = NSApplication.sharedApplication().delegate as AppDelegate
             appDel.tokens = tokenStrings
+            
+            println(tokenizer)
         }
     }
 }

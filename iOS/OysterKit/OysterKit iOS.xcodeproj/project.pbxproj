@@ -32,6 +32,7 @@
 		4267D69B1965ADA100AF442F /* stateTestDelimeter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4267D6961965ADA100AF442F /* stateTestDelimeter.swift */; };
 		4267D69C1965ADA100AF442F /* stateTestRepeat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4267D6971965ADA100AF442F /* stateTestRepeat.swift */; };
 		4267D69D1965ADA100AF442F /* tokenizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4267D6981965ADA100AF442F /* tokenizerTests.swift */; };
+		4298889F19684B1B00A4C4C0 /* TokFileParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298889E19684B1B00A4C4C0 /* TokFileParser.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +74,7 @@
 		4267D6961965ADA100AF442F /* stateTestDelimeter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = stateTestDelimeter.swift; path = ../../../Mac/OysterKit/OysterKitTests/Tests/stateTestDelimeter.swift; sourceTree = "<group>"; };
 		4267D6971965ADA100AF442F /* stateTestRepeat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = stateTestRepeat.swift; path = ../../../Mac/OysterKit/OysterKitTests/Tests/stateTestRepeat.swift; sourceTree = "<group>"; };
 		4267D6981965ADA100AF442F /* tokenizerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = tokenizerTests.swift; path = ../../../Mac/OysterKit/OysterKitTests/Tests/tokenizerTests.swift; sourceTree = "<group>"; };
+		4298889E19684B1B00A4C4C0 /* TokFileParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokFileParser.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -192,6 +194,7 @@
 				4247FF4B19653C7900CCE286 /* Parser.swift */,
 				4247FF4C19653C7900CCE286 /* RPNParser.swift */,
 				4247FF4D19653C7900CCE286 /* SYExpressionParser.swift */,
+				4298889E19684B1B00A4C4C0 /* TokFileParser.swift */,
 			);
 			path = Parsing;
 			sourceTree = "<group>";
@@ -336,6 +339,7 @@
 				4247FF6219653C7900CCE286 /* Repeat.swift in Sources */,
 				4247FF5D19653C7900CCE286 /* RPNParser.swift in Sources */,
 				4247FF5A19653C7900CCE286 /* BranchingController.swift in Sources */,
+				4298889F19684B1B00A4C4C0 /* TokFileParser.swift in Sources */,
 				4247FF5E19653C7900CCE286 /* SYExpressionParser.swift in Sources */,
 				4247FF5419653C7900CCE286 /* Operators.swift in Sources */,
 				4247FF6119653C7900CCE286 /* Delimited.swift in Sources */,

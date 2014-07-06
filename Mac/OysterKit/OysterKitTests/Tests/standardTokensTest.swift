@@ -53,7 +53,7 @@ class standardTokensTest: XCTestCase {
             if tokens.count > 0 {
                 let actualToken:Token = tokens[0]
                 
-                XCTAssert(actualToken.name == token, "Failed to generate "+token+" from "+number+", instead received "+actualToken.description())                
+                XCTAssert(actualToken.name == token, "Failed to generate "+token+" from "+number+", instead received "+actualToken.description)                
             }
         }
     }

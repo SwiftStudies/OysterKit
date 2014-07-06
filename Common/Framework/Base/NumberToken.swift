@@ -62,7 +62,7 @@ class NumberToken : Token{
         }
     }
     
-    override func description() -> String {
+    override var description:String {
         return "number = \(numericValue)"
     }
     

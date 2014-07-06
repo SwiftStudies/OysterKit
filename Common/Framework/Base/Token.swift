@@ -27,7 +27,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Foundation
 
-class Token{
+class Token : Printable{
     let name:String
     var characters:String = ""
     
@@ -40,7 +40,7 @@ class Token{
         self.characters = withCharacters
     }
     
-    func description()->String{
+    var description : String {
         return "\(name) '\(characters)'"
     }
     
@@ -63,8 +63,8 @@ class Token{
             super.init(name: "Error", withCharacters: "\(forCharacter)")
         }
         
-        override func description() -> String {
-            return super.description()+" - "+problem
+        override var description:String {
+            return super.description+" - "+problem
         }
     }
 
