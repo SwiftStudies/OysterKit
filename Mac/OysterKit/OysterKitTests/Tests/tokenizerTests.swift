@@ -83,7 +83,82 @@ class tokenizerTests: XCTestCase {
         XCTAssert(tokenizer.tokenize(regexTest).count == 18)
     }
     
+    func testTokenizerFileChar(){
+        var tokenizer = _privateTokFileParser().parse("{\"0123456789\"->digit}")
+        
+        var tokens = tokenizer.tokenize("0123456789")
+        
+        XCTAssert(tokens.count == 10)
+        
+        tokens = tokenizer.tokenize("324")
+        
+        XCTAssert(tokens.count == 3)
+        
+        tokens = tokenizer.tokenize("343A")
+        
+        XCTAssert(tokens.count == 3)
+    }
+    
+    func testTokenizerFileBranch(){
+        var tokenizer = _privateTokFileParser().parse("{\"0123456789\"->digit,\"ABCDEFGHIJKLMNOPQRSTUVWXYZ\"->capital}")
+        
+        var tokens = tokenizer.tokenize("123ABC")
+        
+        XCTAssert(tokens.count == 6)
+    }
+    
+    func testTokenizerFileRepeat(){
+        var tokenizer = _privateTokFileParser().parse("{(\"0123456789\"->digit)->positiveInteger}")
+        var tokens = tokenizer.tokenize("123")
+        
+        XCTAssert(tokens.count == 1)
+        
+        tokenizer = _privateTokFileParser().parse("{(\"0123456789\"->digit,1,2)->positiveInteger}")
+        tokens = tokenizer.tokenize("123")
+        
+        XCTAssert(tokens.count == 2)
+    }
+    
+    func testTokenizerChain(){
+        //No real pressure on the branches
+        var tokenizer = _privateTokFileParser().parse("{\"i\".\"O\".\"S\"->iOS}")
+        var tokens = tokenizer.tokenize("iOS")
+        XCTAssert(tokens.count == 1)
+        
+        //Branch to one of two tokens
+        tokenizer = _privateTokFileParser().parse("{\"i\".\"O\".\"S\"->iOS,\"O\".\"S\".\"-\".\"X\"->OSX}")
+        tokens = tokenizer.tokenize("OS-X")
+        XCTAssert(tokens.count == 1)
 
+        //Check we can get both from same string
+        tokens = tokenizer.tokenize("OS-XiOS")
+        XCTAssert(tokens.count == 2)
+    }
+    
+    func testTokenizerDelimited(){
+//        let testString = "{<'\"',{({!\"\\\"\"->character})->Char}>->quote}"
+        let testString = "{<'(',')',{({!\")\"->delimitedChar})->bracketedString}>->delimiterCharacters}"
+        var tokenizer = _privateTokFileParser().parse(testString)
+        
+        var tokens = tokenizer.tokenize("(abcdefghij)")
+        
+        XCTAssert(tokens.count == 3)
+    }
+    
+    func testTokenizerFile(){
+        //Then create a definition for it from itself
+        let tokFileTokDef = TokenizerFile().description
+
+        let selfGeneratedTokens = TokenizerFile().tokenize(tokFileTokDef)
+        
+        //Create a tokenizer from the generated description
+        let generatedTokenizer = _privateTokFileParser().parse(tokFileTokDef)
+        
+        //Parse the file you were created from
+        let parserGeneratedTokens = generatedTokenizer.tokenize(tokFileTokDef)
+
+        XCTAssert(parserGeneratedTokens == selfGeneratedTokens)
+    }
     
 
 

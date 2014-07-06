@@ -72,27 +72,8 @@ class Tokenizer : BranchingController {
         return tokens
     }
     
-    func describe(state:TokenizationState, prefix:String, branchesOnly:Bool = false)->String{
-        var output = "\(prefix)"
-        
-        if !branchesOnly {
-            output+=state.description()+"\n"
-        }
-        
-        let branchingState = state as Branch
-        
-        for branchState in branchingState.branches{
-            output+=describe(branchState,prefix: prefix+"\t")+"\n"
-        }
-        
-        return output
-    }
-    
-    override func description() -> String {
-        var outputString = "Tokenizer:\n"
-        outputString+=describe(self,prefix: "\t", branchesOnly:true)
-        
-        return outputString
+    override func serialize(indentation: String) -> String {
+        return super.serialize(indentation)
     }
 }
 

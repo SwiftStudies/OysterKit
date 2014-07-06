@@ -68,9 +68,37 @@ class Char : Branch{
         }
     }
     
-    override func description()->String {
-        var invertString:String = inverted ? "excluding" : "from"
-        return "Character \(invertString) '\(allowedCharacters)'"
+    override func serialize(indentation: String) -> String {
+        var output = ""
+        if inverted {
+            output+="!"
+        }
+        
+        output+="\""
+        for character in allowedCharacters{
+            switch character {
+            case "\\":
+                output+="\\\\"
+            case "\"":
+                output+="\\\""
+            case "\x04":
+                output+="\\x04"
+            case "\r":
+                output+="\\r"
+            case "\n":
+                output+="\\n"
+            case "\t":
+                    output+="\\t"
+            default:
+                output+=character
+            }
+        }
+        output+="\""
+        
+
+        output+=serializeBranches(indentation+"\t")
+
+        return output
     }
 
 }

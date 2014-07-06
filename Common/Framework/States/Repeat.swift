@@ -48,13 +48,13 @@ class Repeat : BranchingController{
         if let countTokensCalled:String = self.countedToken{
             if newToken.name == countTokensCalled {
                 if __okDebug {
-                    println("Counted "+newToken.description())
+                    println("Counted "+newToken.description)
                 }
                 self.repeats++
             }
         } else {
             if __okDebug{
-                println("Counted "+newToken.description())                
+                println("Counted "+newToken.description)                
             }
             self.repeats++
         }
@@ -126,9 +126,21 @@ class Repeat : BranchingController{
         
     }
 
-    override func description()->String {
-        return "Repeat \(repeatingState.description()) Min:\(minimumRepeats) Max:\(maximumRepeats)"
+    override func serialize(indentation: String) -> String {
+        var output = ""
+
+        output+="("+repeatingState.serialize(indentation+"\t")
+        
+        if minimumRepeats != 1 || maximumRepeats {
+            output+=",\(minimumRepeats)"
+            if maximumRepeats {
+                output+=",\(maximumRepeats)"
+            }
+        }
+        
+        output+=")"
+        
+        return output+serializeBranches(indentation+"\t")
     }
-    
-    
+
 }

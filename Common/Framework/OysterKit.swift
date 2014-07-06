@@ -39,7 +39,6 @@ let upperCaseLetterString = lowerCaseLetterString.uppercaseString
 let eotString = "\x004"
 
 class OysterKit{
-    
     //Public
     class var decimalDigit:TokenizationState{
         return Char(from: decimalDigitString).token("digit")
@@ -112,6 +111,14 @@ class OysterKit{
         return Repeat(state: wordCharacter).token("word")
     }
     
+    class var variableName:TokenizationState{
+        return Char(from:lowerCaseLetterString+upperCaseLetterString).sequence(
+                    Repeat(state:Char(from:lowerCaseLetterString+upperCaseLetterString+decimalDigitString+"_-").token("varChar")
+            ).token("variable")
+        )
+        
+    }
+    
     class var blanks:TokenizationState{
         return Repeat(state: blank).token("blank")
     }
@@ -120,5 +127,11 @@ class OysterKit{
         return Repeat(state: whiteSpace).token("whitespace")
     }
     
+    class func parseState(stateDefinition:String)->TokenizationState?{
+        return _privateTokFileParser().parseState(stateDefinition)
+    }
     
+    class func parseTokenizer(tokenizerDefinition:String)->Tokenizer?{
+        return _privateTokFileParser().parse(tokenizerDefinition)
+    }
 }
