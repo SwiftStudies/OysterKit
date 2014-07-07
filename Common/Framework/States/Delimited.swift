@@ -57,6 +57,18 @@ class Delimited : Branch{
         self.delimetedStates.append(self)
     }
     
+    override class func convertFromStringLiteral(value: String) -> Delimited {
+        var parsedState = OysterKit.parseState(value)
+        if parsedState is Delimited {
+            return parsedState as Delimited
+        }
+        return Delimited(delimiter:"",states:Branch())
+    }
+    
+    override class func convertFromExtendedGraphemeClusterLiteral(value: String) -> Delimited {
+        return Delimited.convertFromStringLiteral(value)
+    }
+    
     override func couldEnterWithCharacter(character: UnicodeScalar, controller: TokenizationController) -> Bool {
         let delimiter = consumedFirstDelimiter ? closingDelimiter : openingDelimiter
         

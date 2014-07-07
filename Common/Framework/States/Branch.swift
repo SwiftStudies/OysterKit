@@ -28,9 +28,19 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import Foundation
 
 
-class Branch : TokenizationState {
+class Branch : TokenizationState, StringLiteralConvertible {
     
-
+    class func convertFromStringLiteral(value: String) -> Branch {
+        var parsedState = OysterKit.parseState(value)
+        if parsedState is Branch {
+            return parsedState as Branch
+        }
+        return Branch()
+    }
+    
+    class func convertFromExtendedGraphemeClusterLiteral(value: String) -> Branch {
+        return Branch.convertFromStringLiteral(value)
+    }
     
     var tokenGenerator : TokenCreationBlock?
     var branches = Array<TokenizationState>() //All states that can be transitioned to

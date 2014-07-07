@@ -87,7 +87,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
         var allTokens = Array<String>()
         okFileTokenizer.tokenize(inputTextView.string){(token:Token)->Bool in
             let tokenRange = NSMakeRange(token.originalStringIndex!, countElements(token.characters))
-            allTokens.append(token.description)
+            allTokens.append(token.name)
             self.tokens = allTokens
 
             if let mappedColor = self.tokenColorMap[token.name]? {

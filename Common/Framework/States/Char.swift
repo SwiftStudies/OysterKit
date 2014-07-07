@@ -56,6 +56,19 @@ class Char : Branch{
         return inverted
     }
     
+    override class func convertFromStringLiteral(value: String) -> Char {
+        var parsedState = OysterKit.parseState(value)
+        if parsedState is Char {
+            return parsedState as Char
+        }
+        return Char(from:"")
+    }
+    
+    override class func convertFromExtendedGraphemeClusterLiteral(value: String) -> Char {
+        return Char.convertFromStringLiteral(value)
+    }
+    
+    
     override func couldEnterWithCharacter(character: UnicodeScalar, controller: TokenizationController) -> Bool {
         return isAllowed(character)
     }

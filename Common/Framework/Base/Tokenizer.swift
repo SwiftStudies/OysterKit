@@ -72,6 +72,17 @@ class Tokenizer : BranchingController {
 
         return tokens
     }
+    
+    override class func convertFromStringLiteral(value: String) -> Tokenizer {
+        if let parsedTokenizer = OysterKit.parseTokenizer(value) {
+            return parsedTokenizer
+        }
+        return Tokenizer()
+    }
+    
+    override class func convertFromExtendedGraphemeClusterLiteral(value: String) -> Tokenizer {
+        return Tokenizer.convertFromStringLiteral(value)
+    }
 }
 
 
