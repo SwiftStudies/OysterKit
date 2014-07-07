@@ -48,6 +48,7 @@ class Tokenizer : BranchingController {
         handler = newToken
         currentState = self
         error = false
+        elementIndex = 0
         
         //Iterate through the characters
         for character in terminatedString.unicodeScalars{
@@ -70,10 +71,6 @@ class Tokenizer : BranchingController {
         })
 
         return tokens
-    }
-    
-    override func serialize(indentation: String) -> String {
-        return super.serialize(indentation)
     }
 }
 

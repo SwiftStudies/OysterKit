@@ -26,7 +26,15 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import Foundation
 
 class BranchingController : Branch,TokenizationController {
-    var storedCharacters = ""
+    var storedCharacters : String = "" {
+        didSet{
+            
+        }
+    }
+    
+    var elementIndex = 0
+    var storedCharactersIndex = 0
+    
     var handler:TokenHandler?
     var inStartingState = true
     var tokenizing : UnicodeScalar?
@@ -34,13 +42,25 @@ class BranchingController : Branch,TokenizationController {
     var mostRecentToken:Token?
     
     var contexts = Array<Array<TokenizationState>>()
-
+    
     var currentState : TokenizationState?{
         willSet{
             currentState?.didExit()
         }
         didSet{
             currentState?.didEnter()
+        }
+    }
+    
+    var currentElementIndex:Int{
+        get {
+            return elementIndex
+        }
+    }
+    
+    var storedCharactersStartIndex:Int{
+        get {
+            return storedCharactersIndex
         }
     }
     
@@ -99,6 +119,10 @@ class BranchingController : Branch,TokenizationController {
         
         var consumptionResult:TokenizationStateChange?
         
+        if storedCharacters == "" {
+            storedCharactersIndex = elementIndex
+        }
+        
         if inStartingState{
             consumptionResult = super.consume(character,controller:self)
         } else {
@@ -129,6 +153,7 @@ class BranchingController : Branch,TokenizationController {
                 if !exitCondition.consumedCharacter {
                     return consume(character, controller:controller)
                 }
+                elementIndex++
                 return TokenizationStateChange.None
             case .Transition(let newState, let consumedCharacter):
                 currentState = newState
@@ -138,6 +163,7 @@ class BranchingController : Branch,TokenizationController {
                 fallthrough
             case .None:
                 storedCharacters += "\(character)"
+                elementIndex++
                 return TokenizationStateChange.None
         }
         

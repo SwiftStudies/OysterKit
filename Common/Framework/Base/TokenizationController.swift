@@ -30,12 +30,19 @@ import Foundation
 typealias TokenHandler = (token: Token) -> Bool
 
 protocol TokenizationController {
+    //Capture conditions
     func capturedCharacters()->String
     func currentCharacter()->UnicodeScalar
     func describeCaptureState()->String
+    
+    var currentElementIndex:Int{get}
+    var storedCharactersStartIndex:Int{get}
+    
+    //Token management
     func holdToken(newToken:Token)
     func clearToken()
     
+    //State management
     func push(newContext:Array<TokenizationState>)
     func pop()
 }

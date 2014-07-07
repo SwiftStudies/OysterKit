@@ -53,8 +53,10 @@ class OysterKit{
     }
     
     class var eot:TokenizationState{
-        return Char(from:"\u0004").token(){ (state:TokenizationState, capturedCharacters:String)->Token in 
-            return Token.EndOfTransmissionToken()
+        return Char(from:"\u0004").token(){ (state:TokenizationState, capturedCharacters:String, startIndex:Int)->Token in
+            var token = Token.EndOfTransmissionToken()
+            token.originalStringIndex = startIndex
+            return token
         }
     }
     
@@ -97,6 +99,7 @@ class OysterKit{
                 )
             )
 
+            
         return Branch().branch(
             Repeat(state: decimalDigit).token("integer").branch(decimalPointChain),
             Char(from: "+-").token(OperatorToken.createToken).sequence(
@@ -124,7 +127,37 @@ class OysterKit{
     }
     
     class var whiteSpaces:TokenizationState{
-        return Repeat(state: whiteSpace).token("whitespace")
+        return Repeat(state: whiteSpace).token(WhiteSpaceToken.createToken)
+    }
+    
+    class var quotedString:TokenizationState{
+    return Delimited(delimiter: "\"", states:
+        Repeat(state:Branch().branch(
+            Char(from:"\\").branch(
+                Char(from:"trn\"\\").token("char")
+            ),
+            Char(except: "\"").token("char")
+            ), min: 1, max: nil).token("quoted-string")
+        )
+    }
+    
+    class var quotedStringIncludingQuotes:TokenizationState{
+        return quotedString.token("double-quote")
+    }
+    
+    class var quotedCharacter:TokenizationState{
+    return Delimited(delimiter: "'", states:
+        Repeat(state:Branch().branch(
+            Char(from:"\\").branch(
+                Char(from:"trn'\\").token("char")
+            ),
+            Char(except: "'").token("char")
+            ), min: 1, max: 1).token("char")
+        )
+    }
+    
+    class var quotedCharacterIncludingQuotes:TokenizationState{
+        return quotedCharacter.token("quote")
     }
     
     class func parseState(stateDefinition:String)->TokenizationState?{

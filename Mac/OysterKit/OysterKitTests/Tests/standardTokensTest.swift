@@ -71,4 +71,20 @@ class standardTokensTest: XCTestCase {
         XCTAssert(tokenizer.tokenize(parsingTest) == [token("word",chars:"Short"), token("blank",chars:" "), token("integer",chars:"10"), token("blank",chars:" "), token("word",chars:"string"), ])
     }
     
+    func testQuotedString(){
+        tokenizer.branch(
+            OysterKit.quotedStringIncludingQuotes,
+            OysterKit.blanks,
+            OysterKit.number,
+            OysterKit.word,
+            OysterKit.punctuation,
+            OysterKit.eot
+        )
+
+        let parsingTest = "A great man once said \"It is a far better thing that I do now than I have ever done\". "
+        
+        
+        XCTAssert(tokenizer.tokenize(parsingTest) == [token("word",chars:"A"), token("blank",chars:" "), token("word",chars:"great"), token("blank",chars:" "), token("word",chars:"man"), token("blank",chars:" "), token("word",chars:"once"), token("blank",chars:" "), token("word",chars:"said"), token("blank",chars:" "), token("double-quote",chars:"\""), token("quoted-string",chars:"It is a far better thing that I do now than I have ever done"), token("double-quote",chars:"\""), token("punct",chars:"."), token("blank",chars:" "), ])
+    }
+    
 }

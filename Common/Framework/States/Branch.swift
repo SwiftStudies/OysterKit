@@ -99,16 +99,20 @@ class Branch : TokenizationState {
     }
 
     func token(emitToken: String) -> TokenizationState {
-        tokenGenerator = {(state:TokenizationState, capturedCharacters:String)->Token in
-            return Token(name: emitToken, withCharacters: capturedCharacters)
+        tokenGenerator = {(state:TokenizationState, capturedCharacters:String, startIndex:Int)->Token in
+            var token = Token(name: emitToken, withCharacters: capturedCharacters)
+            token.originalStringIndex = startIndex
+            return token
         }
         
         return self
     }
     
     func token(emitToken: Token) -> TokenizationState {
-        tokenGenerator = {(state:TokenizationState, capturedCharacters:String)->Token in
-            return Token(name: emitToken.name, withCharacters: capturedCharacters)
+        tokenGenerator = {(state:TokenizationState, capturedCharacters:String, startIndex:Int)->Token in
+            var token = Token(name: emitToken.name, withCharacters: capturedCharacters)
+            token.originalStringIndex = startIndex
+            return token
         }
 
         return self
@@ -143,7 +147,7 @@ class Branch : TokenizationState {
         if branches.count == 1  {
             return "."+branches[0].serialize(indentation)
         } else if tokenGenerator {
-            if let token = tokenGenerator?(state: self,capturedCharacteres: ""){
+            if let token = tokenGenerator?(state: self,capturedCharacteres: "",charactersStartIndex:0){
                 return "->"+token.name
             }
         } else if branches.count == 0 {
@@ -199,7 +203,7 @@ class Branch : TokenizationState {
     
     func createToken(controller:TokenizationController, useCurrentCharacter:Bool)->Token?{
         var useCharacters = useCurrentCharacter ? controller.capturedCharacters()+"\(controller.currentCharacter())" : controller.capturedCharacters()
-        if let token = tokenGenerator?(state:self, capturedCharacteres:useCharacters){
+        if let token = tokenGenerator?(state:self, capturedCharacteres:useCharacters,charactersStartIndex:controller.storedCharactersStartIndex){
             return token
         }
         

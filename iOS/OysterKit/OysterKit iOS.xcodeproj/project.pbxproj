@@ -10,9 +10,7 @@
 		4200A1831965C09C008056C5 /* standardTokensTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4200A1821965C09C008056C5 /* standardTokensTest.swift */; };
 		4221035C19601B11001148F5 /* OysterKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 4221035B19601B11001148F5 /* OysterKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4221036219601B11001148F5 /* OysterKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4221035619601B11001148F5 /* OysterKit.framework */; };
-		4247FF5319653C7900CCE286 /* NumberToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247FF4019653C7900CCE286 /* NumberToken.swift */; };
 		4247FF5419653C7900CCE286 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247FF4119653C7900CCE286 /* Operators.swift */; };
-		4247FF5519653C7900CCE286 /* OperatorToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247FF4219653C7900CCE286 /* OperatorToken.swift */; };
 		4247FF5619653C7900CCE286 /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247FF4319653C7900CCE286 /* Token.swift */; };
 		4247FF5719653C7900CCE286 /* TokenizationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247FF4419653C7900CCE286 /* TokenizationController.swift */; };
 		4247FF5819653C7900CCE286 /* TokenizationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247FF4519653C7900CCE286 /* TokenizationState.swift */; };
@@ -52,9 +50,7 @@
 		4221035B19601B11001148F5 /* OysterKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OysterKit.h; sourceTree = "<group>"; };
 		4221036119601B11001148F5 /* OysterKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OysterKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4221036719601B11001148F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4247FF4019653C7900CCE286 /* NumberToken.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NumberToken.swift; path = Base/NumberToken.swift; sourceTree = "<group>"; };
 		4247FF4119653C7900CCE286 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
-		4247FF4219653C7900CCE286 /* OperatorToken.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OperatorToken.swift; path = Base/OperatorToken.swift; sourceTree = "<group>"; };
 		4247FF4319653C7900CCE286 /* Token.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Token.swift; path = Base/Token.swift; sourceTree = "<group>"; };
 		4247FF4419653C7900CCE286 /* TokenizationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenizationController.swift; sourceTree = "<group>"; };
 		4247FF4519653C7900CCE286 /* TokenizationState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenizationState.swift; sourceTree = "<group>"; };
@@ -213,8 +209,6 @@
 		4247FF6319653C9200CCE286 /* Tokens */ = {
 			isa = PBXGroup;
 			children = (
-				4247FF4019653C7900CCE286 /* NumberToken.swift */,
-				4247FF4219653C7900CCE286 /* OperatorToken.swift */,
 				4247FF4319653C7900CCE286 /* Token.swift */,
 			);
 			name = Tokens;
@@ -328,9 +322,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4247FF5519653C7900CCE286 /* OperatorToken.swift in Sources */,
 				4247FF6019653C7900CCE286 /* Char.swift in Sources */,
-				4247FF5319653C7900CCE286 /* NumberToken.swift in Sources */,
 				4247FF5C19653C7900CCE286 /* Parser.swift in Sources */,
 				4247FF5B19653C7900CCE286 /* OysterKit.swift in Sources */,
 				4247FF5819653C7900CCE286 /* TokenizationState.swift in Sources */,

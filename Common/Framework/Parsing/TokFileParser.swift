@@ -33,29 +33,25 @@ class TokenizerFile : Tokenizer {
         super.init()
         //Eventually this will be it's own file
         
-        let charStateDefinition = Delimited(delimiter: "\"", states:
-            Repeat(state:Branch().branch(
-                Char(from:"\\").branch(
-                    Char(from:"trn\"\\").token("character")
-                ),
-                Char(except: "\"").token("character")
-                ), min: 1, max: nil).token("Char")
-            ).token("quote")
-        
-        
-        let delimiterDefintion = Delimited(delimiter: "'", states:
-            Repeat(state:Branch().branch(
-                Char(from:"\\").branch(
-                    Char(from:"'\\").token("character")
-                ),
-                Char(except: "'").token("character")
-                ), min: 1).token("delimiter")
-            ).token("single-quote")
         
         
         self.branch(
-            charStateDefinition,
-            delimiterDefintion,
+            Delimited(delimiter: "\"", states:
+                Repeat(state:Branch().branch(
+                    Char(from:"\\").branch(
+                        Char(from:"trn\"\\").token("character")
+                    ),
+                    Char(except: "\"").token("character")
+                    ), min: 1, max: nil).token("Char")
+                ).token("quote"),
+            Delimited(delimiter: "'", states:
+                Repeat(state:Branch().branch(
+                    Char(from:"\\").branch(
+                        Char(from:"'\\").token("character")
+                    ),
+                    Char(except: "'").token("character")
+                    ), min: 1).token("delimiter")
+                ).token("single-quote"),
             Char(from: "!").token("not"),
             Char(from: "-").sequence(
                 Char(from:">").token("token")
@@ -71,7 +67,7 @@ class TokenizerFile : Tokenizer {
             OysterKit.number,
             //            Char(from:lowerCaseLetterString+upperCaseLetterString+decimalDigitString+"-_").token("word"),
             OysterKit.variableName,
-            OysterKit.whiteSpaces.token("space"),
+            OysterKit.whiteSpaces,
             Char(except: "\x04")
         )
     }

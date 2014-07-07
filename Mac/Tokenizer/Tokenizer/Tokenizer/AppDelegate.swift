@@ -27,8 +27,28 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import Cocoa
 import OysterKit
 
-class AppDelegate: NSObject, NSApplicationDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
 
+    class var stateDefinitionColor:NSColor {
+        return NSColor(calibratedRed: 0, green: 0.6, blue: 0, alpha: 1.0)
+    }
+    
+    let tokenColorMap = [
+        "not" : NSColor.redColor(),
+        "quote" : NSColor.redColor(),
+        "Char" : NSColor.redColor(),
+        "single-quote" : NSColor.redColor(),
+        "delimiter" : NSColor.redColor(),
+        "token" : NSColor.purpleColor(),
+        "variable" : NSColor.blueColor(),
+        "start-branch" : AppDelegate.stateDefinitionColor,
+        "start-repeat" : AppDelegate.stateDefinitionColor,
+        "start-delimited" : AppDelegate.stateDefinitionColor,
+        "end-branch" : AppDelegate.stateDefinitionColor,
+        "end-repeat" : AppDelegate.stateDefinitionColor,
+        "end-delimited" : AppDelegate.stateDefinitionColor,
+    ]
+    
     
     @IBOutlet var window: NSWindow
     @IBOutlet var tokenView: NSTokenField
@@ -36,9 +56,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     var textString:NSString?
     
-    var inputTextView : OKTextView {
+    var inputTextView : NSTextView {
         get {
-            return scrollView.contentView.documentView as OKTextView
+            return scrollView.contentView.documentView as NSTextView
         }
     }
     
@@ -50,53 +70,42 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         inputTextView.automaticQuoteSubstitutionEnabled = false
         inputTextView.automaticSpellingCorrectionEnabled = false
         inputTextView.automaticDashSubstitutionEnabled = false
+        inputTextView.textStorage.font = NSFont(name: "Courier", size: 14.0)
+        inputTextView.textStorage.delegate = self
+        inputTextView.string = "{\n\t\"O\".\"K\"->oysterKit\n}"
+
     }
     
 
     func applicationWillTerminate(aNotification: NSNotification?) {
         // Insert code here to tear down your application
     }
-}
+    
+    func textStorageWillProcessEditing(aNotification: NSNotification!){
 
-//
-// Working around compiler crash with NSTextViewDelegate
-//
-class TextViewDelegate: NSObject {
-    
-    var tokenizationString:String = ""
-    
-    func change(textView: NSTextView!){
-        if textView.string != tokenizationString {
-/*            var tokenizer = Tokenizer()
-            tokenizer.branch(
-                OysterKit.number,
-                OysterKit.word,
-                OysterKit.blanks,
-                OysterKit.punctuation,
-                OysterKit.eot)*/
-            var tokenizer = TokenizerFile()
-            
-            tokenizationString = textView.string
-            let tokens = tokenizer.tokenize(tokenizationString)
-            
-            var tokenStrings = Array<AnyObject>()
-            for token in tokens {
-                tokenStrings.append(token.name+":"+token.characters)
+    }
+
+    func textStorageDidProcessEditing(aNotification: NSNotification!){
+        let old = NSMakeRange(0, inputTextView.textStorage.length)
+        inputTextView.textStorage.removeAttribute(NSForegroundColorAttributeName, range: old)
+        
+        inputTextView.textStorage.font = NSFont(name: "Courier", size: 14.0)
+        
+        
+        var okFileTokenizer = TokenizerFile()
+        var allTokens = Array<String>()
+        okFileTokenizer.tokenize(inputTextView.string){(token:Token)->Bool in
+            let tokenRange = NSMakeRange(token.originalStringIndex!, countElements(token.characters))
+            allTokens.append(token.description)
+            self.tokens = allTokens
+
+            if let mappedColor = self.tokenColorMap[token.name]? {
+                self.inputTextView.textStorage.addAttribute(NSForegroundColorAttributeName, value: mappedColor, range: tokenRange)
             }
             
-            let appDel:AppDelegate = NSApplication.sharedApplication().delegate as AppDelegate
-            appDel.tokens = tokenStrings
-            
-            println(tokenizer)
+            return true
         }
     }
-}
 
-class OKTextView: NSTextView {
-    let okDelegate = TextViewDelegate()
-    
-    override func didChangeText() {
-        okDelegate.change(self)
-    }
 }
 
