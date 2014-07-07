@@ -102,6 +102,7 @@ class EmitTokenOperator : Operator {
     override func applyTo(token: Token, parser:_privateTokFileParser) -> Token? {
         //TODO: Probably an error, should report that
         if !parser.hasTokens() {
+            parser.error = "Expected a state to assign the token to"
             return nil
         }
         
@@ -111,7 +112,7 @@ class EmitTokenOperator : Operator {
             stateToken.state.token(token.characters)
             return stateToken
         } else {
-            //TODO: Also an error, should report
+            parser.error = "Only states can emit tokens"
             parser.pushToken(topToken)
         }
         
@@ -124,6 +125,7 @@ class ChainStateOperator : Operator {
 
 class _privateTokFileParser:StackParser{
     var invert:Bool = false
+    var error:String?
     
     func invokeOperator(onToken:Token){
         if hasTokens() {
@@ -133,11 +135,11 @@ class _privateTokFileParser:StackParser{
                     pushToken(newToken)
                 }
             } else {
-                //TODO: probably an error
+                error = "Expected an operator"
                 pushToken(onToken)
             }
         } else {
-            //TODO: propbably an erorr
+            error = "Expected an operator, there were none"
             pushToken(onToken)
         }
     }
@@ -147,8 +149,8 @@ class _privateTokFileParser:StackParser{
         
         var token = popToken()
         
-        if !token {
-            //TODO: An error should report
+        if token == nil {
+            error = "Expected \(tokenNamed), but there were none"
             return tokenArray
         }
         
@@ -156,10 +158,14 @@ class _privateTokFileParser:StackParser{
             if let nextToken = token{
                 tokenArray.append(nextToken)
             } else {
-                //TODO: An error should report
+                error = "Expected \(tokenNamed)"
                 return tokenArray
             }
             token = popToken()
+            if token == nil {
+                error = "Expected \(tokenNamed), but there were none"
+                return Array<Token>()
+            }
         }
         
         //Now we have an array of either states, or chains of states
@@ -173,13 +179,17 @@ class _privateTokFileParser:StackParser{
                     //The last state needs to be removed, 
                     //chained to this state, 
                     ///and this state added to final
+                    if finalArray.count == 0 {
+                        error = "Incomplete state definition"
+                        return Array<Token>()
+                    }
                     var lastToken = finalArray.removeLast()
                     if let lastStateToken = lastToken as? State {
                         stateToken.state.branch(lastStateToken.state)
                         operator = nil
                     } else {
-                        //TODO: This is an error
-                        println("Error")
+                        error = "Only states can emit tokens"
+                        return Array<Token>()
                     }
                 }
                 finalArray.append(stateToken)
@@ -210,16 +220,34 @@ class _privateTokFileParser:StackParser{
     func endRepeat(){
         var parameters = popTo("start-repeat")
         
+        if (parameters.count == 0){
+            error="At least a state is required"
+            return
+        }
+        
+        if !(parameters[0] is State) {
+            error = "Expected a state"
+            return
+        }
+        
         var minimum = 1
         var maximum : Int? = nil
         var repeatingState = parameters[0] as State
         
         if parameters.count > 1 {
-            var minimumNumberToken = parameters[1] as NumberToken
-            minimum = Int(minimumNumberToken.numericValue)
-            if parameters.count > 2 {
-                var maximumNumberToken = parameters[2] as NumberToken
-                maximum = Int(maximumNumberToken.numericValue)
+            if var minimumNumberToken = parameters[1] as? NumberToken {
+                minimum = Int(minimumNumberToken.numericValue)
+                if parameters.count > 2 {
+                    if var maximumNumberToken = parameters[2] as? NumberToken {
+                        maximum = Int(maximumNumberToken.numericValue)
+                    } else {
+                        error = "Expected a number"
+                        return
+                    }
+                }
+            } else {
+                error = "Expected a number"
+                return
             }
         }
         
@@ -232,13 +260,13 @@ class _privateTokFileParser:StackParser{
         var parameters = popTo("start-delimited")
         
         if parameters.count < 2 || parameters.count > 3{
-            //TODO: This is an error
+            error = "At least two parameters are required for a delimited state"
             return
         }
         
         
         if parameters[0].name != "delimiter" {
-            //TODO: This is an error
+            error = "At least one delimiter must be specified"
             return
         }
 
@@ -247,7 +275,7 @@ class _privateTokFileParser:StackParser{
         
         if parameters.count == 3{
             if parameters[1].name != "delimiter" {
-                //TODO: This is an error
+                error = "Expected delimiter character as second parameter"
                 return
             }
             closingDelimiter = parameters[1].characters
@@ -261,7 +289,7 @@ class _privateTokFileParser:StackParser{
             
             pushToken(State(state:delimited))
         } else {
-            //TODO: This is an error
+            error = "Final parameter must be a state"
             return
         }
     }
@@ -317,6 +345,11 @@ class _privateTokFileParser:StackParser{
     }
     
     override func parse(token: Token) -> Bool {
+        
+        if error {
+            return false
+        }
+        
         if __okDebug {
             println(">Processing: \(token)")
         }
@@ -359,9 +392,12 @@ class _privateTokFileParser:StackParser{
         
         var tokenizer = Tokenizer()
         
-        var rootState = popToken() as State
-        
-        return rootState.state
+        if let rootState = popToken() as? State {
+            return rootState.state
+        } else {
+            error = "Could not create root state"
+            return Branch()
+        }
     }
     
     func parse(string: String) -> Tokenizer {

@@ -32,8 +32,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
     @IBOutlet var window: NSWindow
     @IBOutlet var tokenView: NSTokenField
     @IBOutlet var scrollView: NSScrollView
+    @IBOutlet var tokenizerDefinitionScrollView: NSScrollView
     
     var textString:NSString?
+    var lastDefinition:String = ""
+    var lastInput = ""
     
     var inputTextView : NSTextView {
         get {
@@ -41,19 +44,30 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
         }
     }
     
+    var tokenizerDefinitionTextView : NSTextView {
+        return tokenizerDefinitionScrollView.contentView.documentView as NSTextView
+    }
+    
     
     var tokens = Array<AnyObject>()
-    
-    func applicationDidFinishLaunching(aNotification: NSNotification?) {
+
+    func prepareTextView(view:NSTextView){
         //For some reason IB settings are not making it through
-        inputTextView.automaticQuoteSubstitutionEnabled = false
-        inputTextView.automaticSpellingCorrectionEnabled = false
-        inputTextView.automaticDashSubstitutionEnabled = false
+        view.automaticQuoteSubstitutionEnabled = false
+        view.automaticSpellingCorrectionEnabled = false
+        view.automaticDashSubstitutionEnabled = false
         
         //Change the font, set myself as a delegate, and set a default string
-        inputTextView.textStorage.font = NSFont(name: "Courier", size: 14.0)
-        inputTextView.textStorage.delegate = self
-        inputTextView.string = "{\n\t\"O\".\"K\"->oysterKit\n}"
+        view.textStorage.font = NSFont(name: "Courier", size: 14.0)
+        view.textStorage.delegate = self
+    }
+    
+    func applicationDidFinishLaunching(aNotification: NSNotification?) {
+        prepareTextView(inputTextView)
+        prepareTextView(tokenizerDefinitionTextView)
+        
+        tokenizerDefinitionTextView.string = "{\n\t\"O\".\"K\"->oysterKit\n}"
+        inputTextView.string = "OK"
     }
 
     class var stateDefinitionColor:NSColor {
@@ -77,24 +91,39 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
     ]
     
     func textStorageDidProcessEditing(aNotification: NSNotification!){
-        let old = NSMakeRange(0, inputTextView.textStorage.length)
-        inputTextView.textStorage.removeAttribute(NSForegroundColorAttributeName, range: old)
+        if tokenizerDefinitionTextView.string != lastDefinition {
+            lastDefinition = tokenizerDefinitionTextView.string
+            lastInput=""
+            let old = NSMakeRange(0, tokenizerDefinitionTextView.textStorage.length)
+            tokenizerDefinitionTextView.textStorage.removeAttribute(NSForegroundColorAttributeName, range: old)
+            
+            tokenizerDefinitionTextView.textStorage.font = NSFont(name: "Courier", size: 14.0)
+            
+            
+            var okFileTokenizer = TokenizerFile()
+            okFileTokenizer.tokenize(tokenizerDefinitionTextView.string){(token:Token)->Bool in
+                let tokenRange = NSMakeRange(token.originalStringIndex!, countElements(token.characters))
+                
+                if let mappedColor = self.tokenColorMap[token.name]? {
+                    self.tokenizerDefinitionTextView.textStorage.addAttribute(NSForegroundColorAttributeName, value: mappedColor, range: tokenRange)
+                }
+                
+                return true
+            }
+        }
         
-        inputTextView.textStorage.font = NSFont(name: "Courier", size: 14.0)
-        
-        
-        var okFileTokenizer = TokenizerFile()
-        var allTokens = Array<String>()
-        okFileTokenizer.tokenize(inputTextView.string){(token:Token)->Bool in
-            let tokenRange = NSMakeRange(token.originalStringIndex!, countElements(token.characters))
-            allTokens.append(token.name)
-            self.tokens = allTokens
-
-            if let mappedColor = self.tokenColorMap[token.name]? {
-                self.inputTextView.textStorage.addAttribute(NSForegroundColorAttributeName, value: mappedColor, range: tokenRange)
+        if lastInput != inputTextView.string {
+            lastInput = inputTextView.string
+            var allTokens = Array<String>()
+            
+            if let newTokenizer:Tokenizer = OysterKit.parseTokenizer(tokenizerDefinitionTextView.string){
+                newTokenizer.tokenize(inputTextView.string){(token:Token)->Bool in
+                    allTokens.append(token.name)
+                    return true
+                }
             }
             
-            return true
+            self.tokens = allTokens
         }
     }
 
