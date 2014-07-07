@@ -69,6 +69,6 @@ protocol TokenizationState : Printable{
     func serialize(indentation:String)->String
 }
 
-typealias   TokenCreationBlock = ((state:TokenizationState,capturedCharacteres:String)->Token)
+typealias   TokenCreationBlock = ((state:TokenizationState,capturedCharacteres:String,charactersStartIndex:Int)->Token)
 
 

@@ -672,21 +672,21 @@
         <window title="Tokenizer" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="335" y="390" width="480" height="360"/>
+            <rect key="contentRect" x="335" y="390" width="643" height="484"/>
             <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1418"/>
             <view key="contentView" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="0.0" width="480" height="360"/>
+                <rect key="frame" x="0.0" y="0.0" width="643" height="484"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <splitView dividerStyle="thin" translatesAutoresizingMaskIntoConstraints="NO" id="f5i-Am-zLZ">
-                        <rect key="frame" x="0.0" y="0.0" width="480" height="360"/>
+                        <rect key="frame" x="0.0" y="0.0" width="643" height="484"/>
                         <subviews>
                             <customView id="fcZ-z3-I7Y">
-                                <rect key="frame" x="0.0" y="0.0" width="480" height="175"/>
+                                <rect key="frame" x="0.0" y="0.0" width="643" height="235"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <subviews>
                                     <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eyY-0L-OBg">
-                                        <rect key="frame" x="0.0" y="0.0" width="480" height="175"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="643" height="235"/>
                                         <clipView key="contentView" id="ffl-9I-kkx">
                                             <rect key="frame" x="1" y="1" width="223" height="133"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -695,8 +695,8 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="223" height="173"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <size key="minSize" width="478" height="173"/>
-                                                    <size key="maxSize" width="480" height="10000000"/>
+                                                    <size key="minSize" width="641" height="233"/>
+                                                    <size key="maxSize" width="641" height="10000000"/>
                                                     <attributedString key="textStorage">
                                                         <fragment content="Start typing....">
                                                             <attributes>
@@ -706,8 +706,8 @@
                                                         </fragment>
                                                     </attributedString>
                                                     <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <size key="minSize" width="478" height="173"/>
-                                                    <size key="maxSize" width="480" height="10000000"/>
+                                                    <size key="minSize" width="641" height="233"/>
+                                                    <size key="maxSize" width="641" height="10000000"/>
                                                     <connections>
                                                         <binding destination="Voe-Tx-rLC" name="value" keyPath="self.textString" id="2zU-QA-mnb"/>
                                                     </connections>
@@ -733,11 +733,11 @@
                                 </constraints>
                             </customView>
                             <customView id="kxs-tQ-dYp">
-                                <rect key="frame" x="0.0" y="176" width="480" height="184"/>
+                                <rect key="frame" x="0.0" y="236" width="643" height="248"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <subviews>
                                     <tokenField horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="iN4-hJ-xRF">
-                                        <rect key="frame" x="0.0" y="0.0" width="480" height="184"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="643" height="248"/>
                                         <tokenFieldCell key="cell" selectable="YES" borderStyle="bezel" alignment="left" drawsBackground="YES" allowsEditingTextAttributes="YES" id="MBW-J5-sOI">
                                             <font key="font" metaFont="system"/>
                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -769,7 +769,7 @@
                     <constraint firstAttribute="bottom" secondItem="f5i-Am-zLZ" secondAttribute="bottom" id="ygA-08-06g"/>
                 </constraints>
             </view>
-            <point key="canvasLocation" x="-480" y="98"/>
+            <point key="canvasLocation" x="-398.5" y="160"/>
         </window>
         <userDefaultsController representsSharedInstance="YES" id="ekj-EI-NCF"/>
     </objects>

@@ -30,6 +30,7 @@ import Foundation
 class Token : Printable{
     let name:String
     var characters:String = ""
+    var originalStringIndex:Int?
     
     init(name:String){
         self.name = name
@@ -41,7 +42,17 @@ class Token : Printable{
     }
     
     var description : String {
-        return "\(name) '\(characters)'"
+        if originalStringIndex {
+            return "\(name) '\(characters)' at \(originalStringIndex)"
+        } else {
+            return "\(name) '\(characters)'"
+        }
+    }
+    
+    class func createToken(state:TokenizationState,capturedCharacters:String,startIndex:Int)->Token{
+        var token = Token(name:"Token",withCharacters:capturedCharacters)
+        token.originalStringIndex = startIndex
+        return token
     }
     
     class EndOfTransmissionToken : Token {
@@ -67,8 +78,107 @@ class Token : Printable{
             return super.description+" - "+problem
         }
     }
+}
 
+class WhiteSpaceToken : Token{
+    
+    init(characters:String, startingAt:Int){
+        super.init(name: "whitespace", withCharacters: characters)
+        originalStringIndex = startingAt
+    }
+    
+    override class func createToken(state:TokenizationState,capturedCharacters:String,startIndex:Int)->Token{
+        return WhiteSpaceToken(characters:capturedCharacters, startingAt: startIndex)
+    }
+    
+    override var description:String {
+        return self.name
+    }
+}
 
+class NumberToken : Token{
+    var numericValue:Double
+    
+    init(value:Double,characters:String){
+        numericValue = value
+        super.init(name: "number", withCharacters: characters)
+    }
+    
+    init(value:Int,characters:String){
+        numericValue = Double(value)
+        super.init(name: "number", withCharacters: characters)
+    }
+    
+    convenience init(usingString:String){
+        if let intValue = usingString.toInt() {
+            self.init(value:intValue,characters: usingString)
+        } else {
+            let string:NSString = usingString
+            self.init(value: string.doubleValue,characters:usingString)
+        }
+    }
+    
+    convenience init(usingToken:Token){
+        switch usingToken.name{
+        case "integer":
+            return self.init(value:usingToken.characters.toInt()!,characters:usingToken.characters)
+        case "float":
+            let string : NSString = usingToken.characters
+            return self.init(value: string.doubleValue, characters: usingToken.characters)
+        default:
+            return self.init(value:Double.NaN,characters:usingToken.characters)
+        }
+    }
+    
+    override var description:String {
+    return "number = \(numericValue)"
+    }
+    
+    override class func createToken(state:TokenizationState,capturedCharacters:String,startIndex:Int)->Token{
+        var token = NumberToken(usingString:capturedCharacters)
+        token.originalStringIndex = startIndex
+        return token
+    }
+}
+
+class OperatorToken : Token{
+    func presidence()->Int{
+        switch characters{
+        case "^":
+            return 4
+        case "*","/":
+            return 3
+        case "+","-":
+            return 2
+        default:
+            return 0
+        }
+    }
+    
+    init(characters: String) {
+        super.init(name: "operator", withCharacters: characters)
+    }
+    
+    func applyTo(left:NumberToken,right:NumberToken)->NumberToken{
+        switch characters{
+        case "+":
+            return NumberToken(value: left.numericValue+right.numericValue, characters: left.characters+characters+right.characters)
+        case "-":
+            return NumberToken(value: left.numericValue-right.numericValue, characters: left.characters+characters+right.characters)
+        case "*":
+            return NumberToken(value: left.numericValue*right.numericValue, characters: left.characters+characters+right.characters)
+        case "/":
+            return NumberToken(value: left.numericValue/right.numericValue, characters: left.characters+characters+right.characters)
+        default:
+            return NumberToken(value: Double.NaN, characters: left.characters+characters+right.characters)
+        }
+    }
+    
+    override class func createToken(state:TokenizationState,capturedCharacters:String,startIndex:Int)->Token{
+        var token = OperatorToken(characters:capturedCharacters)
+        token.originalStringIndex = startIndex
+        return token
+    }
 }
 
 

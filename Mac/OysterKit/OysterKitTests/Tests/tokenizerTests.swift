@@ -136,13 +136,16 @@ class tokenizerTests: XCTestCase {
     }
     
     func testTokenizerDelimited(){
-//        let testString = "{<'\"',{({!\"\\\"\"->character})->Char}>->quote}"
         let testString = "{<'(',')',{({!\")\"->delimitedChar})->bracketedString}>->delimiterCharacters}"
         var tokenizer = _privateTokFileParser().parse(testString)
         
         var tokens = tokenizer.tokenize("(abcdefghij)")
         
         XCTAssert(tokens.count == 3)
+    }
+    
+    func testRecursiveChar(){
+        println(OysterKit.parseState(Char(from:"hello").token("hi").description)!.description)
     }
     
     func testTokenizerFile(){
