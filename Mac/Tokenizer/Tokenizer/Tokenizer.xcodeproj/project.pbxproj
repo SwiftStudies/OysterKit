@@ -13,6 +13,7 @@
 		42146BF41966DD4E009BA88A /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 42146BF21966DD4E009BA88A /* MainMenu.xib */; };
 		42146C001966DD4E009BA88A /* TokenizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42146BFF1966DD4E009BA88A /* TokenizerTests.swift */; };
 		42146C131966DF72009BA88A /* OysterKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42146C121966DF72009BA88A /* OysterKit.framework */; };
+		426AB641196AD48B00665025 /* OysterKit.framework in Resources */ = {isa = PBXBuildFile; fileRef = 42146C121966DF72009BA88A /* OysterKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -193,6 +194,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				426AB641196AD48B00665025 /* OysterKit.framework in Resources */,
 				42146BF11966DD4E009BA88A /* Images.xcassets in Resources */,
 				42146BF41966DD4E009BA88A /* MainMenu.xib in Resources */,
 			);
@@ -411,6 +413,7 @@
 				42146C051966DD4E009BA88A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		42146C061966DD4E009BA88A /* Build configuration list for PBXNativeTarget "TokenizerTests" */ = {
 			isa = XCConfigurationList;
@@ -419,6 +422,7 @@
 				42146C081966DD4E009BA88A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

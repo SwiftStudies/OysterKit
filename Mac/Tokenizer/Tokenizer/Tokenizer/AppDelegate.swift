@@ -27,6 +27,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import Cocoa
 import OysterKit
 
+var wibble:Equatable?
+var squiggle:Comparable?
+
+
 class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
     
     @IBOutlet var window: NSWindow
@@ -70,27 +74,40 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
         inputTextView.string = "OK"
     }
 
-    class var stateDefinitionColor:NSColor {
+    class var variableDefinitionColor:NSColor {
+        return NSColor(calibratedRed: 0, green: 0.4, blue: 0.4, alpha: 1.0)
+    }
+
+    class var commentColor:NSColor {
         return NSColor(calibratedRed: 0, green: 0.6, blue: 0, alpha: 1.0)
     }
     
+    class var stringColor:NSColor {
+        return NSColor(calibratedRed: 0.5, green: 0.4, blue: 0.2, alpha: 1.0)
+    }
+    
+    
+    
     let tokenColorMap = [
-        "not" : NSColor.redColor(),
-        "quote" : NSColor.redColor(),
-        "Char" : NSColor.redColor(),
-        "single-quote" : NSColor.redColor(),
-        "delimiter" : NSColor.redColor(),
+        "not" : NSColor.purpleColor(),
+        "quote" : NSColor.purpleColor(),
+        "Char" : AppDelegate.stringColor,
+        "single-quote" : AppDelegate.stringColor,
+        "delimiter" : AppDelegate.stringColor,
         "token" : NSColor.purpleColor(),
-        "variable" : NSColor.blueColor(),
-        "start-branch" : AppDelegate.stateDefinitionColor,
-        "start-repeat" : AppDelegate.stateDefinitionColor,
-        "start-delimited" : AppDelegate.stateDefinitionColor,
-        "end-branch" : AppDelegate.stateDefinitionColor,
-        "end-repeat" : AppDelegate.stateDefinitionColor,
-        "end-delimited" : AppDelegate.stateDefinitionColor,
+        "variable" : AppDelegate.variableDefinitionColor,
+        "start-branch" : NSColor.purpleColor(),
+        "start-repeat" : NSColor.purpleColor(),
+        "start-delimited" : NSColor.purpleColor(),
+        "end-branch" :NSColor.purpleColor(),
+        "end-repeat" : NSColor.purpleColor(),
+        "end-delimited" : NSColor.purpleColor(),
     ]
     
     func textStorageDidProcessEditing(aNotification: NSNotification!){
+        
+//        println(TokenizerFile())
+        
         if tokenizerDefinitionTextView.string != lastDefinition {
             lastDefinition = tokenizerDefinitionTextView.string
             lastInput=""
