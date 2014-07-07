@@ -28,6 +28,33 @@ import Cocoa
 import OysterKit
 
 class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
+    
+    @IBOutlet var window: NSWindow
+    @IBOutlet var tokenView: NSTokenField
+    @IBOutlet var scrollView: NSScrollView
+    
+    var textString:NSString?
+    
+    var inputTextView : NSTextView {
+        get {
+            return scrollView.contentView.documentView as NSTextView
+        }
+    }
+    
+    
+    var tokens = Array<AnyObject>()
+    
+    func applicationDidFinishLaunching(aNotification: NSNotification?) {
+        //For some reason IB settings are not making it through
+        inputTextView.automaticQuoteSubstitutionEnabled = false
+        inputTextView.automaticSpellingCorrectionEnabled = false
+        inputTextView.automaticDashSubstitutionEnabled = false
+        
+        //Change the font, set myself as a delegate, and set a default string
+        inputTextView.textStorage.font = NSFont(name: "Courier", size: 14.0)
+        inputTextView.textStorage.delegate = self
+        inputTextView.string = "{\n\t\"O\".\"K\"->oysterKit\n}"
+    }
 
     class var stateDefinitionColor:NSColor {
         return NSColor(calibratedRed: 0, green: 0.6, blue: 0, alpha: 1.0)
@@ -49,42 +76,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
         "end-delimited" : AppDelegate.stateDefinitionColor,
     ]
     
-    
-    @IBOutlet var window: NSWindow
-    @IBOutlet var tokenView: NSTokenField
-    @IBOutlet var scrollView: NSScrollView
-    
-    var textString:NSString?
-    
-    var inputTextView : NSTextView {
-        get {
-            return scrollView.contentView.documentView as NSTextView
-        }
-    }
-    
-    
-    var tokens = Array<AnyObject>()
-    
-    func applicationDidFinishLaunching(aNotification: NSNotification?) {
-        // Insert code here to initialize your application
-        inputTextView.automaticQuoteSubstitutionEnabled = false
-        inputTextView.automaticSpellingCorrectionEnabled = false
-        inputTextView.automaticDashSubstitutionEnabled = false
-        inputTextView.textStorage.font = NSFont(name: "Courier", size: 14.0)
-        inputTextView.textStorage.delegate = self
-        inputTextView.string = "{\n\t\"O\".\"K\"->oysterKit\n}"
-
-    }
-    
-
-    func applicationWillTerminate(aNotification: NSNotification?) {
-        // Insert code here to tear down your application
-    }
-    
-    func textStorageWillProcessEditing(aNotification: NSNotification!){
-
-    }
-
     func textStorageDidProcessEditing(aNotification: NSNotification!){
         let old = NSMakeRange(0, inputTextView.textStorage.length)
         inputTextView.textStorage.removeAttribute(NSForegroundColorAttributeName, range: old)
