@@ -33,40 +33,70 @@ enum TokenizationStateChange{
     case None
     //Leave this state
     case Exit(consumedCharacter:Bool)
-    //Leave this state, and there was an error
-//    case Error(errorToken:Token.ErrorToken)
     //Move to this new state
     case Transition(newState:TokenizationState,consumedCharacter:Bool)
 }
 
-
-protocol TokenizationState : Printable{
+//
+// XCode 6 Beta 3 Crashes if two protocols refer to each other, so turning this into a class for now
+//
+class TokenizationState : Printable {
     //
     // Tokenization
     //
-    func couldEnterWithCharacter(character:UnicodeScalar, controller:TokenizationController)->Bool
-    func consume(character:UnicodeScalar, controller:TokenizationController) -> TokenizationStateChange
+    func couldEnterWithCharacter(character:UnicodeScalar, controller:TokenizationController)->Bool{
+        return false
+    }
+    func consume(character:UnicodeScalar, controller:TokenizationController) -> TokenizationStateChange{
+        return TokenizationStateChange.Exit(consumedCharacter: false)
+    }
     
     //
     // State transition
     //
-    func reset()
-    func didEnter()
-    func didExit()
+    func reset(){
+
+    }
+    func didEnter(){
+
+    }
+    func didExit(){
+
+    }
     
     //
     // Definition of tokenization state machine
     //
-    func branch(toStates:TokenizationState...)->TokenizationState
-    func sequence(ofStates:TokenizationState...)->TokenizationState
-    func token(emitToken:Token)->TokenizationState
-    func token(emitToken:String)->TokenizationState
-    func token(with:TokenCreationBlock)->TokenizationState
+    func branch(toStates:TokenizationState...)->TokenizationState{
+        return self
+    }
+    func sequence(ofStates:TokenizationState...)->TokenizationState{
+        return self
+    }
+
+    func token(emitToken:Token)->TokenizationState{
+        return self
+    }
+
+    func token(emitToken:String)->TokenizationState{
+        return self
+    }
+
+    func token(with:TokenCreationBlock)->TokenizationState{
+        return self
+    }
+
     
     //
     // Output
     //
-    func serialize(indentation:String)->String
+    func serialize(indentation:String)->String{
+return ""
+}
+
+    var description:String{
+        return ""
+    }
 }
 
 typealias   TokenCreationBlock = ((state:TokenizationState,capturedCharacteres:String,charactersStartIndex:Int)->Token)
