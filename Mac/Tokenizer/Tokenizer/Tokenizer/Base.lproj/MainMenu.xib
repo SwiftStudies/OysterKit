@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6154.21" systemVersion="13E28" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6185.7" systemVersion="13E28" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6154.21"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6185.7"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -693,7 +693,7 @@
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <textView importsGraphics="NO" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="jI7-eq-ssA">
-                                                    <rect key="frame" x="0.0" y="0.0" width="223" height="133"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="223" height="446"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <size key="minSize" width="322" height="446"/>
@@ -757,7 +757,7 @@
                                                                     <rect key="frame" x="0.0" y="0.0" width="223" height="233"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                    <size key="minSize" width="315" height="0.0"/>
+                                                                    <size key="minSize" width="315" height="201"/>
                                                                     <size key="maxSize" width="643" height="10000000"/>
                                                                     <attributedString key="textStorage">
                                                                         <fragment content="Start typing....">
@@ -768,7 +768,7 @@
                                                                         </fragment>
                                                                     </attributedString>
                                                                     <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                                    <size key="minSize" width="315" height="0.0"/>
+                                                                    <size key="minSize" width="315" height="201"/>
                                                                     <size key="maxSize" width="643" height="10000000"/>
                                                                     <connections>
                                                                         <binding destination="Voe-Tx-rLC" name="value" keyPath="self.textString" id="2zU-QA-mnb"/>
