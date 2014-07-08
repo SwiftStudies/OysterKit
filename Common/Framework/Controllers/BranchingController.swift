@@ -67,6 +67,13 @@ class BranchingController : Branch,TokenizationController {
     override func didExit() {
         inStartingState = false
     }
+        
+    override func didEnter() {
+        inStartingState = true
+        storedCharacters = ""
+        tokenizing = nil
+        mostRecentToken = nil
+    }
     
     func capturedCharacters() -> String {
         return storedCharacters
@@ -176,12 +183,6 @@ class BranchingController : Branch,TokenizationController {
         return output+"\n}"
     }
     
-    override func reset(){
-        inStartingState = true
-        storedCharacters = ""
-        tokenizing = nil
-        mostRecentToken = nil
-        super.reset()
-    }
+
 
 }

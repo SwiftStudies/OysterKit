@@ -40,13 +40,37 @@ enum TokenizationStateChange{
 //
 // XCode 6 Beta 3 Crashes if two protocols refer to each other, so turning this into a class for now
 //
-class TokenizationState : Printable {
+class TokenizationState : Printable, StringLiteralConvertible {
+    //
+    // String Literal
+    //
+    class func convertFromStringLiteral(value: String) -> TokenizationState {
+        if let parsedState = OysterKit.parseState(value) {
+            return parsedState
+        }
+        
+        return TokenizationState()
+    }
+    
+    class func convertFromExtendedGraphemeClusterLiteral(value: String) -> TokenizationState {
+        return TokenizationState.convertFromStringLiteral(value)
+    }
+    
+    
     //
     // Tokenization
+    //
+    
+    //
+    // This is called each time the state is a possible entry point for the next token. It is essential
+    // that this method NEVER depends on the internal conditions of the state (this is important becuase
+    // otherwise we would have to reset the state before considering it)
     //
     func couldEnterWithCharacter(character:UnicodeScalar, controller:TokenizationController)->Bool{
         return false
     }
+    
+    
     func consume(character:UnicodeScalar, controller:TokenizationController) -> TokenizationStateChange{
         return TokenizationStateChange.Exit(consumedCharacter: false)
     }
@@ -57,9 +81,11 @@ class TokenizationState : Printable {
     func reset(){
 
     }
+    
     func didEnter(){
 
     }
+    
     func didExit(){
 
     }

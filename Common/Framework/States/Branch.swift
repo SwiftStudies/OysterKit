@@ -28,22 +28,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import Foundation
 
 
-class Branch : TokenizationState, StringLiteralConvertible {
-    
-    class func convertFromStringLiteral(value: String) -> Branch {
-        var parsedState = OysterKit.parseState(value)
-        if parsedState is Branch {
-            return parsedState as Branch
-        }
-        return Branch()
-    }
-    
-    class func convertFromExtendedGraphemeClusterLiteral(value: String) -> Branch {
-        return Branch.convertFromStringLiteral(value)
-    }
-    
+class Branch : TokenizationState {
     var tokenGenerator : TokenCreationBlock?
     var branches = Array<TokenizationState>() //All states that can be transitioned to
+    var transientTransitionState:Branch?
     
     init(){
         
@@ -52,24 +40,8 @@ class Branch : TokenizationState, StringLiteralConvertible {
     init(states:Array<TokenizationState>){
         branches = states
     }
-    
-    //currently stateless
-    override func didExit() {
-        reset()
-    }
-    
-    //currently stateless
-    override func didEnter() {
-        reset()
-    }
 
-    //reset all branches
-    override func reset() {
-        for otherState in branches{
-            otherState.reset()
-        }
-    }
-    
+
     override func couldEnterWithCharacter(character: UnicodeScalar, controller: TokenizationController) -> Bool {
         for branch in branches{
             if branch.couldEnterWithCharacter(character, controller: controller){
@@ -195,11 +167,15 @@ class Branch : TokenizationState, StringLiteralConvertible {
         if branches.count == 0 {
             return TokenizationStateChange.Exit(consumedCharacter: consumedCharacter)
         } else {
-            var transientState = Branch(states: self.branches)
+            if !transientTransitionState{
+                transientTransitionState = Branch()
+            }
+            
+            transientTransitionState!.branches = self.branches
             
             //If we can either enter the transient state or we did consume the character
-            if transientState.couldEnterWithCharacter(controller.currentCharacter(),controller: controller) || consumedCharacter{
-                return TokenizationStateChange.Transition(newState: transientState, consumedCharacter: consumedCharacter)
+            if transientTransitionState!.couldEnterWithCharacter(controller.currentCharacter(),controller: controller) || consumedCharacter{
+                return TokenizationStateChange.Transition(newState: transientTransitionState!, consumedCharacter: consumedCharacter)
             }
 
             return TokenizationStateChange.Exit(consumedCharacter: consumedCharacter)
