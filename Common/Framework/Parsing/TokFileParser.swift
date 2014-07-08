@@ -149,7 +149,7 @@ class _privateTokFileParser:StackParser{
         
         var token = popToken()
         
-        if token == nil {
+        if !token {
             error = "Expected \(tokenNamed), but there were none"
             return tokenArray
         }
@@ -162,7 +162,7 @@ class _privateTokFileParser:StackParser{
                 return tokenArray
             }
             token = popToken()
-            if token == nil {
+            if !token {
                 error = "Expected \(tokenNamed), but there were none"
                 return Array<Token>()
             }

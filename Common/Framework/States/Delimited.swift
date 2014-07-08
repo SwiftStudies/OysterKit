@@ -42,7 +42,6 @@ class Delimited : Branch{
         
         //Initialise super class
         super.init()
-        self.delimetedStates.unshare()
         self.delimetedStates.insert(self, atIndex: 0)
     }
     
@@ -53,7 +52,6 @@ class Delimited : Branch{
         
         //Initialise super class
         super.init()
-        self.delimetedStates.unshare()
         self.delimetedStates.append(self)
     }
     
@@ -109,7 +107,7 @@ class Delimited : Branch{
         output += "{"
         var first = true
         
-        var subStates = Array(delimetedStates[0..self.delimetedStates.endIndex-1])
+        var subStates = Array(delimetedStates[0..<self.delimetedStates.endIndex-1])
         output += serializeStateArray(indentation+"\t", states: subStates)
         
         output+="}"

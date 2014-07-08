@@ -54,23 +54,23 @@ class Branch : TokenizationState, StringLiteralConvertible {
     }
     
     //currently stateless
-    func didExit() {
+    override func didExit() {
         reset()
     }
     
     //currently stateless
-    func didEnter() {
+    override func didEnter() {
         reset()
     }
 
     //reset all branches
-    func reset() {
+    override func reset() {
         for otherState in branches{
             otherState.reset()
         }
     }
     
-    func couldEnterWithCharacter(character: UnicodeScalar, controller: TokenizationController) -> Bool {
+    override func couldEnterWithCharacter(character: UnicodeScalar, controller: TokenizationController) -> Bool {
         for branch in branches{
             if branch.couldEnterWithCharacter(character, controller: controller){
                 return true
@@ -80,7 +80,7 @@ class Branch : TokenizationState, StringLiteralConvertible {
     }
     
     //You may wish to over-ride to set the context for improved error messages
-    func consume(character:UnicodeScalar, controller:TokenizationController) -> TokenizationStateChange{
+    override func consume(character:UnicodeScalar, controller:TokenizationController) -> TokenizationStateChange{
         for branch in branches{
             if (branch.couldEnterWithCharacter(character, controller: controller)){
                 return TokenizationStateChange.Transition(newState: branch, consumedCharacter:false)
@@ -91,7 +91,7 @@ class Branch : TokenizationState, StringLiteralConvertible {
         return TokenizationStateChange.Exit(consumedCharacter: false)
     }
     
-    func branch(toStates: TokenizationState...) -> TokenizationState {
+    override func branch(toStates: TokenizationState...) -> TokenizationState {
         for state in toStates{
             branches.append(state)
         }
@@ -99,16 +99,16 @@ class Branch : TokenizationState, StringLiteralConvertible {
         return self
     }
 
-    func sequence(ofStates: TokenizationState...) -> TokenizationState {
+    override func sequence(ofStates: TokenizationState...) -> TokenizationState {
         branch(ofStates[0])
-        for index in 1..ofStates.count{
+        for index in 1..<ofStates.count{
             ofStates[index-1].branch(ofStates[index])
         }
         
         return self
     }
 
-    func token(emitToken: String) -> TokenizationState {
+    override func token(emitToken: String) -> TokenizationState {
         tokenGenerator = {(state:TokenizationState, capturedCharacters:String, startIndex:Int)->Token in
             var token = Token(name: emitToken, withCharacters: capturedCharacters)
             token.originalStringIndex = startIndex
@@ -118,7 +118,7 @@ class Branch : TokenizationState, StringLiteralConvertible {
         return self
     }
     
-    func token(emitToken: Token) -> TokenizationState {
+    override func token(emitToken: Token) -> TokenizationState {
         tokenGenerator = {(state:TokenizationState, capturedCharacters:String, startIndex:Int)->Token in
             var token = Token(name: emitToken.name, withCharacters: capturedCharacters)
             token.originalStringIndex = startIndex
@@ -128,7 +128,7 @@ class Branch : TokenizationState, StringLiteralConvertible {
         return self
     }
     
-    func token(with: TokenCreationBlock) -> TokenizationState {
+    override func token(with: TokenCreationBlock) -> TokenizationState {
         tokenGenerator = with
 
         return self
@@ -179,7 +179,7 @@ class Branch : TokenizationState, StringLiteralConvertible {
         return output+"}\n"
     }
     
-    func serialize(indentation:String)->String{
+    override func serialize(indentation:String)->String{
         var output = "{"+serializeStateArray(indentation+"\t",states: branches)+"}"
         
         if branches.count > 1 {
@@ -226,7 +226,7 @@ class Branch : TokenizationState, StringLiteralConvertible {
         }
     }
     
-    var description:String {
+    override var description:String {
         return serialize("")
     }
 }
