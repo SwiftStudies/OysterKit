@@ -26,11 +26,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import Foundation
 
 class BranchingController : Branch,TokenizationController {
-    var storedCharacters : String = "" {
-        didSet{
-            
-        }
-    }
+    var storedCharacters : String = "" 
     
     var elementIndex = 0
     var storedCharactersIndex = 0
@@ -42,7 +38,7 @@ class BranchingController : Branch,TokenizationController {
     var mostRecentToken:Token?
     
     var contexts = Array<Array<TokenizationState>>()
-    
+
     var currentState : TokenizationState?{
         willSet{
             currentState?.didExit()
@@ -117,8 +113,7 @@ class BranchingController : Branch,TokenizationController {
     }
     
     func pop() {
-        branches = contexts[contexts.endIndex-1]
-        contexts.removeLast()
+        branches = contexts.removeLast()
     }
     
     override func consume(character: UnicodeScalar, controller: TokenizationController) -> TokenizationStateChange {

@@ -42,13 +42,13 @@ class Delimited : Branch{
         
     }
     
-    let openingDelimiter:String
+    let openingDelimiter:UnicodeScalar
     
     var delimetedStates:Array<TokenizationState>
     let poppingState:PoppingChar
 
     init(open:String,close:String,states:TokenizationState...){
-        self.openingDelimiter = open
+        self.openingDelimiter = open.unicodeScalars[open.unicodeScalars.startIndex]
         self.delimetedStates = states
         self.poppingState = PoppingChar(from: close)
         
@@ -67,7 +67,7 @@ class Delimited : Branch{
 
 
     init(delimiter:String,states:TokenizationState...){
-        self.openingDelimiter = delimiter
+        self.openingDelimiter = delimiter.unicodeScalars[delimiter.unicodeScalars.startIndex]
         self.delimetedStates = states
         self.poppingState = PoppingChar(from:delimiter)
         
@@ -83,23 +83,10 @@ class Delimited : Branch{
         delimetedStates.insert(poppingState, atIndex: 0)
     }
     
-    
+
     //
-    // Would have rather used a property observer but there seems 
-    // to be a bug in Swift that means it isn't ever called
+    // Push any new token onto the popping state too
     //
-    override func token(emitToken: String) -> TokenizationState {
-        super.token(emitToken)
-        poppingState.tokenGenerator = tokenGenerator
-        return self
-    }
-    
-    override func token(emitToken: Token) -> TokenizationState {
-        super.token(emitToken)
-        poppingState.tokenGenerator = tokenGenerator
-        return self
-    }
-    
     override func token(with: TokenCreationBlock) -> TokenizationState {
         super.token(with)
         poppingState.tokenGenerator = tokenGenerator
@@ -113,7 +100,7 @@ class Delimited : Branch{
     
     override func couldEnterWithCharacter(character: UnicodeScalar, controller: TokenizationController) -> Bool {
 
-        return openingDelimiter == "\(character)"
+        return openingDelimiter == character
         
     }
     
@@ -126,11 +113,11 @@ class Delimited : Branch{
     //
     // Serialization
     //
-    func escapeDelimiter(delimiter:String)->String {
-        if delimiter == "'" {
+    func escapeDelimiter(delimiter:UnicodeScalar)->String {
+        if "\(delimiter)" == "'" {
             return "\\'"
         }
-        return delimiter
+        return "\(delimiter)"
     }
     
     override func serialize(indentation: String) -> String {
@@ -146,7 +133,7 @@ class Delimited : Branch{
         
         output+="}"
 
-        if openingDelimiter != poppingState.allowedCharacters {
+        if "\(openingDelimiter)" != poppingState.allowedCharacters {
             output+=",'\(poppingState.allowedCharacters)'"
         }
         
