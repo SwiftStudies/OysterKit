@@ -84,6 +84,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
         return NSColor(calibratedRed: 0.5, green: 0.4, blue: 0.2, alpha: 1.0)
     }
     let tokenColorMap = [
+        "loop" : NSColor.purpleColor(),
         "not" : NSColor.purpleColor(),
         "quote" : NSColor.purpleColor(),
         "Char" : AppDelegate.stringColor,

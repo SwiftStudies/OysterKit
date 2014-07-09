@@ -127,11 +127,7 @@ class OysterKit{
     
     class var whiteSpaces:TokenizationState{
         return LoopingChar(from: whiteSpaceString).token(WhiteSpaceToken.createToken)
-//        return Repeat(state: whiteSpace).token(WhiteSpaceToken.createToken)
     }
-    
-
-    
 
     class func parseState(stateDefinition:String)->TokenizationState?{
         return _privateTokFileParser().parseState(stateDefinition)
@@ -148,7 +144,7 @@ class OysterKit{
                 Char(from:"\\").branch(
                     Char(from:"trn\"\\").token("char")
                 ),
-                Char(except: "\"").token("char")
+                LoopingChar(except: "\"\\").token("char")
                 ), min: 1, max: nil).token("quoted-string")
             )
         }
@@ -163,7 +159,7 @@ class OysterKit{
                 Char(from:"\\").branch(
                     Char(from:"trn'\\").token("char")
                 ),
-                Char(except: "'").token("char")
+                LoopingChar(except: "'\\").token("char")
                 ), min: 1, max: 1).token("char")
             )
         }
