@@ -39,6 +39,25 @@ class stateTestLoop: XCTestCase {
         XCTAssert(true, "Pass")
     }
     
+    func testLoopingCharDelimitedString(){
+        tokenizer.branch(
+            Delimited(delimiter: "\"", states:
+                Repeat(state:Branch().branch(
+                    Char(from:"\\").branch(
+                        Char(from:"trn\"\\").token("character")
+                    ),
+                    LoopingChar(except: "\"\\").token("character")
+                    ), min: 1, max: nil).token("Char")
+                ).token("quote"),
+            LoopingChar(except: "\x04\"").token("otherStuff")
+        )
+        
+        let testString = "The \"quick \\\"brown\" fox jumps over the lazy dog"
+        
+        XCTAssert(tokenizer.tokenize(testString) == [token("otherStuff",chars:"The "), token("quote",chars:"\""), token("Char",chars:"quick \\\"brown"), token("quote",chars:"\""), token("otherStuff",chars:" fox jumps over the lazy dog"), ])
+        
+    }
+    
     func testLoopingChar() {
         
         tokenizer.branch(

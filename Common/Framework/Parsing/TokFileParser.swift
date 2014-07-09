@@ -38,20 +38,20 @@ class TokenizerFile : Tokenizer {
         self.branch(
             Delimited(delimiter: "\"", states:
                 Repeat(state:Branch().branch(
+                    LoopingChar(except: "\"\\").token("character"),
                     Char(from:"\\").branch(
                         Char(from:"trn\"\\").token("character")
-                    ),
-                    Char(except: "\"").token("character")
-                    ), min: 1, max: nil).token("Char")
-                ).token("quote"),
+                    )
+                ), min: 1, max: nil).token("Char")
+            ).token("quote"),
             Delimited(delimiter: "'", states:
                 Repeat(state:Branch().branch(
+                    LoopingChar(except: "'\\").token("character"),
                     Char(from:"\\").branch(
                         Char(from:"'\\").token("character")
-                    ),
-                    Char(except: "'").token("character")
-                    ), min: 1).token("delimiter")
-                ).token("single-quote"),
+                    )
+                ), min: 1).token("delimiter")
+            ).token("single-quote"),
             Char(from: "!").token("not"),
             Char(from: "-").sequence(
                 Char(from:">").token("token")

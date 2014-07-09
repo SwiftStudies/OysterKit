@@ -103,8 +103,18 @@ class Repeat : BranchingController{
             //Reset and look for another
             currentState = repeatingState
             storedCharacters = ""
+
+            switch consumptionResult{
+            case .Exit(let exitCondition):
+                if (!exitCondition.consumedCharacter){
+                    return consume(character,controller: controller)
+                }
+                fallthrough
+            default:
+                return TokenizationStateChange.None
+            }
             
-            return TokenizationStateChange.None
+            
         }
         
         switch consumptionResult{
