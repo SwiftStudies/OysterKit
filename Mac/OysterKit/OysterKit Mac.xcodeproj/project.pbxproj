@@ -31,6 +31,9 @@
 		427BB04219624BF50006829F /* SYExpressionParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB04119624BF50006829F /* SYExpressionParser.swift */; };
 		427BB09A1962FB450006829F /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB0991962FB450006829F /* Operators.swift */; };
 		4298889D19684B1200A4C4C0 /* TokFileParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298889C19684B1200A4C4C0 /* TokFileParser.swift */; };
+		42DAC17A196D3FC50062F91E /* LoopingChar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DAC179196D3FC50062F91E /* LoopingChar.swift */; };
+		42EFD381196D22EB001944F3 /* Loop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EFD380196D22EB001944F3 /* Loop.swift */; };
+		42EFD385196D284C001944F3 /* stateTestLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EFD384196D284C001944F3 /* stateTestLoop.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -183,6 +186,9 @@
 		427BB04119624BF50006829F /* SYExpressionParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SYExpressionParser.swift; sourceTree = "<group>"; };
 		427BB0991962FB450006829F /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
 		4298889C19684B1200A4C4C0 /* TokFileParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokFileParser.swift; sourceTree = "<group>"; };
+		42DAC179196D3FC50062F91E /* LoopingChar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoopingChar.swift; sourceTree = "<group>"; };
+		42EFD380196D22EB001944F3 /* Loop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Loop.swift; sourceTree = "<group>"; };
+		42EFD384196D284C001944F3 /* stateTestLoop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = stateTestLoop.swift; path = Tests/stateTestLoop.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -250,6 +256,7 @@
 				4267D6901965ABC400AF442F /* stateTestDelimeter.swift */,
 				4267D6921965ABDC00AF442F /* tokenizerTests.swift */,
 				4200A1801965C088008056C5 /* standardTokensTest.swift */,
+				42EFD384196D284C001944F3 /* stateTestLoop.swift */,
 				4221038C19601B40001148F5 /* Supporting Files */,
 			);
 			path = OysterKitTests;
@@ -314,6 +321,8 @@
 				427BB02B196248770006829F /* Char.swift */,
 				427BB02A196248770006829F /* Repeat.swift */,
 				427BB029196248770006829F /* Delimited.swift */,
+				42EFD380196D22EB001944F3 /* Loop.swift */,
+				42DAC179196D3FC50062F91E /* LoopingChar.swift */,
 			);
 			path = States;
 			sourceTree = "<group>";
@@ -454,6 +463,7 @@
 				427BB02F196248770006829F /* Tokenizer.swift in Sources */,
 				427BB032196248770006829F /* OysterKit.swift in Sources */,
 				427BB035196248770006829F /* Repeat.swift in Sources */,
+				42DAC17A196D3FC50062F91E /* LoopingChar.swift in Sources */,
 				427BB036196248770006829F /* Char.swift in Sources */,
 				427BB034196248770006829F /* Delimited.swift in Sources */,
 				427BB031196248770006829F /* Parser.swift in Sources */,
@@ -465,6 +475,7 @@
 				427BB030196248770006829F /* BranchingController.swift in Sources */,
 				427BB04019624BEE0006829F /* RPNParser.swift in Sources */,
 				427BB02E196248770006829F /* TokenizationState.swift in Sources */,
+				42EFD381196D22EB001944F3 /* Loop.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -473,6 +484,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4200A1811965C088008056C5 /* standardTokensTest.swift in Sources */,
+				42EFD385196D284C001944F3 /* stateTestLoop.swift in Sources */,
 				4267D68F1965ABB200AF442F /* stateTestBranch.swift in Sources */,
 				4267D68B1965AB8000AF442F /* stateTestChar.swift in Sources */,
 				425EBD9D196549EA00A1C232 /* TestingSupportFunctions.swift in Sources */,

@@ -11,26 +11,19 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		425EBD97196543FF00A1C232 /* PBXContainerItemProxy */ = {
+		42E5267D196BD3670061E4BB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 425EBD92196543FF00A1C232 /* OysterKit Mac.xcodeproj */;
+			containerPortal = 42E52678196BD3670061E4BB /* OysterKit Mac.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 4221037C19601B40001148F5;
 			remoteInfo = OysterKit;
 		};
-		425EBD99196543FF00A1C232 /* PBXContainerItemProxy */ = {
+		42E5267F196BD3670061E4BB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 425EBD92196543FF00A1C232 /* OysterKit Mac.xcodeproj */;
+			containerPortal = 42E52678196BD3670061E4BB /* OysterKit Mac.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 4221038719601B40001148F5;
 			remoteInfo = OysterKitTests;
-		};
-		42AAB55D19667EFB00EDC57F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 425EBD92196543FF00A1C232 /* OysterKit Mac.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 4221037B19601B40001148F5;
-			remoteInfo = OysterKit;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -49,7 +42,7 @@
 /* Begin PBXFileReference section */
 		425EBD88196543F000A1C232 /* Hello World */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Hello World"; sourceTree = BUILT_PRODUCTS_DIR; };
 		425EBD8B196543F000A1C232 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		425EBD92196543FF00A1C232 /* OysterKit Mac.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "OysterKit Mac.xcodeproj"; path = "../../Mac/OysterKit/OysterKit Mac.xcodeproj"; sourceTree = "<group>"; };
+		42E52678196BD3670061E4BB /* OysterKit Mac.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "OysterKit Mac.xcodeproj"; path = "../../Mac/OysterKit/OysterKit Mac.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,7 +59,7 @@
 		425EBD7F196543F000A1C232 = {
 			isa = PBXGroup;
 			children = (
-				425EBD92196543FF00A1C232 /* OysterKit Mac.xcodeproj */,
+				42E52678196BD3670061E4BB /* OysterKit Mac.xcodeproj */,
 				425EBD8A196543F000A1C232 /* Hello World */,
 				425EBD89196543F000A1C232 /* Products */,
 			);
@@ -88,11 +81,11 @@
 			path = "Hello World";
 			sourceTree = "<group>";
 		};
-		425EBD93196543FF00A1C232 /* Products */ = {
+		42E52679196BD3670061E4BB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				425EBD98196543FF00A1C232 /* OysterKit.framework */,
-				425EBD9A196543FF00A1C232 /* OysterKitTests.xctest */,
+				42E5267E196BD3670061E4BB /* OysterKit.framework */,
+				42E52680196BD3670061E4BB /* OysterKitTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -111,7 +104,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				42AAB55E19667EFB00EDC57F /* PBXTargetDependency */,
 			);
 			name = "Hello World";
 			productName = "Hello World";
@@ -144,8 +136,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 425EBD93196543FF00A1C232 /* Products */;
-					ProjectRef = 425EBD92196543FF00A1C232 /* OysterKit Mac.xcodeproj */;
+					ProductGroup = 42E52679196BD3670061E4BB /* Products */;
+					ProjectRef = 42E52678196BD3670061E4BB /* OysterKit Mac.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -156,18 +148,18 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		425EBD98196543FF00A1C232 /* OysterKit.framework */ = {
+		42E5267E196BD3670061E4BB /* OysterKit.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = OysterKit.framework;
-			remoteRef = 425EBD97196543FF00A1C232 /* PBXContainerItemProxy */;
+			remoteRef = 42E5267D196BD3670061E4BB /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		425EBD9A196543FF00A1C232 /* OysterKitTests.xctest */ = {
+		42E52680196BD3670061E4BB /* OysterKitTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = OysterKitTests.xctest;
-			remoteRef = 425EBD99196543FF00A1C232 /* PBXContainerItemProxy */;
+			remoteRef = 42E5267F196BD3670061E4BB /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -182,14 +174,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		42AAB55E19667EFB00EDC57F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = OysterKit;
-			targetProxy = 42AAB55D19667EFB00EDC57F /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		425EBD8D196543F000A1C232 /* Debug */ = {

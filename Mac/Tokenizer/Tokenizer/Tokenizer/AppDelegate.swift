@@ -27,8 +27,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import Cocoa
 import OysterKit
 
-var wibble:Equatable?
-var squiggle:Comparable?
 
 
 class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
@@ -41,6 +39,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
     var textString:NSString?
     var lastDefinition:String = ""
     var lastInput = ""
+    
+    var tokenizer = Tokenizer()
     
     var inputTextView : NSTextView {
         get {
@@ -77,18 +77,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
     class var variableDefinitionColor:NSColor {
         return NSColor(calibratedRed: 0, green: 0.4, blue: 0.4, alpha: 1.0)
     }
-
     class var commentColor:NSColor {
         return NSColor(calibratedRed: 0, green: 0.6, blue: 0, alpha: 1.0)
     }
-    
     class var stringColor:NSColor {
         return NSColor(calibratedRed: 0.5, green: 0.4, blue: 0.2, alpha: 1.0)
     }
-    
-    
-    
     let tokenColorMap = [
+        "loop" : NSColor.purpleColor(),
         "not" : NSColor.purpleColor(),
         "quote" : NSColor.purpleColor(),
         "Char" : AppDelegate.stringColor,
@@ -106,8 +102,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
     
     func textStorageDidProcessEditing(aNotification: NSNotification!){
         
-//        println(TokenizerFile())
-        
         if tokenizerDefinitionTextView.string != lastDefinition {
             lastDefinition = tokenizerDefinitionTextView.string
             lastInput=""
@@ -116,6 +110,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
             
             tokenizerDefinitionTextView.textStorage.font = NSFont(name: "Courier", size: 14.0)
             
+            //The definition is consumped twice. Once here to generate the tokens, 
+            //and again when the tokenizer itself is compiled.
+            if let newTokenizer:Tokenizer = OysterKit.parseTokenizer(lastDefinition) {
+                tokenizer = newTokenizer
+            }
             
             var okFileTokenizer = TokenizerFile()
             okFileTokenizer.tokenize(tokenizerDefinitionTextView.string){(token:Token)->Bool in
@@ -127,17 +126,16 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
                 
                 return true
             }
+            
         }
         
         if lastInput != inputTextView.string {
             lastInput = inputTextView.string
             var allTokens = Array<String>()
             
-            if let newTokenizer:Tokenizer = OysterKit.parseTokenizer(tokenizerDefinitionTextView.string){
-                newTokenizer.tokenize(inputTextView.string){(token:Token)->Bool in
-                    allTokens.append(token.name)
-                    return true
-                }
+            tokenizer.tokenize(inputTextView.string){(token:Token)->Bool in
+                allTokens.append(token.name)
+                return true
             }
             
             self.tokens = allTokens

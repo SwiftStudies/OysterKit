@@ -38,24 +38,25 @@ class TokenizerFile : Tokenizer {
         self.branch(
             Delimited(delimiter: "\"", states:
                 Repeat(state:Branch().branch(
+                    LoopingChar(except: "\"\\").token("character"),
                     Char(from:"\\").branch(
                         Char(from:"trn\"\\").token("character")
-                    ),
-                    Char(except: "\"").token("character")
-                    ), min: 1, max: nil).token("Char")
-                ).token("quote"),
+                    )
+                ), min: 1, max: nil).token("Char")
+            ).token("quote"),
             Delimited(delimiter: "'", states:
                 Repeat(state:Branch().branch(
+                    LoopingChar(except: "'\\").token("character"),
                     Char(from:"\\").branch(
                         Char(from:"'\\").token("character")
-                    ),
-                    Char(except: "'").token("character")
-                    ), min: 1).token("delimiter")
-                ).token("single-quote"),
+                    )
+                ), min: 1).token("delimiter")
+            ).token("single-quote"),
             Char(from: "!").token("not"),
             Char(from: "-").sequence(
                 Char(from:">").token("token")
             ),
+            Char(from:"*").token("loop"),
             Char(from:".").token("then"),
             Char(from:"{").token("start-branch"),
             Char(from:"}").token("end-branch"),
@@ -65,8 +66,7 @@ class TokenizerFile : Tokenizer {
             Char(from:">").token("end-delimited"),
             Char(from:",").token("comma"),
             OysterKit.number,
-            //            Char(from:lowerCaseLetterString+upperCaseLetterString+decimalDigitString+"-_").token("word"),
-            OysterKit.variableName,
+            OysterKit.Code.variableName,
             OysterKit.whiteSpaces,
             Char(except: "\x04")
         )
@@ -125,6 +125,7 @@ class ChainStateOperator : Operator {
 
 class _privateTokFileParser:StackParser{
     var invert:Bool = false
+    var loop:Bool = false
     var error:String?
     
     func invokeOperator(onToken:Token){
@@ -149,7 +150,7 @@ class _privateTokFileParser:StackParser{
         
         var token = popToken()
         
-        if token == nil {
+        if !token {
             error = "Expected \(tokenNamed), but there were none"
             return tokenArray
         }
@@ -162,7 +163,7 @@ class _privateTokFileParser:StackParser{
                 return tokenArray
             }
             token = popToken()
-            if token == nil {
+            if !token {
                 error = "Expected \(tokenNamed), but there were none"
                 return Array<Token>()
             }
@@ -344,6 +345,13 @@ class _privateTokFileParser:StackParser{
         return character
     }
     
+    func createCharState(characters:String, inverted:Bool, looped:Bool)->State{
+        let state = looped ? LoopingChar(from:characters) : Char(from:characters)
+        state.inverted = inverted
+        
+        return State(state: state)
+    }
+    
     override func parse(token: Token) -> Bool {
         
         if error {
@@ -354,13 +362,14 @@ class _privateTokFileParser:StackParser{
             println(">Processing: \(token)")
         }
         switch token.name {
+        case "loop":
+            loop = true
         case "not":
             invert = true
         case "Char":
-            let state = invert ? Char(except: unescapeChar(token.characters)) : Char(from:unescapeChar(token.characters))
-            let symbol = State(state: state)
-            pushToken(symbol)
+            pushToken(createCharState(unescapeChar(token.characters), inverted: invert, looped: loop))
             invert = false
+            loop = false
         case "then":
             pushToken(ChainStateOperator(characters:token.characters))
         case "token":

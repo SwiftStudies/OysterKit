@@ -13,6 +13,7 @@
 		42146BF41966DD4E009BA88A /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 42146BF21966DD4E009BA88A /* MainMenu.xib */; };
 		42146C001966DD4E009BA88A /* TokenizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42146BFF1966DD4E009BA88A /* TokenizerTests.swift */; };
 		42146C131966DF72009BA88A /* OysterKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42146C121966DF72009BA88A /* OysterKit.framework */; };
+		421644D8196C1BEB00BDCA63 /* OysterKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42146C121966DF72009BA88A /* OysterKit.framework */; };
 		426AB641196AD48B00665025 /* OysterKit.framework in Resources */ = {isa = PBXBuildFile; fileRef = 42146C121966DF72009BA88A /* OysterKit.framework */; };
 /* End PBXBuildFile section */
 
@@ -52,6 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				421644D8196C1BEB00BDCA63 /* OysterKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -364,6 +366,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/OysterKit_Workspace-fbjhgmtukhbwijfrgdbagumdmmcc/Build/Products/Debug",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -385,6 +388,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/OysterKit_Workspace-fbjhgmtukhbwijfrgdbagumdmmcc/Build/Products/Debug",
 				);
 				INFOPLIST_FILE = TokenizerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";

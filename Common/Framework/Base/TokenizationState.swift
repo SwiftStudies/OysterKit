@@ -33,40 +33,151 @@ enum TokenizationStateChange{
     case None
     //Leave this state
     case Exit(consumedCharacter:Bool)
-    //Leave this state, and there was an error
-//    case Error(errorToken:Token.ErrorToken)
     //Move to this new state
     case Transition(newState:TokenizationState,consumedCharacter:Bool)
 }
 
-
-protocol TokenizationState : Printable{
+//
+// XCode 6 Beta 3 Crashes if two protocols refer to each other, so turning this into a class for now
+//
+class TokenizationState : Printable, StringLiteralConvertible {
+    var tokenGenerator : TokenCreationBlock?
+    
+    init(){
+        
+    }
+    
+    //
+    // String Literal
+    //
+    class func convertFromStringLiteral(value: String) -> TokenizationState {
+        if let parsedState = OysterKit.parseState(value) {
+            return parsedState
+        }
+        
+        return TokenizationState()
+    }
+    
+    class func convertFromExtendedGraphemeClusterLiteral(value: String) -> TokenizationState {
+        return TokenizationState.convertFromStringLiteral(value)
+    }
+    
+    
     //
     // Tokenization
     //
-    func couldEnterWithCharacter(character:UnicodeScalar, controller:TokenizationController)->Bool
-    func consume(character:UnicodeScalar, controller:TokenizationController) -> TokenizationStateChange
+    
+    //
+    // This is called each time the state is a possible entry point for the next token. It is essential
+    // that this method NEVER depends on the internal conditions of the state (this is important becuase
+    // otherwise we would have to reset the state before considering it)
+    //
+    func couldEnterWithCharacter(character:UnicodeScalar, controller:TokenizationController)->Bool{
+        return false
+    }
+    
+    
+    func consume(character:UnicodeScalar, controller:TokenizationController) -> TokenizationStateChange{
+        return TokenizationStateChange.Exit(consumedCharacter: false)
+    }
     
     //
     // State transition
     //
-    func reset()
-    func didEnter()
-    func didExit()
+    func reset(){
+
+    }
+    
+    func didEnter(){
+
+    }
+    
+    func didExit(){
+
+    }
     
     //
     // Definition of tokenization state machine
     //
-    func branch(toStates:TokenizationState...)->TokenizationState
-    func sequence(ofStates:TokenizationState...)->TokenizationState
-    func token(emitToken:Token)->TokenizationState
-    func token(emitToken:String)->TokenizationState
-    func token(with:TokenCreationBlock)->TokenizationState
+    func branch(toStates:TokenizationState...)->TokenizationState{
+        return self
+    }
+    
+    //
+    // As this method only calls branch, we can provide a concrete implementation here
+    //
+    func sequence(ofStates: TokenizationState...) -> TokenizationState {
+        branch(ofStates[0])
+        for index in 1..<ofStates.count{
+            ofStates[index-1].branch(ofStates[index])
+        }
+        
+        return self
+    }
+
+    func loopingStates()->[TokenizationState]{
+        return [self]
+    }
+    
+    //
+    // Token creation
+    //
+    func token(emitToken: String) -> TokenizationState {
+        token(){(state:TokenizationState, capturedCharacters:String, startIndex:Int)->Token in
+            var token = Token(name: emitToken, withCharacters: capturedCharacters)
+            token.originalStringIndex = startIndex
+            return token
+        }
+        
+        return self
+    }
+    
+    func token(emitToken: Token) -> TokenizationState {
+        token(){(state:TokenizationState, capturedCharacters:String, startIndex:Int)->Token in
+            var token = Token(name: emitToken.name, withCharacters: capturedCharacters)
+            token.originalStringIndex = startIndex
+            return token
+        }
+        
+        return self
+    }
+    
+    func token(with: TokenCreationBlock) -> TokenizationState {
+        tokenGenerator = with
+        
+        return self
+    }
+    
+    func errorToken(controller:TokenizationController) -> Token{
+        return Token.ErrorToken(forString: controller.describeCaptureState(), problemDescription: "Illegal character")
+    }
+    
+    func createToken(controller:TokenizationController, useCurrentCharacter:Bool)->Token?{
+        var useCharacters = useCurrentCharacter ? controller.capturedCharacters()+"\(controller.currentCharacter())" : controller.capturedCharacters()
+        if let token = tokenGenerator?(state:self, capturedCharacteres:useCharacters,charactersStartIndex:controller.storedCharactersStartIndex){
+            return token
+        }
+        
+        return nil
+    }
+    
+    func emitToken(controller:TokenizationController,token:Token?){
+        if let emittableToken = token {
+            controller.holdToken(emittableToken)
+        }
+    }
+    
     
     //
     // Output
     //
-    func serialize(indentation:String)->String
+    func serialize(indentation:String)->String{
+        return ""
+    }
+
+    var description:String{
+        return ""
+    }
 }
 
 typealias   TokenCreationBlock = ((state:TokenizationState,capturedCharacteres:String,charactersStartIndex:Int)->Token)

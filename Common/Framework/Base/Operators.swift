@@ -34,7 +34,7 @@ import Foundation
 //
 func sequence(states:TokenizationState...)->TokenizationState{
     
-    for i in 1..states.count {
+    for i in 1..<states.count {
         states[i-1].branch(states[i])
     }
     
@@ -58,7 +58,7 @@ func sequence(states:TokenizationState...)->TokenizationState{
         return false
     }
     
-    for i in 0..left.count{
+    for i in 0..<left.count{
 //        println("Does "+left[i].description()+" == "+right[i].description())
         if left[i] != right[i]{
 //            println("\t NO IT DOESN'T")
