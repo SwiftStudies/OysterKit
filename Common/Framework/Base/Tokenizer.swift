@@ -49,6 +49,9 @@ class Tokenizer : BranchingController {
         currentState = self
         error = false
         elementIndex = 0
+        while contexts.count > 0 {
+            pop()
+        }
         
         //Iterate through the characters
         for character in terminatedString.unicodeScalars{

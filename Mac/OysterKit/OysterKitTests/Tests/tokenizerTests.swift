@@ -159,9 +159,36 @@ class tokenizerTests: XCTestCase {
         
         //Parse the file you were created from
         let parserGeneratedTokens = generatedTokenizer.tokenize(tokFileTokDef)
-
+        
+//        for i in 0..<selfGeneratedTokens.endIndex {
+//            println("\(selfGeneratedTokens[i]) == \(parserGeneratedTokens[i])")
+//        }
+        
         XCTAssert(parserGeneratedTokens == selfGeneratedTokens)
     }
-    
 
+    func testOKScriptParserPerformance() {
+        let tokFileTokDef = TokenizerFile().description
+
+        
+        self.measureBlock() {
+            let generatedTokenizer = OysterKit.parseTokenizer(tokFileTokDef)
+            let parserGeneratedTokens = generatedTokenizer?.tokenize(tokFileTokDef)
+        }
+    }
+
+    func testOKScriptTokenizerPerformance() {
+        var tokFileTokDef = TokenizerFile().description
+        
+        tokFileTokDef += tokFileTokDef
+        tokFileTokDef += tokFileTokDef
+        tokFileTokDef += tokFileTokDef
+        tokFileTokDef += tokFileTokDef
+        
+        self.measureBlock() {
+            let parserGeneratedTokens = TokenizerFile().tokenize(tokFileTokDef)
+        }
+    }
+    
+    
 }

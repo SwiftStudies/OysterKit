@@ -27,10 +27,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Foundation
 
+//
+//Completely stateless
+//
 class Char : Branch{
     let allowedCharacters : String
     
     var inverted = false
+    var looping = false
     
     init(from:String){
         self.allowedCharacters = from
@@ -47,7 +51,7 @@ class Char : Branch{
         return Char(from: self.allowedCharacters+otherCharacterSet.allowedCharacters)
     }
     
-    func isAllowed(character:UnicodeScalar)->Bool{
+    func isAllowed(character:UnicodeScalar)->Bool{        
         for allowedCharacter in allowedCharacters.unicodeScalars{
             if allowedCharacter == character {
                 return !inverted
@@ -55,18 +59,7 @@ class Char : Branch{
         }
         return inverted
     }
-    
-    override class func convertFromStringLiteral(value: String) -> Char {
-        var parsedState = OysterKit.parseState(value)
-        if parsedState is Char {
-            return parsedState as Char
-        }
-        return Char(from:"")
-    }
-    
-    override class func convertFromExtendedGraphemeClusterLiteral(value: String) -> Char {
-        return Char.convertFromStringLiteral(value)
-    }
+
     
     
     override func couldEnterWithCharacter(character: UnicodeScalar, controller: TokenizationController) -> Bool {
@@ -81,11 +74,12 @@ class Char : Branch{
         }
     }
     
+    func annotations()->String{
+        return inverted ? "!" : ""
+    }
+    
     override func serialize(indentation: String) -> String {
-        var output = ""
-        if inverted {
-            output+="!"
-        }
+        var output = annotations()
         
         output+="\""
         for character in allowedCharacters{

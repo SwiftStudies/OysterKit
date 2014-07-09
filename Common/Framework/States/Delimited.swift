@@ -28,77 +28,96 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import Foundation
 
 class Delimited : Branch{
-    let openingDelimiter:String
-    let closingDelimiter:String
     
-    var consumedFirstDelimiter = false
-
+    class PoppingChar : Char {
+        
+        override func consume(character: UnicodeScalar, controller: TokenizationController) -> TokenizationStateChange {
+            if isAllowed(character){
+                controller.pop()
+                emitToken(controller, token: createToken(controller, useCurrentCharacter: true))
+                return TokenizationStateChange.Exit(consumedCharacter: true)
+            }
+            return TokenizationStateChange.Exit(consumedCharacter: false)
+        }
+        
+    }
+    
+    let openingDelimiter:UnicodeScalar
+    
     var delimetedStates:Array<TokenizationState>
+    let poppingState:PoppingChar
 
     init(open:String,close:String,states:TokenizationState...){
-        self.openingDelimiter = open
-        self.closingDelimiter = close
+        self.openingDelimiter = open.unicodeScalars[open.unicodeScalars.startIndex]
         self.delimetedStates = states
+        self.poppingState = PoppingChar(from: close)
         
         //Initialise super class
         super.init()
-        self.delimetedStates.unshare()
-        self.delimetedStates.insert(self, atIndex: 0)
+        
+        //TODO: Change this to a popping char state so that we don't have to keep
+        //forcing this state to be re-entrant (and more complex as a result). 
+        //The Char state should use the same token generator as this state, be placed
+        //first in the list, and Pop the tokenizer state when exited
+        //
+        // BE CERTAIN THAT THE INITIALISER BELOW IS UPDATED AS WELL
+        //
+        preparePoppingState()
     }
-    
+
+
     init(delimiter:String,states:TokenizationState...){
-        self.openingDelimiter = delimiter
-        self.closingDelimiter = delimiter
+        self.openingDelimiter = delimiter.unicodeScalars[delimiter.unicodeScalars.startIndex]
         self.delimetedStates = states
+        self.poppingState = PoppingChar(from:delimiter)
         
         //Initialise super class
         super.init()
-        self.delimetedStates.unshare()
-        self.delimetedStates.append(self)
+        preparePoppingState()
     }
     
-    override class func convertFromStringLiteral(value: String) -> Delimited {
-        var parsedState = OysterKit.parseState(value)
-        if parsedState is Delimited {
-            return parsedState as Delimited
-        }
-        return Delimited(delimiter:"",states:Branch())
+    //
+    // Popping state setup and maintenance
+    //
+    func preparePoppingState() {
+        delimetedStates.insert(poppingState, atIndex: 0)
     }
     
-    override class func convertFromExtendedGraphemeClusterLiteral(value: String) -> Delimited {
-        return Delimited.convertFromStringLiteral(value)
+
+    //
+    // Push any new token onto the popping state too
+    //
+    override func token(with: TokenCreationBlock) -> TokenizationState {
+        super.token(with)
+        poppingState.tokenGenerator = tokenGenerator
+        
+        return self
     }
+    
+    //
+    // State management
+    //
     
     override func couldEnterWithCharacter(character: UnicodeScalar, controller: TokenizationController) -> Bool {
-        let delimiter = consumedFirstDelimiter ? closingDelimiter : openingDelimiter
+
+        return openingDelimiter == character
         
-        if delimiter == "\(character)" {
-            return true
-        } else {
-            return false
-        }
     }
     
     override func consume(character: UnicodeScalar, controller: TokenizationController) -> TokenizationStateChange {
-        
-        if consumedFirstDelimiter {
-            controller.pop()
-        } else {
-            controller.push(self.delimetedStates)
-        }
-        
-        consumedFirstDelimiter = !consumedFirstDelimiter
-        
+        controller.push(self.delimetedStates)
         emitToken(controller, token: createToken(controller, useCurrentCharacter: true))
-                
         return TokenizationStateChange.Exit(consumedCharacter: true)
     }
     
-    func escapeDelimiter(delimiter:String)->String {
-        if delimiter == "'" {
+    //
+    // Serialization
+    //
+    func escapeDelimiter(delimiter:UnicodeScalar)->String {
+        if "\(delimiter)" == "'" {
             return "\\'"
         }
-        return delimiter
+        return "\(delimiter)"
     }
     
     override func serialize(indentation: String) -> String {
@@ -109,13 +128,13 @@ class Delimited : Branch{
         output += "{"
         var first = true
         
-        var subStates = Array(delimetedStates[0..self.delimetedStates.endIndex-1])
+        var subStates = Array(delimetedStates[1..<self.delimetedStates.endIndex])
         output += serializeStateArray(indentation+"\t", states: subStates)
         
         output+="}"
 
-        if openingDelimiter != closingDelimiter {
-            output+=",'\(closingDelimiter)'"
+        if "\(openingDelimiter)" != poppingState.allowedCharacters {
+            output+=",'\(poppingState.allowedCharacters)'"
         }
         
         return output+">"+serializeBranches(indentation+"\t")

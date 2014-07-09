@@ -28,49 +28,20 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import Foundation
 
 
-class Branch : TokenizationState, StringLiteralConvertible {
-    
-    class func convertFromStringLiteral(value: String) -> Branch {
-        var parsedState = OysterKit.parseState(value)
-        if parsedState is Branch {
-            return parsedState as Branch
-        }
-        return Branch()
-    }
-    
-    class func convertFromExtendedGraphemeClusterLiteral(value: String) -> Branch {
-        return Branch.convertFromStringLiteral(value)
-    }
-    
-    var tokenGenerator : TokenCreationBlock?
+class Branch : TokenizationState {
     var branches = Array<TokenizationState>() //All states that can be transitioned to
+    var transientTransitionState:Branch?
     
     init(){
-        
+       super.init()
     }
     
     init(states:Array<TokenizationState>){
         branches = states
     }
-    
-    //currently stateless
-    func didExit() {
-        reset()
-    }
-    
-    //currently stateless
-    func didEnter() {
-        reset()
-    }
 
-    //reset all branches
-    func reset() {
-        for otherState in branches{
-            otherState.reset()
-        }
-    }
-    
-    func couldEnterWithCharacter(character: UnicodeScalar, controller: TokenizationController) -> Bool {
+
+    override func couldEnterWithCharacter(character: UnicodeScalar, controller: TokenizationController) -> Bool {
         for branch in branches{
             if branch.couldEnterWithCharacter(character, controller: controller){
                 return true
@@ -80,7 +51,7 @@ class Branch : TokenizationState, StringLiteralConvertible {
     }
     
     //You may wish to over-ride to set the context for improved error messages
-    func consume(character:UnicodeScalar, controller:TokenizationController) -> TokenizationStateChange{
+    override func consume(character:UnicodeScalar, controller:TokenizationController) -> TokenizationStateChange{
         for branch in branches{
             if (branch.couldEnterWithCharacter(character, controller: controller)){
                 return TokenizationStateChange.Transition(newState: branch, consumedCharacter:false)
@@ -91,7 +62,10 @@ class Branch : TokenizationState, StringLiteralConvertible {
         return TokenizationStateChange.Exit(consumedCharacter: false)
     }
     
-    func branch(toStates: TokenizationState...) -> TokenizationState {
+    //
+    // Manage storage of branches
+    //
+    override func branch(toStates: TokenizationState...) -> TokenizationState {
         for state in toStates{
             branches.append(state)
         }
@@ -99,41 +73,9 @@ class Branch : TokenizationState, StringLiteralConvertible {
         return self
     }
 
-    func sequence(ofStates: TokenizationState...) -> TokenizationState {
-        branch(ofStates[0])
-        for index in 1..ofStates.count{
-            ofStates[index-1].branch(ofStates[index])
-        }
-        
-        return self
-    }
-
-    func token(emitToken: String) -> TokenizationState {
-        tokenGenerator = {(state:TokenizationState, capturedCharacters:String, startIndex:Int)->Token in
-            var token = Token(name: emitToken, withCharacters: capturedCharacters)
-            token.originalStringIndex = startIndex
-            return token
-        }
-        
-        return self
-    }
-    
-    func token(emitToken: Token) -> TokenizationState {
-        tokenGenerator = {(state:TokenizationState, capturedCharacters:String, startIndex:Int)->Token in
-            var token = Token(name: emitToken.name, withCharacters: capturedCharacters)
-            token.originalStringIndex = startIndex
-            return token
-        }
-
-        return self
-    }
-    
-    func token(with: TokenCreationBlock) -> TokenizationState {
-        tokenGenerator = with
-
-        return self
-    }
-    
+    //
+    // Serialization
+    //
     func serializeStateArray(indentation:String, states:Array<TokenizationState>)->String{
         if states.count == 1 {
             return states[0].serialize(indentation)
@@ -179,7 +121,7 @@ class Branch : TokenizationState, StringLiteralConvertible {
         return output+"}\n"
     }
     
-    func serialize(indentation:String)->String{
+    override func serialize(indentation:String)->String{
         var output = "{"+serializeStateArray(indentation+"\t",states: branches)+"}"
         
         if branches.count > 1 {
@@ -195,38 +137,23 @@ class Branch : TokenizationState, StringLiteralConvertible {
         if branches.count == 0 {
             return TokenizationStateChange.Exit(consumedCharacter: consumedCharacter)
         } else {
-            var transientState = Branch(states: self.branches)
+            if !transientTransitionState{
+                transientTransitionState = Branch()
+            }
+            
+            transientTransitionState!.branches = self.branches
             
             //If we can either enter the transient state or we did consume the character
-            if transientState.couldEnterWithCharacter(controller.currentCharacter(),controller: controller) || consumedCharacter{
-                return TokenizationStateChange.Transition(newState: transientState, consumedCharacter: consumedCharacter)
+            if transientTransitionState!.couldEnterWithCharacter(controller.currentCharacter(),controller: controller) || consumedCharacter{
+                return TokenizationStateChange.Transition(newState: transientTransitionState!, consumedCharacter: consumedCharacter)
             }
 
             return TokenizationStateChange.Exit(consumedCharacter: consumedCharacter)
         }
     }
     
-    func errorToken(controller:TokenizationController) -> Token{
-        return Token.ErrorToken(forString: controller.describeCaptureState(), problemDescription: "Illegal character")
-    }
     
-    
-    func createToken(controller:TokenizationController, useCurrentCharacter:Bool)->Token?{
-        var useCharacters = useCurrentCharacter ? controller.capturedCharacters()+"\(controller.currentCharacter())" : controller.capturedCharacters()
-        if let token = tokenGenerator?(state:self, capturedCharacteres:useCharacters,charactersStartIndex:controller.storedCharactersStartIndex){
-            return token
-        }
-        
-        return nil
-    }
-    
-    func emitToken(controller:TokenizationController,token:Token?){
-        if let emittableToken = token {
-            controller.holdToken(emittableToken)
-        }
-    }
-    
-    var description:String {
+    override var description:String {
         return serialize("")
     }
 }

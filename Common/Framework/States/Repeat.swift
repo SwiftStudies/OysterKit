@@ -61,19 +61,7 @@ class Repeat : BranchingController{
         
         return
     }
-    
-    override class func convertFromStringLiteral(value: String) -> Repeat {
-        var parsedState = OysterKit.parseState(value)
-        if parsedState is Repeat {
-            return parsedState as Repeat
-        }
-        return Repeat(state:Branch())
-    }
-    
-    override class func convertFromExtendedGraphemeClusterLiteral(value: String) -> Repeat {
-        return Repeat.convertFromStringLiteral(value)
-    }
-    
+
     override func clearToken() {
         println("Token stacking not currently supported by repeat, use a specific counted token name instead")
     }
@@ -115,8 +103,18 @@ class Repeat : BranchingController{
             //Reset and look for another
             currentState = repeatingState
             storedCharacters = ""
+
+            switch consumptionResult{
+            case .Exit(let exitCondition):
+                if (!exitCondition.consumedCharacter){
+                    return consume(character,controller: controller)
+                }
+                fallthrough
+            default:
+                return TokenizationStateChange.None
+            }
             
-            return TokenizationStateChange.None
+            
         }
         
         switch consumptionResult{
