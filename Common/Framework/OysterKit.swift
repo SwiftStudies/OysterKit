@@ -90,21 +90,25 @@ class OysterKit{
     
     
     class var number:TokenizationState{
+        
+        var decimalDigitsAfterPoint = LoopingChar(from:decimalDigitString).token("float")
+        var decimalDigitsBeforePoint = LoopingChar(from:decimalDigitString).token("integer")
+        
         let decimalPointChain = Char(from: ".").sequence(
-            Repeat(state: decimalDigit).token("float"),
+            decimalDigitsAfterPoint,
             Char(from: "eE").branch(
-                Repeat(state: decimalDigit).token("float"),
+                decimalDigitsAfterPoint,
                 Char(from: "+-").sequence(
-                    Repeat(state: decimalDigit).token("float")
+                    decimalDigitsAfterPoint
                     )
                 )
             )
 
             
         return Branch().branch(
-            Repeat(state: decimalDigit).token("integer").branch(decimalPointChain),
+            decimalDigitsBeforePoint.branch(decimalPointChain),
             Char(from: "+-").token(OperatorToken.createToken).sequence(
-                Repeat(state: decimalDigit).token("integer").branch(
+                decimalDigitsBeforePoint.branch(
                     decimalPointChain
                     )
                 )
@@ -112,60 +116,67 @@ class OysterKit{
     }
     
     class var word:TokenizationState{
-        return Repeat(state: wordCharacter).token("word")
+        return LoopingChar(from: lowerCaseLetterString+upperCaseLetterString+decimalDigitString+"_").token("word")
     }
     
-    class var variableName:TokenizationState{
-        return Char(from:lowerCaseLetterString+upperCaseLetterString).sequence(
-                    Repeat(state:Char(from:lowerCaseLetterString+upperCaseLetterString+decimalDigitString+"_-").token("varChar")
-            ).token("variable")
-        )
-        
-    }
+
     
     class var blanks:TokenizationState{
-        return Repeat(state: blank).token("blank")
+        return LoopingChar(from:blankString).token("blank")
     }
     
     class var whiteSpaces:TokenizationState{
-        return Repeat(state: whiteSpace).token(WhiteSpaceToken.createToken)
+        return LoopingChar(from: whiteSpaceString).token(WhiteSpaceToken.createToken)
+//        return Repeat(state: whiteSpace).token(WhiteSpaceToken.createToken)
     }
     
-    class var quotedString:TokenizationState{
-    return Delimited(delimiter: "\"", states:
-        Repeat(state:Branch().branch(
-            Char(from:"\\").branch(
-                Char(from:"trn\"\\").token("char")
-            ),
-            Char(except: "\"").token("char")
-            ), min: 1, max: nil).token("quoted-string")
-        )
-    }
+
     
-    class var quotedStringIncludingQuotes:TokenizationState{
-        return quotedString.token("double-quote")
-    }
-    
-    class var quotedCharacter:TokenizationState{
-    return Delimited(delimiter: "'", states:
-        Repeat(state:Branch().branch(
-            Char(from:"\\").branch(
-                Char(from:"trn'\\").token("char")
-            ),
-            Char(except: "'").token("char")
-            ), min: 1, max: 1).token("char")
-        )
-    }
-    
-    class var quotedCharacterIncludingQuotes:TokenizationState{
-        return quotedCharacter.token("quote")
-    }
-    
+
     class func parseState(stateDefinition:String)->TokenizationState?{
         return _privateTokFileParser().parseState(stateDefinition)
     }
     
     class func parseTokenizer(tokenizerDefinition:String)->Tokenizer?{
         return _privateTokFileParser().parse(tokenizerDefinition)
+    }
+    
+    class Code {
+        class var quotedString:TokenizationState{
+        return Delimited(delimiter: "\"", states:
+            Repeat(state:Branch().branch(
+                Char(from:"\\").branch(
+                    Char(from:"trn\"\\").token("char")
+                ),
+                Char(except: "\"").token("char")
+                ), min: 1, max: nil).token("quoted-string")
+            )
+        }
+        
+        class var quotedStringIncludingQuotes:TokenizationState{
+        return quotedString.token("double-quote")
+        }
+        
+        class var quotedCharacter:TokenizationState{
+        return Delimited(delimiter: "'", states:
+            Repeat(state:Branch().branch(
+                Char(from:"\\").branch(
+                    Char(from:"trn'\\").token("char")
+                ),
+                Char(except: "'").token("char")
+                ), min: 1, max: 1).token("char")
+            )
+        }
+        
+        class var quotedCharacterIncludingQuotes:TokenizationState{
+        return quotedCharacter.token("quote")
+        }
+    
+        
+        class var variableName:TokenizationState{
+        return Char(from:lowerCaseLetterString+upperCaseLetterString).sequence(
+                LoopingChar(from:lowerCaseLetterString+upperCaseLetterString+decimalDigitString+"_-").token("variable")
+            )
+        }
     }
 }

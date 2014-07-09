@@ -74,11 +74,12 @@ class Char : Branch{
         }
     }
     
+    func annotations()->String{
+        return inverted ? "!" : ""
+    }
+    
     override func serialize(indentation: String) -> String {
-        var output = ""
-        if inverted {
-            output+="!"
-        }
+        var output = annotations()
         
         output+="\""
         for character in allowedCharacters{
