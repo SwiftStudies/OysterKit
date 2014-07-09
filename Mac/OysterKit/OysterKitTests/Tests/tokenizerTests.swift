@@ -166,6 +166,7 @@ class tokenizerTests: XCTestCase {
     func testOKScriptParserPerformance() {
         let tokFileTokDef = TokenizerFile().description
 
+        
         self.measureBlock() {
             let generatedTokenizer = OysterKit.parseTokenizer(tokFileTokDef)
             let parserGeneratedTokens = generatedTokenizer?.tokenize(tokFileTokDef)

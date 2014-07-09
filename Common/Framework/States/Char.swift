@@ -34,6 +34,7 @@ class Char : Branch{
     let allowedCharacters : String
     
     var inverted = false
+    var looping = false
     
     init(from:String){
         self.allowedCharacters = from

@@ -87,7 +87,8 @@ class OysterKit{
     class var wordCharacter:TokenizationState{
         return Char(from: lowerCaseLetterString+upperCaseLetterString+decimalDigitString+"_").token("word")
     }
-        
+    
+    
     class var number:TokenizationState{
         let decimalPointChain = Char(from: ".").sequence(
             Repeat(state: decimalDigit).token("float"),

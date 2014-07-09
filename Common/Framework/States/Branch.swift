@@ -29,12 +29,11 @@ import Foundation
 
 
 class Branch : TokenizationState {
-    var tokenGenerator : TokenCreationBlock?
     var branches = Array<TokenizationState>() //All states that can be transitioned to
     var transientTransitionState:Branch?
     
     init(){
-        
+       super.init()
     }
     
     init(states:Array<TokenizationState>){
@@ -63,6 +62,9 @@ class Branch : TokenizationState {
         return TokenizationStateChange.Exit(consumedCharacter: false)
     }
     
+    //
+    // Manage storage of branches
+    //
     override func branch(toStates: TokenizationState...) -> TokenizationState {
         for state in toStates{
             branches.append(state)
@@ -71,41 +73,9 @@ class Branch : TokenizationState {
         return self
     }
 
-    override func sequence(ofStates: TokenizationState...) -> TokenizationState {
-        branch(ofStates[0])
-        for index in 1..<ofStates.count{
-            ofStates[index-1].branch(ofStates[index])
-        }
-        
-        return self
-    }
-
-    override func token(emitToken: String) -> TokenizationState {
-        tokenGenerator = {(state:TokenizationState, capturedCharacters:String, startIndex:Int)->Token in
-            var token = Token(name: emitToken, withCharacters: capturedCharacters)
-            token.originalStringIndex = startIndex
-            return token
-        }
-        
-        return self
-    }
-    
-    override func token(emitToken: Token) -> TokenizationState {
-        tokenGenerator = {(state:TokenizationState, capturedCharacters:String, startIndex:Int)->Token in
-            var token = Token(name: emitToken.name, withCharacters: capturedCharacters)
-            token.originalStringIndex = startIndex
-            return token
-        }
-
-        return self
-    }
-    
-    override func token(with: TokenCreationBlock) -> TokenizationState {
-        tokenGenerator = with
-
-        return self
-    }
-    
+    //
+    // Serialization
+    //
     func serializeStateArray(indentation:String, states:Array<TokenizationState>)->String{
         if states.count == 1 {
             return states[0].serialize(indentation)
@@ -182,25 +152,6 @@ class Branch : TokenizationState {
         }
     }
     
-    func errorToken(controller:TokenizationController) -> Token{
-        return Token.ErrorToken(forString: controller.describeCaptureState(), problemDescription: "Illegal character")
-    }
-    
-    
-    func createToken(controller:TokenizationController, useCurrentCharacter:Bool)->Token?{
-        var useCharacters = useCurrentCharacter ? controller.capturedCharacters()+"\(controller.currentCharacter())" : controller.capturedCharacters()
-        if let token = tokenGenerator?(state:self, capturedCharacteres:useCharacters,charactersStartIndex:controller.storedCharactersStartIndex){
-            return token
-        }
-        
-        return nil
-    }
-    
-    func emitToken(controller:TokenizationController,token:Token?){
-        if let emittableToken = token {
-            controller.holdToken(emittableToken)
-        }
-    }
     
     override var description:String {
         return serialize("")

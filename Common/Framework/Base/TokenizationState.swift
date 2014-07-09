@@ -41,6 +41,12 @@ enum TokenizationStateChange{
 // XCode 6 Beta 3 Crashes if two protocols refer to each other, so turning this into a class for now
 //
 class TokenizationState : Printable, StringLiteralConvertible {
+    var tokenGenerator : TokenCreationBlock?
+    
+    init(){
+        
+    }
+    
     //
     // String Literal
     //
@@ -96,29 +102,78 @@ class TokenizationState : Printable, StringLiteralConvertible {
     func branch(toStates:TokenizationState...)->TokenizationState{
         return self
     }
-    func sequence(ofStates:TokenizationState...)->TokenizationState{
+    
+    //
+    // As this method only calls branch, we can provide a concrete implementation here
+    //
+    func sequence(ofStates: TokenizationState...) -> TokenizationState {
+        branch(ofStates[0])
+        for index in 1..<ofStates.count{
+            ofStates[index-1].branch(ofStates[index])
+        }
+        
         return self
     }
 
-    func token(emitToken:Token)->TokenizationState{
+    func loopingStates()->[TokenizationState]{
+        return [self]
+    }
+    
+    //
+    // Token creation
+    //
+    func token(emitToken: String) -> TokenizationState {
+        token(){(state:TokenizationState, capturedCharacters:String, startIndex:Int)->Token in
+            var token = Token(name: emitToken, withCharacters: capturedCharacters)
+            token.originalStringIndex = startIndex
+            return token
+        }
+        
         return self
     }
-
-    func token(emitToken:String)->TokenizationState{
+    
+    func token(emitToken: Token) -> TokenizationState {
+        token(){(state:TokenizationState, capturedCharacters:String, startIndex:Int)->Token in
+            var token = Token(name: emitToken.name, withCharacters: capturedCharacters)
+            token.originalStringIndex = startIndex
+            return token
+        }
+        
         return self
     }
-
-    func token(with:TokenCreationBlock)->TokenizationState{
+    
+    func token(with: TokenCreationBlock) -> TokenizationState {
+        tokenGenerator = with
+        
         return self
     }
-
+    
+    func errorToken(controller:TokenizationController) -> Token{
+        return Token.ErrorToken(forString: controller.describeCaptureState(), problemDescription: "Illegal character")
+    }
+    
+    func createToken(controller:TokenizationController, useCurrentCharacter:Bool)->Token?{
+        var useCharacters = useCurrentCharacter ? controller.capturedCharacters()+"\(controller.currentCharacter())" : controller.capturedCharacters()
+        if let token = tokenGenerator?(state:self, capturedCharacteres:useCharacters,charactersStartIndex:controller.storedCharactersStartIndex){
+            return token
+        }
+        
+        return nil
+    }
+    
+    func emitToken(controller:TokenizationController,token:Token?){
+        if let emittableToken = token {
+            controller.holdToken(emittableToken)
+        }
+    }
+    
     
     //
     // Output
     //
     func serialize(indentation:String)->String{
-return ""
-}
+        return ""
+    }
 
     var description:String{
         return ""
