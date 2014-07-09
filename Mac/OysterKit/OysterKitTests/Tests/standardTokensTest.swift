@@ -71,9 +71,24 @@ class standardTokensTest: XCTestCase {
         XCTAssert(tokenizer.tokenize(parsingTest) == [token("word",chars:"Short"), token("blank",chars:" "), token("integer",chars:"10"), token("blank",chars:" "), token("word",chars:"string"), ])
     }
     
+    func testWhiteSpaces(){
+        tokenizer.branch(
+            OysterKit.Code.quotedStringIncludingQuotes,
+            OysterKit.whiteSpaces,
+            OysterKit.number,
+            OysterKit.word,
+            OysterKit.punctuation,
+            OysterKit.eot
+        )
+
+        let parsingTest = "Short\tlittle\nstring that\n tries \tto  break \n\tthings         up"
+        
+        XCTAssert(tokenizer.tokenize(parsingTest) == [token("word",chars:"Short"), token("whitespace",chars:"\t"), token("word",chars:"little"), token("whitespace",chars:"\n"), token("word",chars:"string"), token("whitespace",chars:" "), token("word",chars:"that"), token("whitespace",chars:"\n "), token("word",chars:"tries"), token("whitespace",chars:" \t"), token("word",chars:"to"), token("whitespace",chars:"  "), token("word",chars:"break"), token("whitespace",chars:" \n\t"), token("word",chars:"things"), token("whitespace",chars:"         "), token("word",chars:"up"), ])        
+    }
+    
     func testQuotedString(){
         tokenizer.branch(
-            OysterKit.quotedStringIncludingQuotes,
+            OysterKit.Code.quotedStringIncludingQuotes,
             OysterKit.blanks,
             OysterKit.number,
             OysterKit.word,

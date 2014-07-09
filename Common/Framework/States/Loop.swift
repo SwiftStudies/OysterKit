@@ -20,7 +20,7 @@ class __Loop : Branch {
         override func consume(character: UnicodeScalar, controller: TokenizationController) -> TokenizationStateChange {
             controller.pop()
             if let cachedState = cachingState {
-                println("Using cached state \(cachedState.observedCharacters)")
+//                println("Using cached state \(cachedState.observedCharacters)")
                 tokenGenerator?(state: parentState!,capturedCharacteres: cachedState.observedCharacters,charactersStartIndex: cachedState.startIndex)
             }
             return TokenizationStateChange.Exit(consumedCharacter: false)
@@ -32,7 +32,7 @@ class __Loop : Branch {
         var startIndex = 0
         
         override func couldEnterWithCharacter(character: UnicodeScalar, controller: TokenizationController) -> Bool {
-            println("Caught: \(character)")
+//            println("Caught: \(character)")
             observedCharacters+="\(character)"
             return false
         }

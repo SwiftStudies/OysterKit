@@ -17,4 +17,9 @@ class LoopingChar : Char {
             return selfSatisfiedBranchOutOfStateTransition(false, controller: controller, withToken: createToken(controller, useCurrentCharacter: false))
         }
     }
+    
+    override func annotations() -> String {
+        return "*"+super.annotations()
+    }
+    
 }
