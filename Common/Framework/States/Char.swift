@@ -32,9 +32,13 @@ import Foundation
 //
 class Char : Branch{
     let allowedCharacters : String
-    
     var inverted = false
-    var looping = false
+    
+    override func stateClassName()->String {
+        return "Char \(allowedCharacters)"
+    }
+
+ 
     
     init(from:String){
         self.allowedCharacters = from
@@ -79,6 +83,7 @@ class Char : Branch{
     }
     
     override func serialize(indentation: String) -> String {
+        
         var output = annotations()
         
         output+="\""
@@ -108,4 +113,16 @@ class Char : Branch{
         return output
     }
 
+    override func __copyProperities(from:TokenizationState){
+        var fromActual = from as Char
+        inverted = fromActual.inverted
+        super.__copyProperities(from)
+    }
+    
+    override func clone()->TokenizationState {
+        var newState = Char(from:self.allowedCharacters)
+        newState.__copyProperities(self)
+        return newState
+    }
+    
 }

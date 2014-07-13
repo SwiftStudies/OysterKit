@@ -37,15 +37,27 @@ enum TokenizationStateChange{
     case Transition(newState:TokenizationState,consumedCharacter:Bool)
 }
 
+var __anonymousStateCount:Int = 0
+
 //
 // XCode 6 Beta 3 Crashes if two protocols refer to each other, so turning this into a class for now
 //
-class TokenizationState : Printable, StringLiteralConvertible {
+class TokenizationState : Printable, StringLiteralConvertible,Equatable {
     var tokenGenerator : TokenCreationBlock?
+    var id : String = ""
+    var reference : String?
+    var branches = Array<TokenizationState>() //All states that can be transitioned to
+    
+    
+    func stateClassName()-> String {
+        return "TokenizationState"
+    }
     
     init(){
-        
+        id = "\(stateClassName())\(__anonymousStateCount++)"
     }
+    
+    
     
     //
     // String Literal
@@ -97,22 +109,31 @@ class TokenizationState : Printable, StringLiteralConvertible {
     }
     
     //
-    // Definition of tokenization state machine
+    // Manage storage of branches
     //
-    func branch(toStates:TokenizationState...)->TokenizationState{
+    func branch(toStates: TokenizationState...) -> TokenizationState {
+        for state in toStates{
+            branches.append(state)
+        }
+        
         return self
     }
+
     
     //
     // As this method only calls branch, we can provide a concrete implementation here
     //
     func sequence(ofStates: TokenizationState...) -> TokenizationState {
+        sequence(ofStates)
+        
+        return self        
+    }
+    
+    func sequence(ofStates:[TokenizationState]){
         branch(ofStates[0])
         for index in 1..<ofStates.count{
             ofStates[index-1].branch(ofStates[index])
         }
-        
-        return self
     }
 
     func loopingStates()->[TokenizationState]{
@@ -148,6 +169,11 @@ class TokenizationState : Printable, StringLiteralConvertible {
         return self
     }
     
+    func clearToken()-> TokenizationState{
+        tokenGenerator = nil
+        return self
+    }
+    
     func errorToken(controller:TokenizationController) -> Token{
         return Token.ErrorToken(forString: controller.describeCaptureState(), problemDescription: "Illegal character")
     }
@@ -167,17 +193,69 @@ class TokenizationState : Printable, StringLiteralConvertible {
         }
     }
     
-    
     //
     // Output
     //
+    func pseudoTokenNameSuffix()->String{
+        if let token = tokenGenerator?(state: self,capturedCharacteres: "",charactersStartIndex:0){
+            return "->"+token.name
+        }
+        return ""
+    }
+    
     func serialize(indentation:String)->String{
+        if reference {
+           return reference!+pseudoTokenNameSuffix()
+        }
         return ""
     }
 
     var description:String{
-        return ""
+        return serialize("")
     }
+    
+    //
+    // Object Life Cycle
+    //
+    func __copyProperities(from:TokenizationState){
+        if from.tokenGenerator{
+            token(from.tokenGenerator!)
+        }
+
+        for branch in from.branches {
+            self.branch(branch.clone())
+        }
+        
+        reference = from.reference
+    }
+    
+    func clone()->TokenizationState {
+        var newState = TokenizationState()
+        newState.__copyProperities(self)
+        return newState
+    }
+    
+    @final func isEqualTo(otherState:TokenizationState)->Bool{
+        return id == otherState.id
+    }
+}
+
+func ==(lhs: TokenizationState, rhs: TokenizationState) -> Bool{
+    return lhs.isEqualTo(rhs)
+}
+
+func ==(lhs:[TokenizationState], rhs:[TokenizationState])->Bool{
+    if lhs.count != rhs.count {
+        return false
+    }
+    
+    for i in 0..<rhs.count {
+        if lhs[i] != rhs[i] {
+            return false
+        }
+    }
+    
+    return true
 }
 
 typealias   TokenCreationBlock = ((state:TokenizationState,capturedCharacteres:String,charactersStartIndex:Int)->Token)

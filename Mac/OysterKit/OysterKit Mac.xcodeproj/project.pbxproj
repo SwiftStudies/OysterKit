@@ -10,6 +10,7 @@
 		4200A1811965C088008056C5 /* standardTokensTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4200A1801965C088008056C5 /* standardTokensTest.swift */; };
 		4221038219601B40001148F5 /* OysterKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 4221038119601B40001148F5 /* OysterKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4221038819601B40001148F5 /* OysterKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4221037C19601B40001148F5 /* OysterKit.framework */; };
+		4232D7AA196FBCA500A3F93C /* Named.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4232D7A9196FBCA500A3F93C /* Named.swift */; };
 		425EBD9D196549EA00A1C232 /* TestingSupportFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425EBD9C196549EA00A1C232 /* TestingSupportFunctions.swift */; };
 		4267D68B1965AB8000AF442F /* stateTestChar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4267D68A1965AB8000AF442F /* stateTestChar.swift */; };
 		4267D68D1965AB9E00AF442F /* stateTestRepeat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4267D68C1965AB9E00AF442F /* stateTestRepeat.swift */; };
@@ -30,9 +31,11 @@
 		427BB04019624BEE0006829F /* RPNParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB03F19624BEE0006829F /* RPNParser.swift */; };
 		427BB04219624BF50006829F /* SYExpressionParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB04119624BF50006829F /* SYExpressionParser.swift */; };
 		427BB09A1962FB450006829F /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB0991962FB450006829F /* Operators.swift */; };
+		4282D123196E9C7300A4785C /* parserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4282D122196E9C7300A4785C /* parserTests.swift */; };
 		4298889D19684B1200A4C4C0 /* TokFileParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298889C19684B1200A4C4C0 /* TokFileParser.swift */; };
+		429A0F03196D754500BE28C0 /* CharSequences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429A0F02196D754500BE28C0 /* CharSequences.swift */; };
+		429A0F05196D7B6900BE28C0 /* stateTestKeywords.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429A0F04196D7B6900BE28C0 /* stateTestKeywords.swift */; };
 		42DAC17A196D3FC50062F91E /* LoopingChar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DAC179196D3FC50062F91E /* LoopingChar.swift */; };
-		42EFD381196D22EB001944F3 /* Loop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EFD380196D22EB001944F3 /* Loop.swift */; };
 		42EFD385196D284C001944F3 /* stateTestLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EFD384196D284C001944F3 /* stateTestLoop.swift */; };
 /* End PBXBuildFile section */
 
@@ -165,6 +168,7 @@
 		4221038119601B40001148F5 /* OysterKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OysterKit.h; sourceTree = "<group>"; };
 		4221038719601B40001148F5 /* OysterKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OysterKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4221038D19601B40001148F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4232D7A9196FBCA500A3F93C /* Named.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Named.swift; sourceTree = "<group>"; };
 		425EBD9C196549EA00A1C232 /* TestingSupportFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TestingSupportFunctions.swift; path = Tests/TestingSupportFunctions.swift; sourceTree = "<group>"; };
 		4267D68A1965AB8000AF442F /* stateTestChar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = stateTestChar.swift; path = Tests/stateTestChar.swift; sourceTree = "<group>"; };
 		4267D68C1965AB9E00AF442F /* stateTestRepeat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = stateTestRepeat.swift; path = Tests/stateTestRepeat.swift; sourceTree = "<group>"; };
@@ -185,9 +189,11 @@
 		427BB03F19624BEE0006829F /* RPNParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPNParser.swift; sourceTree = "<group>"; };
 		427BB04119624BF50006829F /* SYExpressionParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SYExpressionParser.swift; sourceTree = "<group>"; };
 		427BB0991962FB450006829F /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
+		4282D122196E9C7300A4785C /* parserTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = parserTests.swift; path = Tests/parserTests.swift; sourceTree = "<group>"; };
 		4298889C19684B1200A4C4C0 /* TokFileParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokFileParser.swift; sourceTree = "<group>"; };
+		429A0F02196D754500BE28C0 /* CharSequences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharSequences.swift; sourceTree = "<group>"; };
+		429A0F04196D7B6900BE28C0 /* stateTestKeywords.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = stateTestKeywords.swift; path = Tests/stateTestKeywords.swift; sourceTree = "<group>"; };
 		42DAC179196D3FC50062F91E /* LoopingChar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoopingChar.swift; sourceTree = "<group>"; };
-		42EFD380196D22EB001944F3 /* Loop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Loop.swift; sourceTree = "<group>"; };
 		42EFD384196D284C001944F3 /* stateTestLoop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = stateTestLoop.swift; path = Tests/stateTestLoop.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -258,6 +264,8 @@
 				4200A1801965C088008056C5 /* standardTokensTest.swift */,
 				42EFD384196D284C001944F3 /* stateTestLoop.swift */,
 				4221038C19601B40001148F5 /* Supporting Files */,
+				429A0F04196D7B6900BE28C0 /* stateTestKeywords.swift */,
+				4282D122196E9C7300A4785C /* parserTests.swift */,
 			);
 			path = OysterKitTests;
 			sourceTree = "<group>";
@@ -321,8 +329,9 @@
 				427BB02B196248770006829F /* Char.swift */,
 				427BB02A196248770006829F /* Repeat.swift */,
 				427BB029196248770006829F /* Delimited.swift */,
-				42EFD380196D22EB001944F3 /* Loop.swift */,
 				42DAC179196D3FC50062F91E /* LoopingChar.swift */,
+				429A0F02196D754500BE28C0 /* CharSequences.swift */,
+				4232D7A9196FBCA500A3F93C /* Named.swift */,
 			);
 			path = States;
 			sourceTree = "<group>";
@@ -460,6 +469,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				427BB02D196248770006829F /* TokenizationController.swift in Sources */,
+				4232D7AA196FBCA500A3F93C /* Named.swift in Sources */,
 				427BB02F196248770006829F /* Tokenizer.swift in Sources */,
 				427BB032196248770006829F /* OysterKit.swift in Sources */,
 				427BB035196248770006829F /* Repeat.swift in Sources */,
@@ -473,9 +483,9 @@
 				4298889D19684B1200A4C4C0 /* TokFileParser.swift in Sources */,
 				427BB033196248770006829F /* Branch.swift in Sources */,
 				427BB030196248770006829F /* BranchingController.swift in Sources */,
+				429A0F03196D754500BE28C0 /* CharSequences.swift in Sources */,
 				427BB04019624BEE0006829F /* RPNParser.swift in Sources */,
 				427BB02E196248770006829F /* TokenizationState.swift in Sources */,
-				42EFD381196D22EB001944F3 /* Loop.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -485,12 +495,14 @@
 			files = (
 				4200A1811965C088008056C5 /* standardTokensTest.swift in Sources */,
 				42EFD385196D284C001944F3 /* stateTestLoop.swift in Sources */,
+				4282D123196E9C7300A4785C /* parserTests.swift in Sources */,
 				4267D68F1965ABB200AF442F /* stateTestBranch.swift in Sources */,
 				4267D68B1965AB8000AF442F /* stateTestChar.swift in Sources */,
 				425EBD9D196549EA00A1C232 /* TestingSupportFunctions.swift in Sources */,
 				4267D68D1965AB9E00AF442F /* stateTestRepeat.swift in Sources */,
 				4267D6931965ABDC00AF442F /* tokenizerTests.swift in Sources */,
 				4267D6911965ABC400AF442F /* stateTestDelimeter.swift in Sources */,
+				429A0F05196D7B6900BE28C0 /* stateTestKeywords.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

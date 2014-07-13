@@ -22,22 +22,6 @@ class stateTestLoop: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
-
-    func testLoop() {
-
-        tokenizer.branch(
-            OysterKit.whiteSpaces,
-            __Loop(state: Char(from: lowerCaseLetterString+upperCaseLetterString)).token("word"),
-            OysterKit.eot
-        )
-        
-        let testString = "The quick brown fox jumps over the lazy dog"
-        
-        dump(tokenizer,testString)
-        
-        // This is an example of a functional test case.
-        XCTAssert(true, "Pass")
-    }
     
     func testLoopingCharDelimitedString(){
         tokenizer.branch(

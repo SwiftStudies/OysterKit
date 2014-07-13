@@ -26,7 +26,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Foundation
 
-let __okDebug = false
+let __okDebug = true
 
 //Should be private and class variables
 let decimalDigitString = "0123456789"
@@ -150,7 +150,7 @@ class OysterKit{
         }
         
         class var quotedStringIncludingQuotes:TokenizationState{
-        return quotedString.token("double-quote")
+            return quotedString.token("double-quote")
         }
         
         class var quotedCharacter:TokenizationState{

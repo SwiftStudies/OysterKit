@@ -34,6 +34,11 @@ class Repeat : BranchingController{
     var  repeats = 0
     let  repeatingState:TokenizationState
     
+    override func stateClassName()->String {
+        return "Repeat"
+    }
+    
+    
     init(state:TokenizationState, min:Int=1,max:Int? = nil){
         self.minimumRepeats = min
         self.maximumRepeats = max
@@ -135,8 +140,11 @@ class Repeat : BranchingController{
         }
         
     }
+    
+
 
     override func serialize(indentation: String) -> String {
+
         var output = ""
 
         output+="("+repeatingState.serialize(indentation+"\t")
@@ -152,5 +160,10 @@ class Repeat : BranchingController{
         
         return output+serializeBranches(indentation+"\t")
     }
-
+        
+    override func clone()->TokenizationState {
+        var newState = Repeat(state: repeatingState.clone(), min: minimumRepeats, max: maximumRepeats)
+        newState.__copyProperities(self)
+        return newState
+    }
 }

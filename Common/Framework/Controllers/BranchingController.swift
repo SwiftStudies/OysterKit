@@ -39,6 +39,10 @@ class BranchingController : Branch,TokenizationController {
     
     var contexts = Array<Array<TokenizationState>>()
 
+    override func stateClassName()->String {
+        return "BranchingController"
+    }
+    
     var currentState : TokenizationState?{
         willSet{
             currentState?.didExit()

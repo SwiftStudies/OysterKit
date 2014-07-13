@@ -148,24 +148,6 @@ class tokenizerTests: XCTestCase {
         println(OysterKit.parseState(Char(from:"hello").token("hi").description)!.description)
     }
     
-    func testTokenizerFile(){
-        //Then create a definition for it from itself
-        let tokFileTokDef = TokenizerFile().description
-
-        let selfGeneratedTokens = TokenizerFile().tokenize(tokFileTokDef)
-        
-        //Create a tokenizer from the generated description
-        let generatedTokenizer = _privateTokFileParser().parse(tokFileTokDef)
-        
-        //Parse the file you were created from
-        let parserGeneratedTokens = generatedTokenizer.tokenize(tokFileTokDef)
-        
-//        for i in 0..<selfGeneratedTokens.endIndex {
-//            println("\(selfGeneratedTokens[i]) == \(parserGeneratedTokens[i])")
-//        }
-        
-        XCTAssert(parserGeneratedTokens == selfGeneratedTokens)
-    }
 
     func testOKScriptParserPerformance() {
         let tokFileTokDef = TokenizerFile().description
@@ -191,4 +173,13 @@ class tokenizerTests: XCTestCase {
     }
     
     
+    func testParseNamedStates(){
+        let testString = "@oct = \"01234567\"->oct { @oct }"
+                
+        tokenizer = OysterKit.parseTokenizer(testString)!
+        
+        let octTest = "346738"
+        
+        XCTAssert(tokenizer.tokenize(octTest) == [token("oct",chars:"3"), token("oct",chars:"4"), token("oct",chars:"6"), token("oct",chars:"7"), token("oct",chars:"3"), ])
+    }
 }

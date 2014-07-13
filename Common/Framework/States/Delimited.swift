@@ -42,6 +42,11 @@ class Delimited : Branch{
         
     }
     
+    override func stateClassName()->String {
+        return "Delimited"
+    }
+ 
+    
     let openingDelimiter:UnicodeScalar
     
     var delimetedStates:Array<TokenizationState>
@@ -120,7 +125,9 @@ class Delimited : Branch{
         return "\(delimiter)"
     }
     
+    
     override func serialize(indentation: String) -> String {
+
         var output = ""
         
         output+="<'\(escapeDelimiter(openingDelimiter))',"
@@ -140,4 +147,15 @@ class Delimited : Branch{
         return output+">"+serializeBranches(indentation+"\t")
     }
 
+    override func clone() -> TokenizationState {
+        var newState = Delimited(open: "\(openingDelimiter)", close: poppingState.allowedCharacters)
+        
+        for delimitedState in delimetedStates {
+            newState.delimetedStates.append(delimitedState.clone())
+        }
+        
+        newState.__copyProperities(self)
+        
+        return newState
+    }
 }

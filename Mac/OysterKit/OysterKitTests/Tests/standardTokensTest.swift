@@ -97,9 +97,7 @@ class standardTokensTest: XCTestCase {
         )
 
         let parsingTest = "A great man once said \"It is a far better thing that I do now than I have ever done\". "
-        
-        dump(tokenizer, parsingTest)
-        
+                
         XCTAssert(tokenizer.tokenize(parsingTest) == [token("word",chars:"A"), token("blank",chars:" "), token("word",chars:"great"), token("blank",chars:" "), token("word",chars:"man"), token("blank",chars:" "), token("word",chars:"once"), token("blank",chars:" "), token("word",chars:"said"), token("blank",chars:" "), token("double-quote",chars:"\""), token("quoted-string",chars:"It is a far better thing that I do now than I have ever done"), token("double-quote",chars:"\""), token("punct",chars:"."), token("blank",chars:" "), ])
     }
     

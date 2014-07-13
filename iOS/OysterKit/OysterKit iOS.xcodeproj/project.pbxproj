@@ -10,6 +10,7 @@
 		4200A1831965C09C008056C5 /* standardTokensTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4200A1821965C09C008056C5 /* standardTokensTest.swift */; };
 		4221035C19601B11001148F5 /* OysterKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 4221035B19601B11001148F5 /* OysterKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4221036219601B11001148F5 /* OysterKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4221035619601B11001148F5 /* OysterKit.framework */; };
+		4232D7AC196FBDA800A3F93C /* Named.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4232D7AB196FBDA800A3F93C /* Named.swift */; };
 		4247FF5419653C7900CCE286 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247FF4119653C7900CCE286 /* Operators.swift */; };
 		4247FF5619653C7900CCE286 /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247FF4319653C7900CCE286 /* Token.swift */; };
 		4247FF5719653C7900CCE286 /* TokenizationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247FF4419653C7900CCE286 /* TokenizationController.swift */; };
@@ -32,7 +33,6 @@
 		4267D69D1965ADA100AF442F /* tokenizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4267D6981965ADA100AF442F /* tokenizerTests.swift */; };
 		4298889F19684B1B00A4C4C0 /* TokFileParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298889E19684B1B00A4C4C0 /* TokFileParser.swift */; };
 		42DAC17C196D403D0062F91E /* LoopingChar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DAC17B196D403D0062F91E /* LoopingChar.swift */; };
-		42EFD383196D249D001944F3 /* Loop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EFD382196D249D001944F3 /* Loop.swift */; };
 		42EFD387196D2856001944F3 /* stateTestLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EFD386196D2856001944F3 /* stateTestLoop.swift */; };
 /* End PBXBuildFile section */
 
@@ -53,6 +53,7 @@
 		4221035B19601B11001148F5 /* OysterKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OysterKit.h; sourceTree = "<group>"; };
 		4221036119601B11001148F5 /* OysterKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OysterKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4221036719601B11001148F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4232D7AB196FBDA800A3F93C /* Named.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Named.swift; sourceTree = "<group>"; };
 		4247FF4119653C7900CCE286 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
 		4247FF4319653C7900CCE286 /* Token.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Token.swift; path = Base/Token.swift; sourceTree = "<group>"; };
 		4247FF4419653C7900CCE286 /* TokenizationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenizationController.swift; sourceTree = "<group>"; };
@@ -75,7 +76,6 @@
 		4267D6981965ADA100AF442F /* tokenizerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = tokenizerTests.swift; path = ../../../Mac/OysterKit/OysterKitTests/Tests/tokenizerTests.swift; sourceTree = "<group>"; };
 		4298889E19684B1B00A4C4C0 /* TokFileParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokFileParser.swift; sourceTree = "<group>"; };
 		42DAC17B196D403D0062F91E /* LoopingChar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoopingChar.swift; sourceTree = "<group>"; };
-		42EFD382196D249D001944F3 /* Loop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Loop.swift; sourceTree = "<group>"; };
 		42EFD386196D2856001944F3 /* stateTestLoop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = stateTestLoop.swift; path = ../../../Mac/OysterKit/OysterKitTests/Tests/stateTestLoop.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -209,8 +209,8 @@
 				4247FF5019653C7900CCE286 /* Char.swift */,
 				4247FF5119653C7900CCE286 /* Delimited.swift */,
 				4247FF5219653C7900CCE286 /* Repeat.swift */,
-				42EFD382196D249D001944F3 /* Loop.swift */,
 				42DAC17B196D403D0062F91E /* LoopingChar.swift */,
+				4232D7AB196FBDA800A3F93C /* Named.swift */,
 			);
 			path = States;
 			sourceTree = "<group>";
@@ -346,8 +346,8 @@
 				4247FF5419653C7900CCE286 /* Operators.swift in Sources */,
 				4247FF6119653C7900CCE286 /* Delimited.swift in Sources */,
 				4247FF5719653C7900CCE286 /* TokenizationController.swift in Sources */,
+				4232D7AC196FBDA800A3F93C /* Named.swift in Sources */,
 				4247FF5619653C7900CCE286 /* Token.swift in Sources */,
-				42EFD383196D249D001944F3 /* Loop.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

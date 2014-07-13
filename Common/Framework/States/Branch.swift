@@ -29,14 +29,19 @@ import Foundation
 
 
 class Branch : TokenizationState {
-    var branches = Array<TokenizationState>() //All states that can be transitioned to
     var transientTransitionState:Branch?
+    
+    override func stateClassName()->String {
+        return "Branch"
+    }
+    
     
     init(){
        super.init()
     }
     
     init(states:Array<TokenizationState>){
+        super.init()
         branches = states
     }
 
@@ -62,16 +67,6 @@ class Branch : TokenizationState {
         return TokenizationStateChange.Exit(consumedCharacter: false)
     }
     
-    //
-    // Manage storage of branches
-    //
-    override func branch(toStates: TokenizationState...) -> TokenizationState {
-        for state in toStates{
-            branches.append(state)
-        }
-        
-        return self
-    }
 
     //
     // Serialization
@@ -99,9 +94,7 @@ class Branch : TokenizationState {
         if branches.count == 1  {
             return "."+branches[0].serialize(indentation)
         } else if tokenGenerator {
-            if let token = tokenGenerator?(state: self,capturedCharacteres: "",charactersStartIndex:0){
-                return "->"+token.name
-            }
+            return pseudoTokenNameSuffix()
         } else if branches.count == 0 {
             return ""
         }
@@ -152,8 +145,32 @@ class Branch : TokenizationState {
         }
     }
     
+    @final func isClosed(usingList:[TokenizationState])->Bool{
+        for closed in usingList{
+            if self == closed {
+                return true
+            }
+        }
+    
+        return false
+    }
     
     override var description:String {
         return serialize("")
     }
+    
+    override func __copyProperities(from:TokenizationState){
+        var fromActual = from as Branch
+        for otherBranch in fromActual.branches {
+            branches.append(otherBranch.clone())
+        }
+        super.__copyProperities(from)
+    }
+    
+    override func clone()->TokenizationState {
+        var newState = Branch()
+        newState.__copyProperities(self)
+        return newState
+    }
+    
 }

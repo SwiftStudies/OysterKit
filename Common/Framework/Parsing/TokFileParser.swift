@@ -36,6 +36,7 @@ class TokenizerFile : Tokenizer {
         
         
         self.branch(
+            Char(from:" \t\n,"),
             Delimited(delimiter: "\"", states:
                 Repeat(state:Branch().branch(
                     LoopingChar(except: "\"\\").token("character"),
@@ -64,10 +65,15 @@ class TokenizerFile : Tokenizer {
             Char(from:")").token("end-repeat"),
             Char(from:"<").token("start-delimited"),
             Char(from:">").token("end-delimited"),
-            Char(from:",").token("comma"),
+            Char(from:"=").token("assign"),
+            Keywords(validStrings: ["begin"]).token("begin"),
+            Char(from:"@").token("keyword").branch(
+                    Char(from:lowerCaseLetterString+upperCaseLetterString).sequence(
+                        LoopingChar(from:lowerCaseLetterString+upperCaseLetterString+decimalDigitString+"_").token("state-name")
+                    )
+                ),
             OysterKit.number,
             OysterKit.Code.variableName,
-            OysterKit.whiteSpaces,
             Char(except: "\x04")
         )
     }
@@ -84,7 +90,7 @@ class State:Token{
     }
     
     override var description:String {
-        return state.description
+        return "State: "+state.description+state.pseudoTokenNameSuffix()
     }
 }
 
@@ -102,7 +108,7 @@ class EmitTokenOperator : Operator {
     override func applyTo(token: Token, parser:_privateTokFileParser) -> Token? {
         //TODO: Probably an error, should report that
         if !parser.hasTokens() {
-            parser.error = "Expected a state to assign the token to"
+            parser.errors += "Expected a state to assign the token to"
             return nil
         }
         
@@ -112,7 +118,21 @@ class EmitTokenOperator : Operator {
             stateToken.state.token(token.characters)
             return stateToken
         } else {
-            parser.error = "Only states can emit tokens"
+            if topToken.name == "state-name" {
+                var error = "Trying to emit a token from a named state '\(topToken.characters)', but named state does not exist in: "
+                var first = true
+                for (name,_) in parser.definedNamedStates {
+                    if !first {
+                        error+=", "
+                    } else {
+                        first = false
+                    }
+                    error+="'\(name)'"
+                }
+                parser.errors += error
+            } else {
+                parser.errors += "Only states can emit tokens, and I received a \(topToken)"
+            }
             parser.pushToken(topToken)
         }
         
@@ -126,23 +146,49 @@ class ChainStateOperator : Operator {
 class _privateTokFileParser:StackParser{
     var invert:Bool = false
     var loop:Bool = false
-    var error:String?
+    var errors = [String]()
+    var finishedNamedStates = false
+    
+    var definedNamedStates = [String:Named]()
     
     func invokeOperator(onToken:Token){
         if hasTokens() {
-            if topToken()?.name.hasPrefix("operator") {
+            if topToken()! is Operator {
                 var operator = popToken()! as Operator
                 if let newToken = operator.applyTo(onToken, parser: self) {
                     pushToken(newToken)
                 }
             } else {
-                error = "Expected an operator"
+                errors += "Expected an operator"
                 pushToken(onToken)
             }
         } else {
-            error = "Expected an operator, there were none"
+            errors += "Expected an operator, there were none"
             pushToken(onToken)
         }
+    }
+    
+    override func pushToken(symbol: Token) {
+        if let state = symbol as? State {
+            if let topTokenName = topToken()?.name {
+                if topTokenName == "assign" {
+                    popToken()
+                    if let shouldBeStateName = topToken()?.name {
+                        var stateName = popToken()!
+                        //Now we need to create a named state, we only specify the root state
+                        //we won't know the end state for some time
+                        var namedState = Named(name: stateName.characters, root:state.state)
+                        debug("Created state with charcters "+stateName.characters+" which results in a state that describes itself as "+namedState.description)
+                        super.pushToken(State(state: namedState))
+                        return
+                    } else {
+                        errors += "Expected a state name to assign to the state"
+                    }
+                }
+            }
+        }
+        
+        super.pushToken(symbol)
     }
     
     func popTo(tokenNamed:String)->Array<Token> {
@@ -151,7 +197,7 @@ class _privateTokFileParser:StackParser{
         var token = popToken()
         
         if !token {
-            error = "Expected \(tokenNamed), but there were none"
+            errors += "Failed to pop to \(tokenNamed), there were no tokens on the stack"
             return tokenArray
         }
         
@@ -159,12 +205,12 @@ class _privateTokFileParser:StackParser{
             if let nextToken = token{
                 tokenArray.append(nextToken)
             } else {
-                error = "Expected \(tokenNamed)"
+                errors += "Stack exhausted before finding \(tokenNamed) token"
                 return tokenArray
             }
             token = popToken()
             if !token {
-                error = "Expected \(tokenNamed), but there were none"
+                errors += "Stack exhausted before finding \(tokenNamed) token"
                 return Array<Token>()
             }
         }
@@ -181,7 +227,7 @@ class _privateTokFileParser:StackParser{
                     //chained to this state, 
                     ///and this state added to final
                     if finalArray.count == 0 {
-                        error = "Incomplete state definition"
+                        errors += "Incomplete state definition"
                         return Array<Token>()
                     }
                     var lastToken = finalArray.removeLast()
@@ -189,7 +235,7 @@ class _privateTokFileParser:StackParser{
                         stateToken.state.branch(lastStateToken.state)
                         operator = nil
                     } else {
-                        error = "Only states can emit tokens"
+                        errors += "Only states can emit tokens"
                         return Array<Token>()
                     }
                 }
@@ -222,12 +268,12 @@ class _privateTokFileParser:StackParser{
         var parameters = popTo("start-repeat")
         
         if (parameters.count == 0){
-            error="At least a state is required"
+            errors+="At least a state is required"
             return
         }
         
         if !(parameters[0] is State) {
-            error = "Expected a state"
+            errors += "Expected a state"
             return
         }
         
@@ -242,12 +288,12 @@ class _privateTokFileParser:StackParser{
                     if var maximumNumberToken = parameters[2] as? NumberToken {
                         maximum = Int(maximumNumberToken.numericValue)
                     } else {
-                        error = "Expected a number"
+                        errors += "Expected a number"
                         return
                     }
                 }
             } else {
-                error = "Expected a number"
+                errors += "Expected a number"
                 return
             }
         }
@@ -261,13 +307,13 @@ class _privateTokFileParser:StackParser{
         var parameters = popTo("start-delimited")
         
         if parameters.count < 2 || parameters.count > 3{
-            error = "At least two parameters are required for a delimited state"
+            errors += "At least two parameters are required for a delimited state"
             return
         }
         
         
         if parameters[0].name != "delimiter" {
-            error = "At least one delimiter must be specified"
+            errors += "At least one delimiter must be specified"
             return
         }
 
@@ -276,7 +322,7 @@ class _privateTokFileParser:StackParser{
         
         if parameters.count == 3{
             if parameters[1].name != "delimiter" {
-                error = "Expected delimiter character as second parameter"
+                errors += "Expected delimiter character as second parameter"
                 return
             }
             closingDelimiter = parameters[1].characters
@@ -290,7 +336,7 @@ class _privateTokFileParser:StackParser{
             
             pushToken(State(state:delimited))
         } else {
-            error = "Final parameter must be a state"
+            errors += "Final parameter must be a state"
             return
         }
     }
@@ -352,15 +398,26 @@ class _privateTokFileParser:StackParser{
         return State(state: state)
     }
     
+    func debugState(){
+        if __okDebug {
+            println("Current stack is:")
+            for token in symbolStack {
+                println("\t\(token)")
+            }
+            println("\n")
+        }
+    }
+    
+    func debug(message:String){
+        if __okDebug {
+            println(message)
+        }
+    }
+    
     override func parse(token: Token) -> Bool {
         
-        if error {
-            return false
-        }
-        
-        if __okDebug {
-            println(">Processing: \(token)")
-        }
+        debug("\n>Processing: \(token)\n")
+
         switch token.name {
         case "loop":
             loop = true
@@ -374,7 +431,14 @@ class _privateTokFileParser:StackParser{
             pushToken(ChainStateOperator(characters:token.characters))
         case "token":
             pushToken(EmitTokenOperator(characters:token.characters))
-        case "delimiter":
+        case "state-name":
+            if let namedState = definedNamedStates[token.characters] {
+                pushToken(State(state:namedState.clone()))
+                debugState()
+                return true
+            }
+            fallthrough
+        case "delimiter","assign":
             pushToken(token)
         case "integer":
             pushToken(NumberToken(usingToken: token))
@@ -386,12 +450,16 @@ class _privateTokFileParser:StackParser{
             endBranch()
         case "end-delimited":
             endDelimited()
+        case "begin":
+            foldUpNamedStates()
         case let name where name.hasPrefix("start"):
             invert = false
             pushToken(token)
         default:
             return true
         }
+        
+        debugState()
         
         return true
     }
@@ -404,15 +472,88 @@ class _privateTokFileParser:StackParser{
         if let rootState = popToken() as? State {
             return rootState.state
         } else {
-            error = "Could not create root state"
+            errors += "Could not create root state"
             return Branch()
         }
+    }
+    
+    func registerNamedState(inout stateSequence:[TokenizationState], inout endState:TokenizationState?)->Bool{
+        //The last item in the list should be the named state, anything else should be a sequence
+        if let namedState = stateSequence.removeLast() as? Named {
+            debug("Registering the named state, putting the state back on the stack")
+            if stateSequence.count > 0 {
+                debug("Setting up sequence")
+                namedState.sequence(stateSequence.reverse())
+            }
+            
+            debug("Registering state and resetting sequence")
+            definedNamedStates[namedState.name] = namedState
+            
+            endState = nil
+        } else {
+            errors += "Expected a named state, but didn't get one. Aborting named state processing"
+            return false
+        }
+        return true
+    }
+    
+    func foldUpNamedStates(){
+        
+        debug("Folding and defining named states:")
+
+        var endState:TokenizationState?
+        var stateSequence = [TokenizationState]()
+        var concatenate = false
+        
+        while hasTokens() {
+            
+            debugState()
+    
+            if let topStateToken = popToken()! as? State {
+                debug("Top token was a state")
+                
+                if concatenate {
+                    debug("Appending to state sequence")
+                    stateSequence.append(topStateToken.state)
+                } else {
+                    //Is this the start of a chain?
+                    if !endState {
+                        debug("Creating a new state sequence")
+                        endState = topStateToken.state
+                        stateSequence.removeAll(keepCapacity: false)
+                        stateSequence.append(endState!)
+                    } else {
+                        debug("Preparing to register a named state")
+                        //This is actually the start of the next chain, put it back and unwind the chain
+                        pushToken(topStateToken)
+                        
+                        if !registerNamedState(&stateSequence, endState: &endState){
+                            return
+                        }
+                        
+                    }
+                }
+                
+                concatenate = false
+            } else {
+                debug("Assuming it was a concatenate operator")
+                //This should be the then token
+                concatenate = true
+            }
+        }
+        
+        if stateSequence.count > 0 {
+            registerNamedState(&stateSequence, endState: &endState)
+        }
+        
+        debugState()        
     }
     
     func parse(string: String) -> Tokenizer {
         var tokenizer = Tokenizer()
         
         tokenizer.branch(parseState(string))
+        tokenizer.namedStates = definedNamedStates
         
         return tokenizer
     }

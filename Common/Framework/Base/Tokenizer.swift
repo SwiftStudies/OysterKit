@@ -30,6 +30,9 @@ import Foundation
 
 
 class Tokenizer : BranchingController {
+
+    
+    var namedStates = [String:Named]()
     
     //Implementation specific
     func tokenize(character:UnicodeScalar)->Bool{
@@ -86,6 +89,21 @@ class Tokenizer : BranchingController {
     override class func convertFromExtendedGraphemeClusterLiteral(value: String) -> Tokenizer {
         return Tokenizer.convertFromStringLiteral(value)
     }
+    
+    
+    override func serialize(indentation: String) -> String {
+        var output = ""
+        
+        for (name,state) in namedStates {
+            let description = state.serialize("")
+            output+="\(name) = \(state.endState.description)\n"
+        }
+        
+        output+="begin\n"
+        
+        return output+super.serialize(indentation)
+    }
+    
 }
 
 

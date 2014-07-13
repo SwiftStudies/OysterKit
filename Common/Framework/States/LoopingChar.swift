@@ -9,6 +9,9 @@
 import Foundation
 
 class LoopingChar : Char {
+    override func stateClassName()->String {
+        return "LoopingChar \(allowedCharacters)"
+    }
     
     override func consume(character: UnicodeScalar, controller: TokenizationController) -> TokenizationStateChange {
         if isAllowed(character){
@@ -21,5 +24,14 @@ class LoopingChar : Char {
     override func annotations() -> String {
         return "*"+super.annotations()
     }
+
+    override func clone() -> TokenizationState {
+        var newState = LoopingChar(from: allowedCharacters)
+        
+        newState.__copyProperities(self)
+        
+        return newState
+    }
+    
     
 }
