@@ -65,6 +65,27 @@ class Keywords : Branch {
         return completions(controller.capturedCharacters())
     }
     
+    override func serialize(indentation: String) -> String {
+        
+        var output = ""
+        
+        output+="["
+        
+        var first = true
+        for keyword in validStrings {
+            if !first {
+                output+=","
+            } else {
+                first = false
+            }
+            output+="\"\(keyword)\""
+        }
+        
+        output+="]"
+        
+        return output+serializeBranches(indentation+"\t")
+    }
+    
     override func clone() -> TokenizationState {
         var newState = Keywords(validStrings: validStrings)
         

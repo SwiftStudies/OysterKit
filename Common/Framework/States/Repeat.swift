@@ -53,13 +53,13 @@ class Repeat : BranchingController{
         if let countTokensCalled:String = self.countedToken{
             if newToken.name == countTokensCalled {
                 if __okDebug {
-                    println("Counted "+newToken.description)
+                    println("\tCounted "+newToken.description)
                 }
                 self.repeats++
             }
         } else {
             if __okDebug{
-                println("Counted "+newToken.description)                
+                println("\tCounted "+newToken.description)
             }
             self.repeats++
         }
@@ -164,6 +164,7 @@ class Repeat : BranchingController{
     override func clone()->TokenizationState {
         var newState = Repeat(state: repeatingState.clone(), min: minimumRepeats, max: maximumRepeats)
         newState.__copyProperities(self)
+
         return newState
     }
 }

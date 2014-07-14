@@ -65,8 +65,10 @@ class TokenizerFile : Tokenizer {
             Char(from:")").token("end-repeat"),
             Char(from:"<").token("start-delimited"),
             Char(from:">").token("end-delimited"),
+            Char(from:"[").token("start-keyword"),
+            Char(from:"]").token("end-keyword"),
             Char(from:"=").token("assign"),
-            Keywords(validStrings: ["begin"]).token("begin"),
+            Keywords(validStrings: ["begin"]).token("tokenizer"),
             Char(from:"@").token("keyword").branch(
                     Char(from:lowerCaseLetterString+upperCaseLetterString).sequence(
                         LoopingChar(from:lowerCaseLetterString+upperCaseLetterString+decimalDigitString+"_").token("state-name")
@@ -341,6 +343,28 @@ class _privateTokFileParser:StackParser{
         }
     }
     
+    func endKeywords(){
+        var keyWordCharTokens = popTo("start-keyword")
+        
+        var keywordsArray = [String]()
+        
+        for token in keyWordCharTokens {
+            if let stateToken = token as? State {
+                if let charState = stateToken.state as? Char {
+                    keywordsArray.append(charState.allowedCharacters)
+                } else {
+                    errors += "Expected a char state but got \(stateToken.state)"
+                }
+            } else {
+                errors += "Only comma seperated strings expected for keywords, got \(token)"
+            }
+        }
+
+        pushToken(State(state: Keywords(validStrings: keywordsArray)))
+        
+    }
+    
+    
     func unescapeChar(characters:String)->String{
         if countElements(characters) == 1 {
             return characters
@@ -450,7 +474,9 @@ class _privateTokFileParser:StackParser{
             endBranch()
         case "end-delimited":
             endDelimited()
-        case "begin":
+        case "end-keyword":
+            endKeywords()
+        case "tokenizer":
             foldUpNamedStates()
         case let name where name.hasPrefix("start"):
             invert = false
@@ -481,12 +507,18 @@ class _privateTokFileParser:StackParser{
         //The last item in the list should be the named state, anything else should be a sequence
         if let namedState = stateSequence.removeLast() as? Named {
             debug("Registering the named state, putting the state back on the stack")
+            debug("Sequence is: ")
+            for state in stateSequence {
+                debug("\t"+state.description)
+            }
             if stateSequence.count > 0 {
                 debug("Setting up sequence")
                 namedState.sequence(stateSequence.reverse())
+                namedState.endState = endState!
             }
             
             debug("Registering state and resetting sequence")
+            debug("\t\(namedState)")
             definedNamedStates[namedState.name] = namedState
             
             endState = nil

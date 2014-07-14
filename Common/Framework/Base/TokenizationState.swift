@@ -111,13 +111,18 @@ class TokenizationState : Printable, StringLiteralConvertible,Equatable {
     //
     // Manage storage of branches
     //
-    func branch(toStates: TokenizationState...) -> TokenizationState {
+    func branch(toStates: [TokenizationState]) -> TokenizationState {
         for state in toStates{
             branches.append(state)
         }
         
         return self
     }
+
+    func branch(toStates: TokenizationState...) -> TokenizationState {
+        return branch(toStates)
+    }
+
 
     
     //

@@ -96,7 +96,7 @@ class Tokenizer : BranchingController {
         
         for (name,state) in namedStates {
             let description = state.serialize("")
-            output+="\(name) = \(state.endState.description)\n"
+            output+="\(name) = \(state.rootState.description)\n"
         }
         
         output+="begin\n"

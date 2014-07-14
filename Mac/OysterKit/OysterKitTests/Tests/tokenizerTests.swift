@@ -173,13 +173,5 @@ class tokenizerTests: XCTestCase {
     }
     
     
-    func testParseNamedStates(){
-        let testString = "@oct = \"01234567\"->oct { @oct }"
-                
-        tokenizer = OysterKit.parseTokenizer(testString)!
-        
-        let octTest = "346738"
-        
-        XCTAssert(tokenizer.tokenize(octTest) == [token("oct",chars:"3"), token("oct",chars:"4"), token("oct",chars:"6"), token("oct",chars:"7"), token("oct",chars:"3"), ])
-    }
+
 }

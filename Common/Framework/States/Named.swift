@@ -29,9 +29,11 @@ class Named : TokenizationState {
         return self
     }
     
-    func append(nextState:TokenizationState){
-        endState.branch(nextState)
-        endState = nextState
+    override func branch(toStates: [TokenizationState])->TokenizationState{
+        endState.branch(toStates)
+        endState = toStates[toStates.endIndex-1]
+        
+        return endState
     }
 
     override func couldEnterWithCharacter(character: UnicodeScalar, controller: TokenizationController) -> Bool {
@@ -43,7 +45,6 @@ class Named : TokenizationState {
     }
     
     override func serialize(indentation: String) -> String {
-        //TODO: This should also check for additional branches on the end state
         return name+endState.pseudoTokenNameSuffix()
     }
     
@@ -60,16 +61,18 @@ class Named : TokenizationState {
         //Create a "new" named state with the root set as a clone of our root
         var newState = Named(name:name,root: rootState.clone())
         
-        newState.endState = newState.rootState.lowBranch()
+        newState.endState = newState.rootState.lowLeaf()
         
         newState.__copyProperities(self)
         return newState
     }
+    
+
 }
 
 extension TokenizationState {
     
-    func lowBranch()-> TokenizationState{
+    func lowLeaf()-> TokenizationState{
         var traceState = self
         
         while traceState.branches.count > 0 {
