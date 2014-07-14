@@ -92,12 +92,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
         "delimiter" : AppDelegate.stringColor,
         "token" : NSColor.purpleColor(),
         "variable" : AppDelegate.variableDefinitionColor,
+        "state-name" : AppDelegate.variableDefinitionColor,
         "start-branch" : NSColor.purpleColor(),
         "start-repeat" : NSColor.purpleColor(),
         "start-delimited" : NSColor.purpleColor(),
         "end-branch" :NSColor.purpleColor(),
         "end-repeat" : NSColor.purpleColor(),
         "end-delimited" : NSColor.purpleColor(),
+        "tokenizer" : NSColor.purpleColor(),
+        "exit-state" : NSColor.purpleColor()
     ]
     
     func textStorageDidProcessEditing(aNotification: NSNotification!){

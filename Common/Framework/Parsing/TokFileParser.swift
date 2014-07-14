@@ -57,6 +57,7 @@ class TokenizerFile : Tokenizer {
             Char(from: "-").sequence(
                 Char(from:">").token("token")
             ),
+            Char(from:"^").token("exit-state"),
             Char(from:"*").token("loop"),
             Char(from:".").token("then"),
             Char(from:"{").token("start-branch"),
@@ -468,6 +469,8 @@ class _privateTokFileParser:StackParser{
             pushToken(NumberToken(usingToken: token))
         case "variable":
             invokeOperator(token)
+        case "exit-state":
+            pushToken(State(state: Exit()))
         case "end-repeat":
             endRepeat()
         case "end-branch":

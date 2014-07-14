@@ -44,8 +44,6 @@ class parserTests: XCTestCase {
         
         XCTAssert(countElements(parserErrors)==0, "\n\nParsing of \(script) failed with errors:\n\(parserErrors) after creating \n\(tokenizer) from token stream \(TokenizerFile().tokenize(script))")
         
-        println(tokenizer)
-        
         return tokenizer.tokenize(tokenize)
     }
 

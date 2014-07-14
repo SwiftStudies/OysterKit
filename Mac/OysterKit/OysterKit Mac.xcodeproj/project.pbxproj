@@ -34,6 +34,7 @@
 		4282D123196E9C7300A4785C /* parserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4282D122196E9C7300A4785C /* parserTests.swift */; };
 		42954F4D1973B7E700B3CB6E /* cloneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42954F4C1973B7E700B3CB6E /* cloneTests.swift */; };
 		4298889D19684B1200A4C4C0 /* TokFileParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298889C19684B1200A4C4C0 /* TokFileParser.swift */; };
+		42994760197418C000E281FB /* Exit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4299475F197418C000E281FB /* Exit.swift */; };
 		429A0F03196D754500BE28C0 /* Keywords.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429A0F02196D754500BE28C0 /* Keywords.swift */; };
 		429A0F05196D7B6900BE28C0 /* stateTestKeywords.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429A0F04196D7B6900BE28C0 /* stateTestKeywords.swift */; };
 		42DAC17A196D3FC50062F91E /* LoopingChar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DAC179196D3FC50062F91E /* LoopingChar.swift */; };
@@ -193,6 +194,7 @@
 		4282D122196E9C7300A4785C /* parserTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = parserTests.swift; path = Tests/parserTests.swift; sourceTree = "<group>"; };
 		42954F4C1973B7E700B3CB6E /* cloneTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = cloneTests.swift; path = Tests/cloneTests.swift; sourceTree = "<group>"; };
 		4298889C19684B1200A4C4C0 /* TokFileParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokFileParser.swift; sourceTree = "<group>"; };
+		4299475F197418C000E281FB /* Exit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Exit.swift; sourceTree = "<group>"; };
 		429A0F02196D754500BE28C0 /* Keywords.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keywords.swift; sourceTree = "<group>"; };
 		429A0F04196D7B6900BE28C0 /* stateTestKeywords.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = stateTestKeywords.swift; path = Tests/stateTestKeywords.swift; sourceTree = "<group>"; };
 		42DAC179196D3FC50062F91E /* LoopingChar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoopingChar.swift; sourceTree = "<group>"; };
@@ -335,6 +337,7 @@
 				42DAC179196D3FC50062F91E /* LoopingChar.swift */,
 				429A0F02196D754500BE28C0 /* Keywords.swift */,
 				4232D7A9196FBCA500A3F93C /* Named.swift */,
+				4299475F197418C000E281FB /* Exit.swift */,
 			);
 			path = States;
 			sourceTree = "<group>";
@@ -472,6 +475,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				427BB02D196248770006829F /* TokenizationController.swift in Sources */,
+				42994760197418C000E281FB /* Exit.swift in Sources */,
 				4232D7AA196FBCA500A3F93C /* Named.swift in Sources */,
 				427BB02F196248770006829F /* Tokenizer.swift in Sources */,
 				427BB032196248770006829F /* OysterKit.swift in Sources */,

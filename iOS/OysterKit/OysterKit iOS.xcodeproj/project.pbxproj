@@ -36,6 +36,7 @@
 		42954F621973E88A00B3CB6E /* stateTestKeywords.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42954F571973E88A00B3CB6E /* stateTestKeywords.swift */; };
 		42954F631973E88A00B3CB6E /* tokenizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42954F581973E88A00B3CB6E /* tokenizerTests.swift */; };
 		4298889F19684B1B00A4C4C0 /* TokFileParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298889E19684B1B00A4C4C0 /* TokFileParser.swift */; };
+		42994762197418CC00E281FB /* Exit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42994761197418CC00E281FB /* Exit.swift */; };
 		42DAC17C196D403D0062F91E /* LoopingChar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DAC17B196D403D0062F91E /* LoopingChar.swift */; };
 /* End PBXBuildFile section */
 
@@ -82,6 +83,7 @@
 		42954F571973E88A00B3CB6E /* stateTestKeywords.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = stateTestKeywords.swift; path = ../../../Mac/OysterKit/OysterKitTests/Tests/stateTestKeywords.swift; sourceTree = "<group>"; };
 		42954F581973E88A00B3CB6E /* tokenizerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = tokenizerTests.swift; path = ../../../Mac/OysterKit/OysterKitTests/Tests/tokenizerTests.swift; sourceTree = "<group>"; };
 		4298889E19684B1B00A4C4C0 /* TokFileParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokFileParser.swift; sourceTree = "<group>"; };
+		42994761197418CC00E281FB /* Exit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Exit.swift; sourceTree = "<group>"; };
 		42DAC17B196D403D0062F91E /* LoopingChar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoopingChar.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -214,6 +216,7 @@
 		4247FF4E19653C7900CCE286 /* States */ = {
 			isa = PBXGroup;
 			children = (
+				42994761197418CC00E281FB /* Exit.swift */,
 				4247FF4F19653C7900CCE286 /* Branch.swift */,
 				4247FF5019653C7900CCE286 /* Char.swift */,
 				4247FF5119653C7900CCE286 /* Delimited.swift */,
@@ -347,6 +350,7 @@
 				42DAC17C196D403D0062F91E /* LoopingChar.swift in Sources */,
 				4247FF5919653C7900CCE286 /* Tokenizer.swift in Sources */,
 				4247FF5F19653C7900CCE286 /* Branch.swift in Sources */,
+				42994762197418CC00E281FB /* Exit.swift in Sources */,
 				4247FF6219653C7900CCE286 /* Repeat.swift in Sources */,
 				4247FF5D19653C7900CCE286 /* RPNParser.swift in Sources */,
 				4247FF5A19653C7900CCE286 /* BranchingController.swift in Sources */,
