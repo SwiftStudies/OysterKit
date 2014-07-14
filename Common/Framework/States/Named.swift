@@ -12,6 +12,7 @@ class Named : TokenizationState {
     let name:String
     let rootState:TokenizationState
     var endState:TokenizationState
+    var cloneTimeEnd:TokenizationState?
     
     init(name:String,root:TokenizationState){
         self.rootState = root
@@ -45,7 +46,11 @@ class Named : TokenizationState {
     }
     
     override func serialize(indentation: String) -> String {
-        return name+endState.pseudoTokenNameSuffix()
+        if let originalEnd:TokenizationState = cloneTimeEnd {
+            return name+originalEnd.pseudoTokenNameSuffix()+originalEnd.serializeBranches(indentation)
+        } else {
+            return name+endState.pseudoTokenNameSuffix()
+        }
     }
     
     override var branches:[TokenizationState]{
@@ -61,8 +66,12 @@ class Named : TokenizationState {
         //Create a "new" named state with the root set as a clone of our root
         var newState = Named(name:name,root: rootState.clone())
         
-        newState.endState = newState.rootState.lowLeaf()
+        println(self.rootState.description)
+        println(newState.rootState.description)
         
+        newState.endState = newState.rootState.lowLeaf()
+        newState.cloneTimeEnd = endState
+
         newState.__copyProperities(self)
         return newState
     }

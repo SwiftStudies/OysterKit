@@ -60,7 +60,7 @@ class parserTests: XCTestCase {
     }
     
     func testParseNamedStates(){
-        let testString = "@oct = \"01234567\"->oct { @oct }"
+        let testString = "@oct = \"01234567\"->oct begin{ @oct }"
         
         var tokenizer = OysterKit.parseTokenizer(testString)!
         

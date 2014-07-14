@@ -208,6 +208,30 @@ class TokenizationState : Printable, StringLiteralConvertible,Equatable {
         return ""
     }
     
+    func serializeBranches(indentation:String)->String{
+        if branches.count == 1  {
+            return "."+branches[0].serialize(indentation)
+        } else if tokenGenerator {
+            return pseudoTokenNameSuffix()
+        } else if branches.count == 0 {
+            return ""
+        }
+        
+        
+        var output = ".{"
+        var first = true
+        for branch in branches {
+            if !first {
+                output+=","
+            } else {
+                first = false
+            }
+            output+="\n"
+            output+=indentation+branch.serialize(indentation)
+        }
+        return output+"}\n"
+    }
+    
     func serialize(indentation:String)->String{
         if reference {
            return reference!+pseudoTokenNameSuffix()
