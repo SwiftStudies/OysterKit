@@ -26,12 +26,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Foundation
 
-class Repeat : BranchingController{
+class Repeat : TokenizationState{
     let minimumRepeats = 1
     let maximumRepeats : Int?
-    let countedToken : String?
-    
-    var  repeats = 0
     let  repeatingState:TokenizationState
     
     override func stateClassName()->String {
@@ -43,38 +40,11 @@ class Repeat : BranchingController{
         self.minimumRepeats = min
         self.maximumRepeats = max
         self.repeatingState = state
-        self.countedToken = nil
 
         //Initialise super class
         super.init()        
     }
     
-    override func holdToken(newToken: Token){
-        if let countTokensCalled:String = self.countedToken{
-            if newToken.name == countTokensCalled {
-                if __okDebug {
-                    println("\tCounted "+newToken.description)
-                }
-                self.repeats++
-            }
-        } else {
-            if __okDebug{
-                println("\tCounted "+newToken.description)
-            }
-            self.repeats++
-        }
-        
-        return
-    }
-
-    override func clearToken() {
-        println("Token stacking not currently supported by repeat, use a specific counted token name instead")
-    }
-    
-    override func didEnter() {
-        repeats = 0
-        currentState = repeatingState
-    }
     
     func fallThroughToBranches(operation:TokenizeOperation, repeats:Int){
         operation.popContext(publishTokens: false)
@@ -123,73 +93,6 @@ class Repeat : BranchingController{
         fallThroughToBranches(operation, repeats: repeats)
     }
     
-    override func couldEnterWithCharacter(character: UnicodeScalar, controller: TokenizationController) -> Bool {
-        return repeatingState.couldEnterWithCharacter(character, controller: self)
-    }
-    
-    func ungracefulExit(controller:TokenizationController, consumedCharacter:Bool)->TokenizationStateChange{
-        //Regardless of the reason, if I have not crossed the number of minimum repeats I should generate an error
-        if repeats < minimumRepeats {
-            return TokenizationStateChange.Exit(consumedCharacter: consumedCharacter)
-        }
-        
-        //Otherwise create a deferred transition, if it was an error I haven't consumed the current character
-        //if it wasn't then I have
-        return selfSatisfiedBranchOutOfStateTransition(consumedCharacter, controller: controller, withToken: createToken(controller, useCurrentCharacter: consumedCharacter))
-    }
-    
-    override func consume(character: UnicodeScalar, controller: TokenizationController) -> TokenizationStateChange {
-        tokenizing = character
-        
-        let beforeConsumptionRepeats = repeats
-        let consumptionResult = currentState!.consume(character, controller: self)
-        let tokenEncountered = beforeConsumptionRepeats != repeats
-        
-        if tokenEncountered{
-            if maximumRepeats && maximumRepeats == repeats {
-                //Hit the limit, create the token which may be deferred if I can branch and move on
-                let token = createToken(controller, useCurrentCharacter: true)
-                return selfSatisfiedBranchOutOfStateTransition(true, controller: controller, withToken: token)
-            }
-            
-            //Reset and look for another
-            currentState = repeatingState
-            storedCharacters = ""
-
-            switch consumptionResult{
-            case .Exit(let exitCondition):
-                if (!exitCondition.consumedCharacter){
-                    return consume(character,controller: controller)
-                }
-                fallthrough
-            default:
-                return TokenizationStateChange.None
-            }
-            
-            
-        }
-        
-        switch consumptionResult{
-        case .Exit(let exitCondition):
-
-            return ungracefulExit(controller, consumedCharacter:exitCondition)
-        case .Transition(let newState, let consumedCharacter):
-            currentState = newState
-            if !consumedCharacter {
-                return consume(character,controller: controller)
-            }
-            fallthrough
-        case .None:
-            storedCharacters += "\(character)"
-            return TokenizationStateChange.None
-        default:
-            println("What the hell???")
-        }
-        
-    }
-    
-
-
     override func serialize(indentation: String) -> String {
 
         var output = ""

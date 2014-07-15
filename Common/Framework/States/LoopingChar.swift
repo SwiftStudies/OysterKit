@@ -13,14 +13,6 @@ class LoopingChar : Char {
         return "LoopingChar \(allowedCharacters)"
     }
     
-    override func consume(character: UnicodeScalar, controller: TokenizationController) -> TokenizationStateChange {
-        if isAllowed(character){
-            return TokenizationStateChange.None
-        } else {
-            return selfSatisfiedBranchOutOfStateTransition(false, controller: controller, withToken: createToken(controller, useCurrentCharacter: false))
-        }
-    }
-    
     override func annotations() -> String {
         return "*"+super.annotations()
     }
@@ -34,6 +26,8 @@ class LoopingChar : Char {
     }
     
     override func scan(operation: TokenizeOperation){
+        operation.debug(operation: "Entered "+(inverted ? "!" : "")+"LoopingChar(\(allowedCharacters)")
+        
         if isAllowed(operation.current) {
             //Scan through as much as we can
             do {

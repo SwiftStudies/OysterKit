@@ -30,50 +30,15 @@ import Foundation
 
 let __emancipateStates = true
 
-class Tokenizer : BranchingController {
+class Tokenizer : TokenizationState {
 
     
     var namedStates = [String:Named]()
     
-    //Implementation specific
-    func tokenize(character:UnicodeScalar)->Bool{
-        let branchingControllerResult = consume(character, controller: self)
-        switch branchingControllerResult {
-        case .Exit:
-            return false
-        default:
-            return true
-        }
-    }
-    
-    func tokenize(string: String, newToken: TokenHandler) {
-        if __emancipateStates {
-            var emancipatedTokenization = TokenizeOperation(legacyTokenizer: self)
-            
-            emancipatedTokenization.tokenize(string, tokenReceiver: newToken)
-            return
-        }
+    func tokenize(string: String, newToken: (Token)->Bool) {
+        var emancipatedTokenization = TokenizeOperation(legacyTokenizer: self)
         
-        //Initialize
-        var terminatedString = string+"\u0004"
-        handler = newToken
-        currentState = self
-        error = false
-        elementIndex = 0
-        while contexts.count > 0 {
-            pop()
-        }
-        
-        //Iterate through the characters
-        for character in terminatedString.unicodeScalars{
-            if error{
-                return
-            }
-            tokenizing = character
-            if !tokenize(character){
-                return
-            }
-        }
+        emancipatedTokenization.tokenize(string, tokenReceiver: newToken)
     }
     
     func tokenize(string:String) -> Array<Token>{

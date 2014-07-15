@@ -46,28 +46,6 @@ class Branch : TokenizationState {
     }
 
 
-    override func couldEnterWithCharacter(character: UnicodeScalar, controller: TokenizationController) -> Bool {
-        for branch in branches{
-            if branch.couldEnterWithCharacter(character, controller: controller){
-                return true
-            }
-        }
-        return false
-    }
-    
-    //You may wish to over-ride to set the context for improved error messages
-    override func consume(character:UnicodeScalar, controller:TokenizationController) -> TokenizationStateChange{
-        for branch in branches{
-            if (branch.couldEnterWithCharacter(character, controller: controller)){
-                return TokenizationStateChange.Transition(newState: branch, consumedCharacter:false)
-            }
-            
-        }
-
-        return TokenizationStateChange.Exit(consumedCharacter: false)
-    }
-    
-
     //
     // Serialization
     //
@@ -100,37 +78,6 @@ class Branch : TokenizationState {
         }
         
         return output
-    }
-    
-    func selfSatisfiedBranchOutOfStateTransition(consumedCharacter:Bool, controller:TokenizationController, withToken:Token?)->TokenizationStateChange{
-        emitToken(controller, token: withToken)
-
-        if branches.count == 0 {
-            return TokenizationStateChange.Exit(consumedCharacter: consumedCharacter)
-        } else {
-            if !transientTransitionState{
-                transientTransitionState = Branch()
-            }
-            
-            transientTransitionState!.branches = self.branches
-            
-            //If we can either enter the transient state or we did consume the character
-            if transientTransitionState!.couldEnterWithCharacter(controller.currentCharacter(),controller: controller) || consumedCharacter{
-                return TokenizationStateChange.Transition(newState: transientTransitionState!, consumedCharacter: consumedCharacter)
-            }
-
-            return TokenizationStateChange.Exit(consumedCharacter: consumedCharacter)
-        }
-    }
-    
-    @final func isClosed(usingList:[TokenizationState])->Bool{
-        for closed in usingList{
-            if self == closed {
-                return true
-            }
-        }
-    
-        return false
     }
     
     override var description:String {

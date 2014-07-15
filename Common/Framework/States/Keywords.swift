@@ -46,32 +46,7 @@ class Keywords : Branch {
             return
         }
     }
-    
-    override func couldEnterWithCharacter(character: UnicodeScalar, controller: TokenizationController) -> Bool {
-        let totalString = controller.capturedCharacters()+"\(character)"
         
-        if completions(totalString){
-            return true
-        }
-        
-        return false
-    }
-    
-    override func consume(character: UnicodeScalar, controller: TokenizationController) -> TokenizationStateChange {
-        let totalString = controller.capturedCharacters()+"\(character)"
-        
-        if let allCompletions = completions(totalString) {
-            if allCompletions.count == 1 && allCompletions[0] == totalString {
-                return selfSatisfiedBranchOutOfStateTransition(true, controller: controller, withToken: createToken(controller, useCurrentCharacter: true))
-            } else {
-                return TokenizationStateChange.None
-            }
-        } else {
-            //See if we can branch out, and perhaps one of our branches can deal with the other characters
-            return selfSatisfiedBranchOutOfStateTransition(false, controller: controller, withToken: nil)
-        }
-    }
-    
     func completions(string:String) -> Array<String>?{
         var allMatches = Array<String>()
         
@@ -88,9 +63,6 @@ class Keywords : Branch {
         }
     }
     
-    func completions(controller:TokenizationController) -> Array<String>? {
-        return completions(controller.capturedCharacters())
-    }
     
     override func serialize(indentation: String) -> String {
         

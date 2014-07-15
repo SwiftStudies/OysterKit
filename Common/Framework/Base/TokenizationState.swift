@@ -28,15 +28,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Foundation
 
-enum TokenizationStateChange{
-    //No state change requried
-    case None
-    //Leave this state
-    case Exit(consumedCharacter:Bool)
-    //Move to this new state
-    case Transition(newState:TokenizationState,consumedCharacter:Bool)
-}
-
 var __anonymousStateCount:Int = 0
 
 //
@@ -74,39 +65,6 @@ class TokenizationState : Printable, StringLiteralConvertible,Equatable {
         return TokenizationState.convertFromStringLiteral(value)
     }
     
-    
-    //
-    // Tokenization
-    //
-    
-    //
-    // This is called each time the state is a possible entry point for the next token. It is essential
-    // that this method NEVER depends on the internal conditions of the state (this is important becuase
-    // otherwise we would have to reset the state before considering it)
-    //
-    func couldEnterWithCharacter(character:UnicodeScalar, controller:TokenizationController)->Bool{
-        return false
-    }
-    
-    
-    func consume(character:UnicodeScalar, controller:TokenizationController) -> TokenizationStateChange{
-        return TokenizationStateChange.Exit(consumedCharacter: false)
-    }
-    
-    //
-    // State transition
-    //
-    func reset(){
-
-    }
-    
-    func didEnter(){
-
-    }
-    
-    func didExit(){
-
-    }
     
     //
     // Manage storage of branches
@@ -177,25 +135,6 @@ class TokenizationState : Printable, StringLiteralConvertible,Equatable {
     func clearToken()-> TokenizationState{
         tokenGenerator = nil
         return self
-    }
-    
-    func errorToken(controller:TokenizationController) -> Token{
-        return Token.ErrorToken(forString: controller.describeCaptureState(), problemDescription: "Illegal character")
-    }
-    
-    func createToken(controller:TokenizationController, useCurrentCharacter:Bool)->Token?{
-        var useCharacters = useCurrentCharacter ? controller.capturedCharacters()+"\(controller.currentCharacter())" : controller.capturedCharacters()
-        if let token = tokenGenerator?(state:self, capturedCharacteres:useCharacters,charactersStartIndex:controller.storedCharactersStartIndex){
-            return token
-        }
-        
-        return nil
-    }
-    
-    func emitToken(controller:TokenizationController,token:Token?){
-        if let emittableToken = token {
-            controller.holdToken(emittableToken)
-        }
     }
     
     //

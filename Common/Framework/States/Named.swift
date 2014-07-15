@@ -36,14 +36,6 @@ class Named : TokenizationState {
         
         return endState
     }
-
-    override func couldEnterWithCharacter(character: UnicodeScalar, controller: TokenizationController) -> Bool {
-        return rootState.couldEnterWithCharacter( character, controller: controller)
-    }
-    
-    override func consume(character: UnicodeScalar, controller: TokenizationController) -> TokenizationStateChange {
-        return rootState.consume(character, controller: controller)
-    }
     
     override func serialize(indentation: String) -> String {
         if let originalEnd:TokenizationState = cloneTimeEnd {

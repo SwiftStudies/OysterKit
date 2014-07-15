@@ -36,20 +36,18 @@ class tokenizerTests: XCTestCase {
                 )
             }
             
-            override func consume(character: UnicodeScalar, controller: TokenizationController) -> TokenizationStateChange {
-                if controller.capturedCharacters()+"\(character)" == "\\x"{
-                    //If the current state + the new character is \x we should enter this state
-                    return TokenizationStateChange.None
-                } else if controller.capturedCharacters() == "\\x"{
-                    //Otherwise if we already have the prefix see if we can transition to another state
-                    return super.consume(character, controller: controller)
-                }
-                
-                return TokenizationStateChange.Exit(consumedCharacter: false)
-                
-                //Finally fail
-//                return TokenizationStateChange.Error(errorToken: Token.ErrorToken(forString: controller.describeCaptureState(), problemDescription: "Expected FF for ASCII or for unicode {FFFF} (F represents any hex digit)"))
+            override func scan(operation: TokenizeOperation) {
+//                if controller.capturedCharacters()+"\(character)" == "\\x"{
+//                    //If the current state + the new character is \x we should enter this state
+//                    return TokenizationStateChange.None
+//                } else if controller.capturedCharacters() == "\\x"{
+//                    //Otherwise if we already have the prefix see if we can transition to another state
+//                    return super.consume(character, controller: controller)
+//                }
+//                
+//                return TokenizationStateChange.Exit(consumedCharacter: false)
             }
+            
             
         }
         

@@ -238,7 +238,8 @@ extension TokenizeOperation : EmancipatedTokenizer {
                 }
             }
 
-            //TODO: I would like this to be tidier. Feels wierd in the main loop
+            //TODO: I would like this to be tidier. Feels wierd in the main loop, I don't like that not 
+            //issuing a token doesn't get you failure, don't like
             //If I am my own state
             if __contextStack.count == 1 {
                 context.consumedCharacters = ""

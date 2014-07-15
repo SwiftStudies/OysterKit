@@ -91,26 +91,32 @@ class OysterKit{
     
     class var number:TokenizationState{
         
-        var decimalDigitsAfterPoint = LoopingChar(from:decimalDigitString).token("float")
-        var decimalDigitsBeforePoint = LoopingChar(from:decimalDigitString).token("integer")
         
-        let decimalPointChain = Char(from: ".").sequence(
-            decimalDigitsAfterPoint,
-            Char(from: "eE").branch(
-                decimalDigitsAfterPoint,
-                Char(from: "+-").sequence(
-                    decimalDigitsAfterPoint
-                    )
+        var decimalDigitsAfterPoint = LoopingChar(from:decimalDigitString)
+        var decimalDigitsBeforePoint = LoopingChar(from:decimalDigitString)
+        
+        let decimalPointChain = Char(from:".").branch(
+                decimalDigitsAfterPoint.branch(
+                    Char(from:"eE").branch(
+                        decimalDigitsAfterPoint.clone().token("float"),
+                        Char(from:"+-").branch(
+                            decimalDigitsAfterPoint.clone().token("float")
+                        )
+                    ),
+                    Exit().token("float")
                 )
             )
 
             
         return Branch().branch(
-            decimalDigitsBeforePoint.branch(decimalPointChain),
-            Char(from: "+-").token(OperatorToken.createToken).sequence(
-                decimalDigitsBeforePoint.branch(
-                    decimalPointChain
-                    )
+            decimalDigitsBeforePoint.branch(
+                decimalPointChain,
+                Exit().token("integer")
+            ), Char(from: "+-").branch(
+                    decimalDigitsBeforePoint.branch(
+                        decimalPointChain,
+                        Exit().token("integer")
+                    ), Exit().token(OperatorToken.createToken)
                 )
             )
     }

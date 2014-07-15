@@ -40,15 +40,6 @@ class Delimited : Branch{
             }
         }
         
-        override func consume(character: UnicodeScalar, controller: TokenizationController) -> TokenizationStateChange {
-            if isAllowed(character){
-                controller.pop()
-                emitToken(controller, token: createToken(controller, useCurrentCharacter: true))
-                return TokenizationStateChange.Exit(consumedCharacter: true)
-            }
-            return TokenizationStateChange.Exit(consumedCharacter: false)
-        }
-        
     }
     
     override func stateClassName()->String {
@@ -97,16 +88,6 @@ class Delimited : Branch{
         delimetedStates.insert(poppingState, atIndex: 0)
     }
     
-
-    //
-    // Push any new token onto the popping state too
-    //
-    override func token(with: TokenCreationBlock) -> TokenizationState {
-        super.token(with)
-        poppingState.tokenGenerator = tokenGenerator
-        
-        return self
-    }
     
     override func scan(operation: TokenizeOperation) {
         if openingDelimiter != operation.current {
@@ -121,20 +102,6 @@ class Delimited : Branch{
         operation.pushContext(delimetedStates)
     }
     
-    //
-    // State management
-    //
-    override func couldEnterWithCharacter(character: UnicodeScalar, controller: TokenizationController) -> Bool {
-
-        return openingDelimiter == character
-        
-    }
-    
-    override func consume(character: UnicodeScalar, controller: TokenizationController) -> TokenizationStateChange {
-        controller.push(self.delimetedStates)
-        emitToken(controller, token: createToken(controller, useCurrentCharacter: true))
-        return TokenizationStateChange.Exit(consumedCharacter: true)
-    }
     
     //
     // Serialization

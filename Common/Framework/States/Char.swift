@@ -50,10 +50,6 @@ class Char : Branch{
         self.allowedCharacters = except
         super.init()
     }
-        
-    func newSetByMergingWith(otherCharacterSet:Char)->Char{
-        return Char(from: self.allowedCharacters+otherCharacterSet.allowedCharacters)
-    }
     
     func isAllowed(character:UnicodeScalar)->Bool{        
         for allowedCharacter in allowedCharacters.unicodeScalars{
@@ -65,18 +61,6 @@ class Char : Branch{
     }
 
     
-    
-    override func couldEnterWithCharacter(character: UnicodeScalar, controller: TokenizationController) -> Bool {
-        return isAllowed(character)
-    }
-    
-    override func consume(character: UnicodeScalar, controller: TokenizationController) -> TokenizationStateChange {
-        if isAllowed(character){
-            return selfSatisfiedBranchOutOfStateTransition(true, controller: controller, withToken: createToken(controller, useCurrentCharacter: true))
-        } else {
-            return selfSatisfiedBranchOutOfStateTransition(false, controller: controller, withToken: nil)
-        }
-    }
     
     func annotations()->String{
         return inverted ? "!" : ""
@@ -126,6 +110,8 @@ class Char : Branch{
     }
     
     override func scan(operation: TokenizeOperation) {
+        operation.debug(operation: "Entered "+(inverted ? "!" : "")+"Char(\(allowedCharacters)")
+
         if isAllowed(operation.current) {
             //Move scanning forward
             operation.advance()
