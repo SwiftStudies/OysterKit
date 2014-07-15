@@ -132,25 +132,22 @@ class TokenizeOperation : Printable {
     //
     // Moves forward in the supplied string
     //
-    func advance()->Bool{
+    func advance(){
         let advancedChar = "\(current)"
-        for aContext in __contextStack {
-            context.consumedCharacters += advancedChar
-        }
+
+        context.consumedCharacters += advancedChar
 
         if next {
             current = next!
             next = __marker.next()
-            context.__currentIndex++
-            context.currentPosition++
-            debug(operation: "advance()")
-            return true
         } else {
             current = eot
         }
+
+        context.__currentIndex++
+        context.currentPosition++
         
         debug(operation: "advance()")
-        return false
     }
     
     func token(token:Token){
@@ -212,7 +209,7 @@ class TokenizeOperation : Printable {
         
         //If we didn't publish tokens merge in the new characters parsed so far
         if !publishedTokens {
-            let additionalSubstring = __sourceString[context.__currentIndex...oldState.__currentIndex]
+            let additionalSubstring = __sourceString[context.__currentIndex..<oldState.__currentIndex]
             let oldConsumedCharacters = oldState.consumedCharacters
             
             context.consumedCharacters += additionalSubstring
@@ -230,9 +227,8 @@ extension TokenizeOperation : EmancipatedTokenizer {
         scanAdvanced = true
         
         while scanAdvanced && !complete {
-            debug(operation: "rootScan Start")
-            
             scanAdvanced = false
+            debug(operation: "rootScan Start")
 
             //Scan through our branches
             for tokenizer in context.states {
@@ -241,9 +237,8 @@ extension TokenizeOperation : EmancipatedTokenizer {
                     break
                 }
             }
-            
-            debug(operation: "rootScan Middle")
 
+            //TODO: I would like this to be tidier. Feels wierd in the main loop
             //If I am my own state
             if __contextStack.count == 1 {
                 context.consumedCharacters = ""

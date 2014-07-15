@@ -84,7 +84,7 @@ class Repeat : BranchingController{
             return
         }
         
-        if countElements(operation.context.consumedCharacters) > 0 {
+        if operation.context.currentPosition > operation.context.startPosition {
             emitToken(operation)
         }
         super.scan(operation)
