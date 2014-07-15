@@ -267,6 +267,20 @@ class TokenizationState : Printable, StringLiteralConvertible,Equatable {
     @final func isEqualTo(otherState:TokenizationState)->Bool{
         return id == otherState.id
     }
+    
+    func scan(operation : TokenizeOperation){
+        let startPosition = operation.context.currentPosition
+        
+        for branch in branches {
+            branch.scan(operation)
+            
+            //Did we move forward? If so we can leave
+            if operation.context.currentPosition > startPosition{
+                return
+            }
+        }
+    }
+    
 }
 
 func ==(lhs: TokenizationState, rhs: TokenizationState) -> Bool{
@@ -288,5 +302,28 @@ func ==(lhs:[TokenizationState], rhs:[TokenizationState])->Bool{
 }
 
 typealias   TokenCreationBlock = ((state:TokenizationState,capturedCharacteres:String,charactersStartIndex:Int)->Token)
+
+/*
+
+ TO-DO: Once you can over-ride extention provided definitions, pull scan() out of Tokenization STate and put it back here
+
+*/
+extension TokenizationState : EmancipatedTokenizer {
+    
+    func createToken(operation:TokenizeOperation,useCharacters:String?)->Token?{
+        var useCharacters = useCharacters ? useCharacters : operation.context.consumedCharacters
+        if let token = tokenGenerator?(state:self, capturedCharacteres:useCharacters!,charactersStartIndex:operation.context.startPosition){
+            return token
+        }
+        
+        return nil
+    }
+    
+    func emitToken(operation:TokenizeOperation,useCharacters:String?=nil){
+        if let token = createToken(operation,useCharacters: useCharacters) {
+            operation.token(token)
+        }
+    }
+}
 
 

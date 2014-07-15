@@ -124,23 +124,23 @@ class parserTests: XCTestCase {
         
         let parserGeneratedTokens = generatedTokenizer.tokenize(tokFileTokDef)
         
-        for i in 0..<selfGeneratedTokens.endIndex {
-            let selfString = selfGeneratedTokens[i].description
-            let parserString = parserGeneratedTokens[i].description
-            
-            print(selfString == parserString ? "OK   : " : "ERROR: ")
-            
-            if selfString == parserString{
-                
-            } else {
-                
-            }
-            println("\(selfGeneratedTokens[i]) "+(selfString == parserString ? "==" : "!=")+" \(parserGeneratedTokens[i])")
-            
-            if i == selfGeneratedTokens.count-1 || i == parserGeneratedTokens.count - 1 {
-                break
-            }
-        }
+//        for i in 0..<selfGeneratedTokens.endIndex {
+//            let selfString = selfGeneratedTokens[i].description
+//            let parserString = parserGeneratedTokens[i].description
+//            
+//            print(selfString == parserString ? "OK   : " : "ERROR: ")
+//            
+//            if selfString == parserString{
+//                
+//            } else {
+//                
+//            }
+//            println("\(selfGeneratedTokens[i]) "+(selfString == parserString ? "==" : "!=")+" \(parserGeneratedTokens[i])")
+//            
+//            if i == selfGeneratedTokens.count-1 || i == parserGeneratedTokens.count - 1 {
+//                break
+//            }
+//        }
         
         
         XCTAssert(parserGeneratedTokens == selfGeneratedTokens)

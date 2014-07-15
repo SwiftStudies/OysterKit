@@ -76,7 +76,9 @@ class Named : TokenizationState {
         return newState
     }
     
-
+    override func scan(operation: TokenizeOperation) {
+        rootState.scan(operation)
+    }
 }
 
 extension TokenizationState {

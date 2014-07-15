@@ -23,4 +23,8 @@ class Exit : TokenizationState {
     override func serialize(indentation: String) -> String {
         return "^"+pseudoTokenNameSuffix()
     }
+    
+    override func scan(operation: TokenizeOperation) {
+        emitToken(operation)
+    }
 }

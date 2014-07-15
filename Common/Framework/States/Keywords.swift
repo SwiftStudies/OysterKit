@@ -20,6 +20,33 @@ class Keywords : Branch {
         super.init()
     }
     
+    override func scan(operation: TokenizeOperation) {
+        var didAdvance = false
+        
+        if !completions(operation.context.consumedCharacters+"\(operation.current)"){
+            return
+        }
+        
+        while let allCompletions = completions(operation.context.consumedCharacters) {
+            if allCompletions.count == 1 && allCompletions[0] == operation.context.consumedCharacters {
+                //Pursue our branches
+                emitToken(operation)
+                
+                //Keywords don't consider their branches
+                super.scan(operation)
+                return
+            } else {
+                operation.advance()
+                didAdvance = true
+            }
+        }
+        
+        if (didAdvance){
+            super.scan(operation)
+            return
+        }
+    }
+    
     override func couldEnterWithCharacter(character: UnicodeScalar, controller: TokenizationController) -> Bool {
         let totalString = controller.capturedCharacters()+"\(character)"
         
@@ -93,5 +120,4 @@ class Keywords : Branch {
         
         return newState
     }
-    
 }

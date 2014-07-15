@@ -30,6 +30,10 @@ class stateTestRepeat: XCTestCase {
             OysterKit.eot
         )
         
+        __debugScanning = true
+        dump(tokenizer,"AF")
+        __debugScanning = false
+        
         XCTAssert(tokenizer.tokenize("AF") == [token("xx",chars:"AF")])
         XCTAssert(tokenizer.tokenize("A") != [token("xx",chars:"A")])
         XCTAssert(tokenizer.tokenize("AF00") == [token("xx",chars:"AF"),token("xx",chars:"00")])

@@ -31,6 +31,15 @@ class Delimited : Branch{
     
     class PoppingChar : Char {
         
+        override func scan(operation: TokenizeOperation) {
+            //If it is the delimiter character, pop the state and emit our token (if any)
+            if isAllowed(operation.current) {
+                operation.popContext(publishTokens: true)
+                operation.advance()
+                emitToken(operation)
+            }
+        }
+        
         override func consume(character: UnicodeScalar, controller: TokenizationController) -> TokenizationStateChange {
             if isAllowed(character){
                 controller.pop()
@@ -99,10 +108,22 @@ class Delimited : Branch{
         return self
     }
     
+    override func scan(operation: TokenizeOperation) {
+        if openingDelimiter != operation.current {
+            return
+        }
+        
+        //Consume delimiter and emit any token
+        operation.advance()
+        emitToken(operation)
+        
+        //Put the new context in place, and we are done
+        operation.pushContext(delimetedStates)
+    }
+    
     //
     // State management
     //
-    
     override func couldEnterWithCharacter(character: UnicodeScalar, controller: TokenizationController) -> Bool {
 
         return openingDelimiter == character

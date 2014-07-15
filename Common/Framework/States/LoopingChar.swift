@@ -33,5 +33,22 @@ class LoopingChar : Char {
         return newState
     }
     
-    
+    override func scan(operation: TokenizeOperation){
+        if isAllowed(operation.current) {
+            //Scan through as much as we can
+            do {
+                operation.advance()
+            } while !operation.complete && isAllowed(operation.current)
+            
+            
+            //Emit a token, branch on
+            emitToken(operation)
+            
+            if operation.complete {
+                return
+            }
+            
+            super.scan(operation)
+        }
+    }
 }

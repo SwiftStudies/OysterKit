@@ -76,6 +76,53 @@ class Repeat : BranchingController{
         currentState = repeatingState
     }
     
+    func fallThroughToBranches(operation:TokenizeOperation, repeats:Int){
+        operation.popContext(publishTokens: false)
+        
+        //Did we get enough repeats?
+        if repeats < minimumRepeats{
+            return
+        }
+        
+        if countElements(operation.context.consumedCharacters) > 0 {
+            emitToken(operation)
+        }
+        super.scan(operation)
+    }
+    
+    override func scan(operation: TokenizeOperation) {
+        //Create a new context to capture any tokens, we don't want to fall back though, so will pop it off
+        //before returning
+        operation.pushContext([])
+        var repeats = 0
+        
+        var tokensCreated = false
+        
+        do {
+            tokensCreated = false
+            
+            operation.debug(operation: "Before repeat scan")
+            repeatingState.scan(operation)
+            operation.debug(operation: "After repeat scan")
+            
+            if operation.context.tokens.count > 0 {
+                repeats++
+                tokensCreated = true
+                
+                operation.context.tokens.removeAll(keepCapacity: true)
+        
+                //If we have hit the limit, then exit
+                if maximumRepeats && repeats == maximumRepeats {
+                    fallThroughToBranches(operation, repeats: repeats)
+                    return
+                }
+            }
+        } while tokensCreated
+        
+        //Done
+        fallThroughToBranches(operation, repeats: repeats)
+    }
+    
     override func couldEnterWithCharacter(character: UnicodeScalar, controller: TokenizationController) -> Bool {
         return repeatingState.couldEnterWithCharacter(character, controller: self)
     }

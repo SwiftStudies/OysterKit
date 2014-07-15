@@ -84,6 +84,9 @@ class tokenizerTests: XCTestCase {
     }
     
     func testTokenizerFileChar(){
+        XCTAssert(false, "Test caused crash")
+        return
+        
         var tokenizer = _privateTokFileParser().parse("{\"0123456789\"->digit}")
         
         var tokens = tokenizer.tokenize("0123456789")
@@ -120,6 +123,9 @@ class tokenizerTests: XCTestCase {
     }
     
     func testTokenizerChain(){
+        XCTAssert(false, "Test caused crash")
+        return
+        
         //No real pressure on the branches
         var tokenizer = _privateTokFileParser().parse("{\"i\".\"O\".\"S\"->iOS}")
         var tokens = tokenizer.tokenize("iOS")
@@ -136,6 +142,9 @@ class tokenizerTests: XCTestCase {
     }
     
     func testTokenizerDelimited(){
+        XCTAssert(false, "Test would not complete, try again when repeats are fixed")
+        return 
+        
         let testString = "{<'(',')',{({!\")\"->delimitedChar})->bracketedString}>->delimiterCharacters}"
         var tokenizer = _privateTokFileParser().parse(testString)
         

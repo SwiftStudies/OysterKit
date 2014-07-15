@@ -27,8 +27,9 @@ class stateTestKeywords: XCTestCase {
 
     func testKeywords() {
         tokenizer.branch(
-            Keywords(validStrings: ["let","var","func"]).token("keyword").branch(
-                    OysterKit.word.token("variable")
+            Keywords(validStrings: ["let","var","func"]).branch(
+                    OysterKit.word.token("variable"),
+                    Exit().token("keyword")
                 ),
             OysterKit.word.token("variable"),
             OysterKit.blanks.clearToken(),
@@ -39,8 +40,7 @@ class stateTestKeywords: XCTestCase {
         )
         
         let testString = "let a = b; let lettings = rental + lease; var variable = function;"
-        
-        
+                
         // This is an example of a functional test case.
         XCTAssert(tokenizer.tokenize(testString) == [token("keyword",chars:"let"), token("variable",chars:"a"), token("assign",chars:"="), token("variable",chars:"b"), token("keyword",chars:"let"), token("variable",chars:"lettings"), token("assign",chars:"="), token("variable",chars:"rental"), token("operator",chars:"+"), token("variable",chars:"lease"), token("keyword",chars:"var"), token("variable",chars:"variable"), token("assign",chars:"="), token("variable",chars:"function"), ])
     }

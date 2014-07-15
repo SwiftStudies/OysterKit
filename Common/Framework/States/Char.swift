@@ -125,4 +125,22 @@ class Char : Branch{
         return newState
     }
     
+    override func scan(operation: TokenizeOperation) {
+        if isAllowed(operation.current) {
+            //Move scanning forward
+            operation.advance()
+            
+            //Emit a token, branch on
+            emitToken(operation)
+            
+            //If we are done, bug out
+            if operation.complete {
+                return
+            }
+            
+            //Otherwise evaluate our branches
+            super.scan(operation)
+        }
+    }
+    
 }

@@ -28,6 +28,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Foundation
 
+let __emancipateStates = true
 
 class Tokenizer : BranchingController {
 
@@ -46,6 +47,13 @@ class Tokenizer : BranchingController {
     }
     
     func tokenize(string: String, newToken: TokenHandler) {
+        if __emancipateStates {
+            var emancipatedTokenization = TokenizeOperation(legacyTokenizer: self)
+            
+            emancipatedTokenization.tokenize(string, tokenReceiver: newToken)
+            return
+        }
+        
         //Initialize
         var terminatedString = string+"\u0004"
         handler = newToken
@@ -89,7 +97,6 @@ class Tokenizer : BranchingController {
     override class func convertFromExtendedGraphemeClusterLiteral(value: String) -> Tokenizer {
         return Tokenizer.convertFromStringLiteral(value)
     }
-    
     
     override func serialize(indentation: String) -> String {
         var output = ""
