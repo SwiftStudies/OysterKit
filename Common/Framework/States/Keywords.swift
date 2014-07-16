@@ -34,8 +34,7 @@ class Keywords : Branch {
                 //Pursue our branches
                 emitToken(operation)
                 
-                //Keywords don't consider their branches
-                super.scan(operation)
+                scanBranches(operation)
                 return
             } else {
                 operation.advance()
@@ -44,7 +43,7 @@ class Keywords : Branch {
         }
         
         if (didAdvance){
-            super.scan(operation)
+            scanBranches(operation)
             return
         }
     }

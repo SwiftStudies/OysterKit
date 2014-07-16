@@ -207,20 +207,27 @@ class TokenizationState : Printable, StringLiteralConvertible,Equatable {
         return id == otherState.id
     }
     
-    func scan(operation : TokenizeOperation){
+    func scanBranches(operation:TokenizeOperation){
         let startPosition = operation.context.currentPosition
-
+        
         operation.debug(operation: "Entered TokenizationState at \(startPosition) with \(branches.count) states")
         
         for branch in branches {
             branch.scan(operation)
             
+            //Potential bug: For exit states we may remain in this fixed position, but providing exit
+            //states are at the end that could be OK
             //Did we move forward? If so we can leave
             if operation.context.currentPosition > startPosition{
                 scanDebug("Found valid branch now at \(operation.context.currentPosition)")
                 return
             }
         }
+        
+    }
+    
+    func scan(operation : TokenizeOperation){
+        scanBranches(operation)
     }
     
 }

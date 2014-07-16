@@ -125,7 +125,7 @@ class Char : Branch{
             }
             
             //Otherwise evaluate our branches
-            super.scan(operation)
+            scanBranches(operation)
         }
     }
     

@@ -36,7 +36,7 @@ class Delimited : Branch{
             if isAllowed(operation.current) {
                 operation.popContext(publishTokens: true)
                 operation.advance()
-                emitToken(operation)
+                emitToken(operation) //Will not emit something if it has not been told to, need to propagate the token generator (or make sure it has been)
             }
         }
         
@@ -103,6 +103,14 @@ class Delimited : Branch{
         operation.pushContext(delimetedStates)
     }
     
+    //
+    // Assigned token propagation
+    //
+    override func token(with: TokenCreationBlock) -> TokenizationState {
+        super.token(with)
+        poppingState.token(with)
+        return self
+    }
     
     //
     // Serialization
@@ -113,7 +121,6 @@ class Delimited : Branch{
         }
         return "\(delimiter)"
     }
-    
     
     override func serialize(indentation: String) -> String {
 

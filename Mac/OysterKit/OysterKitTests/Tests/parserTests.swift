@@ -42,6 +42,10 @@ class parserTests: XCTestCase {
             parserErrors+="\t\(error)\n"
         }
         
+        if __debugScanning {
+            println(tokenizer.description)
+        }
+        
         XCTAssert(countElements(parserErrors)==0, "\n\nParsing of \(script) failed with errors:\n\(parserErrors) after creating \n\(tokenizer) from token stream \(TokenizerFile().tokenize(script))")
         
         return tokenizer.tokenize(tokenize)
@@ -87,7 +91,7 @@ class parserTests: XCTestCase {
         let testData = [
                     "0xAbcD93343" : 1
                     ]
-        
+        __debugScanning = true
         for (testString,expectedTokens) in testData{
             let tokens = parserTest(script: testScript, thenTokenizing: testString)
             XCTAssert(tokens.count == expectedTokens,"Expected \(expectedTokens) tokens, but got \(tokens.count) from \(testString)")

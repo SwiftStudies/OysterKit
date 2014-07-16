@@ -25,6 +25,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 import OysterKit
+import XCTest
 
 func token(name:String,chars:String?=nil)->Token{
     var actualChars:String
@@ -60,4 +61,27 @@ func dump(izer:Tokenizer,with:String){
         return true
     }
     println("\n")
+}
+
+extension XCTestCase {
+    
+    func assertTokenListsEqual(underTest:[Token],reference:[Token],comparePositions:Bool=false){
+
+        let stopAt = underTest.count < reference.count ? underTest.count : reference.count
+        
+        XCTAssert(underTest.count == reference.count, "Tokens lists are not the same length: Test Result=\(underTest.count), Reference=\(reference.count)")
+        
+        if underTest != reference {
+            for index in 0..<stopAt {
+                let testToken = underTest[index]
+                let refToken = reference[index]
+                if testToken == refToken {
+                    println("OK  : \(testToken)")
+                } else {
+                    println("FAIL: \(testToken) != \(refToken)")
+                }
+            }
+        }
+    }
+    
 }

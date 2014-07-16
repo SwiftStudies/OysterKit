@@ -120,8 +120,6 @@ class OysterKit{
             digitsBeforeDecimalPoint
         )
 
-        println(number.description)
-            
         return number
     }
     

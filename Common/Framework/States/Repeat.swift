@@ -57,7 +57,7 @@ class Repeat : TokenizationState{
         if operation.context.currentPosition > operation.context.startPosition {
             emitToken(operation)
         }
-        super.scan(operation)
+        scanBranches(operation)
     }
     
     override func scan(operation: TokenizeOperation) {

@@ -31,9 +31,16 @@ import Foundation
 let __emancipateStates = true
 
 class Tokenizer : TokenizationState {
-
-    
     var namedStates = [String:Named]()
+    
+    init(){
+        
+    }
+    
+    init(states:[TokenizationState]){
+        super.init()
+        branches = states
+    }
     
     func tokenize(string: String, newToken: (Token)->Bool) {
         var emancipatedTokenization = TokenizeOperation(legacyTokenizer: self)

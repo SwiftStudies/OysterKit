@@ -42,7 +42,7 @@ class LoopingChar : Char {
                 return
             }
             
-            super.scan(operation)
+            scanBranches(operation)
         }
     }
 }
