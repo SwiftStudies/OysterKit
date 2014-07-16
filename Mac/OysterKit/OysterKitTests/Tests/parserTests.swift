@@ -91,8 +91,7 @@ class parserTests: XCTestCase {
         let testData = [
                     "0xAbcD93343" : 1
                     ]
-        __debugScanning = true
-        __okDebug = true
+
         for (testString,expectedTokens) in testData{
             let tokens = parserTest(script: testScript, thenTokenizing: testString)
             XCTAssert(tokens.count == expectedTokens,"Expected \(expectedTokens) tokens, but got \(tokens.count) from \(testString)")

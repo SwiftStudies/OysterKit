@@ -205,17 +205,19 @@ class TokenizeOperation : Printable {
             return
         }
         
-        let oldState = __contextStack.removeLast()
+        let poppedState = __contextStack.removeLast()
         
         //If we didn't publish tokens merge in the new characters parsed so far
         if !publishedTokens {
-            let additionalSubstring = __sourceString[context.__currentIndex..<oldState.__currentIndex]
-            let oldConsumedCharacters = oldState.consumedCharacters
+            let additionalSubstring = __sourceString[context.__currentIndex..<poppedState.__currentIndex]
+            let oldConsumedCharacters = poppedState.consumedCharacters
             
             context.consumedCharacters += additionalSubstring
-            context.currentPosition = oldState.currentPosition
-            context.__currentIndex = oldState.__currentIndex
         }
+        
+        //Update the now current context with the progress achieved by the popped state
+        context.currentPosition = poppedState.currentPosition
+        context.__currentIndex = poppedState.__currentIndex
         
         debug(operation: "popContext()")
     }
