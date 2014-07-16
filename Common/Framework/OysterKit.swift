@@ -98,7 +98,8 @@ class OysterKit{
         let integerExit = Exit().token("integer")
         
         let exponent = exponentCharacter.branch(
-            sign.clone().branch(decimalDigits.clone().token("float"))
+            sign.clone().branch(decimalDigits.clone().token("float")),
+            decimalDigits.clone().token("float")
         )
         
             

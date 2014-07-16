@@ -40,7 +40,7 @@ class stateTestBranch: XCTestCase {
         let seperator = Char(from: ",").token("sep")
         
         let lettersWithLoop = LoopingChar(from:"abcdef").token("easy")
-        let lettersWithRepeat = Repeat(state: Char(from:"abcdef")).token("easy")
+        let lettersWithRepeat = Repeat(state: Char(from:"abcdef").token("ignore")).token("easy")
         
         let space = Char(from: " ")
         let bracketedWithRepeat = Delimited(open: "(", close: ")", states: lettersWithRepeat).token("bracket")
@@ -60,12 +60,8 @@ class stateTestBranch: XCTestCase {
 
         let testString = "(a),(b) (c)(e),(abc),(def) (fed)(aef)"
         
-        __okDebug = true
-        __debugScanning = true
         let testTokens = underTest.tokenize(testString)
         let referenceTokens = tokenizer.tokenize(testString)
-        __okDebug = false
-        __debugScanning = false
         
         assertTokenListsEqual(testTokens, reference: referenceTokens)
     }

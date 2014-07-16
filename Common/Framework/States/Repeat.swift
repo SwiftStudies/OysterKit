@@ -47,7 +47,7 @@ class Repeat : TokenizationState{
     
     
     func fallThroughToBranches(operation:TokenizeOperation, repeats:Int){
-        operation.debug(operation: "Exiting Repeat, before pop")
+        operation.debug(operation: "Exiting Repeat with \(repeats) repititions, before pop")
         operation.popContext(publishTokens: false)
         operation.debug(operation: "Exiting Repeat, after pop")
         

@@ -38,11 +38,13 @@ class LoopingChar : Char {
             //Emit a token, branch on
             emitToken(operation)
             
+
+            
+            scanBranches(operation)
+            
             if operation.complete {
                 return
             }
-            
-            scanBranches(operation)
         }
     }
 }

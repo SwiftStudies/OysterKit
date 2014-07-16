@@ -37,15 +37,7 @@ class tokenizerTests: XCTestCase {
             }
             
             override func scan(operation: TokenizeOperation) {
-//                if controller.capturedCharacters()+"\(character)" == "\\x"{
-//                    //If the current state + the new character is \x we should enter this state
-//                    return TokenizationStateChange.None
-//                } else if controller.capturedCharacters() == "\\x"{
-//                    //Otherwise if we already have the prefix see if we can transition to another state
-//                    return super.consume(character, controller: controller)
-//                }
-//                
-//                return TokenizationStateChange.Exit(consumedCharacter: false)
+                super.scanBranches(operation)
             }
             
             
@@ -134,11 +126,12 @@ class tokenizerTests: XCTestCase {
     }
     
     func testTokenizerDelimited(){
-        XCTAssert(false, "Test would not complete, try again when repeats are fixed")
-        return 
-        
         let testString = "{<'(',')',{({!\")\"->delimitedChar})->bracketedString}>->delimiterCharacters}"
+        __debugScanning = true
+        __okDebug = true
         var tokenizer = _privateTokFileParser().parse(testString)
+        __okDebug = true
+        __debugScanning = false
         
         var tokens = tokenizer.tokenize("(abcdefghij)")
         

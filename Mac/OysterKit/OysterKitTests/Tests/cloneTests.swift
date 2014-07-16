@@ -72,9 +72,7 @@ class cloneTests: XCTestCase {
         let repeatB = Repeat(state: bToken.clone())
         let repeatAB = Repeat(state: aToken.clone()).branch(repeatB).token("AB")
 
-        __debugScanning = true
         tokenizersProduceSameOutput(Repeat(state:repeatAB).token("AB's"))
-        __debugScanning = false
     }
     
     func testDelimitedClone() {

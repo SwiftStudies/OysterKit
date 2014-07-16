@@ -246,7 +246,7 @@ extension TokenizeOperation : EmancipatedTokenizer {
             if __contextStack.count == 1 {
                 context.consumedCharacters = ""
                 context.startPosition = context.currentPosition
-                context.__currentIndex = context.__startIndex
+                context.__startIndex = context.__currentIndex
                 __publishTokens(context)
             }
             
