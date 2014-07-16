@@ -110,7 +110,7 @@ class Char : Branch{
     }
     
     override func scan(operation: TokenizeOperation) {
-        operation.debug(operation: "Entered "+(inverted ? "!" : "")+"Char(\(allowedCharacters)")
+        operation.debug(operation: "Entered "+(inverted ? "!" : "")+"Char '\(allowedCharacters)'")
 
         if isAllowed(operation.current) {
             //Move scanning forward

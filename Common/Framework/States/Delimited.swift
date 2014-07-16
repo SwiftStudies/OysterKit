@@ -90,6 +90,7 @@ class Delimited : Branch{
     
     
     override func scan(operation: TokenizeOperation) {
+        operation.debug(operation: "Entered \(openingDelimiter)Delimited\(poppingState.allowedCharacters)")
         if openingDelimiter != operation.current {
             return
         }

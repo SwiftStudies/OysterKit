@@ -26,7 +26,7 @@ class LoopingChar : Char {
     }
     
     override func scan(operation: TokenizeOperation){
-        operation.debug(operation: "Entered "+(inverted ? "!" : "")+"LoopingChar(\(allowedCharacters)")
+        operation.debug(operation: "Entered "+(inverted ? "!" : "")+"LoopingChar '\(allowedCharacters)'")
         
         if isAllowed(operation.current) {
             //Scan through as much as we can

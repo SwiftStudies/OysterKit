@@ -90,35 +90,39 @@ class OysterKit{
     
     
     class var number:TokenizationState{
-        
-        
-        var decimalDigitsAfterPoint = LoopingChar(from:decimalDigitString)
-        var decimalDigitsBeforePoint = LoopingChar(from:decimalDigitString)
-        
-        let decimalPointChain = Char(from:".").branch(
-                decimalDigitsAfterPoint.branch(
-                    Char(from:"eE").branch(
-                        decimalDigitsAfterPoint.clone().token("float"),
-                        Char(from:"+-").branch(
-                            decimalDigitsAfterPoint.clone().token("float")
-                        )
-                    ),
-                    Exit().token("float")
-                )
-            )
-
+        let decimalDigits = LoopingChar(from:decimalDigitString)
+        let sign = Char(from:"+-")
+        let exponentCharacter = Char(from:"eE")
             
-        return Branch().branch(
-            decimalDigitsBeforePoint.branch(
-                decimalPointChain,
-                Exit().token("integer")
-            ), Char(from: "+-").branch(
-                    decimalDigitsBeforePoint.branch(
-                        decimalPointChain,
-                        Exit().token("integer")
-                    ), Exit().token(OperatorToken.createToken)
+        let floatExit = Exit().token("float")
+        let integerExit = Exit().token("integer")
+        
+        let exponent = exponentCharacter.branch(
+            sign.clone().branch(decimalDigits.clone().token("float"))
+        )
+        
+            
+        let digitsBeforeDecimalPoint = decimalDigits.clone().branch(
+            Char(from:".").branch(
+                decimalDigits.clone().branch(
+                    exponent,
+                    floatExit   //If there's no eE then it's just a normal float
                 )
-            )
+            ),
+            integerExit     //If there's no . then it's an int
+        )
+            
+        let number = Branch().branch(
+            sign.clone().branch(
+                digitsBeforeDecimalPoint,
+                Exit().token("operator")    //If there are no numbers then it's just an operator
+            ),
+            digitsBeforeDecimalPoint
+        )
+
+        println(number.description)
+            
+        return number
     }
     
     class var word:TokenizationState{

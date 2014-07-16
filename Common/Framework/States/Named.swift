@@ -69,6 +69,8 @@ class Named : TokenizationState {
     }
     
     override func scan(operation: TokenizeOperation) {
+        operation.debug(operation: "Entered Named "+name)
+        
         rootState.scan(operation)
     }
 }

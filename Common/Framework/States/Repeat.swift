@@ -61,6 +61,8 @@ class Repeat : TokenizationState{
     }
     
     override func scan(operation: TokenizeOperation) {
+        operation.debug(operation: "Entered Repeat (\(minimumRepeats).."+(maximumRepeats ? ", \(maximumRepeats))" : ")"))
+        
         //Create a new context to capture any tokens, we don't want to fall back though, so will pop it off
         //before returning
         operation.pushContext([])

@@ -21,6 +21,8 @@ class Keywords : Branch {
     }
     
     override func scan(operation: TokenizeOperation) {
+        operation.debug(operation: "Entered Keywords \(validStrings)")
+
         var didAdvance = false
         
         if !completions(operation.context.consumedCharacters+"\(operation.current)"){
