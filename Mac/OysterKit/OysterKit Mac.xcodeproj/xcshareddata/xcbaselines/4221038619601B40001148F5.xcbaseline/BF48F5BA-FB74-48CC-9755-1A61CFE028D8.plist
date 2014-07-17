@@ -13,9 +13,9 @@
 					<key>baselineAverage</key>
 					<real>0.46279666319999996</real>
 					<key>baselineIntegrationDisplayName</key>
-					<string>8 Jul 2014 18:12:48</string>
+					<string>17 Jul 2014 18:33:27</string>
 					<key>maxPercentRelativeStandardDeviation</key>
-					<real>7.4165679087300012</real>
+					<real>4.8011438616145918</real>
 				</dict>
 			</dict>
 			<key>testOKScriptTokenizerPerformance()</key>
@@ -25,9 +25,9 @@
 					<key>baselineAverage</key>
 					<real>2.1263034953000002</real>
 					<key>baselineIntegrationDisplayName</key>
-					<string>8 Jul 2014 18:12:48</string>
+					<string>17 Jul 2014 18:33:27</string>
 					<key>maxPercentRelativeStandardDeviation</key>
-					<real>2.5305325623839448</real>
+					<real>1.8278848251533464</real>
 				</dict>
 			</dict>
 		</dict>
