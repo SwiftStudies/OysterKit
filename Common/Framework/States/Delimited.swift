@@ -27,7 +27,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Foundation
 
-class Delimited : Branch{
+class Delimited : TokenizationState{
     
     class PoppingChar : Char {
         
@@ -71,6 +71,16 @@ class Delimited : Branch{
         preparePoppingState()
     }
 
+    override func flatten() -> TokenizationState {
+        
+        for i in 0..<delimetedStates.count {
+            delimetedStates[i] = delimetedStates[i].flatten()
+        }
+        
+        flattenBranches()
+        
+        return self
+    }
 
     init(delimiter:String,states:TokenizationState...){
         self.openingDelimiter = delimiter.unicodeScalars[delimiter.unicodeScalars.startIndex]

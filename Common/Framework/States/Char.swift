@@ -30,8 +30,8 @@ import Foundation
 //
 //Completely stateless
 //
-class Char : Branch{
-    let allowedCharacters : String
+class Char : TokenizationState{
+    let allowedCharacters : String.UnicodeScalarView
     let inverted = false
     
     override func stateClassName()->String {
@@ -41,7 +41,7 @@ class Char : Branch{
  
     
     init(from:String){
-        self.allowedCharacters = from
+        self.allowedCharacters = from.unicodeScalars
         super.init()
     }
     
@@ -50,12 +50,12 @@ class Char : Branch{
         
         //Inverted chars can be dangerous if they don't reject
         //the eot character
-        self.allowedCharacters = except+"\x04"
+        self.allowedCharacters = (except+"\x04").unicodeScalars
         super.init()
     }
     
     func isAllowed(character:UnicodeScalar)->Bool{        
-        for allowedCharacter in allowedCharacters.unicodeScalars{
+        for allowedCharacter in allowedCharacters{
             if allowedCharacter == character {
                 return !inverted
             }
@@ -89,7 +89,7 @@ class Char : Branch{
             case "\t":
                     output+="\\t"
             default:
-                output+=character
+                output+="\(character)"
             }
         }
         output+="\""

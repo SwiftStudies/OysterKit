@@ -45,14 +45,18 @@ class Branch : TokenizationState {
         branches = states
     }
 
+    override func flatten() -> TokenizationState {
+        flattenBranches()
+        if branches.count == 1 {
+            return branches[0]
+        }
+        return self
+    }
 
+    
     //
     // Serialization
     //
-
-    
-
-    
     override func serialize(indentation:String)->String{
         var output = "{"+serializeStateArray(indentation+"\t",states: branches)+"}"
         

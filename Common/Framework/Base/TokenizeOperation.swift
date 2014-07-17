@@ -152,7 +152,7 @@ class TokenizeOperation : Printable {
         context.__currentIndex++
         context.currentPosition++
         
-        debug(operation: "advance()")
+//        debug(operation: "advance()")
     }
     
     func token(token:Token){
@@ -217,7 +217,6 @@ class TokenizeOperation : Printable {
         if !publishedTokens {
             let additionalSubstring = __sourceString[context.__currentIndex..<poppedState.__currentIndex]
             let oldConsumedCharacters = poppedState.consumedCharacters
-            
         }
         
         //Update the now current context with the progress achieved by the popped state

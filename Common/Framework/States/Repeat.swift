@@ -29,7 +29,7 @@ import Foundation
 class Repeat : TokenizationState{
     let minimumRepeats = 1
     let maximumRepeats : Int?
-    let  repeatingState:TokenizationState
+    let repeatingState:TokenizationState
     
     override func stateClassName()->String {
         return "Repeat"
@@ -45,6 +45,20 @@ class Repeat : TokenizationState{
         super.init()        
     }
     
+    override func flatten() -> TokenizationState {
+        let flattenedRepeatingState = repeatingState.flatten()
+        
+        if flattenedRepeatingState === self {
+            return self
+        } else {
+            let flattenedCopy = Repeat(state: flattenedRepeatingState, min: minimumRepeats, max: maximumRepeats)
+            
+            flattenedCopy.branches = branches
+            flattenedCopy.tokenGenerator = tokenGenerator
+            
+            return flattenedCopy
+        }
+    }
     
     func fallThroughToBranches(operation:TokenizeOperation, repeats:Int){
         operation.debug(operation: "Exiting Repeat with \(repeats) repititions, before pop")

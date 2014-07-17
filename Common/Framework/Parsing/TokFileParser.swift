@@ -523,7 +523,9 @@ class _privateTokFileParser:StackParser{
         var tokenizer = Tokenizer()
         
         if let rootState = popToken() as? State {
-            return rootState.state
+            let flattened = rootState.state.flatten()
+
+            return flattened
         } else {
             errors += "Could not create root state"
             return Branch()
@@ -613,6 +615,8 @@ class _privateTokFileParser:StackParser{
         
         tokenizer.branch(parseState(string))
         tokenizer.namedStates = definedNamedStates
+        
+        tokenizer.flatten()
         
         return tokenizer
     }

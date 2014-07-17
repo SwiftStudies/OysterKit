@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Keywords : Branch {
+class Keywords : TokenizationState {
     override func stateClassName()->String {
         return "Keywords"
     }

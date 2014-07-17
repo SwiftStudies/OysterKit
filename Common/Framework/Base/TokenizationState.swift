@@ -65,6 +65,25 @@ class TokenizationState : Printable, StringLiteralConvertible,Equatable {
         return TokenizationState.convertFromStringLiteral(value)
     }
     
+    //If I have a branch that goes to a branch that goes nowhere....
+    func flattenBranches(){
+        if branches.count == 1 {
+            if let branch = branches[0] as? Branch {
+                branches = branches[0].branches
+                //Keep trying
+                flattenBranches()
+            }
+        }
+        
+        for branch in branches {
+            branch.flatten()
+        }
+    }
+    
+    func flatten()->TokenizationState{
+        flattenBranches()
+        return self
+    }
     
     //
     // Manage storage of branches
