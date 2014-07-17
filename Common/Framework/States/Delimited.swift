@@ -127,6 +127,10 @@ class Delimited : Branch{
         var output = ""
         
         output+="<'\(escapeDelimiter(openingDelimiter))',"
+
+        if "\(openingDelimiter)" != poppingState.allowedCharacters {
+            output+="'\(poppingState.allowedCharacters)',"
+        }
         
         output += "{"
         var first = true
@@ -135,10 +139,6 @@ class Delimited : Branch{
         output += serializeStateArray(indentation+"\t", states: subStates)
         
         output+="}"
-
-        if "\(openingDelimiter)" != poppingState.allowedCharacters {
-            output+=",'\(poppingState.allowedCharacters)'"
-        }
         
         return output+">"+serializeBranches(indentation+"\t")
     }
@@ -147,7 +147,8 @@ class Delimited : Branch{
         var newState = Delimited(open: "\(openingDelimiter)", close: poppingState.allowedCharacters)
         
         for delimitedState in delimetedStates {
-            newState.delimetedStates.append(delimitedState.clone())
+            //Woo-hoo correct array semantics!
+            newState.delimetedStates=delimetedStates
         }
         
         newState.__copyProperities(self)

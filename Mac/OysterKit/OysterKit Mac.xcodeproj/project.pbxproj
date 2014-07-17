@@ -36,6 +36,7 @@
 		42994760197418C000E281FB /* Exit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4299475F197418C000E281FB /* Exit.swift */; };
 		429A0F03196D754500BE28C0 /* Keywords.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429A0F02196D754500BE28C0 /* Keywords.swift */; };
 		429A0F05196D7B6900BE28C0 /* stateTestKeywords.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429A0F04196D7B6900BE28C0 /* stateTestKeywords.swift */; };
+		42C2B2951977C38400098585 /* referenceOKScriptDefinition.txt in Resources */ = {isa = PBXBuildFile; fileRef = 42C2B2941977C38400098585 /* referenceOKScriptDefinition.txt */; };
 		42DAC17A196D3FC50062F91E /* LoopingChar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DAC179196D3FC50062F91E /* LoopingChar.swift */; };
 		42EFD385196D284C001944F3 /* stateTestLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EFD384196D284C001944F3 /* stateTestLoop.swift */; };
 /* End PBXBuildFile section */
@@ -195,6 +196,7 @@
 		4299475F197418C000E281FB /* Exit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Exit.swift; sourceTree = "<group>"; };
 		429A0F02196D754500BE28C0 /* Keywords.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keywords.swift; sourceTree = "<group>"; };
 		429A0F04196D7B6900BE28C0 /* stateTestKeywords.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = stateTestKeywords.swift; path = Tests/stateTestKeywords.swift; sourceTree = "<group>"; };
+		42C2B2941977C38400098585 /* referenceOKScriptDefinition.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = referenceOKScriptDefinition.txt; sourceTree = "<group>"; };
 		42DAC179196D3FC50062F91E /* LoopingChar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoopingChar.swift; sourceTree = "<group>"; };
 		42EFD384196D284C001944F3 /* stateTestLoop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = stateTestLoop.swift; path = Tests/stateTestLoop.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -257,6 +259,7 @@
 		4221038B19601B40001148F5 /* OysterKitTests */ = {
 			isa = PBXGroup;
 			children = (
+				42C2B2941977C38400098585 /* referenceOKScriptDefinition.txt */,
 				425EBD9C196549EA00A1C232 /* TestingSupportFunctions.swift */,
 				42954F4C1973B7E700B3CB6E /* cloneTests.swift */,
 				4282D122196E9C7300A4785C /* parserTests.swift */,
@@ -453,6 +456,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42C2B2951977C38400098585 /* referenceOKScriptDefinition.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

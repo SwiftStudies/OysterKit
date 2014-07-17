@@ -35,12 +35,18 @@ class TokenizerFile : Tokenizer {
         
         
         
+        
         self.branch(
             Char(from:" \t\n,"),
             Delimited(delimiter: "\"", states:
                 Repeat(state:Branch().branch(
                     LoopingChar(except: "\"\\").token("character"),
                     Char(from:"\\").branch(
+                        Char(from:"x").branch(
+                            Repeat(state: Branch().branch(
+                                Char(from: "0123456789abcdefABCDEF").token("hex")
+                                ),min: 2,max: 2).token("character")
+                        ),
                         Char(from:"trn\"\\").token("character")
                     )
                 ), min: 1, max: nil).token("Char")
@@ -69,15 +75,17 @@ class TokenizerFile : Tokenizer {
             Char(from:"[").token("start-keyword"),
             Char(from:"]").token("end-keyword"),
             Char(from:"=").token("assign"),
-            Keywords(validStrings: ["begin"]).token("tokenizer"),
+            Keywords(validStrings: ["begin"]).branch(
+                LoopingChar(from:lowerCaseLetterString+upperCaseLetterString+decimalDigitString+"_").token("variable"),
+                Exit().token("tokenizer")
+                ),
             Char(from:"@").token("keyword").branch(
                     Char(from:lowerCaseLetterString+upperCaseLetterString).sequence(
                         LoopingChar(from:lowerCaseLetterString+upperCaseLetterString+decimalDigitString+"_").token("state-name")
                     )
                 ),
             OysterKit.number,
-            OysterKit.Code.variableName,
-            Char(except: "\x04")
+            OysterKit.Code.variableName
         )
     }
     
@@ -379,7 +387,10 @@ class _privateTokFileParser:StackParser{
                     Char(from:"\"").token("quote"),
                     Char(from:"n").token("newline"),
                     Char(from:"r").token("return"),
-                    Char(from:"t").token("tab")
+                    Char(from:"t").token("tab"),
+                    Char(from:"x").branch(
+                        Repeat(state: Branch().branch(Char(from: "0123456789ABCDEFabcdef").token("hex")), min: 2, max: 4).token("unicode")
+                    )
                 ),
                 Char(except: "\\").token("character")
             )
@@ -387,6 +398,14 @@ class _privateTokFileParser:StackParser{
         var output = ""
         for token in simpleTokenizer.tokenize(characters){
             switch token.name {
+            case "unicode":
+                let hexDigits = token.characters[token.characters.startIndex.successor().successor()..<token.characters.endIndex]
+                if let intValue = hexDigits.toInt() {
+                    let unicodeCharacter = UnicodeScalar(intValue)
+                    output += "\(unicodeCharacter)"
+                } else {
+                    errors += "Could not create unicode scalar from \(token.characters)"
+                }
             case "return":
                 output+="\r"
             case "tab":
@@ -417,8 +436,13 @@ class _privateTokFileParser:StackParser{
     }
     
     func createCharState(characters:String, inverted:Bool, looped:Bool)->State{
-        let state = looped ? LoopingChar(from:characters) : Char(from:characters)
-        state.inverted = inverted
+        var state : TokenizationState
+        
+        if inverted {
+            state = looped ? LoopingChar(except:characters) : Char(except:characters)
+        } else {
+            state = looped ? LoopingChar(from:characters) : Char(from:characters)
+        }
         
         return State(state: state)
     }

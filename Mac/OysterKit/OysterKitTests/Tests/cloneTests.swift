@@ -35,7 +35,7 @@ class cloneTests: XCTestCase {
         let clonedTokens = ct.tokenize(testString)
         
         XCTAssert(originalTokens.count > 0, "Original tokens array is empty, bad test: \(startState)")
-        XCTAssert(originalTokens == clonedTokens, "Token arrays don't match \(originalTokens) vs. cloned \(clonedTokens)")
+        assertTokenListsEqual(clonedTokens, reference: originalTokens)
     }
     
     func testCloneChar(){

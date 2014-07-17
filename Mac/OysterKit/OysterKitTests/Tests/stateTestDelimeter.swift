@@ -34,6 +34,7 @@ class stateTestDelimeter: XCTestCase {
         XCTAssert(tokenizer.tokenize(testString).count == countElements(testString))
     }
     
+    
     func testNestedQuotedString(){
         let tougherTest = "1.5 Nasty example with -10 or 10.5 maybe even 1.0e-10 \"Great \\(variableName) \\t 🐨 \\\"Nested\\\" quote\"!"
         

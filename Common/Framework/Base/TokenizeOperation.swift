@@ -8,7 +8,7 @@
 
 import Foundation
 
-var __debugScanning = false
+let __debugScanning = false
 
 func scanDebug(message:String){
     if __debugScanning {

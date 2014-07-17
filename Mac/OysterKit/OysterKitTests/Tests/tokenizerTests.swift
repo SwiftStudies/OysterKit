@@ -23,26 +23,7 @@ class tokenizerTests: XCTestCase {
         super.tearDown()
     }
 
-    func testRegexCharacter(){
-        class HexCharacterStart : Branch{
-            init(){
-                super.init()
-                branch(
-                    Repeat(state: OysterKit.hexDigit, min:2,max:2).token("character"),
-                    Char(from: "{").sequence(
-                        Repeat(state: OysterKit.hexDigit, min: 4, max: 4),
-                        Char(from: "}").token("character")
-                    )
-                )
-            }
-            
-            override func scan(operation: TokenizeOperation) {
-                super.scanBranches(operation)
-            }
-            
-            
-        }
-        
+    func testRegexCharacter(){        
         let escapedControlCodes = "\\vrnt"
         let escapedAnchorCharacters = "AzZbB"
         let escapedRegexSyntax = "[]()|?.*+{}"
@@ -58,7 +39,11 @@ class tokenizerTests: XCTestCase {
         let escapedAnchors = Char(from:"\\").branch(
             Char(from:escapedControlCodes+escapedAnchorCharacters+escapedRegexSyntax+escapedCharacterClasses).token("character"),
             Char(from:"x").branch(
-                HexCharacterStart()
+                Repeat(state: OysterKit.hexDigit, min:2,max:2).token("character"),
+                Char(from: "{").sequence(
+                    Repeat(state: OysterKit.hexDigit, min: 4, max: 4),
+                    Char(from: "}").token("character")
+                )
             )
         )
         
@@ -127,11 +112,7 @@ class tokenizerTests: XCTestCase {
     
     func testTokenizerDelimited(){
         let testString = "{<'(',')',{({!\")\"->delimitedChar})->bracketedString}>->delimiterCharacters}"
-        __debugScanning = true
-        __okDebug = true
         var tokenizer = _privateTokFileParser().parse(testString)
-        __okDebug = true
-        __debugScanning = false
         
         var tokens = tokenizer.tokenize("(abcdefghij)")
         
@@ -144,28 +125,35 @@ class tokenizerTests: XCTestCase {
     
 
     func testOKScriptParserPerformance() {
-        let tokFileTokDef = TokenizerFile().description
+//        let tokFileTokDef = TokenizerFile().description
+        let tokFileTokDef = readBundleFile("referenceOKScriptDefinition", ext: "txt")
 
+        if !tokFileTokDef {
+            return
+        }
         
         self.measureBlock() {
-            let generatedTokenizer = OysterKit.parseTokenizer(tokFileTokDef)
-            let parserGeneratedTokens = generatedTokenizer?.tokenize(tokFileTokDef)
+            let generatedTokenizer = OysterKit.parseTokenizer(tokFileTokDef!)
+            let parserGeneratedTokens = generatedTokenizer?.tokenize(tokFileTokDef!)
         }
     }
 
     func testOKScriptTokenizerPerformance() {
-        var tokFileTokDef = TokenizerFile().description
-        
-        tokFileTokDef += tokFileTokDef
-        tokFileTokDef += tokFileTokDef
-        tokFileTokDef += tokFileTokDef
-        tokFileTokDef += tokFileTokDef
-        
-        self.measureBlock() {
-            let parserGeneratedTokens = TokenizerFile().tokenize(tokFileTokDef)
+        //        let tokFileTokDef = TokenizerFile().description
+        if let loadedTokFile : String = readBundleFile("referenceOKScriptDefinition", ext: "txt") {
+            
+            var tokFileTokDef = loadedTokFile as String
+            
+            tokFileTokDef = tokFileTokDef + tokFileTokDef
+            tokFileTokDef += tokFileTokDef
+            tokFileTokDef += tokFileTokDef
+            tokFileTokDef += tokFileTokDef
+            
+            self.measureBlock() {
+                let parserGeneratedTokens = TokenizerFile().tokenize(tokFileTokDef)
+            }
         }
+        
+        
     }
-    
-    
-
 }

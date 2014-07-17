@@ -32,7 +32,7 @@ import Foundation
 //
 class Char : Branch{
     let allowedCharacters : String
-    var inverted = false
+    let inverted = false
     
     override func stateClassName()->String {
         return "Char \(allowedCharacters)"
@@ -47,7 +47,10 @@ class Char : Branch{
     
     init(except:String){
         self.inverted = true
-        self.allowedCharacters = except
+        
+        //Inverted chars can be dangerous if they don't reject
+        //the eot character
+        self.allowedCharacters = except+"\x04"
         super.init()
     }
     
@@ -97,14 +100,16 @@ class Char : Branch{
         return output
     }
 
-    override func __copyProperities(from:TokenizationState){
-        var fromActual = from as Char
-        inverted = fromActual.inverted
-        super.__copyProperities(from)
-    }
     
     override func clone()->TokenizationState {
-        var newState = Char(from:self.allowedCharacters)
+        var newState : TokenizationState
+        
+        if inverted {
+            newState = Char(except: self.allowedCharacters)
+        } else {
+            newState = Char(from: self.allowedCharacters)
+        }
+        
         newState.__copyProperities(self)
         return newState
     }

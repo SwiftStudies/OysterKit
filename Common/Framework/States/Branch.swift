@@ -49,24 +49,7 @@ class Branch : TokenizationState {
     //
     // Serialization
     //
-    func serializeStateArray(indentation:String, states:Array<TokenizationState>)->String{
-        if states.count == 1 {
-            return states[0].serialize(indentation)
-        }
-        var output = ""
-        var first = true
-        for state in states {
-            if !first {
-                output+=","
-            } else {
-                first = false
-            }
-            output+="\n"
-            output+=indentation+state.serialize(indentation)
-        }
-        
-        return output
-    }
+
     
 
     

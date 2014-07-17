@@ -34,7 +34,7 @@ class Tokenizer : TokenizationState {
     var namedStates = [String:Named]()
     
     init(){
-        
+        super.init()
     }
     
     init(states:[TokenizationState]){
@@ -80,7 +80,7 @@ class Tokenizer : TokenizationState {
         
         output+="begin\n"
         
-        return output+super.serialize(indentation)
+        return output+"{\n"+serializeStateArray("\t", states: branches)+"}"
     }
     
 }

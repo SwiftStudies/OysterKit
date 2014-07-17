@@ -9,6 +9,7 @@
 import Foundation
 
 class LoopingChar : Char {
+    
     override func stateClassName()->String {
         return "LoopingChar \(allowedCharacters)"
     }

@@ -98,6 +98,13 @@ class parserTests: XCTestCase {
         }
     }
     
+    func testUnicode(){
+        var testString = "{!\"\\x04\"->anything}"
+        
+        var tokenizer = OysterKit.parseTokenizer(testString)!
+        
+        dump(tokenizer,"823947283479238428348734")
+    }
     
     func testParseGeneratedOKScriptDefinition(){
         //Then create a definition for it from itself
@@ -106,48 +113,20 @@ class parserTests: XCTestCase {
         //Tokenizer my own serialized description
         let selfGeneratedTokens = TokenizerFile().tokenize(tokFileTokDef)
         
-        
-        
         //Create a tokenizer from the generated description
         let generatedTokenizer = parser.parse(tokFileTokDef)
-
-        println(tokFileTokDef)
-        println(generatedTokenizer)
-        
-        
         var parserErrors = ""
         for error in parser.errors {
             parserErrors+="\t\(error)\n"
         }
         
         XCTAssert(countElements(parserErrors) == 0, "Self parsing generated an error:\n\(parserErrors) with \n\(tokFileTokDef)\n")
-        
 
-        
         //Tokenize original serialized description with the parsed tokenizer built from my own serialized description
-        
         let parserGeneratedTokens = generatedTokenizer.tokenize(tokFileTokDef)
-        
-//        for i in 0..<selfGeneratedTokens.endIndex {
-//            let selfString = selfGeneratedTokens[i].description
-//            let parserString = parserGeneratedTokens[i].description
-//            
-//            print(selfString == parserString ? "OK   : " : "ERROR: ")
-//            
-//            if selfString == parserString{
-//                
-//            } else {
-//                
-//            }
-//            println("\(selfGeneratedTokens[i]) "+(selfString == parserString ? "==" : "!=")+" \(parserGeneratedTokens[i])")
-//            
-//            if i == selfGeneratedTokens.count-1 || i == parserGeneratedTokens.count - 1 {
-//                break
-//            }
-//        }
-        
-        
-        XCTAssert(parserGeneratedTokens == selfGeneratedTokens)
+
+        //Do we get the same results?
+        assertTokenListsEqual(parserGeneratedTokens, reference: selfGeneratedTokens)
     }
 
 }

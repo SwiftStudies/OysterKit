@@ -65,6 +65,22 @@ func dump(izer:Tokenizer,with:String){
 
 extension XCTestCase {
     
+    func readBundleFile(fileName:String, ext:String)->String?{
+        let bundle = NSBundle(identifier:"com.rwe-uk.OysterKitTests")
+        
+        if let url = bundle.URLForResource(fileName, withExtension: ext) {
+            return NSString.stringWithContentsOfURL(url, encoding: NSUTF8StringEncoding, error: nil)
+        } else {
+           let allFiles =  bundle.URLsForResourcesWithExtension(nil, subdirectory: nil)
+            
+            
+            
+            XCTAssert(false, "Could not find \(fileName).\(ext) in bundle, available files are \(allFiles)")
+        }
+        
+        return nil
+    }
+    
     func assertTokenListsEqual(underTest:[Token],reference:[Token],comparePositions:Bool=false){
 
         let stopAt = underTest.count < reference.count ? underTest.count : reference.count
