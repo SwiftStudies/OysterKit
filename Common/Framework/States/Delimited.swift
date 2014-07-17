@@ -27,17 +27,18 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Foundation
 
-class Delimited : Branch{
+class Delimited : TokenizationState{
     
     class PoppingChar : Char {
         
-        override func consume(character: UnicodeScalar, controller: TokenizationController) -> TokenizationStateChange {
-            if isAllowed(character){
-                controller.pop()
-                emitToken(controller, token: createToken(controller, useCurrentCharacter: true))
-                return TokenizationStateChange.Exit(consumedCharacter: true)
+        override func scan(operation: TokenizeOperation) {
+            //If it is the delimiter character, pop the state and emit our token (if any)
+            if isAllowed(operation.current) {
+                operation.popContext(publishTokens: true)
+                operation.context.flushConsumedCharacters()
+                operation.advance()
+                emitToken(operation) //Will not emit something if it has not been told to, need to propagate the token generator (or make sure it has been)
             }
-            return TokenizationStateChange.Exit(consumedCharacter: false)
         }
         
     }
@@ -70,6 +71,16 @@ class Delimited : Branch{
         preparePoppingState()
     }
 
+    override func flatten() -> TokenizationState {
+        
+        for i in 0..<delimetedStates.count {
+            delimetedStates[i] = delimetedStates[i].flatten()
+        }
+        
+        flattenBranches()
+        
+        return self
+    }
 
     init(delimiter:String,states:TokenizationState...){
         self.openingDelimiter = delimiter.unicodeScalars[delimiter.unicodeScalars.startIndex]
@@ -88,31 +99,28 @@ class Delimited : Branch{
         delimetedStates.insert(poppingState, atIndex: 0)
     }
     
-
+    
+    override func scan(operation: TokenizeOperation) {
+        operation.debug(operation: "Entered \(openingDelimiter)Delimited\(poppingState.allowedCharacters)")
+        if openingDelimiter != operation.current {
+            return
+        }
+        
+        //Consume delimiter and emit any token
+        operation.advance()
+        emitToken(operation)
+        
+        //Put the new context in place, and we are done
+        operation.pushContext(delimetedStates)
+    }
+    
     //
-    // Push any new token onto the popping state too
+    // Assigned token propagation
     //
     override func token(with: TokenCreationBlock) -> TokenizationState {
         super.token(with)
-        poppingState.tokenGenerator = tokenGenerator
-        
+        poppingState.token(with)
         return self
-    }
-    
-    //
-    // State management
-    //
-    
-    override func couldEnterWithCharacter(character: UnicodeScalar, controller: TokenizationController) -> Bool {
-
-        return openingDelimiter == character
-        
-    }
-    
-    override func consume(character: UnicodeScalar, controller: TokenizationController) -> TokenizationStateChange {
-        controller.push(self.delimetedStates)
-        emitToken(controller, token: createToken(controller, useCurrentCharacter: true))
-        return TokenizationStateChange.Exit(consumedCharacter: true)
     }
     
     //
@@ -125,12 +133,15 @@ class Delimited : Branch{
         return "\(delimiter)"
     }
     
-    
     override func serialize(indentation: String) -> String {
 
         var output = ""
         
         output+="<'\(escapeDelimiter(openingDelimiter))',"
+
+        if "\(openingDelimiter)" != poppingState.allowedCharacters {
+            output+="'\(poppingState.allowedCharacters)',"
+        }
         
         output += "{"
         var first = true
@@ -139,10 +150,6 @@ class Delimited : Branch{
         output += serializeStateArray(indentation+"\t", states: subStates)
         
         output+="}"
-
-        if "\(openingDelimiter)" != poppingState.allowedCharacters {
-            output+=",'\(poppingState.allowedCharacters)'"
-        }
         
         return output+">"+serializeBranches(indentation+"\t")
     }
@@ -151,7 +158,8 @@ class Delimited : Branch{
         var newState = Delimited(open: "\(openingDelimiter)", close: poppingState.allowedCharacters)
         
         for delimitedState in delimetedStates {
-            newState.delimetedStates.append(delimitedState.clone())
+            //Woo-hoo correct array semantics!
+            newState.delimetedStates=delimetedStates
         }
         
         newState.__copyProperities(self)

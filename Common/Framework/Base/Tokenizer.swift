@@ -28,44 +28,24 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Foundation
 
+let __emancipateStates = true
 
-class Tokenizer : BranchingController {
-
-    
+class Tokenizer : TokenizationState {
     var namedStates = [String:Named]()
     
-    //Implementation specific
-    func tokenize(character:UnicodeScalar)->Bool{
-        let branchingControllerResult = consume(character, controller: self)
-        switch branchingControllerResult {
-        case .Exit:
-            return false
-        default:
-            return true
-        }
+    init(){
+        super.init()
     }
     
-    func tokenize(string: String, newToken: TokenHandler) {
-        //Initialize
-        var terminatedString = string+"\u0004"
-        handler = newToken
-        currentState = self
-        error = false
-        elementIndex = 0
-        while contexts.count > 0 {
-            pop()
-        }
+    init(states:[TokenizationState]){
+        super.init()
+        branches = states
+    }
+    
+    func tokenize(string: String, newToken: (Token)->Bool) {
+        var emancipatedTokenization = TokenizeOperation(legacyTokenizer: self)
         
-        //Iterate through the characters
-        for character in terminatedString.unicodeScalars{
-            if error{
-                return
-            }
-            tokenizing = character
-            if !tokenize(character){
-                return
-            }
-        }
+        emancipatedTokenization.tokenize(string, tokenReceiver: newToken)
     }
     
     func tokenize(string:String) -> Array<Token>{
@@ -90,7 +70,6 @@ class Tokenizer : BranchingController {
         return Tokenizer.convertFromStringLiteral(value)
     }
     
-    
     override func serialize(indentation: String) -> String {
         var output = ""
         
@@ -101,7 +80,7 @@ class Tokenizer : BranchingController {
         
         output+="begin\n"
         
-        return output+super.serialize(indentation)
+        return output+"{\n"+serializeStateArray("\t", states: branches)+"}"
     }
     
 }

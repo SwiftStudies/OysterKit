@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Keywords : Branch {
+class Keywords : TokenizationState {
     override func stateClassName()->String {
         return "Keywords"
     }
@@ -20,31 +20,34 @@ class Keywords : Branch {
         super.init()
     }
     
-    override func couldEnterWithCharacter(character: UnicodeScalar, controller: TokenizationController) -> Bool {
-        let totalString = controller.capturedCharacters()+"\(character)"
+    override func scan(operation: TokenizeOperation) {
+        operation.debug(operation: "Entered Keywords \(validStrings)")
+
+        var didAdvance = false
         
-        if completions(totalString){
-            return true
+        if !completions(operation.context.consumedCharacters+"\(operation.current)"){
+            return
         }
         
-        return false
-    }
-    
-    override func consume(character: UnicodeScalar, controller: TokenizationController) -> TokenizationStateChange {
-        let totalString = controller.capturedCharacters()+"\(character)"
-        
-        if let allCompletions = completions(totalString) {
-            if allCompletions.count == 1 && allCompletions[0] == totalString {
-                return selfSatisfiedBranchOutOfStateTransition(true, controller: controller, withToken: createToken(controller, useCurrentCharacter: true))
+        while let allCompletions = completions(operation.context.consumedCharacters) {
+            if allCompletions.count == 1 && allCompletions[0] == operation.context.consumedCharacters {
+                //Pursue our branches
+                emitToken(operation)
+                
+                scanBranches(operation)
+                return
             } else {
-                return TokenizationStateChange.None
+                operation.advance()
+                didAdvance = true
             }
-        } else {
-            //See if we can branch out, and perhaps one of our branches can deal with the other characters
-            return selfSatisfiedBranchOutOfStateTransition(false, controller: controller, withToken: nil)
+        }
+        
+        if (didAdvance){
+            scanBranches(operation)
+            return
         }
     }
-    
+        
     func completions(string:String) -> Array<String>?{
         var allMatches = Array<String>()
         
@@ -61,9 +64,6 @@ class Keywords : Branch {
         }
     }
     
-    func completions(controller:TokenizationController) -> Array<String>? {
-        return completions(controller.capturedCharacters())
-    }
     
     override func serialize(indentation: String) -> String {
         
@@ -93,5 +93,4 @@ class Keywords : Branch {
         
         return newState
     }
-    
 }

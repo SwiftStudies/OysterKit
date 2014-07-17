@@ -25,6 +25,8 @@ class standardTokensTest: XCTestCase {
     }
 
     func testNumber(){
+
+        
         tokenizer.branch(
             OysterKit.number,
             OysterKit.eot
@@ -40,12 +42,14 @@ class standardTokensTest: XCTestCase {
             "-1.5e10": "float",
             "-1.5e-10": "float",
         ]
+
+        let newTokenizer = Tokenizer(states: [
+            OysterKit.number,
+            OysterKit.eot
+            ])
+        
         
         for (number:String,token:String) in testStrings{
-            let newTokenizer = Tokenizer(states: [
-                OysterKit.number,
-                OysterKit.eot
-                ])
             var tokens:Array<Token> = newTokenizer.tokenize(number)
             
             XCTAssert(tokens.count == 1, "Failed to generate "+token+" from "+number+", exactly one token should have been created")
@@ -97,8 +101,8 @@ class standardTokensTest: XCTestCase {
         )
 
         let parsingTest = "A great man once said \"It is a far better thing that I do now than I have ever done\". "
-                
-        XCTAssert(tokenizer.tokenize(parsingTest) == [token("word",chars:"A"), token("blank",chars:" "), token("word",chars:"great"), token("blank",chars:" "), token("word",chars:"man"), token("blank",chars:" "), token("word",chars:"once"), token("blank",chars:" "), token("word",chars:"said"), token("blank",chars:" "), token("double-quote",chars:"\""), token("quoted-string",chars:"It is a far better thing that I do now than I have ever done"), token("double-quote",chars:"\""), token("punct",chars:"."), token("blank",chars:" "), ])
+
+        assertTokenListsEqual(tokenizer.tokenize(parsingTest), reference: [token("word",chars:"A"), token("blank",chars:" "), token("word",chars:"great"), token("blank",chars:" "), token("word",chars:"man"), token("blank",chars:" "), token("word",chars:"once"), token("blank",chars:" "), token("word",chars:"said"), token("blank",chars:" "), token("double-quote",chars:"\""), token("quoted-string",chars:"It is a far better thing that I do now than I have ever done"), token("double-quote",chars:"\""), token("punct",chars:"."), token("blank",chars:" "), ])
     }
     
 }

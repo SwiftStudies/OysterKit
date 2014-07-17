@@ -28,15 +28,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Foundation
 
-enum TokenizationStateChange{
-    //No state change requried
-    case None
-    //Leave this state
-    case Exit(consumedCharacter:Bool)
-    //Move to this new state
-    case Transition(newState:TokenizationState,consumedCharacter:Bool)
-}
-
 var __anonymousStateCount:Int = 0
 
 //
@@ -74,38 +65,24 @@ class TokenizationState : Printable, StringLiteralConvertible,Equatable {
         return TokenizationState.convertFromStringLiteral(value)
     }
     
-    
-    //
-    // Tokenization
-    //
-    
-    //
-    // This is called each time the state is a possible entry point for the next token. It is essential
-    // that this method NEVER depends on the internal conditions of the state (this is important becuase
-    // otherwise we would have to reset the state before considering it)
-    //
-    func couldEnterWithCharacter(character:UnicodeScalar, controller:TokenizationController)->Bool{
-        return false
+    //If I have a branch that goes to a branch that goes nowhere....
+    func flattenBranches(){
+        if branches.count == 1 {
+            if let branch = branches[0] as? Branch {
+                branches = branches[0].branches
+                //Keep trying
+                flattenBranches()
+            }
+        }
+        
+        for branch in branches {
+            branch.flatten()
+        }
     }
     
-    
-    func consume(character:UnicodeScalar, controller:TokenizationController) -> TokenizationStateChange{
-        return TokenizationStateChange.Exit(consumedCharacter: false)
-    }
-    
-    //
-    // State transition
-    //
-    func reset(){
-
-    }
-    
-    func didEnter(){
-
-    }
-    
-    func didExit(){
-
+    func flatten()->TokenizationState{
+        flattenBranches()
+        return self
     }
     
     //
@@ -179,25 +156,6 @@ class TokenizationState : Printable, StringLiteralConvertible,Equatable {
         return self
     }
     
-    func errorToken(controller:TokenizationController) -> Token{
-        return Token.ErrorToken(forString: controller.describeCaptureState(), problemDescription: "Illegal character")
-    }
-    
-    func createToken(controller:TokenizationController, useCurrentCharacter:Bool)->Token?{
-        var useCharacters = useCurrentCharacter ? controller.capturedCharacters()+"\(controller.currentCharacter())" : controller.capturedCharacters()
-        if let token = tokenGenerator?(state:self, capturedCharacteres:useCharacters,charactersStartIndex:controller.storedCharactersStartIndex){
-            return token
-        }
-        
-        return nil
-    }
-    
-    func emitToken(controller:TokenizationController,token:Token?){
-        if let emittableToken = token {
-            controller.holdToken(emittableToken)
-        }
-    }
-    
     //
     // Output
     //
@@ -206,6 +164,25 @@ class TokenizationState : Printable, StringLiteralConvertible,Equatable {
             return "->"+token.name
         }
         return ""
+    }
+    
+    func serializeStateArray(indentation:String, states:Array<TokenizationState>)->String{
+        if states.count == 1 {
+            return states[0].serialize(indentation)
+        }
+        var output = ""
+        var first = true
+        for state in states {
+            if !first {
+                output+=","
+            } else {
+                first = false
+            }
+            output+="\n"
+            output+=indentation+state.serialize(indentation)
+        }
+        
+        return output
     }
     
     func serializeBranches(indentation:String)->String{
@@ -267,6 +244,30 @@ class TokenizationState : Printable, StringLiteralConvertible,Equatable {
     @final func isEqualTo(otherState:TokenizationState)->Bool{
         return id == otherState.id
     }
+    
+    func scanBranches(operation:TokenizeOperation){
+        let startPosition = operation.context.currentPosition
+        
+        operation.debug(operation: "Entered TokenizationState at \(startPosition) with \(branches.count) states")
+        
+        for branch in branches {
+            branch.scan(operation)
+            
+            //Potential bug: For exit states we may remain in this fixed position, but providing exit
+            //states are at the end that could be OK
+            //Did we move forward? If so we can leave
+            if operation.context.currentPosition > startPosition{
+                scanDebug("Found valid branch now at \(operation.context.currentPosition)")
+                return
+            }
+        }
+        
+    }
+    
+    func scan(operation : TokenizeOperation){
+        scanBranches(operation)
+    }
+    
 }
 
 func ==(lhs: TokenizationState, rhs: TokenizationState) -> Bool{
@@ -288,5 +289,28 @@ func ==(lhs:[TokenizationState], rhs:[TokenizationState])->Bool{
 }
 
 typealias   TokenCreationBlock = ((state:TokenizationState,capturedCharacteres:String,charactersStartIndex:Int)->Token)
+
+/*
+
+ TO-DO: Once you can over-ride extention provided definitions, pull scan() out of Tokenization STate and put it back here
+
+*/
+extension TokenizationState : EmancipatedTokenizer {
+    
+    func createToken(operation:TokenizeOperation,useCharacters:String?)->Token?{
+        var useCharacters = useCharacters ? useCharacters : operation.context.consumedCharacters
+        if let token = tokenGenerator?(state:self, capturedCharacteres:useCharacters!,charactersStartIndex:operation.context.startPosition){
+            return token
+        }
+        
+        return nil
+    }
+    
+    func emitToken(operation:TokenizeOperation,useCharacters:String?=nil){
+        if let token = createToken(operation,useCharacters: useCharacters) {
+            operation.token(token)
+        }
+    }
+}
 
 

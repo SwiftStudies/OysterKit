@@ -9,16 +9,9 @@
 import Foundation
 
 class LoopingChar : Char {
+    
     override func stateClassName()->String {
         return "LoopingChar \(allowedCharacters)"
-    }
-    
-    override func consume(character: UnicodeScalar, controller: TokenizationController) -> TokenizationStateChange {
-        if isAllowed(character){
-            return TokenizationStateChange.None
-        } else {
-            return selfSatisfiedBranchOutOfStateTransition(false, controller: controller, withToken: createToken(controller, useCurrentCharacter: false))
-        }
     }
     
     override func annotations() -> String {
@@ -33,5 +26,26 @@ class LoopingChar : Char {
         return newState
     }
     
-    
+    override func scan(operation: TokenizeOperation){
+        operation.debug(operation: "Entered "+(inverted ? "!" : "")+"LoopingChar '\(allowedCharacters)'")
+        
+        if isAllowed(operation.current) {
+            //Scan through as much as we can
+            do {
+                operation.advance()
+            } while !operation.complete && isAllowed(operation.current)
+            
+            
+            //Emit a token, branch on
+            emitToken(operation)
+            
+
+            
+            scanBranches(operation)
+            
+            if operation.complete {
+                return
+            }
+        }
+    }
 }

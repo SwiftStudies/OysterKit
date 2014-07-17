@@ -42,6 +42,10 @@ class parserTests: XCTestCase {
             parserErrors+="\t\(error)\n"
         }
         
+        if __debugScanning {
+            println(tokenizer.description)
+        }
+        
         XCTAssert(countElements(parserErrors)==0, "\n\nParsing of \(script) failed with errors:\n\(parserErrors) after creating \n\(tokenizer) from token stream \(TokenizerFile().tokenize(script))")
         
         return tokenizer.tokenize(tokenize)
@@ -87,13 +91,22 @@ class parserTests: XCTestCase {
         let testData = [
                     "0xAbcD93343" : 1
                     ]
-        
+
         for (testString,expectedTokens) in testData{
             let tokens = parserTest(script: testScript, thenTokenizing: testString)
             XCTAssert(tokens.count == expectedTokens,"Expected \(expectedTokens) tokens, but got \(tokens.count) from \(testString)")
         }
     }
     
+    func testUnicode(){
+        var testString = "{!\"\\x04\"->anything}"
+        
+        var tokenizer = OysterKit.parseTokenizer(testString)!
+        
+        
+        assertTokenListsEqual(tokenizer.tokenize("823947283479238428348734"), reference: [token("anything",chars:"8"), token("anything",chars:"2"), token("anything",chars:"3"), token("anything",chars:"9"), token("anything",chars:"4"), token("anything",chars:"7"), token("anything",chars:"2"), token("anything",chars:"8"), token("anything",chars:"3"), token("anything",chars:"4"), token("anything",chars:"7"), token("anything",chars:"9"), token("anything",chars:"2"), token("anything",chars:"3"), token("anything",chars:"8"), token("anything",chars:"4"), token("anything",chars:"2"), token("anything",chars:"8"), token("anything",chars:"3"), token("anything",chars:"4"), token("anything",chars:"8"), token("anything",chars:"7"), token("anything",chars:"3"), token("anything",chars:"4"), ])
+        
+    }
     
     func testParseGeneratedOKScriptDefinition(){
         //Then create a definition for it from itself
@@ -102,48 +115,20 @@ class parserTests: XCTestCase {
         //Tokenizer my own serialized description
         let selfGeneratedTokens = TokenizerFile().tokenize(tokFileTokDef)
         
-        
-        
         //Create a tokenizer from the generated description
         let generatedTokenizer = parser.parse(tokFileTokDef)
-
-        println(tokFileTokDef)
-        println(generatedTokenizer)
-        
-        
         var parserErrors = ""
         for error in parser.errors {
             parserErrors+="\t\(error)\n"
         }
         
         XCTAssert(countElements(parserErrors) == 0, "Self parsing generated an error:\n\(parserErrors) with \n\(tokFileTokDef)\n")
-        
 
-        
         //Tokenize original serialized description with the parsed tokenizer built from my own serialized description
-        
         let parserGeneratedTokens = generatedTokenizer.tokenize(tokFileTokDef)
-        
-        for i in 0..<selfGeneratedTokens.endIndex {
-            let selfString = selfGeneratedTokens[i].description
-            let parserString = parserGeneratedTokens[i].description
-            
-            print(selfString == parserString ? "OK   : " : "ERROR: ")
-            
-            if selfString == parserString{
-                
-            } else {
-                
-            }
-            println("\(selfGeneratedTokens[i]) "+(selfString == parserString ? "==" : "!=")+" \(parserGeneratedTokens[i])")
-            
-            if i == selfGeneratedTokens.count-1 || i == parserGeneratedTokens.count - 1 {
-                break
-            }
-        }
-        
-        
-        XCTAssert(parserGeneratedTokens == selfGeneratedTokens)
+
+        //Do we get the same results?
+        assertTokenListsEqual(parserGeneratedTokens, reference: selfGeneratedTokens)
     }
 
 }

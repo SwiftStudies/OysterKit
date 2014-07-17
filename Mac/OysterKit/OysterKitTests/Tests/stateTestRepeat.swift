@@ -29,7 +29,7 @@ class stateTestRepeat: XCTestCase {
             Repeat(state:OysterKit.hexDigit, min:2,max:2).token("xx"),
             OysterKit.eot
         )
-        
+                
         XCTAssert(tokenizer.tokenize("AF") == [token("xx",chars:"AF")])
         XCTAssert(tokenizer.tokenize("A") != [token("xx",chars:"A")])
         XCTAssert(tokenizer.tokenize("AF00") == [token("xx",chars:"AF"),token("xx",chars:"00")])

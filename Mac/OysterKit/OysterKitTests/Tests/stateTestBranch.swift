@@ -35,6 +35,37 @@ class stateTestBranch: XCTestCase {
         XCTAssert(tokenizer.tokenize("xyxz") == [token("xy"),token("xz")])
     }
     
+    func testRepeatLoopEquivalence(){
+        
+        let seperator = Char(from: ",").token("sep")
+        
+        let lettersWithLoop = LoopingChar(from:"abcdef").token("easy")
+        let lettersWithRepeat = Repeat(state: Char(from:"abcdef").token("ignore")).token("easy")
+        
+        let space = Char(from: " ")
+        let bracketedWithRepeat = Delimited(open: "(", close: ")", states: lettersWithRepeat).token("bracket")
+        let bracketedWithLoop = Delimited(open: "(", close: ")", states: lettersWithLoop).token("bracket")
+        
+        tokenizer.branch([
+            bracketedWithLoop,
+            seperator,
+            space
+        ])
+        
+        var underTest = Tokenizer()
+        underTest.branch([
+            bracketedWithRepeat,
+            seperator,
+            space])
+
+        let testString = "(a),(b) (c)(e),(abc),(def) (fed)(aef)"
+        
+        let testTokens = underTest.tokenize(testString)
+        let referenceTokens = tokenizer.tokenize(testString)
+        
+        assertTokenListsEqual(testTokens, reference: referenceTokens)
+    }
+    
     func testNestedBranch(){
         tokenizer.branch(
             Branch(states: [

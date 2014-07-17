@@ -1,0 +1,28 @@
+{
+    <'"',{({*!"\"\\"->character,
+                "\\"."trn\"\\"->character}
+            )->Char}
+        >->quote,
+    <'\'',{({*!"'\\"->character,
+                "\\"."'\\"->character}
+            )->delimiter}
+        >->single-quote,
+    "!"->not,
+    "-".">"->token,
+    "*"->loop,
+    "."->then,
+    "{"->start-branch,
+    "}"->end-branch,
+    "("->start-repeat,
+    ")"->end-repeat,
+    "<"->start-delimited,
+    ">"->end-delimited,
+    ","->comma,
+    {
+        *"0123456789"->integer,
+        "+-".*"0123456789"->integer
+    },
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".*"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-"->variable,
+    *" \t\r\n"->whitespace,
+    !"\x04"
+}

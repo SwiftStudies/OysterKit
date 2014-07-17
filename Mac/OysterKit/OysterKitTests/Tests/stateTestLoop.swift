@@ -38,7 +38,8 @@ class stateTestLoop: XCTestCase {
         
         let testString = "The \"quick \\\"brown\" fox jumps over the lazy dog"
         
-        XCTAssert(tokenizer.tokenize(testString) == [token("otherStuff",chars:"The "), token("quote",chars:"\""), token("Char",chars:"quick \\\"brown"), token("quote",chars:"\""), token("otherStuff",chars:" fox jumps over the lazy dog"), ])
+        assertTokenListsEqual(tokenizer.tokenize(testString), reference: [token("otherStuff",chars:"The "), token("quote",chars:"\""), token("Char",chars:"quick \\\"brown"), token("quote",chars:"\""), token("otherStuff",chars:" fox jumps over the lazy dog")])
+        
         
     }
     

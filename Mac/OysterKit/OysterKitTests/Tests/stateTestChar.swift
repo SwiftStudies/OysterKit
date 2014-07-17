@@ -28,7 +28,7 @@ class stateTestChar: XCTestCase {
             char("xyz1").token("character"),
             OysterKit.eot
         )
-        
+                
         XCTAssert(tokenizer.tokenize("x1z") == [token("character",chars: "x"), token("character",chars: "1"),token("character",chars: "z"),])
     }
     

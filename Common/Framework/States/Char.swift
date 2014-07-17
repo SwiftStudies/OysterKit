@@ -30,9 +30,9 @@ import Foundation
 //
 //Completely stateless
 //
-class Char : Branch{
-    let allowedCharacters : String
-    var inverted = false
+class Char : TokenizationState{
+    let allowedCharacters : String.UnicodeScalarView
+    let inverted = false
     
     override func stateClassName()->String {
         return "Char \(allowedCharacters)"
@@ -41,22 +41,21 @@ class Char : Branch{
  
     
     init(from:String){
-        self.allowedCharacters = from
+        self.allowedCharacters = from.unicodeScalars
         super.init()
     }
     
     init(except:String){
         self.inverted = true
-        self.allowedCharacters = except
-        super.init()
-    }
         
-    func newSetByMergingWith(otherCharacterSet:Char)->Char{
-        return Char(from: self.allowedCharacters+otherCharacterSet.allowedCharacters)
+        //Inverted chars can be dangerous if they don't reject
+        //the eot character
+        self.allowedCharacters = (except+"\x04").unicodeScalars
+        super.init()
     }
     
     func isAllowed(character:UnicodeScalar)->Bool{        
-        for allowedCharacter in allowedCharacters.unicodeScalars{
+        for allowedCharacter in allowedCharacters{
             if allowedCharacter == character {
                 return !inverted
             }
@@ -65,18 +64,6 @@ class Char : Branch{
     }
 
     
-    
-    override func couldEnterWithCharacter(character: UnicodeScalar, controller: TokenizationController) -> Bool {
-        return isAllowed(character)
-    }
-    
-    override func consume(character: UnicodeScalar, controller: TokenizationController) -> TokenizationStateChange {
-        if isAllowed(character){
-            return selfSatisfiedBranchOutOfStateTransition(true, controller: controller, withToken: createToken(controller, useCurrentCharacter: true))
-        } else {
-            return selfSatisfiedBranchOutOfStateTransition(false, controller: controller, withToken: nil)
-        }
-    }
     
     func annotations()->String{
         return inverted ? "!" : ""
@@ -102,7 +89,7 @@ class Char : Branch{
             case "\t":
                     output+="\\t"
             default:
-                output+=character
+                output+="\(character)"
             }
         }
         output+="\""
@@ -113,16 +100,38 @@ class Char : Branch{
         return output
     }
 
-    override func __copyProperities(from:TokenizationState){
-        var fromActual = from as Char
-        inverted = fromActual.inverted
-        super.__copyProperities(from)
-    }
     
     override func clone()->TokenizationState {
-        var newState = Char(from:self.allowedCharacters)
+        var newState : TokenizationState
+        
+        if inverted {
+            newState = Char(except: self.allowedCharacters)
+        } else {
+            newState = Char(from: self.allowedCharacters)
+        }
+        
         newState.__copyProperities(self)
         return newState
+    }
+    
+    override func scan(operation: TokenizeOperation) {
+        operation.debug(operation: "Entered "+(inverted ? "!" : "")+"Char '\(allowedCharacters)'")
+
+        if isAllowed(operation.current) {
+            //Move scanning forward
+            operation.advance()
+            
+            //Emit a token, branch on
+            emitToken(operation)
+            
+            //If we are done, bug out
+            if operation.complete {
+                return
+            }
+            
+            //Otherwise evaluate our branches
+            scanBranches(operation)
+        }
     }
     
 }

@@ -90,29 +90,38 @@ class OysterKit{
     
     
     class var number:TokenizationState{
-        
-        var decimalDigitsAfterPoint = LoopingChar(from:decimalDigitString).token("float")
-        var decimalDigitsBeforePoint = LoopingChar(from:decimalDigitString).token("integer")
-        
-        let decimalPointChain = Char(from: ".").sequence(
-            decimalDigitsAfterPoint,
-            Char(from: "eE").branch(
-                decimalDigitsAfterPoint,
-                Char(from: "+-").sequence(
-                    decimalDigitsAfterPoint
-                    )
-                )
-            )
-
+        let decimalDigits = LoopingChar(from:decimalDigitString)
+        let sign = Char(from:"+-")
+        let exponentCharacter = Char(from:"eE")
             
-        return Branch().branch(
-            decimalDigitsBeforePoint.branch(decimalPointChain),
-            Char(from: "+-").token(OperatorToken.createToken).sequence(
-                decimalDigitsBeforePoint.branch(
-                    decimalPointChain
-                    )
+        let floatExit = Exit().token("float")
+        let integerExit = Exit().token("integer")
+        
+        let exponent = exponentCharacter.branch(
+            sign.clone().branch(decimalDigits.clone().token("float")),
+            decimalDigits.clone().token("float")
+        )
+        
+            
+        let digitsBeforeDecimalPoint = decimalDigits.clone().branch(
+            Char(from:".").branch(
+                decimalDigits.clone().branch(
+                    exponent,
+                    floatExit   //If there's no eE then it's just a normal float
                 )
-            )
+            ),
+            integerExit     //If there's no . then it's an int
+        )
+            
+        let number = Branch().branch(
+            sign.clone().branch(
+                digitsBeforeDecimalPoint,
+                Exit().token("operator")    //If there are no numbers then it's just an operator
+            ),
+            digitsBeforeDecimalPoint
+        )
+
+        return number
     }
     
     class var word:TokenizationState{

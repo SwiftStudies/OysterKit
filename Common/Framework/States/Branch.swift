@@ -45,53 +45,18 @@ class Branch : TokenizationState {
         branches = states
     }
 
-
-    override func couldEnterWithCharacter(character: UnicodeScalar, controller: TokenizationController) -> Bool {
-        for branch in branches{
-            if branch.couldEnterWithCharacter(character, controller: controller){
-                return true
-            }
+    override func flatten() -> TokenizationState {
+        flattenBranches()
+        if branches.count == 1 {
+            return branches[0]
         }
-        return false
+        return self
     }
-    
-    //You may wish to over-ride to set the context for improved error messages
-    override func consume(character:UnicodeScalar, controller:TokenizationController) -> TokenizationStateChange{
-        for branch in branches{
-            if (branch.couldEnterWithCharacter(character, controller: controller)){
-                return TokenizationStateChange.Transition(newState: branch, consumedCharacter:false)
-            }
-            
-        }
 
-        return TokenizationStateChange.Exit(consumedCharacter: false)
-    }
     
-
     //
     // Serialization
     //
-    func serializeStateArray(indentation:String, states:Array<TokenizationState>)->String{
-        if states.count == 1 {
-            return states[0].serialize(indentation)
-        }
-        var output = ""
-        var first = true
-        for state in states {
-            if !first {
-                output+=","
-            } else {
-                first = false
-            }
-            output+="\n"
-            output+=indentation+state.serialize(indentation)
-        }
-        
-        return output
-    }
-    
-
-    
     override func serialize(indentation:String)->String{
         var output = "{"+serializeStateArray(indentation+"\t",states: branches)+"}"
         
@@ -100,37 +65,6 @@ class Branch : TokenizationState {
         }
         
         return output
-    }
-    
-    func selfSatisfiedBranchOutOfStateTransition(consumedCharacter:Bool, controller:TokenizationController, withToken:Token?)->TokenizationStateChange{
-        emitToken(controller, token: withToken)
-
-        if branches.count == 0 {
-            return TokenizationStateChange.Exit(consumedCharacter: consumedCharacter)
-        } else {
-            if !transientTransitionState{
-                transientTransitionState = Branch()
-            }
-            
-            transientTransitionState!.branches = self.branches
-            
-            //If we can either enter the transient state or we did consume the character
-            if transientTransitionState!.couldEnterWithCharacter(controller.currentCharacter(),controller: controller) || consumedCharacter{
-                return TokenizationStateChange.Transition(newState: transientTransitionState!, consumedCharacter: consumedCharacter)
-            }
-
-            return TokenizationStateChange.Exit(consumedCharacter: consumedCharacter)
-        }
-    }
-    
-    @final func isClosed(usingList:[TokenizationState])->Bool{
-        for closed in usingList{
-            if self == closed {
-                return true
-            }
-        }
-    
-        return false
     }
     
     override var description:String {

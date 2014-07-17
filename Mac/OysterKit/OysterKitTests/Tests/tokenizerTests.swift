@@ -23,36 +23,7 @@ class tokenizerTests: XCTestCase {
         super.tearDown()
     }
 
-    func testRegexCharacter(){
-        class HexCharacterStart : Branch{
-            init(){
-                super.init()
-                branch(
-                    Repeat(state: OysterKit.hexDigit, min:2,max:2).token("character"),
-                    Char(from: "{").sequence(
-                        Repeat(state: OysterKit.hexDigit, min: 4, max: 4),
-                        Char(from: "}").token("character")
-                    )
-                )
-            }
-            
-            override func consume(character: UnicodeScalar, controller: TokenizationController) -> TokenizationStateChange {
-                if controller.capturedCharacters()+"\(character)" == "\\x"{
-                    //If the current state + the new character is \x we should enter this state
-                    return TokenizationStateChange.None
-                } else if controller.capturedCharacters() == "\\x"{
-                    //Otherwise if we already have the prefix see if we can transition to another state
-                    return super.consume(character, controller: controller)
-                }
-                
-                return TokenizationStateChange.Exit(consumedCharacter: false)
-                
-                //Finally fail
-//                return TokenizationStateChange.Error(errorToken: Token.ErrorToken(forString: controller.describeCaptureState(), problemDescription: "Expected FF for ASCII or for unicode {FFFF} (F represents any hex digit)"))
-            }
-            
-        }
-        
+    func testRegexCharacter(){        
         let escapedControlCodes = "\\vrnt"
         let escapedAnchorCharacters = "AzZbB"
         let escapedRegexSyntax = "[]()|?.*+{}"
@@ -68,7 +39,11 @@ class tokenizerTests: XCTestCase {
         let escapedAnchors = Char(from:"\\").branch(
             Char(from:escapedControlCodes+escapedAnchorCharacters+escapedRegexSyntax+escapedCharacterClasses).token("character"),
             Char(from:"x").branch(
-                HexCharacterStart()
+                Repeat(state: OysterKit.hexDigit, min:2,max:2).token("character"),
+                Char(from: "{").sequence(
+                    Repeat(state: OysterKit.hexDigit, min: 4, max: 4),
+                    Char(from: "}").token("character")
+                )
             )
         )
         
@@ -150,28 +125,35 @@ class tokenizerTests: XCTestCase {
     
 
     func testOKScriptParserPerformance() {
-        let tokFileTokDef = TokenizerFile().description
+//        let tokFileTokDef = TokenizerFile().description
+        let tokFileTokDef = readBundleFile("referenceOKScriptDefinition", ext: "txt")
 
+        if !tokFileTokDef {
+            return
+        }
         
         self.measureBlock() {
-            let generatedTokenizer = OysterKit.parseTokenizer(tokFileTokDef)
-            let parserGeneratedTokens = generatedTokenizer?.tokenize(tokFileTokDef)
+            let generatedTokenizer = OysterKit.parseTokenizer(tokFileTokDef!)
+            let parserGeneratedTokens = generatedTokenizer?.tokenize(tokFileTokDef!)
         }
     }
 
     func testOKScriptTokenizerPerformance() {
-        var tokFileTokDef = TokenizerFile().description
-        
-        tokFileTokDef += tokFileTokDef
-        tokFileTokDef += tokFileTokDef
-        tokFileTokDef += tokFileTokDef
-        tokFileTokDef += tokFileTokDef
-        
-        self.measureBlock() {
-            let parserGeneratedTokens = TokenizerFile().tokenize(tokFileTokDef)
+        //        let tokFileTokDef = TokenizerFile().description
+        if let loadedTokFile : String = readBundleFile("referenceOKScriptDefinition", ext: "txt") {
+            
+            var tokFileTokDef = loadedTokFile as String
+            
+            tokFileTokDef = tokFileTokDef + tokFileTokDef
+            tokFileTokDef += tokFileTokDef
+            tokFileTokDef += tokFileTokDef
+            tokFileTokDef += tokFileTokDef
+            
+            self.measureBlock() {
+                let parserGeneratedTokens = TokenizerFile().tokenize(tokFileTokDef)
+            }
         }
+        
+        
     }
-    
-    
-
 }
