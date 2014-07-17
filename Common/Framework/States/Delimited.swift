@@ -35,6 +35,7 @@ class Delimited : Branch{
             //If it is the delimiter character, pop the state and emit our token (if any)
             if isAllowed(operation.current) {
                 operation.popContext(publishTokens: true)
+                operation.context.flushConsumedCharacters()
                 operation.advance()
                 emitToken(operation) //Will not emit something if it has not been told to, need to propagate the token generator (or make sure it has been)
             }

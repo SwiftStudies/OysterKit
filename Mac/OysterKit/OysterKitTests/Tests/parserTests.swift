@@ -103,7 +103,9 @@ class parserTests: XCTestCase {
         
         var tokenizer = OysterKit.parseTokenizer(testString)!
         
-        dump(tokenizer,"823947283479238428348734")
+        
+        assertTokenListsEqual(tokenizer.tokenize("823947283479238428348734"), reference: [token("anything",chars:"8"), token("anything",chars:"2"), token("anything",chars:"3"), token("anything",chars:"9"), token("anything",chars:"4"), token("anything",chars:"7"), token("anything",chars:"2"), token("anything",chars:"8"), token("anything",chars:"3"), token("anything",chars:"4"), token("anything",chars:"7"), token("anything",chars:"9"), token("anything",chars:"2"), token("anything",chars:"3"), token("anything",chars:"8"), token("anything",chars:"4"), token("anything",chars:"2"), token("anything",chars:"8"), token("anything",chars:"3"), token("anything",chars:"4"), token("anything",chars:"8"), token("anything",chars:"7"), token("anything",chars:"3"), token("anything",chars:"4"), ])
+        
     }
     
     func testParseGeneratedOKScriptDefinition(){
