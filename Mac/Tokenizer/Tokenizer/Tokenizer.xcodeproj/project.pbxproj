@@ -14,11 +14,26 @@
 		42146C001966DD4E009BA88A /* TokenizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42146BFF1966DD4E009BA88A /* TokenizerTests.swift */; };
 		42146C131966DF72009BA88A /* OysterKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42146C121966DF72009BA88A /* OysterKit.framework */; };
 		421644D8196C1BEB00BDCA63 /* OysterKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42146C121966DF72009BA88A /* OysterKit.framework */; };
+		42277E411979017900D9BF1B /* SyntaxHighlighter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42277E401979017900D9BF1B /* SyntaxHighlighter.swift */; };
 		426AB641196AD48B00665025 /* OysterKit.framework in Resources */ = {isa = PBXBuildFile; fileRef = 42146C121966DF72009BA88A /* OysterKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
 		42146BFA1966DD4E009BA88A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 42146BDF1966DD4E009BA88A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 42146BE61966DD4E009BA88A;
+			remoteInfo = Tokenizer;
+		};
+		42277E131979000E00D9BF1B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 42146BDF1966DD4E009BA88A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 42146BE61966DD4E009BA88A;
+			remoteInfo = Tokenizer;
+		};
+		42277E151979000F00D9BF1B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 42146BDF1966DD4E009BA88A /* Project object */;
 			proxyType = 1;
@@ -38,6 +53,7 @@
 		42146BFE1966DD4E009BA88A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		42146BFF1966DD4E009BA88A /* TokenizerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenizerTests.swift; sourceTree = "<group>"; };
 		42146C121966DF72009BA88A /* OysterKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OysterKit.framework; path = "../../../../../../../../Library/Developer/Xcode/DerivedData/OysterKit_Workspace-fbjhgmtukhbwijfrgdbagumdmmcc/Build/Products/Debug/OysterKit.framework"; sourceTree = "<group>"; };
+		42277E401979017900D9BF1B /* SyntaxHighlighter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyntaxHighlighter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +98,7 @@
 		42146BE91966DD4E009BA88A /* Tokenizer */ = {
 			isa = PBXGroup;
 			children = (
+				42277E401979017900D9BF1B /* SyntaxHighlighter.swift */,
 				42146BEE1966DD4E009BA88A /* AppDelegate.swift */,
 				42146BF01966DD4E009BA88A /* Images.xcassets */,
 				42146BF21966DD4E009BA88A /* MainMenu.xib */,
@@ -148,6 +165,8 @@
 			);
 			dependencies = (
 				42146BFB1966DD4E009BA88A /* PBXTargetDependency */,
+				42277E141979000E00D9BF1B /* PBXTargetDependency */,
+				42277E161979000F00D9BF1B /* PBXTargetDependency */,
 			);
 			name = TokenizerTests;
 			productName = TokenizerTests;
@@ -218,6 +237,7 @@
 			files = (
 				42146BEF1966DD4E009BA88A /* AppDelegate.swift in Sources */,
 				42146BED1966DD4E009BA88A /* main.swift in Sources */,
+				42277E411979017900D9BF1B /* SyntaxHighlighter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -236,6 +256,16 @@
 			isa = PBXTargetDependency;
 			target = 42146BE61966DD4E009BA88A /* Tokenizer */;
 			targetProxy = 42146BFA1966DD4E009BA88A /* PBXContainerItemProxy */;
+		};
+		42277E141979000E00D9BF1B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 42146BE61966DD4E009BA88A /* Tokenizer */;
+			targetProxy = 42277E131979000E00D9BF1B /* PBXContainerItemProxy */;
+		};
+		42277E161979000F00D9BF1B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 42146BE61966DD4E009BA88A /* Tokenizer */;
+			targetProxy = 42277E151979000F00D9BF1B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

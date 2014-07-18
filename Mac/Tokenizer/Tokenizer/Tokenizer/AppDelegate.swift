@@ -28,32 +28,65 @@ import Cocoa
 import OysterKit
 
 
-
 class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
+    let keyTokenizerString = "tokString"
+    let keyTokenizerText   = "tokText"
+    let keyColors = "tokColors"
+    let keyColor = "tokColor"
     
     @IBOutlet var window: NSWindow
-    @IBOutlet var tokenView: NSTokenField
-    @IBOutlet var scrollView: NSScrollView
     @IBOutlet var tokenizerDefinitionScrollView: NSScrollView
-    
+    @IBOutlet var syntaxHighlighter: SyntaxHighlighter
+
     var textString:NSString?
     var lastDefinition:String = ""
     var lastInput = ""
     
     var tokenizer = Tokenizer()
     
-    var inputTextView : NSTextView {
-        get {
-            return scrollView.contentView.documentView as NSTextView
-        }
-    }
-    
     var tokenizerDefinitionTextView : NSTextView {
         return tokenizerDefinitionScrollView.contentView.documentView as NSTextView
     }
     
+    func registerDefaults(){
+        NSUserDefaults.standardUserDefaults().registerDefaults([
+            keyTokenizerString : "begin{\n\t\"O\".\"K\"->oysterKit\n}",
+            keyTokenizerText : "OK",
+            keyColors : [
+                "oysterKit" : NSArchiver.archivedDataWithRootObject(NSColor.purpleColor())
+            ]
+            ])
+    }
     
-    var tokens = Array<AnyObject>()
+    func saveToDefaults(){
+        var defaults = NSUserDefaults.standardUserDefaults()
+
+        defaults.setValue(tokenizerDefinitionTextView.string, forKey: keyTokenizerString)
+        defaults.setValue(syntaxHighlighter.inputTextView.string, forKey: keyTokenizerText)
+
+        var tokenColorDict = [String:NSData]()
+        
+        for (tokenName:String, color:NSColor) in syntaxHighlighter.tokenColorDictionary {
+            tokenColorDict[tokenName] = NSArchiver.archivedDataWithRootObject(color)
+        }
+        
+        defaults.setValue(tokenColorDict, forKey: keyColors)
+    }
+    
+    func loadFromDefaults(){
+        var defaults = NSUserDefaults.standardUserDefaults()
+        
+        tokenizerDefinitionTextView.string = defaults.stringForKey(keyTokenizerString)
+        syntaxHighlighter.inputTextView.string = defaults.stringForKey(keyTokenizerText)
+        
+        var dictionary = defaults.dictionaryForKey(keyColors)
+        syntaxHighlighter.tokenColorDictionary = [String:NSColor]()
+        for (tokenName,tokenColorData) in dictionary {
+            var tokenColor : NSColor = NSUnarchiver.unarchiveObjectWithData(tokenColorData as NSData) as NSColor
+            syntaxHighlighter.tokenColorDictionary[tokenName as String] = tokenColor
+        }
+    }
+    
 
     func prepareTextView(view:NSTextView){
         //For some reason IB settings are not making it through
@@ -63,15 +96,18 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
         
         //Change the font, set myself as a delegate, and set a default string
         view.textStorage.font = NSFont(name: "Courier", size: 14.0)
-        view.textStorage.delegate = self
     }
     
     func applicationDidFinishLaunching(aNotification: NSNotification?) {
-        prepareTextView(inputTextView)
+        registerDefaults()
+        
         prepareTextView(tokenizerDefinitionTextView)
         
-        tokenizerDefinitionTextView.string = "{\n\t\"O\".\"K\"->oysterKit\n}"
-        inputTextView.string = "OK"
+        loadFromDefaults()
+        tokenizerDefinitionTextView.textStorage.font = NSFont(name: "Courier", size: 14.0)
+        textStorageDidProcessEditing(nil)
+        syntaxHighlighter.begin()
+        tokenizerDefinitionTextView.textStorage.delegate = self
     }
 
     class var variableDefinitionColor:NSColor {
@@ -106,17 +142,20 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
     func textStorageDidProcessEditing(aNotification: NSNotification!){
         
         if tokenizerDefinitionTextView.string != lastDefinition {
+            saveToDefaults()
             lastDefinition = tokenizerDefinitionTextView.string
             lastInput=""
             let old = NSMakeRange(0, tokenizerDefinitionTextView.textStorage.length)
             tokenizerDefinitionTextView.textStorage.removeAttribute(NSForegroundColorAttributeName, range: old)
-            
-            tokenizerDefinitionTextView.textStorage.font = NSFont(name: "Courier", size: 14.0)
+            tokenizerDefinitionTextView.textStorage.removeAttribute(NSFontAttributeName, range: old)
+            tokenizerDefinitionTextView.textStorage.addAttribute(NSFontAttributeName, value: NSFont(name: "Courier", size: 14.0), range: old)
             
             //The definition is consumped twice. Once here to generate the tokens, 
             //and again when the tokenizer itself is compiled.
             if let newTokenizer:Tokenizer = OysterKit.parseTokenizer(lastDefinition) {
                 tokenizer = newTokenizer
+                syntaxHighlighter.tokenizer = newTokenizer
+                syntaxHighlighter.applyTokenizer()
             }
             
             var okFileTokenizer = TokenizerFile()
@@ -129,20 +168,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
                 
                 return true
             }
-            
+            syntaxHighlighter.applyTokenizer(force: true)            
         }
-        
-        if lastInput != inputTextView.string {
-            lastInput = inputTextView.string
-            var allTokens = Array<String>()
-            
-            tokenizer.tokenize(inputTextView.string){(token:Token)->Bool in
-                allTokens.append(token.name)
-                return true
-            }
-            
-            self.tokens = allTokens
-        }
+
     }
 
 }

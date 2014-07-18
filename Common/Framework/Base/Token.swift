@@ -40,6 +40,13 @@ class Token : Printable{
         self.name = name
         self.characters = withCharacters
     }
+
+    init(name:String, withCharacters:String, index:Int){
+        self.name = name
+        self.characters = withCharacters
+        self.originalStringIndex = index
+    }
+    
     
     var description : String {
         if originalStringIndex {

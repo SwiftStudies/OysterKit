@@ -9,21 +9,24 @@
 /* Begin PBXBuildFile section */
 		4221035C19601B11001148F5 /* OysterKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 4221035B19601B11001148F5 /* OysterKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4221036219601B11001148F5 /* OysterKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4221035619601B11001148F5 /* OysterKit.framework */; };
-		4232D7AC196FBDA800A3F93C /* Named.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4232D7AB196FBDA800A3F93C /* Named.swift */; };
-		4247FF5419653C7900CCE286 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247FF4119653C7900CCE286 /* Operators.swift */; };
-		4247FF5619653C7900CCE286 /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247FF4319653C7900CCE286 /* Token.swift */; };
-		4247FF5719653C7900CCE286 /* TokenizationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247FF4419653C7900CCE286 /* TokenizationController.swift */; };
-		4247FF5819653C7900CCE286 /* TokenizationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247FF4519653C7900CCE286 /* TokenizationState.swift */; };
-		4247FF5919653C7900CCE286 /* Tokenizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247FF4619653C7900CCE286 /* Tokenizer.swift */; };
-		4247FF5A19653C7900CCE286 /* BranchingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247FF4819653C7900CCE286 /* BranchingController.swift */; };
-		4247FF5B19653C7900CCE286 /* OysterKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247FF4919653C7900CCE286 /* OysterKit.swift */; };
-		4247FF5C19653C7900CCE286 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247FF4B19653C7900CCE286 /* Parser.swift */; };
-		4247FF5D19653C7900CCE286 /* RPNParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247FF4C19653C7900CCE286 /* RPNParser.swift */; };
-		4247FF5E19653C7900CCE286 /* SYExpressionParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247FF4D19653C7900CCE286 /* SYExpressionParser.swift */; };
-		4247FF5F19653C7900CCE286 /* Branch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247FF4F19653C7900CCE286 /* Branch.swift */; };
-		4247FF6019653C7900CCE286 /* Char.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247FF5019653C7900CCE286 /* Char.swift */; };
-		4247FF6119653C7900CCE286 /* Delimited.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247FF5119653C7900CCE286 /* Delimited.swift */; };
-		4247FF6219653C7900CCE286 /* Repeat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4247FF5219653C7900CCE286 /* Repeat.swift */; };
+		42277E2E1979007800D9BF1B /* OysterKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42277E171979007800D9BF1B /* OysterKit.swift */; };
+		42277E2F1979007800D9BF1B /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42277E181979007800D9BF1B /* Token.swift */; };
+		42277E301979007800D9BF1B /* TokenizeOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42277E1A1979007800D9BF1B /* TokenizeOperation.swift */; };
+		42277E311979007800D9BF1B /* TokenizationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42277E1B1979007800D9BF1B /* TokenizationState.swift */; };
+		42277E321979007800D9BF1B /* Tokenizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42277E1C1979007800D9BF1B /* Tokenizer.swift */; };
+		42277E331979007800D9BF1B /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42277E1D1979007800D9BF1B /* Operators.swift */; };
+		42277E341979007800D9BF1B /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42277E1F1979007800D9BF1B /* Parser.swift */; };
+		42277E351979007800D9BF1B /* RPNParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42277E201979007800D9BF1B /* RPNParser.swift */; };
+		42277E361979007800D9BF1B /* SYExpressionParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42277E211979007800D9BF1B /* SYExpressionParser.swift */; };
+		42277E371979007800D9BF1B /* TokFileParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42277E221979007800D9BF1B /* TokFileParser.swift */; };
+		42277E381979007800D9BF1B /* Branch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42277E241979007800D9BF1B /* Branch.swift */; };
+		42277E391979007800D9BF1B /* Char.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42277E251979007800D9BF1B /* Char.swift */; };
+		42277E3A1979007800D9BF1B /* Repeat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42277E261979007800D9BF1B /* Repeat.swift */; };
+		42277E3B1979007800D9BF1B /* Delimited.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42277E271979007800D9BF1B /* Delimited.swift */; };
+		42277E3C1979007800D9BF1B /* LoopingChar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42277E281979007800D9BF1B /* LoopingChar.swift */; };
+		42277E3D1979007800D9BF1B /* Keywords.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42277E291979007800D9BF1B /* Keywords.swift */; };
+		42277E3E1979007800D9BF1B /* Named.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42277E2A1979007800D9BF1B /* Named.swift */; };
+		42277E3F1979007800D9BF1B /* Exit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42277E2B1979007800D9BF1B /* Exit.swift */; };
 		42954F591973E88A00B3CB6E /* TestingSupportFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42954F4E1973E88A00B3CB6E /* TestingSupportFunctions.swift */; };
 		42954F5A1973E88A00B3CB6E /* cloneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42954F4F1973E88A00B3CB6E /* cloneTests.swift */; };
 		42954F5B1973E88A00B3CB6E /* parserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42954F501973E88A00B3CB6E /* parserTests.swift */; };
@@ -35,9 +38,6 @@
 		42954F611973E88A00B3CB6E /* stateTestLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42954F561973E88A00B3CB6E /* stateTestLoop.swift */; };
 		42954F621973E88A00B3CB6E /* stateTestKeywords.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42954F571973E88A00B3CB6E /* stateTestKeywords.swift */; };
 		42954F631973E88A00B3CB6E /* tokenizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42954F581973E88A00B3CB6E /* tokenizerTests.swift */; };
-		4298889F19684B1B00A4C4C0 /* TokFileParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298889E19684B1B00A4C4C0 /* TokFileParser.swift */; };
-		42994762197418CC00E281FB /* Exit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42994761197418CC00E281FB /* Exit.swift */; };
-		42DAC17C196D403D0062F91E /* LoopingChar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DAC17B196D403D0062F91E /* LoopingChar.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,21 +56,24 @@
 		4221035B19601B11001148F5 /* OysterKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OysterKit.h; sourceTree = "<group>"; };
 		4221036119601B11001148F5 /* OysterKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OysterKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4221036719601B11001148F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4232D7AB196FBDA800A3F93C /* Named.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Named.swift; sourceTree = "<group>"; };
-		4247FF4119653C7900CCE286 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
-		4247FF4319653C7900CCE286 /* Token.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Token.swift; path = Base/Token.swift; sourceTree = "<group>"; };
-		4247FF4419653C7900CCE286 /* TokenizationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenizationController.swift; sourceTree = "<group>"; };
-		4247FF4519653C7900CCE286 /* TokenizationState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenizationState.swift; sourceTree = "<group>"; };
-		4247FF4619653C7900CCE286 /* Tokenizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tokenizer.swift; sourceTree = "<group>"; };
-		4247FF4819653C7900CCE286 /* BranchingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BranchingController.swift; sourceTree = "<group>"; };
-		4247FF4919653C7900CCE286 /* OysterKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OysterKit.swift; sourceTree = "<group>"; };
-		4247FF4B19653C7900CCE286 /* Parser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
-		4247FF4C19653C7900CCE286 /* RPNParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPNParser.swift; sourceTree = "<group>"; };
-		4247FF4D19653C7900CCE286 /* SYExpressionParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SYExpressionParser.swift; sourceTree = "<group>"; };
-		4247FF4F19653C7900CCE286 /* Branch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Branch.swift; sourceTree = "<group>"; };
-		4247FF5019653C7900CCE286 /* Char.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Char.swift; sourceTree = "<group>"; };
-		4247FF5119653C7900CCE286 /* Delimited.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Delimited.swift; sourceTree = "<group>"; };
-		4247FF5219653C7900CCE286 /* Repeat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Repeat.swift; sourceTree = "<group>"; };
+		42277E171979007800D9BF1B /* OysterKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OysterKit.swift; sourceTree = "<group>"; };
+		42277E181979007800D9BF1B /* Token.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Token.swift; path = Base/Token.swift; sourceTree = "<group>"; };
+		42277E1A1979007800D9BF1B /* TokenizeOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenizeOperation.swift; sourceTree = "<group>"; };
+		42277E1B1979007800D9BF1B /* TokenizationState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenizationState.swift; sourceTree = "<group>"; };
+		42277E1C1979007800D9BF1B /* Tokenizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tokenizer.swift; sourceTree = "<group>"; };
+		42277E1D1979007800D9BF1B /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
+		42277E1F1979007800D9BF1B /* Parser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
+		42277E201979007800D9BF1B /* RPNParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPNParser.swift; sourceTree = "<group>"; };
+		42277E211979007800D9BF1B /* SYExpressionParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SYExpressionParser.swift; sourceTree = "<group>"; };
+		42277E221979007800D9BF1B /* TokFileParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokFileParser.swift; sourceTree = "<group>"; };
+		42277E241979007800D9BF1B /* Branch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Branch.swift; sourceTree = "<group>"; };
+		42277E251979007800D9BF1B /* Char.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Char.swift; sourceTree = "<group>"; };
+		42277E261979007800D9BF1B /* Repeat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Repeat.swift; sourceTree = "<group>"; };
+		42277E271979007800D9BF1B /* Delimited.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Delimited.swift; sourceTree = "<group>"; };
+		42277E281979007800D9BF1B /* LoopingChar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoopingChar.swift; sourceTree = "<group>"; };
+		42277E291979007800D9BF1B /* Keywords.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keywords.swift; sourceTree = "<group>"; };
+		42277E2A1979007800D9BF1B /* Named.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Named.swift; sourceTree = "<group>"; };
+		42277E2B1979007800D9BF1B /* Exit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Exit.swift; sourceTree = "<group>"; };
 		42954F4E1973E88A00B3CB6E /* TestingSupportFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TestingSupportFunctions.swift; path = ../../../Mac/OysterKit/OysterKitTests/Tests/TestingSupportFunctions.swift; sourceTree = "<group>"; };
 		42954F4F1973E88A00B3CB6E /* cloneTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = cloneTests.swift; path = ../../../Mac/OysterKit/OysterKitTests/Tests/cloneTests.swift; sourceTree = "<group>"; };
 		42954F501973E88A00B3CB6E /* parserTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = parserTests.swift; path = ../../../Mac/OysterKit/OysterKitTests/Tests/parserTests.swift; sourceTree = "<group>"; };
@@ -82,9 +85,6 @@
 		42954F561973E88A00B3CB6E /* stateTestLoop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = stateTestLoop.swift; path = ../../../Mac/OysterKit/OysterKitTests/Tests/stateTestLoop.swift; sourceTree = "<group>"; };
 		42954F571973E88A00B3CB6E /* stateTestKeywords.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = stateTestKeywords.swift; path = ../../../Mac/OysterKit/OysterKitTests/Tests/stateTestKeywords.swift; sourceTree = "<group>"; };
 		42954F581973E88A00B3CB6E /* tokenizerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = tokenizerTests.swift; path = ../../../Mac/OysterKit/OysterKitTests/Tests/tokenizerTests.swift; sourceTree = "<group>"; };
-		4298889E19684B1B00A4C4C0 /* TokFileParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokFileParser.swift; sourceTree = "<group>"; };
-		42994761197418CC00E281FB /* Exit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Exit.swift; sourceTree = "<group>"; };
-		42DAC17B196D403D0062F91E /* LoopingChar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoopingChar.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,7 +109,7 @@
 		4221034C19601B11001148F5 = {
 			isa = PBXGroup;
 			children = (
-				4247FF3E19653C7900CCE286 /* Framework */,
+				42277E2D1979007800D9BF1B /* Framework */,
 				4221035819601B11001148F5 /* OysterKit */,
 				4221036519601B11001148F5 /* OysterKitTests */,
 				4221035719601B11001148F5 /* Products */,
@@ -169,71 +169,63 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		4247FF3E19653C7900CCE286 /* Framework */ = {
+		42277E191979007800D9BF1B /* Tokens */ = {
 			isa = PBXGroup;
 			children = (
-				4247FF4919653C7900CCE286 /* OysterKit.swift */,
-				4247FF6319653C9200CCE286 /* Tokens */,
-				4247FF3F19653C7900CCE286 /* Base */,
-				4247FF4719653C7900CCE286 /* Controllers */,
-				4247FF4A19653C7900CCE286 /* Parsing */,
-				4247FF4E19653C7900CCE286 /* States */,
+				42277E181979007800D9BF1B /* Token.swift */,
 			);
-			name = Framework;
-			path = ../../Common/Framework;
+			name = Tokens;
 			sourceTree = "<group>";
 		};
-		4247FF3F19653C7900CCE286 /* Base */ = {
+		42277E1E1979007800D9BF1B /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				4247FF4119653C7900CCE286 /* Operators.swift */,
-				4247FF4419653C7900CCE286 /* TokenizationController.swift */,
-				4247FF4519653C7900CCE286 /* TokenizationState.swift */,
-				4247FF4619653C7900CCE286 /* Tokenizer.swift */,
+				42277E1A1979007800D9BF1B /* TokenizeOperation.swift */,
+				42277E1B1979007800D9BF1B /* TokenizationState.swift */,
+				42277E1C1979007800D9BF1B /* Tokenizer.swift */,
+				42277E1D1979007800D9BF1B /* Operators.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
 		};
-		4247FF4719653C7900CCE286 /* Controllers */ = {
+		42277E231979007800D9BF1B /* Parsing */ = {
 			isa = PBXGroup;
 			children = (
-				4247FF4819653C7900CCE286 /* BranchingController.swift */,
-			);
-			path = Controllers;
-			sourceTree = "<group>";
-		};
-		4247FF4A19653C7900CCE286 /* Parsing */ = {
-			isa = PBXGroup;
-			children = (
-				4247FF4B19653C7900CCE286 /* Parser.swift */,
-				4247FF4C19653C7900CCE286 /* RPNParser.swift */,
-				4247FF4D19653C7900CCE286 /* SYExpressionParser.swift */,
-				4298889E19684B1B00A4C4C0 /* TokFileParser.swift */,
+				42277E1F1979007800D9BF1B /* Parser.swift */,
+				42277E201979007800D9BF1B /* RPNParser.swift */,
+				42277E211979007800D9BF1B /* SYExpressionParser.swift */,
+				42277E221979007800D9BF1B /* TokFileParser.swift */,
 			);
 			path = Parsing;
 			sourceTree = "<group>";
 		};
-		4247FF4E19653C7900CCE286 /* States */ = {
+		42277E2C1979007800D9BF1B /* States */ = {
 			isa = PBXGroup;
 			children = (
-				42994761197418CC00E281FB /* Exit.swift */,
-				4247FF4F19653C7900CCE286 /* Branch.swift */,
-				4247FF5019653C7900CCE286 /* Char.swift */,
-				4247FF5119653C7900CCE286 /* Delimited.swift */,
-				4247FF5219653C7900CCE286 /* Repeat.swift */,
-				42DAC17B196D403D0062F91E /* LoopingChar.swift */,
-				4232D7AB196FBDA800A3F93C /* Named.swift */,
+				42277E241979007800D9BF1B /* Branch.swift */,
+				42277E251979007800D9BF1B /* Char.swift */,
+				42277E261979007800D9BF1B /* Repeat.swift */,
+				42277E271979007800D9BF1B /* Delimited.swift */,
+				42277E281979007800D9BF1B /* LoopingChar.swift */,
+				42277E291979007800D9BF1B /* Keywords.swift */,
+				42277E2A1979007800D9BF1B /* Named.swift */,
+				42277E2B1979007800D9BF1B /* Exit.swift */,
 			);
 			path = States;
 			sourceTree = "<group>";
 		};
-		4247FF6319653C9200CCE286 /* Tokens */ = {
+		42277E2D1979007800D9BF1B /* Framework */ = {
 			isa = PBXGroup;
 			children = (
-				4247FF4319653C7900CCE286 /* Token.swift */,
+				42277E171979007800D9BF1B /* OysterKit.swift */,
+				42277E191979007800D9BF1B /* Tokens */,
+				42277E1E1979007800D9BF1B /* Base */,
+				42277E231979007800D9BF1B /* Parsing */,
+				42277E2C1979007800D9BF1B /* States */,
 			);
-			name = Tokens;
-			sourceTree = "<group>";
+			name = Framework;
+			path = /Users/nhughes/Documents/Code/XCode/GitHub/OysterKit/Mac/OysterKit/../../Common/Framework;
+			sourceTree = "<absolute>";
 		};
 /* End PBXGroup section */
 
@@ -343,24 +335,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4247FF6019653C7900CCE286 /* Char.swift in Sources */,
-				4247FF5C19653C7900CCE286 /* Parser.swift in Sources */,
-				4247FF5B19653C7900CCE286 /* OysterKit.swift in Sources */,
-				4247FF5819653C7900CCE286 /* TokenizationState.swift in Sources */,
-				42DAC17C196D403D0062F91E /* LoopingChar.swift in Sources */,
-				4247FF5919653C7900CCE286 /* Tokenizer.swift in Sources */,
-				4247FF5F19653C7900CCE286 /* Branch.swift in Sources */,
-				42994762197418CC00E281FB /* Exit.swift in Sources */,
-				4247FF6219653C7900CCE286 /* Repeat.swift in Sources */,
-				4247FF5D19653C7900CCE286 /* RPNParser.swift in Sources */,
-				4247FF5A19653C7900CCE286 /* BranchingController.swift in Sources */,
-				4298889F19684B1B00A4C4C0 /* TokFileParser.swift in Sources */,
-				4247FF5E19653C7900CCE286 /* SYExpressionParser.swift in Sources */,
-				4247FF5419653C7900CCE286 /* Operators.swift in Sources */,
-				4247FF6119653C7900CCE286 /* Delimited.swift in Sources */,
-				4247FF5719653C7900CCE286 /* TokenizationController.swift in Sources */,
-				4232D7AC196FBDA800A3F93C /* Named.swift in Sources */,
-				4247FF5619653C7900CCE286 /* Token.swift in Sources */,
+				42277E2E1979007800D9BF1B /* OysterKit.swift in Sources */,
+				42277E3D1979007800D9BF1B /* Keywords.swift in Sources */,
+				42277E321979007800D9BF1B /* Tokenizer.swift in Sources */,
+				42277E361979007800D9BF1B /* SYExpressionParser.swift in Sources */,
+				42277E371979007800D9BF1B /* TokFileParser.swift in Sources */,
+				42277E301979007800D9BF1B /* TokenizeOperation.swift in Sources */,
+				42277E381979007800D9BF1B /* Branch.swift in Sources */,
+				42277E3F1979007800D9BF1B /* Exit.swift in Sources */,
+				42277E311979007800D9BF1B /* TokenizationState.swift in Sources */,
+				42277E3A1979007800D9BF1B /* Repeat.swift in Sources */,
+				42277E391979007800D9BF1B /* Char.swift in Sources */,
+				42277E3C1979007800D9BF1B /* LoopingChar.swift in Sources */,
+				42277E2F1979007800D9BF1B /* Token.swift in Sources */,
+				42277E331979007800D9BF1B /* Operators.swift in Sources */,
+				42277E3B1979007800D9BF1B /* Delimited.swift in Sources */,
+				42277E341979007800D9BF1B /* Parser.swift in Sources */,
+				42277E3E1979007800D9BF1B /* Named.swift in Sources */,
+				42277E351979007800D9BF1B /* RPNParser.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
