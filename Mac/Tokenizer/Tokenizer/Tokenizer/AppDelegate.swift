@@ -27,21 +27,19 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import Cocoa
 import OysterKit
 
-let backgroundQueue = NSOperationQueue()
-
 class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
     let keyTokenizerString = "tokString"
     let keyTokenizerText   = "tokText"
     let keyColors = "tokColors"
     let keyColor = "tokColor"
     
-    var parsingOperation = NSOperation()
-    
     @IBOutlet var window: NSWindow
     @IBOutlet var tokenizerDefinitionScrollView: NSScrollView
-    @IBOutlet var highlighter: Highlight
     @IBOutlet var testInputScroller : NSScrollView
-
+    @IBOutlet var highlighter: TokenHighlighter
+    @IBOutlet var okScriptHighlighter: TokenHighlighter
+    @IBOutlet var colorDictionaryController: NSDictionaryController
+    
     var textString:NSString?
     var lastDefinition:String = ""
     var lastInput = ""
@@ -53,6 +51,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
     var tokenizerDefinitionTextView : NSTextView {
         return tokenizerDefinitionScrollView.contentView.documentView as NSTextView
     }
+
     
     func registerDefaults(){
         NSUserDefaults.standardUserDefaults().registerDefaults([
@@ -105,98 +104,70 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
     }
     
     func applicationDidFinishLaunching(aNotification: NSNotification?) {
-        highlighter.textStorage = testInputTextView.textStorage
         registerDefaults()
-        prepareTextView(tokenizerDefinitionTextView)
-        loadFromDefaults()
-        tokenizerDefinitionTextView.textStorage.font = NSFont(name: "Courier", size: 14.0)
-        textStorageDidProcessEditing(nil)
-        prepareTextView(testInputTextView)
-        
-        tokenizerDefinitionTextView.textStorage.delegate = self
-    }
 
-    class var variableDefinitionColor:NSColor {
-        return NSColor(calibratedRed: 0, green: 0.4, blue: 0.4, alpha: 1.0)
-    }
-    class var commentColor:NSColor {
-        return NSColor(calibratedRed: 0, green: 0.6, blue: 0, alpha: 1.0)
-    }
-    class var stringColor:NSColor {
-        return NSColor(calibratedRed: 0.5, green: 0.4, blue: 0.2, alpha: 1.0)
-    }
-    let tokenColorMap = [
-        "loop" : NSColor.purpleColor(),
-        "not" : NSColor.purpleColor(),
-        "quote" : NSColor.purpleColor(),
-        "Char" : AppDelegate.stringColor,
-        "single-quote" : AppDelegate.stringColor,
-        "delimiter" : AppDelegate.stringColor,
-        "token" : NSColor.purpleColor(),
-        "variable" : AppDelegate.variableDefinitionColor,
-        "state-name" : AppDelegate.variableDefinitionColor,
-        "start-branch" : NSColor.purpleColor(),
-        "start-repeat" : NSColor.purpleColor(),
-        "start-delimited" : NSColor.purpleColor(),
-        "end-branch" :NSColor.purpleColor(),
-        "end-repeat" : NSColor.purpleColor(),
-        "end-delimited" : NSColor.purpleColor(),
-        "tokenizer" : NSColor.purpleColor(),
-        "exit-state" : NSColor.purpleColor()
-    ]
-    
-    func applyColouringTokens(tokens:[Token]){
-        let old = NSMakeRange(0, self.tokenizerDefinitionTextView.textStorage.length)
-        self.tokenizerDefinitionTextView.textStorage.removeAttribute(NSForegroundColorAttributeName, range: old)
-        self.tokenizerDefinitionTextView.textStorage.removeAttribute(NSFontAttributeName, range: old)
-        self.tokenizerDefinitionTextView.textStorage.addAttribute(NSFontAttributeName, value: NSFont(name: "Courier", size: 14.0), range: old)
+        colorDictionaryController.initialKey = "token"
+        colorDictionaryController.initialValue = NSColor.grayColor()
+
+        //Tie the highlighters to their text views
+        highlighter.textStorage = testInputTextView.textStorage
+        okScriptHighlighter.textStorage = tokenizerDefinitionTextView.textStorage
         
-        for token in tokens {
-            let tokenRange = NSMakeRange(token.originalStringIndex!, countElements(token.characters))
-            
-            if let mappedColor = self.tokenColorMap[token.name]? {
-                if tokenRange.location+tokenRange.length < old.location+old.length {
-                    self.tokenizerDefinitionTextView.textStorage.addAttribute(NSForegroundColorAttributeName, value: mappedColor, range: tokenRange)                    
-                }
-            }
+        okScriptHighlighter.textDidChange = {
+            self.buildTokenizer(self.okScriptHighlighter.textStorage.string)
         }
+        
+        loadFromDefaults()
+        
+        okScriptHighlighter.tokenColorMap = [
+            "loop" : NSColor.purpleColor(),
+            "not" : NSColor.purpleColor(),
+            "quote" : NSColor.purpleColor(),
+            "Char" : NSColor.stringColor(),
+            "single-quote" :NSColor.stringColor(),
+            "delimiter" : NSColor.stringColor(),
+            "token" : NSColor.purpleColor(),
+            "variable" : NSColor.variableColor(),
+            "state-name" : NSColor.variableColor(),
+            "start-branch" : NSColor.purpleColor(),
+            "start-repeat" : NSColor.purpleColor(),
+            "start-delimited" : NSColor.purpleColor(),
+            "end-branch" :NSColor.purpleColor(),
+            "end-repeat" : NSColor.purpleColor(),
+            "end-delimited" : NSColor.purpleColor(),
+            "tokenizer" : NSColor.purpleColor(),
+            "exit-state" : NSColor.purpleColor()
+        ]
+        
+        okScriptHighlighter.tokenizer = TokenizerFile()
+
+        prepareTextView(testInputTextView)
+        prepareTextView(tokenizerDefinitionTextView)
+        
+    }
+    
+    func applicationWillTerminate(notification: NSNotification!) {
+        saveToDefaults()
     }
     
     func buildTokenizer(usingString:String){
-        saveToDefaults()
-
-        if let newTokenizer:Tokenizer = OysterKit.parseTokenizer(self.lastDefinition) {
+        if let newTokenizer:Tokenizer = OysterKit.parseTokenizer(self.tokenizerDefinitionTextView.string) {
             self.highlighter.tokenizer = newTokenizer
         }
-        
-        var tokens = TokenizerFile().tokenize(self.lastDefinition)
+    }
+}
 
-        let colorText = NSBlockOperation(){
-            self.applyColouringTokens(tokens)
-        }
-
-        //Todo
-        //And we could check here to see if there are already new characters pending and NOT do this
-        NSOperationQueue.mainQueue().addOperations([colorText], waitUntilFinished: true)
+extension NSColor{
+    class func variableColor()->NSColor{
+        return NSColor(calibratedRed: 0, green: 0.4, blue: 0.4, alpha: 1.0)
     }
     
-    func textStorageDidProcessEditing(aNotification: NSNotification!){
-        if tokenizerDefinitionTextView.string != lastDefinition {
-            if parsingOperation.executing{
-                //To do... we could just check again in the future to see if 
-                //the coloring has been updated..., if another thread got in in the gap
-                // then the the text definition will have been updated
-                return
-            }
-            lastDefinition = tokenizerDefinitionTextView.string
-            
-            //Now we can creaqte the operation
-            parsingOperation = NSBlockOperation(){
-                self.buildTokenizer(self.lastDefinition)
-            }
-            backgroundQueue.addOperation(parsingOperation)
-        }
+    class func commentColor()->NSColor{
+        return NSColor(calibratedRed: 0, green: 0.6, blue: 0, alpha: 1.0)
     }
-
+    
+    class func stringColor()->NSColor{
+        return NSColor(calibratedRed: 0.5, green: 0.4, blue: 0.2, alpha: 1.0)
+    }
 }
 

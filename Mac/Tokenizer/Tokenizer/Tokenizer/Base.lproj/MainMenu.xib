@@ -11,10 +11,13 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application"/>
-        <customObject id="nJm-pa-xmQ" customClass="Highlight" customModule="Tokenizer"/>
+        <customObject id="nJm-pa-xmQ" userLabel="Test Code Highlighter" customClass="TokenHighlighter" customModule="Tokenizer"/>
+        <customObject id="esw-3P-7sP" userLabel="OK Script Highlighter" customClass="TokenHighlighter" customModule="Tokenizer"/>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Tokenizer">
             <connections>
+                <outlet property="colorDictionaryController" destination="wYe-1u-cec" id="vQm-d5-cLa"/>
                 <outlet property="highlighter" destination="nJm-pa-xmQ" id="9Eq-yx-YXO"/>
+                <outlet property="okScriptHighlighter" destination="esw-3P-7sP" id="HeD-VY-de8"/>
                 <outlet property="testInputScroller" destination="eyY-0L-OBg" id="oZz-MT-ai0"/>
                 <outlet property="tokenizerDefinitionScrollView" destination="A4n-iy-7Ml" id="m3f-XG-Ymh"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
@@ -971,7 +974,7 @@
                             </subviews>
                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </clipView>
-                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="mVr-ZZ-WuP">
+                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="0.5" horizontal="YES" id="mVr-ZZ-WuP">
                             <rect key="frame" x="1" y="119" width="223" height="15"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>

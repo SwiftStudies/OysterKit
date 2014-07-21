@@ -12,7 +12,10 @@ import OysterKit
 let __TokenKey = "OKToken"
 
 @objc
-class Highlight : NSObject, NSTextStorageDelegate, NSLayoutManagerDelegate{
+class TokenHighlighter : NSObject, NSTextStorageDelegate, NSLayoutManagerDelegate{
+    var textDidChange:()->() = {() in
+    }
+    
     var textStorage:NSTextStorage!{
     willSet{
         if let reallyAvailable = textStorage? {
@@ -25,12 +28,10 @@ class Highlight : NSObject, NSTextStorageDelegate, NSLayoutManagerDelegate{
     }
     
     var tokenColorMap = [String:NSColor]()
+    
     var tokenizer:Tokenizer = Tokenizer(){
     didSet{
-        NSOperationQueue.mainQueue().addOperationWithBlock(){
-            self.tokenize()
-        }
-        
+        self.tokenize()        
     }
     }
     
@@ -84,43 +85,31 @@ class Highlight : NSObject, NSTextStorageDelegate, NSLayoutManagerDelegate{
             return
         }
 
+        textDidChange()
+        
         var layoutManagers = self.textStorage.layoutManagers as [NSLayoutManager]
         
         let fullRange = NSMakeRange(0, self.textStorage.length)
 
         let editedRange = self.textStorage.editedRange
+
+        
         var actualRangeStart = editedRange.location
+        var actualRangeEnd = editedRange.end
+        var parseLocation = 0
+        var foundStart = false
         
-        var foundBreak = false
-        
-        while actualRangeStart > 0 {
-            var myRange = NSMakeRange(0,0)
-            let tokenAtChar : AnyObject! = layoutManagers[0].temporaryAttribute(__TokenKey, atCharacterIndex: actualRangeStart, longestEffectiveRange: &myRange, inRange:fullRange)
-            if tokenAtChar {
-                actualRangeStart = myRange.location
-                break
-            } else {
-                foundBreak = true
-                actualRangeStart = myRange.location
-            }
-            actualRangeStart--
-        }
-
-        var actualRangeEnd = editedRange.location+editedRange.length
-        foundBreak = false
-        while actualRangeEnd < textStorage.length {
-            var myRange = NSMakeRange(0,0)
-            let tokenAtChar : AnyObject! = layoutManagers[0].temporaryAttribute(__TokenKey, atCharacterIndex: actualRangeEnd, effectiveRange: &myRange)
-
-            if tokenAtChar {
-                actualRangeEnd = myRange.location+myRange.length
-                break
-            } else {
-                actualRangeEnd = myRange.location+myRange.length
+        for character in self.textStorage.string as String {
+            if character == "\n" {
+                if parseLocation < editedRange.location {
+                    actualRangeStart = parseLocation
+                } else if parseLocation > editedRange.end{
+                    actualRangeEnd = parseLocation
+                    break
+                }
             }
             
-            
-            actualRangeEnd++
+            parseLocation++
         }
         
         let nsString : NSString = textStorage.string
