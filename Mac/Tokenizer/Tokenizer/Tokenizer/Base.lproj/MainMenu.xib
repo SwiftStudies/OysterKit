@@ -11,16 +11,11 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application"/>
-        <customObject id="dRp-nD-6V5" customClass="SyntaxHighlighter" customModule="Tokenizer">
-            <connections>
-                <outlet property="inputScrollView" destination="eyY-0L-OBg" id="SHh-PC-R0l"/>
-                <outlet property="tokenView" destination="iN4-hJ-xRF" id="0Ih-9K-bpn"/>
-            </connections>
-        </customObject>
+        <customObject id="nJm-pa-xmQ" customClass="Highlight" customModule="Tokenizer"/>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Tokenizer">
             <connections>
-                <outlet property="inputTextView" destination="3Xu-wa-Mvc" id="EnE-TV-dh6"/>
-                <outlet property="syntaxHighlighter" destination="dRp-nD-6V5" id="pjR-uw-oAQ"/>
+                <outlet property="highlighter" destination="nJm-pa-xmQ" id="9Eq-yx-YXO"/>
+                <outlet property="testInputScroller" destination="eyY-0L-OBg" id="oZz-MT-ai0"/>
                 <outlet property="tokenizerDefinitionScrollView" destination="A4n-iy-7Ml" id="m3f-XG-Ymh"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
@@ -28,8 +23,7 @@
         <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
         <dictionaryController objectClassName="_NSControllerKeyValuePair" id="wYe-1u-cec" userLabel="tokenColors">
             <connections>
-                <binding destination="dRp-nD-6V5" name="contentDictionary" keyPath="self.tokenColorDictionary" id="Pk1-Ej-bgN"/>
-                <binding destination="dRp-nD-6V5" name="initialValue" keyPath="self.defaultColor" id="Lua-Z6-UrT"/>
+                <binding destination="nJm-pa-xmQ" name="contentDictionary" keyPath="self.tokenColorMap" id="OKW-9Z-srU"/>
             </connections>
         </dictionaryController>
         <menu title="Main Menu" systemMenu="main" id="AYu-sK-qS6">
@@ -773,9 +767,6 @@
                                                                     <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                                     <size key="minSize" width="315" height="201"/>
                                                                     <size key="maxSize" width="643" height="10000000"/>
-                                                                    <connections>
-                                                                        <binding destination="Voe-Tx-rLC" name="value" keyPath="self.textString" id="2zU-QA-mnb"/>
-                                                                    </connections>
                                                                 </textView>
                                                             </subviews>
                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -830,9 +821,6 @@
                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         </tokenFieldCell>
-                                                        <connections>
-                                                            <binding destination="dRp-nD-6V5" name="value" keyPath="self.tokens" id="dCh-Ye-C8f"/>
-                                                        </connections>
                                                     </tokenField>
                                                 </subviews>
                                                 <constraints>
@@ -884,7 +872,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="317" height="370"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="r8a-aR-Vez">
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="r8a-aR-Vez">
                         <rect key="frame" x="237" y="13" width="66" height="32"/>
                         <buttonCell key="cell" type="push" title="Add" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="P58-0v-4gj">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -894,23 +882,13 @@
                             <action selector="add:" target="wYe-1u-cec" id="UFm-HN-Mf4"/>
                         </connections>
                     </button>
-                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aV8-ZC-fid">
-                        <rect key="frame" x="147" y="13" width="90" height="32"/>
-                        <buttonCell key="cell" type="push" title="Remove" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ZS0-fi-xe8">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                        <connections>
-                            <action selector="remove:" target="wYe-1u-cec" id="dQh-L3-UWe"/>
-                        </connections>
-                    </button>
-                    <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Yz-Ej-AaI">
+                    <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Yz-Ej-AaI">
                         <rect key="frame" x="20" y="47" width="277" height="303"/>
-                        <clipView key="contentView" ambiguous="YES" misplaced="YES" id="GRK-LD-3QT">
+                        <clipView key="contentView" id="GRK-LD-3QT">
                             <rect key="frame" x="1" y="17" width="238" height="117"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" headerView="Hzn-Q1-3UQ" viewBased="YES" id="noW-al-bQg">
+                                <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" selectionHighlightStyle="none" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" headerView="Hzn-Q1-3UQ" viewBased="YES" id="noW-al-bQg">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <size key="intercellSpacing" width="3" height="2"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1006,7 +984,29 @@
                             <autoresizingMask key="autoresizingMask"/>
                         </tableHeaderView>
                     </scrollView>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aV8-ZC-fid">
+                        <rect key="frame" x="147" y="13" width="90" height="32"/>
+                        <buttonCell key="cell" type="push" title="Remove" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ZS0-fi-xe8">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="remove:" target="wYe-1u-cec" id="dQh-L3-UWe"/>
+                        </connections>
+                    </button>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="8Yz-Ej-AaI" firstAttribute="top" secondItem="6nW-Sx-AhH" secondAttribute="top" constant="20" id="7hS-Rz-KVj"/>
+                    <constraint firstItem="aV8-ZC-fid" firstAttribute="top" secondItem="8Yz-Ej-AaI" secondAttribute="bottom" constant="6" id="GF5-4o-zRi"/>
+                    <constraint firstAttribute="trailing" secondItem="8Yz-Ej-AaI" secondAttribute="trailing" constant="20" id="L5t-pZ-S16"/>
+                    <constraint firstAttribute="trailing" secondItem="r8a-aR-Vez" secondAttribute="trailing" constant="20" id="RB0-lX-d10"/>
+                    <constraint firstAttribute="bottom" secondItem="aV8-ZC-fid" secondAttribute="bottom" constant="20" id="U0P-Ev-uzg"/>
+                    <constraint firstItem="r8a-aR-Vez" firstAttribute="leading" secondItem="aV8-ZC-fid" secondAttribute="trailing" constant="12" id="U2h-9d-f06"/>
+                    <constraint firstAttribute="bottom" secondItem="r8a-aR-Vez" secondAttribute="bottom" constant="20" id="Zui-FR-0Uz"/>
+                    <constraint firstItem="aV8-ZC-fid" firstAttribute="top" secondItem="8Yz-Ej-AaI" secondAttribute="bottom" constant="6" id="cwb-xm-PXO"/>
+                    <constraint firstItem="r8a-aR-Vez" firstAttribute="top" secondItem="8Yz-Ej-AaI" secondAttribute="bottom" constant="6" id="lTz-H2-ayH"/>
+                    <constraint firstItem="8Yz-Ej-AaI" firstAttribute="leading" secondItem="6nW-Sx-AhH" secondAttribute="leading" constant="20" id="yXR-a2-4Ip"/>
+                </constraints>
             </view>
             <point key="canvasLocation" x="-220.5" y="147"/>
         </window>
