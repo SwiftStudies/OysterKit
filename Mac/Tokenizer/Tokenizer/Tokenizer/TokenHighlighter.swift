@@ -1,10 +1,28 @@
-//
-//  SyntaxHighlighter.swift
-//  OysterKit Mac
-//
-//  Created by Nigel Hughes on 21/07/2014.
-//  Copyright (c) 2014 RED When Excited Limited. All rights reserved.
-//
+/*
+Copyright (c) 2014, RED When Excited
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+* Redistributions of source code must retain the above copyright notice, this
+list of conditions and the following disclaimer.
+
+* Redistributions in binary form must reproduce the above copyright notice,
+this list of conditions and the following disclaimer in the documentation
+and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
 
 import Cocoa
 import OysterKit
@@ -16,6 +34,7 @@ class TokenHighlighter : NSObject, NSTextStorageDelegate, NSLayoutManagerDelegat
     var textDidChange:()->() = {() in
     }
     var highlightingDelay : NSTimeInterval = 0.5
+    var highlightingTimer : NSTimer?
     
     var textStorage:NSTextStorage!{
     willSet{
@@ -32,7 +51,8 @@ class TokenHighlighter : NSObject, NSTextStorageDelegate, NSLayoutManagerDelegat
     
     var tokenizer:Tokenizer = Tokenizer(){
     didSet{
-        self.tokenize()        
+        editedRange = NSMakeRange(0,textStorage.string.lengthOfBytesUsingEncoding(NSUTF8StringEncoding))
+        scheduleHighlighting()
     }
     }
     
@@ -83,9 +103,20 @@ class TokenHighlighter : NSObject, NSTextStorageDelegate, NSLayoutManagerDelegat
     }
     
     func prepareToHighlight(){
+        if tokenizationOperation.executing {
+            scheduleHighlighting()
+            return
+        }
+    
+        highlightingTimer = nil
+        
         textDidChange()
         
         let finalRange = editedRange ? editedRange! : self.textStorage.editedRange
+        editedRange = nil
+        
+        println("Using base range: \(finalRange)")
+        
         
         var actualRangeStart = finalRange.location
         var actualRangeEnd = finalRange.end
@@ -108,6 +139,11 @@ class TokenHighlighter : NSObject, NSTextStorageDelegate, NSLayoutManagerDelegat
         let nsString : NSString = textStorage.string
         
         let adaptiveRange = NSMakeRange(actualRangeStart, actualRangeEnd-actualRangeStart)
+        
+        
+        println("Adaptive range: \(adaptiveRange)")
+        
+        
         let adaptiveString = nsString.substringWithRange(adaptiveRange)
         
         let string = self.textStorage.string as String
@@ -121,18 +157,20 @@ class TokenHighlighter : NSObject, NSTextStorageDelegate, NSLayoutManagerDelegat
         backgroundQueue.addOperation(tokenizationOperation)
     }
     
-    func textStorageDidProcessEditing(notification: NSNotification!) {
-        
-//        editedRange = editedRange ? editedRange!.unionWith(textStorage.editedRange) : textStorage.editedRange
-        
-        if tokenizationOperation.executing {
-            return
+    func scheduleHighlighting(){
+        if let timer = highlightingTimer {
+            timer.invalidate()
+            highlightingTimer = nil
         }
-
-        editedRange = textStorage.editedRange
         
+        highlightingTimer = NSTimer(timeInterval: highlightingDelay, target: self, selector: Selector("prepareToHighlight"), userInfo: nil, repeats: false)
+        NSRunLoop.mainRunLoop().addTimer(highlightingTimer, forMode: NSRunLoopCommonModes)
+    }
+    
+    func textStorageDidProcessEditing(notification: NSNotification!) {
+        editedRange = editedRange ? editedRange!.unionWith(textStorage.editedRange) : textStorage.editedRange
         
-        prepareToHighlight()
+        scheduleHighlighting()
     }
     
     func layoutManager(layoutManager: NSLayoutManager!, shouldUseTemporaryAttributes attrs: [NSObject : AnyObject]!, forDrawingToScreen toScreen: Bool, atCharacterIndex charIndex: Int, effectiveRange effectiveCharRange: NSRangePointer) -> [NSObject : AnyObject]! {

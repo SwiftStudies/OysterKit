@@ -8,13 +8,13 @@
 
 import Foundation
 
-class Named : TokenizationState {
+public class Named : TokenizationState {
     let name:String
     let rootState:TokenizationState
     var endState:TokenizationState
     var cloneTimeEnd:TokenizationState?
     
-    init(name:String,root:TokenizationState){
+    public init(name:String,root:TokenizationState){
         self.rootState = root
         self.endState = root
         self.name = name
@@ -25,12 +25,12 @@ class Named : TokenizationState {
         return "Named"
     }
     
-    override func token(with: TokenCreationBlock) -> TokenizationState {
+    public override func token(with: TokenCreationBlock) -> TokenizationState {
         endState.token(with)
         return self
     }
     
-    override func branch(toStates: [TokenizationState])->TokenizationState{
+    public override func branch(toStates: [TokenizationState])->TokenizationState{
         endState.branch(toStates)
         endState = toStates[toStates.endIndex-1]
         
@@ -68,7 +68,7 @@ class Named : TokenizationState {
         return newState
     }
     
-    override func scan(operation: TokenizeOperation) {
+    public override func scan(operation: TokenizeOperation) {
         operation.debug(operation: "Entered Named "+name)
         
         rootState.scan(operation)

@@ -25,19 +25,19 @@
 		427BB033196248770006829F /* Branch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB028196248770006829F /* Branch.swift */; };
 		427BB034196248770006829F /* Delimited.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB029196248770006829F /* Delimited.swift */; };
 		427BB035196248770006829F /* Repeat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB02A196248770006829F /* Repeat.swift */; };
-		427BB036196248770006829F /* Char.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB02B196248770006829F /* Char.swift */; };
+		427BB036196248770006829F /* Characters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB02B196248770006829F /* Characters.swift */; };
 		427BB04019624BEE0006829F /* RPNParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB03F19624BEE0006829F /* RPNParser.swift */; };
 		427BB04219624BF50006829F /* SYExpressionParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB04119624BF50006829F /* SYExpressionParser.swift */; };
 		427BB09A1962FB450006829F /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB0991962FB450006829F /* Operators.swift */; };
 		4282D123196E9C7300A4785C /* parserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4282D122196E9C7300A4785C /* parserTests.swift */; };
 		42923D7F1975027F00A38AEF /* TokenizeOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42923D7E1975027F00A38AEF /* TokenizeOperation.swift */; };
 		42954F4D1973B7E700B3CB6E /* cloneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42954F4C1973B7E700B3CB6E /* cloneTests.swift */; };
-		4298889D19684B1200A4C4C0 /* TokFileParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298889C19684B1200A4C4C0 /* TokFileParser.swift */; };
+		4298889D19684B1200A4C4C0 /* OKScriptParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298889C19684B1200A4C4C0 /* OKScriptParser.swift */; };
 		42994760197418C000E281FB /* Exit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4299475F197418C000E281FB /* Exit.swift */; };
 		429A0F03196D754500BE28C0 /* Keywords.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429A0F02196D754500BE28C0 /* Keywords.swift */; };
 		429A0F05196D7B6900BE28C0 /* stateTestKeywords.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429A0F04196D7B6900BE28C0 /* stateTestKeywords.swift */; };
 		42C2B2951977C38400098585 /* referenceOKScriptDefinition.txt in Resources */ = {isa = PBXBuildFile; fileRef = 42C2B2941977C38400098585 /* referenceOKScriptDefinition.txt */; };
-		42DAC17A196D3FC50062F91E /* LoopingChar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DAC179196D3FC50062F91E /* LoopingChar.swift */; };
+		42DAC17A196D3FC50062F91E /* LoopingCharacters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DAC179196D3FC50062F91E /* LoopingCharacters.swift */; };
 		42EFD385196D284C001944F3 /* stateTestLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EFD384196D284C001944F3 /* stateTestLoop.swift */; };
 /* End PBXBuildFile section */
 
@@ -185,19 +185,19 @@
 		427BB028196248770006829F /* Branch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Branch.swift; sourceTree = "<group>"; };
 		427BB029196248770006829F /* Delimited.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Delimited.swift; sourceTree = "<group>"; };
 		427BB02A196248770006829F /* Repeat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Repeat.swift; sourceTree = "<group>"; };
-		427BB02B196248770006829F /* Char.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Char.swift; sourceTree = "<group>"; };
+		427BB02B196248770006829F /* Characters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Characters.swift; sourceTree = "<group>"; };
 		427BB03F19624BEE0006829F /* RPNParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPNParser.swift; sourceTree = "<group>"; };
 		427BB04119624BF50006829F /* SYExpressionParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SYExpressionParser.swift; sourceTree = "<group>"; };
 		427BB0991962FB450006829F /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
 		4282D122196E9C7300A4785C /* parserTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = parserTests.swift; path = Tests/parserTests.swift; sourceTree = "<group>"; };
 		42923D7E1975027F00A38AEF /* TokenizeOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenizeOperation.swift; sourceTree = "<group>"; };
 		42954F4C1973B7E700B3CB6E /* cloneTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = cloneTests.swift; path = Tests/cloneTests.swift; sourceTree = "<group>"; };
-		4298889C19684B1200A4C4C0 /* TokFileParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokFileParser.swift; sourceTree = "<group>"; };
+		4298889C19684B1200A4C4C0 /* OKScriptParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OKScriptParser.swift; sourceTree = "<group>"; };
 		4299475F197418C000E281FB /* Exit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Exit.swift; sourceTree = "<group>"; };
 		429A0F02196D754500BE28C0 /* Keywords.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keywords.swift; sourceTree = "<group>"; };
 		429A0F04196D7B6900BE28C0 /* stateTestKeywords.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = stateTestKeywords.swift; path = Tests/stateTestKeywords.swift; sourceTree = "<group>"; };
 		42C2B2941977C38400098585 /* referenceOKScriptDefinition.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = referenceOKScriptDefinition.txt; sourceTree = "<group>"; };
-		42DAC179196D3FC50062F91E /* LoopingChar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoopingChar.swift; sourceTree = "<group>"; };
+		42DAC179196D3FC50062F91E /* LoopingCharacters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoopingCharacters.swift; sourceTree = "<group>"; };
 		42EFD384196D284C001944F3 /* stateTestLoop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = stateTestLoop.swift; path = Tests/stateTestLoop.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -314,7 +314,7 @@
 				427BB025196248770006829F /* Parser.swift */,
 				427BB03F19624BEE0006829F /* RPNParser.swift */,
 				427BB04119624BF50006829F /* SYExpressionParser.swift */,
-				4298889C19684B1200A4C4C0 /* TokFileParser.swift */,
+				4298889C19684B1200A4C4C0 /* OKScriptParser.swift */,
 			);
 			path = Parsing;
 			sourceTree = "<group>";
@@ -323,10 +323,10 @@
 			isa = PBXGroup;
 			children = (
 				427BB028196248770006829F /* Branch.swift */,
-				427BB02B196248770006829F /* Char.swift */,
+				427BB02B196248770006829F /* Characters.swift */,
 				427BB02A196248770006829F /* Repeat.swift */,
 				427BB029196248770006829F /* Delimited.swift */,
-				42DAC179196D3FC50062F91E /* LoopingChar.swift */,
+				42DAC179196D3FC50062F91E /* LoopingCharacters.swift */,
 				429A0F02196D754500BE28C0 /* Keywords.swift */,
 				4232D7A9196FBCA500A3F93C /* Named.swift */,
 				4299475F197418C000E281FB /* Exit.swift */,
@@ -472,14 +472,14 @@
 				427BB02F196248770006829F /* Tokenizer.swift in Sources */,
 				427BB032196248770006829F /* OysterKit.swift in Sources */,
 				427BB035196248770006829F /* Repeat.swift in Sources */,
-				42DAC17A196D3FC50062F91E /* LoopingChar.swift in Sources */,
-				427BB036196248770006829F /* Char.swift in Sources */,
+				42DAC17A196D3FC50062F91E /* LoopingCharacters.swift in Sources */,
+				427BB036196248770006829F /* Characters.swift in Sources */,
 				427BB034196248770006829F /* Delimited.swift in Sources */,
 				427BB031196248770006829F /* Parser.swift in Sources */,
 				427BB04219624BF50006829F /* SYExpressionParser.swift in Sources */,
 				427BB09A1962FB450006829F /* Operators.swift in Sources */,
 				427BB02C196248770006829F /* Token.swift in Sources */,
-				4298889D19684B1200A4C4C0 /* TokFileParser.swift in Sources */,
+				4298889D19684B1200A4C4C0 /* OKScriptParser.swift in Sources */,
 				427BB033196248770006829F /* Branch.swift in Sources */,
 				42923D7F1975027F00A38AEF /* TokenizeOperation.swift in Sources */,
 				429A0F03196D754500BE28C0 /* Keywords.swift in Sources */,

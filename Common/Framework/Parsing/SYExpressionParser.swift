@@ -27,7 +27,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Foundation
 
-class SYExpressionParser : StackParser{
+public class SYExpressionParser : StackParser{
     var rpnParser = RPNParser()
     
     func processOperator(operatorToken:OperatorToken)->Bool{

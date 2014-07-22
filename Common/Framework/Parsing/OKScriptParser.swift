@@ -26,7 +26,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Foundation
 
-public class TokenizerFile : Tokenizer {
+public class OKScriptTokenizer : Tokenizer {
     
     
     public init(){
@@ -37,55 +37,55 @@ public class TokenizerFile : Tokenizer {
         
         
         self.branch(
-            Char(from:" \t\n,"),
+            Characters(from:" \t\n,"),
             Delimited(delimiter: "\"", states:
                 Repeat(state:Branch().branch(
-                    LoopingChar(except: "\"\\").token("character"),
-                    Char(from:"\\").branch(
-                        Char(from:"x").branch(
+                    LoopingCharacters(except: "\"\\").token("character"),
+                    Characters(from:"\\").branch(
+                        Characters(from:"x").branch(
                             Repeat(state: Branch().branch(
-                                Char(from: "0123456789abcdefABCDEF").token("hex")
+                                Characters(from: "0123456789abcdefABCDEF").token("hex")
                                 ),min: 2,max: 2).token("character")
                         ),
-                        Char(from:"trn\"\\").token("character")
+                        Characters(from:"trn\"\\").token("character")
                     )
                 ), min: 1, max: nil).token("Char")
             ).token("quote"),
             Delimited(delimiter: "'", states:
                 Repeat(state:Branch().branch(
-                    LoopingChar(except: "'\\").token("character"),
-                    Char(from:"\\").branch(
-                        Char(from:"'\\").token("character")
+                    LoopingCharacters(except: "'\\").token("character"),
+                    Characters(from:"\\").branch(
+                        Characters(from:"'\\").token("character")
                     )
                 ), min: 1).token("delimiter")
             ).token("single-quote"),
-            Char(from: "!").token("not"),
-            Char(from: "-").sequence(
-                Char(from:">").token("token")
+            Characters(from: "!").token("not"),
+            Characters(from: "-").sequence(
+                Characters(from:">").token("token")
             ),
-            Char(from:"^").token("exit-state"),
-            Char(from:"*").token("loop"),
-            Char(from:".").token("then"),
-            Char(from:"{").token("start-branch"),
-            Char(from:"}").token("end-branch"),
-            Char(from:"(").token("start-repeat"),
-            Char(from:")").token("end-repeat"),
-            Char(from:"<").token("start-delimited"),
-            Char(from:">").token("end-delimited"),
-            Char(from:"[").token("start-keyword"),
-            Char(from:"]").token("end-keyword"),
-            Char(from:"=").token("assign"),
+            Characters(from:"^").token("exit-state"),
+            Characters(from:"*").token("loop"),
+            Characters(from:".").token("then"),
+            Characters(from:"{").token("start-branch"),
+            Characters(from:"}").token("end-branch"),
+            Characters(from:"(").token("start-repeat"),
+            Characters(from:")").token("end-repeat"),
+            Characters(from:"<").token("start-delimited"),
+            Characters(from:">").token("end-delimited"),
+            Characters(from:"[").token("start-keyword"),
+            Characters(from:"]").token("end-keyword"),
+            Characters(from:"=").token("assign"),
             Keywords(validStrings: ["begin"]).branch(
-                LoopingChar(from:lowerCaseLetterString+upperCaseLetterString+decimalDigitString+"_").token("variable"),
+                LoopingCharacters(from:lowerCaseLetterString+upperCaseLetterString+decimalDigitString+"_").token("variable"),
                 Exit().token("tokenizer")
                 ),
-            Char(from:"@").token("keyword").branch(
-                    Char(from:lowerCaseLetterString+upperCaseLetterString).sequence(
-                        LoopingChar(from:lowerCaseLetterString+upperCaseLetterString+decimalDigitString+"_").token("state-name")
+            Characters(from:"@").token("keyword").branch(
+                    Characters(from:lowerCaseLetterString+upperCaseLetterString).sequence(
+                        LoopingCharacters(from:lowerCaseLetterString+upperCaseLetterString+decimalDigitString+"_").token("state-name")
                     )
                 ),
-            OysterKit.number,
-            OysterKit.Code.variableName
+            OKStandard.number,
+            OKStandard.Code.variableName
         )
     }
     
@@ -110,13 +110,13 @@ class Operator : Token {
         super.init(name: "operator", withCharacters: characters)
     }
 
-    func applyTo(token:Token, parser:_privateTokFileParser)->Token?{
+    func applyTo(token:Token, parser:OKScriptParser)->Token?{
         return nil
     }
 }
 
 class EmitTokenOperator : Operator {
-    override func applyTo(token: Token, parser:_privateTokFileParser) -> Token? {
+    override func applyTo(token: Token, parser:OKScriptParser) -> Token? {
         //TODO: Probably an error, should report that
         if !parser.hasTokens() {
             parser.errors += "Expected a state to assign the token to"
@@ -154,7 +154,7 @@ class EmitTokenOperator : Operator {
 class ChainStateOperator : Operator {
 }
 
-class _privateTokFileParser:StackParser{
+public class OKScriptParser:StackParser{
     var invert:Bool = false
     var loop:Bool = false
     var errors = [String]()
@@ -359,7 +359,7 @@ class _privateTokFileParser:StackParser{
         
         for token in keyWordCharTokens {
             if let stateToken = token as? State {
-                if let charState = stateToken.state as? Char {
+                if let charState = stateToken.state as? Characters {
                     keywordsArray.append("\(charState.allowedCharacters)")
                 } else {
                     errors += "Expected a char state but got \(stateToken.state)"
@@ -381,18 +381,18 @@ class _privateTokFileParser:StackParser{
         
         let simpleTokenizer = Tokenizer()
         simpleTokenizer.branch(
-                OysterKit.eot.token("ignore"),
-                Char(from:"\\").branch(
-                    Char(from:"\\").token("backslash"),
-                    Char(from:"\"").token("quote"),
-                    Char(from:"n").token("newline"),
-                    Char(from:"r").token("return"),
-                    Char(from:"t").token("tab"),
-                    Char(from:"x").branch(
-                        Repeat(state: Branch().branch(Char(from: "0123456789ABCDEFabcdef").token("hex")), min: 2, max: 4).token("unicode")
+                OKStandard.eot.token("ignore"),
+                Characters(from:"\\").branch(
+                    Characters(from:"\\").token("backslash"),
+                    Characters(from:"\"").token("quote"),
+                    Characters(from:"n").token("newline"),
+                    Characters(from:"r").token("return"),
+                    Characters(from:"t").token("tab"),
+                    Characters(from:"x").branch(
+                        Repeat(state: Branch().branch(Characters(from: "0123456789ABCDEFabcdef").token("hex")), min: 2, max: 4).token("unicode")
                     )
                 ),
-                Char(except: "\\").token("character")
+                Characters(except: "\\").token("character")
             )
         
         var output = ""
@@ -439,9 +439,9 @@ class _privateTokFileParser:StackParser{
         var state : TokenizationState
         
         if inverted {
-            state = looped ? LoopingChar(except:characters) : Char(except:characters)
+            state = looped ? LoopingCharacters(except:characters) : Characters(except:characters)
         } else {
-            state = looped ? LoopingChar(from:characters) : Char(from:characters)
+            state = looped ? LoopingCharacters(from:characters) : Characters(from:characters)
         }
         
         return State(state: state)
@@ -518,7 +518,7 @@ class _privateTokFileParser:StackParser{
     }
 
     func parseState(string:String) ->TokenizationState {
-        TokenizerFile().tokenize(string,parse)
+        OKScriptTokenizer().tokenize(string,parse)
         
         var tokenizer = Tokenizer()
         

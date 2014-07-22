@@ -28,7 +28,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Foundation
 
-class RPNParser : StackParser{
+public class RPNParser : StackParser{
     override func parse(token: Token) -> Bool {
         switch token.name{
         case "operator":

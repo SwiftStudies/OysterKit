@@ -28,10 +28,10 @@ import OysterKit
 var tokenizer = Tokenizer()
 
 tokenizer.branch(
-    OysterKit.whiteSpaces,
-    OysterKit.punctuation,
-    OysterKit.word,
-    OysterKit.eot
+    OKStandard.whiteSpaces,
+    OKStandard.punctuation,
+    OKStandard.word,
+    OKStandard.eot
 )
 
 tokenizer.tokenize("Hello, World!"){(token:Token)->Bool in

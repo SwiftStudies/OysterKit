@@ -10,12 +10,12 @@ import XCTest
 import OysterKit
 
 class stateTestLoop: XCTestCase {
-    var tokenizer = OysterKit.Tokenizer()
+    var tokenizer = Tokenizer()
     
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        tokenizer = OysterKit.Tokenizer()
+        tokenizer = Tokenizer()
     }
     
     override func tearDown() {
@@ -25,15 +25,15 @@ class stateTestLoop: XCTestCase {
     
     func testLoopingCharDelimitedString(){
         tokenizer.branch(
-            OysterKit.Delimited(delimiter: "\"", states:
+            Delimited(delimiter: "\"", states:
                 Repeat(state:OysterKit.Branch().branch(
-                    OysterKit.Char(from:"\\").branch(
-                        OysterKit.Char(from:"trn\"\\").token("character")
+                    Characters(from:"\\").branch(
+                        Characters(from:"trn\"\\").token("character")
                     ),
-                    OysterKit.LoopingChar(except: "\"\\").token("character")
+                    LoopingCharacters(except: "\"\\").token("character")
                     ), min: 1, max: nil).token("Char")
                 ).token("quote"),
-            OysterKit.LoopingChar(except: "\u{04}\"").token("otherStuff")
+            LoopingCharacters(except: "\u{04}\"").token("otherStuff")
         )
         
         let testString = "The \"quick \\\"brown\" fox jumps over the lazy dog"
@@ -46,9 +46,9 @@ class stateTestLoop: XCTestCase {
     func testLoopingChar() {
         
         tokenizer.branch(
-            OysterKit.whiteSpaces,
-            OysterKit.LoopingChar(from: OysterKit.lowerCaseLetterString+OysterKit.upperCaseLetterString).token("word"),
-            OysterKit.eot
+            OKStandard.whiteSpaces,
+            LoopingCharacters(from: lowerCaseLetterString+upperCaseLetterString).token("word"),
+            OKStandard.eot
         )
         
         let testString = "The quick brown fox jumps over the lazy dog"

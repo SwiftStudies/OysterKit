@@ -8,19 +8,19 @@
 
 import Foundation
 
-class Keywords : TokenizationState {
+public class Keywords : TokenizationState {
     override func stateClassName()->String {
         return "Keywords"
     }
     
     let validStrings : [String]
     
-    init(validStrings:Array<String>){
+    public init(validStrings:Array<String>){
         self.validStrings = validStrings
         super.init()
     }
     
-    override func scan(operation: TokenizeOperation) {
+    public override func scan(operation: TokenizeOperation) {
         operation.debug(operation: "Entered Keywords \(validStrings)")
 
         var didAdvance = false

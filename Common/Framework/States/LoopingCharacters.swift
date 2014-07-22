@@ -8,7 +8,7 @@
 
 import Foundation
 
-class LoopingChar : Char {
+public class LoopingCharacters : Characters {
     
     override func stateClassName()->String {
         return "LoopingChar \(allowedCharacters)"
@@ -19,14 +19,14 @@ class LoopingChar : Char {
     }
 
     override func clone() -> TokenizationState {
-        var newState = LoopingChar(from: "\(allowedCharacters)")
+        var newState = LoopingCharacters(from: "\(allowedCharacters)")
         
         newState.__copyProperities(self)
         
         return newState
     }
     
-    override func scan(operation: TokenizeOperation){
+    public override func scan(operation: TokenizeOperation){
         operation.debug(operation: "Entered "+(inverted ? "!" : "")+"LoopingChar '\(allowedCharacters)'")
         
         if isAllowed(operation.current) {

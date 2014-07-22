@@ -16,7 +16,7 @@ class standardTokensTest: XCTestCase {
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        tokenizer = OysterKit.Tokenizer()
+        tokenizer = Tokenizer()
     }
     
     override func tearDown() {
@@ -28,8 +28,8 @@ class standardTokensTest: XCTestCase {
 
         
         tokenizer.branch(
-            OysterKit.number,
-            OysterKit.eot
+            OKStandard.number,
+            OKStandard.eot
         )
         
         let testStrings = [
@@ -44,8 +44,8 @@ class standardTokensTest: XCTestCase {
         ]
 
         let newTokenizer = Tokenizer(states: [
-            OysterKit.number,
-            OysterKit.eot
+            OKStandard.number,
+            OKStandard.eot
             ])
         
         
@@ -64,10 +64,10 @@ class standardTokensTest: XCTestCase {
     
     func testSimpleString(){
         tokenizer.branch(
-            OysterKit.blanks,
-            OysterKit.number,
-            OysterKit.word,
-            OysterKit.eot
+            OKStandard.blanks,
+            OKStandard.number,
+            OKStandard.word,
+            OKStandard.eot
         )
         
         let parsingTest = "Short 10 string"
@@ -77,12 +77,12 @@ class standardTokensTest: XCTestCase {
     
     func testWhiteSpaces(){
         tokenizer.branch(
-            OysterKit.Code.quotedStringIncludingQuotes,
-            OysterKit.whiteSpaces,
-            OysterKit.number,
-            OysterKit.word,
-            OysterKit.punctuation,
-            OysterKit.eot
+            OKStandard.Code.quotedStringIncludingQuotes,
+            OKStandard.whiteSpaces,
+            OKStandard.number,
+            OKStandard.word,
+            OKStandard.punctuation,
+            OKStandard.eot
         )
 
         let parsingTest = "Short\tlittle\nstring that\n tries \tto  break \n\tthings         up"
@@ -92,12 +92,12 @@ class standardTokensTest: XCTestCase {
     
     func testQuotedString(){
         tokenizer.branch(
-            OysterKit.Code.quotedStringIncludingQuotes,
-            OysterKit.blanks,
-            OysterKit.number,
-            OysterKit.word,
-            OysterKit.punctuation,
-            OysterKit.eot
+            OKStandard.Code.quotedStringIncludingQuotes,
+            OKStandard.blanks,
+            OKStandard.number,
+            OKStandard.word,
+            OKStandard.punctuation,
+            OKStandard.eot
         )
 
         let parsingTest = "A great man once said \"It is a far better thing that I do now than I have ever done\". "

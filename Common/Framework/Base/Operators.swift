@@ -32,7 +32,7 @@ import Foundation
 // Creates a sequence from the first state to the last state, returning the first
 // state
 //
-func sequence(states:TokenizationState...)->TokenizationState{
+public func sequence(states:TokenizationState...)->TokenizationState{
     
     for i in 1..<states.count {
         states[i-1].branch(states[i])
@@ -54,14 +54,11 @@ func sequence(states:TokenizationState...)->TokenizationState{
 }
 @infix func == (left: Array<Token>, right: Array<Token>) -> Bool {
     if left.count != right.count {
-//        println("Counts don't match")
         return false
     }
     
     for i in 0..<left.count{
-//        println("Does "+left[i].description()+" == "+right[i].description())
         if left[i] != right[i]{
-//            println("\t NO IT DOESN'T")
             return false
         }
     }

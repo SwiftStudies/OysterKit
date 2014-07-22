@@ -27,9 +27,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Foundation
 
-class Delimited : TokenizationState{
+public class Delimited : TokenizationState{
     
-    class PoppingChar : Char {
+    class PoppingChar : Characters {
         
         override func scan(operation: TokenizeOperation) {
             //If it is the delimiter character, pop the state and emit our token (if any)
@@ -53,7 +53,7 @@ class Delimited : TokenizationState{
     var delimetedStates:Array<TokenizationState>
     let poppingState:PoppingChar
 
-    init(open:String,close:String,states:TokenizationState...){
+    public init(open:String,close:String,states:TokenizationState...){
         self.openingDelimiter = open.unicodeScalars[open.unicodeScalars.startIndex]
         self.delimetedStates = states
         self.poppingState = PoppingChar(from: close)
@@ -100,7 +100,7 @@ class Delimited : TokenizationState{
     }
     
     
-    override func scan(operation: TokenizeOperation) {
+    public override func scan(operation: TokenizeOperation) {
         operation.debug(operation: "Entered \(openingDelimiter)Delimited\(poppingState.allowedCharacters)")
         if openingDelimiter != operation.current {
             return
@@ -117,7 +117,7 @@ class Delimited : TokenizationState{
     //
     // Assigned token propagation
     //
-    override func token(with: TokenCreationBlock) -> TokenizationState {
+    public override func token(with: TokenCreationBlock) -> TokenizationState {
         super.token(with)
         poppingState.token(with)
         return self

@@ -28,7 +28,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import Foundation
 
 
-class Branch : TokenizationState {
+public class Branch : TokenizationState {
     var transientTransitionState:Branch?
     
     override func stateClassName()->String {
@@ -36,11 +36,11 @@ class Branch : TokenizationState {
     }
     
     
-    init(){
+    public init(){
        super.init()
     }
     
-    init(states:Array<TokenizationState>){
+    public init(states:Array<TokenizationState>){
         super.init()
         branches = states
     }
@@ -67,7 +67,7 @@ class Branch : TokenizationState {
         return output
     }
     
-    override var description:String {
+    public override var description:String {
         return serialize("")
     }
     

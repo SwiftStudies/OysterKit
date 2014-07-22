@@ -30,7 +30,7 @@ import Foundation
 //
 //Completely stateless
 //
-class Char : TokenizationState{
+public class Characters : TokenizationState{
     let allowedCharacters : String.UnicodeScalarView
     let inverted = false
     
@@ -40,12 +40,12 @@ class Char : TokenizationState{
 
  
     
-    init(from:String){
+    public init(from:String){
         self.allowedCharacters = from.unicodeScalars
         super.init()
     }
     
-    init(except:String){
+    public init(except:String){
         self.inverted = true
         
         //Inverted chars can be dangerous if they don't reject
@@ -105,16 +105,16 @@ class Char : TokenizationState{
         var newState : TokenizationState
         
         if inverted {
-            newState = Char(except: "\(allowedCharacters)")
+            newState = Characters(except: "\(allowedCharacters)")
         } else {
-            newState = Char(from: "\(allowedCharacters)")
+            newState = Characters(from: "\(allowedCharacters)")
         }
         
         newState.__copyProperities(self)
         return newState
     }
     
-    override func scan(operation: TokenizeOperation) {
+    public override func scan(operation: TokenizeOperation) {
         operation.debug(operation: "Entered "+(inverted ? "!" : "")+"Char '\(allowedCharacters)'")
 
         if isAllowed(operation.current) {

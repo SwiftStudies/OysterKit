@@ -10,7 +10,7 @@ import XCTest
 import OysterKit
 
 class stateTestBranch: XCTestCase {
-    var tokenizer = Tokenizer()
+    var tokenizer = OysterKit.Tokenizer()
     
     override func setUp() {
         super.setUp()
@@ -24,12 +24,13 @@ class stateTestBranch: XCTestCase {
     }
 
     func testBranch(){
+        
         tokenizer.branch(
-            char("x").branch(
-                char("y").token("xy"),
-                char("z").token("xz")
+            Characters("x").branch(
+                Characters("y").token("xy"),
+                Characters("z").token("xz")
             ),
-            OysterKit.eot
+            OKStandard.eot
         )
                 
         XCTAssert(tokenizer.tokenize("xyxz") == [token("xy"),token("xz")])
@@ -37,12 +38,12 @@ class stateTestBranch: XCTestCase {
     
     func testRepeatLoopEquivalence(){
         
-        let seperator = Char(from: ",").token("sep")
+        let seperator = Characters(from: ",").token("sep")
         
-        let lettersWithLoop = LoopingChar(from:"abcdef").token("easy")
-        let lettersWithRepeat = Repeat(state: Char(from:"abcdef").token("ignore")).token("easy")
+        let lettersWithLoop = LoopingCharacters(from:"abcdef").token("easy")
+        let lettersWithRepeat = Repeat(state: Characters(from:"abcdef").token("ignore")).token("easy")
         
-        let space = Char(from: " ")
+        let space = Characters(from: " ")
         let bracketedWithRepeat = Delimited(open: "(", close: ")", states: lettersWithRepeat).token("bracket")
         let bracketedWithLoop = Delimited(open: "(", close: ")", states: lettersWithLoop).token("bracket")
         
@@ -81,7 +82,7 @@ class stateTestBranch: XCTestCase {
     
     func testXY(){
         tokenizer.sequence(char("x"),char("y").token("xy"))
-        tokenizer.branch(OysterKit.eot)
+        tokenizer.branch(OKStandard.eot)
         
         XCTAssert(tokenizer.tokenize("xy") == [token("xy")], "Chained results do not match")
     }
@@ -103,7 +104,7 @@ class stateTestBranch: XCTestCase {
         
         tokenizer.branch(
             char("x").sequence(char("y"),char("z").token("done")),
-            OysterKit.eot
+            OKStandard.eot
         )
         
         XCTAssert(tokenizer.tokenize("xyz") == expectedResults)

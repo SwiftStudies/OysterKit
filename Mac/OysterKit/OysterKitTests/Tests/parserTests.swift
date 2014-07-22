@@ -10,13 +10,13 @@ import OysterKit
 import XCTest
 
 class parserTests: XCTestCase {
-    var parser = _privateTokFileParser()
+    var parser = OKScriptParser()
     
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
         
-        parser = _privateTokFileParser()
+        parser = OKScriptParser()
     }
     
     override func tearDown() {
@@ -24,7 +24,7 @@ class parserTests: XCTestCase {
         super.tearDown()
     }
     
-    func niceParserErrors(theParser:_privateTokFileParser)->String{
+    func niceParserErrors(theParser:OKScriptParser)->String{
         var parserErrors = ""
         
         for error in theParser.errors {
@@ -64,7 +64,7 @@ class parserTests: XCTestCase {
     func testParseNamedStates(){
         let testString = "@oct = \"01234567\"->oct begin{ @oct }"
         
-        var tokenizer = OysterKit.parseTokenizer(testString)!
+        var tokenizer = OKStandard.parseTokenizer(testString)!
         
         let octTest = "346738"
         
@@ -101,7 +101,7 @@ class parserTests: XCTestCase {
     func testUnicode(){
         var testString = "{!\"\\x04\"->anything}"
         
-        var tokenizer = OysterKit.parseTokenizer(testString)!
+        var tokenizer = OKStandard.parseTokenizer(testString)!
         
         
         assertTokenListsEqual(tokenizer.tokenize("823947283479238428348734"), reference: [token("anything",chars:"8"), token("anything",chars:"2"), token("anything",chars:"3"), token("anything",chars:"9"), token("anything",chars:"4"), token("anything",chars:"7"), token("anything",chars:"2"), token("anything",chars:"8"), token("anything",chars:"3"), token("anything",chars:"4"), token("anything",chars:"7"), token("anything",chars:"9"), token("anything",chars:"2"), token("anything",chars:"3"), token("anything",chars:"8"), token("anything",chars:"4"), token("anything",chars:"2"), token("anything",chars:"8"), token("anything",chars:"3"), token("anything",chars:"4"), token("anything",chars:"8"), token("anything",chars:"7"), token("anything",chars:"3"), token("anything",chars:"4"), ])

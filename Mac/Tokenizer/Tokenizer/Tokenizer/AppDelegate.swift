@@ -142,7 +142,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
             "exit-state" : NSColor.purpleColor()
         ]
         
-        okScriptHighlighter.tokenizer = TokenizerFile()
+        okScriptHighlighter.tokenizer = OKScriptTokenizer()
 
         prepareTextView(testInputTextView)
         prepareTextView(tokenizerDefinitionTextView)
@@ -156,7 +156,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
     
     func doBuild(){
         highlighter.backgroundQueue.addOperationWithBlock(){
-            if let newTokenizer:Tokenizer = OysterKit.parseTokenizer(self.tokenizerDefinitionTextView.string) {
+            if let newTokenizer:Tokenizer = OKStandard.parseTokenizer(self.tokenizerDefinitionTextView.string) {
                 self.highlighter.tokenizer = newTokenizer
             }
         }

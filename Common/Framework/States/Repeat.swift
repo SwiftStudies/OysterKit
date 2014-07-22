@@ -26,7 +26,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Foundation
 
-class Repeat : TokenizationState{
+public class Repeat : TokenizationState{
     let minimumRepeats = 1
     let maximumRepeats : Int?
     let repeatingState:TokenizationState
@@ -36,7 +36,7 @@ class Repeat : TokenizationState{
     }
     
     
-    init(state:TokenizationState, min:Int=1,max:Int? = nil){
+    public init(state:TokenizationState, min:Int=1,max:Int? = nil){
         self.minimumRepeats = min
         self.maximumRepeats = max
         self.repeatingState = state
@@ -76,7 +76,7 @@ class Repeat : TokenizationState{
         scanBranches(operation)
     }
     
-    override func scan(operation: TokenizeOperation) {
+    public override func scan(operation: TokenizeOperation) {
         operation.debug(operation: "Entered Repeat (\(minimumRepeats).."+(maximumRepeats ? ", \(maximumRepeats))" : ")"))
         
         //Create a new context to capture any tokens, we don't want to fall back though, so will pop it off

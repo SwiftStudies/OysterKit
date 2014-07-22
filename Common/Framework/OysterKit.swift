@@ -29,31 +29,31 @@ import Foundation
 let __okDebug = false
 
 //Should be private and class variables
-let decimalDigitString = "0123456789"
-let hexDigitString = decimalDigitString+"ABCDEFabcdef"
-let puncuationString = "!\"#$%&'()*+,\\-./:;<=>?@[]^_`{|}~"
-let blankString = " \t"
-let whiteSpaceString = " \t\r\n"
-let lowerCaseLetterString = "abcdefghijklmnopqrstuvwxyz"
-let upperCaseLetterString = lowerCaseLetterString.uppercaseString
-let eotString = "\u{0004}"
+public let decimalDigitString = "0123456789"
+public let hexDigitString = decimalDigitString+"ABCDEFabcdef"
+public let puncuationString = "!\"#$%&'()*+,\\-./:;<=>?@[]^_`{|}~"
+public let blankString = " \t"
+public let whiteSpaceString = " \t\r\n"
+public let lowerCaseLetterString = "abcdefghijklmnopqrstuvwxyz"
+public let upperCaseLetterString = lowerCaseLetterString.uppercaseString
+public let eotString = "\u{0004}"
 
-public class OysterKit{
+public class OKStandard{
     //Public
     public class var decimalDigit:TokenizationState{
-        return Char(from: decimalDigitString).token("digit")
+        return Characters(from: decimalDigitString).token("digit")
     }
     
     public class var hexDigit:TokenizationState{
-        return Char(from: hexDigitString).token("xdigit")
+        return Characters(from: hexDigitString).token("xdigit")
     }
     
     public class var punctuation:TokenizationState{
-        return Char(from: puncuationString).token("punct")
+        return Characters(from: puncuationString).token("punct")
     }
     
     public class var eot:TokenizationState{
-            return Char(from:"\u{0004}").token(){ (state:TokenizationState, capturedCharacters:String, startIndex:Int)->Token in
+            return Characters(from:"\u{0004}").token(){ (state:TokenizationState, capturedCharacters:String, startIndex:Int)->Token in
             var token = Token.EndOfTransmissionToken()
             token.originalStringIndex = startIndex
             return token
@@ -61,38 +61,38 @@ public class OysterKit{
     }
     
     public class var blank:TokenizationState{
-        return Char(from: blankString).token("blank")
+        return Characters(from: blankString).token("blank")
     }
     
     public class var whiteSpace:TokenizationState{
-        return Char(from: whiteSpaceString).token("space")
+        return Characters(from: whiteSpaceString).token("space")
     }
     
     public class var lowercaseLetter:TokenizationState{
-        return Char(from: lowerCaseLetterString).token("lower")
+        return Characters(from: lowerCaseLetterString).token("lower")
     }
     
     public class var uppercaseLetter:TokenizationState{
-        return Char(from:upperCaseLetterString).token("upper")
+        return Characters(from:upperCaseLetterString).token("upper")
     }
     
     public class var letter:TokenizationState{
-        return Char(from: lowerCaseLetterString+upperCaseLetterString).token("alpha")
+        return Characters(from: lowerCaseLetterString+upperCaseLetterString).token("alpha")
     }
     
     public class var letterOrDigit:TokenizationState{
-        return Char(from: lowerCaseLetterString+upperCaseLetterString+decimalDigitString).token("alnum")
+        return Characters(from: lowerCaseLetterString+upperCaseLetterString+decimalDigitString).token("alnum")
     }
     
     public class var wordCharacter:TokenizationState{
-        return Char(from: lowerCaseLetterString+upperCaseLetterString+decimalDigitString+"_").token("word")
+        return Characters(from: lowerCaseLetterString+upperCaseLetterString+decimalDigitString+"_").token("word")
     }
     
     
     public class var number:TokenizationState{
-        let decimalDigits = LoopingChar(from:decimalDigitString)
-        let sign = Char(from:"+-")
-        let exponentCharacter = Char(from:"eE")
+        let decimalDigits = LoopingCharacters(from:decimalDigitString)
+        let sign = Characters(from:"+-")
+        let exponentCharacter = Characters(from:"eE")
             
         let floatExit = Exit().token("float")
         let integerExit = Exit().token("integer")
@@ -104,7 +104,7 @@ public class OysterKit{
         
             
         let digitsBeforeDecimalPoint = decimalDigits.clone().branch(
-            Char(from:".").branch(
+            Characters(from:".").branch(
                 decimalDigits.clone().branch(
                     exponent,
                     floatExit   //If there's no eE then it's just a normal float
@@ -125,35 +125,35 @@ public class OysterKit{
     }
     
     public class var word:TokenizationState{
-        return LoopingChar(from: lowerCaseLetterString+upperCaseLetterString+decimalDigitString+"_").token("word")
+        return LoopingCharacters(from: lowerCaseLetterString+upperCaseLetterString+decimalDigitString+"_").token("word")
     }
     
 
     
     public class var blanks:TokenizationState{
-        return LoopingChar(from:blankString).token("blank")
+        return LoopingCharacters(from:blankString).token("blank")
     }
     
     public class var whiteSpaces:TokenizationState{
-        return LoopingChar(from: whiteSpaceString).token(WhiteSpaceToken.createToken)
+        return LoopingCharacters(from: whiteSpaceString).token(WhiteSpaceToken.createToken)
     }
 
     public class func parseState(stateDefinition:String)->TokenizationState?{
-        return _privateTokFileParser().parseState(stateDefinition)
+        return OKScriptParser().parseState(stateDefinition)
     }
     
     public class func parseTokenizer(tokenizerDefinition:String)->Tokenizer?{
-        return _privateTokFileParser().parse(tokenizerDefinition)
+        return OKScriptParser().parse(tokenizerDefinition)
     }
     
     public class Code {
         public class var quotedString:TokenizationState{
         return Delimited(delimiter: "\"", states:
             Repeat(state:Branch().branch(
-                Char(from:"\\").branch(
-                    Char(from:"trn\"\\").token("char")
+                Characters(from:"\\").branch(
+                    Characters(from:"trn\"\\").token("char")
                 ),
-                LoopingChar(except: "\"\\").token("char")
+                LoopingCharacters(except: "\"\\").token("char")
                 ), min: 1, max: nil).token("quoted-string")
             )
         }
@@ -165,10 +165,10 @@ public class OysterKit{
         public class var quotedCharacter:TokenizationState{
         return Delimited(delimiter: "'", states:
             Repeat(state:Branch().branch(
-                Char(from:"\\").branch(
-                    Char(from:"trn'\\").token("char")
+                Characters(from:"\\").branch(
+                    Characters(from:"trn'\\").token("char")
                 ),
-                LoopingChar(except: "'\\").token("char")
+                LoopingCharacters(except: "'\\").token("char")
                 ), min: 1, max: 1).token("char")
             )
         }
@@ -179,8 +179,8 @@ public class OysterKit{
     
         
         public class var variableName:TokenizationState{
-        return Char(from:lowerCaseLetterString+upperCaseLetterString).sequence(
-                LoopingChar(from:lowerCaseLetterString+upperCaseLetterString+decimalDigitString+"_-").token("variable")
+        return Characters(from:lowerCaseLetterString+upperCaseLetterString).sequence(
+                LoopingCharacters(from:lowerCaseLetterString+upperCaseLetterString+decimalDigitString+"_-").token("variable")
             )
         }
     }

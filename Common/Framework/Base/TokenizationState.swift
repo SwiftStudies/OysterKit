@@ -28,7 +28,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Foundation
 
-var __anonymousStateCount:Int = 0
+internal var __anonymousStateCount:Int = 0
 
 //
 // XCode 6 Beta 3 Crashes if two protocols refer to each other, so turning this into a class for now
@@ -54,7 +54,7 @@ public class TokenizationState : Printable, StringLiteralConvertible,Equatable {
     // String Literal
     //
     public class func convertFromStringLiteral(value: String) -> TokenizationState {
-        if let parsedState = OysterKit.parseState(value) {
+        if let parsedState = OKStandard.parseState(value) {
             return parsedState
         }
         
@@ -88,7 +88,7 @@ public class TokenizationState : Printable, StringLiteralConvertible,Equatable {
     //
     // Manage storage of branches
     //
-    func branch(toStates: [TokenizationState]) -> TokenizationState {
+    public func branch(toStates: [TokenizationState]) -> TokenizationState {
         for state in toStates{
             branches.append(state)
         }
@@ -96,7 +96,7 @@ public class TokenizationState : Printable, StringLiteralConvertible,Equatable {
         return self
     }
 
-    func branch(toStates: TokenizationState...) -> TokenizationState {
+    public func branch(toStates: TokenizationState...) -> TokenizationState {
         return branch(toStates)
     }
 
@@ -105,13 +105,13 @@ public class TokenizationState : Printable, StringLiteralConvertible,Equatable {
     //
     // As this method only calls branch, we can provide a concrete implementation here
     //
-    func sequence(ofStates: TokenizationState...) -> TokenizationState {
+    public func sequence(ofStates: TokenizationState...) -> TokenizationState {
         sequence(ofStates)
         
         return self        
     }
     
-    func sequence(ofStates:[TokenizationState]){
+    public func sequence(ofStates:[TokenizationState]){
         branch(ofStates[0])
         for index in 1..<ofStates.count{
             ofStates[index-1].branch(ofStates[index])
@@ -125,7 +125,7 @@ public class TokenizationState : Printable, StringLiteralConvertible,Equatable {
     //
     // Token creation
     //
-    func token(emitToken: String) -> TokenizationState {
+    public func token(emitToken: String) -> TokenizationState {
         token(){(state:TokenizationState, capturedCharacters:String, startIndex:Int)->Token in
             var token = Token(name: emitToken, withCharacters: capturedCharacters)
             token.originalStringIndex = startIndex
@@ -135,7 +135,7 @@ public class TokenizationState : Printable, StringLiteralConvertible,Equatable {
         return self
     }
     
-    func token(emitToken: Token) -> TokenizationState {
+    public func token(emitToken: Token) -> TokenizationState {
         token(){(state:TokenizationState, capturedCharacters:String, startIndex:Int)->Token in
             var token = Token(name: emitToken.name, withCharacters: capturedCharacters)
             token.originalStringIndex = startIndex
@@ -145,13 +145,13 @@ public class TokenizationState : Printable, StringLiteralConvertible,Equatable {
         return self
     }
     
-    func token(with: TokenCreationBlock) -> TokenizationState {
+    public func token(with: TokenCreationBlock) -> TokenizationState {
         tokenGenerator = with
         
         return self
     }
     
-    func clearToken()-> TokenizationState{
+    public func clearToken()-> TokenizationState{
         tokenGenerator = nil
         return self
     }
@@ -223,7 +223,7 @@ public class TokenizationState : Printable, StringLiteralConvertible,Equatable {
     //
     // Object Life Cycle
     //
-    func __copyProperities(from:TokenizationState){
+    internal func __copyProperities(from:TokenizationState){
         if from.tokenGenerator{
             token(from.tokenGenerator!)
         }
@@ -264,7 +264,7 @@ public class TokenizationState : Printable, StringLiteralConvertible,Equatable {
         
     }
     
-    func scan(operation : TokenizeOperation){
+    public func scan(operation : TokenizeOperation){
         scanBranches(operation)
     }
     
@@ -288,7 +288,7 @@ public func ==(lhs:[TokenizationState], rhs:[TokenizationState])->Bool{
     return true
 }
 
-typealias   TokenCreationBlock = ((state:TokenizationState,capturedCharacteres:String,charactersStartIndex:Int)->Token)
+public typealias   TokenCreationBlock = ((state:TokenizationState,capturedCharacteres:String,charactersStartIndex:Int)->Token)
 
 /*
 

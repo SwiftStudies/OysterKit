@@ -16,26 +16,29 @@ func scanDebug(message:String){
     }
 }
 
-protocol EmancipatedTokenizer {
-    func scan(operation:TokenizeOperation)
+public protocol EmancipatedTokenizer {
+     func scan(operation:TokenizeOperation)
 }
 
-class TokenizeOperation : Printable {
-    class Context : Printable {
+public class TokenizeOperation : Printable {
+    public class Context : Printable {
         var tokens = [Token]()
         var consumedCharacters : String {
-            return "\(__sourceString[__startIndex..<__currentIndex])"
+            let substring = __sourceString[__startIndex..<__currentIndex]
+                
+            return substring
         }
 
         let states : [TokenizationState]
-        let __sourceString : String.UnicodeScalarView
+        private let __sourceString : String.UnicodeScalarView
         
-        var __startIndex : String.UnicodeScalarView.IndexType
-        var __currentIndex : String.UnicodeScalarView.IndexType
+        private var __startIndex : String.UnicodeScalarView.IndexType
+        private var __currentIndex : String.UnicodeScalarView.IndexType
+        
         var startPosition : Int
         var currentPosition : Int
         
-        init(atPosition:Int, withMarker:String.UnicodeScalarView.IndexType, withStates:[TokenizationState], forString:String.UnicodeScalarView){
+        private init(atPosition:Int, withMarker:String.UnicodeScalarView.IndexType, withStates:[TokenizationState], forString:String.UnicodeScalarView){
             __startIndex = withMarker
             __currentIndex = __startIndex
             __sourceString = forString
@@ -45,12 +48,12 @@ class TokenizeOperation : Printable {
             states = withStates
         }
         
-        func flushConsumedCharacters(){
+        internal func flushConsumedCharacters(){
             __startIndex = __currentIndex
             startPosition = currentPosition
         }
         
-        var description : String {
+        public var description : String {
             return "Started at: \(startPosition), now at: \(currentPosition), having consumed \(consumedCharacters) and holding \(tokens)"
         }
     }
@@ -61,23 +64,23 @@ class TokenizeOperation : Printable {
     
     var  scanAdvanced = false
 
-    var  __tokenHandler : (Token)->Bool
-    let  __startingStates : [TokenizationState]
+    private var  __tokenHandler : (Token)->Bool
+    private let  __startingStates : [TokenizationState]
     let  eot = UnicodeScalar(4)
-    var  __marker : String.UnicodeScalarView.GeneratorType {
+    private var  __marker : String.UnicodeScalarView.GeneratorType {
     didSet{
         scanAdvanced = true
     }
     }
-    var  __contextStack = [Context]()
-    var  __sourceString : String.UnicodeScalarView
+    private var  __contextStack = [Context]()
+    private var  __sourceString : String.UnicodeScalarView
 
     var  context : Context
     var  complete : Bool {
         return current == eot 
     }
     
-    var description : String {
+    public var description : String {
         var output = "Tokenization Operation State\n\tCurrent=\(current) Next=\(next) scanAdvanced=\(scanAdvanced) Complete=\(complete)\n"
             
         //Print the context stack
@@ -108,7 +111,7 @@ class TokenizeOperation : Printable {
     // The primary entry point for the class, the token receiver will be called
     // whenever a token is published
     //
-    func tokenize(string:String, tokenReceiver : (Token)->(Bool)){
+    public func tokenize(string:String, tokenReceiver : (Token)->(Bool)){
         __tokenHandler = tokenReceiver
         
         //Prepare string
@@ -139,7 +142,7 @@ class TokenizeOperation : Printable {
     //
     // Moves forward in the supplied string
     //
-    func advance(){
+    public func advance(){
         let advancedChar = "\(current)"
 
         if next {
@@ -155,7 +158,7 @@ class TokenizeOperation : Printable {
 //        debug(operation: "advance()")
     }
     
-    func token(token:Token){
+    public func token(token:Token){
         if !(token is Token.EndOfTransmissionToken) {
             context.tokens.append(token)
         }
@@ -167,7 +170,7 @@ class TokenizeOperation : Printable {
     }
     
     
-    func __publishTokens(inContext:Context)->Bool{
+    private func __publishTokens(inContext:Context)->Bool{
         //Do we need to do this at all?
         if inContext.tokens.count == 0 {
             return true
@@ -187,7 +190,7 @@ class TokenizeOperation : Printable {
         return true
     }
 
-    func pushContext(states:[TokenizationState]){
+    public func pushContext(states:[TokenizationState]){
         //Publish any tokens before moving into the new state
         __publishTokens(context)
         
@@ -198,7 +201,7 @@ class TokenizeOperation : Printable {
     }
     
     
-    func popContext(publishTokens:Bool=true){
+    public func popContext(publishTokens:Bool=true){
         let publishedTokens = publishTokens && context.tokens.count > 0
         
         if publishTokens {
@@ -228,7 +231,7 @@ class TokenizeOperation : Printable {
 }
 
 extension TokenizeOperation : EmancipatedTokenizer {
-    func scan(operation:TokenizeOperation) {
+    public func scan(operation:TokenizeOperation) {
         
         scanAdvanced = true
         

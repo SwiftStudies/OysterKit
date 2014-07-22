@@ -33,8 +33,12 @@ protocol Parser{
     func parseString(string:String, withTokenizer:Tokenizer)
 }
 
-class StackParser:Parser{
+public class StackParser:Parser{
     var symbolStack = Array<Token>()
+    
+    public init(){
+        
+    }
     
     func pushToken(symbol: Token) {
         symbolStack.append(symbol)
