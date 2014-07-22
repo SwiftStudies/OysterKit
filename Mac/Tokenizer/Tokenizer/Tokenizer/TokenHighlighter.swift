@@ -85,18 +85,18 @@ class TokenHighlighter : NSObject, NSTextStorageDelegate, NSLayoutManagerDelegat
     func prepareToHighlight(){
         textDidChange()
         
-        let finalRange = editedRange ? editedRange : self.textStorage.editedRange
+        let finalRange = editedRange ? editedRange! : self.textStorage.editedRange
         
-        var actualRangeStart = editedRange.location
-        var actualRangeEnd = editedRange.end
+        var actualRangeStart = finalRange.location
+        var actualRangeEnd = finalRange.end
         var parseLocation = 0
         var foundStart = false
         
         for character in self.textStorage.string as String {
             if character == "\n" {
-                if parseLocation < editedRange.location {
+                if parseLocation < finalRange.location {
                     actualRangeStart = parseLocation
-                } else if parseLocation > editedRange.end{
+                } else if parseLocation > finalRange.end{
                     actualRangeEnd = parseLocation
                     break
                 }
@@ -123,12 +123,16 @@ class TokenHighlighter : NSObject, NSTextStorageDelegate, NSLayoutManagerDelegat
     
     func textStorageDidProcessEditing(notification: NSNotification!) {
         
-        editedRange = editedRange ? editedRange!.unionWith(textStorage.editedRange) : textStorage.editedRange
+//        editedRange = editedRange ? editedRange!.unionWith(textStorage.editedRange) : textStorage.editedRange
         
         if tokenizationOperation.executing {
             return
         }
 
+        editedRange = textStorage.editedRange
+        
+        
+        prepareToHighlight()
     }
     
     func layoutManager(layoutManager: NSLayoutManager!, shouldUseTemporaryAttributes attrs: [NSObject : AnyObject]!, forDrawingToScreen toScreen: Bool, atCharacterIndex charIndex: Int, effectiveRange effectiveCharRange: NSRangePointer) -> [NSObject : AnyObject]! {

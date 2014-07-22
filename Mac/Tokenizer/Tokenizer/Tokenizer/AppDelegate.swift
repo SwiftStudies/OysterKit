@@ -35,14 +35,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
     
     var buildTokenizerTimer : NSTimer?
     
-    @IBOutlet var window: NSWindow
-    @IBOutlet var tokenizerDefinitionScrollView: NSScrollView
-    @IBOutlet var testInputScroller : NSScrollView
-    @IBOutlet var highlighter: TokenHighlighter
-    @IBOutlet var okScriptHighlighter: TokenHighlighter
-    @IBOutlet var colorDictionaryController: NSDictionaryController
+    @IBOutlet var window: NSWindow!
+    @IBOutlet var tokenizerDefinitionScrollView: NSScrollView!
+    @IBOutlet var testInputScroller : NSScrollView!
+    @IBOutlet var highlighter: TokenHighlighter!
+    @IBOutlet var okScriptHighlighter: TokenHighlighter!
+    @IBOutlet var colorDictionaryController: NSDictionaryController!
+    @IBOutlet var buildProgressIndicator: NSProgressIndicator!
     
-    @IBOutlet var buildProgressIndicator: NSProgressIndicator
     var textString:NSString?
     var lastDefinition:String = ""
     var lastInput = ""

@@ -10,12 +10,12 @@ import XCTest
 import OysterKit
 
 class stateTestLoop: XCTestCase {
-    var tokenizer = Tokenizer()
+    var tokenizer = OysterKit.Tokenizer()
     
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        tokenizer = Tokenizer()
+        tokenizer = OysterKit.Tokenizer()
     }
     
     override func tearDown() {
@@ -25,15 +25,15 @@ class stateTestLoop: XCTestCase {
     
     func testLoopingCharDelimitedString(){
         tokenizer.branch(
-            Delimited(delimiter: "\"", states:
-                Repeat(state:Branch().branch(
-                    Char(from:"\\").branch(
-                        Char(from:"trn\"\\").token("character")
+            OysterKit.Delimited(delimiter: "\"", states:
+                Repeat(state:OysterKit.Branch().branch(
+                    OysterKit.Char(from:"\\").branch(
+                        OysterKit.Char(from:"trn\"\\").token("character")
                     ),
-                    LoopingChar(except: "\"\\").token("character")
+                    OysterKit.LoopingChar(except: "\"\\").token("character")
                     ), min: 1, max: nil).token("Char")
                 ).token("quote"),
-            LoopingChar(except: "\u{04}\"").token("otherStuff")
+            OysterKit.LoopingChar(except: "\u{04}\"").token("otherStuff")
         )
         
         let testString = "The \"quick \\\"brown\" fox jumps over the lazy dog"
@@ -47,7 +47,7 @@ class stateTestLoop: XCTestCase {
         
         tokenizer.branch(
             OysterKit.whiteSpaces,
-            LoopingChar(from: lowerCaseLetterString+upperCaseLetterString).token("word"),
+            OysterKit.LoopingChar(from: OysterKit.lowerCaseLetterString+OysterKit.upperCaseLetterString).token("word"),
             OysterKit.eot
         )
         

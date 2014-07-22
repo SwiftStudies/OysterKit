@@ -27,28 +27,28 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Foundation
 
-class Token : Printable{
-    let name:String
-    var characters:String = ""
-    var originalStringIndex:Int?
+public class Token : Printable{
+    public let name:String
+    public var characters:String = ""
+    public var originalStringIndex:Int?
     
     init(name:String){
         self.name = name
     }
 
-    init(name:String, withCharacters:String){
+    public init(name:String, withCharacters:String){
         self.name = name
         self.characters = withCharacters
     }
 
-    init(name:String, withCharacters:String, index:Int){
+    public init(name:String, withCharacters:String, index:Int){
         self.name = name
         self.characters = withCharacters
         self.originalStringIndex = index
     }
     
     
-    var description : String {
+    public var description : String {
         if originalStringIndex {
             return "\(name) '\(characters)' at \(originalStringIndex)"
         } else {
@@ -56,19 +56,19 @@ class Token : Printable{
         }
     }
     
-    class func createToken(state:TokenizationState,capturedCharacters:String,startIndex:Int)->Token{
+    public class func createToken(state:TokenizationState,capturedCharacters:String,startIndex:Int)->Token{
         var token = Token(name:"Token",withCharacters:capturedCharacters)
         token.originalStringIndex = startIndex
         return token
     }
     
-    class EndOfTransmissionToken : Token {
+    public class EndOfTransmissionToken : Token {
         init(){
             super.init(name: "End of Transmission",withCharacters: "")
         }
     }
     
-    class ErrorToken: Token{
+    public class ErrorToken: Token{
         let problem : String
         
         init(forString:String, problemDescription:String){
@@ -81,7 +81,7 @@ class Token : Printable{
             super.init(name: "Error", withCharacters: "\(forCharacter)")
         }
         
-        override var description:String {
+        public override var description:String {
             return super.description+" - "+problem
         }
     }

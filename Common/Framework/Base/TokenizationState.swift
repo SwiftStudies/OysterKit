@@ -33,7 +33,7 @@ var __anonymousStateCount:Int = 0
 //
 // XCode 6 Beta 3 Crashes if two protocols refer to each other, so turning this into a class for now
 //
-class TokenizationState : Printable, StringLiteralConvertible,Equatable {
+public class TokenizationState : Printable, StringLiteralConvertible,Equatable {
     var tokenGenerator : TokenCreationBlock?
     var id : String = ""
     var reference : String?
@@ -53,7 +53,7 @@ class TokenizationState : Printable, StringLiteralConvertible,Equatable {
     //
     // String Literal
     //
-    class func convertFromStringLiteral(value: String) -> TokenizationState {
+    public class func convertFromStringLiteral(value: String) -> TokenizationState {
         if let parsedState = OysterKit.parseState(value) {
             return parsedState
         }
@@ -61,7 +61,7 @@ class TokenizationState : Printable, StringLiteralConvertible,Equatable {
         return TokenizationState()
     }
     
-    class func convertFromExtendedGraphemeClusterLiteral(value: String) -> TokenizationState {
+    public class func convertFromExtendedGraphemeClusterLiteral(value: String) -> TokenizationState {
         return TokenizationState.convertFromStringLiteral(value)
     }
     
@@ -216,7 +216,7 @@ class TokenizationState : Printable, StringLiteralConvertible,Equatable {
         return ""
     }
 
-    var description:String{
+    public var description:String{
         return serialize("")
     }
     
@@ -270,11 +270,11 @@ class TokenizationState : Printable, StringLiteralConvertible,Equatable {
     
 }
 
-func ==(lhs: TokenizationState, rhs: TokenizationState) -> Bool{
+public func ==(lhs: TokenizationState, rhs: TokenizationState) -> Bool{
     return lhs.isEqualTo(rhs)
 }
 
-func ==(lhs:[TokenizationState], rhs:[TokenizationState])->Bool{
+public func ==(lhs:[TokenizationState], rhs:[TokenizationState])->Bool{
     if lhs.count != rhs.count {
         return false
     }

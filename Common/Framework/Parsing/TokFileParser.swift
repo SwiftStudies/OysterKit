@@ -26,10 +26,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Foundation
 
-class TokenizerFile : Tokenizer {
+public class TokenizerFile : Tokenizer {
     
     
-    init(){
+    public init(){
         super.init()
         //Eventually this will be it's own file
         

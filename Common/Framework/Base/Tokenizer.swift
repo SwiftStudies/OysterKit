@@ -30,25 +30,25 @@ import Foundation
 
 let __emancipateStates = true
 
-class Tokenizer : TokenizationState {
+public class Tokenizer : TokenizationState {
     var namedStates = [String:Named]()
     
-    init(){
+    public init(){
         super.init()
     }
     
-    init(states:[TokenizationState]){
+    public init(states:[TokenizationState]){
         super.init()
         branches = states
     }
     
-    func tokenize(string: String, newToken: (Token)->Bool) {
+    public func tokenize(string: String, newToken: (Token)->Bool) {
         var emancipatedTokenization = TokenizeOperation(legacyTokenizer: self)
         
         emancipatedTokenization.tokenize(string, tokenReceiver: newToken)
     }
     
-    func tokenize(string:String) -> Array<Token>{
+    public func tokenize(string:String) -> Array<Token>{
         var tokens = Array<Token>()
         
         tokenize(string, newToken: {(token:Token)->Bool in
@@ -59,14 +59,14 @@ class Tokenizer : TokenizationState {
         return tokens
     }
     
-    override class func convertFromStringLiteral(value: String) -> Tokenizer {
+    override public class func convertFromStringLiteral(value: String) -> Tokenizer {
         if let parsedTokenizer = OysterKit.parseTokenizer(value) {
             return parsedTokenizer
         }
         return Tokenizer()
     }
     
-    override class func convertFromExtendedGraphemeClusterLiteral(value: String) -> Tokenizer {
+    override public class func convertFromExtendedGraphemeClusterLiteral(value: String) -> Tokenizer {
         return Tokenizer.convertFromStringLiteral(value)
     }
     

@@ -38,21 +38,21 @@ let lowerCaseLetterString = "abcdefghijklmnopqrstuvwxyz"
 let upperCaseLetterString = lowerCaseLetterString.uppercaseString
 let eotString = "\u{0004}"
 
-class OysterKit{
+public class OysterKit{
     //Public
-    class var decimalDigit:TokenizationState{
+    public class var decimalDigit:TokenizationState{
         return Char(from: decimalDigitString).token("digit")
     }
     
-    class var hexDigit:TokenizationState{
+    public class var hexDigit:TokenizationState{
         return Char(from: hexDigitString).token("xdigit")
     }
     
-    class var punctuation:TokenizationState{
+    public class var punctuation:TokenizationState{
         return Char(from: puncuationString).token("punct")
     }
     
-    class var eot:TokenizationState{
+    public class var eot:TokenizationState{
             return Char(from:"\u{0004}").token(){ (state:TokenizationState, capturedCharacters:String, startIndex:Int)->Token in
             var token = Token.EndOfTransmissionToken()
             token.originalStringIndex = startIndex
@@ -60,36 +60,36 @@ class OysterKit{
         }
     }
     
-    class var blank:TokenizationState{
+    public class var blank:TokenizationState{
         return Char(from: blankString).token("blank")
     }
     
-    class var whiteSpace:TokenizationState{
+    public class var whiteSpace:TokenizationState{
         return Char(from: whiteSpaceString).token("space")
     }
     
-    class var lowercaseLetter:TokenizationState{
+    public class var lowercaseLetter:TokenizationState{
         return Char(from: lowerCaseLetterString).token("lower")
     }
     
-    class var uppercaseLetter:TokenizationState{
+    public class var uppercaseLetter:TokenizationState{
         return Char(from:upperCaseLetterString).token("upper")
     }
     
-    class var letter:TokenizationState{
+    public class var letter:TokenizationState{
         return Char(from: lowerCaseLetterString+upperCaseLetterString).token("alpha")
     }
     
-    class var letterOrDigit:TokenizationState{
+    public class var letterOrDigit:TokenizationState{
         return Char(from: lowerCaseLetterString+upperCaseLetterString+decimalDigitString).token("alnum")
     }
     
-    class var wordCharacter:TokenizationState{
+    public class var wordCharacter:TokenizationState{
         return Char(from: lowerCaseLetterString+upperCaseLetterString+decimalDigitString+"_").token("word")
     }
     
     
-    class var number:TokenizationState{
+    public class var number:TokenizationState{
         let decimalDigits = LoopingChar(from:decimalDigitString)
         let sign = Char(from:"+-")
         let exponentCharacter = Char(from:"eE")
@@ -124,30 +124,30 @@ class OysterKit{
         return number
     }
     
-    class var word:TokenizationState{
+    public class var word:TokenizationState{
         return LoopingChar(from: lowerCaseLetterString+upperCaseLetterString+decimalDigitString+"_").token("word")
     }
     
 
     
-    class var blanks:TokenizationState{
+    public class var blanks:TokenizationState{
         return LoopingChar(from:blankString).token("blank")
     }
     
-    class var whiteSpaces:TokenizationState{
+    public class var whiteSpaces:TokenizationState{
         return LoopingChar(from: whiteSpaceString).token(WhiteSpaceToken.createToken)
     }
 
-    class func parseState(stateDefinition:String)->TokenizationState?{
+    public class func parseState(stateDefinition:String)->TokenizationState?{
         return _privateTokFileParser().parseState(stateDefinition)
     }
     
-    class func parseTokenizer(tokenizerDefinition:String)->Tokenizer?{
+    public class func parseTokenizer(tokenizerDefinition:String)->Tokenizer?{
         return _privateTokFileParser().parse(tokenizerDefinition)
     }
     
-    class Code {
-        class var quotedString:TokenizationState{
+    public class Code {
+        public class var quotedString:TokenizationState{
         return Delimited(delimiter: "\"", states:
             Repeat(state:Branch().branch(
                 Char(from:"\\").branch(
@@ -158,11 +158,11 @@ class OysterKit{
             )
         }
         
-        class var quotedStringIncludingQuotes:TokenizationState{
+        public class var quotedStringIncludingQuotes:TokenizationState{
             return quotedString.token("double-quote")
         }
         
-        class var quotedCharacter:TokenizationState{
+        public class var quotedCharacter:TokenizationState{
         return Delimited(delimiter: "'", states:
             Repeat(state:Branch().branch(
                 Char(from:"\\").branch(
@@ -173,12 +173,12 @@ class OysterKit{
             )
         }
         
-        class var quotedCharacterIncludingQuotes:TokenizationState{
+        public class var quotedCharacterIncludingQuotes:TokenizationState{
         return quotedCharacter.token("quote")
         }
     
         
-        class var variableName:TokenizationState{
+        public class var variableName:TokenizationState{
         return Char(from:lowerCaseLetterString+upperCaseLetterString).sequence(
                 LoopingChar(from:lowerCaseLetterString+upperCaseLetterString+decimalDigitString+"_-").token("variable")
             )
