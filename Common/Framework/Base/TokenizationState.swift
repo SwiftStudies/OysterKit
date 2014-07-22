@@ -235,7 +235,7 @@ public class TokenizationState : Printable, StringLiteralConvertible,Equatable {
         reference = from.reference
     }
     
-    func clone()->TokenizationState {
+    public func clone()->TokenizationState {
         var newState = TokenizationState()
         newState.__copyProperities(self)
         return newState

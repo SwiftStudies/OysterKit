@@ -72,7 +72,7 @@ public class Branch : TokenizationState {
     }
     
     
-    override func clone()->TokenizationState {
+    override public func clone()->TokenizationState {
         var newState = Branch()
         newState.__copyProperities(self)
         return newState

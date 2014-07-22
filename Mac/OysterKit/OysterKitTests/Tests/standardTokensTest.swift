@@ -72,6 +72,7 @@ class standardTokensTest: XCTestCase {
         
         let parsingTest = "Short 10 string"
         
+        
         XCTAssert(tokenizer.tokenize(parsingTest) == [token("word",chars:"Short"), token("blank",chars:" "), token("integer",chars:"10"), token("blank",chars:" "), token("word",chars:"string"), ])
     }
     
@@ -87,7 +88,9 @@ class standardTokensTest: XCTestCase {
 
         let parsingTest = "Short\tlittle\nstring that\n tries \tto  break \n\tthings         up"
         
-        XCTAssert(tokenizer.tokenize(parsingTest) == [token("word",chars:"Short"), token("whitespace",chars:"\t"), token("word",chars:"little"), token("whitespace",chars:"\n"), token("word",chars:"string"), token("whitespace",chars:" "), token("word",chars:"that"), token("whitespace",chars:"\n "), token("word",chars:"tries"), token("whitespace",chars:" \t"), token("word",chars:"to"), token("whitespace",chars:"  "), token("word",chars:"break"), token("whitespace",chars:" \n\t"), token("word",chars:"things"), token("whitespace",chars:"         "), token("word",chars:"up"), ])        
+        __debugScanning = true
+        assertTokenListsEqual(tokenizer.tokenize(parsingTest), reference: [token("word",chars:"Short"), token("whitespace",chars:"\t"), token("word",chars:"little"), token("whitespace",chars:"\n"), token("word",chars:"string"), token("whitespace",chars:" "), token("word",chars:"that"), token("whitespace",chars:"\n "), token("word",chars:"tries"), token("whitespace",chars:" \t"), token("word",chars:"to"), token("whitespace",chars:"  "), token("word",chars:"break"), token("whitespace",chars:" \n\t"), token("word",chars:"things"), token("whitespace",chars:"         "), token("word",chars:"up"), ])
+        __debugScanning = false
     }
     
     func testQuotedString(){

@@ -54,7 +54,7 @@ public class Named : TokenizationState {
         }
     }
     
-    override func clone()->TokenizationState {
+    override public func clone()->TokenizationState {
         //Create a "new" named state with the root set as a clone of our root
         var newState = Named(name:name,root: rootState.clone())
         

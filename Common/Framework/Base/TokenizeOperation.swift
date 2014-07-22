@@ -8,7 +8,7 @@
 
 import Foundation
 
-let __debugScanning = false
+public var __debugScanning = false
 
 func scanDebug(message:String){
     if __debugScanning {
@@ -30,15 +30,15 @@ public class TokenizeOperation : Printable {
         }
 
         let states : [TokenizationState]
-        private let __sourceString : String.UnicodeScalarView
+        private let __sourceString : String
         
-        private var __startIndex : String.UnicodeScalarView.IndexType
-        private var __currentIndex : String.UnicodeScalarView.IndexType
+        private var __startIndex : String.IndexType
+        private var __currentIndex : String.IndexType
         
         var startPosition : Int
         var currentPosition : Int
         
-        private init(atPosition:Int, withMarker:String.UnicodeScalarView.IndexType, withStates:[TokenizationState], forString:String.UnicodeScalarView){
+        private init(atPosition:Int, withMarker:String.IndexType, withStates:[TokenizationState], forString:String){
             __startIndex = withMarker
             __currentIndex = __startIndex
             __sourceString = forString
@@ -59,21 +59,21 @@ public class TokenizeOperation : Printable {
     }
     
     
-    var  current : UnicodeScalar
-    var  next : UnicodeScalar?
+    var  current : Character
+    var  next : Character?
     
     var  scanAdvanced = false
 
     private var  __tokenHandler : (Token)->Bool
     private let  __startingStates : [TokenizationState]
-    let  eot = UnicodeScalar(4)
-    private var  __marker : String.UnicodeScalarView.GeneratorType {
+    let  eot : Character = "\u{04}"
+    private var  __marker : String.GeneratorType {
     didSet{
         scanAdvanced = true
     }
     }
     private var  __contextStack = [Context]()
-    private var  __sourceString : String.UnicodeScalarView
+    private var  __sourceString : String
 
     var  context : Context
     var  complete : Bool {
@@ -93,7 +93,7 @@ public class TokenizeOperation : Printable {
     
     //For now, to help with compatibility
     init(legacyTokenizer:Tokenizer){
-        __sourceString = "\u{0004}".unicodeScalars
+        __sourceString = "\u{0004}"
         __marker = __sourceString.generate()
         current = __marker.next()!
         next = __marker.next()
@@ -104,7 +104,7 @@ public class TokenizeOperation : Printable {
             return false
         }
         
-        context = Context(atPosition: 0, withMarker: "".unicodeScalars.startIndex, withStates: [], forString: "".unicodeScalars)
+        context = Context(atPosition: 0, withMarker: "".startIndex, withStates: [], forString: "")
     }
     
     //
@@ -115,7 +115,7 @@ public class TokenizeOperation : Printable {
         __tokenHandler = tokenReceiver
         
         //Prepare string
-        __sourceString = string.unicodeScalars
+        __sourceString = string
         __marker = __sourceString.generate()
         
         //Prepare stack and context
@@ -143,19 +143,15 @@ public class TokenizeOperation : Printable {
     // Moves forward in the supplied string
     //
     public func advance(){
-        let advancedChar = "\(current)"
-
         if next {
             current = next!
             next = __marker.next()
         } else {
             current = eot
         }
-
+        
         context.__currentIndex++
         context.currentPosition++
-        
-//        debug(operation: "advance()")
     }
     
     public func token(token:Token){

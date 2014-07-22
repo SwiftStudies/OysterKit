@@ -131,7 +131,7 @@ public class Repeat : TokenizationState{
         return output+serializeBranches(indentation+"\t")
     }
         
-    override func clone()->TokenizationState {
+    override public func clone()->TokenizationState {
         var newState = Repeat(state: repeatingState.clone(), min: minimumRepeats, max: maximumRepeats)
         newState.__copyProperities(self)
 

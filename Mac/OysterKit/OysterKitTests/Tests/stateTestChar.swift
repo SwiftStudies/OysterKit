@@ -24,9 +24,11 @@ class stateTestChar: XCTestCase {
     }
 
     func testChar(){
+        
+        
         tokenizer.branch(
             char("xyz1").token("character"),
-            OysterKit.eot
+            OKStandard.eot
         )
                 
         XCTAssert(tokenizer.tokenize("x1z") == [token("character",chars: "x"), token("character",chars: "1"),token("character",chars: "z"),])

@@ -13,8 +13,8 @@ class cloneTests: XCTestCase {
     var ot = Tokenizer()
     var ct = Tokenizer()
     
-    let aToken = Char(from: "A").token("A")
-    let bToken = Char(from: "B").token("B")
+    let aToken = Characters(from: "A").token("A")
+    let bToken = Characters(from: "B").token("B")
 
     let testABString = "AABBBAABA"
     
@@ -77,10 +77,10 @@ class cloneTests: XCTestCase {
     
     func testDelimitedClone() {
         let sentance = Branch().branch(
-            OysterKit.blanks,
-            OysterKit.word,
-            OysterKit.Code.quotedCharacterIncludingQuotes,
-            OysterKit.eot
+            OKStandard.blanks,
+            OKStandard.word,
+            OKStandard.Code.quotedCharacterIncludingQuotes,
+            OKStandard.eot
         )
         
         tokenizersProduceSameOutput(sentance, testString: "The 'quick' brown fox jumped over the 'lazy' dog")

@@ -10,6 +10,14 @@ import Foundation
 
 public class LoopingCharacters : Characters {
     
+    public init(except: String) {
+        super.init(except: except)
+    }
+    
+    public init(from: String) {
+        super.init(from:from)
+    }
+    
     override func stateClassName()->String {
         return "LoopingChar \(allowedCharacters)"
     }
@@ -18,7 +26,7 @@ public class LoopingCharacters : Characters {
         return "*"+super.annotations()
     }
 
-    override func clone() -> TokenizationState {
+    override public func clone() -> TokenizationState {
         var newState = LoopingCharacters(from: "\(allowedCharacters)")
         
         newState.__copyProperities(self)

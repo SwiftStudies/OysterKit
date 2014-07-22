@@ -86,7 +86,7 @@ public class Keywords : TokenizationState {
         return output+serializeBranches(indentation+"\t")
     }
     
-    override func clone() -> TokenizationState {
+    override public func clone() -> TokenizationState {
         var newState = Keywords(validStrings: validStrings)
         
         newState.__copyProperities(self)

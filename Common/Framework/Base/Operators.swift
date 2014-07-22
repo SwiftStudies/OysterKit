@@ -46,13 +46,13 @@ public func sequence(states:TokenizationState...)->TokenizationState{
 //
 // Tokens are considered equal if they have the same name and characters
 //
-@infix func == (left: Token, right: Token) -> Bool {
+@infix public func == (left: Token, right: Token) -> Bool {
     return (left.name == right.name) && (left.characters == right.characters)
 }
-@infix func != (left: Token, right: Token) -> Bool {
+@infix public func != (left: Token, right: Token) -> Bool {
     return !(left == right)
 }
-@infix func == (left: Array<Token>, right: Array<Token>) -> Bool {
+@infix public func == (left: Array<Token>, right: Array<Token>) -> Bool {
     if left.count != right.count {
         return false
     }
@@ -65,7 +65,7 @@ public func sequence(states:TokenizationState...)->TokenizationState{
 
     return true
 }
-@infix func != (left: Array<Token>, right: Array<Token>) -> Bool {
+@infix public func != (left: Array<Token>, right: Array<Token>) -> Bool {
     return !(left == right)
 }
 

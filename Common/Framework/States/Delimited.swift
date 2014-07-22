@@ -48,13 +48,13 @@ public class Delimited : TokenizationState{
     }
  
     
-    let openingDelimiter:UnicodeScalar
+    let openingDelimiter:Character
     
     var delimetedStates:Array<TokenizationState>
     let poppingState:PoppingChar
 
     public init(open:String,close:String,states:TokenizationState...){
-        self.openingDelimiter = open.unicodeScalars[open.unicodeScalars.startIndex]
+        self.openingDelimiter = open[open.startIndex]
         self.delimetedStates = states
         self.poppingState = PoppingChar(from: close)
         
@@ -82,8 +82,8 @@ public class Delimited : TokenizationState{
         return self
     }
 
-    init(delimiter:String,states:TokenizationState...){
-        self.openingDelimiter = delimiter.unicodeScalars[delimiter.unicodeScalars.startIndex]
+    public init(delimiter:String,states:TokenizationState...){
+        self.openingDelimiter = delimiter[delimiter.startIndex]
         self.delimetedStates = states
         self.poppingState = PoppingChar(from:delimiter)
         
@@ -126,8 +126,8 @@ public class Delimited : TokenizationState{
     //
     // Serialization
     //
-    func escapeDelimiter(delimiter:UnicodeScalar)->String {
-        if "\(delimiter)" == "'" {
+    func escapeDelimiter(delimiter:Character)->String {
+        if delimiter == "'" {
             return "\\'"
         }
         return "\(delimiter)"
@@ -154,7 +154,7 @@ public class Delimited : TokenizationState{
         return output+">"+serializeBranches(indentation+"\t")
     }
 
-    override func clone() -> TokenizationState {
+    override public func clone() -> TokenizationState {
         var newState = Delimited(open: "\(openingDelimiter)", close: "\(poppingState.allowedCharacters)")
         
         for delimitedState in delimetedStates {

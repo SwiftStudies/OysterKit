@@ -21,7 +21,7 @@
 		427BB02E196248770006829F /* TokenizationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB020196248770006829F /* TokenizationState.swift */; };
 		427BB02F196248770006829F /* Tokenizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB021196248770006829F /* Tokenizer.swift */; };
 		427BB031196248770006829F /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB025196248770006829F /* Parser.swift */; };
-		427BB032196248770006829F /* OysterKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB026196248770006829F /* OysterKit.swift */; };
+		427BB032196248770006829F /* OKStandard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB026196248770006829F /* OKStandard.swift */; };
 		427BB033196248770006829F /* Branch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB028196248770006829F /* Branch.swift */; };
 		427BB034196248770006829F /* Delimited.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB029196248770006829F /* Delimited.swift */; };
 		427BB035196248770006829F /* Repeat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB02A196248770006829F /* Repeat.swift */; };
@@ -181,7 +181,7 @@
 		427BB020196248770006829F /* TokenizationState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenizationState.swift; sourceTree = "<group>"; };
 		427BB021196248770006829F /* Tokenizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tokenizer.swift; sourceTree = "<group>"; };
 		427BB025196248770006829F /* Parser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
-		427BB026196248770006829F /* OysterKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OysterKit.swift; sourceTree = "<group>"; };
+		427BB026196248770006829F /* OKStandard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OKStandard.swift; sourceTree = "<group>"; };
 		427BB028196248770006829F /* Branch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Branch.swift; sourceTree = "<group>"; };
 		427BB029196248770006829F /* Delimited.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Delimited.swift; sourceTree = "<group>"; };
 		427BB02A196248770006829F /* Repeat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Repeat.swift; sourceTree = "<group>"; };
@@ -287,7 +287,7 @@
 		427BB01C196248770006829F /* Framework */ = {
 			isa = PBXGroup;
 			children = (
-				427BB026196248770006829F /* OysterKit.swift */,
+				427BB026196248770006829F /* OKStandard.swift */,
 				427BB0981962FA950006829F /* Tokens */,
 				427BB01D196248770006829F /* Base */,
 				427BB024196248770006829F /* Parsing */,
@@ -470,7 +470,7 @@
 				42994760197418C000E281FB /* Exit.swift in Sources */,
 				4232D7AA196FBCA500A3F93C /* Named.swift in Sources */,
 				427BB02F196248770006829F /* Tokenizer.swift in Sources */,
-				427BB032196248770006829F /* OysterKit.swift in Sources */,
+				427BB032196248770006829F /* OKStandard.swift in Sources */,
 				427BB035196248770006829F /* Repeat.swift in Sources */,
 				42DAC17A196D3FC50062F91E /* LoopingCharacters.swift in Sources */,
 				427BB036196248770006829F /* Characters.swift in Sources */,

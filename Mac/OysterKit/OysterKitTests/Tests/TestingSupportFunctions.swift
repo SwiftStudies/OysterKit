@@ -40,7 +40,7 @@ func token(name:String,chars:String?=nil)->Token{
 }
 
 func char(chars:String)->TokenizationState{
-    return Char(from:chars)
+    return Characters(from:chars)
 }
 
 func printAsTest(tokenizer:Tokenizer, string:String, variableName:String){

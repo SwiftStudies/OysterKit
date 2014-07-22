@@ -26,8 +26,8 @@ class stateTestRepeat: XCTestCase {
     func testRepeat2HexDigits(){
         //Test for 2
         tokenizer.branch(
-            Repeat(state:OysterKit.hexDigit, min:2,max:2).token("xx"),
-            OysterKit.eot
+            Repeat(state:OKStandard.hexDigit, min:2,max:2).token("xx"),
+            OKStandard.eot
         )
                 
         XCTAssert(tokenizer.tokenize("AF") == [token("xx",chars:"AF")])
@@ -37,8 +37,8 @@ class stateTestRepeat: XCTestCase {
     
     func testRepeat4HexDigits(){
         tokenizer.branch(
-            Repeat(state:OysterKit.hexDigit, min:4,max:4).token("xx"),
-            OysterKit.eot
+            Repeat(state:OKStandard.hexDigit, min:4,max:4).token("xx"),
+            OKStandard.eot
         )
         
         XCTAssert(tokenizer.tokenize("AF00") == [token("xx",chars:"AF00")])
@@ -58,7 +58,7 @@ class stateTestRepeat: XCTestCase {
             Repeat(state:Branch().branch(
                 sequence(char("x"),char("y").token("xy"))
                 ),min:3,max:3).token("xyxyxy"),
-            OysterKit.eot
+            OKStandard.eot
         )
         
         XCTAssert(tokenizer.tokenize("xyxyxy") == [token("xyxyxy")])
@@ -66,9 +66,9 @@ class stateTestRepeat: XCTestCase {
 
     func testSentance(){
         tokenizer.branch(
-            OysterKit.word,
-            OysterKit.whiteSpaces,
-            OysterKit.eot
+            OKStandard.word,
+            OKStandard.whiteSpaces,
+            OKStandard.eot
         )
         
         XCTAssert(tokenizer.tokenize("Quick fox") == [token("word",chars: "Quick"), token("whitespace",chars: " "),token("word",chars: "fox")])

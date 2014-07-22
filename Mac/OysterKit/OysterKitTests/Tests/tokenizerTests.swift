@@ -32,23 +32,23 @@ class tokenizerTests: XCTestCase {
         var regexCharacterTokenizer = Tokenizer()
         
         let singleAnchors = Branch().branch(
-            Char(from:"^").token("character"),
-            Char(from:"$").token("character")
+            Characters(from:"^").token("character"),
+            Characters(from:"$").token("character")
         )
         
-        let escapedAnchors = Char(from:"\\").branch(
-            Char(from:escapedControlCodes+escapedAnchorCharacters+escapedRegexSyntax+escapedCharacterClasses).token("character"),
-            Char(from:"x").branch(
-                Repeat(state: OysterKit.hexDigit, min:2,max:2).token("character"),
-                Char(from: "{").sequence(
-                    Repeat(state: OysterKit.hexDigit, min: 4, max: 4),
-                    Char(from: "}").token("character")
+        let escapedAnchors = Characters(from:"\\").branch(
+            Characters(from:escapedControlCodes+escapedAnchorCharacters+escapedRegexSyntax+escapedCharacterClasses).token("character"),
+            Characters(from:"x").branch(
+                Repeat(state: OKStandard.hexDigit, min:2,max:2).token("character"),
+                Characters(from: "{").sequence(
+                    Repeat(state: OKStandard.hexDigit, min: 4, max: 4),
+                    Characters(from: "}").token("character")
                 )
             )
         )
         
         tokenizer.branch(
-            OysterKit.eot,
+            OKStandard.eot,
             singleAnchors,
             escapedAnchors
         )
@@ -59,7 +59,7 @@ class tokenizerTests: XCTestCase {
     }
     
     func testTokenizerFileChar(){
-        var tokenizer = _privateTokFileParser().parse("{\"0123456789\"->digit}")
+        var tokenizer = OKScriptParser().parse("{\"0123456789\"->digit}")
         
         var tokens = tokenizer.tokenize("0123456789")
         
@@ -75,7 +75,7 @@ class tokenizerTests: XCTestCase {
     }
     
     func testTokenizerFileBranch(){
-        var tokenizer = _privateTokFileParser().parse("{\"0123456789\"->digit,\"ABCDEFGHIJKLMNOPQRSTUVWXYZ\"->capital}")
+        var tokenizer = OKScriptParser().parse("{\"0123456789\"->digit,\"ABCDEFGHIJKLMNOPQRSTUVWXYZ\"->capital}")
         
         var tokens = tokenizer.tokenize("123ABC")
         
@@ -83,12 +83,12 @@ class tokenizerTests: XCTestCase {
     }
     
     func testTokenizerFileRepeat(){
-        var tokenizer = _privateTokFileParser().parse("{(\"0123456789\"->digit)->positiveInteger}")
+        var tokenizer = OKScriptParser().parse("{(\"0123456789\"->digit)->positiveInteger}")
         var tokens = tokenizer.tokenize("123")
         
         XCTAssert(tokens.count == 1)
         
-        tokenizer = _privateTokFileParser().parse("{(\"0123456789\"->digit,1,2)->positiveInteger}")
+        tokenizer = OKScriptParser().parse("{(\"0123456789\"->digit,1,2)->positiveInteger}")
         tokens = tokenizer.tokenize("123")
         
         XCTAssert(tokens.count == 2)
@@ -96,12 +96,12 @@ class tokenizerTests: XCTestCase {
     
     func testTokenizerChain(){
         //No real pressure on the branches
-        var tokenizer = _privateTokFileParser().parse("{\"i\".\"O\".\"S\"->iOS}")
+        var tokenizer = OKScriptParser().parse("{\"i\".\"O\".\"S\"->iOS}")
         var tokens = tokenizer.tokenize("iOS")
         XCTAssert(tokens.count == 1)
         
         //Branch to one of two tokens
-        tokenizer = _privateTokFileParser().parse("{\"i\".\"O\".\"S\"->iOS,\"O\".\"S\".\"-\".\"X\"->OSX}")
+        tokenizer = OKScriptParser().parse("{\"i\".\"O\".\"S\"->iOS,\"O\".\"S\".\"-\".\"X\"->OSX}")
         tokens = tokenizer.tokenize("OS-X")
         XCTAssert(tokens.count == 1)
 
@@ -112,7 +112,7 @@ class tokenizerTests: XCTestCase {
     
     func testTokenizerDelimited(){
         let testString = "{<'(',')',{({!\")\"->delimitedChar})->bracketedString}>->delimiterCharacters}"
-        var tokenizer = _privateTokFileParser().parse(testString)
+        var tokenizer = OKScriptParser().parse(testString)
         
         var tokens = tokenizer.tokenize("(abcdefghij)")
         
@@ -120,7 +120,7 @@ class tokenizerTests: XCTestCase {
     }
     
     func testRecursiveChar(){
-        println(OysterKit.parseState(Char(from:"hello").token("hi").description)!.description)
+        println(OKStandard.parseState(Characters(from:"hello").token("hi").description)!.description)
     }
     
 
@@ -133,7 +133,7 @@ class tokenizerTests: XCTestCase {
         }
         
         self.measureBlock() {
-            let generatedTokenizer = OysterKit.parseTokenizer(tokFileTokDef!)
+            let generatedTokenizer = OKStandard.parseTokenizer(tokFileTokDef!)
             let parserGeneratedTokens = generatedTokenizer?.tokenize(tokFileTokDef!)
         }
     }
@@ -150,7 +150,7 @@ class tokenizerTests: XCTestCase {
             tokFileTokDef += tokFileTokDef
             
             self.measureBlock() {
-                let parserGeneratedTokens = TokenizerFile().tokenize(tokFileTokDef)
+                let parserGeneratedTokens = OKScriptTokenizer().tokenize(tokFileTokDef)
             }
         }
         

@@ -26,9 +26,9 @@ class stateTestBranch: XCTestCase {
     func testBranch(){
         
         tokenizer.branch(
-            Characters("x").branch(
-                Characters("y").token("xy"),
-                Characters("z").token("xz")
+            char("x").branch(
+                char("y").token("xy"),
+                char("z").token("xz")
             ),
             OKStandard.eot
         )
@@ -93,7 +93,7 @@ class stateTestBranch: XCTestCase {
         
         tokenizer.branch(
             sequence(char("x"),char("y"),char("z").token("done")),
-            OysterKit.eot
+            OKStandard.eot
         )
         
         XCTAssert(tokenizer.tokenize("xyz") == expectedResults)

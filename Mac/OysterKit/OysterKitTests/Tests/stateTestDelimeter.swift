@@ -25,8 +25,8 @@ class stateTestDelimeter: XCTestCase {
 
     func testSimple() {
         tokenizer.branch(
-            Delimited(delimiter: "\"", states:OysterKit.letter).token("quoted-string"),
-            OysterKit.eot
+            Delimited(delimiter: "\"", states:OKStandard.letter).token("quoted-string"),
+            OKStandard.eot
         )
         
         // This is an example of a functional test case.
@@ -42,15 +42,15 @@ class stateTestDelimeter: XCTestCase {
             Delimited(delimiter:"\"",states:
                 char("\\").branch(
                     char("t\"").token("character"),
-                    Delimited(open:"(",close:")",states:OysterKit.word).token("inline")
+                    Delimited(open:"(",close:")",states:OKStandard.word).token("inline")
                 ),
-                Char(except:"\"").token("character")
+                Characters(except:"\"").token("character")
                 ).token("quoted-string"),
-            OysterKit.blanks,
-            OysterKit.number,
-            OysterKit.word,
-            OysterKit.punctuation,
-            OysterKit.eot
+            OKStandard.blanks,
+            OKStandard.number,
+            OKStandard.word,
+            OKStandard.punctuation,
+            OKStandard.eot
         )
         
         

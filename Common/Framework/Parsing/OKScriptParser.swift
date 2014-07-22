@@ -157,10 +157,14 @@ class ChainStateOperator : Operator {
 public class OKScriptParser:StackParser{
     var invert:Bool = false
     var loop:Bool = false
-    var errors = [String]()
+    public var errors = [String]()
     var finishedNamedStates = false
     
     var definedNamedStates = [String:Named]()
+    
+    public init(){
+        super.init()
+    }
     
     func invokeOperator(onToken:Token){
         if hasTokens() {
@@ -610,7 +614,7 @@ public class OKScriptParser:StackParser{
         debugState()        
     }
     
-    func parse(string: String) -> Tokenizer {
+    public func parse(string: String) -> Tokenizer {
         var tokenizer = Tokenizer()
         
         tokenizer.branch(parseState(string))

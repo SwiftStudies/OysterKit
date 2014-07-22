@@ -28,15 +28,15 @@ class stateTestKeywords: XCTestCase {
     func testKeywords() {
         tokenizer.branch(
             Keywords(validStrings: ["let","var","func"]).branch(
-                    OysterKit.word.token("variable"),
+                    OKStandard.word.token("variable"),
                     Exit().token("keyword")
                 ),
-            OysterKit.word.token("variable"),
-            OysterKit.blanks.clearToken(),
-            Char(from:"=").token("assign"),
-            Char(from:"+-*/").token("operator"),
-            Char(from:";\n"),
-            OysterKit.eot
+            OKStandard.word.token("variable"),
+            OKStandard.blanks.clearToken(),
+            Characters(from:"=").token("assign"),
+            Characters(from:"+-*/").token("operator"),
+            Characters(from:";\n"),
+            OKStandard.eot
         )
         
         let testString = "let a = b; let lettings = rental + lease; var variable = function;"

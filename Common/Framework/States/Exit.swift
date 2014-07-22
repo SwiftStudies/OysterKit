@@ -9,7 +9,11 @@
 import Foundation
 
 public class Exit : TokenizationState {
-        
+    
+    public init(){
+        super.init()
+    }
+    
     override func serialize(indentation: String) -> String {
         return "^"+pseudoTokenNameSuffix()
     }
