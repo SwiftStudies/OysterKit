@@ -24,7 +24,7 @@ class TokenizeOperation : Printable {
     class Context : Printable {
         var tokens = [Token]()
         var consumedCharacters : String {
-            return __sourceString[__startIndex..<__currentIndex]
+            return "\(__sourceString[__startIndex..<__currentIndex])"
         }
 
         let states : [TokenizationState]

@@ -33,7 +33,7 @@ class stateTestLoop: XCTestCase {
                     LoopingChar(except: "\"\\").token("character")
                     ), min: 1, max: nil).token("Char")
                 ).token("quote"),
-            LoopingChar(except: "\x04\"").token("otherStuff")
+            LoopingChar(except: "\u{04}\"").token("otherStuff")
         )
         
         let testString = "The \"quick \\\"brown\" fox jumps over the lazy dog"
