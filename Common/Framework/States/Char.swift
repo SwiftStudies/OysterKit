@@ -50,7 +50,7 @@ class Char : TokenizationState{
         
         //Inverted chars can be dangerous if they don't reject
         //the eot character
-        self.allowedCharacters = (except+"\x04").unicodeScalars
+        self.allowedCharacters = (except+"\u{0004}").unicodeScalars
         super.init()
     }
     
@@ -80,7 +80,7 @@ class Char : TokenizationState{
                 output+="\\\\"
             case "\"":
                 output+="\\\""
-            case "\x04":
+            case "\u{04}":
                 output+="\\x04"
             case "\r":
                 output+="\\r"
@@ -105,9 +105,9 @@ class Char : TokenizationState{
         var newState : TokenizationState
         
         if inverted {
-            newState = Char(except: self.allowedCharacters)
+            newState = Char(except: "\(allowedCharacters)")
         } else {
-            newState = Char(from: self.allowedCharacters)
+            newState = Char(from: "\(allowedCharacters)")
         }
         
         newState.__copyProperities(self)

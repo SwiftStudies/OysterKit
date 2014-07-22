@@ -15,6 +15,7 @@ let __TokenKey = "OKToken"
 class TokenHighlighter : NSObject, NSTextStorageDelegate, NSLayoutManagerDelegate{
     var textDidChange:()->() = {() in
     }
+    var highlightingDelay : NSTimeInterval = 0.5
     
     var textStorage:NSTextStorage!{
     willSet{
@@ -37,6 +38,7 @@ class TokenHighlighter : NSObject, NSTextStorageDelegate, NSLayoutManagerDelegat
     
     var backgroundQueue = NSOperationQueue()
     var tokenizationOperation = NSOperation()
+    var editedRange:NSRange?
     
     func tokenize(string:String, usesRange:NSRange){
         
@@ -80,19 +82,10 @@ class TokenHighlighter : NSObject, NSTextStorageDelegate, NSLayoutManagerDelegat
         tokenize(textStorage.string,usesRange: NSMakeRange(0, textStorage.length))
     }
     
-    func textStorageDidProcessEditing(notification: NSNotification!) {
-        if tokenizationOperation.executing {
-            return
-        }
-
+    func prepareToHighlight(){
         textDidChange()
         
-        var layoutManagers = self.textStorage.layoutManagers as [NSLayoutManager]
-        
-        let fullRange = NSMakeRange(0, self.textStorage.length)
-
-        let editedRange = self.textStorage.editedRange
-
+        let finalRange = editedRange ? editedRange : self.textStorage.editedRange
         
         var actualRangeStart = editedRange.location
         var actualRangeEnd = editedRange.end
@@ -128,6 +121,16 @@ class TokenHighlighter : NSObject, NSTextStorageDelegate, NSLayoutManagerDelegat
         backgroundQueue.addOperation(tokenizationOperation)
     }
     
+    func textStorageDidProcessEditing(notification: NSNotification!) {
+        
+        editedRange = editedRange ? editedRange!.unionWith(textStorage.editedRange) : textStorage.editedRange
+        
+        if tokenizationOperation.executing {
+            return
+        }
+
+    }
+    
     func layoutManager(layoutManager: NSLayoutManager!, shouldUseTemporaryAttributes attrs: [NSObject : AnyObject]!, forDrawingToScreen toScreen: Bool, atCharacterIndex charIndex: Int, effectiveRange effectiveCharRange: NSRangePointer) -> [NSObject : AnyObject]! {
         if !toScreen {
             return attrs
@@ -157,5 +160,12 @@ class TokenHighlighter : NSObject, NSTextStorageDelegate, NSLayoutManagerDelegat
 extension NSRange{
     var end : Int {
         return length+location
+    }
+    
+    func unionWith(range:NSRange)->NSRange{
+        let newLocation = range.location < self.location ? range.location : self.location
+        let newEnd = range.end > self.end ? range.end : self.end
+        
+        return NSMakeRange(newLocation, newEnd-newLocation)
     }
 }

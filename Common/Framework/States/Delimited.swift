@@ -139,7 +139,7 @@ class Delimited : TokenizationState{
         
         output+="<'\(escapeDelimiter(openingDelimiter))',"
 
-        if "\(openingDelimiter)" != poppingState.allowedCharacters {
+        if "\(openingDelimiter)" != "\(poppingState.allowedCharacters)" {
             output+="'\(poppingState.allowedCharacters)',"
         }
         
@@ -155,7 +155,7 @@ class Delimited : TokenizationState{
     }
 
     override func clone() -> TokenizationState {
-        var newState = Delimited(open: "\(openingDelimiter)", close: poppingState.allowedCharacters)
+        var newState = Delimited(open: "\(openingDelimiter)", close: "\(poppingState.allowedCharacters)")
         
         for delimitedState in delimetedStates {
             //Woo-hoo correct array semantics!

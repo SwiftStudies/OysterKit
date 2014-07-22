@@ -19,7 +19,7 @@ class LoopingChar : Char {
     }
 
     override func clone() -> TokenizationState {
-        var newState = LoopingChar(from: allowedCharacters)
+        var newState = LoopingChar(from: "\(allowedCharacters)")
         
         newState.__copyProperities(self)
         

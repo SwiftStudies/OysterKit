@@ -241,7 +241,7 @@ class TokenizationState : Printable, StringLiteralConvertible,Equatable {
         return newState
     }
     
-    @final func isEqualTo(otherState:TokenizationState)->Bool{
+    final func isEqualTo(otherState:TokenizationState)->Bool{
         return id == otherState.id
     }
     

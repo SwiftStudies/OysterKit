@@ -33,6 +33,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
     let keyColors = "tokColors"
     let keyColor = "tokColor"
     
+    var buildTokenizerTimer : NSTimer?
+    
     @IBOutlet var window: NSWindow
     @IBOutlet var tokenizerDefinitionScrollView: NSScrollView
     @IBOutlet var testInputScroller : NSScrollView
@@ -40,6 +42,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
     @IBOutlet var okScriptHighlighter: TokenHighlighter
     @IBOutlet var colorDictionaryController: NSDictionaryController
     
+    @IBOutlet var buildProgressIndicator: NSProgressIndicator
     var textString:NSString?
     var lastDefinition:String = ""
     var lastInput = ""
@@ -114,7 +117,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
         okScriptHighlighter.textStorage = tokenizerDefinitionTextView.textStorage
         
         okScriptHighlighter.textDidChange = {
-            self.buildTokenizer(self.okScriptHighlighter.textStorage.string)
+            self.buildTokenizer()
         }
         
         loadFromDefaults()
@@ -150,10 +153,26 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
         saveToDefaults()
     }
     
-    func buildTokenizer(usingString:String){
-        if let newTokenizer:Tokenizer = OysterKit.parseTokenizer(self.tokenizerDefinitionTextView.string) {
-            self.highlighter.tokenizer = newTokenizer
+    
+    func doBuild(){
+        highlighter.backgroundQueue.addOperationWithBlock(){
+            if let newTokenizer:Tokenizer = OysterKit.parseTokenizer(self.tokenizerDefinitionTextView.string) {
+                self.highlighter.tokenizer = newTokenizer
+            }
         }
+        
+        buildProgressIndicator.stopAnimation(self)
+    }
+    
+    func buildTokenizer(){
+        if let timer = buildTokenizerTimer {
+            timer.invalidate()
+        }
+        
+        buildProgressIndicator.startAnimation(self)
+        
+        buildTokenizerTimer = NSTimer(timeInterval: 1.0, target: self, selector:Selector("doBuild"), userInfo: nil, repeats: false)
+        NSRunLoop.mainRunLoop().addTimer(buildTokenizerTimer, forMode: NSRunLoopCommonModes)
     }
 }
 

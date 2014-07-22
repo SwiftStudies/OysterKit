@@ -36,7 +36,7 @@ let blankString = " \t"
 let whiteSpaceString = " \t\r\n"
 let lowerCaseLetterString = "abcdefghijklmnopqrstuvwxyz"
 let upperCaseLetterString = lowerCaseLetterString.uppercaseString
-let eotString = "\x004"
+let eotString = "\u{0004}"
 
 class OysterKit{
     //Public
@@ -53,7 +53,7 @@ class OysterKit{
     }
     
     class var eot:TokenizationState{
-        return Char(from:"\u0004").token(){ (state:TokenizationState, capturedCharacters:String, startIndex:Int)->Token in
+            return Char(from:"\u{0004}").token(){ (state:TokenizationState, capturedCharacters:String, startIndex:Int)->Token in
             var token = Token.EndOfTransmissionToken()
             token.originalStringIndex = startIndex
             return token

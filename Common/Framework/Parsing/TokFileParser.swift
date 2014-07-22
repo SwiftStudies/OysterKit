@@ -360,7 +360,7 @@ class _privateTokFileParser:StackParser{
         for token in keyWordCharTokens {
             if let stateToken = token as? State {
                 if let charState = stateToken.state as? Char {
-                    keywordsArray.append(charState.allowedCharacters)
+                    keywordsArray.append("\(charState.allowedCharacters)")
                 } else {
                     errors += "Expected a char state but got \(stateToken.state)"
                 }

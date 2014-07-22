@@ -15,6 +15,7 @@
         <customObject id="esw-3P-7sP" userLabel="OK Script Highlighter" customClass="TokenHighlighter" customModule="Tokenizer"/>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Tokenizer">
             <connections>
+                <outlet property="buildProgressIndicator" destination="LlF-Rn-kYS" id="uqe-ty-CkV"/>
                 <outlet property="colorDictionaryController" destination="wYe-1u-cec" id="vQm-d5-cLa"/>
                 <outlet property="highlighter" destination="nJm-pa-xmQ" id="9Eq-yx-YXO"/>
                 <outlet property="okScriptHighlighter" destination="esw-3P-7sP" id="HeD-VY-de8"/>
@@ -690,7 +691,7 @@
                     <splitView dividerStyle="paneSplitter" vertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="G3X-D3-T5x">
                         <rect key="frame" x="0.0" y="0.0" width="643" height="484"/>
                         <subviews>
-                            <customView id="ZiG-gn-fJV">
+                            <customView misplaced="YES" id="ZiG-gn-fJV">
                                 <rect key="frame" x="0.0" y="0.0" width="319" height="484"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <subviews>
@@ -722,11 +723,13 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                     </scrollView>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PbY-8V-IAt">
-                                        <rect key="frame" x="8" y="456" width="288" height="22"/>
+                                    <progressIndicator horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="LlF-Rn-kYS">
+                                        <rect key="frame" x="283" y="459" width="16" height="16"/>
+                                    </progressIndicator>
+                                    <textField verticalHuggingPriority="750" misplaced="YES" placeholderIntrinsicWidth="300" placeholderIntrinsicHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="PbY-8V-IAt">
+                                        <rect key="frame" x="8" y="456" width="269" height="22"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="22" id="nkf-fG-SOr"/>
-                                            <constraint firstAttribute="width" constant="284" id="xp7-Sf-5Nk"/>
                                         </constraints>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Tokenizer Definition" id="eis-cQ-K4d">
                                             <font key="font" metaFont="system"/>
@@ -736,15 +739,19 @@
                                     </textField>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstItem="A4n-iy-7Ml" firstAttribute="top" secondItem="LlF-Rn-kYS" secondAttribute="bottom" constant="11" id="9yC-ll-YUF"/>
+                                    <constraint firstItem="LlF-Rn-kYS" firstAttribute="leading" secondItem="PbY-8V-IAt" secondAttribute="trailing" constant="8" id="B1N-8J-Nid"/>
                                     <constraint firstItem="A4n-iy-7Ml" firstAttribute="leading" secondItem="ZiG-gn-fJV" secondAttribute="leading" id="DZd-OM-4rq"/>
                                     <constraint firstItem="A4n-iy-7Ml" firstAttribute="top" secondItem="PbY-8V-IAt" secondAttribute="bottom" constant="8" id="ILD-7s-Hoc"/>
                                     <constraint firstItem="PbY-8V-IAt" firstAttribute="leading" secondItem="ZiG-gn-fJV" secondAttribute="leading" constant="10" id="KXO-SQ-Qr9"/>
                                     <constraint firstAttribute="trailing" secondItem="A4n-iy-7Ml" secondAttribute="trailing" id="Wa0-S6-dhi"/>
+                                    <constraint firstAttribute="trailing" secondItem="LlF-Rn-kYS" secondAttribute="trailing" constant="20" id="dDT-3g-86b"/>
+                                    <constraint firstItem="LlF-Rn-kYS" firstAttribute="top" secondItem="ZiG-gn-fJV" secondAttribute="top" constant="9" id="oLn-lR-hOd"/>
                                     <constraint firstItem="PbY-8V-IAt" firstAttribute="top" secondItem="ZiG-gn-fJV" secondAttribute="top" constant="6" id="oXu-P0-VCr"/>
                                     <constraint firstAttribute="bottom" secondItem="A4n-iy-7Ml" secondAttribute="bottom" id="yUv-ax-blY"/>
                                 </constraints>
                             </customView>
-                            <customView id="3pB-4z-LSC">
+                            <customView misplaced="YES" id="3pB-4z-LSC">
                                 <rect key="frame" x="329" y="0.0" width="314" height="484"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <subviews>

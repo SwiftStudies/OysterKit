@@ -90,7 +90,7 @@ class TokenizeOperation : Printable {
     
     //For now, to help with compatibility
     init(legacyTokenizer:Tokenizer){
-        __sourceString = "\x04".unicodeScalars
+        __sourceString = "\u{0004}".unicodeScalars
         __marker = __sourceString.generate()
         current = __marker.next()!
         next = __marker.next()
