@@ -30,7 +30,7 @@ import XCTest
 func token(name:String,chars:String?=nil)->Token{
     var actualChars:String
     
-    if chars{
+    if (chars != nil){
         actualChars = chars!
     } else {
         actualChars = name
@@ -68,12 +68,10 @@ extension XCTestCase {
     func readBundleFile(fileName:String, ext:String)->String?{
         let bundle = NSBundle(identifier:"com.rwe-uk.OysterKitTests")
         
-        if let url = bundle.URLForResource(fileName, withExtension: ext) {
-            return NSString.stringWithContentsOfURL(url, encoding: NSUTF8StringEncoding, error: nil)
+        if let url = bundle?.URLForResource(fileName, withExtension: ext) {
+            return String(contentsOfURL: url, encoding: NSUTF8StringEncoding, error: nil)
         } else {
-           let allFiles =  bundle.URLsForResourcesWithExtension(nil, subdirectory: nil)
-            
-            
+           let allFiles =  bundle?.URLsForResourcesWithExtension(nil, subdirectory: nil)
             
             XCTAssert(false, "Could not find \(fileName).\(ext) in bundle, available files are \(allFiles)")
         }

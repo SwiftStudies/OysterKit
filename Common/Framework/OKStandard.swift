@@ -54,7 +54,7 @@ public class OKStandard{
     
     public class var eot:TokenizationState{
         class EOTState : TokenizationState{
-            public override func scan(operation: TokenizeOperation) {
+            override func scan(operation: TokenizeOperation) {
                 operation.debug(operation: "Entered EOTState")
                 
                 if operation.current == "\u{04}" {

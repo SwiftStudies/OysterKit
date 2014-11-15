@@ -12,10 +12,8 @@
 		42146BF11966DD4E009BA88A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 42146BF01966DD4E009BA88A /* Images.xcassets */; };
 		42146BF41966DD4E009BA88A /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 42146BF21966DD4E009BA88A /* MainMenu.xib */; };
 		42146C001966DD4E009BA88A /* TokenizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42146BFF1966DD4E009BA88A /* TokenizerTests.swift */; };
-		42146C131966DF72009BA88A /* OysterKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42146C121966DF72009BA88A /* OysterKit.framework */; };
-		421644D8196C1BEB00BDCA63 /* OysterKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42146C121966DF72009BA88A /* OysterKit.framework */; };
 		422D5E6B197CFF1900678526 /* TokenHighlighter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422D5E6A197CFF1900678526 /* TokenHighlighter.swift */; };
-		426AB641196AD48B00665025 /* OysterKit.framework in Resources */ = {isa = PBXBuildFile; fileRef = 42146C121966DF72009BA88A /* OysterKit.framework */; };
+		F9B235571A16BEEE00CEC3AA /* OysterKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9B235561A16BEEE00CEC3AA /* OysterKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,8 +50,8 @@
 		42146BF91966DD4E009BA88A /* TokenizerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TokenizerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		42146BFE1966DD4E009BA88A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		42146BFF1966DD4E009BA88A /* TokenizerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenizerTests.swift; sourceTree = "<group>"; };
-		42146C121966DF72009BA88A /* OysterKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OysterKit.framework; path = "../../../../../../../../Library/Developer/Xcode/DerivedData/OysterKit_Workspace-fbjhgmtukhbwijfrgdbagumdmmcc/Build/Products/Debug/OysterKit.framework"; sourceTree = "<group>"; };
 		422D5E6A197CFF1900678526 /* TokenHighlighter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenHighlighter.swift; sourceTree = "<group>"; };
+		F9B235561A16BEEE00CEC3AA /* OysterKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OysterKit.framework; path = "../../../../../../Library/Developer/Xcode/DerivedData/OysterKit_Workspace-enzmukjavwigvhawxyzvnavgsmxg/Build/Products/Debug/OysterKit.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,7 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				42146C131966DF72009BA88A /* OysterKit.framework in Frameworks */,
+				F9B235571A16BEEE00CEC3AA /* OysterKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -69,7 +67,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				421644D8196C1BEB00BDCA63 /* OysterKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -79,7 +76,7 @@
 		42146BDE1966DD4E009BA88A = {
 			isa = PBXGroup;
 			children = (
-				42146C121966DF72009BA88A /* OysterKit.framework */,
+				F9B235561A16BEEE00CEC3AA /* OysterKit.framework */,
 				42146BE91966DD4E009BA88A /* Tokenizer */,
 				42146BFC1966DD4E009BA88A /* TokenizerTests */,
 				42146BE81966DD4E009BA88A /* Products */,
@@ -215,7 +212,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				426AB641196AD48B00665025 /* OysterKit.framework in Resources */,
 				42146BF11966DD4E009BA88A /* Images.xcassets in Resources */,
 				42146BF41966DD4E009BA88A /* MainMenu.xib in Resources */,
 			);
@@ -363,9 +359,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/OysterKit_Workspace-fbjhgmtukhbwijfrgdbagumdmmcc/Build/Products/Debug",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/OysterKit_Workspace-enzmukjavwigvhawxyzvnavgsmxg/Build/Products/Debug",
 				);
 				INFOPLIST_FILE = Tokenizer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
@@ -378,9 +376,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/OysterKit_Workspace-fbjhgmtukhbwijfrgdbagumdmmcc/Build/Products/Debug",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/OysterKit_Workspace-enzmukjavwigvhawxyzvnavgsmxg/Build/Products/Debug",
 				);
 				INFOPLIST_FILE = Tokenizer/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";

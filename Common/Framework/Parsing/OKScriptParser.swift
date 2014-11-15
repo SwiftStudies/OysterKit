@@ -28,13 +28,9 @@ import Foundation
 
 public class OKScriptTokenizer : Tokenizer {
     
-    
-    public init(){
+    public override init(){
         super.init()
         //Eventually this will be it's own file
-        
-        
-        
         
         self.branch(
             Characters(from:" \t\n,"),
@@ -119,7 +115,7 @@ class EmitTokenOperator : Operator {
     override func applyTo(token: Token, parser:OKScriptParser) -> Token? {
         //TODO: Probably an error, should report that
         if !parser.hasTokens() {
-            parser.errors += "Expected a state to assign the token to"
+            parser.errors.append("Expected a state to assign the token to")
             return nil
         }
         
@@ -140,9 +136,9 @@ class EmitTokenOperator : Operator {
                     }
                     error+="'\(name)'"
                 }
-                parser.errors += error
+                parser.errors.append(error)
             } else {
-                parser.errors += "Only states can emit tokens, and I received a \(topToken)"
+                parser.errors.append("Only states can emit tokens, and I received a \(topToken)")
             }
             parser.pushToken(topToken)
         }
@@ -162,23 +158,23 @@ public class OKScriptParser:StackParser{
     
     var definedNamedStates = [String:Named]()
     
-    public init(){
+    public override init(){
         super.init()
     }
     
     func invokeOperator(onToken:Token){
         if hasTokens() {
             if topToken()! is Operator {
-                var operator = popToken()! as Operator
-                if let newToken = operator.applyTo(onToken, parser: self) {
+                var op = popToken()! as Operator
+                if let newToken = op.applyTo(onToken, parser: self) {
                     pushToken(newToken)
                 }
             } else {
-                errors += "Expected an operator"
+                errors.append("Expected an operator")
                 pushToken(onToken)
             }
         } else {
-            errors += "Expected an operator, there were none"
+            errors.append("Expected an operator, there were none")
             pushToken(onToken)
         }
     }
@@ -197,7 +193,7 @@ public class OKScriptParser:StackParser{
                         super.pushToken(State(state: namedState))
                         return
                     } else {
-                        errors += "Expected a state name to assign to the state"
+                        errors.append("Expected a state name to assign to the state")
                     }
                 }
             }
@@ -211,8 +207,8 @@ public class OKScriptParser:StackParser{
         
         var token = popToken()
         
-        if !token {
-            errors += "Failed to pop to \(tokenNamed), there were no tokens on the stack"
+        if token == nil {
+            errors.append("Failed to pop to \(tokenNamed), there were no tokens on the stack")
             return tokenArray
         }
         
@@ -220,12 +216,12 @@ public class OKScriptParser:StackParser{
             if let nextToken = token{
                 tokenArray.append(nextToken)
             } else {
-                errors += "Stack exhausted before finding \(tokenNamed) token"
+                errors.append("Stack exhausted before finding \(tokenNamed) token")
                 return tokenArray
             }
             token = popToken()
-            if !token {
-                errors += "Stack exhausted before finding \(tokenNamed) token"
+            if token == nil {
+                errors.append("Stack exhausted before finding \(tokenNamed) token")
                 return Array<Token>()
             }
         }
@@ -233,30 +229,30 @@ public class OKScriptParser:StackParser{
         //Now we have an array of either states, or chains of states
         //and the chains need to be unwound and entire array reversed
         var finalArray = Array<Token>()
-        var operator : ChainStateOperator?
+        var op : ChainStateOperator?
         
         for token in tokenArray {
             if let stateToken = token as? State {
-                if operator {
+                if op != nil {
                     //The last state needs to be removed, 
                     //chained to this state, 
                     ///and this state added to final
                     if finalArray.count == 0 {
-                        errors += "Incomplete state definition"
+                        errors.append("Incomplete state definition")
                         return Array<Token>()
                     }
                     var lastToken = finalArray.removeLast()
                     if let lastStateToken = lastToken as? State {
                         stateToken.state.branch(lastStateToken.state)
-                        operator = nil
+                        op = nil
                     } else {
-                        errors += "Only states can emit tokens"
+                        errors.append("Only states can emit tokens")
                         return Array<Token>()
                     }
                 }
                 finalArray.append(stateToken)
             } else if token is ChainStateOperator {
-                operator = token as? ChainStateOperator
+                op = token as? ChainStateOperator
             } else {
                 //It's just a parameter
                 finalArray.append(token)
@@ -283,12 +279,12 @@ public class OKScriptParser:StackParser{
         var parameters = popTo("start-repeat")
         
         if (parameters.count == 0){
-            errors+="At least a state is required"
+            errors.append("At least a state is required")
             return
         }
         
         if !(parameters[0] is State) {
-            errors += "Expected a state"
+            errors.append("Expected a state")
             return
         }
         
@@ -303,12 +299,12 @@ public class OKScriptParser:StackParser{
                     if var maximumNumberToken = parameters[2] as? NumberToken {
                         maximum = Int(maximumNumberToken.numericValue)
                     } else {
-                        errors += "Expected a number"
+                        errors.append("Expected a number")
                         return
                     }
                 }
             } else {
-                errors += "Expected a number"
+                errors.append("Expected a number")
                 return
             }
         }
@@ -322,13 +318,13 @@ public class OKScriptParser:StackParser{
         var parameters = popTo("start-delimited")
         
         if parameters.count < 2 || parameters.count > 3{
-            errors += "At least two parameters are required for a delimited state"
+            errors.append("At least two parameters are required for a delimited state")
             return
         }
         
         
         if parameters[0].name != "delimiter" {
-            errors += "At least one delimiter must be specified"
+            errors.append("At least one delimiter must be specified")
             return
         }
 
@@ -337,7 +333,7 @@ public class OKScriptParser:StackParser{
         
         if parameters.count == 3{
             if parameters[1].name != "delimiter" {
-                errors += "Expected delimiter character as second parameter"
+                errors.append("Expected delimiter character as second parameter")
                 return
             }
             closingDelimiter = parameters[1].characters
@@ -351,7 +347,7 @@ public class OKScriptParser:StackParser{
             
             pushToken(State(state:delimited))
         } else {
-            errors += "Final parameter must be a state"
+            errors.append("Final parameter must be a state")
             return
         }
     }
@@ -366,10 +362,10 @@ public class OKScriptParser:StackParser{
                 if let charState = stateToken.state as? Characters {
                     keywordsArray.append("\(charState.allowedCharacters)")
                 } else {
-                    errors += "Expected a char state but got \(stateToken.state)"
+                    errors.append("Expected a char state but got \(stateToken.state)")
                 }
             } else {
-                errors += "Only comma seperated strings expected for keywords, got \(token)"
+                errors.append("Only comma seperated strings expected for keywords, got \(token)")
             }
         }
 
@@ -408,7 +404,7 @@ public class OKScriptParser:StackParser{
                     let unicodeCharacter = UnicodeScalar(intValue)
                     output += "\(unicodeCharacter)"
                 } else {
-                    errors += "Could not create unicode scalar from \(token.characters)"
+                    errors.append("Could not create unicode scalar from \(token.characters)")
                 }
             case "return":
                 output+="\r"
@@ -531,7 +527,7 @@ public class OKScriptParser:StackParser{
 
             return flattened
         } else {
-            errors += "Could not create root state"
+            errors.append("Could not create root state")
             return Branch()
         }
     }
@@ -556,7 +552,7 @@ public class OKScriptParser:StackParser{
             
             endState = nil
         } else {
-            errors += "Expected a named state, but didn't get one. Aborting named state processing"
+            errors.append("Expected a named state, but didn't get one. Aborting named state processing")
             return false
         }
         return true
@@ -582,7 +578,7 @@ public class OKScriptParser:StackParser{
                     stateSequence.append(topStateToken.state)
                 } else {
                     //Is this the start of a chain?
-                    if !endState {
+                    if endState == nil {
                         debug("Creating a new state sequence")
                         endState = topStateToken.state
                         stateSequence.removeAll(keepCapacity: false)

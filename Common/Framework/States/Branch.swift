@@ -35,8 +35,7 @@ public class Branch : TokenizationState {
         return "Branch"
     }
     
-    
-    public init(){
+    public override init(){
        super.init()
     }
     

@@ -87,11 +87,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
         tokenizerDefinitionTextView.string = defaults.stringForKey(keyTokenizerString)
         testInputTextView.string = defaults.stringForKey(keyTokenizerText)
         
-        var dictionary = defaults.dictionaryForKey(keyColors)
+        var dictionary = defaults.dictionaryForKey(keyColors) as Dictionary<String, NSData>
         highlighter.tokenColorMap = [String:NSColor]()
         for (tokenName,tokenColorData) in dictionary {
-            var tokenColor : NSColor = NSUnarchiver.unarchiveObjectWithData(tokenColorData as NSData) as NSColor
-            highlighter.tokenColorMap[tokenName as String] = tokenColor
+            var tokenColor : NSColor = NSUnarchiver.unarchiveObjectWithData(tokenColorData) as NSColor
+            highlighter.tokenColorMap[tokenName] = tokenColor
         }
     }
     
@@ -103,7 +103,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
         view.automaticDashSubstitutionEnabled = false
         
         //Change the font, set myself as a delegate, and set a default string
-        view.textStorage.font = NSFont(name: "Courier", size: 14.0)
+        view.textStorage?.font = NSFont(name: "Courier", size: 14.0)
     }
     
     func applicationDidFinishLaunching(aNotification: NSNotification?) {
@@ -156,7 +156,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
     
     func doBuild(){
         highlighter.backgroundQueue.addOperationWithBlock(){
-            if let newTokenizer:Tokenizer = OKStandard.parseTokenizer(self.tokenizerDefinitionTextView.string) {
+            if let newTokenizer:Tokenizer = OKStandard.parseTokenizer(self.tokenizerDefinitionTextView.string!) {
                 self.highlighter.tokenizer = newTokenizer
             }
         }
@@ -172,7 +172,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
         buildProgressIndicator.startAnimation(self)
         
         buildTokenizerTimer = NSTimer(timeInterval: 1.0, target: self, selector:Selector("doBuild"), userInfo: nil, repeats: false)
-        NSRunLoop.mainRunLoop().addTimer(buildTokenizerTimer, forMode: NSRunLoopCommonModes)
+        NSRunLoop.mainRunLoop().addTimer(buildTokenizerTimer!, forMode: NSRunLoopCommonModes)
     }
 }
 

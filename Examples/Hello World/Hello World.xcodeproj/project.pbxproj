@@ -8,24 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		425EBD8C196543F000A1C232 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425EBD8B196543F000A1C232 /* main.swift */; };
+		F9DCCA571A175F0400FF68BA /* OysterKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9DCCA561A175F0400FF68BA /* OysterKit.framework */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		42E5267D196BD3670061E4BB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 42E52678196BD3670061E4BB /* OysterKit Mac.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 4221037C19601B40001148F5;
-			remoteInfo = OysterKit;
-		};
-		42E5267F196BD3670061E4BB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 42E52678196BD3670061E4BB /* OysterKit Mac.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 4221038719601B40001148F5;
-			remoteInfo = OysterKitTests;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		425EBD86196543F000A1C232 /* CopyFiles */ = {
@@ -42,7 +26,7 @@
 /* Begin PBXFileReference section */
 		425EBD88196543F000A1C232 /* Hello World */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Hello World"; sourceTree = BUILT_PRODUCTS_DIR; };
 		425EBD8B196543F000A1C232 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		42E52678196BD3670061E4BB /* OysterKit Mac.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "OysterKit Mac.xcodeproj"; path = "../../Mac/OysterKit/OysterKit Mac.xcodeproj"; sourceTree = "<group>"; };
+		F9DCCA561A175F0400FF68BA /* OysterKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OysterKit.framework; path = "../../../../../Library/Developer/Xcode/DerivedData/OysterKit_Workspace-enzmukjavwigvhawxyzvnavgsmxg/Build/Products/Debug/OysterKit.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +34,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F9DCCA571A175F0400FF68BA /* OysterKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,7 +44,7 @@
 		425EBD7F196543F000A1C232 = {
 			isa = PBXGroup;
 			children = (
-				42E52678196BD3670061E4BB /* OysterKit Mac.xcodeproj */,
+				F9DCCA561A175F0400FF68BA /* OysterKit.framework */,
 				425EBD8A196543F000A1C232 /* Hello World */,
 				425EBD89196543F000A1C232 /* Products */,
 			);
@@ -79,15 +64,6 @@
 				425EBD8B196543F000A1C232 /* main.swift */,
 			);
 			path = "Hello World";
-			sourceTree = "<group>";
-		};
-		42E52679196BD3670061E4BB /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				42E5267E196BD3670061E4BB /* OysterKit.framework */,
-				42E52680196BD3670061E4BB /* OysterKitTests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -134,35 +110,12 @@
 			mainGroup = 425EBD7F196543F000A1C232;
 			productRefGroup = 425EBD89196543F000A1C232 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 42E52679196BD3670061E4BB /* Products */;
-					ProjectRef = 42E52678196BD3670061E4BB /* OysterKit Mac.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				425EBD87196543F000A1C232 /* Hello World */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		42E5267E196BD3670061E4BB /* OysterKit.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = OysterKit.framework;
-			remoteRef = 42E5267D196BD3670061E4BB /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		42E52680196BD3670061E4BB /* OysterKitTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = OysterKitTests.xctest;
-			remoteRef = 42E5267F196BD3670061E4BB /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXSourcesBuildPhase section */
 		425EBD84196543F000A1C232 /* Sources */ = {
@@ -209,6 +162,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				METAL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -245,6 +199,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				METAL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
@@ -254,6 +209,12 @@
 		425EBD90196543F000A1C232 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/OysterKit_Workspace-enzmukjavwigvhawxyzvnavgsmxg/Build/Products/Debug",
+				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -261,6 +222,12 @@
 		425EBD91196543F000A1C232 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/OysterKit_Workspace-enzmukjavwigvhawxyzvnavgsmxg/Build/Products/Debug",
+				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

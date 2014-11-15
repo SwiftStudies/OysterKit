@@ -33,7 +33,7 @@ internal var __anonymousStateCount:Int = 0
 //
 // XCode 6 Beta 3 Crashes if two protocols refer to each other, so turning this into a class for now
 //
-public class TokenizationState : Printable, StringLiteralConvertible,Equatable {
+public class TokenizationState : Printable, Equatable /*StringLiteralConvertible*/ {
     var tokenGenerator : TokenCreationBlock?
     var id : String = ""
     var reference : String?
@@ -47,8 +47,6 @@ public class TokenizationState : Printable, StringLiteralConvertible,Equatable {
     init(){
         id = "\(stateClassName())\(__anonymousStateCount++)"
     }
-    
-    
     
     //
     // String Literal
@@ -188,7 +186,7 @@ public class TokenizationState : Printable, StringLiteralConvertible,Equatable {
     func serializeBranches(indentation:String)->String{
         if branches.count == 1  {
             return "."+branches[0].serialize(indentation)
-        } else if tokenGenerator {
+        } else if (tokenGenerator != nil) {
             return pseudoTokenNameSuffix()
         } else if branches.count == 0 {
             return ""
@@ -210,7 +208,7 @@ public class TokenizationState : Printable, StringLiteralConvertible,Equatable {
     }
     
     func serialize(indentation:String)->String{
-        if reference {
+        if (reference != nil) {
            return reference!+pseudoTokenNameSuffix()
         }
         return ""
@@ -224,7 +222,7 @@ public class TokenizationState : Printable, StringLiteralConvertible,Equatable {
     // Object Life Cycle
     //
     internal func __copyProperities(from:TokenizationState){
-        if from.tokenGenerator{
+        if (from.tokenGenerator != nil){
             token(from.tokenGenerator!)
         }
 
@@ -298,7 +296,7 @@ public typealias   TokenCreationBlock = ((state:TokenizationState,capturedCharac
 extension TokenizationState : EmancipatedTokenizer {
     
     func createToken(operation:TokenizeOperation,useCharacters:String?)->Token?{
-        var useCharacters = useCharacters ? useCharacters : operation.context.consumedCharacters
+        var useCharacters = (useCharacters != nil) ? useCharacters : operation.context.consumedCharacters
         if let token = tokenGenerator?(state:self, capturedCharacteres:useCharacters!,charactersStartIndex:operation.context.startPosition){
             return token
         }

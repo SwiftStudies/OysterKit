@@ -32,13 +32,13 @@ public class TokenizeOperation : Printable {
         let states : [TokenizationState]
         private let __sourceString : String
         
-        private var __startIndex : String.IndexType
-        private var __currentIndex : String.IndexType
+        private var __startIndex : String.Index
+        private var __currentIndex : String.Index
         
         var startPosition : Int
         var currentPosition : Int
         
-        private init(atPosition:Int, withMarker:String.IndexType, withStates:[TokenizationState], forString:String){
+        private init(atPosition:Int, withMarker:String.Index, withStates:[TokenizationState], forString:String){
             __startIndex = withMarker
             __currentIndex = __startIndex
             __sourceString = forString
@@ -67,7 +67,7 @@ public class TokenizeOperation : Printable {
     private var  __tokenHandler : (Token)->Bool
     private let  __startingStates : [TokenizationState]
     let  eot : Character = "\u{04}"
-    private var  __marker : String.GeneratorType {
+    private var  __marker : String.Generator {
     didSet{
         scanAdvanced = true
     }
@@ -143,7 +143,7 @@ public class TokenizeOperation : Printable {
     // Moves forward in the supplied string
     //
     public func advance(){
-        if next {
+        if next != nil {
             current = next!
             next = __marker.next()
         } else {

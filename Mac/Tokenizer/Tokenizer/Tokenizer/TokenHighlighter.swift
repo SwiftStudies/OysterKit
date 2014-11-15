@@ -112,7 +112,7 @@ class TokenHighlighter : NSObject, NSTextStorageDelegate, NSLayoutManagerDelegat
         
         textDidChange()
         
-        let finalRange = editedRange ? editedRange! : self.textStorage.editedRange
+        let finalRange = (editedRange != nil) ? editedRange! : self.textStorage.editedRange
         editedRange = nil
         
         println("Using base range: \(finalRange)")
@@ -164,11 +164,11 @@ class TokenHighlighter : NSObject, NSTextStorageDelegate, NSLayoutManagerDelegat
         }
         
         highlightingTimer = NSTimer(timeInterval: highlightingDelay, target: self, selector: Selector("prepareToHighlight"), userInfo: nil, repeats: false)
-        NSRunLoop.mainRunLoop().addTimer(highlightingTimer, forMode: NSRunLoopCommonModes)
+        NSRunLoop.mainRunLoop().addTimer(highlightingTimer!, forMode: NSRunLoopCommonModes)
     }
     
     func textStorageDidProcessEditing(notification: NSNotification!) {
-        editedRange = editedRange ? editedRange!.unionWith(textStorage.editedRange) : textStorage.editedRange
+        editedRange = editedRange != nil ? editedRange!.unionWith(textStorage.editedRange) : textStorage.editedRange
         
         scheduleHighlighting()
     }
@@ -179,7 +179,7 @@ class TokenHighlighter : NSObject, NSTextStorageDelegate, NSLayoutManagerDelegat
         }
         
         //This should never happen, but does!
-        if !attrs {
+        if attrs == nil {
             return attrs
         }
         

@@ -10,11 +10,11 @@ import Foundation
 
 public class LoopingCharacters : Characters {
     
-    public init(except: String) {
+    public override init(except: String) {
         super.init(except: except)
     }
     
-    public init(from: String) {
+    public override init(from: String) {
         super.init(from:from)
     }
     
