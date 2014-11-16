@@ -64,6 +64,10 @@ public class StackParser:Parser{
         return symbolStack.count != 0
     }
     
+    func tokens() -> Array<Token> {
+        return symbolStack
+    }
+    
     func parse(token: Token) -> Bool {
         pushToken(token)
         return true

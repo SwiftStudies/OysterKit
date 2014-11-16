@@ -31,6 +31,7 @@ public class Token : Printable{
     public let name:String
     public var characters:String = ""
     public var originalStringIndex:Int?
+    public var originalStringLine:Int?
     
     init(name:String){
         self.name = name
