@@ -61,7 +61,7 @@ public class SYExpressionParser : StackParser{
         return true
     }
     
-    override func parse(token: Token) -> Bool {
+    override public func parse(token: Token) -> Bool {
         switch token.name{
         case "operator":
             return processOperator(token as OperatorToken)
@@ -87,7 +87,7 @@ public class SYExpressionParser : StackParser{
         rpnParser.execute()
     }
     
-    override func parseString(string: String, withTokenizer: Tokenizer) {
+    override public func parseString(string: String, withTokenizer: Tokenizer) {
         rpnParser = RPNParser()
         super.parseString(string, withTokenizer: withTokenizer)
     }

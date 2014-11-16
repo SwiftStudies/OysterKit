@@ -179,7 +179,7 @@ public class OKScriptParser:StackParser{
         }
     }
     
-    override func pushToken(symbol: Token) {
+    override public func pushToken(symbol: Token) {
         if let state = symbol as? State {
             if let topTokenName = topToken()?.name {
                 if topTokenName == "assign" {
@@ -463,7 +463,7 @@ public class OKScriptParser:StackParser{
         }
     }
     
-    override func parse(token: Token) -> Bool {
+    override public func parse(token: Token) -> Bool {
         
         debug("\n>Processing: \(token)\n")
 

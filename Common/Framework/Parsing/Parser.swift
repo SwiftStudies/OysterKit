@@ -40,11 +40,11 @@ public class StackParser:Parser{
         
     }
     
-    func pushToken(symbol: Token) {
+    public func pushToken(symbol: Token) {
         symbolStack.append(symbol)
     }
     
-    func topToken() -> Token? {
+    public func topToken() -> Token? {
         if !hasTokens(){
             return nil
         }
@@ -52,7 +52,7 @@ public class StackParser:Parser{
         return symbolStack[symbolStack.endIndex-1]
     }
     
-    func popToken() -> Token? {
+    public func popToken() -> Token? {
         if !hasTokens(){
             return nil
         }
@@ -60,20 +60,20 @@ public class StackParser:Parser{
         return symbolStack.removeLast()
     }
     
-    func hasTokens() -> Bool {
+    public func hasTokens() -> Bool {
         return symbolStack.count != 0
     }
     
-    func tokens() -> Array<Token> {
+    public func tokens() -> Array<Token> {
         return symbolStack
     }
     
-    func parse(token: Token) -> Bool {
+    public func parse(token: Token) -> Bool {
         pushToken(token)
         return true
     }
     
-    func parseString(string: String, withTokenizer: Tokenizer) {
+    public func parseString(string: String, withTokenizer: Tokenizer) {
         withTokenizer.tokenize(string,parse)
     }
 }
