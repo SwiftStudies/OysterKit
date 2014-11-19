@@ -10,7 +10,7 @@ import Foundation
 
 public class Exit : TokenizationState {
     
-    public init(){
+    public override init(){
         super.init()
     }
     

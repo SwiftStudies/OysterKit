@@ -128,7 +128,7 @@ class tokenizerTests: XCTestCase {
 //        let tokFileTokDef = TokenizerFile().description
         let tokFileTokDef = readBundleFile("referenceOKScriptDefinition", ext: "txt")
 
-        if !tokFileTokDef {
+        if (tokFileTokDef == nil) {
             return
         }
         

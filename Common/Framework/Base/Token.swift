@@ -31,6 +31,7 @@ public class Token : Printable{
     public let name:String
     public var characters:String = ""
     public var originalStringIndex:Int?
+    public var originalStringLine:Int?
     
     init(name:String){
         self.name = name
@@ -49,7 +50,7 @@ public class Token : Printable{
     
     
     public var description : String {
-        if originalStringIndex {
+        if (originalStringIndex != nil) {
             return "\(name) '\(characters)' at \(originalStringIndex)"
         } else {
             return "\(name) '\(characters)'"
@@ -129,15 +130,15 @@ class NumberToken : Token{
         switch usingToken.name{
         case "integer":
             if let intValue = usingToken.characters.toInt() {
-                return self.init(value:intValue,characters:usingToken.characters)
+                self.init(value:intValue,characters:usingToken.characters)
             } else {
-                return self.init(value:Double.NaN,characters:usingToken.characters)
+                self.init(value:Double.NaN,characters:usingToken.characters)
             }
         case "float":
             let string : NSString = usingToken.characters
-            return self.init(value: string.doubleValue, characters: usingToken.characters)
+            self.init(value: string.doubleValue, characters: usingToken.characters)
         default:
-            return self.init(value:Double.NaN,characters:usingToken.characters)
+            self.init(value:Double.NaN,characters:usingToken.characters)
         }
     }
     

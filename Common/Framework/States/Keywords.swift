@@ -25,11 +25,11 @@ public class Keywords : TokenizationState {
 
         var didAdvance = false
         
-        if !completions(operation.context.consumedCharacters+"\(operation.current)"){
+        if completions(operation.context.consumedCharacters+"\(operation.current)") == nil {
             return
         }
         
-        while let allCompletions = completions(operation.context.consumedCharacters) {
+        while let allCompletions = completions(operation.context.consumedCharacters+"\(operation.current)") {
             if allCompletions.count == 1 && allCompletions[0] == operation.context.consumedCharacters {
                 //Pursue our branches
                 emitToken(operation)

@@ -48,12 +48,12 @@ public class SYExpressionParser : StackParser{
     
     func processCloseBracket()->Bool{
         var topTokenName = topToken()?.name
-        while topTokenName && topTokenName != "bracket-open" {
+        while topTokenName != nil && topTokenName != "bracket-open" {
             rpnParser.parse(popToken()!)
             topTokenName = topToken()?.name
         }
         
-        if !topTokenName{
+        if topTokenName == nil {
             println("Missing open bracket")
             return true
         }
@@ -61,7 +61,7 @@ public class SYExpressionParser : StackParser{
         return true
     }
     
-    override func parse(token: Token) -> Bool {
+    override public func parse(token: Token) -> Bool {
         switch token.name{
         case "operator":
             return processOperator(token as OperatorToken)
@@ -74,7 +74,7 @@ public class SYExpressionParser : StackParser{
         case "bracket-close":
             return processCloseBracket()
         case "end":
-            while topToken(){
+            while (topToken() != nil){
                 rpnParser.parse(popToken()!)
             }
             return true
@@ -87,7 +87,7 @@ public class SYExpressionParser : StackParser{
         rpnParser.execute()
     }
     
-    override func parseString(string: String, withTokenizer: Tokenizer) {
+    override public func parseString(string: String, withTokenizer: Tokenizer) {
         rpnParser = RPNParser()
         super.parseString(string, withTokenizer: withTokenizer)
     }

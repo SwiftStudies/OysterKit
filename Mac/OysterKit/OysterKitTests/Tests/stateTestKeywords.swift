@@ -40,9 +40,11 @@ class stateTestKeywords: XCTestCase {
         )
         
         let testString = "let a = b; let lettings = rental + lease; var variable = function;"
+        
+        let tokens = tokenizer.tokenize(testString)
                 
         // This is an example of a functional test case.
-        XCTAssert(tokenizer.tokenize(testString) == [token("keyword",chars:"let"), token("variable",chars:"a"), token("assign",chars:"="), token("variable",chars:"b"), token("keyword",chars:"let"), token("variable",chars:"lettings"), token("assign",chars:"="), token("variable",chars:"rental"), token("operator",chars:"+"), token("variable",chars:"lease"), token("keyword",chars:"var"), token("variable",chars:"variable"), token("assign",chars:"="), token("variable",chars:"function"), ])
+        XCTAssert(tokens == [token("keyword",chars:"let"), token("variable",chars:"a"), token("assign",chars:"="), token("variable",chars:"b"), token("keyword",chars:"let"), token("variable",chars:"lettings"), token("assign",chars:"="), token("variable",chars:"rental"), token("operator",chars:"+"), token("variable",chars:"lease"), token("keyword",chars:"var"), token("variable",chars:"variable"), token("assign",chars:"="), token("variable",chars:"function"), ])
     }
 
 }

@@ -68,6 +68,8 @@ class parserTests: XCTestCase {
         
         let octTest = "346738"
         
+        let tokens = tokenizer.tokenize(octTest)
+        
         XCTAssert(tokenizer.tokenize(octTest) == [token("oct",chars:"3"), token("oct",chars:"4"), token("oct",chars:"6"), token("oct",chars:"7"), token("oct",chars:"3"), ])
     }
 

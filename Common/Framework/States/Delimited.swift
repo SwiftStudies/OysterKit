@@ -138,8 +138,11 @@ public class Delimited : TokenizationState{
         var output = ""
         
         output+="<'\(escapeDelimiter(openingDelimiter))',"
+        
+        let opening = "\(openingDelimiter)"
+        let allowed = "\(poppingState.allowedCharacters)"
 
-        if "\(openingDelimiter)" != "\(poppingState.allowedCharacters)" {
+        if opening != allowed {
             output+="'\(poppingState.allowedCharacters)',"
         }
         

@@ -29,7 +29,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import Foundation
 
 public class RPNParser : StackParser{
-    override func parse(token: Token) -> Bool {
+    override public func parse(token: Token) -> Bool {
         switch token.name{
         case "operator":
             let right = popToken() as NumberToken

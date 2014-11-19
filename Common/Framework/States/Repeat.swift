@@ -77,7 +77,7 @@ public class Repeat : TokenizationState{
     }
     
     public override func scan(operation: TokenizeOperation) {
-        operation.debug(operation: "Entered Repeat (\(minimumRepeats).."+(maximumRepeats ? ", \(maximumRepeats))" : ")"))
+        operation.debug(operation: "Entered Repeat (\(minimumRepeats).."+(maximumRepeats != nil ? ", \(maximumRepeats))" : ")"))
         
         //Create a new context to capture any tokens, we don't want to fall back though, so will pop it off
         //before returning
@@ -102,7 +102,7 @@ public class Repeat : TokenizationState{
                 operation.debug(operation: "Cleared")
         
                 //If we have hit the limit, then exit
-                if maximumRepeats && repeats == maximumRepeats {
+                if maximumRepeats != nil && repeats == maximumRepeats {
                     fallThroughToBranches(operation, repeats: repeats)
                     return
                 }
@@ -119,9 +119,9 @@ public class Repeat : TokenizationState{
 
         output+="("+repeatingState.serialize(indentation+"\t")
         
-        if minimumRepeats != 1 || maximumRepeats {
+        if minimumRepeats != 1 || maximumRepeats != nil {
             output+=",\(minimumRepeats)"
-            if maximumRepeats {
+            if (maximumRepeats != nil) {
                 output+=",\(maximumRepeats)"
             }
         }

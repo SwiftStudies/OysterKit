@@ -31,7 +31,7 @@ let __emancipateStates = true
 public class Tokenizer : TokenizationState {
     var namedStates = [String:Named]()
     
-    public init(){
+    public override init(){
         super.init()
     }
     
