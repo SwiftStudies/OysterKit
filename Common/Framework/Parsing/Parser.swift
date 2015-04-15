@@ -74,7 +74,7 @@ public class StackParser:Parser{
     }
     
     public func parseString(string: String, withTokenizer: Tokenizer) {
-        withTokenizer.tokenize(string,parse)
+        withTokenizer.tokenize(string,newToken:parse)
     }
 }
 

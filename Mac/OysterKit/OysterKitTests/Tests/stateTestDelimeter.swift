@@ -31,7 +31,7 @@ class stateTestDelimeter: XCTestCase {
         
         // This is an example of a functional test case.
         let testString = "\"Hello\""
-        XCTAssert(tokenizer.tokenize(testString).count == countElements(testString))
+        XCTAssert(tokenizer.tokenize(testString).count == count(testString))
     }
     
     

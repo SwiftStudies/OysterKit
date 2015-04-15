@@ -27,9 +27,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import Foundation
 
 public class Repeat : TokenizationState{
-    let minimumRepeats = 1
-    let maximumRepeats : Int?
-    let repeatingState:TokenizationState
+    var minimumRepeats = 1
+    var maximumRepeats : Int?
+    var repeatingState:TokenizationState
     
     override func stateClassName()->String {
         return "Repeat"

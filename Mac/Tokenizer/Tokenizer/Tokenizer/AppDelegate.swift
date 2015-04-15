@@ -48,11 +48,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
     var lastInput = ""
     
     var testInputTextView : NSTextView {
-        return testInputScroller.contentView.documentView as NSTextView
+        return testInputScroller.contentView.documentView as! NSTextView
     }
     
     var tokenizerDefinitionTextView : NSTextView {
-        return tokenizerDefinitionScrollView.contentView.documentView as NSTextView
+        return tokenizerDefinitionScrollView.contentView.documentView as! NSTextView
     }
 
     
@@ -87,10 +87,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
         tokenizerDefinitionTextView.string = defaults.stringForKey(keyTokenizerString)
         testInputTextView.string = defaults.stringForKey(keyTokenizerText)
         
-        var dictionary = defaults.dictionaryForKey(keyColors) as Dictionary<String, NSData>
+        var dictionary = defaults.dictionaryForKey(keyColors) as! Dictionary<String, NSData>
         highlighter.tokenColorMap = [String:NSColor]()
         for (tokenName,tokenColorData) in dictionary {
-            var tokenColor : NSColor = NSUnarchiver.unarchiveObjectWithData(tokenColorData) as NSColor
+            var tokenColor : NSColor = NSUnarchiver.unarchiveObjectWithData(tokenColorData) as! NSColor
             highlighter.tokenColorMap[tokenName] = tokenColor
         }
     }
@@ -106,7 +106,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
         view.textStorage?.font = NSFont(name: "Courier", size: 14.0)
     }
     
-    func applicationDidFinishLaunching(aNotification: NSNotification?) {
+    func applicationDidFinishLaunching(aNotification: NSNotification) {
         registerDefaults()
 
         colorDictionaryController.initialKey = "token"
@@ -149,7 +149,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
         
     }
     
-    func applicationWillTerminate(notification: NSNotification!) {
+    func applicationWillTerminate(notification: NSNotification) {
         saveToDefaults()
     }
     
