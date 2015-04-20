@@ -31,8 +31,8 @@ import Foundation
 //Completely stateless
 //
 public class Characters : TokenizationState{
-    let allowedCharacters : String
-    let inverted = false
+    var allowedCharacters : String
+    var inverted = false
     
     override func stateClassName()->String {
         return "Char \(allowedCharacters)"

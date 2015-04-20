@@ -165,7 +165,7 @@ public class OKScriptParser:StackParser{
     func invokeOperator(onToken:Token){
         if hasTokens() {
             if topToken()! is Operator {
-                var op = popToken()! as Operator
+                var op = popToken()! as! Operator
                 if let newToken = op.applyTo(onToken, parser: self) {
                     pushToken(newToken)
                 }
@@ -290,7 +290,7 @@ public class OKScriptParser:StackParser{
         
         var minimum = 1
         var maximum : Int? = nil
-        var repeatingState = parameters[0] as State
+        var repeatingState = parameters[0] as! State
         
         if parameters.count > 1 {
             if var minimumNumberToken = parameters[1] as? NumberToken {
@@ -375,7 +375,7 @@ public class OKScriptParser:StackParser{
     
     
     func unescapeChar(characters:String)->String{
-        if countElements(characters) == 1 {
+        if count(characters) == 1 {
             return characters
         }
         
@@ -518,7 +518,7 @@ public class OKScriptParser:StackParser{
     }
 
     func parseState(string:String) ->TokenizationState {
-        OKScriptTokenizer().tokenize(string,parse)
+        OKScriptTokenizer().tokenize(string,newToken:parse)
         
         var tokenizer = Tokenizer()
         

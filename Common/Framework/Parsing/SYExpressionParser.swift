@@ -33,7 +33,7 @@ public class SYExpressionParser : StackParser{
     func processOperator(operatorToken:OperatorToken)->Bool{
         
         while topToken() is OperatorToken{
-            let topOp = topToken() as OperatorToken
+            let topOp = topToken() as! OperatorToken
             if operatorToken.presidence() <= topOp.presidence(){
                 rpnParser.parse(popToken()!)
             } else {
@@ -64,7 +64,7 @@ public class SYExpressionParser : StackParser{
     override public func parse(token: Token) -> Bool {
         switch token.name{
         case "operator":
-            return processOperator(token as OperatorToken)
+            return processOperator(token as! OperatorToken)
         case "integer","float":
             rpnParser.parse(token)
             return true

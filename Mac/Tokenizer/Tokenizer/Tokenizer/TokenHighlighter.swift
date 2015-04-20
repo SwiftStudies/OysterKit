@@ -38,8 +38,10 @@ class TokenHighlighter : NSObject, NSTextStorageDelegate, NSLayoutManagerDelegat
     
     var textStorage:NSTextStorage!{
     willSet{
-        if let reallyAvailable = textStorage? {
-            textStorage.delegate = nil
+        if let reallyAvailable = textStorage {
+            if let oldValue = textStorage {
+                oldValue.delegate = nil
+            }
         }
     }
     didSet{
@@ -62,12 +64,15 @@ class TokenHighlighter : NSObject, NSTextStorageDelegate, NSLayoutManagerDelegat
     
     func tokenize(string:String, usesRange:NSRange){
         
-        var layoutManagers = self.textStorage.layoutManagers as [NSLayoutManager]
+        var layoutManagers = self.textStorage.layoutManagers as! [NSLayoutManager]
         
-        let limit = countElements(self.textStorage.string as String)
+        let limit = count(self.textStorage.string as String)
         
+        println("tokenizer is \(tokenizer)")
         
         let tokens = tokenizer.tokenize(string)
+        
+        let tokens2 = tokenizer.tokenize("OK is a test")
         
         let applyColoring = NSBlockOperation(){
             var inRange:NSRange
@@ -85,7 +90,7 @@ class TokenHighlighter : NSObject, NSTextStorageDelegate, NSLayoutManagerDelegat
             
             
             for token in tokens {
-                let tokenRange = NSMakeRange(inRange.location+token.originalStringIndex!, countElements(token.characters))
+                let tokenRange = NSMakeRange(inRange.location+token.originalStringIndex!, count(token.characters))
                 
                 if tokenRange.location + tokenRange.length < limit {
                     for layoutManager in layoutManagers {
@@ -147,7 +152,7 @@ class TokenHighlighter : NSObject, NSTextStorageDelegate, NSLayoutManagerDelegat
         let adaptiveString = nsString.substringWithRange(adaptiveRange)
         
         let string = self.textStorage.string as String
-        let tokenizeRange = NSMakeRange(0, countElements(string))
+        let tokenizeRange = NSMakeRange(0, count(string))
         
         
         tokenizationOperation = NSBlockOperation(){
@@ -167,19 +172,19 @@ class TokenHighlighter : NSObject, NSTextStorageDelegate, NSLayoutManagerDelegat
         NSRunLoop.mainRunLoop().addTimer(highlightingTimer!, forMode: NSRunLoopCommonModes)
     }
     
-    func textStorageDidProcessEditing(notification: NSNotification!) {
+    func textStorageDidProcessEditing(notification: NSNotification) {
         editedRange = editedRange != nil ? editedRange!.unionWith(textStorage.editedRange) : textStorage.editedRange
         
         scheduleHighlighting()
     }
     
-    func layoutManager(layoutManager: NSLayoutManager!, shouldUseTemporaryAttributes attrs: [NSObject : AnyObject]!, forDrawingToScreen toScreen: Bool, atCharacterIndex charIndex: Int, effectiveRange effectiveCharRange: NSRangePointer) -> [NSObject : AnyObject]! {
+    func layoutManager(layoutManager: NSLayoutManager, shouldUseTemporaryAttributes attrs: [NSObject : AnyObject], forDrawingToScreen toScreen: Bool, atCharacterIndex charIndex: Int, effectiveRange effectiveCharRange: NSRangePointer) -> [NSObject : AnyObject]? {
         if !toScreen {
             return attrs
         }
         
         //This should never happen, but does!
-        if attrs == nil {
+        if attrs.count == 0 {
             return attrs
         }
         
@@ -191,7 +196,7 @@ class TokenHighlighter : NSObject, NSTextStorageDelegate, NSLayoutManagerDelegat
                 
                 returnAttributes[NSForegroundColorAttributeName] = color
                 
-                return returnAttributes
+                return returnAttributes as [NSObject : AnyObject]
             }
         }
         

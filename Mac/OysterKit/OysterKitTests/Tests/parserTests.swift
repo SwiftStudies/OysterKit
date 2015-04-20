@@ -46,7 +46,7 @@ class parserTests: XCTestCase {
             println(tokenizer.description)
         }
         
-        XCTAssert(countElements(parserErrors)==0, "\n\nParsing of \(script) failed with errors:\n\(parserErrors) after creating \n\(tokenizer) from token stream \(OKScriptTokenizer().tokenize(script))")
+        XCTAssert(count(parserErrors)==0, "\n\nParsing of \(script) failed with errors:\n\(parserErrors) after creating \n\(tokenizer) from token stream \(OKScriptTokenizer().tokenize(script))")
         
         return tokenizer.tokenize(tokenize)
     }
@@ -124,7 +124,7 @@ class parserTests: XCTestCase {
             parserErrors+="\t\(error)\n"
         }
         
-        XCTAssert(countElements(parserErrors) == 0, "Self parsing generated an error:\n\(parserErrors) with \n\(tokFileTokDef)\n")
+        XCTAssert(count(parserErrors) == 0, "Self parsing generated an error:\n\(parserErrors) with \n\(tokFileTokDef)\n")
 
         //Tokenize original serialized description with the parsed tokenizer built from my own serialized description
         let parserGeneratedTokens = generatedTokenizer.tokenize(tokFileTokDef)

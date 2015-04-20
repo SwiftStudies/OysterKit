@@ -32,9 +32,9 @@ public class RPNParser : StackParser{
     override public func parse(token: Token) -> Bool {
         switch token.name{
         case "operator":
-            let right = popToken() as NumberToken
-            let left = popToken() as NumberToken
-            let actualOperator = token as OperatorToken
+            let right = popToken() as! NumberToken
+            let left = popToken() as! NumberToken
+            let actualOperator = token as! OperatorToken
             pushToken(actualOperator.applyTo(left, right: right))
             return true
         case "integer","float":
@@ -45,7 +45,7 @@ public class RPNParser : StackParser{
     }
     
     func execute(){
-        let top = popToken() as NumberToken
+        let top = popToken() as! NumberToken
         println(top.numericValue)
     }
 }
