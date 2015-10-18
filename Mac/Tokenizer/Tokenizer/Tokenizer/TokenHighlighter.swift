@@ -38,7 +38,7 @@ class TokenHighlighter : NSObject, NSTextStorageDelegate, NSLayoutManagerDelegat
     
     var textStorage:NSTextStorage!{
     willSet{
-        if let reallyAvailable = textStorage {
+        if let _ = textStorage {
             if let oldValue = textStorage {
                 oldValue.delegate = nil
             }
@@ -64,15 +64,15 @@ class TokenHighlighter : NSObject, NSTextStorageDelegate, NSLayoutManagerDelegat
     
     func tokenize(string:String, usesRange:NSRange){
         
-        var layoutManagers = self.textStorage.layoutManagers as! [NSLayoutManager]
+        let layoutManagers = self.textStorage.layoutManagers
         
-        let limit = count(self.textStorage.string as String)
+        let limit = (self.textStorage.string as String).characters.count
         
-        println("tokenizer is \(tokenizer)")
+        print("tokenizer is \(tokenizer)")
         
         let tokens = tokenizer.tokenize(string)
         
-        let tokens2 = tokenizer.tokenize("OK is a test")
+        _ = tokenizer.tokenize("OK is a test")
         
         let applyColoring = NSBlockOperation(){
             var inRange:NSRange
@@ -90,7 +90,7 @@ class TokenHighlighter : NSObject, NSTextStorageDelegate, NSLayoutManagerDelegat
             
             
             for token in tokens {
-                let tokenRange = NSMakeRange(inRange.location+token.originalStringIndex!, count(token.characters))
+                let tokenRange = NSMakeRange(inRange.location+token.originalStringIndex!, token.characters.characters.count)
                 
                 if tokenRange.location + tokenRange.length < limit {
                     for layoutManager in layoutManagers {
@@ -120,15 +120,15 @@ class TokenHighlighter : NSObject, NSTextStorageDelegate, NSLayoutManagerDelegat
         let finalRange = (editedRange != nil) ? editedRange! : self.textStorage.editedRange
         editedRange = nil
         
-        println("Using base range: \(finalRange)")
+        print("Using base range: \(finalRange)")
         
         
         var actualRangeStart = finalRange.location
         var actualRangeEnd = finalRange.end
         var parseLocation = 0
-        var foundStart = false
+        _ = false
         
-        for character in self.textStorage.string as String {
+        for character in (self.textStorage.string as String).characters {
             if character == "\n" {
                 if parseLocation < finalRange.location {
                     actualRangeStart = parseLocation
@@ -146,13 +146,13 @@ class TokenHighlighter : NSObject, NSTextStorageDelegate, NSLayoutManagerDelegat
         let adaptiveRange = NSMakeRange(actualRangeStart, actualRangeEnd-actualRangeStart)
         
         
-        println("Adaptive range: \(adaptiveRange)")
+        print("Adaptive range: \(adaptiveRange)")
         
         
         let adaptiveString = nsString.substringWithRange(adaptiveRange)
         
         let string = self.textStorage.string as String
-        let tokenizeRange = NSMakeRange(0, count(string))
+        _ = NSMakeRange(0, string.characters.count)
         
         
         tokenizationOperation = NSBlockOperation(){
@@ -172,13 +172,13 @@ class TokenHighlighter : NSObject, NSTextStorageDelegate, NSLayoutManagerDelegat
         NSRunLoop.mainRunLoop().addTimer(highlightingTimer!, forMode: NSRunLoopCommonModes)
     }
     
-    func textStorageDidProcessEditing(notification: NSNotification) {
+    override func textStorageDidProcessEditing(notification: NSNotification) {
         editedRange = editedRange != nil ? editedRange!.unionWith(textStorage.editedRange) : textStorage.editedRange
         
         scheduleHighlighting()
     }
     
-    func layoutManager(layoutManager: NSLayoutManager, shouldUseTemporaryAttributes attrs: [NSObject : AnyObject], forDrawingToScreen toScreen: Bool, atCharacterIndex charIndex: Int, effectiveRange effectiveCharRange: NSRangePointer) -> [NSObject : AnyObject]? {
+    func layoutManager(layoutManager: NSLayoutManager, shouldUseTemporaryAttributes attrs: [String : AnyObject], forDrawingToScreen toScreen: Bool, atCharacterIndex charIndex: Int, effectiveRange effectiveCharRange: NSRangePointer) -> [String : AnyObject]? {
         if !toScreen {
             return attrs
         }
@@ -188,15 +188,13 @@ class TokenHighlighter : NSObject, NSTextStorageDelegate, NSLayoutManagerDelegat
             return attrs
         }
         
-        let tokenValue:AnyObject? = attrs[__TokenKey]
-        
         if let token:Token = attrs[__TokenKey] as? Token {
             if let color = tokenColorMap[token.name] {
-                var returnAttributes : NSMutableDictionary = NSMutableDictionary(dictionary: attrs)
+                var returnAttributes = attrs
                 
                 returnAttributes[NSForegroundColorAttributeName] = color
                 
-                return returnAttributes as [NSObject : AnyObject]
+                return returnAttributes
             }
         }
         

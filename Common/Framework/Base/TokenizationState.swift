@@ -33,7 +33,7 @@ internal var __anonymousStateCount:Int = 0
 //
 // XCode 6 Beta 3 Crashes if two protocols refer to each other, so turning this into a class for now
 //
-public class TokenizationState : Printable, Equatable /*StringLiteralConvertible*/ {
+public class TokenizationState : CustomStringConvertible, Equatable /*StringLiteralConvertible*/ {
     var tokenGenerator : TokenCreationBlock?
     var id : String = ""
     var reference : String?
@@ -66,7 +66,7 @@ public class TokenizationState : Printable, Equatable /*StringLiteralConvertible
     //If I have a branch that goes to a branch that goes nowhere....
     func flattenBranches(){
         if branches.count == 1 {
-            if let branch = branches[0] as? Branch {
+            if let _ = branches[0] as? Branch {
                 branches = branches[0].branches
                 //Keep trying
                 flattenBranches()
@@ -125,7 +125,7 @@ public class TokenizationState : Printable, Equatable /*StringLiteralConvertible
     //
     public func token(emitToken: String) -> TokenizationState {
         token(){(state:TokenizationState, capturedCharacters:String, startIndex:Int)->Token in
-            var token = Token(name: emitToken, withCharacters: capturedCharacters)
+            let token = Token(name: emitToken, withCharacters: capturedCharacters)
             token.originalStringIndex = startIndex
             return token
         }
@@ -135,7 +135,7 @@ public class TokenizationState : Printable, Equatable /*StringLiteralConvertible
     
     public func token(emitToken: Token) -> TokenizationState {
         token(){(state:TokenizationState, capturedCharacters:String, startIndex:Int)->Token in
-            var token = Token(name: emitToken.name, withCharacters: capturedCharacters)
+            let token = Token(name: emitToken.name, withCharacters: capturedCharacters)
             token.originalStringIndex = startIndex
             return token
         }
@@ -234,7 +234,7 @@ public class TokenizationState : Printable, Equatable /*StringLiteralConvertible
     }
     
     public func clone()->TokenizationState {
-        var newState = TokenizationState()
+        let newState = TokenizationState()
         newState.__copyProperities(self)
         return newState
     }
@@ -246,7 +246,7 @@ public class TokenizationState : Printable, Equatable /*StringLiteralConvertible
     func scanBranches(operation:TokenizeOperation){
         let startPosition = operation.context.currentPosition
         
-        operation.debug(operation: "Entered TokenizationState at \(startPosition) with \(branches.count) states")
+        operation.debug("Entered TokenizationState at \(startPosition) with \(branches.count) states")
         
         for branch in branches {
             branch.scan(operation)
@@ -296,7 +296,7 @@ public typealias   TokenCreationBlock = ((state:TokenizationState,capturedCharac
 extension TokenizationState : EmancipatedTokenizer {
     
     func createToken(operation:TokenizeOperation,useCharacters:String?)->Token?{
-        var useCharacters = (useCharacters != nil) ? useCharacters : operation.context.consumedCharacters
+        let useCharacters = (useCharacters != nil) ? useCharacters : operation.context.consumedCharacters
         if let token = tokenGenerator?(state:self, capturedCharacteres:useCharacters!,charactersStartIndex:operation.context.startPosition){
             return token
         }

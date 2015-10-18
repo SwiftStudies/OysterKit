@@ -35,7 +35,7 @@ tokenizer.branch(
 )
 
 tokenizer.tokenize("Hello, World!"){(token:Token)->Bool in
-    println(token.description)
+    print(token.description)
     return true
 }
 

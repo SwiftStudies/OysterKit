@@ -67,14 +67,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
     }
     
     func saveToDefaults(){
-        var defaults = NSUserDefaults.standardUserDefaults()
+        let defaults = NSUserDefaults.standardUserDefaults()
 
         defaults.setValue(tokenizerDefinitionTextView.string, forKey: keyTokenizerString)
         defaults.setValue(highlighter.textStorage.string, forKey: keyTokenizerText)
 
         var tokenColorDict = [String:NSData]()
         
-        for (tokenName:String, color:NSColor) in highlighter.tokenColorMap{
+        for (tokenName, color): (String, NSColor) in highlighter.tokenColorMap{
             tokenColorDict[tokenName] = NSArchiver.archivedDataWithRootObject(color)
         }
         
@@ -82,15 +82,15 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSTextStorageDelegate {
     }
     
     func loadFromDefaults(){
-        var defaults = NSUserDefaults.standardUserDefaults()
+        let defaults = NSUserDefaults.standardUserDefaults()
         
         tokenizerDefinitionTextView.string = defaults.stringForKey(keyTokenizerString)
         testInputTextView.string = defaults.stringForKey(keyTokenizerText)
         
-        var dictionary = defaults.dictionaryForKey(keyColors) as! Dictionary<String, NSData>
+        let dictionary = defaults.dictionaryForKey(keyColors) as! Dictionary<String, NSData>
         highlighter.tokenColorMap = [String:NSColor]()
         for (tokenName,tokenColorData) in dictionary {
-            var tokenColor : NSColor = NSUnarchiver.unarchiveObjectWithData(tokenColorData) as! NSColor
+            let tokenColor : NSColor = NSUnarchiver.unarchiveObjectWithData(tokenColorData) as! NSColor
             highlighter.tokenColorMap[tokenName] = tokenColor
         }
     }

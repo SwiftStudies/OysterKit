@@ -119,7 +119,7 @@ class EmitTokenOperator : Operator {
             return nil
         }
         
-        var topToken = parser.popToken()!
+        let topToken = parser.popToken()!
         
         if let stateToken = topToken as? State {
             stateToken.state.token(token.characters)
@@ -165,7 +165,7 @@ public class OKScriptParser:StackParser{
     func invokeOperator(onToken:Token){
         if hasTokens() {
             if topToken()! is Operator {
-                var op = popToken()! as! Operator
+                let op = popToken()! as! Operator
                 if let newToken = op.applyTo(onToken, parser: self) {
                     pushToken(newToken)
                 }
@@ -184,11 +184,11 @@ public class OKScriptParser:StackParser{
             if let topTokenName = topToken()?.name {
                 if topTokenName == "assign" {
                     popToken()
-                    if let shouldBeStateName = topToken()?.name {
-                        var stateName = popToken()!
+                    if let _ = topToken()?.name {
+                        let stateName = popToken()!
                         //Now we need to create a named state, we only specify the root state
                         //we won't know the end state for some time
-                        var namedState = Named(name: stateName.characters, root:state.state)
+                        let namedState = Named(name: stateName.characters, root:state.state)
                         debug("Created state with charcters "+stateName.characters+" which results in a state that describes itself as "+namedState.description)
                         super.pushToken(State(state: namedState))
                         return
@@ -241,7 +241,7 @@ public class OKScriptParser:StackParser{
                         errors.append("Incomplete state definition")
                         return Array<Token>()
                     }
-                    var lastToken = finalArray.removeLast()
+                    let lastToken = finalArray.removeLast()
                     if let lastStateToken = lastToken as? State {
                         stateToken.state.branch(lastStateToken.state)
                         op = nil
@@ -259,12 +259,12 @@ public class OKScriptParser:StackParser{
             }
         }
         
-        return finalArray.reverse()
+        return Array(finalArray.reverse())
     }
     
     func endBranch(){
         
-        var branch = Branch()
+        let branch = Branch()
         
         for token in popTo("start-branch"){
             if let stateToken = token as? State {
@@ -290,13 +290,13 @@ public class OKScriptParser:StackParser{
         
         var minimum = 1
         var maximum : Int? = nil
-        var repeatingState = parameters[0] as! State
+        let repeatingState = parameters[0] as! State
         
         if parameters.count > 1 {
-            if var minimumNumberToken = parameters[1] as? NumberToken {
+            if let minimumNumberToken = parameters[1] as? NumberToken {
                 minimum = Int(minimumNumberToken.numericValue)
                 if parameters.count > 2 {
-                    if var maximumNumberToken = parameters[2] as? NumberToken {
+                    if let maximumNumberToken = parameters[2] as? NumberToken {
                         maximum = Int(maximumNumberToken.numericValue)
                     } else {
                         errors.append("Expected a number")
@@ -309,9 +309,9 @@ public class OKScriptParser:StackParser{
             }
         }
         
-        var repeat = Repeat(state: repeatingState.state, min: minimum, max: maximum)
+        let `repeat` = Repeat(state: repeatingState.state, min: minimum, max: maximum)
         
-        pushToken(State(state:repeat))
+        pushToken(State(state:`repeat`))
     }
     
     func endDelimited(){
@@ -343,7 +343,7 @@ public class OKScriptParser:StackParser{
         closingDelimiter = unescapeDelimiter(closingDelimiter)
         
         if let delimitedStateToken = parameters[parameters.endIndex-1] as? State {
-            var delimited = Delimited(open: openingDelimiter, close: closingDelimiter, states: delimitedStateToken.state)
+            let delimited = Delimited(open: openingDelimiter, close: closingDelimiter, states: delimitedStateToken.state)
             
             pushToken(State(state:delimited))
         } else {
@@ -353,7 +353,7 @@ public class OKScriptParser:StackParser{
     }
     
     func endKeywords(){
-        var keyWordCharTokens = popTo("start-keyword")
+        let keyWordCharTokens = popTo("start-keyword")
         
         var keywordsArray = [String]()
         
@@ -375,7 +375,7 @@ public class OKScriptParser:StackParser{
     
     
     func unescapeChar(characters:String)->String{
-        if count(characters) == 1 {
+        if characters.characters.count == 1 {
             return characters
         }
         
@@ -400,7 +400,7 @@ public class OKScriptParser:StackParser{
             switch token.name {
             case "unicode":
                 let hexDigits = token.characters[token.characters.startIndex.successor().successor()..<token.characters.endIndex]
-                if let intValue = hexDigits.toInt() {
+                if let intValue = Int(hexDigits) {
                     let unicodeCharacter = UnicodeScalar(intValue)
                     output += "\(unicodeCharacter)"
                 } else {
@@ -449,17 +449,17 @@ public class OKScriptParser:StackParser{
     
     func debugState(){
         if __okDebug {
-            println("Current stack is:")
+            print("Current stack is:")
             for token in symbolStack {
-                println("\t\(token)")
+                print("\t\(token)")
             }
-            println("\n")
+            print("\n")
         }
     }
     
     func debug(message:String){
         if __okDebug {
-            println(message)
+            print(message)
         }
     }
     
@@ -520,7 +520,7 @@ public class OKScriptParser:StackParser{
     func parseState(string:String) ->TokenizationState {
         OKScriptTokenizer().tokenize(string,newToken:parse)
         
-        var tokenizer = Tokenizer()
+        _ = Tokenizer()
         
         if let rootState = popToken() as? State {
             let flattened = rootState.state.flatten()
@@ -542,7 +542,7 @@ public class OKScriptParser:StackParser{
             }
             if stateSequence.count > 0 {
                 debug("Setting up sequence")
-                namedState.sequence(stateSequence.reverse())
+                namedState.sequence(Array(stateSequence.reverse()))
                 namedState.endState = endState!
             }
             
@@ -611,7 +611,7 @@ public class OKScriptParser:StackParser{
     }
     
     public func parse(string: String) -> Tokenizer {
-        var tokenizer = Tokenizer()
+        let tokenizer = Tokenizer()
         
         tokenizer.branch(parseState(string))
         tokenizer.namedStates = definedNamedStates

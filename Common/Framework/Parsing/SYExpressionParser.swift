@@ -54,7 +54,7 @@ public class SYExpressionParser : StackParser{
         }
         
         if topTokenName == nil {
-            println("Missing open bracket")
+            print("Missing open bracket")
             return true
         }
         

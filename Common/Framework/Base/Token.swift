@@ -27,7 +27,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Foundation
 
-public class Token : Printable{
+public class Token : CustomStringConvertible{
     public let name:String
     public var characters:String = ""
     public var originalStringIndex:Int?
@@ -58,7 +58,7 @@ public class Token : Printable{
     }
     
     public class func createToken(state:TokenizationState,capturedCharacters:String,startIndex:Int)->Token{
-        var token = Token(name:"Token",withCharacters:capturedCharacters)
+        let token = Token(name:"Token",withCharacters:capturedCharacters)
         token.originalStringIndex = startIndex
         return token
     }
@@ -118,7 +118,7 @@ class NumberToken : Token{
     }
     
     convenience init(usingString:String){
-        if let intValue = usingString.toInt() {
+        if let intValue = Int(usingString) {
             self.init(value:intValue,characters: usingString)
         } else {
             let string:NSString = usingString
@@ -129,7 +129,7 @@ class NumberToken : Token{
     convenience init(usingToken:Token){
         switch usingToken.name{
         case "integer":
-            if let intValue = usingToken.characters.toInt() {
+            if let intValue = Int(usingToken.characters) {
                 self.init(value:intValue,characters:usingToken.characters)
             } else {
                 self.init(value:Double.NaN,characters:usingToken.characters)
@@ -147,7 +147,7 @@ class NumberToken : Token{
     }
     
     override class func createToken(state:TokenizationState,capturedCharacters:String,startIndex:Int)->Token{
-        var token = NumberToken(usingString:capturedCharacters)
+        let token = NumberToken(usingString:capturedCharacters)
         token.originalStringIndex = startIndex
         return token
     }
@@ -187,7 +187,7 @@ class OperatorToken : Token{
     }
     
     override class func createToken(state:TokenizationState,capturedCharacters:String,startIndex:Int)->Token{
-        var token = OperatorToken(characters:capturedCharacters)
+        let token = OperatorToken(characters:capturedCharacters)
         token.originalStringIndex = startIndex
         return token
     }
