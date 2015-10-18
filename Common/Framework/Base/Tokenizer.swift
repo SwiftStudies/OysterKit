@@ -46,7 +46,7 @@ public class Tokenizer : TokenizationState {
         emancipatedTokenization.tokenize(string, tokenReceiver: newToken)
     }
     
-    public func tokenize(string:String) -> Array<Token>{
+    public func tokenize(string:String) -> [Token]{
         var tokens = Array<Token>()
         
         tokenize(string, newToken: {(token:Token)->Bool in

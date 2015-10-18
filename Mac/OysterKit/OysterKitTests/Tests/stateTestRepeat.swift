@@ -10,18 +10,7 @@ import XCTest
 import OysterKit
 
 class stateTestRepeat: XCTestCase {
-    var tokenizer = Tokenizer()
-    
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-        tokenizer = Tokenizer()
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
+    let tokenizer = Tokenizer()
 
     func testRepeat2HexDigits(){
         //Test for 2
@@ -34,7 +23,7 @@ class stateTestRepeat: XCTestCase {
         XCTAssert(tokenizer.tokenize("A") != [token("xx",chars:"A")])
         XCTAssert(tokenizer.tokenize("AF00") == [token("xx",chars:"AF"),token("xx",chars:"00")])
     }
-    
+
     func testRepeat4HexDigits(){
         tokenizer.branch(
             Repeat(state:OKStandard.hexDigit, min:4,max:4).token("xx"),
@@ -43,21 +32,17 @@ class stateTestRepeat: XCTestCase {
         
         XCTAssert(tokenizer.tokenize("AF00") == [token("xx",chars:"AF00")])
     }
-    
-    func testRepeatXYFixed1(){
-        tokenizer.branch(
-            Repeat(state:char("x").sequence(char("y").token("xy")),min:3,max:3).token("xyxyxy")
-        )
-        
+
+    func testRepeatXYFixed1() {
+        let x = char("x").sequence(char("y").token("xy"))
+        tokenizer.branch(Repeat(state: x, min: 3, max: 3).token("xyxyxy"))
         XCTAssert(tokenizer.tokenize("xyxyxy") == [token("xyxyxy")])
     }
-    
+
     func testRepeatXYFixed2(){
-        
+        let branch = Branch().branch(sequence(char("x"),char("y").token("xy")))
         tokenizer.branch(
-            Repeat(state:Branch().branch(
-                sequence(char("x"),char("y").token("xy"))
-                ),min:3,max:3).token("xyxyxy"),
+            Repeat(state:branch,min:3,max:3).token("xyxyxy"),
             OKStandard.eot
         )
         

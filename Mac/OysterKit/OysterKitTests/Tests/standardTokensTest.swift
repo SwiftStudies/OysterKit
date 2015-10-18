@@ -49,7 +49,7 @@ class standardTokensTest: XCTestCase {
             ])
         
         
-        for (number:String,token:String) in testStrings{
+        for (number, token) in testStrings {
             var tokens:Array<Token> = newTokenizer.tokenize(number)
             
             XCTAssert(tokens.count == 1, "Failed to generate "+token+" from "+number+", exactly one token should have been created")
