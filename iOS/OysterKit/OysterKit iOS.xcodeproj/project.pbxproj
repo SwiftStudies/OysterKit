@@ -18,6 +18,7 @@
 		2373CE781BD3871200AD6BA8 /* stateTestLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42954F561973E88A00B3CB6E /* stateTestLoop.swift */; };
 		2373CE791BD387D000AD6BA8 /* stateTestKeywords.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42954F571973E88A00B3CB6E /* stateTestKeywords.swift */; };
 		2373CE7A1BD387D900AD6BA8 /* tokenizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42954F581973E88A00B3CB6E /* tokenizerTests.swift */; };
+		2373CE7C1BD38CAB00AD6BA8 /* referenceOKScriptDefinition.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2373CE7B1BD38CAB00AD6BA8 /* referenceOKScriptDefinition.txt */; settings = {ASSET_TAGS = (); }; };
 		4221035C19601B11001148F5 /* OysterKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 4221035B19601B11001148F5 /* OysterKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4221036219601B11001148F5 /* OysterKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4221035619601B11001148F5 /* OysterKit.framework */; };
 		EBFDF1BF1ADDACF800DC6B90 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFDF1AB1ADDACF800DC6B90 /* Operators.swift */; };
@@ -51,6 +52,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2373CE7B1BD38CAB00AD6BA8 /* referenceOKScriptDefinition.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = referenceOKScriptDefinition.txt; path = ../../../Mac/OysterKit/OysterKitTests/referenceOKScriptDefinition.txt; sourceTree = "<group>"; };
 		4221035619601B11001148F5 /* OysterKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OysterKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4221035A19601B11001148F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4221035B19601B11001148F5 /* OysterKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OysterKit.h; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 		4221036519601B11001148F5 /* OysterKitTests */ = {
 			isa = PBXGroup;
 			children = (
+				2373CE7B1BD38CAB00AD6BA8 /* referenceOKScriptDefinition.txt */,
 				42954F4E1973E88A00B3CB6E /* TestingSupportFunctions.swift */,
 				42954F4F1973E88A00B3CB6E /* cloneTests.swift */,
 				42954F501973E88A00B3CB6E /* parserTests.swift */,
@@ -318,6 +321,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2373CE7C1BD38CAB00AD6BA8 /* referenceOKScriptDefinition.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

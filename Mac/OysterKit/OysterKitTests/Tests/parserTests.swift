@@ -121,7 +121,7 @@ class parserTests: XCTestCase {
         let generatedTokenizer = parser.parse(tokFileTokDef)
         var parserErrors = ""
         for error in parser.errors {
-            parserErrors += "\t\(error)"
+            parserErrors += "\t\(error)\n"
         }
         
         XCTAssert(parserErrors.characters.count == 0, "Self parsing generated an error: \(parserErrors) with \(tokFileTokDef)")
