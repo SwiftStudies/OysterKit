@@ -21,7 +21,7 @@ public class Keywords : TokenizationState {
     }
     
     public override func scan(operation: TokenizeOperation) {
-        operation.debug(operation: "Entered Keywords \(validStrings)")
+        operation.debug("Entered Keywords \(validStrings)")
 
         var didAdvance = false
         
@@ -87,7 +87,7 @@ public class Keywords : TokenizationState {
     }
     
     override public func clone() -> TokenizationState {
-        var newState = Keywords(validStrings: validStrings)
+        let newState = Keywords(validStrings: validStrings)
         
         newState.__copyProperities(self)
         

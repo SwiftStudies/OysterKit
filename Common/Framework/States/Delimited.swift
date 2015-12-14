@@ -34,7 +34,7 @@ public class Delimited : TokenizationState{
         override func scan(operation: TokenizeOperation) {
             //If it is the delimiter character, pop the state and emit our token (if any)
             if isAllowed(operation.current) {
-                operation.popContext(publishTokens: true)
+                operation.popContext(true)
                 operation.context.flushConsumedCharacters()
                 operation.advance()
                 emitToken(operation) //Will not emit something if it has not been told to, need to propagate the token generator (or make sure it has been)
@@ -101,7 +101,7 @@ public class Delimited : TokenizationState{
     
     
     public override func scan(operation: TokenizeOperation) {
-        operation.debug(operation: "Entered \(openingDelimiter)Delimited\(poppingState.allowedCharacters)")
+        operation.debug("Entered \(openingDelimiter)Delimited\(poppingState.allowedCharacters)")
         if openingDelimiter != operation.current {
             return
         }
@@ -147,9 +147,8 @@ public class Delimited : TokenizationState{
         }
         
         output += "{"
-        var first = true
-        
-        var subStates = Array(delimetedStates[1..<self.delimetedStates.endIndex])
+
+        let subStates = Array(delimetedStates[1..<self.delimetedStates.endIndex])
         output += serializeStateArray(indentation+"\t", states: subStates)
         
         output+="}"
@@ -158,9 +157,9 @@ public class Delimited : TokenizationState{
     }
 
     override public func clone() -> TokenizationState {
-        var newState = Delimited(open: "\(openingDelimiter)", close: "\(poppingState.allowedCharacters)")
+        let newState = Delimited(open: "\(openingDelimiter)", close: "\(poppingState.allowedCharacters)")
         
-        for delimitedState in delimetedStates {
+        for _ in delimetedStates {
             //Woo-hoo correct array semantics!
             newState.delimetedStates=delimetedStates
         }

@@ -41,12 +41,12 @@ public class Tokenizer : TokenizationState {
     }
     
     public func tokenize(string: String, newToken: (Token)->Bool) {
-        var emancipatedTokenization = TokenizeOperation(legacyTokenizer: self)
+        let emancipatedTokenization = TokenizeOperation(legacyTokenizer: self)
         
         emancipatedTokenization.tokenize(string, tokenReceiver: newToken)
     }
     
-    public func tokenize(string:String) -> Array<Token>{
+    public func tokenize(string:String) -> [Token]{
         var tokens = Array<Token>()
         
         tokenize(string, newToken: {(token:Token)->Bool in
@@ -72,7 +72,7 @@ public class Tokenizer : TokenizationState {
         var output = ""
         
         for (name,state) in namedStates {
-            let description = state.serialize("")
+            _ = state.serialize("")
             output+="\(name) = \(state.rootState.description)\n"
         }
         

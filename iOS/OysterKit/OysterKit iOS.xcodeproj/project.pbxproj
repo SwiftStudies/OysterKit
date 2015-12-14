@@ -7,19 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2373CE6E1BD381D700AD6BA8 /* TestingSupportFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42954F4E1973E88A00B3CB6E /* TestingSupportFunctions.swift */; };
+		2373CE6F1BD381E300AD6BA8 /* cloneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42954F4F1973E88A00B3CB6E /* cloneTests.swift */; };
+		2373CE701BD381EF00AD6BA8 /* parserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42954F501973E88A00B3CB6E /* parserTests.swift */; };
+		2373CE711BD3825A00AD6BA8 /* stateTestChar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42954F511973E88A00B3CB6E /* stateTestChar.swift */; };
+		2373CE741BD3836F00AD6BA8 /* stateTestRepeat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42954F521973E88A00B3CB6E /* stateTestRepeat.swift */; };
+		2373CE751BD386F400AD6BA8 /* stateTestBranch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42954F531973E88A00B3CB6E /* stateTestBranch.swift */; };
+		2373CE761BD3870000AD6BA8 /* stateTestDelimeter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42954F541973E88A00B3CB6E /* stateTestDelimeter.swift */; };
+		2373CE771BD3870900AD6BA8 /* standardTokensTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42954F551973E88A00B3CB6E /* standardTokensTest.swift */; };
+		2373CE781BD3871200AD6BA8 /* stateTestLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42954F561973E88A00B3CB6E /* stateTestLoop.swift */; };
+		2373CE791BD387D000AD6BA8 /* stateTestKeywords.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42954F571973E88A00B3CB6E /* stateTestKeywords.swift */; };
+		2373CE7A1BD387D900AD6BA8 /* tokenizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42954F581973E88A00B3CB6E /* tokenizerTests.swift */; };
+		2373CE7C1BD38CAB00AD6BA8 /* referenceOKScriptDefinition.txt in Resources */ = {isa = PBXBuildFile; fileRef = 2373CE7B1BD38CAB00AD6BA8 /* referenceOKScriptDefinition.txt */; settings = {ASSET_TAGS = (); }; };
 		4221035C19601B11001148F5 /* OysterKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 4221035B19601B11001148F5 /* OysterKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4221036219601B11001148F5 /* OysterKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4221035619601B11001148F5 /* OysterKit.framework */; };
-		42954F591973E88A00B3CB6E /* TestingSupportFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42954F4E1973E88A00B3CB6E /* TestingSupportFunctions.swift */; };
-		42954F5A1973E88A00B3CB6E /* cloneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42954F4F1973E88A00B3CB6E /* cloneTests.swift */; };
-		42954F5B1973E88A00B3CB6E /* parserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42954F501973E88A00B3CB6E /* parserTests.swift */; };
-		42954F5C1973E88A00B3CB6E /* stateTestChar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42954F511973E88A00B3CB6E /* stateTestChar.swift */; };
-		42954F5D1973E88A00B3CB6E /* stateTestRepeat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42954F521973E88A00B3CB6E /* stateTestRepeat.swift */; };
-		42954F5E1973E88A00B3CB6E /* stateTestBranch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42954F531973E88A00B3CB6E /* stateTestBranch.swift */; };
-		42954F5F1973E88A00B3CB6E /* stateTestDelimeter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42954F541973E88A00B3CB6E /* stateTestDelimeter.swift */; };
-		42954F601973E88A00B3CB6E /* standardTokensTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42954F551973E88A00B3CB6E /* standardTokensTest.swift */; };
-		42954F611973E88A00B3CB6E /* stateTestLoop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42954F561973E88A00B3CB6E /* stateTestLoop.swift */; };
-		42954F621973E88A00B3CB6E /* stateTestKeywords.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42954F571973E88A00B3CB6E /* stateTestKeywords.swift */; };
-		42954F631973E88A00B3CB6E /* tokenizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42954F581973E88A00B3CB6E /* tokenizerTests.swift */; };
 		EBFDF1BF1ADDACF800DC6B90 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFDF1AB1ADDACF800DC6B90 /* Operators.swift */; };
 		EBFDF1C01ADDACF800DC6B90 /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFDF1AC1ADDACF800DC6B90 /* Token.swift */; };
 		EBFDF1C11ADDACF800DC6B90 /* TokenizationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFDF1AD1ADDACF800DC6B90 /* TokenizationState.swift */; };
@@ -51,6 +52,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2373CE7B1BD38CAB00AD6BA8 /* referenceOKScriptDefinition.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = referenceOKScriptDefinition.txt; path = ../../../Mac/OysterKit/OysterKitTests/referenceOKScriptDefinition.txt; sourceTree = "<group>"; };
 		4221035619601B11001148F5 /* OysterKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OysterKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4221035A19601B11001148F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4221035B19601B11001148F5 /* OysterKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OysterKit.h; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 		4221036519601B11001148F5 /* OysterKitTests */ = {
 			isa = PBXGroup;
 			children = (
+				2373CE7B1BD38CAB00AD6BA8 /* referenceOKScriptDefinition.txt */,
 				42954F4E1973E88A00B3CB6E /* TestingSupportFunctions.swift */,
 				42954F4F1973E88A00B3CB6E /* cloneTests.swift */,
 				42954F501973E88A00B3CB6E /* parserTests.swift */,
@@ -275,7 +278,8 @@
 		4221034D19601B11001148F5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0600;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "RED When Excited Limited";
 				TargetAttributes = {
 					4221035519601B11001148F5 = {
@@ -317,6 +321,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2373CE7C1BD38CAB00AD6BA8 /* referenceOKScriptDefinition.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -352,17 +357,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				42954F601973E88A00B3CB6E /* standardTokensTest.swift in Sources */,
-				42954F5B1973E88A00B3CB6E /* parserTests.swift in Sources */,
-				42954F5E1973E88A00B3CB6E /* stateTestBranch.swift in Sources */,
-				42954F5D1973E88A00B3CB6E /* stateTestRepeat.swift in Sources */,
-				42954F5C1973E88A00B3CB6E /* stateTestChar.swift in Sources */,
-				42954F611973E88A00B3CB6E /* stateTestLoop.swift in Sources */,
-				42954F591973E88A00B3CB6E /* TestingSupportFunctions.swift in Sources */,
-				42954F621973E88A00B3CB6E /* stateTestKeywords.swift in Sources */,
-				42954F5F1973E88A00B3CB6E /* stateTestDelimeter.swift in Sources */,
-				42954F5A1973E88A00B3CB6E /* cloneTests.swift in Sources */,
-				42954F631973E88A00B3CB6E /* tokenizerTests.swift in Sources */,
+				2373CE7A1BD387D900AD6BA8 /* tokenizerTests.swift in Sources */,
+				2373CE791BD387D000AD6BA8 /* stateTestKeywords.swift in Sources */,
+				2373CE781BD3871200AD6BA8 /* stateTestLoop.swift in Sources */,
+				2373CE771BD3870900AD6BA8 /* standardTokensTest.swift in Sources */,
+				2373CE761BD3870000AD6BA8 /* stateTestDelimeter.swift in Sources */,
+				2373CE751BD386F400AD6BA8 /* stateTestBranch.swift in Sources */,
+				2373CE741BD3836F00AD6BA8 /* stateTestRepeat.swift in Sources */,
+				2373CE711BD3825A00AD6BA8 /* stateTestChar.swift in Sources */,
+				2373CE701BD381EF00AD6BA8 /* parserTests.swift in Sources */,
+				2373CE6F1BD381E300AD6BA8 /* cloneTests.swift in Sources */,
+				2373CE6E1BD381D700AD6BA8 /* TestingSupportFunctions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -398,6 +403,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -472,6 +478,7 @@
 				INFOPLIST_FILE = OysterKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.rwe-uk.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -487,6 +494,7 @@
 				INFOPLIST_FILE = OysterKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.rwe-uk.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -495,10 +503,6 @@
 		4221037019601B11001148F5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -506,6 +510,7 @@
 				INFOPLIST_FILE = OysterKitTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				METAL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.rwe-uk.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -513,13 +518,10 @@
 		4221037119601B11001148F5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
 				INFOPLIST_FILE = OysterKitTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				METAL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.rwe-uk.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

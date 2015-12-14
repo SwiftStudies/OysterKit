@@ -1,0 +1,44 @@
+set -x
+
+pre() {
+    gem install xcpretty
+    gem install xcpretty-travis-formatter
+}
+
+test() {
+#    set -o pipefail && xcodebuild -workspace OysterKit\ Workspace.xcworkspace -scheme Tokenizer build test -configuration "Debug" | xcpretty -c -f `xcpretty-travis-formatter`
+#    set -o pipefail && xcodebuild -workspace OysterKit\ Workspace.xcworkspace -scheme OysterKit build test | xcpretty -c -f `xcpretty-travis-formatter`
+    set -o pipefail && xcodebuild -workspace OysterKit\ Workspace.xcworkspace -scheme OysterKit build test -sdk iphonesimulator9.0 ONLY_ACTIVE_ARCH=NO -destination name="iPhone 6" | xcpretty -c -f `xcpretty-travis-formatter`
+}
+
+if [ "$#" -eq 0 -o "$#" -gt 2 ]; then
+    exit 1
+fi
+
+COMMAND="$1"
+
+case "$COMMAND" in
+
+    ######################################
+    # Bootstrap
+    ######################################
+    "bootstrap")
+      pre
+      exit $?
+        ;;
+
+    ######################################
+    # Test
+    ######################################
+    "test")
+      test
+      exit $?
+      ;;
+  *)
+
+  echo "Unknown command '$COMMAND'"
+  exit 1
+    ;;
+
+
+esac

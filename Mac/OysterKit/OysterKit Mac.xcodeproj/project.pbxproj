@@ -29,7 +29,6 @@
 		427BB04019624BEE0006829F /* RPNParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB03F19624BEE0006829F /* RPNParser.swift */; };
 		427BB04219624BF50006829F /* SYExpressionParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB04119624BF50006829F /* SYExpressionParser.swift */; };
 		427BB09A1962FB450006829F /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427BB0991962FB450006829F /* Operators.swift */; };
-		4282D123196E9C7300A4785C /* parserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4282D122196E9C7300A4785C /* parserTests.swift */; };
 		42923D7F1975027F00A38AEF /* TokenizeOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42923D7E1975027F00A38AEF /* TokenizeOperation.swift */; };
 		42954F4D1973B7E700B3CB6E /* cloneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42954F4C1973B7E700B3CB6E /* cloneTests.swift */; };
 		4298889D19684B1200A4C4C0 /* OKScriptParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4298889C19684B1200A4C4C0 /* OKScriptParser.swift */; };
@@ -414,7 +413,9 @@
 		4221037319601B40001148F5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0600;
+				LastSwiftMigration = 0700;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "RED When Excited Limited";
 				TargetAttributes = {
 					4221037B19601B40001148F5 = {
@@ -494,7 +495,6 @@
 			files = (
 				4200A1811965C088008056C5 /* standardTokensTest.swift in Sources */,
 				42EFD385196D284C001944F3 /* stateTestLoop.swift in Sources */,
-				4282D123196E9C7300A4785C /* parserTests.swift in Sources */,
 				4267D68F1965ABB200AF442F /* stateTestBranch.swift in Sources */,
 				42954F4D1973B7E700B3CB6E /* cloneTests.swift in Sources */,
 				4267D68B1965AB8000AF442F /* stateTestChar.swift in Sources */,
@@ -617,6 +617,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -692,6 +693,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.rwe-uk.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -711,6 +713,7 @@
 				INFOPLIST_FILE = OysterKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.rwe-uk.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -731,6 +734,7 @@
 				INFOPLIST_FILE = OysterKitTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				METAL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.rwe-uk.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -746,6 +750,7 @@
 				INFOPLIST_FILE = OysterKitTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				METAL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.rwe-uk.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

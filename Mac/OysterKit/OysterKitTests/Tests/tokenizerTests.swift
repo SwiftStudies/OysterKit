@@ -28,9 +28,7 @@ class tokenizerTests: XCTestCase {
         let escapedAnchorCharacters = "AzZbB"
         let escapedRegexSyntax = "[]()|?.*+{}"
         let escapedCharacterClasses = "sSdDwW"
-        
-        var regexCharacterTokenizer = Tokenizer()
-        
+
         let singleAnchors = Branch().branch(
             Characters(from:"^").token("character"),
             Characters(from:"$").token("character")
@@ -59,7 +57,7 @@ class tokenizerTests: XCTestCase {
     }
     
     func testTokenizerFileChar(){
-        var tokenizer = OKScriptParser().parse("{\"0123456789\"->digit}")
+        let tokenizer = OKScriptParser().parse("{\"0123456789\"->digit}")
         
         var tokens = tokenizer.tokenize("0123456789")
         
@@ -75,9 +73,9 @@ class tokenizerTests: XCTestCase {
     }
     
     func testTokenizerFileBranch(){
-        var tokenizer = OKScriptParser().parse("{\"0123456789\"->digit,\"ABCDEFGHIJKLMNOPQRSTUVWXYZ\"->capital}")
+        let tokenizer = OKScriptParser().parse("{\"0123456789\"->digit,\"ABCDEFGHIJKLMNOPQRSTUVWXYZ\"->capital}")
         
-        var tokens = tokenizer.tokenize("123ABC")
+        let tokens = tokenizer.tokenize("123ABC")
         
         XCTAssert(tokens.count == 6)
     }
@@ -112,15 +110,15 @@ class tokenizerTests: XCTestCase {
     
     func testTokenizerDelimited(){
         let testString = "{<'(',')',{({!\")\"->delimitedChar})->bracketedString}>->delimiterCharacters}"
-        var tokenizer = OKScriptParser().parse(testString)
+        let tokenizer = OKScriptParser().parse(testString)
         
-        var tokens = tokenizer.tokenize("(abcdefghij)")
+        let tokens = tokenizer.tokenize("(abcdefghij)")
         
         XCTAssert(tokens.count == 3)
     }
     
     func testRecursiveChar(){
-        println(OKStandard.parseState(Characters(from:"hello").token("hi").description)!.description)
+        print(OKStandard.parseState(Characters(from:"hello").token("hi").description)!.description)
     }
     
 
@@ -134,7 +132,7 @@ class tokenizerTests: XCTestCase {
         
         self.measureBlock() {
             let generatedTokenizer = OKStandard.parseTokenizer(tokFileTokDef!)
-            let parserGeneratedTokens = generatedTokenizer?.tokenize(tokFileTokDef!)
+            _ = generatedTokenizer?.tokenize(tokFileTokDef!)
         }
     }
 
@@ -150,7 +148,7 @@ class tokenizerTests: XCTestCase {
             tokFileTokDef += tokFileTokDef
             
             self.measureBlock() {
-                let parserGeneratedTokens = OKScriptTokenizer().tokenize(tokFileTokDef)
+                OKScriptTokenizer().tokenize(tokFileTokDef)
             }
         }
         

@@ -55,7 +55,7 @@ public class OKStandard{
     public class var eot:TokenizationState{
         class EOTState : TokenizationState{
             override func scan(operation: TokenizeOperation) {
-                operation.debug(operation: "Entered EOTState")
+                operation.debug("Entered EOTState")
                 
                 if operation.current == "\u{04}" {
                     //Emit a token, branch on
@@ -65,7 +65,7 @@ public class OKStandard{
         }
 
         return EOTState().token(){ (state:TokenizationState, capturedCharacters:String, startIndex:Int)->Token in
-            var token = Token.EndOfTransmissionToken()
+            let token = Token.EndOfTransmissionToken()
             token.originalStringIndex = startIndex
             return token
         }

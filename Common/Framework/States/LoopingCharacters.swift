@@ -27,7 +27,7 @@ public class LoopingCharacters : Characters {
     }
 
     override public func clone() -> TokenizationState {
-        var newState = LoopingCharacters(from: "\(allowedCharacters)")
+        let newState = LoopingCharacters(from: "\(allowedCharacters)")
         
         newState.__copyProperities(self)
         
@@ -35,11 +35,11 @@ public class LoopingCharacters : Characters {
     }
     
     public override func scan(operation: TokenizeOperation){
-        operation.debug(operation: "Entered "+(inverted ? "!" : "")+"LoopingChar '\(allowedCharacters)'")
+        operation.debug("Entered "+(inverted ? "!" : "")+"LoopingChar '\(allowedCharacters)'")
         
         if isAllowed(operation.current) {
             //Scan through as much as we can
-            do {
+            repeat {
                 operation.advance()
             } while !operation.complete && isAllowed(operation.current)
             

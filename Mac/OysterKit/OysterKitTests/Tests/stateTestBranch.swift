@@ -10,50 +10,32 @@ import XCTest
 import OysterKit
 
 class stateTestBranch: XCTestCase {
-    var tokenizer = OysterKit.Tokenizer()
-    
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-        tokenizer = Tokenizer()
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
+    let tokenizer = Tokenizer()
 
     func testBranch(){
-        
-        tokenizer.branch(
-            char("x").branch(
-                char("y").token("xy"),
-                char("z").token("xz")
-            ),
-            OKStandard.eot
-        )
-                
+        let branch = char("x").branch(char("y").token("xy"), char("z").token("xz"))
+        tokenizer.branch(branch, OKStandard.eot)
         XCTAssert(tokenizer.tokenize("xyxz") == [token("xy"),token("xz")])
     }
-    
+
     func testRepeatLoopEquivalence(){
-        
         let seperator = Characters(from: ",").token("sep")
-        
+
         let lettersWithLoop = LoopingCharacters(from:"abcdef").token("easy")
-        let lettersWithRepeat = Repeat(state: Characters(from:"abcdef").token("ignore")).token("easy")
-        
+        let state = Characters(from:"abcdef").token("ignore")
+        let lettersWithRepeat = Repeat(state: state).token("easy")
+
         let space = Characters(from: " ")
         let bracketedWithRepeat = Delimited(open: "(", close: ")", states: lettersWithRepeat).token("bracket")
         let bracketedWithLoop = Delimited(open: "(", close: ")", states: lettersWithLoop).token("bracket")
-        
+
         tokenizer.branch([
             bracketedWithLoop,
             seperator,
             space
         ])
-        
-        var underTest = Tokenizer()
+
+        let underTest = Tokenizer()
         underTest.branch([
             bracketedWithRepeat,
             seperator,
@@ -66,27 +48,20 @@ class stateTestBranch: XCTestCase {
         
         assertTokenListsEqual(testTokens, reference: referenceTokens)
     }
-    
+
     func testNestedBranch(){
-        tokenizer.branch(
-            Branch(states: [
-                char("x").branch(
-                    char("y").token("xy"),
-                    char("z").token("xz")
-                )
-                ])
-        )
-        
+        let branch = Branch(states: [char("x").branch(char("y").token("xy"), char("z").token("xz"))])
+        tokenizer.branch(branch)
         XCTAssert(tokenizer.tokenize("xyxz") == [token("xy"),token("xz")])
     }
-    
+
     func testXY(){
         tokenizer.sequence(char("x"),char("y").token("xy"))
         tokenizer.branch(OKStandard.eot)
         
         XCTAssert(tokenizer.tokenize("xy") == [token("xy")], "Chained results do not match")
     }
-    
+
     
     func testSequence1(){
         let expectedResults = [token("done",chars:"xyz")]
@@ -98,7 +73,7 @@ class stateTestBranch: XCTestCase {
         
         XCTAssert(tokenizer.tokenize("xyz") == expectedResults)
     }
-    
+
     func testSequence2(){
         let expectedResults = [token("done",chars:"xyz")]
         
@@ -109,6 +84,4 @@ class stateTestBranch: XCTestCase {
         
         XCTAssert(tokenizer.tokenize("xyz") == expectedResults)
     }
-
-
 }

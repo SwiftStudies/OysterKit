@@ -34,8 +34,8 @@ class parserTests: XCTestCase {
         return parserErrors
     }
     
-    func parserTest(#script:String, thenTokenizing tokenize:String)->[Token]{
-        var tokenizer = parser.parse(script)
+    func parserTest(script: String, thenTokenizing tokenize: String) -> [Token] {
+        let tokenizer = parser.parse(script)
         
         var parserErrors = ""
         for error in parser.errors {
@@ -43,10 +43,10 @@ class parserTests: XCTestCase {
         }
         
         if __debugScanning {
-            println(tokenizer.description)
+            print(tokenizer.description)
         }
         
-        XCTAssert(count(parserErrors)==0, "\n\nParsing of \(script) failed with errors:\n\(parserErrors) after creating \n\(tokenizer) from token stream \(OKScriptTokenizer().tokenize(script))")
+        XCTAssert(parserErrors.characters.count == 0, "\n\nParsing of \(script) failed with errors:\n\(parserErrors) after creating \n\(tokenizer) from token stream \(OKScriptTokenizer().tokenize(script))")
         
         return tokenizer.tokenize(tokenize)
     }
@@ -57,18 +57,18 @@ class parserTests: XCTestCase {
         
         let testString = ""
         
-        let tokens = parserTest(script: testScript, thenTokenizing: testString)
+        _ = parserTest(testScript, thenTokenizing: testString)
         
     }
     
     func testParseNamedStates(){
         let testString = "@oct = \"01234567\"->oct begin{ @oct }"
         
-        var tokenizer = OKStandard.parseTokenizer(testString)!
+        let tokenizer = OKStandard.parseTokenizer(testString)!
         
         let octTest = "346738"
         
-        let tokens = tokenizer.tokenize(octTest)
+        _ = tokenizer.tokenize(octTest)
         
         XCTAssert(tokenizer.tokenize(octTest) == [token("oct",chars:"3"), token("oct",chars:"4"), token("oct",chars:"6"), token("oct",chars:"7"), token("oct",chars:"3"), ])
     }
@@ -81,7 +81,7 @@ class parserTests: XCTestCase {
         ]
         
         for (testString,expectedTokens) in testData{
-            let tokens = parserTest(script: testScript, thenTokenizing: testString)
+            let tokens = parserTest(testScript, thenTokenizing: testString)
             XCTAssert(tokens.count == expectedTokens,"Expected \(expectedTokens) tokens, but got \(tokens.count) from \(testString)")
         }
     }
@@ -95,15 +95,15 @@ class parserTests: XCTestCase {
                     ]
 
         for (testString,expectedTokens) in testData{
-            let tokens = parserTest(script: testScript, thenTokenizing: testString)
+            let tokens = parserTest(testScript, thenTokenizing: testString)
             XCTAssert(tokens.count == expectedTokens,"Expected \(expectedTokens) tokens, but got \(tokens.count) from \(testString)")
         }
     }
     
     func testUnicode(){
-        var testString = "{!\"\\x04\"->anything}"
+        let testString = "{!\"\\x04\"->anything}"
         
-        var tokenizer = OKStandard.parseTokenizer(testString)!
+        let tokenizer = OKStandard.parseTokenizer(testString)!
         
         
         assertTokenListsEqual(tokenizer.tokenize("823947283479238428348734"), reference: [token("anything",chars:"8"), token("anything",chars:"2"), token("anything",chars:"3"), token("anything",chars:"9"), token("anything",chars:"4"), token("anything",chars:"7"), token("anything",chars:"2"), token("anything",chars:"8"), token("anything",chars:"3"), token("anything",chars:"4"), token("anything",chars:"7"), token("anything",chars:"9"), token("anything",chars:"2"), token("anything",chars:"3"), token("anything",chars:"8"), token("anything",chars:"4"), token("anything",chars:"2"), token("anything",chars:"8"), token("anything",chars:"3"), token("anything",chars:"4"), token("anything",chars:"8"), token("anything",chars:"7"), token("anything",chars:"3"), token("anything",chars:"4"), ])
@@ -121,10 +121,10 @@ class parserTests: XCTestCase {
         let generatedTokenizer = parser.parse(tokFileTokDef)
         var parserErrors = ""
         for error in parser.errors {
-            parserErrors+="\t\(error)\n"
+            parserErrors += "\t\(error)\n"
         }
         
-        XCTAssert(count(parserErrors) == 0, "Self parsing generated an error:\n\(parserErrors) with \n\(tokFileTokDef)\n")
+        XCTAssert(parserErrors.characters.count == 0, "Self parsing generated an error: \(parserErrors) with \(tokFileTokDef)")
 
         //Tokenize original serialized description with the parsed tokenizer built from my own serialized description
         let parserGeneratedTokens = generatedTokenizer.tokenize(tokFileTokDef)

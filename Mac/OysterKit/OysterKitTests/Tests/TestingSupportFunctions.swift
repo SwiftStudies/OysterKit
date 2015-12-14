@@ -55,12 +55,12 @@ func printAsTest(tokenizer:Tokenizer, string:String, variableName:String){
 }
 
 func dump(izer:Tokenizer,with:String){
-    println("\nTokenizing "+with)
+    print("\nTokenizing "+with)
     izer.tokenize(with){(token:Token)->Bool in
-        println("\t"+token.description)
+        print("\t"+token.description)
         return true
     }
-    println("\n")
+    print("\n")
 }
 
 extension XCTestCase {
@@ -69,7 +69,7 @@ extension XCTestCase {
         let bundle = NSBundle(identifier:"com.rwe-uk.OysterKitTests")
         
         if let url = bundle?.URLForResource(fileName, withExtension: ext) {
-            return String(contentsOfURL: url, encoding: NSUTF8StringEncoding, error: nil)
+            return try! String(contentsOfURL: url)
         } else {
            let allFiles =  bundle?.URLsForResourcesWithExtension(nil, subdirectory: nil)
             
@@ -90,9 +90,9 @@ extension XCTestCase {
                 let testToken = underTest[index]
                 let refToken = reference[index]
                 if testToken == refToken {
-                    println("OK  : \(testToken)")
+                    print("OK  : \(testToken)")
                 } else {
-                    println("FAIL: \(testToken) != \(refToken)")
+                    print("FAIL: \(testToken) != \(refToken)")
                 }
             }
         }
