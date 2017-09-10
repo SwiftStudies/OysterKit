@@ -92,3 +92,27 @@ We often want to change how an element is matched. For example repeating it, or 
   - `!` Not: This is used to invert the match and is prefixed to the element and can be combined with any of the suffix operators. For example to scan until a newline we could specify `!.newlines*`. This would scan up to, but not including, the first newline character found
   - `>>` Look ahead: This is used when you want to lookahead (for example, skip the next three characters, but check the fourth). It is prefixed to the element and like the not modifier can be combined with any suffix modifier. Regardless of matching or failure the scanner position will not be changed. However the sequence will only continue to be evaluated if it is met. 
   
+## Comments
+
+Comments can be single line or multiline. Single line comments begin whenever `//` is seen, and all further input will be ignored by the compiler until the end of the line. Multiline comments begin with `/*` and end only when `*/` is matched. 
+
+## Annotations
+
+Annotations change how elements are interpreted and principly impact construction of the AST (Abstract Syntax Tree). The are prefixed by the `@` character and can also have a supplied value which can be a string, integer, or boolean. If no value is provided they are simply considered 'set'. 
+
+### @token(String) 
+
+The next element will result in a token with the provided String value. 
+
+### @transient
+
+We do not always want tokens met to be included in the AST. If prefixed with @transient then the token will not be captured in the AST or stream. 
+
+### @error(String)
+
+When your defined language is being parsed, if the element annotated with this fails the match the specified error message will be available in the results. For example 
+
+    url = @error("You must specifify a protocol") protcol "://" 
+    
+Will generate an error explaining why matching failed. 
+
