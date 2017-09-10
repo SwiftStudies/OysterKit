@@ -2,6 +2,8 @@
 
 OysterKit is a framework that provides a native Swift scanning, lexical analysis, and parsing capabilities. In addition it provides a language that can be used to rapidly define the rules used by OysterKit called STLR (see STLR.md). 
 
+For those that used v1.0 there are significant performance and capability benefits of moving to v2. I have not yet built an OKScript translator, but that could quite easily be done if there is demand. 
+
 ## Key Features
 
   - Provides support for scanning strings
