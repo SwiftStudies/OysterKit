@@ -100,13 +100,17 @@ Comments can be single line or multiline. Single line comments begin whenever `/
 
 Annotations change how elements are interpreted and principly impact construction of the AST (Abstract Syntax Tree). The are prefixed by the `@` character and can also have a supplied value which can be a string, integer, or boolean. If no value is provided they are simply considered 'set'. 
 
+Annotations can be applied inline to elements in an expression, or to a token-identifier when it is first being defined. If both are provided the inline annotation will override the token-identifier's annotation. 
+
 ### @token(String) 
 
 The next element will result in a token with the provided String value. 
 
 ### @transient
 
-We do not always want tokens met to be included in the AST. If prefixed with @transient then the token will not be captured in the AST or stream. 
+We do not always want tokens met to be included in the AST. If prefixed with @transient then the token will not be captured in the AST or stream. For example, if we do not want any newlines to be captured in our AST but we do need to capture both types we could define the following rule
+
+    @transient crlf = "\r\n"
 
 ### @error(String)
 
