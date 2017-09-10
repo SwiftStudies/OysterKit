@@ -43,5 +43,43 @@ Would match `a` or `b` or `c` in a string. When you wish to combine these two gr
  
  ### Terminals
 
+Terminals are specific characters or sequences of characters, such as a string. String are simply defined by wrapping the desired text in quotations marks, eg: `"http:"`. 
 
+If you wish to include special characters, or indeed a quotation mark, you can insert escaped characters using the backslash. At this point the following escapes are supported: 
 
+  - `\"` A quotation mark "
+  - `\r` A carrige return
+  - `\n` A new line
+  - `\t` A tab
+
+More will be added in the future. 
+
+You can also use predefined character sets that match multiple characters. These are prefixed by a `.` and followed by the character set name. The following character sets are available at the moment:
+
+  - `.decimalDigits` All decimal digits from 0 to 9
+  - `.letters` All letters 
+  - `.uppercaseLetters` All uppercase letters
+  - `.lowercaseLetters` All lowercase letters
+  - `.alphaNumerics` All letters and digits
+  - `.whitespaces` All whitespaces. For example tabs and spaces. 
+  - `.newlines` All newline characters, matching for example both newline and carriage return
+  - `.whitespacesAndNewlines` All white space and newline characters
+  
+For example, a rule to capture a co-ordinate might be
+
+    coord = .decimalDigits "," .decimalDigits
+    
+This would match `3,4` for example. 
+
+### Identifiers 
+
+We can also reference other tokens in a sequence or choice by using their identifier (or name). For example we might define a token for our different web protocols earlier and use it in a rule for a URL. 
+
+    protocol = "http" | "https"
+    url      = protocol "://" //I'll finish this later
+    
+When matching with `url` the rule will first evaluate the `protocol` rule and then if matched continue through the sequence. This allows complex rules to be built up. 
+
+## Modifiers
+
+We often 
