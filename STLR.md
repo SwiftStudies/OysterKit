@@ -80,6 +80,15 @@ We can also reference other tokens in a sequence or choice by using their identi
     
 When matching with `url` the rule will first evaluate the `protocol` rule and then if matched continue through the sequence. This allows complex rules to be built up. 
 
+STLR fully supports left-hand recursion, meaning a rule can refer directly or indirectly to itself. However you should be aware that you must always advance the scanner position before doing so (otherwise you will enter an infinite loop). 
+
 ## Modifiers
 
-We often 
+We often want to change how an element is matched. For example repeating it, or just checking it is there without advancing the scanner position (lookahead). The following modifiers are available before or after any element (terminal, group, or identifier). 
+
+  - `?` Optional (0 or 1 instances of the element): This might be used to simplify our protocol rule for example `protocol = "http" "s"?`. This is much closer to how we think about it, `http` followed optionally by an `s`. It is added as a suffic to the element. 
+  - `*` Optional repeated (0 or any number of instances of the element): This is used when an element does not have to be there, but any number of them will be greedly consumed during matching. It is added as a suffic to the element. 
+  - `+` Required repeated (1 or any number of instances of the element): This is used when an element MUST exist, and then once one has been matched, any number of subsequence instances will be greedily consumed. It is added as a suffic to the element. 
+  - `!` Not: This is used to invert the match and is prefixed to the element and can be combined with any of the suffix operators. For example to scan until a newline we could specify `!.newlines*`. This would scan up to, but not including, the first newline character found
+  - `>>` Look ahead: This is used when you want to lookahead (for example, skip the next three characters, but check the fourth). It is prefixed to the element and like the not modifier can be combined with any suffix modifier. Regardless of matching or failure the scanner position will not be changed. However the sequence will only continue to be evaluated if it is met. 
+  
