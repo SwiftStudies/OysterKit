@@ -20,3 +20,6 @@ Coverage of the automated unit tests are quite good, but more thorough explorati
 
 In particular the performance tests need fixing up. 
 
+### Linux
+
+Although this package only requires Foundation, I have not yet set-up the XCTests to run on Linux, this needs to be done (just the array of testMethods needs to be added to each class). A good starter issue!
