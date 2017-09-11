@@ -14,7 +14,7 @@ For example, if we wanted to define a simple token `digit` that was any decimal 
 
     digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" 
     
-A token, `digit` is defined as being any one of the strings separated by the `|` character. We can also define sequences, very simply. This token can then be refrenced by another token definition. For example, 
+A token, `digit` is defined as being any one of the strings separated by the `|` character. We can also define sequences, very simply. This token can then be referenced by another token definition. For example, 
 
     threeDigitNumber = digit digit digit
     
@@ -47,8 +47,8 @@ Terminals are specific characters or sequences of characters, such as a string. 
 
 If you wish to include special characters, or indeed a quotation mark, you can insert escaped characters using the backslash. At this point the following escapes are supported: 
 
-  - `\"` A quotation mark "
-  - `\r` A carrige return
+  - `\"` A quotation mark 
+  - `\r` A carriage return
   - `\n` A new line
   - `\t` A tab
 
@@ -86,9 +86,9 @@ STLR fully supports left-hand recursion, meaning a rule can refer directly or in
 
 We often want to change how an element is matched. For example repeating it, or just checking it is there without advancing the scanner position (lookahead). The following modifiers are available before or after any element (terminal, group, or identifier). 
 
-  - `?` Optional (0 or 1 instances of the element): This might be used to simplify our protocol rule for example `protocol = "http" "s"?`. This is much closer to how we think about it, `http` followed optionally by an `s`. It is added as a suffic to the element. 
-  - `*` Optional repeated (0 or any number of instances of the element): This is used when an element does not have to be there, but any number of them will be greedly consumed during matching. It is added as a suffic to the element. 
-  - `+` Required repeated (1 or any number of instances of the element): This is used when an element MUST exist, and then once one has been matched, any number of subsequence instances will be greedily consumed. It is added as a suffic to the element. 
+  - `?` Optional (0 or 1 instances of the element): This might be used to simplify our protocol rule for example `protocol = "http" "s"?`. This is much closer to how we think about it, `http` followed optionally by an `s`. It is added as a suffix to the element. 
+  - `*` Optional repeated (0 or any number of instances of the element): This is used when an element does not have to be there, but any number of them will be greedily consumed during matching. It is added as a suffic to the element. 
+  - `+` Required repeated (1 or any number of instances of the element): This is used when an element MUST exist, and then once one has been matched, any number of subsequence instances will be greedily consumed. It is added as a suffix to the element. 
   - `!` Not: This is used to invert the match and is prefixed to the element and can be combined with any of the suffix operators. For example to scan until a newline we could specify `!.newlines*`. This would scan up to, but not including, the first newline character found
   - `>>` Look ahead: This is used when you want to lookahead (for example, skip the next three characters, but check the fourth). It is prefixed to the element and like the not modifier can be combined with any suffix modifier. Regardless of matching or failure the scanner position will not be changed. However the sequence will only continue to be evaluated if it is met. 
   
@@ -98,7 +98,7 @@ Comments can be single line or multiline. Single line comments begin whenever `/
 
 ## Annotations
 
-Annotations change how elements are interpreted and principly impact construction of the AST (Abstract Syntax Tree). The are prefixed by the `@` character and can also have a supplied value which can be a string, integer, or boolean. If no value is provided they are simply considered 'set'. 
+Annotations change how elements are interpreted and principally impact construction of the AST (Abstract Syntax Tree). The are prefixed by the `@` character and can also have a supplied value which can be a string, integer, or boolean. If no value is provided they are simply considered 'set'. 
 
 Annotations can be applied inline to elements in an expression, or to a token-identifier when it is first being defined. If both are provided the inline annotation will override the token-identifier's annotation. 
 
@@ -116,7 +116,186 @@ We do not always want tokens met to be included in the AST. If prefixed with @tr
 
 When your defined language is being parsed, if the element annotated with this fails the match the specified error message will be available in the results. For example 
 
-    url = @error("You must specifify a protocol") protcol "://" 
+    url = @error("You must specify a protocol") protocol "://" 
     
 Will generate an error explaining why matching failed. 
 
+## Examples
+
+### Number Parser
+
+
+    real		= sign? digits point digits exponent?
+    exponent 	= "e" integer
+    integer  	= sign? digits
+    
+    sign 		= "+" | "-"
+    digits 		= .decimalDigits+
+    spaces 		= .whitespacesAndNewlines+
+    point 		= "."
+
+
+
+### HTTP Request
+
+    //
+    // HTTP 1.1 Request (Abridged)
+    //
+    // Created as an example
+    //
+
+    //
+    // Constants 
+    //
+    method              = "GET" | "POST" 
+    protocol            = "HTTP/1.1"
+    @transient crlf     = .newlines
+    
+    //
+    // Requested path
+    //
+    path                = pathSep? pathElement? (pathSep pathElement?)* @transient pathSep = "/"
+    pathElement         = (.letters | .decimalDigits)+
+    
+    //
+    // Query
+    //
+    queryParameterName  = .letters+
+    queryParameterValue = .letters | .decimalDigits 
+    queryParameter      = queryParameterName ("=" queryParameterValue)?
+    query               = "?" queryParameter ("&" queryParameter)* 
+    
+    //
+    // All content before header
+    //
+    transaction         = method .whitespaces+ path query? .whitespaces+ protocol crlf
+    
+    //
+    // Header
+    //
+    headerName          = (.letters | "-")+
+    headerValue         = !(crlf)+
+    header              = headerName ":" .whitespaces headerValue crlf
+    
+    headers             = header+
+    
+    //
+    // Root rule
+    //
+    request             = transaction headers crlf
+
+
+
+### Simple Basic   
+    
+    //
+    // A moderately updated version of   
+    // https://www.ecma-international.org/publications/files/ECMA-ST-WITHDRAWN/ECMA-55,%201st%20Edition%20January%201978.pdf     
+    //
+    
+  
+    //program					= (line endLine)* line?
+    
+    //program					= (block | remarkLine)* endLine
+    //block						= ((line | forBlock) .whitespacesAndNewlines*)*
+    line						= lineNumber ows statement
+    
+    remarkLine					= lineNumber ws statementREM endOfLine?
+    endLine						= lineNumber ws statementEND ows .newlines?
+    
+    lineNumber					= digit+ 
+    
+    forBlock					= "SOMETHING FOR A FOR BLOCK"
+    
+    statement					= statementLET
+    statementEND				= keywordEND ows
+    statementREM			 	= keywordREM ( " "+ remarkString? )?
+    statementLET				= keywordLET ws @error("expected variable") variable ows @error("expected '='") equalsSign ows @error("expected expression") expr
+    
+    
+    expr						= operand (ows? operator ows? operand)*
+    operator					= "+" | "-" | "/" | "*" | "^"
+    operand						= (variable | literal | function) | (leftParenthesis expr rightParenthesis)
+    
+    function					= functionName argumentList?
+    argumentList				= leftParenthesis argument rightParenthesis
+    argument					= expr
+    
+    functionName				= "SIN" | "COS"
+    
+    
+    variable					= arrayElement | variableName
+    variableName				= letter (letter | digit)*
+    arrayElement				= variableName subscript
+    
+    subscript					= leftParenthesis expr (comma expr)? rightParenthesis
+    
+    literal						= number | quotedString
+    
+    number						= sign? numericRepresentation
+    sign						= plusSign | minusSign
+    numericRepresentation		= significand exrad?
+    significand					= (integer fullStop?) | (integer? fraction)
+    integer						= digit+
+    fraction					= fullStop digit+
+    exrad						= "E" sign? integer
+    
+    keywordLET					= "LET"
+    keywordREM					= "REM" | "rem" 
+    keywordEND					= "END"
+    
+    // The very basics
+    letter 						= .letters 
+    digit  						= .decimalDigits
+    
+    
+    
+    // Specific characters
+	    exclamationMark				= "!"
+	    numberSign					= "???" // What's this??
+	    dollarSign					= "$"
+	    space						= " "
+	    plusSign					= "+"
+	    minusSign					= "-"
+	    percentSign					= "%"
+	    ampersand					= "&"
+	    apostrophe					= "'"
+	    leftParenthesis				= "("
+	    rightParenthesis			= ")"
+	    asterisk					= "*"
+	    comma						= ","
+	    solidus						= "/" 
+	    colon						= ":"
+	    semicolon					= ";"
+	    lessThanSign				= "<"
+	    greaterThanSign				= ">"
+	    equalsSign					= "="
+	    questionMark				= "?"
+	    circumflexAccent			= "^"
+	    underline					= "_"
+	    quotationMark				= "\""
+	    fullStop					= "."
+	    endOfLine					= .newlines
+    
+    stringCharacter 			= quotationMark | quotedStringCharacter
+    plainStringCharacter		= plusSign | minusSign | fullStop | digit | letter
+    
+    unquotedStringCharacter 	= space | plainStringCharacter
+    quotedStringCharacter		= exclamationMark | numberSign | dollarSign |
+ 							    dollarSign | percentSign | ampersand | 
+							    apostrophe | leftParenthesis | 
+							    rightParenthesis | asterisk | comma | 
+							    solidus | colon | semicolon | lessThanSign | 
+							    equalsSign | greaterThanSign | questionMark |
+							    circumflexAccent | underline | 
+							    unquotedStringCharacter 
+    
+    remarkString				= stringCharacter*
+    quotedString				= quotationMark quotedStringCharacter* quotationMark
+    
+    
+    nl = .newlines*
+    ws = .whitespaces+
+    ows = .whitespaces*
+    
+    consume = .whitespaces*
