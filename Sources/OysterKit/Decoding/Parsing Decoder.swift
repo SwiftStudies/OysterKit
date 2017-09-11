@@ -101,7 +101,7 @@ public struct ParsingDecoder{
         
         let topLevel : DefaultHeterogeneousAST = parser.build(source: source)
 
-        prettyPrint(nodes: topLevel.children, from: source)
+//        prettyPrint(nodes: topLevel.children, from: source)
         
         if topLevel.children.count == 0 {
             throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: [], debugDescription: "Could not parse supplied string"))
