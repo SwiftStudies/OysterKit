@@ -34,8 +34,44 @@ private extension String {
     }
 }
 
+public enum Platform{
+    case macOS, iOS, foundation
+    
+    fileprivate var colorType : String {
+        switch self {
+        case .macOS:
+            return "NSColor"
+        case .iOS:
+            return "UIColor"
+        case .foundation:
+            return "(r:Float,g:Float,b:Float)"
+            
+        }
+    }
+    
+    fileprivate var coreLibrary : String {
+        switch self {
+        case .macOS:
+            return "Cocoa"
+        case .iOS:
+            return "UIKit"
+        case .foundation:
+            return "Foundation"
+        }
+    }
+    
+    func colorLiteral(rgb:(r:Float,g:Float,b:Float))->String{
+        switch self {
+        case .macOS,.iOS:
+           return "#colorLiteral(red:\(rgb.r), green:\(rgb.g), blue:\(rgb.b), alpha: 1)"
+        case .foundation:
+            return "(r:\(rgb.r),g:\(rgb.g),b:\(rgb.b))"
+        }
+    }
+}
+
 public extension STLRIntermediateRepresentation {
-    func swift(grammar name:String, colorPrefix : String = "NS", colors : [String : (r:Float,g:Float,b:Float)]?  = nil)->String?{
+    func swift(grammar name:String, platform : Platform = .macOS, colors : [String : (r:Float,g:Float,b:Float)]?  = nil)->String?{
         var output = ""
         
         var hasLeftHandRecursiveRules = false
@@ -45,6 +81,7 @@ public extension STLRIntermediateRepresentation {
         output.add(comment: "")
         output.add(comment: "Generated: \(Date.init(timeIntervalSinceNow: 0))")
         output.add(comment: "")
+        output.add(line: "import \(platform.coreLibrary)")
         output.add(line: "import OysterKit")
         output.add(line: "")
         output.add(comment: "")
@@ -108,13 +145,14 @@ public extension STLRIntermediateRepresentation {
             
             output.add(line: "")
             output.add(depth: 1, comment: "Color Definitions")
-            output.add(depth: 1, line:      "fileprivate var color : \(colorPrefix)Color? {")
+            output.add(depth: 1, line:      "fileprivate var color : \(platform.colorType)? {")
             output.add(depth: 2, line:          "switch self {")
             for rule in rules {
                 guard let identifier = rule.identifier, let colorSpec = colors[identifier.name] else {
                     continue
                 }
-                output.add(depth: 2, line:      "case .\(identifier):\treturn #colorLiteral(red:\(colorSpec.r), green:\(colorSpec.g), blue:\(colorSpec.b), alpha: 1)")
+                
+                output.add(depth: 2, line:      "case .\(identifier):\treturn \(platform.colorLiteral(rgb:colorSpec))")
                 
                 if !colorDictionaryLiteral!.isEmpty {
                     colorDictionaryLiteral! += ", "
