@@ -236,7 +236,7 @@ internal extension STLRIntermediateRepresentation.Expression{
     
 
     
-    func swift(depth:Int = 0, from ast:STLRIntermediateRepresentation, creating token:Token, annotations: STLRIntermediateRepresentation.ElementAnnotations)->String{
+    func swift(depth:Int = 0, from ast:STLRIntermediateRepresentation, creating token:Token, annotations: STLRIntermediateRepresentation.ElementAnnotations?)->String{
         let depth = depth + 1
         var result = ""
         
@@ -252,9 +252,13 @@ internal extension STLRIntermediateRepresentation.Expression{
         case .sequence(let elements):
             result.add(depth: depth, line: "[")
             for element in elements{
-                result.add(depth: depth, line: element.swift(depth: depth+1, from: ast, creating: TransientToken.instance, annotations: []).trim+",")
+                result.add(depth: depth, line: element.swift(depth: depth+1, from: ast, creating: TransientToken.instance, annotations: nil).trim+",")
             }
-            result.add(depth: depth, line: "].sequence(token: T.\(token), annotations: annotations.isEmpty ? \(annotations.swiftDictionary) : annotations)")
+            if let annotations = annotations {
+                result.add(depth: depth, line: "].sequence(token: T.\(token), annotations: annotations.isEmpty ? \(annotations.swiftDictionary) : annotations)")
+            } else {
+                result.add(depth: depth, line: "].sequence(token: T.\(token))")
+            }
         case .choice(let elements):
             if scannable {
                 var strings = [String]()
@@ -264,14 +268,17 @@ internal extension STLRIntermediateRepresentation.Expression{
                     }
                 }
                 let values = strings.joined(separator: ", ")
-                result.add(depth: depth, line: "ScannerRule.oneOf(token: T.\(token), [\(values)],\(annotations.swiftDictionary).merge(with: annotations))")
+                if let annotations = annotations {
+                    result.add(depth: depth, line: "ScannerRule.oneOf(token: T.\(token), [\(values)],\(annotations.swiftDictionary).merge(with: annotations))")
+                } else {
+                    result.add(depth: depth, line: "ScannerRule.oneOf(token: T.\(token), [\(values)],\(annotations?.swiftDictionary ?? "[:]").merge(with: annotations))")
+                }
             } else {
                 result.add(depth: depth, line: "[")
                 for element in elements{
-                    //TODO: Investigate if this is a failure. Should annotations:[] be annotations:element.annotations? I think it should
-                    result.add(depth: depth, line: element.swift(depth: depth+1, from: ast, creating: TransientToken.instance, annotations: []).trim+",")
+                    result.add(depth: depth, line: element.swift(depth: depth+1, from: ast, creating: TransientToken.instance, annotations: nil).trim+",")
                 }
-                result.add(depth: depth, line: "].oneOf(token: T.\(token)\(annotations.swiftNthParameter))")
+                result.add(depth: depth, line: "].oneOf(token: T.\(token)\(annotations?.swiftNthParameter ?? ""))")
             }
         default:
             result.add(depth: depth, comment: "FATAL ERROR: \(self) Not implemented")
@@ -322,17 +329,23 @@ internal extension STLRIntermediateRepresentation.ElementAnnotationInstance{
 }
 
 internal extension STLRIntermediateRepresentation.Element{
-    func swift(depth:Int = 0, from ast:STLRIntermediateRepresentation, creating token:Token, annotations:STLRIntermediateRepresentation.ElementAnnotations)->String{
+    func swift(depth:Int = 0, from ast:STLRIntermediateRepresentation, creating token:Token, annotations:STLRIntermediateRepresentation.ElementAnnotations?)->String{
         let depth = depth + 1
         var result = ""
         
-        var quantifierAnnotations = self.quantifierAnnotations
-        var elementAnnotations    = self.elementAnnotations
+        var quantifierAnnotations   : STLRIntermediateRepresentation.ElementAnnotations?
+        var elementAnnotations      : STLRIntermediateRepresentation.ElementAnnotations?
         
-        if quantifier == .one {
-            elementAnnotations = elementAnnotations.merge(with: annotations)
+        if let annotations = annotations {
+            if quantifier == .one {
+                elementAnnotations = self.elementAnnotations.merge(with: annotations)
+            } else {
+                quantifierAnnotations = self.quantifierAnnotations.merge(with: annotations)
+            }
         } else {
-            quantifierAnnotations = quantifierAnnotations.merge(with: annotations)
+            if !self.elementAnnotations.isEmpty{
+                elementAnnotations = self.elementAnnotations
+            }
         }
         
         let elementToken = quantifier == .one ? token       : TransientToken.instance
@@ -341,9 +354,9 @@ internal extension STLRIntermediateRepresentation.Element{
         case .group(let expression, let quantity, let lookahead,_):
             result.add(depth: depth+1, line: expression.swift(depth: depth + 1, from: ast, creating: elementToken, annotations: elementAnnotations).trim+quantity.swift(creating:token, annotations: quantifierAnnotations)+(lookahead ? ".lookahead()" : ""))
         case .terminal(let terminal, let quantity,let lookahead,_):
-            result.add(depth: depth, line: terminal.swift(depth:depth, from: ast, creating: elementToken, annotations: elementAnnotations).trim+quantity.swift(creating:token, annotations: quantifierAnnotations)+(lookahead ? ".lookahead()" : ""))
+            result.add(depth: depth, line: terminal.swift(depth:depth, from: ast, creating: elementToken, annotations: annotations == nil ? nil : elementAnnotations).trim+quantity.swift(creating:token, annotations: quantifierAnnotations)+(lookahead ? ".lookahead()" : ""))
         case .identifier(let identifier, let quantity,let lookahead,_):
-            result.add(depth: depth, line: "T.\(identifier)._rule(\(elementAnnotations.swiftArray))"+quantity.swift(creating:token, annotations: quantifierAnnotations)+(lookahead ? ".lookahead()" : ""))
+            result.add(depth: depth, line: "T.\(identifier)._rule(\(elementAnnotations?.swiftArray ?? ""))"+quantity.swift(creating:token, annotations: quantifierAnnotations)+(lookahead ? ".lookahead()" : ""))
         }
 
         
@@ -371,27 +384,27 @@ internal extension Collection where Self.Iterator.Element == STLRIntermediateRep
     
     var swiftNthParameter : String {
         if count == 0 {
-            return ""
+            return ", annotations: annotations"
         }
-        return ", annotations: "+swiftArray
+        return ", annotations: annotations.isEmpty ? "+swiftArray+" : annotations"
     }
 }
 
 internal extension STLRIntermediateRepresentation.Modifier{
-    func swift(creating token:Token, annotations: STLRIntermediateRepresentation.ElementAnnotations)->String{
+    func swift(creating token:Token, annotations: STLRIntermediateRepresentation.ElementAnnotations?)->String{
         switch self {
         case .one:
             return ""
         case .not:
-            return ".not(producing: T.\(token)\(annotations.swiftNthParameter))"
+            return ".not(producing: T.\(token)\(annotations?.swiftNthParameter ?? ""))"
         case .consume:
             return ".consume(\(annotations))"
         case .zeroOrOne:
-            return ".optional(producing: T.\(token)\(annotations.swiftNthParameter))"
+            return ".optional(producing: T.\(token)\(annotations?.swiftNthParameter ?? ""))"
         case .zeroOrMore:
-            return ".repeated(min: 0, producing: T.\(token)\(annotations.swiftNthParameter))"
+            return ".repeated(min: 0, producing: T.\(token)\(annotations?.swiftNthParameter ?? ""))"
         case .oneOrMore:
-            return ".repeated(min: 1, producing: T.\(token)\(annotations.swiftNthParameter))"
+            return ".repeated(min: 1, producing: T.\(token)\(annotations?.swiftNthParameter ?? ""))"
         }
     }
 }
@@ -436,15 +449,15 @@ internal extension STLRIntermediateRepresentation.TerminalCharacterSet{
 
 
 internal extension STLRIntermediateRepresentation.Terminal{
-    func swift(depth:Int = 0, from ast:STLRIntermediateRepresentation, creating token:Token, annotations: STLRIntermediateRepresentation.ElementAnnotations)->String{
+    func swift(depth:Int = 0, from ast:STLRIntermediateRepresentation, creating token:Token, annotations: STLRIntermediateRepresentation.ElementAnnotations?)->String{
         let depth = depth + 1
         var result = ""
         
         switch (string,characterSet){
         case (let sv,_) where sv != nil:
-            result.add(depth:depth, line:"\"\(sv!.swiftSafe)\".terminal(token: T.\(token)\(annotations.swiftNthParameter))")
+            result.add(depth:depth, line:"\"\(sv!.swiftSafe)\".terminal(token: T.\(token)\(annotations?.swiftNthParameter ?? ""))")
         case (_, let terminalCharacterSet) where terminalCharacterSet != nil:
-            return "\(terminalCharacterSet!.swift).terminal(token: T.\(token)\(annotations.swiftNthParameter))"
+            return "\(terminalCharacterSet!.swift).terminal(token: T.\(token)\(annotations?.swiftNthParameter ?? ""))"
         default:
             return "❌ \(self) not implemented"
         }

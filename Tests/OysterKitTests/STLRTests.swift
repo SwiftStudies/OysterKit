@@ -14,6 +14,28 @@ import XCTest
 
 class STLRTest: XCTestCase {
     
+    func testBackslash(){
+        let backSlash = ".backslash"
+        
+        let ruleSource = """
+        token = "\(backSlash)x"
+"""
+        guard let testLanguage = STLRParser(source: ruleSource).ast.runtimeLanguage else {
+            XCTFail("Could not compile")
+            return
+        }
+        
+        let source = "\\x"
+        
+        let ast : DefaultHeterogeneousAST = Parser(grammar: testLanguage.grammar).build(source: source)
+        if ast.children.count != 1 {
+            XCTFail("Expected one token")
+            prettyPrint(nodes: ast.children, from: source)
+            return
+        }
+        XCTAssertEqual(ast.children[0].token.rawValue, 1)
+    }
+    
     func testPinnedNodes(){
         enum TestToken : Int, Token{
             case pass

@@ -1,7 +1,7 @@
 // 
 // STLR Generated Swift File
 // 
-// Generated: 2017-12-06 10:47:36 +0000
+// Generated: 2017-12-06 14:52:12 +0000
 // 
 import Cocoa
 import OysterKit
@@ -51,31 +51,31 @@ enum STLR : Int, Token {
 			return [
 					T.singleLineComment._rule(),
 					T.multilineComment._rule(),
-					].oneOf(token: T.comment)
+					].oneOf(token: T.comment, annotations: annotations)
 		// whitespace
 		case .whitespace:
 			return [
 					T.comment._rule(),
 					CharacterSet.whitespacesAndNewlines.terminal(token: T._transient),
-					].oneOf(token: T.whitespace, annotations: [RuleAnnotation.void : RuleAnnotationValue.set])
+					].oneOf(token: T.whitespace, annotations: annotations.isEmpty ? [RuleAnnotation.void : RuleAnnotationValue.set] : annotations)
 		// ows
 		case .ows:
-			return T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T.ows)
+			return T.whitespace._rule().repeated(min: 0, producing: T.ows, annotations: annotations)
 		// quantifier
 		case .quantifier:
 			return ScannerRule.oneOf(token: T.quantifier, ["*", "+", "?", "-"],[ : ].merge(with: annotations))
 		// negated
 		case .negated:
-			return "!".terminal(token: T.negated)
+			return "!".terminal(token: T.negated, annotations: annotations)
 		// transient
 		case .transient:
-			return "-".terminal(token: T.transient)
+			return "-".terminal(token: T.transient, annotations: annotations)
 		// lookahead
 		case .lookahead:
-			return ">>".terminal(token: T.lookahead)
+			return ">>".terminal(token: T.lookahead, annotations: annotations)
 		// stringQuote
 		case .stringQuote:
-			return "\"".terminal(token: T.stringQuote)
+			return "\"".terminal(token: T.stringQuote, annotations: annotations)
 		// escapedCharacters
 		case .escapedCharacters:
 			return [
@@ -84,7 +84,7 @@ enum STLR : Int, Token {
 					"n".terminal(token: T._transient),
 					"t".terminal(token: T._transient),
 					"\\".terminal(token: T._transient),
-					].oneOf(token: T.escapedCharacters)
+					].oneOf(token: T.escapedCharacters, annotations: annotations)
 		// escapedCharacter
 		case .escapedCharacter:
 			return [
@@ -99,13 +99,13 @@ enum STLR : Int, Token {
 									T.stringQuote._rule(),
 									CharacterSet.newlines.terminal(token: T._transient),
 									].oneOf(token: T._transient).not(producing: T._transient),
-					].oneOf(token: T.stringCharacter, annotations: [RuleAnnotation.void : RuleAnnotationValue.set])
+					].oneOf(token: T.stringCharacter, annotations: annotations.isEmpty ? [RuleAnnotation.void : RuleAnnotationValue.set] : annotations)
 		// terminalBody
 		case .terminalBody:
-			return T.stringCharacter._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 1, producing: T.terminalBody)
+			return T.stringCharacter._rule().repeated(min: 1, producing: T.terminalBody, annotations: annotations)
 		// stringBody
 		case .stringBody:
-			return T.stringCharacter._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T.stringBody)
+			return T.stringCharacter._rule().repeated(min: 0, producing: T.stringBody, annotations: annotations)
 		// string
 		case .string:
 			return [
@@ -133,7 +133,7 @@ enum STLR : Int, Token {
 		case .rangeOperator:
 			return [
 					".".terminal(token: T._transient),
-					"..".terminal(token: T._transient, annotations: [RuleAnnotation.error : RuleAnnotationValue.string("Expected ... in character range")]),
+					"..".terminal(token: T._transient),
 					].sequence(token: T.rangeOperator, annotations: annotations.isEmpty ? [ : ] : annotations)
 		// characterRange
 		case .characterRange:
@@ -145,7 +145,7 @@ enum STLR : Int, Token {
 		// number
 		case .number:
 			return [
-					ScannerRule.oneOf(token: T._transient, ["-", "+"],[ : ].merge(with: annotations)).optional(producing: T._transient),
+					ScannerRule.oneOf(token: T._transient, ["-", "+"],[:].merge(with: annotations)).optional(producing: T._transient),
 					CharacterSet.decimalDigits.terminal(token: T._transient).repeated(min: 1, producing: T._transient),
 					].sequence(token: T.number, annotations: annotations.isEmpty ? [ : ] : annotations)
 		// boolean
@@ -157,7 +157,7 @@ enum STLR : Int, Token {
 					T.string._rule(),
 					T.number._rule(),
 					T.boolean._rule(),
-					].oneOf(token: T.literal)
+					].oneOf(token: T.literal, annotations: annotations)
 		// annotation
 		case .annotation:
 			return [
@@ -166,22 +166,22 @@ enum STLR : Int, Token {
 					[
 									"(".terminal(token: T._transient),
 									T.literal._rule([RuleAnnotation.error : RuleAnnotationValue.string("A value must be specified or the () omitted")]),
-									")".terminal(token: T._transient, annotations: [RuleAnnotation.error : RuleAnnotationValue.string("Missing ')'")]),
-									].sequence(token: T._transient, annotations: annotations.isEmpty ? [ : ] : annotations).optional(producing: T._transient),
+									")".terminal(token: T._transient),
+									].sequence(token: T._transient).optional(producing: T._transient),
 					].sequence(token: T.annotation, annotations: annotations.isEmpty ? [ : ] : annotations)
 		// annotations
 		case .annotations:
 			return [
 								T.annotation._rule(),
 								T.ows._rule(),
-								].sequence(token: T._transient, annotations: annotations.isEmpty ? [ : ] : annotations).repeated(min: 1, producing: T.annotations)
+								].sequence(token: T._transient).repeated(min: 1, producing: T.annotations, annotations: annotations)
 		// customLabel
 		case .customLabel:
 			return [
 					[
 									CharacterSet.letters.terminal(token: T._transient),
 									"_".terminal(token: T._transient),
-									].oneOf(token: T._transient, annotations: [RuleAnnotation.error : RuleAnnotationValue.string("Labels must start with a letter or _")]),
+									].oneOf(token: T._transient, annotations: annotations.isEmpty ? [RuleAnnotation.error : RuleAnnotationValue.string("Labels must start with a letter or _")] : annotations),
 					[
 									CharacterSet.letters.terminal(token: T._transient),
 									CharacterSet.decimalDigits.terminal(token: T._transient),
@@ -196,14 +196,14 @@ enum STLR : Int, Token {
 			return [
 					T.definedLabel._rule(),
 					T.customLabel._rule(),
-					].oneOf(token: T.label)
+					].oneOf(token: T.label, annotations: annotations)
 		// terminal
 		case .terminal:
 			return [
 					T.characterSet._rule(),
 					T.characterRange._rule(),
 					T.terminalString._rule(),
-					].oneOf(token: T.terminal)
+					].oneOf(token: T.terminal, annotations: annotations)
 		// group
 		case .group:
 			guard let cachedRule = STLR.leftHandRecursiveRules[self.rawValue] else {
@@ -216,7 +216,7 @@ enum STLR : Int, Token {
 					T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T._transient),
 					T.expression._rule(),
 					T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T._transient),
-					")".terminal(token: T._transient, annotations: [RuleAnnotation.error : RuleAnnotationValue.string("Expected ')'")]),
+					")".terminal(token: T._transient),
 					].sequence(token: T.group, annotations: annotations.isEmpty ? [ : ] : annotations)
 				recursiveRule.surrogateRule = rule
 				return recursiveRule
@@ -277,9 +277,9 @@ enum STLR : Int, Token {
 									T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T._transient),
 									"+".terminal(token: T._transient),
 									T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T._transient),
-									].sequence(token: T._transient, annotations: annotations.isEmpty ? [ : ] : annotations),
+									].sequence(token: T._transient),
 					T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 1, producing: T._transient),
-					].oneOf(token: T.then, annotations: [RuleAnnotation.void : RuleAnnotationValue.set])
+					].oneOf(token: T.then, annotations: annotations.isEmpty ? [RuleAnnotation.void : RuleAnnotationValue.set] : annotations)
 		// choice
 		case .choice:
 			guard let cachedRule = STLR.leftHandRecursiveRules[self.rawValue] else {
@@ -292,7 +292,7 @@ enum STLR : Int, Token {
 					[
 									T.or._rule([RuleAnnotation.void : RuleAnnotationValue.set]),
 									T.element._rule([RuleAnnotation.error : RuleAnnotationValue.string("Expected terminal, identifier, or group")]),
-									].sequence(token: T._transient, annotations: annotations.isEmpty ? [ : ] : annotations).repeated(min: 1, producing: T._transient),
+									].sequence(token: T._transient).repeated(min: 1, producing: T._transient),
 					].sequence(token: T.choice, annotations: annotations.isEmpty ? [ : ] : annotations)
 				recursiveRule.surrogateRule = rule
 				return recursiveRule
@@ -305,7 +305,7 @@ enum STLR : Int, Token {
 								T.identifier._rule(),
 								T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T._transient),
 								T.assignmentOperators._rule(),
-								].sequence(token: T._transient, annotations: annotations.isEmpty ? [ : ] : annotations).not(producing: T.notNewRule)
+								].sequence(token: T._transient).not(producing: T.notNewRule, annotations: annotations)
 		// sequence
 		case .sequence:
 			guard let cachedRule = STLR.leftHandRecursiveRules[self.rawValue] else {
@@ -319,7 +319,7 @@ enum STLR : Int, Token {
 									T.then._rule([RuleAnnotation.void : RuleAnnotationValue.set]),
 									T.notNewRule._rule().lookahead(),
 									T.element._rule([RuleAnnotation.error : RuleAnnotationValue.string("Expected terminal, identifier, or group")]),
-									].sequence(token: T._transient, annotations: annotations.isEmpty ? [ : ] : annotations).repeated(min: 1, producing: T._transient),
+									].sequence(token: T._transient).repeated(min: 1, producing: T._transient),
 					].sequence(token: T.sequence, annotations: annotations.isEmpty ? [ : ] : annotations)
 				recursiveRule.surrogateRule = rule
 				return recursiveRule
@@ -336,7 +336,7 @@ enum STLR : Int, Token {
 					T.choice._rule(),
 					T.sequence._rule(),
 					T.element._rule(),
-					].oneOf(token: T.expression)
+					].oneOf(token: T.expression, annotations: annotations)
 				recursiveRule.surrogateRule = rule
 				return recursiveRule
 			}
@@ -374,7 +374,7 @@ enum STLR : Int, Token {
 					].sequence(token: T.moduleName, annotations: annotations.isEmpty ? [ : ] : annotations)
 		// import
 		case .import:
-			return "import".terminal(token: T.import)
+			return "import".terminal(token: T.import, annotations: annotations)
 		// moduleImport
 		case .moduleImport:
 			return [
@@ -389,13 +389,13 @@ enum STLR : Int, Token {
 			return [
 								" ".terminal(token: T._transient).not(producing: T._transient),
 								" ".terminal(token: T._transient),
-								].oneOf(token: T.mark).lookahead()
+								].oneOf(token: T.mark, annotations: annotations).lookahead()
 		// grammar
 		case .grammar:
 			return [
 					T.mark._rule(),
 					T.moduleImport._rule().repeated(min: 0, producing: T._transient),
-					T.rule._rule().repeated(min: 1, producing: T._transient, annotations: [RuleAnnotation.error : RuleAnnotationValue.string("Expected at least one rule")]),
+					T.rule._rule().repeated(min: 1, producing: T._transient),
 					].sequence(token: T.grammar, annotations: annotations.isEmpty ? [ : ] : annotations)
 		}
 	}
