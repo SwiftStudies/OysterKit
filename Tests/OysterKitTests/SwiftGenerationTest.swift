@@ -153,7 +153,7 @@ class SwiftGenerationTest: XCTestCase {
         do {
             let result = try swift(for: "letter = @error(\"error\").whitespaces")
             
-            XCTAssertEqual(result,"CharacterSet.whitespaces.terminal(token: T.tokenA, annotations: [RuleAnnotation.error : RuleAnnotationValue.string(\"error\")])")
+            XCTAssertEqual(result,"CharacterSet.whitespaces.terminal(token: T.tokenA, annotations: annotations.isEmpty ? [RuleAnnotation.error : RuleAnnotationValue.string(\"error\")] : annotations)")
         } catch (let error){
             XCTFail("\(error)")
         }
@@ -163,7 +163,7 @@ class SwiftGenerationTest: XCTestCase {
         do {
             let result = try swift(for: "letter = @error(\"error\") \"a\"...\"z\"")
             
-            XCTAssert(result == "CharacterSet(charactersIn: \"a\".unicodeScalars.first!...\"z\".unicodeScalars.first!).terminal(token: T.tokenA, annotations: [RuleAnnotation.error : RuleAnnotationValue.string(\"error\")])", "Bad Swift output '\(result)'")
+            XCTAssertEqual(result,"CharacterSet(charactersIn: \"a\".unicodeScalars.first!...\"z\".unicodeScalars.first!).terminal(token: T.tokenA, annotations: annotations.isEmpty ? [RuleAnnotation.error : RuleAnnotationValue.string(\"error\")] : annotations)")
         } catch (let error){
             XCTFail("\(error)")
         }
@@ -173,7 +173,7 @@ class SwiftGenerationTest: XCTestCase {
         do {
             let result = try swift(for: "letter = @error(\"error\") \"hello\"")
             
-            XCTAssert(result == "\"hello\".terminal(token: T.tokenA, annotations: [RuleAnnotation.error : RuleAnnotationValue.string(\"error\")])", "Bad Swift output '\(result)'")
+            XCTAssertEqual(result,"\"hello\".terminal(token: T.tokenA, annotations: annotations.isEmpty ? [RuleAnnotation.error : RuleAnnotationValue.string(\"error\")] : annotations)")
         } catch (let error){
             XCTFail("\(error)")
         }
@@ -183,7 +183,7 @@ class SwiftGenerationTest: XCTestCase {
         do {
             let result = try swift(for: "letter = @error(\"error\") \"h\"")
             
-            XCTAssert(result == "\"h\".terminal(token: T.tokenA, annotations: [RuleAnnotation.error : RuleAnnotationValue.string(\"error\")])", "Bad Swift output '\(result)'")
+            XCTAssertEqual(result,"\"h\".terminal(token: T.tokenA, annotations: annotations.isEmpty ? [RuleAnnotation.error : RuleAnnotationValue.string(\"error\")] : annotations)")
         } catch (let error){
             XCTFail("\(error)")
         }
@@ -193,7 +193,7 @@ class SwiftGenerationTest: XCTestCase {
         do {
             let result = try swift(for: "letter = @error(\"error a\") \"a\"| @error(\"error b\")\"b\"| @error(\"error c\") \"c\"").replacingOccurrences(of: "\n", with: "").replacingOccurrences(of: "\t", with: "")
             
-            XCTAssert(result == "[\"a\".terminal(token: T._transient, annotations: [RuleAnnotation.error : RuleAnnotationValue.string(\"error a\")]),\"b\".terminal(token: T._transient, annotations: [RuleAnnotation.error : RuleAnnotationValue.string(\"error b\")]),\"c\".terminal(token: T._transient, annotations: [RuleAnnotation.error : RuleAnnotationValue.string(\"error c\")]),].oneOf(token: T.tokenA)", "Bad Swift output '\(result)'")
+            XCTAssertEqual(result, "[\"a\".terminal(token: T._transient, annotations: [RuleAnnotation.error : RuleAnnotationValue.string(\"error a\")]),\"b\".terminal(token: T._transient, annotations: [RuleAnnotation.error : RuleAnnotationValue.string(\"error b\")]),\"c\".terminal(token: T._transient, annotations: [RuleAnnotation.error : RuleAnnotationValue.string(\"error c\")]),].oneOf(token: T.tokenA, annotations: annotations)")
         } catch (let error){
             XCTFail("\(error)")
         }
@@ -205,7 +205,7 @@ class SwiftGenerationTest: XCTestCase {
         do {
             let result = try swift(for: "letter = @error(\"error a\") \"a\"| @error(\"error b\")\"b\"| @error(\"error c\") \"c\"").replacingOccurrences(of: "\n", with: "").replacingOccurrences(of: "\t", with: "")
             
-            XCTAssert(result == "[\"a\".terminal(token: T._transient, annotations: [RuleAnnotation.error : RuleAnnotationValue.string(\"error a\")]),\"b\".terminal(token: T._transient, annotations: [RuleAnnotation.error : RuleAnnotationValue.string(\"error b\")]),\"c\".terminal(token: T._transient, annotations: [RuleAnnotation.error : RuleAnnotationValue.string(\"error c\")]),].oneOf(token: T.tokenA)", "Bad Swift output '\(result)'")
+            XCTAssertEqual(result, "[\"a\".terminal(token: T._transient, annotations: [RuleAnnotation.error : RuleAnnotationValue.string(\"error a\")]),\"b\".terminal(token: T._transient, annotations: [RuleAnnotation.error : RuleAnnotationValue.string(\"error b\")]),\"c\".terminal(token: T._transient, annotations: [RuleAnnotation.error : RuleAnnotationValue.string(\"error c\")]),].oneOf(token: T.tokenA, annotations: annotations)")
         } catch (let error){
             XCTFail("\(error)")
         }
@@ -279,7 +279,7 @@ class SwiftGenerationTest: XCTestCase {
         do {
             let result = try swift(for: "@error(\"expected a\")a = @error(\"inner a\") \"a\"\naa = a+ \" \" @error(\"error a2\") a+", desiredRule: 1)
             
-            XCTAssert(result == "[T.a._rule([RuleAnnotation.error : RuleAnnotationValue.string(\"expected a\")]).repeated(min: 1, producing: T._transient),\" \".terminal(token: T._transient),T.a._rule([RuleAnnotation.error : RuleAnnotationValue.string(\"expected a\")]).repeated(min: 1, producing: T._transient, annotations: [RuleAnnotation.error : RuleAnnotationValue.string(\"error a2\")]),].sequence(token: T.tokenA, annotations: annotations.isEmpty ? [ : ] : annotations)", "Bad Swift output '\(result)'")
+            XCTAssertEqual(result,"[T.a._rule([RuleAnnotation.error : RuleAnnotationValue.string(\"expected a\")]).repeated(min: 1, producing: T._transient),\" \".terminal(token: T._transient),T.a._rule([RuleAnnotation.error : RuleAnnotationValue.string(\"expected a\")]).repeated(min: 1, producing: T._transient),].sequence(token: T.tokenA, annotations: annotations.isEmpty ? [ : ] : annotations)")
         } catch (let error){
             XCTFail("\(error)")
         }

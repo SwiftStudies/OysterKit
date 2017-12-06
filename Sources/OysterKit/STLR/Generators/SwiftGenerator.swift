@@ -276,6 +276,7 @@ internal extension STLRIntermediateRepresentation.Expression{
             } else {
                 result.add(depth: depth, line: "[")
                 for element in elements{
+                    
                     result.add(depth: depth, line: element.swift(depth: depth+1, from: ast, creating: TransientToken.instance, annotations: nil).trim+",")
                 }
                 result.add(depth: depth, line: "].oneOf(token: T.\(token)\(annotations?.swiftNthParameter ?? ""))")
@@ -337,9 +338,8 @@ internal extension STLRIntermediateRepresentation.Element{
         var elementAnnotations      : STLRIntermediateRepresentation.ElementAnnotations?
         
         if let annotations = annotations {
-            if quantifier == .one {
-                elementAnnotations = self.elementAnnotations.merge(with: annotations)
-            } else {
+            elementAnnotations = self.elementAnnotations.merge(with: annotations)
+            if quantifier != .one {
                 quantifierAnnotations = self.quantifierAnnotations.merge(with: annotations)
             }
         } else {
@@ -354,7 +354,8 @@ internal extension STLRIntermediateRepresentation.Element{
         case .group(let expression, let quantity, let lookahead,_):
             result.add(depth: depth+1, line: expression.swift(depth: depth + 1, from: ast, creating: elementToken, annotations: elementAnnotations).trim+quantity.swift(creating:token, annotations: quantifierAnnotations)+(lookahead ? ".lookahead()" : ""))
         case .terminal(let terminal, let quantity,let lookahead,_):
-            result.add(depth: depth, line: terminal.swift(depth:depth, from: ast, creating: elementToken, annotations: annotations == nil ? nil : elementAnnotations).trim+quantity.swift(creating:token, annotations: quantifierAnnotations)+(lookahead ? ".lookahead()" : ""))
+            result.add(depth: depth,
+                       line: terminal.swift(depth:depth, from: ast, creating: elementToken, annotations: elementAnnotations, allowOveride: annotations != nil).trim+quantity.swift(creating:token, annotations: quantifierAnnotations)+(lookahead ? ".lookahead()" : ""))
         case .identifier(let identifier, let quantity,let lookahead,_):
             result.add(depth: depth, line: "T.\(identifier)._rule(\(elementAnnotations?.swiftArray ?? ""))"+quantity.swift(creating:token, annotations: quantifierAnnotations)+(lookahead ? ".lookahead()" : ""))
         }
@@ -449,15 +450,27 @@ internal extension STLRIntermediateRepresentation.TerminalCharacterSet{
 
 
 internal extension STLRIntermediateRepresentation.Terminal{
-    func swift(depth:Int = 0, from ast:STLRIntermediateRepresentation, creating token:Token, annotations: STLRIntermediateRepresentation.ElementAnnotations?)->String{
+    func swift(depth:Int = 0, from ast:STLRIntermediateRepresentation, creating token:Token, annotations: STLRIntermediateRepresentation.ElementAnnotations?, allowOveride: Bool)->String{
         let depth = depth + 1
         var result = ""
         
+        let annotationParameter : String
+        
+        if let annotations = annotations {
+            if allowOveride {
+                annotationParameter = annotations.swiftNthParameter
+            } else {
+                annotationParameter = ", annotations: "+annotations.swiftArray
+            }
+        } else {
+            annotationParameter = ""
+        }
+        
         switch (string,characterSet){
         case (let sv,_) where sv != nil:
-            result.add(depth:depth, line:"\"\(sv!.swiftSafe)\".terminal(token: T.\(token)\(annotations?.swiftNthParameter ?? ""))")
+            result.add(depth:depth, line:"\"\(sv!.swiftSafe)\".terminal(token: T.\(token)\(annotationParameter))")
         case (_, let terminalCharacterSet) where terminalCharacterSet != nil:
-            return "\(terminalCharacterSet!.swift).terminal(token: T.\(token)\(annotations?.swiftNthParameter ?? ""))"
+            return "\(terminalCharacterSet!.swift).terminal(token: T.\(token)\(annotationParameter))"
         default:
             return "❌ \(self) not implemented"
         }
