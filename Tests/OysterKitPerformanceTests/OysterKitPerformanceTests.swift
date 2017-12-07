@@ -93,7 +93,6 @@ class OysterKitPerformanceTests: XCTestCase {
             XCTAssert(ruleCount == 47,"Got \(ruleCount) rules")
             
             do {
-                print(stlr.ast.errors)
                 try stlr.ast.validate()
             } catch (let error){
                 XCTFail("Did not validate \(error)")
