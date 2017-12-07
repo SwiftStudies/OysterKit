@@ -34,8 +34,44 @@ private extension String {
     }
 }
 
+public enum Platform{
+    case macOS, iOS, foundation
+    
+    fileprivate var colorType : String {
+        switch self {
+        case .macOS:
+            return "NSColor"
+        case .iOS:
+            return "UIColor"
+        case .foundation:
+            return "(r:Float,g:Float,b:Float)"
+            
+        }
+    }
+    
+    fileprivate var coreLibrary : String {
+        switch self {
+        case .macOS:
+            return "Cocoa"
+        case .iOS:
+            return "UIKit"
+        case .foundation:
+            return "Foundation"
+        }
+    }
+    
+    func colorLiteral(rgb:(r:Float,g:Float,b:Float))->String{
+        switch self {
+        case .macOS,.iOS:
+           return "#colorLiteral(red:\(rgb.r), green:\(rgb.g), blue:\(rgb.b), alpha: 1)"
+        case .foundation:
+            return "(r:\(rgb.r),g:\(rgb.g),b:\(rgb.b))"
+        }
+    }
+}
+
 public extension STLRIntermediateRepresentation {
-    func swift(grammar name:String, colorPrefix : String = "NS", colors : [String : (r:Float,g:Float,b:Float)]?  = nil)->String?{
+    func swift(grammar name:String, platform : Platform = .macOS, colors : [String : (r:Float,g:Float,b:Float)]?  = nil)->String?{
         var output = ""
         
         var hasLeftHandRecursiveRules = false
@@ -45,6 +81,7 @@ public extension STLRIntermediateRepresentation {
         output.add(comment: "")
         output.add(comment: "Generated: \(Date.init(timeIntervalSinceNow: 0))")
         output.add(comment: "")
+        output.add(line: "import \(platform.coreLibrary)")
         output.add(line: "import OysterKit")
         output.add(line: "")
         output.add(comment: "")
@@ -108,13 +145,14 @@ public extension STLRIntermediateRepresentation {
             
             output.add(line: "")
             output.add(depth: 1, comment: "Color Definitions")
-            output.add(depth: 1, line:      "fileprivate var color : \(colorPrefix)Color? {")
+            output.add(depth: 1, line:      "fileprivate var color : \(platform.colorType)? {")
             output.add(depth: 2, line:          "switch self {")
             for rule in rules {
                 guard let identifier = rule.identifier, let colorSpec = colors[identifier.name] else {
                     continue
                 }
-                output.add(depth: 2, line:      "case .\(identifier):\treturn #colorLiteral(red:\(colorSpec.r), green:\(colorSpec.g), blue:\(colorSpec.b), alpha: 1)")
+                
+                output.add(depth: 2, line:      "case .\(identifier):\treturn \(platform.colorLiteral(rgb:colorSpec))")
                 
                 if !colorDictionaryLiteral!.isEmpty {
                     colorDictionaryLiteral! += ", "
@@ -198,7 +236,7 @@ internal extension STLRIntermediateRepresentation.Expression{
     
 
     
-    func swift(depth:Int = 0, from ast:STLRIntermediateRepresentation, creating token:Token, annotations: STLRIntermediateRepresentation.ElementAnnotations)->String{
+    func swift(depth:Int = 0, from ast:STLRIntermediateRepresentation, creating token:Token, annotations: STLRIntermediateRepresentation.ElementAnnotations?)->String{
         let depth = depth + 1
         var result = ""
         
@@ -214,9 +252,13 @@ internal extension STLRIntermediateRepresentation.Expression{
         case .sequence(let elements):
             result.add(depth: depth, line: "[")
             for element in elements{
-                result.add(depth: depth, line: element.swift(depth: depth+1, from: ast, creating: TransientToken.instance, annotations: []).trim+",")
+                result.add(depth: depth, line: element.swift(depth: depth+1, from: ast, creating: TransientToken.instance, annotations: nil).trim+",")
             }
-            result.add(depth: depth, line: "].sequence(token: T.\(token), annotations: annotations.isEmpty ? \(annotations.swiftDictionary) : annotations)")
+            if let annotations = annotations {
+                result.add(depth: depth, line: "].sequence(token: T.\(token), annotations: annotations.isEmpty ? \(annotations.swiftDictionary) : annotations)")
+            } else {
+                result.add(depth: depth, line: "].sequence(token: T.\(token))")
+            }
         case .choice(let elements):
             if scannable {
                 var strings = [String]()
@@ -226,14 +268,18 @@ internal extension STLRIntermediateRepresentation.Expression{
                     }
                 }
                 let values = strings.joined(separator: ", ")
-                result.add(depth: depth, line: "ScannerRule.oneOf(token: T.\(token), [\(values)],\(annotations.swiftDictionary).merge(with: annotations))")
+                if let annotations = annotations {
+                    result.add(depth: depth, line: "ScannerRule.oneOf(token: T.\(token), [\(values)],\(annotations.swiftDictionary).merge(with: annotations))")
+                } else {
+                    result.add(depth: depth, line: "ScannerRule.oneOf(token: T.\(token), [\(values)],\(annotations?.swiftDictionary ?? "[:]").merge(with: annotations))")
+                }
             } else {
                 result.add(depth: depth, line: "[")
                 for element in elements{
-                    //TODO: Investigate if this is a failure. Should annotations:[] be annotations:element.annotations? I think it should
-                    result.add(depth: depth, line: element.swift(depth: depth+1, from: ast, creating: TransientToken.instance, annotations: []).trim+",")
+                    
+                    result.add(depth: depth, line: element.swift(depth: depth+1, from: ast, creating: TransientToken.instance, annotations: nil).trim+",")
                 }
-                result.add(depth: depth, line: "].oneOf(token: T.\(token)\(annotations.swiftNthParameter))")
+                result.add(depth: depth, line: "].oneOf(token: T.\(token)\(annotations?.swiftNthParameter ?? ""))")
             }
         default:
             result.add(depth: depth, comment: "FATAL ERROR: \(self) Not implemented")
@@ -284,17 +330,22 @@ internal extension STLRIntermediateRepresentation.ElementAnnotationInstance{
 }
 
 internal extension STLRIntermediateRepresentation.Element{
-    func swift(depth:Int = 0, from ast:STLRIntermediateRepresentation, creating token:Token, annotations:STLRIntermediateRepresentation.ElementAnnotations)->String{
+    func swift(depth:Int = 0, from ast:STLRIntermediateRepresentation, creating token:Token, annotations:STLRIntermediateRepresentation.ElementAnnotations?)->String{
         let depth = depth + 1
         var result = ""
         
-        var quantifierAnnotations = self.quantifierAnnotations
-        var elementAnnotations    = self.elementAnnotations
+        var quantifierAnnotations   : STLRIntermediateRepresentation.ElementAnnotations?
+        var elementAnnotations      : STLRIntermediateRepresentation.ElementAnnotations?
         
-        if quantifier == .one {
-            elementAnnotations = elementAnnotations.merge(with: annotations)
+        if let annotations = annotations {
+            elementAnnotations = self.elementAnnotations.merge(with: annotations)
+            if quantifier != .one {
+                quantifierAnnotations = self.quantifierAnnotations.merge(with: annotations)
+            }
         } else {
-            quantifierAnnotations = quantifierAnnotations.merge(with: annotations)
+            if !self.elementAnnotations.isEmpty{
+                elementAnnotations = self.elementAnnotations
+            }
         }
         
         let elementToken = quantifier == .one ? token       : TransientToken.instance
@@ -303,9 +354,10 @@ internal extension STLRIntermediateRepresentation.Element{
         case .group(let expression, let quantity, let lookahead,_):
             result.add(depth: depth+1, line: expression.swift(depth: depth + 1, from: ast, creating: elementToken, annotations: elementAnnotations).trim+quantity.swift(creating:token, annotations: quantifierAnnotations)+(lookahead ? ".lookahead()" : ""))
         case .terminal(let terminal, let quantity,let lookahead,_):
-            result.add(depth: depth, line: terminal.swift(depth:depth, from: ast, creating: elementToken, annotations: elementAnnotations).trim+quantity.swift(creating:token, annotations: quantifierAnnotations)+(lookahead ? ".lookahead()" : ""))
+            result.add(depth: depth,
+                       line: terminal.swift(depth:depth, from: ast, creating: elementToken, annotations: elementAnnotations, allowOveride: annotations != nil).trim+quantity.swift(creating:token, annotations: quantifierAnnotations)+(lookahead ? ".lookahead()" : ""))
         case .identifier(let identifier, let quantity,let lookahead,_):
-            result.add(depth: depth, line: "T.\(identifier)._rule(\(elementAnnotations.swiftArray))"+quantity.swift(creating:token, annotations: quantifierAnnotations)+(lookahead ? ".lookahead()" : ""))
+            result.add(depth: depth, line: "T.\(identifier)._rule(\(elementAnnotations?.swiftArray ?? ""))"+quantity.swift(creating:token, annotations: quantifierAnnotations)+(lookahead ? ".lookahead()" : ""))
         }
 
         
@@ -333,27 +385,27 @@ internal extension Collection where Self.Iterator.Element == STLRIntermediateRep
     
     var swiftNthParameter : String {
         if count == 0 {
-            return ""
+            return ", annotations: annotations"
         }
-        return ", annotations: "+swiftArray
+        return ", annotations: annotations.isEmpty ? "+swiftArray+" : annotations"
     }
 }
 
 internal extension STLRIntermediateRepresentation.Modifier{
-    func swift(creating token:Token, annotations: STLRIntermediateRepresentation.ElementAnnotations)->String{
+    func swift(creating token:Token, annotations: STLRIntermediateRepresentation.ElementAnnotations?)->String{
         switch self {
         case .one:
             return ""
         case .not:
-            return ".not(producing: T.\(token)\(annotations.swiftNthParameter))"
+            return ".not(producing: T.\(token)\(annotations?.swiftNthParameter ?? ""))"
         case .consume:
             return ".consume(\(annotations))"
         case .zeroOrOne:
-            return ".optional(producing: T.\(token)\(annotations.swiftNthParameter))"
+            return ".optional(producing: T.\(token)\(annotations?.swiftNthParameter ?? ""))"
         case .zeroOrMore:
-            return ".repeated(min: 0, producing: T.\(token)\(annotations.swiftNthParameter))"
+            return ".repeated(min: 0, producing: T.\(token)\(annotations?.swiftNthParameter ?? ""))"
         case .oneOrMore:
-            return ".repeated(min: 1, producing: T.\(token)\(annotations.swiftNthParameter))"
+            return ".repeated(min: 1, producing: T.\(token)\(annotations?.swiftNthParameter ?? ""))"
         }
     }
 }
@@ -398,15 +450,27 @@ internal extension STLRIntermediateRepresentation.TerminalCharacterSet{
 
 
 internal extension STLRIntermediateRepresentation.Terminal{
-    func swift(depth:Int = 0, from ast:STLRIntermediateRepresentation, creating token:Token, annotations: STLRIntermediateRepresentation.ElementAnnotations)->String{
+    func swift(depth:Int = 0, from ast:STLRIntermediateRepresentation, creating token:Token, annotations: STLRIntermediateRepresentation.ElementAnnotations?, allowOveride: Bool)->String{
         let depth = depth + 1
         var result = ""
         
+        let annotationParameter : String
+        
+        if let annotations = annotations {
+            if allowOveride {
+                annotationParameter = annotations.swiftNthParameter
+            } else {
+                annotationParameter = ", annotations: "+annotations.swiftArray
+            }
+        } else {
+            annotationParameter = ""
+        }
+        
         switch (string,characterSet){
         case (let sv,_) where sv != nil:
-            result.add(depth:depth, line:"\"\(sv!.swiftSafe)\".terminal(token: T.\(token)\(annotations.swiftNthParameter))")
+            result.add(depth:depth, line:"\"\(sv!.swiftSafe)\".terminal(token: T.\(token)\(annotationParameter))")
         case (_, let terminalCharacterSet) where terminalCharacterSet != nil:
-            return "\(terminalCharacterSet!.swift).terminal(token: T.\(token)\(annotations.swiftNthParameter))"
+            return "\(terminalCharacterSet!.swift).terminal(token: T.\(token)\(annotationParameter))"
         default:
             return "❌ \(self) not implemented"
         }

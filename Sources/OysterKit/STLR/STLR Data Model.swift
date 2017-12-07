@@ -860,6 +860,12 @@ public extension Collection where Iterator.Element == STLRIntermediateRepresenta
             }
         }
         
+        for annotation in incoming{
+            if merged[annotation: annotation.annotation] == nil {
+                merged.append(annotation)
+            }
+        }
+        
         return merged
     }
 }

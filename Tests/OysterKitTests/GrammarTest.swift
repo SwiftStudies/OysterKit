@@ -345,7 +345,7 @@ class GrammarTest: XCTestCase {
         }
         
         XCTAssert("\(parser.ast.errors[0])".hasPrefix("Unknown character set"),"Incorrect error \(parser.ast.errors[0])")
-        XCTAssert("\(parser.ast.errors[1])".hasPrefix("Expected at least one rule"),"Incorrect error \(parser.ast.errors[0])")
+        XCTAssert("\(parser.ast.errors[1])".hasPrefix("Expected expression"),"Incorrect error \(parser.ast.errors[0])")
         XCTAssert("\(parser.ast.errors[2])".hasPrefix("hello is never defined"),"Incorrect error \(parser.ast.errors[0])")
     }
     
@@ -355,11 +355,11 @@ class GrammarTest: XCTestCase {
         let parser = STLRParser(source: source)
         
         guard parser.errors.count == 3 else {
-            XCTFail("Expected one error but got \(parser.errors)")
+            XCTFail("Expected three errors but got \(parser.errors)")
             return
         }
         XCTAssert("\(parser.ast.errors[0])".hasPrefix("Missing terminating quote"),"Incorrect error \(parser.ast.errors[0])")
-        XCTAssert("\(parser.ast.errors[1])".hasPrefix("Expected at least one rule"),"Incorrect error \(parser.ast.errors[0])")
+        XCTAssert("\(parser.ast.errors[1])".hasPrefix("Expected expression"),"Incorrect error \(parser.ast.errors[0])")
         XCTAssert("\(parser.ast.errors[2])".hasPrefix("hello is never defined"),"Incorrect error \(parser.ast.errors[0])")
     }
     
