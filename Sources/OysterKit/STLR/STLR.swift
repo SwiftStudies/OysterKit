@@ -1,10 +1,9 @@
 // 
 // STLR Generated Swift File
 // 
-// Generated: 2017-12-06 14:52:12 +0000
+// Generated: 2017-12-07 02:10:53 +0000
 // 
 import Cocoa
-import OysterKit
 
 // 
 // STLR Parser
@@ -14,7 +13,7 @@ enum STLR : Int, Token {
 	// Convenience alias
 	private typealias T = STLR
 
-	case _transient = -1, `singleLineComment`, `multilineComment`, `comment`, `whitespace`, `ows`, `quantifier`, `negated`, `transient`, `lookahead`, `stringQuote`, `escapedCharacters`, `escapedCharacter`, `stringCharacter`, `terminalBody`, `stringBody`, `string`, `terminalString`, `characterSetName`, `characterSet`, `rangeOperator`, `characterRange`, `number`, `boolean`, `literal`, `annotation`, `annotations`, `customLabel`, `definedLabel`, `label`, `terminal`, `group`, `identifier`, `element`, `assignmentOperators`, `or`, `then`, `choice`, `notNewRule`, `sequence`, `expression`, `lhs`, `rule`, `moduleName`, `import`, `moduleImport`, `mark`, `grammar`
+	case _transient = -1, `singleLineComment`, `multilineComment`, `comment`, `whitespace`, `ows`, `quantifier`, `negated`, `transient`, `lookahead`, `stringQuote`, `escapedCharacter`, `stringCharacter`, `terminalBody`, `stringBody`, `string`, `terminalString`, `characterSetName`, `characterSet`, `rangeOperator`, `characterRange`, `number`, `boolean`, `literal`, `annotation`, `annotations`, `customLabel`, `definedLabel`, `label`, `terminal`, `group`, `identifier`, `element`, `assignmentOperators`, `or`, `then`, `choice`, `notNewRule`, `sequence`, `expression`, `lhs`, `rule`, `moduleName`, `moduleImport`, `mark`, `grammar`
 
 	func _rule(_ annotations: RuleAnnotations = [ : ])->Rule {
 		switch self {
@@ -29,10 +28,10 @@ enum STLR : Int, Token {
 					].sequence(token: T.singleLineComment, annotations: annotations.isEmpty ? [ : ] : annotations)
 		// multilineComment
 		case .multilineComment:
-			guard let cachedRule = STLR.leftHandRecursiveRules[self.rawValue] else {
+			guard let cachedRule = T.leftHandRecursiveRules[self.rawValue] else {
 				// Create recursive shell
 				let recursiveRule = RecursiveRule()
-				STLR.leftHandRecursiveRules[self.rawValue] = recursiveRule
+				T.leftHandRecursiveRules[self.rawValue] = recursiveRule
 				// Create the rule we would normally generate
 				let rule = [
 					"/*".terminal(token: T._transient),
@@ -60,10 +59,10 @@ enum STLR : Int, Token {
 					].oneOf(token: T.whitespace, annotations: annotations.isEmpty ? [RuleAnnotation.void : RuleAnnotationValue.set] : annotations)
 		// ows
 		case .ows:
-			return T.whitespace._rule().repeated(min: 0, producing: T.ows, annotations: annotations)
+			return T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T.ows, annotations: annotations)
 		// quantifier
 		case .quantifier:
-			return ScannerRule.oneOf(token: T.quantifier, ["*", "+", "?", "-"],[ : ].merge(with: annotations))
+			return CharacterSet(charactersIn: "*+?-").terminal(token: T.quantifier, annotations: annotations)
 		// negated
 		case .negated:
 			return "!".terminal(token: T.negated, annotations: annotations)
@@ -76,20 +75,11 @@ enum STLR : Int, Token {
 		// stringQuote
 		case .stringQuote:
 			return "\"".terminal(token: T.stringQuote, annotations: annotations)
-		// escapedCharacters
-		case .escapedCharacters:
-			return [
-					T.stringQuote._rule(),
-					"r".terminal(token: T._transient),
-					"n".terminal(token: T._transient),
-					"t".terminal(token: T._transient),
-					"\\".terminal(token: T._transient),
-					].oneOf(token: T.escapedCharacters, annotations: annotations)
 		// escapedCharacter
 		case .escapedCharacter:
 			return [
 					"\\".terminal(token: T._transient),
-					T.escapedCharacters._rule(),
+					CharacterSet(charactersIn: "\"rnt\\").terminal(token: T._transient),
 					].sequence(token: T.escapedCharacter, annotations: annotations.isEmpty ? [ : ] : annotations)
 		// stringCharacter
 		case .stringCharacter:
@@ -102,23 +92,23 @@ enum STLR : Int, Token {
 					].oneOf(token: T.stringCharacter, annotations: annotations.isEmpty ? [RuleAnnotation.void : RuleAnnotationValue.set] : annotations)
 		// terminalBody
 		case .terminalBody:
-			return T.stringCharacter._rule().repeated(min: 1, producing: T.terminalBody, annotations: annotations)
+			return T.stringCharacter._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 1, producing: T.terminalBody, annotations: annotations)
 		// stringBody
 		case .stringBody:
-			return T.stringCharacter._rule().repeated(min: 0, producing: T.stringBody, annotations: annotations)
+			return T.stringCharacter._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T.stringBody, annotations: annotations)
 		// string
 		case .string:
 			return [
-					T.stringQuote._rule(),
+					"\"".terminal(token: T._transient),
 					T.stringBody._rule(),
-					T.stringQuote._rule([RuleAnnotation.error : RuleAnnotationValue.string("Missing terminating quote")]),
+					"\"".terminal(token: T._transient, annotations: [RuleAnnotation.error : RuleAnnotationValue.string("Missing terminating quote")]),
 					].sequence(token: T.string, annotations: annotations.isEmpty ? [ : ] : annotations)
 		// terminalString
 		case .terminalString:
 			return [
-					T.stringQuote._rule(),
+					"\"".terminal(token: T._transient),
 					T.terminalBody._rule([RuleAnnotation.error : RuleAnnotationValue.string("Terminals must have at least one character")]),
-					T.stringQuote._rule([RuleAnnotation.error : RuleAnnotationValue.string("Missing terminating quote")]),
+					"\"".terminal(token: T._transient, annotations: [RuleAnnotation.error : RuleAnnotationValue.string("Missing terminating quote")]),
 					].sequence(token: T.terminalString, annotations: annotations.isEmpty ? [ : ] : annotations)
 		// characterSetName
 		case .characterSetName:
@@ -133,7 +123,7 @@ enum STLR : Int, Token {
 		case .rangeOperator:
 			return [
 					".".terminal(token: T._transient),
-					"..".terminal(token: T._transient),
+					"..".terminal(token: T._transient, annotations: [RuleAnnotation.error : RuleAnnotationValue.string("Expected ... in character range")]),
 					].sequence(token: T.rangeOperator, annotations: annotations.isEmpty ? [ : ] : annotations)
 		// characterRange
 		case .characterRange:
@@ -145,7 +135,7 @@ enum STLR : Int, Token {
 		// number
 		case .number:
 			return [
-					ScannerRule.oneOf(token: T._transient, ["-", "+"],[:].merge(with: annotations)).optional(producing: T._transient),
+					CharacterSet(charactersIn: "-+").terminal(token: T._transient).optional(producing: T._transient),
 					CharacterSet.decimalDigits.terminal(token: T._transient).repeated(min: 1, producing: T._transient),
 					].sequence(token: T.number, annotations: annotations.isEmpty ? [ : ] : annotations)
 		// boolean
@@ -166,7 +156,7 @@ enum STLR : Int, Token {
 					[
 									"(".terminal(token: T._transient),
 									T.literal._rule([RuleAnnotation.error : RuleAnnotationValue.string("A value must be specified or the () omitted")]),
-									")".terminal(token: T._transient),
+									")".terminal(token: T._transient, annotations: [RuleAnnotation.error : RuleAnnotationValue.string("Missing ')'")]),
 									].sequence(token: T._transient).optional(producing: T._transient),
 					].sequence(token: T.annotation, annotations: annotations.isEmpty ? [ : ] : annotations)
 		// annotations
@@ -174,19 +164,12 @@ enum STLR : Int, Token {
 			return [
 								T.annotation._rule(),
 								T.ows._rule(),
-								].sequence(token: T._transient).repeated(min: 1, producing: T.annotations, annotations: annotations)
+								].sequence(token: T._transient, annotations: annotations.isEmpty ? [ : ] : annotations).repeated(min: 1, producing: T.annotations, annotations: annotations)
 		// customLabel
 		case .customLabel:
 			return [
-					[
-									CharacterSet.letters.terminal(token: T._transient),
-									"_".terminal(token: T._transient),
-									].oneOf(token: T._transient, annotations: annotations.isEmpty ? [RuleAnnotation.error : RuleAnnotationValue.string("Labels must start with a letter or _")] : annotations),
-					[
-									CharacterSet.letters.terminal(token: T._transient),
-									CharacterSet.decimalDigits.terminal(token: T._transient),
-									"_".terminal(token: T._transient),
-									].oneOf(token: T._transient).repeated(min: 0, producing: T._transient),
+					CharacterSet.letters.union(CharacterSet(charactersIn: "_")).terminal(token: T._transient),
+					CharacterSet.letters.union(CharacterSet.decimalDigits).union(CharacterSet(charactersIn: "_")).terminal(token: T._transient).repeated(min: 0, producing: T._transient),
 					].sequence(token: T.customLabel, annotations: annotations.isEmpty ? [ : ] : annotations)
 		// definedLabel
 		case .definedLabel:
@@ -206,17 +189,17 @@ enum STLR : Int, Token {
 					].oneOf(token: T.terminal, annotations: annotations)
 		// group
 		case .group:
-			guard let cachedRule = STLR.leftHandRecursiveRules[self.rawValue] else {
+			guard let cachedRule = T.leftHandRecursiveRules[self.rawValue] else {
 				// Create recursive shell
 				let recursiveRule = RecursiveRule()
-				STLR.leftHandRecursiveRules[self.rawValue] = recursiveRule
+				T.leftHandRecursiveRules[self.rawValue] = recursiveRule
 				// Create the rule we would normally generate
 				let rule = [
 					"(".terminal(token: T._transient),
 					T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T._transient),
 					T.expression._rule(),
 					T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T._transient),
-					")".terminal(token: T._transient),
+					")".terminal(token: T._transient, annotations: [RuleAnnotation.error : RuleAnnotationValue.string("Expected ')'")]),
 					].sequence(token: T.group, annotations: annotations.isEmpty ? [ : ] : annotations)
 				recursiveRule.surrogateRule = rule
 				return recursiveRule
@@ -225,22 +208,15 @@ enum STLR : Int, Token {
 		// identifier
 		case .identifier:
 			return [
-					[
-									CharacterSet.letters.terminal(token: T._transient),
-									"_".terminal(token: T._transient),
-									].oneOf(token: T._transient),
-					[
-									CharacterSet.letters.terminal(token: T._transient),
-									CharacterSet.decimalDigits.terminal(token: T._transient),
-									"_".terminal(token: T._transient),
-									].oneOf(token: T._transient).repeated(min: 0, producing: T._transient),
+					CharacterSet.letters.union(CharacterSet(charactersIn: "_")).terminal(token: T._transient),
+					CharacterSet.letters.union(CharacterSet.decimalDigits).union(CharacterSet(charactersIn: "_")).terminal(token: T._transient).repeated(min: 0, producing: T._transient),
 					].sequence(token: T.identifier, annotations: annotations.isEmpty ? [ : ] : annotations)
 		// element
 		case .element:
-			guard let cachedRule = STLR.leftHandRecursiveRules[self.rawValue] else {
+			guard let cachedRule = T.leftHandRecursiveRules[self.rawValue] else {
 				// Create recursive shell
 				let recursiveRule = RecursiveRule()
-				STLR.leftHandRecursiveRules[self.rawValue] = recursiveRule
+				T.leftHandRecursiveRules[self.rawValue] = recursiveRule
 				// Create the rule we would normally generate
 				let rule = [
 					T.annotations._rule().optional(producing: T._transient),
@@ -282,10 +258,10 @@ enum STLR : Int, Token {
 					].oneOf(token: T.then, annotations: annotations.isEmpty ? [RuleAnnotation.void : RuleAnnotationValue.set] : annotations)
 		// choice
 		case .choice:
-			guard let cachedRule = STLR.leftHandRecursiveRules[self.rawValue] else {
+			guard let cachedRule = T.leftHandRecursiveRules[self.rawValue] else {
 				// Create recursive shell
 				let recursiveRule = RecursiveRule()
-				STLR.leftHandRecursiveRules[self.rawValue] = recursiveRule
+				T.leftHandRecursiveRules[self.rawValue] = recursiveRule
 				// Create the rule we would normally generate
 				let rule = [
 					T.element._rule(),
@@ -305,13 +281,13 @@ enum STLR : Int, Token {
 								T.identifier._rule(),
 								T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T._transient),
 								T.assignmentOperators._rule(),
-								].sequence(token: T._transient).not(producing: T.notNewRule, annotations: annotations)
+								].sequence(token: T._transient, annotations: annotations.isEmpty ? [ : ] : annotations).not(producing: T.notNewRule, annotations: annotations)
 		// sequence
 		case .sequence:
-			guard let cachedRule = STLR.leftHandRecursiveRules[self.rawValue] else {
+			guard let cachedRule = T.leftHandRecursiveRules[self.rawValue] else {
 				// Create recursive shell
 				let recursiveRule = RecursiveRule()
-				STLR.leftHandRecursiveRules[self.rawValue] = recursiveRule
+				T.leftHandRecursiveRules[self.rawValue] = recursiveRule
 				// Create the rule we would normally generate
 				let rule = [
 					T.element._rule(),
@@ -327,10 +303,10 @@ enum STLR : Int, Token {
 			return cachedRule
 		// expression
 		case .expression:
-			guard let cachedRule = STLR.leftHandRecursiveRules[self.rawValue] else {
+			guard let cachedRule = T.leftHandRecursiveRules[self.rawValue] else {
 				// Create recursive shell
 				let recursiveRule = RecursiveRule()
-				STLR.leftHandRecursiveRules[self.rawValue] = recursiveRule
+				T.leftHandRecursiveRules[self.rawValue] = recursiveRule
 				// Create the rule we would normally generate
 				let rule = [
 					T.choice._rule(),
@@ -362,24 +338,14 @@ enum STLR : Int, Token {
 		// moduleName
 		case .moduleName:
 			return [
-					[
-									CharacterSet.letters.terminal(token: T._transient),
-									"_".terminal(token: T._transient),
-									].oneOf(token: T._transient),
-					[
-									CharacterSet.letters.terminal(token: T._transient),
-									"_".terminal(token: T._transient),
-									CharacterSet.decimalDigits.terminal(token: T._transient),
-									].oneOf(token: T._transient).repeated(min: 0, producing: T._transient),
+					CharacterSet.letters.union(CharacterSet(charactersIn: "_")).terminal(token: T._transient),
+					CharacterSet.letters.union(CharacterSet.decimalDigits).union(CharacterSet(charactersIn: "_")).terminal(token: T._transient).repeated(min: 0, producing: T._transient),
 					].sequence(token: T.moduleName, annotations: annotations.isEmpty ? [ : ] : annotations)
-		// import
-		case .import:
-			return "import".terminal(token: T.import, annotations: annotations)
 		// moduleImport
 		case .moduleImport:
 			return [
 					T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T._transient),
-					T.import._rule(),
+					"import".terminal(token: T._transient),
 					CharacterSet.whitespaces.terminal(token: T._transient).repeated(min: 1, producing: T._transient),
 					T.moduleName._rule(),
 					T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 1, producing: T._transient),
@@ -403,7 +369,6 @@ enum STLR : Int, Token {
 	// Color Definitions
 	fileprivate var color : NSColor? {
 		switch self {
-		case .comment:	return #colorLiteral(red:0.0, green:0.517924, blue:0.320485, alpha: 1)
 		case .grammar:	return #colorLiteral(red:0.0, green:0.0, blue:0.0, alpha: 1)
 		default:	return nil
 		}
@@ -411,7 +376,7 @@ enum STLR : Int, Token {
 
 
 	// Color Dictionary
-	static var tokenNameColorIndex = ["comment" : T.comment.color!, "grammar" : T.grammar.color!]
+	static var tokenNameColorIndex = ["grammar" : T.grammar.color!]
 
 	// Cache for left-hand recursive rules
 	private static var leftHandRecursiveRules = [ Int : Rule ]()
@@ -423,6 +388,6 @@ enum STLR : Int, Token {
 
 	// Convient way to apply your grammar to a string
 	public static func parse(source: String) -> DefaultHeterogeneousAST {
-		return STLR.generatedLanguage.build(source: source)
+		return T.generatedLanguage.build(source: source)
 	}
 }
