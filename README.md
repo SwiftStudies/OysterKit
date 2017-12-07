@@ -17,6 +17,5 @@ For those that used v1.0 there are significant performance and capability benefi
 
 ## Status
 
-  - All standard tests are passing
-  - Performance tests need some tidy up with 2 failing
+  - All tests are passing
   - Some example products will be added shortly to provide some concrete usage examples
