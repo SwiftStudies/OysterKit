@@ -399,7 +399,7 @@ internal extension STLRIntermediateRepresentation.Modifier{
         case .not:
             return ".not(producing: T.\(token)\(annotations?.swiftNthParameter ?? ""))"
         case .consume:
-            return ".consume(\(annotations))"
+            return ".consume(\(annotations?.swiftDictionary ?? ""))"
         case .zeroOrOne:
             return ".optional(producing: T.\(token)\(annotations?.swiftNthParameter ?? ""))"
         case .zeroOrMore:

@@ -158,7 +158,7 @@ open class Lexer : LexicalAnalyzer, CustomStringConvertible{
     }
     
     public var description: String{
-        var result = "Scanning: \(scanner.string.characters.count) characters, currently at \(scanner) '\(scanner.current)':\n"
+        var result = "Scanning: \(scanner.string.count) characters, currently at \(scanner) '\(scanner.current)':\n"
         
         for mark in marks {
             let position = scanner.string.unicodeScalars.distance(from: scanner.string.unicodeScalars.startIndex, to: mark.preSkipLocation)

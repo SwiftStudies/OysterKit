@@ -19,7 +19,7 @@ private extension STLRIntermediateRepresentation.Element{
             //If it's not a character set then return true if it's a single character
             //string
             guard let terminalCharacterSet = terminal.characterSet else {
-                return terminal.string?.characters.count ?? 0 == 1
+                return terminal.string?.count ?? 0 == 1
             }
             
             //Otherwise return true if it's a character set that already has a custom 
@@ -67,7 +67,7 @@ public struct CharacterSetOnlyChoiceOptimizer : STLRExpressionOptimizer{
             switch element{
                 
             case .terminal(let terminal, let quantifier,_,_):
-                if let string = terminal.string , string.characters.count == 1, quantifier == .one {
+                if let string = terminal.string , string.count == 1, quantifier == .one {
                     characters +=  string
                 } else {
                     return nil
@@ -76,7 +76,7 @@ public struct CharacterSetOnlyChoiceOptimizer : STLRExpressionOptimizer{
             }
         }
         
-        if characters.characters.count == elements.count {
+        if characters.count == elements.count {
             return TerminalCharacterSet.customString(characters)
         }
 

@@ -331,7 +331,7 @@ class GrammarTest: XCTestCase {
             return
         }
         
-        XCTAssert(result.children.count == test.characters.count, "Expected \(test.characters.count) tokens but got \(result.children.count)")
+        XCTAssert(result.children.count == test.count, "Expected \(test.count) tokens but got \(result.children.count)")
     }
     
     func testUnknownCharacterSet(){

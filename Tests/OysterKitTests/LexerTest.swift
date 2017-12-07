@@ -193,7 +193,7 @@ class LexerTest: XCTestCase {
         var expected : Character
         
         do {
-            for current in source.characters {
+            for current in source {
                 expected = current
                 try lexer.scan(oneOf: CharacterSet.letters)
             }

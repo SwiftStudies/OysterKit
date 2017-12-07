@@ -549,7 +549,7 @@ public class STLRIntermediateRepresentation : CustomStringConvertible {
             case .multipleSets(let sets):
                 return "("+sets.map({ $0.description }).joined(separator: "|")+")"
             case .customString(let string):
-                return "("+string.characters.map({ "\"\($0)\"" }).joined(separator: "|")+")"
+                return "("+string.map({ "\"\($0)\"" }).joined(separator: "|")+")"
             }
         }
         
