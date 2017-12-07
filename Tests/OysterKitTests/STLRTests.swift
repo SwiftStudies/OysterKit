@@ -18,7 +18,7 @@ class STLRTest: XCTestCase {
         let backSlash = ".backslash"
         
         let ruleSource = """
-        token = "\(backSlash)x"
+        id = \(backSlash) "x"
 """
         guard let testLanguage = STLRParser(source: ruleSource).ast.runtimeLanguage else {
             XCTFail("Could not compile")
