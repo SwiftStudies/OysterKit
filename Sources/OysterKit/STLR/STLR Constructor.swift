@@ -220,8 +220,13 @@ extension STLRIntermediateRepresentation : ASTNodeConstructor {
                 return HeterogeneousNode(for: STLR.expression,at: matchRange , value: STLRIntermediateRepresentation.Expression.choice(elements), annotations: [:])
             }
         case .characterSetName:
-            let characterSet = STLRIntermediateRepresentation.TerminalCharacterSet(rawValue:context.matchedString) ?? STLRIntermediateRepresentation.TerminalCharacterSet.customString("")
-            return HeterogeneousNode(for: STLR.characterSet,at: matchRange , value: characterSet, annotations: [:])
+            switch context.matchedString {
+            case "backslash":
+                return HeterogeneousNode(for: STLR.terminal, at: matchRange, value: STLRIntermediateRepresentation.Terminal(with:"\\\\"), annotations: [:])
+            default:
+                let characterSet = STLRIntermediateRepresentation.TerminalCharacterSet(rawValue:context.matchedString) ?? STLRIntermediateRepresentation.TerminalCharacterSet.customString("")
+                return HeterogeneousNode(for: STLR.characterSet,at: matchRange , value: characterSet, annotations: [:])
+            }
         case .terminal:
             switch children[0].token as? STLR ?? STLR._transient {
             case .characterSet:
