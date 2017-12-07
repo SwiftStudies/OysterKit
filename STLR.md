@@ -47,6 +47,7 @@ Terminals are specific characters or sequences of characters, such as a string. 
 
 If you wish to include special characters, or indeed a quotation mark, you can insert escaped characters using the backslash. At this point the following escapes are supported: 
 
+  - `\\` A backslash (note you can also use the .backslash character set)
   - `\"` A quotation mark 
   - `\r` A carriage return
   - `\n` A new line
@@ -64,6 +65,7 @@ You can also use predefined character sets that match multiple characters. These
   - `.whitespaces` All whitespaces. For example tabs and spaces. 
   - `.newlines` All newline characters, matching for example both newline and carriage return
   - `.whitespacesAndNewlines` All white space and newline characters
+  - `.backslash` The backslash character
   
 For example, a rule to capture a co-ordinate might be
 
