@@ -112,11 +112,11 @@ public enum RuleAnnotationValue : CustomStringConvertible{
 }
 
 public enum RuleAnnotation : Hashable, CustomStringConvertible{
-    case token
-    case error
-    case void
-    case transient
-    case pinned
+    case token //Token to be created when the rule is matched
+    case error //An error to be generated when the rule is not matched
+    case void  //Matches will be completely discarded (no node, no adoption of children by parent)
+    case transient //Token will not be preserved in the AST but it's children should be adopted by the parent node
+    case pinned //Nodes will be created for failed optional matches
     
     case custom(label:String)
     
