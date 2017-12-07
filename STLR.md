@@ -122,6 +122,12 @@ When your defined language is being parsed, if the element annotated with this f
     
 Will generate an error explaining why matching failed. 
 
+### @pinned
+
+When an optional non-transient element is not matched a node will be created regardless of whether or not the optional element was matched. It will also ensure that if this is the only non-transient child created for a node that it will be not be hoisted (normally if a node has only one child, the child is raised to the level of the parent to reduce complexity of the AST). 
+
+This can be convenient if you wish to depend on the order and structure of children for some node of your AST without needing to implement your own AST that could implement this behaviour. 
+
 ## Examples
 
 ### Number Parser
