@@ -113,6 +113,12 @@ The next element will result in a token with the provided String value.
 We do not always want tokens met to be included in the AST. If prefixed with @transient then the token will not be captured in the AST or stream. For example, if we do not want any newlines to be captured in our AST but we do need to capture both types we could define the following rule
 
     @transient crlf = "\r\n"
+    
+However the match will still be included in the range of the parent node and any non-transient child nodes of the annotated node will be adopted by the parent node. If you wish to completely ignore the match and proceed with evaluation you should use the @void annotation. 
+
+### @void
+
+When a token of this type is matched scanning will continue after the match but no nodes will be created and any children of a void node will be completely discarded. The range of this match will not be applied to the range of the parent. 
 
 ### @error(String)
 
