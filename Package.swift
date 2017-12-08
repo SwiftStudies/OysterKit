@@ -17,6 +17,10 @@ let package = Package(
             type: .static,
             targets: ["ExampleLanguages"]
         ),
+        .executable(
+            name: "stlr",
+            targets: ["stlr"]
+        ),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -37,5 +41,9 @@ let package = Package(
         .testTarget(
             name: "OysterKitPerformanceTests",
             dependencies: ["OysterKit","ExampleLanguages"]),
+        .target(
+            name: "stlr",
+            dependencies: ["OysterKit"]
+        ),
     ]
 )
