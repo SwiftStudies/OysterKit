@@ -5,60 +5,85 @@
 //  Created by Swift Studies on 08/12/2017.
 //
 
-import Foundation
+import CommandKit
+import OysterKit
 
-public enum StlrOptions : String, Equatable, CommandLineOption{
-    private static let settings : [StlrOptions : (shortFlag: String?, defaultValue:String?, helpMessage:String)] = [
-        .operation : ("\(StlrOptions.operation.rawValue.first!)",Operation.defaultValue,"By default stlr will generate swift implementations of the supplied grammar. However you may override this behaviour and apply a dynamically created implementation of the grammer to the specified input files"),
-        .language : ("\(StlrOptions.language.rawValue.first!)",Language.defaultValue,"Specifiy the output language for source code generations"),
-        .grammar : ("\(StlrOptions.grammar.rawValue.first!)",nil,"Specify the .stlr grammar file to be used"),
-        ]
-    
-    case operation
-    case language
-    case grammar
-    
-    public static var allValues : [StlrOptions] {
-        return [
-            .operation,
-            .language,
-            .grammar
-        ]
-    }
-    
-    public var shortFlag: String?{
-        return StlrOptions.settings[self]?.shortFlag
-    }
-    
-    public var longFlag: String?{
-        return self.rawValue
-    }
-    
-    public var defaultValue: String?{
-        return StlrOptions.settings[self]?.defaultValue
-    }
-    
-    public var helpMessage: String{
-        return StlrOptions.settings[self]?.helpMessage ?? "No help available for \(rawValue)"
-    }
-    
-    
-    public enum Operation : String, OptionValue{
-        case dynamic
-        case generate
+
+class STLROption : Option {
+    public init(_ name: String, verbose: String, description:String,required:Bool = false, requiredParameters: RequiredParameters = RequiredParameters()) {
+        super.init(name, verbose: verbose, description: description, required: required, requiredParameters: requiredParameters)
         
-        static var defaultValue : String? {
-            return Operation.generate.rawValue
+        apply = { [unowned self] (command,parameters) in
+            guard let stlrCommand = command as? STLRCommand else {
+                fatalError("Expected command to be a STLRCommand")
+            }
+            
+            self.command = stlrCommand
+            try self.apply(parameters: parameters)
         }
     }
     
-    public enum Language : String, OptionValue {
-        case swift
+    var command : STLRCommand?
+    
+    open func apply(parameters:[Any]) throws{
         
-        static var defaultValue : String? {
-            return Language.swift.rawValue
-        }
     }
 }
 
+class STLRCommand : Command {
+    let name        : String
+    let description : String
+    
+    var requiredParameters = RequiredParameters()
+    
+    var customOptions: [Option] = []
+    
+    var parameters: [Any] = []
+    
+    var run         : RunBlock = {_ in -1}
+    
+    var grammarFile : String?
+    var grammar     : STLRParser?
+    
+    init(name:String, description:String, options : [Option] = [], parameters: RequiredParameters = []){
+        self.name = name
+        self.description = description
+        
+        customOptions.append(GrammarOption())
+        customOptions.append(contentsOf: options)
+        requiredParameters.append(contentsOf: parameters)
+        self.run = {[unowned self] arguments in
+            
+            
+            self.execute(arguments: arguments)
+        }
+    }
+    
+    open func execute(arguments:Arguments)->Int{
+        return -1
+    }
+}
 
+class GrammarOption : STLROption {
+    
+    init(){
+        super.init("g", verbose: "grammar", description: "The grammar to use", required: true, requiredParameters: [
+            ({$0},.one)
+            ])
+    }
+    
+    override func apply(parameters: [Any]) throws {
+        guard let grammarFile = parameters.first as? String else {
+            throw Tool.ArgumentError.commandNotFound(for: "This isn't a command not found message, it's because the parameter wasn't there or wasn't a string")
+        }
+        
+        let stlrGrammar = try String(contentsOfFile: grammarFile, encoding: String.Encoding.utf8)
+        
+        command?.grammarFile = grammarFile
+        command?.grammar     = STLRParser(source: stlrGrammar)
+        
+        // Pull off the top parameter and consume it as long as it's a parameter
+        print("I'll use \(parameters[0]) as the grammar")
+
+    }
+}
