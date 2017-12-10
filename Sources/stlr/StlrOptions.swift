@@ -5,6 +5,7 @@
 //  Created by Swift Studies on 08/12/2017.
 //
 
+import Foundation
 import CommandKit
 import OysterKit
 
@@ -43,6 +44,7 @@ class STLRCommand : Command {
     var run         : RunBlock = {_ in -1}
     
     var grammarFile : String?
+    var grammarName : String?
     var grammar     : STLRParser?
     
     init(name:String, description:String, options : [Option] = [], parameters: RequiredParameters = []){
@@ -64,6 +66,59 @@ class STLRCommand : Command {
     }
 }
 
+class LanguageOption : STLROption {
+    
+    enum Language : String {
+        case swift
+        case test
+        
+        var fileExtension : String {
+            switch self {
+            case .swift:
+                return rawValue
+            case .test:
+                return "test"
+            }
+        }
+        
+        func generate(grammarName: String, from stlrParser:STLRParser) throws {
+            let generatedLanguage : String?
+            
+            switch self {
+            case .swift:
+                generatedLanguage = stlrParser.ast.swift(grammar: grammarName)
+            case .test:
+                generatedLanguage = "test"
+            }
+            
+            if let generatedLanguage = generatedLanguage {
+                try generatedLanguage.write(toFile: "\(grammarName).\(fileExtension)", atomically: true, encoding: String.Encoding.utf8)
+            } else {
+                print("Couldn't generate language".color(.red))
+            }
+        }
+    }
+    
+    init(){
+        super.init("l", verbose: "language", description: "The language to generate", required: false, requiredParameters: [
+            ({Language(rawValue:$0)},.one)
+            ])
+    }
+    
+    override func apply(parameters: [Any]) throws {
+        guard let language = parameters.first as? LanguageOption.Language else {
+            //It will default to swift
+            return
+        }
+        
+        guard let generateCommand = command as? GenerateCommand else {
+            fatalError("Expected GenerateCommand for LanguagerOption")
+        }
+        
+        generateCommand.language = language
+    }
+}
+
 class GrammarOption : STLROption {
     
     init(){
@@ -76,6 +131,10 @@ class GrammarOption : STLROption {
         guard let grammarFile = parameters.first as? String else {
             throw Tool.ArgumentError.commandNotFound(for: "This isn't a command not found message, it's because the parameter wasn't there or wasn't a string")
         }
+
+        let grammarFileName = ((grammarFile as NSString).pathComponents.last ?? "stlr")
+        
+        command?.grammarName = String(grammarFileName[grammarFileName.startIndex..<(grammarFileName.index(of: ".") ?? grammarFileName.endIndex)])
         
         let stlrGrammar = try String(contentsOfFile: grammarFile, encoding: String.Encoding.utf8)
         
