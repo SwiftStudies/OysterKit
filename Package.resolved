@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "CommandKit",
+        "repositoryURL": "https://github.com/SwiftStudies/CommandKit.git",
+        "state": {
+          "branch": "master",
+          "revision": "27e0179c9c8a82715055f6e8d9d58cf1ef840e85",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
