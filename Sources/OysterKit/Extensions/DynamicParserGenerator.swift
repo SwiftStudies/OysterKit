@@ -15,7 +15,7 @@ fileprivate struct DynamicLanguage : Language{
 // create and distribute a generator, they can just create a module with their
 // own extension (perhaps cool if it's somehow scoped) to Grammar.AST
 public extension STLRIntermediateRepresentation {
-    var runtimeLanguage:Language?{
+    public var runtimeLanguage:Language?{
         var rules = [Rule]()
         
         let generationContext = GenerationContext()
