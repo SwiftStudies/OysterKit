@@ -1,6 +1,6 @@
 # A text adventure using OysterKit and STLR
 
-I wanted to create a tutorial that illustrated the complete tool-chain for someone wanting to use OysterKit to do _something_. A text adventure seems like a nice example to get started with! During this tutorial you will use the [Swift Package Manager](https://github.com/apple/swift-package-manager/blob/master/README.md) to create the executable, the command line tool for OysterKit and STLR called... imaginately... stlr as well as your normal XCode-ing to write your code. There's a **TO-DO: ADD LINK** (complete GitHub repository for the final project)[]. 
+I wanted to create a tutorial that illustrated the complete tool-chain for someone wanting to use OysterKit to do _something_. A text adventure seems like a nice example to get started with! During this tutorial you will use the [Swift Package Manager](https://github.com/apple/swift-package-manager/blob/master/README.md) to create the executable, the command line tool for OysterKit and STLR called... imaginately... stlr as well as your normal XCode-ing to write your code. There's a [complete GitHub repository for the final project](https://github.com/SwiftStudies/Bork). 
 
 ## Using Swift Package Manager (SPM) to create a new project
 
@@ -809,7 +809,7 @@ You can now go to the command line and from the Bork package type
 	
 Any you will be in your adventure. Obviously this is a very simple adventure, and some of the more interesting behaviours are hard coded (can you make the snake angry?). A real text adventure would need a richer data model where those behaviours were captured differently (state change events anyone?). As discussed earlier, we might also want to extend our vocabulary and with some small changes we could do just that making the String array used to create the rule for nouns for example read from an updated `Game` class that captured all the nouns actually used in the game. 
 
-
+Please feel to play, don't forget you can just download the [complete GitHub repository for the final project](https://github.com/SwiftStudies/Bork). If you extend and expand any part of this I'd love to see the results!
 
 --------
 
