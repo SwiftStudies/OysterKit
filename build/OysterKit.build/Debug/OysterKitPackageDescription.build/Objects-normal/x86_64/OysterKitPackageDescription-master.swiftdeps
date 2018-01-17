@@ -1,0 +1,5 @@
+version: "Apple Swift version 4.0.3 (swiftlang-900.0.74.1 clang-900.0.39.2)"
+options: "4f71a92117918bda38e840f85f07668f"
+build_time: [1516188421, 321199000]
+inputs:
+  "/Volumes/Personal/SPM/OysterKit/Package.swift": [1515953331, 0]
