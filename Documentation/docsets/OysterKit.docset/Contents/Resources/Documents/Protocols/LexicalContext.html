@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>LexicalContext Protocol Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Protocol/LexicalContext" class="dashAnchor"></a>
+    <a title="LexicalContext Protocol Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">OysterKit Docs</a> (21% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">OysterKit Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        LexicalContext Protocol Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/DebuggingDelegate.html">DebuggingDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DefaultHeterogenousConstructor.html">DefaultHeterogenousConstructor</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DefaultHomogenousAST.html">DefaultHomogenousAST</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ForwardingIR.html">ForwardingIR</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/HeterogenousAST.html">HeterogenousAST</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/HomogenousAST.html">HomogenousAST</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Lexer.html">Lexer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/NodeIterator.html">NodeIterator</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/NodeStack.html">NodeStack</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/NodeStackEntry.html">NodeStackEntry</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Parser.html">Parser</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RecursiveRule.html">RecursiveRule</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/STLRIntermediateRepresentation.html">STLRIntermediateRepresentation</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/STLRIntermediateRepresentation/Expression.html">– Expression</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/STLRIntermediateRepresentation/Modifier.html">– Modifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/STLRIntermediateRepresentation/Element.html">– Element</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/STLRIntermediateRepresentation/Identifier.html">– Identifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/STLRIntermediateRepresentation/ElementAnnotationInstance.html">– ElementAnnotationInstance</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/STLRIntermediateRepresentation/ElementAnnotationValue.html">– ElementAnnotationValue</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/STLRIntermediateRepresentation/TerminalCharacterSet.html">– TerminalCharacterSet</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/STLRIntermediateRepresentation/Terminal.html">– Terminal</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/STLRIntermediateRepresentation/Text.html">– Text</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/STLRIntermediateRepresentation/GrammarRule.html">– GrammarRule</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/STLRIntermediateRepresentation/ElementAnnotation.html">– ElementAnnotation</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/STLRParser.html">STLRParser</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/StateCache.html">StateCache</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/StreamConstructor.html">StreamConstructor</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/StreamRepresentation.html">StreamRepresentation</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/StringScanner.html">StringScanner</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/BackgroundTimer.html">BackgroundTimer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/GrammarError.html">GrammarError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/LanguageError.html">LanguageError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/MatchResult.html">MatchResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ParserRule.html">ParserRule</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/Platform.html">Platform</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/RuleAnnotation.html">RuleAnnotation</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/RuleAnnotationValue.html">RuleAnnotationValue</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ScannerRule.html">ScannerRule</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/Array.html">Array</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Array/Wrapper.html">– Wrapper</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/CharacterSet.html">CharacterSet</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Collection.html">Collection</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/DispatchTimeInterval.html">DispatchTimeInterval</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Int.html">Int</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/String.html">String</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/String/UnicodeScalarView.html">– UnicodeScalarView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/StringProtocol.html">StringProtocol</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/_ParsingDecoder.html">_ParsingDecoder</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Functions.html">Functions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:9OysterKit2eeoiSbAA30STLRIntermediateRepresentationC10IdentifierC_AFtF">==(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:9OysterKit2eeoiSbAA5Token_p_AaC_ptF">==(_:_:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/ASTNodeConstructor.html">ASTNodeConstructor</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/DecodeableNode.html">DecodeableNode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/HumanConsumableError.html">HumanConsumableError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/IRIndependantNode.html">IRIndependantNode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Language.html">Language</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/LexicalContext.html">LexicalContext</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Matcher.html">Matcher</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Node.html">Node</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Rule.html">Rule</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/STLRExpressionOptimizer.html">STLRExpressionOptimizer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols.html#/s:9OysterKit13STLROptimizerP">STLROptimizer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Token.html">Token</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ValuedNode.html">ValuedNode</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/CharacterSetOnlyChoiceOptimizer.html">CharacterSetOnlyChoiceOptimizer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/HeterogeneousNode.html">HeterogeneousNode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/HomogenousNode.html">HomogenousNode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/InlineIdentifierOptimization.html">InlineIdentifierOptimization</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ParsingDecoder.html">ParsingDecoder</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9OysterKit17CustomRuleClosurea">CustomRuleClosure</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>LexicalContext</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">LexicalContext</span></code></pre>
+
+                </div>
+              </div>
+            <p>A lexical context summarises the of a <code>String</code> being scanned by a <code><a href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a></code> between two marks. It is generated when the <code><a href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a></code> is advanced
+confirming that the last rule was essentially matched.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit14LexicalContextP5ranges5RangeVySS5IndexVGv"></a>
+                    <a name="//apple_ref/swift/Property/range" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit14LexicalContextP5ranges5RangeVySS5IndexVGv">range</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The range from the <code><a href="../Protocols/LexicalAnalyzer.html#/s:9OysterKit15LexicalAnalyzerP4markyyF">LexicalAnalyzer.mark()</a></code> to the point at which <code>LexicalAnalyzer.proceed()-&gt;LexicalContext</code> was called</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">range</span>         <span class="p">:</span> <span class="kt">Range</span><span class="o">&lt;</span><span class="kt">String</span><span class="o">.</span><span class="kt">UnicodeScalarView</span><span class="o">.</span><span class="kt">Index</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit14LexicalContextP6sourceSSv"></a>
+                    <a name="//apple_ref/swift/Property/source" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit14LexicalContextP6sourceSSv">source</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The string being scanned</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">source</span>        <span class="p">:</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit14LexicalContextP13matchedStringSSv"></a>
+                    <a name="//apple_ref/swift/Property/matchedString" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit14LexicalContextP13matchedStringSSv">matchedString</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The substring that was matched and is catpured by the <code><a href="../Protocols/LexicalContext.html#/s:9OysterKit14LexicalContextP5ranges5RangeVySS5IndexVGv">range</a></code></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">matchedString</span> <span class="p">:</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-01-17)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

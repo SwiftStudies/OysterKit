@@ -1,0 +1,2714 @@
+{
+  "warnings": [
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Decoding/Parsing Decoder.swift",
+      "line": null,
+      "symbol": "_ParsingDecoder",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Decoding/Parsing Decoder.swift",
+      "line": 13,
+      "symbol": "DecodeableNode",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Decoding/Parsing Decoder.swift",
+      "line": 14,
+      "symbol": "DecodeableNode.stringValue(source:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Decoding/Parsing Decoder.swift",
+      "line": 15,
+      "symbol": "DecodeableNode.key",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Decoding/Parsing Decoder.swift",
+      "line": 16,
+      "symbol": "DecodeableNode.contents",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Decoding/Parsing Decoder.swift",
+      "line": 46,
+      "symbol": "HeterogenousAST.stringValue(source:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Decoding/Parsing Decoder.swift",
+      "line": 50,
+      "symbol": "HeterogenousAST.key",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Decoding/Parsing Decoder.swift",
+      "line": 54,
+      "symbol": "HeterogenousAST.contents",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Decoding/Parsing Decoder.swift",
+      "line": 65,
+      "symbol": "HeterogeneousNode.contents",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Decoding/Parsing Decoder.swift",
+      "line": 69,
+      "symbol": "HeterogeneousNode.stringValue(source:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Decoding/Parsing Decoder.swift",
+      "line": 73,
+      "symbol": "HeterogeneousNode.key",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Decoding/Parsing Decoder.swift",
+      "line": 91,
+      "symbol": "ParsingDecoder",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Decoding/Parsing Decoder.swift",
+      "line": 93,
+      "symbol": "ParsingDecoder.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Decoding/Parsing Decoder.swift",
+      "line": 97,
+      "symbol": "ParsingDecoder.decode(_:from:with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Decoding/Parsing Decoder.swift",
+      "line": 1364,
+      "symbol": "HeterogeneousNode.children",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Errors/Errors.swift",
+      "line": 10,
+      "symbol": "GrammarError",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Errors/Errors.swift",
+      "line": 11,
+      "symbol": "GrammarError.notImplemented",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Errors/Errors.swift",
+      "line": 12,
+      "symbol": "GrammarError.noTokenCreatedFromMatch",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Errors/Errors.swift",
+      "line": 13,
+      "symbol": "GrammarError.matchFailed",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/BackgroundTimer.swift",
+      "line": 13,
+      "symbol": "BackgroundTimer",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/BackgroundTimer.swift",
+      "line": 16,
+      "symbol": "BackgroundTimer.schedule(interval:handler:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/BackgroundTimer.swift",
+      "line": 20,
+      "symbol": "BackgroundTimer.schedule(queue:interval:handler:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/BackgroundTimer.swift",
+      "line": 44,
+      "symbol": "DispatchTimeInterval.fromSeconds(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/DynamicParserGenerator.swift",
+      "line": 18,
+      "symbol": "STLRIntermediateRepresentation.runtimeLanguage",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/DynamicParserGenerator.swift",
+      "line": 136,
+      "symbol": "STLRIntermediateRepresentation.GrammarRule.rule(from:creating:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/DynamicParserGenerator.swift",
+      "line": 192,
+      "symbol": "STLRIntermediateRepresentation.Identifier.token",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/DynamicParserGenerator.swift",
+      "line": 196,
+      "symbol": "STLRIntermediateRepresentation.Identifier.rule(from:creating:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/DynamicParserGenerator.swift",
+      "line": 294,
+      "symbol": "STLRIntermediateRepresentation.Element.token",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/String Extensions.swift",
+      "line": 14,
+      "symbol": "String.UnicodeScalarView.length(of:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/String Extensions.swift",
+      "line": 22,
+      "symbol": "StringProtocol.tokenStream(with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/SwiftTypeExtensions.swift",
+      "line": 12,
+      "symbol": "String.until(token:annotations:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/SwiftTypeExtensions.swift",
+      "line": 16,
+      "symbol": "String.terminal(token:annotations:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/SwiftTypeExtensions.swift",
+      "line": 20,
+      "symbol": "String.consume(annotations:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/SwiftTypeExtensions.swift",
+      "line": 24,
+      "symbol": "String.dynamicRule(token:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/SwiftTypeExtensions.swift",
+      "line": 44,
+      "symbol": "CharacterSet.until(token:annotations:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/SwiftTypeExtensions.swift",
+      "line": 48,
+      "symbol": "CharacterSet.terminal(token:annotations:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/SwiftTypeExtensions.swift",
+      "line": 52,
+      "symbol": "CharacterSet.consume(greedily:annotations:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Lexical Analysis/Scanner.swift",
+      "line": 10,
+      "symbol": "StringScanner",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Lexical Analysis/Scanner.swift",
+      "line": 11,
+      "symbol": "StringScanner.string",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Lexical Analysis/Scanner.swift",
+      "line": 13,
+      "symbol": "StringScanner.scanLocation",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Lexical Analysis/Scanner.swift",
+      "line": 15,
+      "symbol": "StringScanner.isAtEnd",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Lexical Analysis/Scanner.swift",
+      "line": 19,
+      "symbol": "StringScanner.init(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Lexical Analysis/Scanner.swift",
+      "line": 41,
+      "symbol": "StringScanner.scanNext()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Lexical Analysis/Scanner.swift",
+      "line": 112,
+      "symbol": "StringScanner.scanUpTo(string:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Lexical Analysis/Scanner.swift",
+      "line": 148,
+      "symbol": "StringScanner.scan(string:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/DebuggingDelegate.swift",
+      "line": 11,
+      "symbol": "DebuggingDelegate",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/DebuggingDelegate.swift",
+      "line": 14,
+      "symbol": "DebuggingDelegate.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/DebuggingDelegate.swift",
+      "line": 22,
+      "symbol": "DebuggingDelegate.willBuildFrom(source:with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/DebuggingDelegate.swift",
+      "line": 26,
+      "symbol": "DebuggingDelegate.didBuild()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/DebuggingDelegate.swift",
+      "line": 29,
+      "symbol": "DebuggingDelegate.willEvaluate(rule:at:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/DebuggingDelegate.swift",
+      "line": 35,
+      "symbol": "DebuggingDelegate.didEvaluate(rule:matchResult:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/DebuggingDelegate.swift",
+      "line": 49,
+      "symbol": "DebuggingDelegate.resetState()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/ForkedIR.swift",
+      "line": 11,
+      "symbol": "ForwardingIR",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/ForkedIR.swift",
+      "line": 12,
+      "symbol": "ForwardingIR.primary",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/ForkedIR.swift",
+      "line": 13,
+      "symbol": "ForwardingIR.secondary",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/ForkedIR.swift",
+      "line": 15,
+      "symbol": "ForwardingIR.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/ForkedIR.swift",
+      "line": 19,
+      "symbol": "ForwardingIR.init(secondary:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/ForkedIR.swift",
+      "line": 24,
+      "symbol": "ForwardingIR.init(primary:secondary:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/ForkedIR.swift",
+      "line": 30,
+      "symbol": "ForwardingIR.willBuildFrom(source:with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/ForkedIR.swift",
+      "line": 35,
+      "symbol": "ForwardingIR.resetState()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/ForkedIR.swift",
+      "line": 40,
+      "symbol": "ForwardingIR.willEvaluate(rule:at:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/ForkedIR.swift",
+      "line": 53,
+      "symbol": "ForwardingIR.didEvaluate(rule:matchResult:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/ForkedIR.swift",
+      "line": 58,
+      "symbol": "ForwardingIR.didBuild()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HeterogenousAST.swift",
+      "line": null,
+      "symbol": "HeterogenousAST",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HeterogenousAST.swift",
+      "line": 11,
+      "symbol": "DefaultHeterogenousConstructor",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HeterogenousAST.swift",
+      "line": 14,
+      "symbol": "DefaultHeterogenousConstructor.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HeterogenousAST.swift",
+      "line": 18,
+      "symbol": "DefaultHeterogenousConstructor.begin(with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HeterogenousAST.swift",
+      "line": 22,
+      "symbol": "DefaultHeterogenousConstructor.match(token:annotations:context:children:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HeterogenousAST.swift",
+      "line": 41,
+      "symbol": "DefaultHeterogenousConstructor.ignoreableFailure(token:annotations:index:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HeterogenousAST.swift",
+      "line": 50,
+      "symbol": "DefaultHeterogenousConstructor.failed(token:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HeterogenousAST.swift",
+      "line": 54,
+      "symbol": "DefaultHeterogenousConstructor.complete(parsingErrors:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HeterogenousAST.swift",
+      "line": 61,
+      "symbol": "HeterogenousAST",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HeterogenousNode.swift",
+      "line": null,
+      "symbol": "HeterogeneousNode",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HeterogenousNode.swift",
+      "line": null,
+      "symbol": "HeterogeneousNode",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HeterogenousNode.swift",
+      "line": null,
+      "symbol": "ValuedNode",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HeterogenousNode.swift",
+      "line": 11,
+      "symbol": "ValuedNode",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HeterogenousNode.swift",
+      "line": 12,
+      "symbol": "ValuedNode.init(for:at:value:annotations:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HeterogenousNode.swift",
+      "line": 14,
+      "symbol": "ValuedNode.value",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HeterogenousNode.swift",
+      "line": 19,
+      "symbol": "ValuedNode.description",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HeterogenousNode.swift",
+      "line": 23,
+      "symbol": "ValuedNode.cast()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HeterogenousNode.swift",
+      "line": 79,
+      "symbol": "Collection.child(token:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HeterogenousNode.swift",
+      "line": 90,
+      "symbol": "HeterogeneousNode",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HeterogenousNode.swift",
+      "line": 92,
+      "symbol": "HeterogeneousNode.token",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HeterogenousNode.swift",
+      "line": 93,
+      "symbol": "HeterogeneousNode.range",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HeterogenousNode.swift",
+      "line": 94,
+      "symbol": "HeterogeneousNode.value",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HeterogenousNode.swift",
+      "line": 95,
+      "symbol": "HeterogeneousNode.annotations",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HeterogenousNode.swift",
+      "line": 97,
+      "symbol": "HeterogeneousNode.init(for:at:annotations:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HeterogenousNode.swift",
+      "line": 104,
+      "symbol": "HeterogeneousNode.init(for:at:value:annotations:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HomogenousAST.swift",
+      "line": 11,
+      "symbol": "ASTNodeConstructor",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HomogenousAST.swift",
+      "line": 14,
+      "symbol": "ASTNodeConstructor.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HomogenousAST.swift",
+      "line": 16,
+      "symbol": "ASTNodeConstructor.begin(with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HomogenousAST.swift",
+      "line": 18,
+      "symbol": "ASTNodeConstructor.match(token:annotations:context:children:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HomogenousAST.swift",
+      "line": 19,
+      "symbol": "ASTNodeConstructor.ignoreableFailure(token:annotations:index:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HomogenousAST.swift",
+      "line": 20,
+      "symbol": "ASTNodeConstructor.failed(token:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HomogenousAST.swift",
+      "line": 22,
+      "symbol": "ASTNodeConstructor.complete(parsingErrors:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HomogenousAST.swift",
+      "line": 72,
+      "symbol": "DefaultHomogenousAST",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HomogenousAST.swift",
+      "line": 73,
+      "symbol": "DefaultHomogenousAST.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HomogenousAST.swift",
+      "line": 78,
+      "symbol": "HomogenousAST",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HomogenousAST.swift",
+      "line": 82,
+      "symbol": "HomogenousAST.constructor",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HomogenousAST.swift",
+      "line": 84,
+      "symbol": "HomogenousAST.errors",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HomogenousAST.swift",
+      "line": 92,
+      "symbol": "HomogenousAST.tokens",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HomogenousAST.swift",
+      "line": 96,
+      "symbol": "HomogenousAST.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HomogenousAST.swift",
+      "line": 100,
+      "symbol": "HomogenousAST.init(constructor:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HomogenousAST.swift",
+      "line": 104,
+      "symbol": "HomogenousAST.resetState()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HomogenousAST.swift",
+      "line": 109,
+      "symbol": "HomogenousAST.willBuildFrom(source:with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HomogenousAST.swift",
+      "line": 115,
+      "symbol": "HomogenousAST.didBuild()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HomogenousAST.swift",
+      "line": 119,
+      "symbol": "HomogenousAST.willEvaluate(rule:at:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HomogenousAST.swift",
+      "line": 125,
+      "symbol": "HomogenousAST.didEvaluate(rule:matchResult:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HomogenousAST.swift",
+      "line": 184,
+      "symbol": "HomogenousAST.description",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HomogenousNode.swift",
+      "line": 11,
+      "symbol": "HomogenousNode",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HomogenousNode.swift",
+      "line": 12,
+      "symbol": "HomogenousNode.token",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HomogenousNode.swift",
+      "line": 13,
+      "symbol": "HomogenousNode.range",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HomogenousNode.swift",
+      "line": 14,
+      "symbol": "HomogenousNode.annotations",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HomogenousNode.swift",
+      "line": 16,
+      "symbol": "HomogenousNode.init(for:at:annotations:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HomogenousNode.swift",
+      "line": 29,
+      "symbol": "Node.matchedString(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HomogenousNode.swift",
+      "line": 33,
+      "symbol": "Node.matchedString(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/IntermediateRepresentation.swift",
+      "line": null,
+      "symbol": "Node",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/IntermediateRepresentation.swift",
+      "line": null,
+      "symbol": "Node",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/IntermediateRepresentation.swift",
+      "line": 11,
+      "symbol": "Node",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/IntermediateRepresentation.swift",
+      "line": 12,
+      "symbol": "Node.token",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/IntermediateRepresentation.swift",
+      "line": 13,
+      "symbol": "Node.range",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/IntermediateRepresentation.swift",
+      "line": 14,
+      "symbol": "Node.annotations",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/IntermediateRepresentation.swift",
+      "line": 16,
+      "symbol": "Node.init(for:at:annotations:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/IntermediateRepresentation.swift",
+      "line": 19,
+      "symbol": "IRIndependantNode",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/IntermediateRepresentation.swift",
+      "line": 20,
+      "symbol": "IRIndependantNode.setup(in:with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/IntermediateRepresentation.swift",
+      "line": 23,
+      "symbol": "IntermediateRepresentation",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/IntermediateRepresentation.swift",
+      "line": 24,
+      "symbol": "IntermediateRepresentation.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/IntermediateRepresentation.swift",
+      "line": 26,
+      "symbol": "IntermediateRepresentation.willEvaluate(rule:at:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/IntermediateRepresentation.swift",
+      "line": 27,
+      "symbol": "IntermediateRepresentation.didEvaluate(rule:matchResult:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/IntermediateRepresentation.swift",
+      "line": 29,
+      "symbol": "IntermediateRepresentation.willBuildFrom(source:with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/IntermediateRepresentation.swift",
+      "line": 30,
+      "symbol": "IntermediateRepresentation.didBuild()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/IntermediateRepresentation.swift",
+      "line": 32,
+      "symbol": "IntermediateRepresentation.resetState()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Language.swift",
+      "line": null,
+      "symbol": "Language",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Language.swift",
+      "line": null,
+      "symbol": "Language",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Language.swift",
+      "line": 11,
+      "symbol": "HumanConsumableError",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Language.swift",
+      "line": 12,
+      "symbol": "HumanConsumableError.message",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Language.swift",
+      "line": 13,
+      "symbol": "HumanConsumableError.range",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Language.swift",
+      "line": 16,
+      "symbol": "LanguageError",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Language.swift",
+      "line": 17,
+      "symbol": "LanguageError.scanningError",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Language.swift",
+      "line": 18,
+      "symbol": "LanguageError.parsingError",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Language.swift",
+      "line": 19,
+      "symbol": "LanguageError.semanticError",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Language.swift",
+      "line": 20,
+      "symbol": "LanguageError.warning",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Language.swift",
+      "line": 22,
+      "symbol": "LanguageError.range",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Language.swift",
+      "line": 29,
+      "symbol": "LanguageError.message",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Language.swift",
+      "line": 48,
+      "symbol": "Language",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Language.swift",
+      "line": 49,
+      "symbol": "Language.grammar",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Language.swift",
+      "line": 53,
+      "symbol": "Array.Wrapper",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Language.swift",
+      "line": 54,
+      "symbol": "Array.Wrapper.grammar",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Language.swift",
+      "line": 57,
+      "symbol": "Array.language",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Language.swift",
+      "line": 64,
+      "symbol": "Language.build(intermediateRepresentation:using:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Language.swift",
+      "line": 106,
+      "symbol": "Language.build(using:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Language.swift",
+      "line": 110,
+      "symbol": "Language.build(source:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/NodeStack.swift",
+      "line": 25,
+      "symbol": "NodeStackEntry",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/NodeStack.swift",
+      "line": 26,
+      "symbol": "NodeStackEntry.nodes",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/NodeStack.swift",
+      "line": 29,
+      "symbol": "NodeStackEntry.addError(error:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/NodeStack.swift",
+      "line": 40,
+      "symbol": "NodeStackEntry.addErrors(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/NodeStack.swift",
+      "line": 46,
+      "symbol": "NodeStackEntry.flushErrors()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/NodeStack.swift",
+      "line": 50,
+      "symbol": "NodeStackEntry.errors",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/NodeStack.swift",
+      "line": 54,
+      "symbol": "NodeStackEntry.append(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/NodeStack.swift",
+      "line": 58,
+      "symbol": "NodeStackEntry.adopt(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/NodeStack.swift",
+      "line": 67,
+      "symbol": "NodeStack",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/NodeStack.swift",
+      "line": 70,
+      "symbol": "NodeStack.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/NodeStack.swift",
+      "line": 74,
+      "symbol": "NodeStack.reset()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/NodeStack.swift",
+      "line": 79,
+      "symbol": "NodeStack.push()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/NodeStack.swift",
+      "line": 83,
+      "symbol": "NodeStack.pop()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/NodeStack.swift",
+      "line": 87,
+      "symbol": "NodeStack.top",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/NodeStack.swift",
+      "line": 91,
+      "symbol": "NodeStack.depth",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/NodeStack.swift",
+      "line": 95,
+      "symbol": "NodeStack.all",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Nodes.swift",
+      "line": 11,
+      "symbol": "Node.description",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Nodes.swift",
+      "line": 17,
+      "symbol": "Collection.combinedRange",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Parser.swift",
+      "line": 11,
+      "symbol": "Parser",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Parser.swift",
+      "line": 12,
+      "symbol": "Parser.grammar",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Parser.swift",
+      "line": 14,
+      "symbol": "Parser.init(grammar:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/StateCache.swift",
+      "line": 60,
+      "symbol": "StateCache",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/StateCache.swift",
+      "line": 67,
+      "symbol": "StateCache.init(memorySize:breadth:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/StateCache.swift",
+      "line": 74,
+      "symbol": "StateCache.remember(at:key:value:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/StateCache.swift",
+      "line": 82,
+      "symbol": "StateCache.recall(at:key:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Stream.swift",
+      "line": 12,
+      "symbol": "Language.stream(lexer:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Stream.swift",
+      "line": 15,
+      "symbol": "Language.stream(source:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Stream.swift",
+      "line": 22,
+      "symbol": "StreamConstructor",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Stream.swift",
+      "line": 24,
+      "symbol": "StreamConstructor.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Stream.swift",
+      "line": 28,
+      "symbol": "StreamConstructor.begin(with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Stream.swift",
+      "line": 32,
+      "symbol": "StreamConstructor.match(token:annotations:context:children:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Stream.swift",
+      "line": 36,
+      "symbol": "StreamConstructor.failed(token:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Stream.swift",
+      "line": 40,
+      "symbol": "StreamConstructor.ignoreableFailure(token:annotations:index:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Stream.swift",
+      "line": 48,
+      "symbol": "StreamConstructor.complete(parsingErrors:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Stream.swift",
+      "line": 53,
+      "symbol": "NodeIterator",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Stream.swift",
+      "line": 62,
+      "symbol": "NodeIterator.parsingErrors",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Stream.swift",
+      "line": 109,
+      "symbol": "NodeIterator.endOfInput",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Stream.swift",
+      "line": 114,
+      "symbol": "StreamRepresentation",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Stream.swift",
+      "line": 120,
+      "symbol": "StreamRepresentation.init(source:language:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Matching.swift",
+      "line": 14,
+      "symbol": "Matcher.match(from:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/ParserRules.swift",
+      "line": 31,
+      "symbol": "ParserRule",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/ParserRules.swift",
+      "line": 33,
+      "symbol": "ParserRule.failureIgnorable",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/ParserRules.swift",
+      "line": 44,
+      "symbol": "ParserRule.isNot",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/ParserRules.swift",
+      "line": 52,
+      "symbol": "ParserRule.match(with:for:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/ParserRules.swift",
+      "line": 266,
+      "symbol": "ParserRule.produces",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/ParserRules.swift",
+      "line": 293,
+      "symbol": "ParserRule.annotations",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/ParserRules.swift",
+      "line": 407,
+      "symbol": "ParserRule.not",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/ParserRules.swift",
+      "line": 409,
+      "symbol": "ParserRule.custom",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/RecursiveRule.swift",
+      "line": 11,
+      "symbol": "RecursiveRule",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/RecursiveRule.swift",
+      "line": 14,
+      "symbol": "RecursiveRule.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/RecursiveRule.swift",
+      "line": 18,
+      "symbol": "RecursiveRule.init(initializeWith:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/RecursiveRule.swift",
+      "line": 33,
+      "symbol": "RecursiveRule.surrogateRule",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/RecursiveRule.swift",
+      "line": 47,
+      "symbol": "RecursiveRule.match(with:for:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/RecursiveRule.swift",
+      "line": 55,
+      "symbol": "RecursiveRule.produces",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/RecursiveRule.swift",
+      "line": 69,
+      "symbol": "RecursiveRule.annotations",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": null,
+      "symbol": "Rule",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": null,
+      "symbol": "Rule",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": null,
+      "symbol": "Token",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": null,
+      "symbol": "Token",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": 20,
+      "symbol": "Token",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": 21,
+      "symbol": "Token.rawValue",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": 25,
+      "symbol": "String.rawValue",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": 31,
+      "symbol": "Int.rawValue",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": 38,
+      "symbol": "Token.from(oneOf:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": 42,
+      "symbol": "Token.consume(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": 46,
+      "symbol": "Token.consumeGreedily(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": 50,
+      "symbol": "Token.oneOrMore(of:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": 65,
+      "symbol": "MatchResult",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": 66,
+      "symbol": "MatchResult.success",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": 67,
+      "symbol": "MatchResult.consume",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": 68,
+      "symbol": "MatchResult.ignoreFailure",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": 69,
+      "symbol": "MatchResult.failure",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": 84,
+      "symbol": "MatchResult.matchedString",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": 94,
+      "symbol": "RuleAnnotationValue",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": 95,
+      "symbol": "RuleAnnotationValue.string",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": 96,
+      "symbol": "RuleAnnotationValue.bool",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": 97,
+      "symbol": "RuleAnnotationValue.int",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": 98,
+      "symbol": "RuleAnnotationValue.set",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": 114,
+      "symbol": "RuleAnnotation",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": 115,
+      "symbol": "RuleAnnotation.token",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": 116,
+      "symbol": "RuleAnnotation.error",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": 117,
+      "symbol": "RuleAnnotation.void",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": 118,
+      "symbol": "RuleAnnotation.transient",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": 119,
+      "symbol": "RuleAnnotation.pinned",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": 121,
+      "symbol": "RuleAnnotation.custom",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": 162,
+      "symbol": "Collection.merge(with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": 171,
+      "symbol": "Collection.stlrDescription",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": 185,
+      "symbol": "Rule",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": 186,
+      "symbol": "Rule.match(with:for:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": 187,
+      "symbol": "Rule.produces",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": 189,
+      "symbol": "Rule.annotations",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": 194,
+      "symbol": "Rule.error",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": 206,
+      "symbol": "Rule.void",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": 221,
+      "symbol": "Rule.transient",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": 246,
+      "symbol": "==(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.free",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/Rule.swift",
+      "line": 251,
+      "symbol": "Token.transient",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/RuleExtensions.swift",
+      "line": 15,
+      "symbol": "Rule.consume(annotations:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/RuleExtensions.swift",
+      "line": 19,
+      "symbol": "Rule.lookahead(annotations:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/RuleExtensions.swift",
+      "line": 24,
+      "symbol": "Rule.optional(annotations:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/RuleExtensions.swift",
+      "line": 28,
+      "symbol": "Rule.not(annotations:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/RuleExtensions.swift",
+      "line": 32,
+      "symbol": "Rule.not(producing:annotations:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/RuleExtensions.swift",
+      "line": 37,
+      "symbol": "Rule.repeated(min:limit:producing:annotations:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/RuleExtensions.swift",
+      "line": 41,
+      "symbol": "Rule.optional(producing:annotations:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/RuleExtensions.swift",
+      "line": 47,
+      "symbol": "Collection.sequence(token:annotations:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/RuleExtensions.swift",
+      "line": 51,
+      "symbol": "Collection.oneOf(token:annotations:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/ScannerRules.swift",
+      "line": 16,
+      "symbol": "ScannerRule",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/ScannerRules.swift",
+      "line": 18,
+      "symbol": "ScannerRule.oneOf",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/ScannerRules.swift",
+      "line": 20,
+      "symbol": "ScannerRule.match(with:for:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/ScannerRules.swift",
+      "line": 70,
+      "symbol": "ScannerRule.produces",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Rules/ScannerRules.swift",
+      "line": 90,
+      "symbol": "ScannerRule.annotations",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/Generators/SwiftGenerator.swift",
+      "line": 37,
+      "symbol": "Platform",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/Generators/SwiftGenerator.swift",
+      "line": 38,
+      "symbol": "Platform.foundation",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/Generators/SwiftGenerator.swift",
+      "line": 38,
+      "symbol": "Platform.iOS",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/Generators/SwiftGenerator.swift",
+      "line": 38,
+      "symbol": "Platform.macOS",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/Generators/SwiftGenerator.swift",
+      "line": 74,
+      "symbol": "STLRIntermediateRepresentation.swift(grammar:platform:colors:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/Optimisers/CharacterSetOnlyChoiceOptimizer.swift",
+      "line": 42,
+      "symbol": "CharacterSetOnlyChoiceOptimizer",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/Optimisers/CharacterSetOnlyChoiceOptimizer.swift",
+      "line": 49,
+      "symbol": "CharacterSetOnlyChoiceOptimizer.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/Optimisers/CharacterSetOnlyChoiceOptimizer.swift",
+      "line": 139,
+      "symbol": "CharacterSetOnlyChoiceOptimizer.optimize(expression:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/Optimisers/InlineIdentifierOptimizer.swift",
+      "line": 11,
+      "symbol": "InlineIdentifierOptimization",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/Optimisers/InlineIdentifierOptimizer.swift",
+      "line": 18,
+      "symbol": "InlineIdentifierOptimization.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/Optimisers/InlineIdentifierOptimizer.swift",
+      "line": 57,
+      "symbol": "InlineIdentifierOptimization.optimize(expression:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Constructor.swift",
+      "line": 14,
+      "symbol": "STLRIntermediateRepresentation.begin(with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Constructor.swift",
+      "line": 31,
+      "symbol": "STLRIntermediateRepresentation.match(token:annotations:context:children:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Constructor.swift",
+      "line": 305,
+      "symbol": "STLRIntermediateRepresentation.failed(token:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Constructor.swift",
+      "line": 309,
+      "symbol": "STLRIntermediateRepresentation.ignoreableFailure(token:annotations:index:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Constructor.swift",
+      "line": 317,
+      "symbol": "STLRIntermediateRepresentation.complete(parsingErrors:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": null,
+      "symbol": "STLRIntermediateRepresentation",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": null,
+      "symbol": "STLRIntermediateRepresentation",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": null,
+      "symbol": "STLRIntermediateRepresentation",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": null,
+      "symbol": "STLRIntermediateRepresentation",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": null,
+      "symbol": "STLRIntermediateRepresentation",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": null,
+      "symbol": "STLRIntermediateRepresentation",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": null,
+      "symbol": "STLRIntermediateRepresentation.Element",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": null,
+      "symbol": "STLRIntermediateRepresentation.ElementAnnotation",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": null,
+      "symbol": "STLRIntermediateRepresentation.GrammarRule",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": null,
+      "symbol": "STLRIntermediateRepresentation.Identifier",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 11,
+      "symbol": "STLRIntermediateRepresentation",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 13,
+      "symbol": "STLRIntermediateRepresentation.Expression",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 15,
+      "symbol": "STLRIntermediateRepresentation.Expression.element",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 16,
+      "symbol": "STLRIntermediateRepresentation.Expression.sequence",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 17,
+      "symbol": "STLRIntermediateRepresentation.Expression.choice",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 18,
+      "symbol": "STLRIntermediateRepresentation.Expression.group",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 39,
+      "symbol": "STLRIntermediateRepresentation.Expression.firstToken(_:context:searchStack:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 57,
+      "symbol": "STLRIntermediateRepresentation.Expression.references(_:context:searchStack:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 86,
+      "symbol": "STLRIntermediateRepresentation.Expression.scannable",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 106,
+      "symbol": "STLRIntermediateRepresentation.Modifier",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 107,
+      "symbol": "STLRIntermediateRepresentation.Modifier.one",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 108,
+      "symbol": "STLRIntermediateRepresentation.Modifier.zeroOrOne",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 109,
+      "symbol": "STLRIntermediateRepresentation.Modifier.zeroOrMore",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 110,
+      "symbol": "STLRIntermediateRepresentation.Modifier.oneOrMore",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 111,
+      "symbol": "STLRIntermediateRepresentation.Modifier.not",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 112,
+      "symbol": "STLRIntermediateRepresentation.Modifier.consume",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 114,
+      "symbol": "STLRIntermediateRepresentation.Modifier.isOne",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 121,
+      "symbol": "STLRIntermediateRepresentation.Modifier.isZeroOrOne",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 128,
+      "symbol": "STLRIntermediateRepresentation.Modifier.isZeroOrMore",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 135,
+      "symbol": "STLRIntermediateRepresentation.Modifier.isOneOrMore",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 142,
+      "symbol": "STLRIntermediateRepresentation.Modifier.isNot",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 149,
+      "symbol": "STLRIntermediateRepresentation.Modifier.isConsume",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 157,
+      "symbol": "STLRIntermediateRepresentation.Modifier.init(from:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 225,
+      "symbol": "STLRIntermediateRepresentation.Modifier.rule(appliedTo:producing:quantifiersAnnotations:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 244,
+      "symbol": "STLRIntermediateRepresentation.Element",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 245,
+      "symbol": "STLRIntermediateRepresentation.Element.terminal",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 246,
+      "symbol": "STLRIntermediateRepresentation.Element.identifier",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 247,
+      "symbol": "STLRIntermediateRepresentation.Element.group",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 261,
+      "symbol": "STLRIntermediateRepresentation.Element.setLookahead(lookahead:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 272,
+      "symbol": "STLRIntermediateRepresentation.Element.quantifierAnnotations",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 286,
+      "symbol": "STLRIntermediateRepresentation.Element.elementAnnotations",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 308,
+      "symbol": "STLRIntermediateRepresentation.Element.quantifier",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 338,
+      "symbol": "STLRIntermediateRepresentation.Element.stlrDescription",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 343,
+      "symbol": "STLRIntermediateRepresentation.Element.scannable",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 368,
+      "symbol": "STLRIntermediateRepresentation.Element.references(_:context:searchStack:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 387,
+      "symbol": "STLRIntermediateRepresentation.Identifier",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 388,
+      "symbol": "STLRIntermediateRepresentation.Identifier.name",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 389,
+      "symbol": "STLRIntermediateRepresentation.Identifier.rawValue",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 390,
+      "symbol": "STLRIntermediateRepresentation.Identifier.annotations",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 394,
+      "symbol": "STLRIntermediateRepresentation.Identifier.init(name:rawValue:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 400,
+      "symbol": "STLRIntermediateRepresentation.Identifier.stlrReference",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 416,
+      "symbol": "STLRIntermediateRepresentation.ElementAnnotationInstance",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 417,
+      "symbol": "STLRIntermediateRepresentation.ElementAnnotationInstance.annotation",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 418,
+      "symbol": "STLRIntermediateRepresentation.ElementAnnotationInstance.value",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 428,
+      "symbol": "STLRIntermediateRepresentation.ElementAnnotationInstance.init(_:value:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 433,
+      "symbol": "STLRIntermediateRepresentation.ElementAnnotationInstance.init(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 440,
+      "symbol": "STLRIntermediateRepresentation.ElementAnnotationValue",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 441,
+      "symbol": "STLRIntermediateRepresentation.ElementAnnotationValue.bool",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 441,
+      "symbol": "STLRIntermediateRepresentation.ElementAnnotationValue.int",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 441,
+      "symbol": "STLRIntermediateRepresentation.ElementAnnotationValue.set",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 441,
+      "symbol": "STLRIntermediateRepresentation.ElementAnnotationValue.string",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 456,
+      "symbol": "STLRIntermediateRepresentation.ElementAnnotationValue.ruleValue",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 474,
+      "symbol": "STLRIntermediateRepresentation.TerminalCharacterSet",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 475,
+      "symbol": "STLRIntermediateRepresentation.TerminalCharacterSet.whitespaces",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 476,
+      "symbol": "STLRIntermediateRepresentation.TerminalCharacterSet.newlines",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 477,
+      "symbol": "STLRIntermediateRepresentation.TerminalCharacterSet.whitespacesAndNewlines",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 478,
+      "symbol": "STLRIntermediateRepresentation.TerminalCharacterSet.decimalDigits",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 479,
+      "symbol": "STLRIntermediateRepresentation.TerminalCharacterSet.alphanumerics",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 480,
+      "symbol": "STLRIntermediateRepresentation.TerminalCharacterSet.letters",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 481,
+      "symbol": "STLRIntermediateRepresentation.TerminalCharacterSet.uppercaseLetters",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 482,
+      "symbol": "STLRIntermediateRepresentation.TerminalCharacterSet.lowercaseLetters",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 483,
+      "symbol": "STLRIntermediateRepresentation.TerminalCharacterSet.customRange",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 484,
+      "symbol": "STLRIntermediateRepresentation.TerminalCharacterSet.multipleSets",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 485,
+      "symbol": "STLRIntermediateRepresentation.TerminalCharacterSet.customString",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 487,
+      "symbol": "STLRIntermediateRepresentation.TerminalCharacterSet.init(rawValue:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 560,
+      "symbol": "STLRIntermediateRepresentation.Terminal",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 568,
+      "symbol": "STLRIntermediateRepresentation.Terminal.init(with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 573,
+      "symbol": "STLRIntermediateRepresentation.Terminal.init(with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 591,
+      "symbol": "STLRIntermediateRepresentation.Text",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 594,
+      "symbol": "STLRIntermediateRepresentation.Text.init(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 604,
+      "symbol": "STLRIntermediateRepresentation.GrammarRule",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 605,
+      "symbol": "STLRIntermediateRepresentation.GrammarRule.identifier",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 660,
+      "symbol": "STLRIntermediateRepresentation.GrammarRule.validate()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 701,
+      "symbol": "STLRIntermediateRepresentation.GrammarRule.leftHandRecursive",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 708,
+      "symbol": "STLRIntermediateRepresentation.GrammarRule.directLeftHandRecursive",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 716,
+      "symbol": "STLRIntermediateRepresentation.build(from:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 774,
+      "symbol": "STLRIntermediateRepresentation.rules",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 775,
+      "symbol": "STLRIntermediateRepresentation.errors",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 776,
+      "symbol": "STLRIntermediateRepresentation.identifiers",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 789,
+      "symbol": "STLRIntermediateRepresentation.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 795,
+      "symbol": "==(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.free",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 802,
+      "symbol": "Collection.asRuleAnnotations",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 810,
+      "symbol": "Collection.stlrDescription",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 816,
+      "symbol": "Collection.isSet(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 830,
+      "symbol": "Collection.remove(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 847,
+      "symbol": "Collection.merge(with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Data Model.swift",
+      "line": 874,
+      "symbol": "STLRIntermediateRepresentation.ElementAnnotation.init(rawValue:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Optimization.swift",
+      "line": 12,
+      "symbol": "STLRIntermediateRepresentation.optimize()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Validation.swift",
+      "line": 12,
+      "symbol": "STLRIntermediateRepresentation.validate()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLR Validation.swift",
+      "line": 36,
+      "symbol": "STLRIntermediateRepresentation.validate(parsingErrors:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLROptimizers.swift",
+      "line": 12,
+      "symbol": "STLROptimizer",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLROptimizers.swift",
+      "line": 16,
+      "symbol": "STLRExpressionOptimizer",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLROptimizers.swift",
+      "line": 17,
+      "symbol": "STLRExpressionOptimizer.optimize(expression:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLROptimizers.swift",
+      "line": 23,
+      "symbol": "STLRIntermediateRepresentation.register(optimizer:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLROptimizers.swift",
+      "line": 27,
+      "symbol": "STLRIntermediateRepresentation.removeAllOptimizations()",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLRParser.swift",
+      "line": 11,
+      "symbol": "STLRParser",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLRParser.swift",
+      "line": 12,
+      "symbol": "STLRParser.ast",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLRParser.swift",
+      "line": 14,
+      "symbol": "STLRParser.init(source:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLRParser.swift",
+      "line": 30,
+      "symbol": "STLRParser.compiled",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Volumes/Personal/SPM/OysterKit"
+}
