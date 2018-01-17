@@ -20,4 +20,4 @@ For those that used v1.0 there are significant performance and capability benefi
 ## Status
 
   - All tests are passing
-  - Some example products will be added shortly to provide some concrete usage examples
+  - Public API Documentation Progress: **22%**
