@@ -1,9 +1,26 @@
+//    Copyright (c) 2016, RED When Excited
+//    All rights reserved.
 //
-//  Rule.swift
-//  OysterKit
+//    Redistribution and use in source and binary forms, with or without
+//    modification, are permitted provided that the following conditions are met:
 //
-//  Copyright © 2016 RED When Excited. All rights reserved.
+//    * Redistributions of source code must retain the above copyright notice, this
+//    list of conditions and the following disclaimer.
 //
+//    * Redistributions in binary form must reproduce the above copyright notice,
+//    this list of conditions and the following disclaimer in the documentation
+//    and/or other materials provided with the distribution.
+//
+//    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+//    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+//    IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+//    DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+//    FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+//    DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+//    SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+//    CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+//    OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+//    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Foundation
 
@@ -25,11 +42,22 @@ private struct EmptyLexicalContext : LexicalContext {
     }
 }
 
-///: Should throw on failure, true if the token should be passed false if it should be consumed
+/**
+ A closure that captures all the required behaviour for rule evaluation (but not the parser logic surrounding it. If the rule
+ is not satisfied an `Error` should be thrown. The return value simply indicates wether or not a token should be created.
+ 
+ - Parameter lexer: The `LexcicalAnalyzer` to user for scanning
+ - Returns: Wether or not a token should be created, so`true` if the rule was satisfied and a token should be created, `false` if it was satisfied but a token should not be created
+ */
 public typealias CustomRuleClosure = (_ lexer:LexicalAnalyzer) throws -> Bool
 
+/**
+ A standard set of `Rule`s for parsing, including a `.custom` case where a `CustomRuleClosure` can be supplied and you only need to provide
+ the logic for the actual matching (and any error messages).
+ */
 public indirect enum ParserRule : Rule, CustomStringConvertible{
     
+    /// `true` if a failure to match this rule can be ignored
     public var failureIgnorable : Bool {
         switch self {
         case .optional:
@@ -41,6 +69,7 @@ public indirect enum ParserRule : Rule, CustomStringConvertible{
         }
     }
     
+    /// Returns `true` if this rule is a negation rule
     public var isNot : Bool {
         if case .not = self {
             return true
@@ -49,6 +78,13 @@ public indirect enum ParserRule : Rule, CustomStringConvertible{
         }
     }
     
+    /**
+     Performs the actual match check during parsing based on the specific case of `ParserRule` that this instance is.
+    
+     - Parameter with: The `LexicalAnalyzer` providing the scanning functions
+     - Parameter for: The `IntermediateRepresentation` that wil be building any data structures required for subsequent interpretation of the parsing results
+     - Returns: The match result (see `Rule` for full documentation on the behviour of a `Rule`)
+    */
     public func match(with lexer : LexicalAnalyzer, `for` ir:IntermediateRepresentation) throws -> MatchResult {
         var matchResult = MatchResult.failure(atIndex: lexer.index)
         let endOfInput = lexer.endOfInput
@@ -290,6 +326,7 @@ public indirect enum ParserRule : Rule, CustomStringConvertible{
         }
     }
     
+    /// The annotations associated with the `Rule`
     public var annotations: RuleAnnotations{
         get {
             let definedAnnotations : RuleAnnotations?
@@ -330,6 +367,7 @@ public indirect enum ParserRule : Rule, CustomStringConvertible{
         }
     }
     
+    /// A human readable description of the `Rule` almost in STLR
     public var description: String{
         let ruleType : String
 
@@ -404,25 +442,38 @@ public indirect enum ParserRule : Rule, CustomStringConvertible{
     /// Determines if the rule would match, but produces no tokens
     case lookahead(Rule, RuleAnnotations?)
     
+    /// Matches if the associated `Rule` does NOT match
     case not(produces: Token, Rule, RuleAnnotations?)
     
+    /// Matches using the supplied `CustomRuleClosure`. This is the recommended way of implementing custom rules as it means you do not need
+    /// to manage the lexer and ir
     case custom(produces: Token, CustomRuleClosure,String, RuleAnnotations?)
 }
 
+/**
+ A dummy `IntermediateRepresentation` used for lookahead evaluation instead of the standard IR so that the lookahead as no impact on the IR
+ */
 final private class LookAheadIR : IntermediateRepresentation{
+    
+    /// Does nothing
+    /// Returns: `nil`
     final fileprivate func willEvaluate(rule: Rule, at position: String.UnicodeScalarView.Index) -> MatchResult? {
         return nil
     }
     
+    /// Does nothing
     final fileprivate func didEvaluate(rule: Rule, matchResult: MatchResult) {
     }
     
+    /// Does nothing
     final fileprivate func willBuildFrom(source: String, with: Language) {
     }
     
+    /// Does nothing
     final fileprivate func didBuild() {
     }
     
+    /// Does nothing
     func resetState() {
     }
 }

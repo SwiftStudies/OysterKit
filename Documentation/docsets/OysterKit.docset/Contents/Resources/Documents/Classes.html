@@ -13,7 +13,7 @@
     <a title="Classes  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">OysterKit Docs</a> (58% documented)</p>
+        <p><a href="index.html">OysterKit Docs</a> (73% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -268,6 +268,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="Typealiases.html#/s:9OysterKit23DefaultHeterogeneousASTa">DefaultHeterogeneousAST</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a>
               </li>
             </ul>
           </li>
@@ -816,7 +819,7 @@ be created directly but are supplied from the <code>stream()</code> functions of
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>When a rule definition calls itself whilst evaluating itself (left hand recursion) you cannot create the rule directly as it will become caught in an infinite look (creating instances of itself, which create instances of itself etc until the stack is empty).  To avoid this a rule can use this wrapper to manage lazy initialization of itself. The recursive rule enables a reference to be added on the RHS, but the actual rule will not be initiialized until later, and this wrapper will then call that lazily initalized rule.</p>
 
                         <a href="Classes/RecursiveRule.html" class="slightly-smaller">See more</a>
                       </div>

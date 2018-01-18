@@ -13,7 +13,7 @@
     <a title="Type Aliases  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">OysterKit Docs</a> (58% documented)</p>
+        <p><a href="index.html">OysterKit Docs</a> (73% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -269,6 +269,9 @@
               <li class="nav-group-task">
                 <a href="Typealiases.html#/s:9OysterKit23DefaultHeterogeneousASTa">DefaultHeterogeneousAST</a>
               </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a>
+              </li>
             </ul>
           </li>
         </ul>
@@ -327,7 +330,8 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>: Should throw on failure, true if the token should be passed false if it should be consumed</p>
+                        <p>A closure that captures all the required behaviour for rule evaluation (but not the parser logic surrounding it. If the rule
+is not satisfied an <code>Error</code> should be thrown. The return value simply indicates wether or not a token should be created.</p>
 
                       </div>
                       <div class="declaration">
@@ -335,6 +339,60 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">CustomRuleClosure</span> <span class="o">=</span> <span class="p">(</span><span class="n">_</span> <span class="nv">lexer</span><span class="p">:</span><span class="kt"><a href="Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>lexer</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>LexcicalAnalyzer</code> to user for scanning</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Wether or not a token should be created, so<code>true</code> if the rule was satisfied and a token should be created, <code>false</code> if it was satisfied but a token should not be created</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit15RuleAnnotationsa"></a>
+                    <a name="//apple_ref/swift/Alias/RuleAnnotations" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A dictionary of annotations and their values</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">RuleAnnotations</span> <span class="o">=</span> <span class="p">[</span><span class="kt"><a href="Enums/RuleAnnotation.html">RuleAnnotation</a></span> <span class="p">:</span> <span class="kt"><a href="Enums/RuleAnnotationValue.html">RuleAnnotationValue</a></span><span class="p">]</span></code></pre>
 
                         </div>
                       </div>

@@ -13,7 +13,7 @@
     <a title="Protocols  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">OysterKit Docs</a> (58% documented)</p>
+        <p><a href="index.html">OysterKit Docs</a> (73% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -268,6 +268,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="Typealiases.html#/s:9OysterKit23DefaultHeterogeneousASTa">DefaultHeterogeneousAST</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a>
               </li>
             </ul>
           </li>
@@ -627,7 +630,7 @@ fails or succeeds</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p><code>Token</code>s are generated when rules are matched (usually, sometime a rule just advances the scan-head). Tokens with a <code>rawValue</code> of -1 are considered transient, meaning that they should not be included in any construction of an AST. However, they may provide context to the AST.</p>
 
                         <a href="Protocols/Token.html" class="slightly-smaller">See more</a>
                       </div>
@@ -655,7 +658,7 @@ fails or succeeds</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The protocol that parsing and scanning rules must adhere to. There is no need to fully implement this protocol unless you are looking for bespoke <code><a href="Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a></code> or <code><a href="Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></code> control. It is recommended to use <code><a href="Enums/ParserRule.html#/s:9OysterKit10ParserRuleO6customAcA5Token_p8produces_SbAA15LexicalAnalyzer_pKcSSs10DictionaryVyAA0D10AnnotationOAA0dK5ValueOGSgtcACmF">ParserRule.custom</a></code> in almost all cases.</p>
 
                         <a href="Protocols/Rule.html" class="slightly-smaller">See more</a>
                       </div>

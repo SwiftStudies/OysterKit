@@ -13,7 +13,7 @@
     <a title="Enumerations  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">OysterKit Docs</a> (58% documented)</p>
+        <p><a href="index.html">OysterKit Docs</a> (73% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -269,6 +269,9 @@
               <li class="nav-group-task">
                 <a href="Typealiases.html#/s:9OysterKit23DefaultHeterogeneousASTa">DefaultHeterogeneousAST</a>
               </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a>
+              </li>
             </ul>
           </li>
         </ul>
@@ -393,7 +396,8 @@ in the background.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>A standard set of <code><a href="Protocols/Rule.html">Rule</a></code>s for parsing, including a <code>.custom</code> case where a <code><a href="Typealiases.html#/s:9OysterKit17CustomRuleClosurea">CustomRuleClosure</a></code> can be supplied and you only need to provide
+the logic for the actual matching (and any error messages).</p>
 
                         <a href="Enums/ParserRule.html" class="slightly-smaller">See more</a>
                       </div>
@@ -425,7 +429,8 @@ in the background.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Match results are passed from <code><a href="Protocols/Rule.html">Rule</a></code>s to <code>IntermediateRepresentations</code> and provide all information required to create an AST or even begin
+interpretting the results of the match.</p>
 
                         <a href="Enums/MatchResult.html" class="slightly-smaller">See more</a>
                       </div>
@@ -453,7 +458,7 @@ in the background.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Represents the value for a rule annotation</p>
 
                         <a href="Enums/RuleAnnotationValue.html" class="slightly-smaller">See more</a>
                       </div>
@@ -481,7 +486,15 @@ in the background.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>An annotation that can be associated with any rule influencing how matches are interpretted and providing additional data about the token. The following annotations represent <q>reserved words</q>, but otherwise you can define any annotations you want.</p>
+
+<ul>
+<li><code>.token</code> Override the token to be created when the rule is matched (ignoring the <code><a href="Protocols/Rule.html">Rule</a></code>&lsquo;s <code>produces</code> property</li>
+<li>&rsquo;.error<code>A specific error message to generate if the</code>Rule` is not satisfied</li>
+<li>&lsquo;.void&rsquo; The match should be completely ignored. This is not a failure but rather a consumption</li>
+<li>&lsquo;.transient&rsquo; The match should be made and a <code><a href="Protocols/Node.html">Node</a></code> could be created but this token is not significant for the AST</li>
+<li>&lsquo;.pinned&rsquo; The token should be created with no value even if the <code><a href="Protocols/Rule.html">Rule</a></code> is not matched in an ignorable failure</li>
+</ul>
 
                         <a href="Enums/RuleAnnotation.html" class="slightly-smaller">See more</a>
                       </div>
@@ -513,7 +526,7 @@ in the background.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>A set of low level rules that operate only on terminals. These are much faster than <code>ParserRules</code></p>
 
                         <a href="Enums/ScannerRule.html" class="slightly-smaller">See more</a>
                       </div>

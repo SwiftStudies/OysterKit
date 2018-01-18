@@ -14,7 +14,7 @@
     <a title="Rule Protocol Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">OysterKit Docs</a> (58% documented)</p>
+        <p><a href="../index.html">OysterKit Docs</a> (73% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -270,6 +270,9 @@
               <li class="nav-group-task">
                 <a href="../Typealiases.html#/s:9OysterKit23DefaultHeterogeneousASTa">DefaultHeterogeneousAST</a>
               </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a>
+              </li>
             </ul>
           </li>
         </ul>
@@ -284,7 +287,7 @@
 
                 </div>
               </div>
-            <p>Undocumented</p>
+            <p>The protocol that parsing and scanning rules must adhere to. There is no need to fully implement this protocol unless you are looking for bespoke <code><a href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a></code> or <code><a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></code> control. It is recommended to use <code><a href="../Enums/ParserRule.html#/s:9OysterKit10ParserRuleO6customAcA5Token_p8produces_SbAA15LexicalAnalyzer_pKcSSs10DictionaryVyAA0D10AnnotationOAA0dK5ValueOGSgtcACmF">ParserRule.custom</a></code> in almost all cases.</p>
 
           </section>
           <section class="section task-group-section">
@@ -303,7 +306,21 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Should perform the actual check and manage the communicaion with the supplied <code>IntermedidateRepresentation</code>. If the match fails, and that failure cannot
+ be ignored an <code>Error</code> should be thrown. It is the responsiblity of the implementer to ensure the following basic pattern is followed</p>
+<pre class="highlight swift"><code><span class="mi">1</span><span class="o">.</span> <span class="err">`</span><span class="n">ir</span><span class="o">.</span><span class="nf">willEvaluate</span><span class="p">()</span><span class="err">`</span> <span class="k">is</span> <span class="n">called</span> <span class="n">to</span> <span class="n">inform</span> <span class="n">the</span> <span class="p">`</span><span class="nv">ir</span><span class="p">`</span> <span class="n">that</span> <span class="n">evaluation</span> <span class="k">is</span> <span class="n">beginning</span><span class="o">.</span> <span class="kt">If</span> <span class="n">the</span> <span class="p">`</span><span class="nv">ir</span><span class="p">`</span> <span class="n">returns</span> <span class="n">an</span> <span class="n">existing</span> <span class="n">match</span> <span class="n">result</span> <span class="n">that</span> <span class="n">should</span> <span class="n">be</span> <span class="nf">used</span> <span class="p">(</span><span class="n">proceed</span> <span class="n">to</span> <span class="n">step</span> <span class="kt">XXX</span><span class="p">)</span>
+<span class="mi">2</span><span class="o">.</span> <span class="err">`</span><span class="n">lexer</span><span class="o">.</span><span class="nf">mark</span><span class="p">()</span><span class="err">`</span> <span class="n">should</span> <span class="n">be</span> <span class="n">called</span> <span class="n">so</span> <span class="n">that</span> <span class="n">an</span> <span class="n">accurate</span> <span class="p">`</span><span class="nv">LexicalContext</span><span class="p">`</span> <span class="n">can</span> <span class="n">be</span> <span class="n">generated</span><span class="o">.</span>
+<span class="mi">3</span><span class="o">.</span> <span class="kt">Perform</span> <span class="n">apply</span> <span class="n">your</span> <span class="n">rule</span> <span class="n">using</span> <span class="p">`</span><span class="nv">lexer</span><span class="p">`</span><span class="o">.</span>
+<span class="mi">4</span><span class="o">.</span> <span class="kt">Depending</span> <span class="n">on</span> <span class="n">the</span> <span class="n">outcome</span><span class="p">,</span> <span class="n">and</span> <span class="n">the</span> <span class="n">to</span><span class="o">-</span><span class="n">be</span><span class="o">-</span><span class="n">generated</span> <span class="nv">token</span><span class="p">:</span>
+    <span class="o">-</span> <span class="kt">If</span> <span class="n">the</span> <span class="n">rule</span> <span class="n">was</span> <span class="n">satisfied</span><span class="p">,</span> <span class="k">return</span> <span class="n">a</span> <span class="err">`</span><span class="kt">MatchResult</span><span class="o">.</span><span class="n">success</span><span class="err">`</span> <span class="n">together</span> <span class="n">with</span> <span class="n">a</span> <span class="n">generated</span> <span class="err">`</span><span class="n">lexer</span><span class="o">.</span><span class="nf">proceed</span><span class="p">()</span><span class="err">`</span> <span class="n">generated</span> <span class="n">context</span>
+    <span class="o">-</span> <span class="kt">If</span> <span class="n">the</span> <span class="n">rule</span> <span class="n">was</span> <span class="n">satisfied</span><span class="p">,</span> <span class="n">but</span> <span class="n">the</span> <span class="n">result</span> <span class="n">should</span> <span class="n">be</span> <span class="nf">consumed</span> <span class="p">(</span><span class="n">no</span> <span class="n">node</span><span class="o">/</span><span class="n">token</span> <span class="n">created</span><span class="p">,</span> <span class="n">but</span> <span class="n">scanning</span> <span class="n">should</span> <span class="n">proceed</span> <span class="n">after</span> <span class="n">the</span> <span class="n">match</span><span class="p">)</span> <span class="k">return</span> <span class="err">`</span><span class="kt">MatchResult</span><span class="o">.</span><span class="n">consume</span><span class="err">`</span> <span class="n">with</span> <span class="n">a</span> <span class="n">generated</span> <span class="err">`</span><span class="n">lexer</span><span class="o">.</span><span class="nf">proceed</span><span class="p">()</span><span class="err">`</span> <span class="n">context</span>
+    <span class="o">-</span> <span class="kt">If</span> <span class="n">the</span> <span class="n">rule</span> <span class="n">was</span> <span class="n">_not_</span> <span class="n">satisfied</span> <span class="n">but</span> <span class="n">the</span> <span class="n">failure</span> <span class="n">can</span> <span class="n">be</span> <span class="n">ignored</span> <span class="k">return</span> <span class="err">`</span><span class="kt">MatchResult</span><span class="o">.</span><span class="n">ignoreFailure</span><span class="err">`</span><span class="o">.</span> <span class="kt">Depending</span> <span class="n">on</span> <span class="n">your</span> <span class="n">grammar</span> <span class="n">you</span> <span class="o">*</span><span class="n">may</span><span class="o">*</span> <span class="n">want</span> <span class="n">to</span> <span class="n">leave</span> <span class="n">the</span> <span class="n">scanner</span> <span class="k">in</span> <span class="n">the</span> <span class="n">same</span> <span class="n">position</span> <span class="k">in</span> <span class="n">which</span> <span class="k">case</span> <span class="n">issue</span> <span class="n">a</span> <span class="err">`</span><span class="n">lexer</span><span class="o">.</span><span class="nf">proceed</span><span class="p">()</span><span class="err">`</span> <span class="n">but</span> <span class="n">discard</span> <span class="n">the</span> <span class="n">result</span><span class="o">.</span> <span class="kt">Otherwise</span> <span class="n">issue</span> <span class="n">a</span> <span class="err">`</span><span class="n">lexer</span><span class="o">.</span><span class="nf">rewind</span><span class="p">()</span><span class="err">`</span><span class="o">.</span>
+    <span class="o">-</span> <span class="kt">If</span> <span class="n">the</span> <span class="n">rule</span> <span class="n">was</span> <span class="n">_not_</span> <span class="n">satisfied</span> <span class="n">but</span> <span class="n">the</span> <span class="n">failure</span> <span class="n">should</span> <span class="n">not</span> <span class="n">be</span> <span class="n">ignored</span><span class="o">.</span> <span class="kt">Call</span> <span class="err">`</span><span class="n">lexer</span><span class="o">.</span><span class="nf">rewind</span><span class="p">()</span><span class="err">`</span> <span class="n">and</span> <span class="k">return</span> <span class="n">a</span> <span class="err">`</span><span class="kt">MatchResult</span><span class="o">.</span><span class="n">failure</span><span class="err">`</span>
+    <span class="o">-</span> <span class="kt">If</span> <span class="n">the</span> <span class="n">rule</span> <span class="n">was</span> <span class="n">_not_</span> <span class="n">satisifed</span> <span class="n">and</span> <span class="n">parsing</span> <span class="n">of</span> <span class="n">this</span> <span class="n">branch</span> <span class="n">of</span> <span class="n">the</span> <span class="n">grammar</span> <span class="n">should</span> <span class="n">stop</span> <span class="n">immediately</span> <span class="k">throw</span> <span class="n">an</span> <span class="p">`</span><span class="nv">Error</span><span class="p">`</span>
+</code></pre>
+
+<p>For standard implementations of rules that should satisfy almost every grammar see <code><a href="../Enums/ParserRule.html">ParserRule</a></code> and <code><a href="../Enums/ScannerRule.html">ScannerRule</a></code>. <code><a href="../Enums/ParserRule.html">ParserRule</a></code> has a custom case which
+ provides all of the logic above with the exception of actual matching which is a lot simpler, and it is recommended that you use that if you wish to provide your own rules.</p>
 
                       </div>
                       <div class="declaration">
@@ -313,6 +330,41 @@
                           <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">match</span><span class="p">(</span><span class="n">with</span> <span class="nv">lexer</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a></span><span class="p">,</span> <span class="p">`</span><span class="nv">for</span><span class="p">`</span> <span class="nv">ir</span><span class="p">:</span><span class="kt"><a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Enums/MatchResult.html">MatchResult</a></span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>with</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code><a href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a></code> providing the scanning functions</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>for</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code><a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></code> that wil be building any data structures required for subsequent interpretation of the parsing results</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The match result.</p>
                       </div>
                     </section>
                   </div>
@@ -330,7 +382,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The token produced by this rule</p>
 
                       </div>
                       <div class="declaration">
@@ -357,14 +409,49 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The annotations on this rule</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">var</span>  <span class="nv">annotations</span> <span class="p">:</span> <span class="kt">RuleAnnotations</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">var</span>  <span class="nv">annotations</span> <span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit4RuleP9subscriptAA0C15AnnotationValueOSgAA0cE0Oci"></a>
+                    <a name="//apple_ref/swift/Method/subscript(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit4RuleP9subscriptAA0C15AnnotationValueOSgAA0cE0Oci">subscript(_:)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns the value of the specific <code><a href="../Enums/RuleAnnotationValue.html">RuleAnnotationValue</a></code> identified by <code>annotation</code> if present</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        <p>Returns the value of the specific <code>RuleAnnotationValue</code> identified by <code>annotation</code> if present</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="nf">subscript</span><span class="p">(</span><span class="nv">annotation</span><span class="p">:</span><span class="kt"><a href="../Enums/RuleAnnotation.html">RuleAnnotation</a></span><span class="p">)</span><span class="o">-&gt;</span><span class="nf">RuleAnnotationValue</span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -391,7 +478,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The user specified (in an annotation) error associated with the rule</p>
 
                       </div>
                       <div class="declaration">
@@ -421,7 +508,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Is this rule marked as void?</p>
 
                       </div>
                       <div class="declaration">
@@ -451,7 +538,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Is this rule marked as transient</p>
 
                       </div>
                       <div class="declaration">
@@ -485,16 +572,35 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Creates a new rule which is the same as this rule except that it consumes rather than generating tokens</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">consume</span><span class="p">(</span><span class="nv">annotations</span><span class="p">:</span><span class="kt">RuleAnnotations</span><span class="p">?</span><span class="o">=</span><span class="kc">nil</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">Rule</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">consume</span><span class="p">(</span><span class="nv">annotations</span><span class="p">:</span><span class="kt"><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></span><span class="p">?</span><span class="o">=</span><span class="kc">nil</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">Rule</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>annotations</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional annotations on the generated rule</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -515,16 +621,35 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Create a new rule wrapping the supplied rule which looks ahead rather than directly applying the rule</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">lookahead</span><span class="p">(</span><span class="nv">annotations</span><span class="p">:</span><span class="kt">RuleAnnotations</span><span class="p">?</span><span class="o">=</span><span class="kc">nil</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">Rule</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">lookahead</span><span class="p">(</span><span class="nv">annotations</span><span class="p">:</span><span class="kt"><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></span><span class="p">?</span><span class="o">=</span><span class="kc">nil</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">Rule</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>annotations</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional annotations on the generated rule</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -545,16 +670,35 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Creates a new rule making this rule optional</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">optional</span><span class="p">(</span><span class="nv">annotations</span><span class="p">:</span><span class="kt">RuleAnnotations</span><span class="p">?</span><span class="o">=</span><span class="kc">nil</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">Rule</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">optional</span><span class="p">(</span><span class="nv">annotations</span><span class="p">:</span><span class="kt"><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></span><span class="p">?</span><span class="o">=</span><span class="kc">nil</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">Rule</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>annotations</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional annotations on the generated rule</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -575,16 +719,35 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Creates a new rule making this rule logical inverse (that is, everything that didn&rsquo;t match it now does and vice versa)(</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">not</span><span class="p">(</span><span class="nv">annotations</span><span class="p">:</span><span class="kt">RuleAnnotations</span><span class="p">?</span><span class="o">=</span><span class="kc">nil</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">Rule</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">not</span><span class="p">(</span><span class="nv">annotations</span><span class="p">:</span><span class="kt"><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></span><span class="p">?</span><span class="o">=</span><span class="kc">nil</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">Rule</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>annotations</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional annotations on the generated rule</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -605,16 +768,47 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Creates a new rule making this rule logical inverse (that is, everything that didn&rsquo;t match it now does and vice versa) and changing the token that is produced by the rule</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">not</span><span class="p">(</span><span class="n">producing</span> <span class="nv">token</span><span class="p">:</span><span class="kt"><a href="../Protocols/Token.html">Token</a></span><span class="p">,</span> <span class="nv">annotations</span><span class="p">:</span><span class="kt">RuleAnnotations</span><span class="p">?</span><span class="o">=</span><span class="kc">nil</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">Rule</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">not</span><span class="p">(</span><span class="n">producing</span> <span class="nv">token</span><span class="p">:</span><span class="kt"><a href="../Protocols/Token.html">Token</a></span><span class="p">,</span> <span class="nv">annotations</span><span class="p">:</span><span class="kt"><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></span><span class="p">?</span><span class="o">=</span><span class="kc">nil</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">Rule</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>annotations</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional annotations on the generated rule</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>token</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The token the new rule should produce</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -635,16 +829,71 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Creates a new rule wrapping this rule and requiring that it is repeated as specified</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">repeated</span><span class="p">(</span><span class="nv">min</span><span class="p">:</span><span class="kt">Int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="nv">limit</span><span class="p">:</span><span class="kt">Int</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="n">producing</span> <span class="nv">token</span><span class="p">:</span><span class="kt"><a href="../Protocols/Token.html">Token</a></span><span class="p">?</span>  <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">annotations</span><span class="p">:</span><span class="kt">RuleAnnotations</span><span class="p">?</span><span class="o">=</span><span class="kc">nil</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">Rule</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">repeated</span><span class="p">(</span><span class="nv">min</span><span class="p">:</span><span class="kt">Int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="nv">limit</span><span class="p">:</span><span class="kt">Int</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="n">producing</span> <span class="nv">token</span><span class="p">:</span><span class="kt"><a href="../Protocols/Token.html">Token</a></span><span class="p">?</span>  <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">annotations</span><span class="p">:</span><span class="kt"><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></span><span class="p">?</span><span class="o">=</span><span class="kc">nil</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">Rule</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>annotations</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional annotations on the generated rule</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>min</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The minimum number of matches of the matched rule to be satisfied</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>limit</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The maxium number of matches before evaluation stops</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>producing</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An alternative token to produce. If <code>nil</code> the wrapped rule&rsquo;s token will be used</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -665,16 +914,47 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Creates a new rule wrapping this rule making it optional</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">optional</span><span class="p">(</span><span class="n">producing</span> <span class="nv">token</span><span class="p">:</span><span class="kt"><a href="../Protocols/Token.html">Token</a></span><span class="p">,</span><span class="nv">annotations</span><span class="p">:</span><span class="kt">RuleAnnotations</span><span class="p">?</span><span class="o">=</span><span class="kc">nil</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">Rule</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">optional</span><span class="p">(</span><span class="n">producing</span> <span class="nv">token</span><span class="p">:</span><span class="kt"><a href="../Protocols/Token.html">Token</a></span><span class="p">,</span><span class="nv">annotations</span><span class="p">:</span><span class="kt"><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></span><span class="p">?</span><span class="o">=</span><span class="kc">nil</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">Rule</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>annotations</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional annotations on the generated rule</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>producing</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An alternative token to produce. If <code>nil</code> the wrapped rule&rsquo;s token will be used</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>

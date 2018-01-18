@@ -14,7 +14,7 @@
     <a title="Collection Extension Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">OysterKit Docs</a> (58% documented)</p>
+        <p><a href="../index.html">OysterKit Docs</a> (73% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -270,6 +270,9 @@
               <li class="nav-group-task">
                 <a href="../Typealiases.html#/s:9OysterKit23DefaultHeterogeneousASTa">DefaultHeterogeneousAST</a>
               </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a>
+              </li>
             </ul>
           </li>
         </ul>
@@ -423,16 +426,36 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Creates a new collection of RuleAnnotations where the merged annotations override those in
+this object</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">merge</span><span class="p">(</span><span class="n">with</span> <span class="nv">incoming</span><span class="p">:</span><span class="kt">RuleAnnotations</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">RuleAnnotations</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">merge</span><span class="p">(</span><span class="n">with</span> <span class="nv">incoming</span><span class="p">:</span><span class="kt"><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></span><span class="p">)</span><span class="o">-&gt;</span><span class="kt"><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>with</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The annotations which will add to or override those already in the dictionary</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -450,7 +473,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>A description in STLR format of the <code><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></code></p>
 
                       </div>
                       <div class="declaration">
@@ -481,16 +504,47 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Creates a new rule that requires that all rules in this array are found one after another.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">sequence</span><span class="p">(</span><span class="nv">token</span><span class="p">:</span><span class="kt"><a href="../Protocols/Token.html">Token</a></span><span class="p">,</span><span class="nv">annotations</span><span class="p">:</span><span class="kt">RuleAnnotations</span><span class="p">?</span><span class="o">=</span><span class="kc">nil</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt"><a href="../Protocols/Rule.html">Rule</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">sequence</span><span class="p">(</span><span class="nv">token</span><span class="p">:</span><span class="kt"><a href="../Protocols/Token.html">Token</a></span><span class="p">,</span><span class="nv">annotations</span><span class="p">:</span><span class="kt"><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></span><span class="p">?</span><span class="o">=</span><span class="kc">nil</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt"><a href="../Protocols/Rule.html">Rule</a></span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>token</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The token that should be produced</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>annotations</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Any annotations to the rule</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -508,16 +562,47 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Creates a new rule that requires one of all the rules in this array must be matched.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">oneOf</span><span class="p">(</span><span class="nv">token</span><span class="p">:</span><span class="kt"><a href="../Protocols/Token.html">Token</a></span><span class="p">,</span><span class="nv">annotations</span><span class="p">:</span><span class="kt">RuleAnnotations</span><span class="p">?</span><span class="o">=</span><span class="kc">nil</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt"><a href="../Protocols/Rule.html">Rule</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">oneOf</span><span class="p">(</span><span class="nv">token</span><span class="p">:</span><span class="kt"><a href="../Protocols/Token.html">Token</a></span><span class="p">,</span><span class="nv">annotations</span><span class="p">:</span><span class="kt"><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></span><span class="p">?</span><span class="o">=</span><span class="kc">nil</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt"><a href="../Protocols/Rule.html">Rule</a></span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>token</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The token that should be produced</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>annotations</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Any annotations to the rule</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -546,7 +631,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">asRuleAnnotations</span> <span class="p">:</span> <span class="kt">RuleAnnotations</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">asRuleAnnotations</span> <span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></span></code></pre>
 
                         </div>
                       </div>

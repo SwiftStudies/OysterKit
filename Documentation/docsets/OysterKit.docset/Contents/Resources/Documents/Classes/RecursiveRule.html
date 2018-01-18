@@ -14,7 +14,7 @@
     <a title="RecursiveRule Class Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">OysterKit Docs</a> (58% documented)</p>
+        <p><a href="../index.html">OysterKit Docs</a> (73% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -270,6 +270,9 @@
               <li class="nav-group-task">
                 <a href="../Typealiases.html#/s:9OysterKit23DefaultHeterogeneousASTa">DefaultHeterogeneousAST</a>
               </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a>
+              </li>
             </ul>
           </li>
         </ul>
@@ -284,7 +287,7 @@
 
                 </div>
               </div>
-            <p>Undocumented</p>
+            <p>When a rule definition calls itself whilst evaluating itself (left hand recursion) you cannot create the rule directly as it will become caught in an infinite look (creating instances of itself, which create instances of itself etc until the stack is empty).  To avoid this a rule can use this wrapper to manage lazy initialization of itself. The recursive rule enables a reference to be added on the RHS, but the actual rule will not be initiialized until later, and this wrapper will then call that lazily initalized rule.</p>
 
           </section>
           <section class="section task-group-section">
@@ -303,7 +306,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Creates a new instance of the rule. If you use this initializer then you should subsequently (when possible) set <code><a href="../Classes/RecursiveRule.html#/s:9OysterKit13RecursiveRuleC09surrogateD0AA0D0_pSgv">surrogateRule</a></code></p>
 
                       </div>
                       <div class="declaration">
@@ -330,7 +333,9 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Creates a new instance providing a closure which will create the actual rule when the rule is first used</p>
+
+<p>Parameters initializeWith: The closure to be used once it is safe to do so</p>
 
                       </div>
                       <div class="declaration">
@@ -357,7 +362,8 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Always appears to be <code>nil</code> when read, but when set applies the matcher methods etc from the supplied rule to this so that the <code>RecursiveRule</code> behaves
+exactly like the original rule.</p>
 
                       </div>
                       <div class="declaration">
@@ -384,7 +390,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Delegated to the the surrogate rule</p>
 
                       </div>
                       <div class="declaration">
@@ -411,7 +417,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Delegated to the the surrogate rule</p>
 
                       </div>
                       <div class="declaration">
@@ -438,14 +444,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Delegated to the the surrogate rule</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">annotations</span><span class="p">:</span> <span class="kt">RuleAnnotations</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">annotations</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></span></code></pre>
 
                         </div>
                       </div>

@@ -14,7 +14,7 @@
     <a title="RuleAnnotation Enumeration Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">OysterKit Docs</a> (58% documented)</p>
+        <p><a href="../index.html">OysterKit Docs</a> (73% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -270,6 +270,9 @@
               <li class="nav-group-task">
                 <a href="../Typealiases.html#/s:9OysterKit23DefaultHeterogeneousASTa">DefaultHeterogeneousAST</a>
               </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a>
+              </li>
             </ul>
           </li>
         </ul>
@@ -284,7 +287,15 @@
 
                 </div>
               </div>
-            <p>Undocumented</p>
+            <p>An annotation that can be associated with any rule influencing how matches are interpretted and providing additional data about the token. The following annotations represent <q>reserved words</q>, but otherwise you can define any annotations you want.</p>
+
+<ul>
+<li><code>.token</code> Override the token to be created when the rule is matched (ignoring the <code><a href="../Protocols/Rule.html">Rule</a></code>&lsquo;s <code>produces</code> property</li>
+<li>&rsquo;.error<code>A specific error message to generate if the</code>Rule` is not satisfied</li>
+<li>&lsquo;.void&rsquo; The match should be completely ignored. This is not a failure but rather a consumption</li>
+<li>&lsquo;.transient&rsquo; The match should be made and a <code><a href="../Protocols/Node.html">Node</a></code> could be created but this token is not significant for the AST</li>
+<li>&lsquo;.pinned&rsquo; The token should be created with no value even if the <code><a href="../Protocols/Rule.html">Rule</a></code> is not matched in an ignorable failure</li>
+</ul>
 
           </section>
           <section class="section task-group-section">
@@ -303,14 +314,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Token to be created when the rule is matched</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">token</span> <span class="c1">//Token to be created when the rule is matched</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">token</span></code></pre>
 
                         </div>
                       </div>
@@ -334,14 +345,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>An error to be generated when the rule is not matched</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">error</span> <span class="c1">//An error to be generated when the rule is not matched</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">error</span></code></pre>
 
                         </div>
                       </div>
@@ -365,14 +376,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Matches will be completely discarded (no node, no adoption of children by parent)</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">void</span>  <span class="c1">//Matches will be completely discarded (no node, no adoption of children by parent)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">void</span></code></pre>
 
                         </div>
                       </div>
@@ -396,14 +407,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Token will not be preserved in the AST but it&rsquo;s children should be adopted by the parent node</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">transient</span> <span class="c1">//Token will not be preserved in the AST but it's children should be adopted by the parent node</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">transient</span></code></pre>
 
                         </div>
                       </div>
@@ -427,14 +438,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Nodes will be created for failed optional matches</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">pinned</span> <span class="c1">//Nodes will be created for failed optional matches</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">pinned</span></code></pre>
 
                         </div>
                       </div>
@@ -458,7 +469,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>A custom developer defined annotation that your own AST will interpret</p>
 
                       </div>
                       <div class="declaration">
@@ -505,9 +516,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:s9EquatableP2eeoiSbx_xtFZ"></a>
+                    <a name="/s:9OysterKit14RuleAnnotationO2eeoiSbAC_ACtFZ"></a>
                     <a name="//apple_ref/swift/Method/==(_:_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:s9EquatableP2eeoiSbx_xtFZ">==(_:_:)</a>
+                    <a class="token" href="#/s:9OysterKit14RuleAnnotationO2eeoiSbAC_ACtFZ">==(_:_:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -515,7 +526,8 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        
+                        <p>Compares two annotations for equality (not values, but keys)</p>
+
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
@@ -525,15 +537,50 @@
 
                         </div>
                       </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>lhs</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The first annotation</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>rhs</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The second annotation</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p><code>true</code> if the annotations are the same, <code>false</code> otherwise.</p>
+                      </div>
                     </section>
                   </div>
                 </li>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:s23CustomStringConvertibleP11descriptionSSv"></a>
+                    <a name="/s:9OysterKit14RuleAnnotationO11descriptionSSv"></a>
                     <a name="//apple_ref/swift/Property/description" class="dashAnchor"></a>
-                    <a class="token" href="#/s:s23CustomStringConvertibleP11descriptionSSv">description</a>
+                    <a class="token" href="#/s:9OysterKit14RuleAnnotationO11descriptionSSv">description</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -541,7 +588,8 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        
+                        <p>A human readable description of the annotation</p>
+
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
