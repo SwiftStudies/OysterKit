@@ -14,7 +14,7 @@
     <a title="HomogenousAST Class Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">OysterKit Docs</a> (21% documented)</p>
+        <p><a href="../index.html">OysterKit Docs</a> (58% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -158,9 +158,6 @@
                 <a href="../Extensions/Array.html">Array</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Extensions/Array/Wrapper.html">– Wrapper</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Extensions/CharacterSet.html">CharacterSet</a>
               </li>
               <li class="nav-group-task">
@@ -208,9 +205,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Protocols/HumanConsumableError.html">HumanConsumableError</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/IRIndependantNode.html">IRIndependantNode</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a>
@@ -273,6 +267,9 @@
               <li class="nav-group-task">
                 <a href="../Typealiases.html#/s:9OysterKit17CustomRuleClosurea">CustomRuleClosure</a>
               </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9OysterKit23DefaultHeterogeneousASTa">DefaultHeterogeneousAST</a>
+              </li>
             </ul>
           </li>
         </ul>
@@ -287,7 +284,10 @@
 
                 </div>
               </div>
-            <p>Undocumented</p>
+            <p>HomogenousAST is an <code>InternalRepresenation</code> which uses an instance of <code><a href="../Protocols/ASTNodeConstructor.html">ASTNodeConstructor</a></code> to build its AST. Each node
+is off the same type.</p>
+
+<p>-SeeAlso: DefaultHomogenousAST<a href="NodeType:Node">NodeType:Node</a> which provides a default implementation using <code>DefaultConstructor&lt;NodeType:Node&gt;</code></p>
 
           </section>
           <section class="section task-group-section">
@@ -306,7 +306,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The constructor used to create <code><a href="../Protocols/Node.html">Node</a></code>s of <code>NodeType</code></p>
 
                       </div>
                       <div class="declaration">
@@ -333,7 +333,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The errors generated during parsing</p>
 
                       </div>
                       <div class="declaration">
@@ -360,7 +360,8 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The top-level children of the AST
+SeeAlso: <code>tokens</code></p>
 
                       </div>
                       <div class="declaration">
@@ -387,7 +388,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Creates a new instance</p>
 
                       </div>
                       <div class="declaration">
@@ -414,7 +415,9 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Creates a new instance with the supplied <code>Constructor</code></p>
+
+<p>-Parameters constructor: A preinitialized constructor</p>
 
                       </div>
                       <div class="declaration">
@@ -441,7 +444,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Completely resets the state of the AST removing all generated structure and errors</p>
 
                       </div>
                       <div class="declaration">
@@ -468,7 +471,10 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Resets the state of the AST and signals to the constructor that parsing is about to begin</p>
+
+<p>-Parameter source: The <code>String</code> to be parsed.
+-Parameter with: The <code><a href="../Protocols/Language.html">Language</a></code> to be used to parse with.</p>
 
                       </div>
                       <div class="declaration">
@@ -495,7 +501,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Errors generated captured during parsing are passed to the <code>ASTNodeConstructuro</code> for processing and made available through the <code><a href="../Classes/HomogenousAST.html#/s:9OysterKit13HomogenousASTC6errorsSays5Error_pGv">errors</a></code> property.</p>
 
                       </div>
                       <div class="declaration">
@@ -522,7 +528,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Adds a new context to the node stack</p>
 
                       </div>
                       <div class="declaration">
@@ -532,6 +538,41 @@
                           <pre class="highlight swift"><code><span class="kd">final</span> <span class="kd">public</span> <span class="kd">func</span> <span class="nf">willEvaluate</span><span class="p">(</span><span class="nv">rule</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Rule.html">Rule</a></span><span class="p">,</span> <span class="n">at</span> <span class="nv">position</span><span class="p">:</span><span class="kt">String</span><span class="o">.</span><span class="kt">UnicodeScalarView</span><span class="o">.</span><span class="kt">Index</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt"><a href="../Enums/MatchResult.html">MatchResult</a></span><span class="p">?</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>rule</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code><a href="../Protocols/Rule.html">Rule</a></code> that will be evaluated</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>at</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The position in the source of the scan-head</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A pre-existing <code><a href="../Enums/MatchResult.html">MatchResult</a></code> if known for this rule at this position, or <code>nil</code> if evaluation should proceed</p>
                       </div>
                     </section>
                   </div>
@@ -549,7 +590,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Based on <code>matchResult</code> it will pop the topmost item from the nodeStack (gathering all children) and then:</p>
+
+<ul>
+<li><code>.success</code>: If the rule is <code>void</code> (see @void annotation) no action will be taken. Otherwise if the token is not transient (see @transient) and the <code><a href="../Protocols/ASTNodeConstructor.html">ASTNodeConstructor</a></code> returns a new Node that node will be added to children of the new top of the node stack. If no <code><a href="../Protocols/Node.html">Node</a></code> is created or the <code>token</code> is @transient the new top of the node stack will adopt the children of the previous top (hoisting)</li>
+<li><code>.ignoreFailure</code>: If this constructor creates a node (for example because the token is @pin&rsquo;d) the new node is added to the children of the nodestack top. Otherwise the children are adopted by the current node stack top.</li>
+<li><code>.failure</code>: If existing <code><a href="../Enums/LanguageError.html">LanguageError</a></code>s then they are flushed and the new <code>ParsingError</code> is appended to the <code><a href="../Classes/HomogenousAST.html#/s:9OysterKit13HomogenousASTC6errorsSays5Error_pGv">errors</a></code> for the AST. The <code>ASTConstructor.failure()</code> is called.</li>
+<li><p><code>.consume</code>: Nothing is done</p></li>
+</ul>
 
                       </div>
                       <div class="declaration">
@@ -559,6 +607,37 @@
                           <pre class="highlight swift"><code><span class="kd">final</span> <span class="kd">public</span> <span class="kd">func</span> <span class="nf">didEvaluate</span><span class="p">(</span><span class="nv">rule</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Rule.html">Rule</a></span><span class="p">,</span> <span class="nv">matchResult</span><span class="p">:</span> <span class="kt"><a href="../Enums/MatchResult.html">MatchResult</a></span><span class="p">)</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>rule</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code><a href="../Protocols/Rule.html">Rule</a></code> that has been evaluated</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>matchResult</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The result of the evaluation</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -576,7 +655,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Provides a human readable description of the AST</p>
 
                       </div>
                       <div class="declaration">
@@ -595,7 +674,7 @@
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-01-17)</p>
+          <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-01-18)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

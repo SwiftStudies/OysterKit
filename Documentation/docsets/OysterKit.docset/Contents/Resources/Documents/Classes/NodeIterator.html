@@ -14,7 +14,7 @@
     <a title="NodeIterator Class Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">OysterKit Docs</a> (21% documented)</p>
+        <p><a href="../index.html">OysterKit Docs</a> (58% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -158,9 +158,6 @@
                 <a href="../Extensions/Array.html">Array</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Extensions/Array/Wrapper.html">– Wrapper</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Extensions/CharacterSet.html">CharacterSet</a>
               </li>
               <li class="nav-group-task">
@@ -208,9 +205,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Protocols/HumanConsumableError.html">HumanConsumableError</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/IRIndependantNode.html">IRIndependantNode</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a>
@@ -273,6 +267,9 @@
               <li class="nav-group-task">
                 <a href="../Typealiases.html#/s:9OysterKit17CustomRuleClosurea">CustomRuleClosure</a>
               </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9OysterKit23DefaultHeterogeneousASTa">DefaultHeterogeneousAST</a>
+              </li>
             </ul>
           </li>
         </ul>
@@ -287,12 +284,67 @@
 
                 </div>
               </div>
-            <p>Undocumented</p>
+            <p>A lazy iterator that parses for the next <code><a href="../Protocols/Token.html">Token</a></code> each time the consumer of the <code>IteratorProtocol</code> requests the <code>next()</code> entry. These cannot
+be created directly but are supplied from the <code>stream()</code> functions of a <code><a href="../Protocols/Language.html">Language</a></code></p>
 
           </section>
           <section class="section task-group-section">
             <div class="task-group">
               <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit12NodeIteratorC7Elementa"></a>
+                    <a name="//apple_ref/swift/Alias/Element" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit12NodeIteratorC7Elementa">Element</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Elements are always <code><a href="../Protocols/Node.html">Node</a></code>s</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">Element</span> <span class="o">=</span> <span class="kt">N</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit12NodeIteratorC11Constructora"></a>
+                    <a name="//apple_ref/swift/Alias/Constructor" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit12NodeIteratorC11Constructora">Constructor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Uses the HomogenousAST to create it with the <code><a href="../Classes/StreamConstructor.html">StreamConstructor</a></code> provided as a lighter weight constructor</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">Constructor</span> <span class="o">=</span> <span class="kt"><a href="../Classes/HomogenousAST.html">HomogenousAST</a></span><span class="o">&lt;</span><span class="kt">N</span><span class="p">,</span><span class="kt"><a href="../Classes/StreamConstructor.html">StreamConstructor</a></span><span class="o">&lt;</span><span class="kt">N</span><span class="o">&gt;&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
                 <li class="item">
                   <div>
                     <code>
@@ -306,7 +358,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The errors generated during parsing</p>
 
                       </div>
                       <div class="declaration">
@@ -323,9 +375,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:s16IteratorProtocolP4next7ElementQzSgyF"></a>
+                    <a name="/s:9OysterKit12NodeIteratorC4nextxSgyF"></a>
                     <a name="//apple_ref/swift/Method/next()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:s16IteratorProtocolP4next7ElementQzSgyF">next()</a>
+                    <a class="token" href="#/s:9OysterKit12NodeIteratorC4nextxSgyF">next()</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -333,7 +385,8 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        
+                        <p>Returns the next node in the stream</p>
+
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
@@ -342,6 +395,10 @@
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">next</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">N</span><span class="p">?</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The next node in the stream or <code>nil</code> if the end of the source has been reached or a fatal error has occured</p>
                       </div>
                     </section>
                   </div>
@@ -359,7 +416,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Returns true if the scan-head is at the end of the source <code>String</code></p>
 
                       </div>
                       <div class="declaration">
@@ -378,7 +435,7 @@
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-01-17)</p>
+          <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-01-18)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

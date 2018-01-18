@@ -14,7 +14,7 @@
     <a title="NodeStackEntry Class Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">OysterKit Docs</a> (21% documented)</p>
+        <p><a href="../index.html">OysterKit Docs</a> (58% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -158,9 +158,6 @@
                 <a href="../Extensions/Array.html">Array</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Extensions/Array/Wrapper.html">– Wrapper</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Extensions/CharacterSet.html">CharacterSet</a>
               </li>
               <li class="nav-group-task">
@@ -208,9 +205,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Protocols/HumanConsumableError.html">HumanConsumableError</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/IRIndependantNode.html">IRIndependantNode</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a>
@@ -273,6 +267,9 @@
               <li class="nav-group-task">
                 <a href="../Typealiases.html#/s:9OysterKit17CustomRuleClosurea">CustomRuleClosure</a>
               </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9OysterKit23DefaultHeterogeneousASTa">DefaultHeterogeneousAST</a>
+              </li>
             </ul>
           </li>
         </ul>
@@ -287,7 +284,7 @@
 
                 </div>
               </div>
-            <p>Undocumented</p>
+            <p><code>NodeStackEntry</code>&lsquo;s are used to capture parsing context (for example child-nodes and errors) ASTs are constructed.</p>
 
           </section>
           <section class="section task-group-section">
@@ -306,7 +303,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The child nodes of this node</p>
 
                       </div>
                       <div class="declaration">
@@ -333,7 +330,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Adds an error to the context providing it is unique</p>
 
                       </div>
                       <div class="declaration">
@@ -343,6 +340,25 @@
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">addError</span><span class="p">(</span><span class="nv">error</span><span class="p">:</span><span class="kt"><a href="../Enums/LanguageError.html">LanguageError</a></span><span class="p">)</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>error</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The new <code><a href="../Enums/LanguageError.html">LanguageError</a></code> to add</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -360,7 +376,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Adds all unique errors to the context providing from the supplied array</p>
 
                       </div>
                       <div class="declaration">
@@ -370,6 +386,25 @@
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">addErrors</span><span class="p">(</span><span class="n">_</span> <span class="nv">errors</span><span class="p">:[</span><span class="kt"><a href="../Enums/LanguageError.html">LanguageError</a></span><span class="p">])</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>errors</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The new <code><a href="../Enums/LanguageError.html">LanguageError</a></code>s to add</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -387,7 +422,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Removes all errors</p>
 
                       </div>
                       <div class="declaration">
@@ -414,7 +449,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The errors captured during parsing of sub-rules of this node&rsquo;s token</p>
 
                       </div>
                       <div class="declaration">
@@ -441,7 +476,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Should be called when a child node is created</p>
 
                       </div>
                       <div class="declaration">
@@ -451,6 +486,25 @@
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">append</span><span class="p">(</span><span class="n">_</span> <span class="nv">node</span><span class="p">:</span> <span class="kt">NodeType</span><span class="p">)</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>node</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The new child node</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -468,7 +522,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Adds all of the supplied nodes as this nodes children</p>
 
                       </div>
                       <div class="declaration">
@@ -479,15 +533,34 @@
 
                         </div>
                       </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>nodes</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The new child nodes</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
                     </section>
                   </div>
                 </li>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:s23CustomStringConvertibleP11descriptionSSv"></a>
+                    <a name="/s:9OysterKit14NodeStackEntryC11descriptionSSv"></a>
                     <a name="//apple_ref/swift/Property/description" class="dashAnchor"></a>
-                    <a class="token" href="#/s:s23CustomStringConvertibleP11descriptionSSv">description</a>
+                    <a class="token" href="#/s:9OysterKit14NodeStackEntryC11descriptionSSv">description</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -495,7 +568,8 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        
+                        <p>A human readable description of the context</p>
+
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
@@ -513,7 +587,7 @@
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-01-17)</p>
+          <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-01-18)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

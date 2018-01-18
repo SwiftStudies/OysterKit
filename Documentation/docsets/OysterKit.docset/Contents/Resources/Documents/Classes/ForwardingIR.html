@@ -14,7 +14,7 @@
     <a title="ForwardingIR Class Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">OysterKit Docs</a> (21% documented)</p>
+        <p><a href="../index.html">OysterKit Docs</a> (58% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -158,9 +158,6 @@
                 <a href="../Extensions/Array.html">Array</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Extensions/Array/Wrapper.html">– Wrapper</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Extensions/CharacterSet.html">CharacterSet</a>
               </li>
               <li class="nav-group-task">
@@ -208,9 +205,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Protocols/HumanConsumableError.html">HumanConsumableError</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/IRIndependantNode.html">IRIndependantNode</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a>
@@ -273,6 +267,9 @@
               <li class="nav-group-task">
                 <a href="../Typealiases.html#/s:9OysterKit17CustomRuleClosurea">CustomRuleClosure</a>
               </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9OysterKit23DefaultHeterogeneousASTa">DefaultHeterogeneousAST</a>
+              </li>
             </ul>
           </li>
         </ul>
@@ -287,7 +284,8 @@
 
                 </div>
               </div>
-            <p>Undocumented</p>
+            <p>This <code><a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></code> essentially forks the function calls to its two subordinate <code>IntermediateRepresentations</code>. This allows you to combine
+multiple <code><a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></code>s for example your normal data-structure pairs with an instance of <code><a href="../Classes/DebuggingDelegate.html">DebuggingDelegate</a></code> for debugging purposes.</p>
 
           </section>
           <section class="section task-group-section">
@@ -306,7 +304,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The primary, or first <code><a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></code></p>
 
                       </div>
                       <div class="declaration">
@@ -333,7 +331,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The secondary <code><a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></code>.</p>
 
                       </div>
                       <div class="declaration">
@@ -360,7 +358,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Calling the constructor with no parameters on this implementation will result in a fatal error as both must exist.</p>
 
                       </div>
                       <div class="declaration">
@@ -387,7 +385,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Creates a new instance with a new instance of the <code>BaseIR</code> using the required constructor for the specified and then consuming the supplied secondary <code>IntermediateRepresentaion</code></p>
 
                       </div>
                       <div class="declaration">
@@ -397,6 +395,25 @@
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">secondary</span><span class="p">:</span><span class="kt"><a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></span><span class="p">)</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>secondary</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An instance of the secondary <code><a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></code></p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -414,7 +431,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Creates a new instance with a new instance of the <code>BaseIR</code> consuming the supplied primary and secondary <code>IntermediateRepresentaion</code> instances</p>
 
                       </div>
                       <div class="declaration">
@@ -424,6 +441,37 @@
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">primary</span><span class="p">:</span> <span class="kt">BaseIR</span><span class="p">,</span> <span class="nv">secondary</span><span class="p">:</span><span class="kt"><a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></span><span class="p">)</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>Primary</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An instance of the primary <code><a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></code></p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>secondary</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An instance of the secondary <code><a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></code></p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -441,7 +489,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Forwarded to both primary and secondary <code>Intermediate Representations</code></p>
 
                       </div>
                       <div class="declaration">
@@ -468,7 +516,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Forwarded to both primary and secondary <code>Intermediate Representations</code></p>
 
                       </div>
                       <div class="declaration">
@@ -495,7 +543,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Forwarded to both primary and secondary <code>Intermediate Representations</code></p>
 
                       </div>
                       <div class="declaration">
@@ -522,7 +570,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Forwarded to both primary and secondary <code>Intermediate Representations</code></p>
 
                       </div>
                       <div class="declaration">
@@ -549,7 +597,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Forwarded to both primary and secondary <code>Intermediate Representations</code></p>
 
                       </div>
                       <div class="declaration">
@@ -568,7 +616,7 @@
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-01-17)</p>
+          <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-01-18)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

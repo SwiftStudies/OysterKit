@@ -14,7 +14,7 @@
     <a title="DefaultHeterogenousConstructor Class Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">OysterKit Docs</a> (21% documented)</p>
+        <p><a href="../index.html">OysterKit Docs</a> (58% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -158,9 +158,6 @@
                 <a href="../Extensions/Array.html">Array</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Extensions/Array/Wrapper.html">– Wrapper</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Extensions/CharacterSet.html">CharacterSet</a>
               </li>
               <li class="nav-group-task">
@@ -208,9 +205,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Protocols/HumanConsumableError.html">HumanConsumableError</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/IRIndependantNode.html">IRIndependantNode</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a>
@@ -273,6 +267,9 @@
               <li class="nav-group-task">
                 <a href="../Typealiases.html#/s:9OysterKit17CustomRuleClosurea">CustomRuleClosure</a>
               </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9OysterKit23DefaultHeterogeneousASTa">DefaultHeterogeneousAST</a>
+              </li>
             </ul>
           </li>
         </ul>
@@ -287,12 +284,40 @@
 
                 </div>
               </div>
-            <p>Undocumented</p>
+            <p>Provides a default implementation of an <code><a href="../Protocols/ASTNodeConstructor.html">ASTNodeConstructor</a></code> that is expected to construct nodes that can have different fundamental data types. All nodes
+are of type <code><a href="../Structs/HeterogeneousNode.html">HeterogeneousNode</a></code>.</p>
 
           </section>
           <section class="section task-group-section">
             <div class="task-group">
               <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit30DefaultHeterogenousConstructorC8NodeTypea"></a>
+                    <a name="//apple_ref/swift/Alias/NodeType" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit30DefaultHeterogenousConstructorC8NodeTypea">NodeType</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>All nodes must conform to the protocol <code><a href="../Structs/HeterogeneousNode.html">HeterogeneousNode</a></code></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">NodeType</span> <span class="o">=</span>  <span class="kt"><a href="../Structs/HeterogeneousNode.html">HeterogeneousNode</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
                 <li class="item">
                   <div>
                     <code>
@@ -306,7 +331,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Create a new instance of the constructor</p>
 
                       </div>
                       <div class="declaration">
@@ -333,7 +358,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Does nothing</p>
 
                       </div>
                       <div class="declaration">
@@ -343,6 +368,25 @@
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">begin</span><span class="p">(</span><span class="n">with</span> <span class="nv">source</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>with</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The source <code>String</code> being parsed</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -360,7 +404,13 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>If the token is transient <code>nil</code> is returned. Otherwise the behaviour is determined by the number of children</p>
+
+<ul>
+<li>0: A new instance of <code><a href="../Structs/HeterogeneousNode.html">HeterogeneousNode</a></code> is created and returned</li>
+<li>1: Providing the token is not @pin&rsquo;d a new <code>HeterogeousNode</code> is created for the child&rsquo;s range and value and returned If it is @pin&rsquo;d behaviour falls through to</li>
+<li><p><em>n</em>: Return a new <code><a href="../Structs/HeterogeneousNode.html">HeterogeneousNode</a></code> with the combined range of all children and the children are set as the node&rsquo;s value</p></li>
+</ul>
 
                       </div>
                       <div class="declaration">
@@ -370,6 +420,65 @@
                           <pre class="highlight swift"><code><span class="kd">final</span> <span class="kd">public</span> <span class="kd">func</span> <span class="nf">match</span><span class="p">(</span><span class="nv">token</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Token.html">Token</a></span><span class="p">,</span> <span class="nv">annotations</span><span class="p">:</span><span class="kt">RuleAnnotations</span><span class="p">,</span> <span class="nv">context</span><span class="p">:</span> <span class="kt"><a href="../Protocols/LexicalContext.html">LexicalContext</a></span><span class="p">,</span> <span class="nv">children</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/HeterogeneousNode.html">HeterogeneousNode</a></span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/HeterogeneousNode.html">HeterogeneousNode</a></span><span class="p">?</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>token</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The token that has been successfully identified in the source</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>annotations</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The annotations that had been marked on this instance of the token</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>context</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code><a href="../Protocols/LexicalContext.html">LexicalContext</a></code> from the <code><a href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a></code> from which an implementation can extract the matched range.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>children</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Any <code><a href="../Protocols/Node.html">Node</a></code>s that were created while this token was being evaluated.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Any <code><a href="../Protocols/Node.html">Node</a></code> that was created, or <code>nil</code> if not</p>
                       </div>
                     </section>
                   </div>
@@ -387,7 +496,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>If the token is not transient but is pinned a node is created with a range at the current scan-head but no value. Otherwise <code>nil</code> is returned.</p>
 
                       </div>
                       <div class="declaration">
@@ -397,6 +506,41 @@
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">ignoreableFailure</span><span class="p">(</span><span class="nv">token</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Token.html">Token</a></span><span class="p">,</span> <span class="nv">annotations</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Enums/RuleAnnotation.html">RuleAnnotation</a></span> <span class="p">:</span> <span class="kt"><a href="../Enums/RuleAnnotationValue.html">RuleAnnotationValue</a></span><span class="p">],</span> <span class="nv">index</span><span class="p">:</span> <span class="kt">String</span><span class="o">.</span><span class="kt">UnicodeScalarView</span><span class="o">.</span><span class="kt">Index</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt"><a href="../Structs/HeterogeneousNode.html">HeterogeneousNode</a></span><span class="p">?</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>token</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The token that failed to be matched identified in the source</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>annotations</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The annotations that had been marked on this instance of the token</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Any <code><a href="../Protocols/Node.html">Node</a></code> that was created, or <code>nil</code> if not</p>
                       </div>
                     </section>
                   </div>
@@ -414,7 +558,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>No behaviour</p>
 
                       </div>
                       <div class="declaration">
@@ -441,7 +585,10 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Returns the supplied errors without modification</p>
+
+<p>-Parameter parsingErrors: The errors created during parsing
+-Returns: A potentially modified <code>Array</code> of errors.</p>
 
                       </div>
                       <div class="declaration">
@@ -460,7 +607,7 @@
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-01-17)</p>
+          <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-01-18)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

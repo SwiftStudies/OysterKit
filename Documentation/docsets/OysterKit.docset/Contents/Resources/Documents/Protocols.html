@@ -13,7 +13,7 @@
     <a title="Protocols  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">OysterKit Docs</a> (21% documented)</p>
+        <p><a href="index.html">OysterKit Docs</a> (58% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -157,9 +157,6 @@
                 <a href="Extensions/Array.html">Array</a>
               </li>
               <li class="nav-group-task">
-                <a href="Extensions/Array/Wrapper.html">– Wrapper</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="Extensions/CharacterSet.html">CharacterSet</a>
               </li>
               <li class="nav-group-task">
@@ -207,9 +204,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="Protocols/HumanConsumableError.html">HumanConsumableError</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Protocols/IRIndependantNode.html">IRIndependantNode</a>
               </li>
               <li class="nav-group-task">
                 <a href="Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a>
@@ -272,6 +266,9 @@
               <li class="nav-group-task">
                 <a href="Typealiases.html#/s:9OysterKit17CustomRuleClosurea">CustomRuleClosure</a>
               </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:9OysterKit23DefaultHeterogeneousASTa">DefaultHeterogeneousAST</a>
+              </li>
             </ul>
           </li>
         </ul>
@@ -299,7 +296,8 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>This protocol identifies as set of additional requirements for <code><a href="Protocols/Node.html">Node</a></code>s in order for them to be used for decoding.  Some elements of the implementation are
+provided through an extension.</p>
 
                         <a href="Protocols/DecodeableNode.html" class="slightly-smaller">See more</a>
                       </div>
@@ -403,7 +401,7 @@ confirming that the last rule was essentially matched.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>An extension of the base <code><a href="Protocols/Node.html">Node</a></code> type used by the standard ASTs that supports values of type <code>Any</code>. This is used primarily by <code>HeterogeousAST</code>s</p>
 
                         <a href="Protocols/ValuedNode.html" class="slightly-smaller">See more</a>
                       </div>
@@ -435,7 +433,8 @@ confirming that the last rule was essentially matched.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p><code>ASTNodeConstructor</code>s are responsible for building the data-structures used by the default homogenous and heterogenous <code>IntermediateRepresentations</code>. They
+ allow you to, by providing your own implementations, control the behaviour of <code><a href="Protocols/Node.html">Node</a></code> creation of those default implementations.</p>
 
                         <a href="Protocols/ASTNodeConstructor.html" class="slightly-smaller">See more</a>
                       </div>
@@ -467,7 +466,8 @@ confirming that the last rule was essentially matched.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Nodes are the basic elements of <code><a href="Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></code>s. They record a <code><a href="Protocols/Token.html">Token</a></code>, the range of the <code>String</code>&lsquo;s <code>UnicodeScalarView</code> the match occured in
+as well as any annotations that were made on the token.</p>
 
                         <a href="Protocols/Node.html" class="slightly-smaller">See more</a>
                       </div>
@@ -476,34 +476,6 @@ confirming that the last rule was essentially matched.</p>
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Node</span> <span class="p">:</span> <span class="kt">CustomStringConvertible</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:9OysterKit17IRIndependantNodeP"></a>
-                    <a name="//apple_ref/swift/Protocol/IRIndependantNode" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit17IRIndependantNodeP">IRIndependantNode</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Undocumented</p>
-
-                        <a href="Protocols/IRIndependantNode.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">IRIndependantNode</span> <span class="p">:</span> <span class="kt"><a href="Protocols/Node.html">Node</a></span></code></pre>
 
                         </div>
                       </div>
@@ -523,7 +495,14 @@ confirming that the last rule was essentially matched.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>An <code>IntermediateRepresentation</code> is responsible for building this structure, typically some kind of Abstract Syntax Tree (AST).
+There are some other examples of this such as <code><a href="Classes/DebuggingDelegate.html">DebuggingDelegate</a></code> or <code>ForkedIR</code>. It does this by observing the state changes in the
+matcher (such as start and end of evaluation of a rule). See below for standard implementations of this protocol that you can use. </p>
+<div class="aside aside-see-also">
+    <p class="aside-title">See also</p>
+    <code><a href="Classes/HomogenousAST.html">HomogenousAST</a></code>, <code>HeterogeneousAST</code>, <code>DebuggingIR</code>, <code><a href="Classes/ForwardingIR.html">ForwardingIR</a></code>
+
+</div>
 
                         <a href="Protocols/IntermediateRepresentation.html" class="slightly-smaller">See more</a>
                       </div>
@@ -555,7 +534,7 @@ confirming that the last rule was essentially matched.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>To be implemented by any error that is expected to be meaningful to a user looking at parsing results</p>
 
                         <a href="Protocols/HumanConsumableError.html" class="slightly-smaller">See more</a>
                       </div>
@@ -583,7 +562,7 @@ confirming that the last rule was essentially matched.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>A language stores a set of grammar rules that can be used to parse <code>String</code>s. Extensions provide additional methods (such as parsing) that operate on these rules.</p>
 
                         <a href="Protocols/Language.html" class="slightly-smaller">See more</a>
                       </div>
@@ -755,7 +734,7 @@ fails or succeeds</p>
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-01-17)</p>
+          <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-01-18)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

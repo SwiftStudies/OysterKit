@@ -24,17 +24,42 @@
 
 import Foundation
 
+
+/**
+ Provides a default implementation of an `ASTNodeConstructor` that is expected to construct nodes that can have different fundamental data types. All nodes
+ are of type `HeterogeneousNode`.
+*/
 public final class DefaultHeterogenousConstructor : ASTNodeConstructor{
+    /// All nodes must conform to the protocol `HeterogeneousNode`
     public typealias NodeType =  HeterogeneousNode
     
+    /// Create a new instance of the constructor
     public init(){
         
     }
     
+    /**
+     Does nothing
+     
+     - Parameter with: The source `String` being parsed
+     */
     public func begin(with source: String) {
         
     }
     
+    /**
+     If the token is transient `nil` is returned. Otherwise the behaviour is determined by the number of children
+     
+     - 0: A new instance of `HeterogeneousNode` is created and returned
+     - 1: Providing the token is not @pin'd a new `HeterogeousNode` is created for the child's range and value and returned If it is @pin'd behaviour falls through to
+     - _n_: Return a new `HeterogeneousNode` with the combined range of all children and the children are set as the node's value
+     
+     - Parameter token: The token that has been successfully identified in the source
+     - Parameter annotations: The annotations that had been marked on this instance of the token
+     - Parameter context: The `LexicalContext` from the `LexicalAnalyzer` from which an implementation can extract the matched range.
+     - Parameter children: Any `Node`s that were created while this token was being evaluated.
+     - Returns: Any `Node` that was created, or `nil` if not
+     */
     final public func match(token: Token, annotations:RuleAnnotations, context: LexicalContext, children: [HeterogeneousNode]) -> HeterogeneousNode? {
         guard !token.transient else {
             return nil
@@ -54,6 +79,13 @@ public final class DefaultHeterogenousConstructor : ASTNodeConstructor{
         
     }
 
+    /**
+     If the token is not transient but is pinned a node is created with a range at the current scan-head but no value. Otherwise `nil` is returned.
+     
+     - Parameter token: The token that failed to be matched identified in the source
+     - Parameter annotations: The annotations that had been marked on this instance of the token
+     - Returns: Any `Node` that was created, or `nil` if not
+     */
     public func ignoreableFailure(token: Token, annotations: [RuleAnnotation : RuleAnnotationValue], index: String.UnicodeScalarView.Index)->HeterogeneousNode? {
         if !token.transient && annotations[RuleAnnotation.pinned] != nil{
             let range = index..<index
@@ -62,18 +94,26 @@ public final class DefaultHeterogenousConstructor : ASTNodeConstructor{
         return nil
     }
 
-    
+    /// No behaviour
     public func failed(token: Token) {
         
     }
-    
+
+    /**
+     Returns the supplied errors without modification
+     
+     -Parameter parsingErrors: The errors created during parsing
+     -Returns: A potentially modified `Array` of errors.
+     */
     public func complete(parsingErrors: [Error]) -> [Error] {
         return parsingErrors
     }
 }
 
+/// The default implementation of a `HeterogenousAST` using the `DefaultHeterogenousConstructor`
 public typealias DefaultHeterogeneousAST = HeterogenousAST<HeterogeneousNode,DefaultHeterogenousConstructor>
 
+/// The base class for any 'HeterogenousAST'
 public final class HeterogenousAST<NodeType : ValuedNode, Constructor : ASTNodeConstructor> : HomogenousAST<NodeType,Constructor> where Constructor.NodeType == NodeType{
     
 }

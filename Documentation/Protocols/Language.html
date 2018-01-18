@@ -14,7 +14,7 @@
     <a title="Language Protocol Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">OysterKit Docs</a> (21% documented)</p>
+        <p><a href="../index.html">OysterKit Docs</a> (58% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -158,9 +158,6 @@
                 <a href="../Extensions/Array.html">Array</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Extensions/Array/Wrapper.html">– Wrapper</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Extensions/CharacterSet.html">CharacterSet</a>
               </li>
               <li class="nav-group-task">
@@ -208,9 +205,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Protocols/HumanConsumableError.html">HumanConsumableError</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/IRIndependantNode.html">IRIndependantNode</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a>
@@ -273,6 +267,9 @@
               <li class="nav-group-task">
                 <a href="../Typealiases.html#/s:9OysterKit17CustomRuleClosurea">CustomRuleClosure</a>
               </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9OysterKit23DefaultHeterogeneousASTa">DefaultHeterogeneousAST</a>
+              </li>
             </ul>
           </li>
         </ul>
@@ -287,7 +284,7 @@
 
                 </div>
               </div>
-            <p>Undocumented</p>
+            <p>A language stores a set of grammar rules that can be used to parse <code>String</code>s. Extensions provide additional methods (such as parsing) that operate on these rules.</p>
 
           </section>
           <section class="section task-group-section">
@@ -306,7 +303,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The rules in the <code>Language</code>&lsquo;s grammar</p>
 
                       </div>
                       <div class="declaration">
@@ -340,7 +337,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Builds an <code><a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></code> of the receiving type using the supplied <code><a href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a></code></p>
 
                       </div>
                       <div class="declaration">
@@ -350,6 +347,41 @@
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">build</span><span class="o">&lt;</span><span class="kt">IR</span><span class="p">:</span><span class="kt"><a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></span><span class="o">&gt;</span><span class="p">(</span><span class="n">intermediateRepresentation</span> <span class="nv">ir</span><span class="p">:</span><span class="kt">IR</span><span class="p">,</span> <span class="n">using</span> <span class="nv">lexer</span><span class="p">:</span><span class="kt"><a href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a></span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">IR</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>intermediateRepresentation</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A pre-initialized instance of the <code><a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></code></p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>using</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A pre-initialized instance of a <code><a href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a></code></p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The finished <code><a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></code></p>
                       </div>
                     </section>
                   </div>
@@ -370,7 +402,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Builds an <code><a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></code> of the receiving type using the supplied <code><a href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a></code></p>
 
                       </div>
                       <div class="declaration">
@@ -380,6 +412,29 @@
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">build</span><span class="o">&lt;</span><span class="kt">IR</span><span class="p">:</span><span class="kt"><a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></span><span class="o">&gt;</span><span class="p">(</span><span class="n">using</span> <span class="nv">lexer</span><span class="p">:</span><span class="kt"><a href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a></span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">IR</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>using</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A pre-initialized instance of a <code><a href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a></code></p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The finished <code><a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></code></p>
                       </div>
                     </section>
                   </div>
@@ -400,7 +455,8 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Builds an <code><a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></code> of the receiving type using <code><a href="../Classes/Lexer.html">Lexer</a></code> as the lexical analyzer. It will automatically
+create an instance of the receiving <code>IR</code></p>
 
                       </div>
                       <div class="declaration">
@@ -410,6 +466,29 @@
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">build</span><span class="o">&lt;</span><span class="kt">IR</span><span class="p">:</span><span class="kt"><a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></span><span class="o">&gt;</span><span class="p">(</span><span class="nv">source</span><span class="p">:</span><span class="kt">String</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">IR</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>source</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The string to parse</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The finished <code><a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></code></p>
                       </div>
                     </section>
                   </div>
@@ -434,7 +513,8 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Creates a <code>Sequence</code> of <code>Nodes</code> that can be iterated over. The intention is that these are lazily constructed meaning that they appropriate for use
+for large files where a full AST is not necessarily required.</p>
 
                       </div>
                       <div class="declaration">
@@ -444,6 +524,29 @@
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">stream</span><span class="o">&lt;</span><span class="kt">N</span><span class="p">:</span><span class="kt"><a href="../Protocols/Node.html">Node</a></span><span class="p">,</span><span class="kt">L</span><span class="p">:</span><span class="kt"><a href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a></span><span class="o">&gt;</span><span class="p">(</span><span class="nv">lexer</span><span class="p">:</span><span class="kt">L</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">AnySequence</span><span class="o">&lt;</span><span class="kt">N</span><span class="o">&gt;</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>lexer</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code><a href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a></code> to use</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A sequence of <code><a href="../Protocols/Node.html">Node</a></code>s</p>
                       </div>
                     </section>
                   </div>
@@ -464,7 +567,8 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Creates a <code>Sequence</code> of <code>Nodes</code> that can be iterated over using the standard <code><a href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a></code>, <code><a href="../Classes/Lexer.html">Lexer</a></code>. The intention is that these are lazily constructed meaning that they appropriate for use
+ for large files where a full AST is not necessarily required.</p>
 
                       </div>
                       <div class="declaration">
@@ -475,6 +579,10 @@
 
                         </div>
                       </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A sequence of <code><a href="../Protocols/Node.html">Node</a></code>s</p>
+                      </div>
                     </section>
                   </div>
                 </li>
@@ -483,7 +591,7 @@
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-01-17)</p>
+          <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-01-18)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

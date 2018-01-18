@@ -14,7 +14,7 @@
     <a title="HeterogeneousNode Structure Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">OysterKit Docs</a> (21% documented)</p>
+        <p><a href="../index.html">OysterKit Docs</a> (58% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -158,9 +158,6 @@
                 <a href="../Extensions/Array.html">Array</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Extensions/Array/Wrapper.html">– Wrapper</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Extensions/CharacterSet.html">CharacterSet</a>
               </li>
               <li class="nav-group-task">
@@ -208,9 +205,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Protocols/HumanConsumableError.html">HumanConsumableError</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/IRIndependantNode.html">IRIndependantNode</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a>
@@ -273,6 +267,9 @@
               <li class="nav-group-task">
                 <a href="../Typealiases.html#/s:9OysterKit17CustomRuleClosurea">CustomRuleClosure</a>
               </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9OysterKit23DefaultHeterogeneousASTa">DefaultHeterogeneousAST</a>
+              </li>
             </ul>
           </li>
         </ul>
@@ -287,7 +284,7 @@
 
                 </div>
               </div>
-            <p>Undocumented</p>
+            <p>The default implementation of <code><a href="../Protocols/ValuedNode.html">ValuedNode</a></code>.</p>
 
           </section>
           <section class="section task-group-section">
@@ -306,7 +303,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The token created</p>
 
                       </div>
                       <div class="declaration">
@@ -333,7 +330,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The range of the match in the source string</p>
 
                       </div>
                       <div class="declaration">
@@ -360,7 +357,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The (opitional) value.</p>
 
                       </div>
                       <div class="declaration">
@@ -387,7 +384,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Any associated annotations made on the <code><a href="../Structs/HeterogeneousNode.html#/s:9OysterKit17HeterogeneousNodeV5tokenAA5Token_pv">token</a></code></p>
 
                       </div>
                       <div class="declaration">
@@ -414,7 +411,11 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Creates a new instance with no <code><a href="../Structs/HeterogeneousNode.html#/s:9OysterKit17HeterogeneousNodeV5valueypSgv">value</a></code></p>
+
+<p>-Parameter for: The <code><a href="../Protocols/Token.html">Token</a></code> the node captures
+-Parameter at: The range the token was matched at in the original source string
+-Prameter annotations: Any annotations that should be stored with the node</p>
 
                       </div>
                       <div class="declaration">
@@ -441,7 +442,12 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Creates a new instance</p>
+
+<p>-Parameter for: The <code><a href="../Protocols/Token.html">Token</a></code> the node captures
+-Parameter at: The range the token was matched at in the original source string
+-Parameter value: The value, if any
+-Prameter annotations: Any annotations that should be stored with the node</p>
 
                       </div>
                       <div class="declaration">
@@ -472,7 +478,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The children of this node</p>
 
                       </div>
                       <div class="declaration">
@@ -499,7 +505,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Returns the sub string captured by this node (that is, what it matched)</p>
 
                       </div>
                       <div class="declaration">
@@ -509,6 +515,29 @@
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">stringValue</span><span class="p">(</span><span class="nv">source</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>source</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>String</code> that the <code><a href="../Protocols/DecodeableNode.html">DecodeableNode</a></code> was created from</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The sub-string</p>
                       </div>
                     </section>
                   </div>
@@ -526,7 +555,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The <code>CodingKey</code> for this node. This is normally generated using the name of the <code><a href="../Protocols/Token.html">Token</a></code>.</p>
 
                       </div>
                       <div class="declaration">
@@ -547,6 +576,106 @@
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:9OysterKit17HeterogeneousNodeV9subscriptACSgAA5Token_p5child_tci"></a>
+                    <a name="//apple_ref/swift/Method/subscript(child:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit17HeterogeneousNodeV9subscriptACSgAA5Token_p5child_tci">subscript(child:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns the first child with the specified token.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="nf">subscript</span><span class="p">(</span><span class="n">child</span> <span class="nv">token</span><span class="p">:</span><span class="kt"><a href="../Protocols/Token.html">Token</a></span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">HeterogeneousNode</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>child</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The token of the desired child</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The child node or <code>nil</code> if the supplied index is out of bounds.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit17HeterogeneousNodeV9subscriptACSgSi5child_tci"></a>
+                    <a name="//apple_ref/swift/Method/subscript(child:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit17HeterogeneousNodeV9subscriptACSgSi5child_tci">subscript(child:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns the child at the specified <code>index</code>, which is bounds checked.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="nf">subscript</span><span class="p">(</span><span class="n">child</span> <span class="nv">index</span><span class="p">:</span><span class="kt">Int</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">HeterogeneousNode</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>child</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The index of the desired child, it will be bounds checked.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The child node or <code>nil</code> if the supplied index is out of bounds.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:9OysterKit17HeterogeneousNodeV8childrenSayACGv"></a>
                     <a name="//apple_ref/swift/Property/children" class="dashAnchor"></a>
                     <a class="token" href="#/s:9OysterKit17HeterogeneousNodeV8childrenSayACGv">children</a>
@@ -557,7 +686,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>All children of the node in an array of <code>HeterogeneousNode</code>s.</p>
 
                       </div>
                       <div class="declaration">
@@ -576,7 +705,7 @@
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-01-17)</p>
+          <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-01-18)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

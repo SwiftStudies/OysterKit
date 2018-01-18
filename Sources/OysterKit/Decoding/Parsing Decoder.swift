@@ -1,24 +1,77 @@
+//    Copyright (c) 2014, RED When Excited
+//    All rights reserved.
 //
-//  STLR Decoder.swift
-//  OysterKit
+//    Redistribution and use in source and binary forms, with or without
+//    modification, are permitted provided that the following conditions are met:
 //
-// Createed with heavy reference to: https://github.com/apple/swift-corelibs-foundation/blob/master/Foundation/JSONEncoder.swift#L802
+//    * Redistributions of source code must retain the above copyright notice, this
+//    list of conditions and the following disclaimer.
 //
-//  Created on 01/09/2017.
-//  Copyright © 2017 RED When Excited. All rights reserved.
+//    * Redistributions in binary form must reproduce the above copyright notice,
+//    this list of conditions and the following disclaimer in the documentation
+//    and/or other materials provided with the distribution.
+//
+//    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+//    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+//    IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+//    DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+//    FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+//    DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+//    SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+//    CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+//    OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+//    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//
+//    Createed with heavy reference to: https://github.com/apple/swift-corelibs-foundation/blob/master/Foundation/JSONEncoder.swift#L802
 //
 
 import Foundation
 
+/**
+ This protocol identifies as set of additional requirements for `Node`s in order for them to be used for decoding.  Some elements of the implementation are
+ provided through an extension.
+ */
 public protocol DecodeableNode{
+    /**
+     Should return the sub string captured by this node (that is, what it matched)
+     
+     - Parameter source: The `String` that the `DecodeableNode` was created from
+     - Returns: The sub-string
+     */
     func stringValue(source : String)->String
+    
+    /// Should be the `CodingKey` for this node. This is normally generated using the name of the `Token`.
     var  key                : CodingKey {get}
+    
+    /// Should be the children of this node
     var  contents           : [DecodeableNode] {get}
+    
+    /**
+     Should return the child node at the supplied `index`. A default implementation is provided through an extension.
+     
+     -Parameter index: The index of the desired child
+     -Returns: The child node
+     */
     subscript(_ index:Int)->DecodeableNode {get}
+    
+    /**
+     Should return the child node with the specified `CodingKey` or `nil` if it does not exist. A default implementation
+     is provided through an extension.
+     
+     -Parameter key: The key of the desired child
+     -Returns: The child node, or `nil` if not found
+     */
     subscript(key codingKey:CodingKey)->DecodeableNode? {get}
 }
 
+/// Provide standard implementations of the subscripting requirements
 public extension DecodeableNode{
+    /**
+     Returns the child node at the supplied `index`
+     
+     -Parameter index: The index of the desired child
+     -Returns: The child node
+     */
     public subscript(key codingKey: CodingKey) -> DecodeableNode? {
         for child in contents {
             if child.key.stringValue == codingKey.stringValue {
@@ -27,12 +80,26 @@ public extension DecodeableNode{
         }
         return nil
     }
+    
+    /**
+     Returns the child node with the specified `CodingKey` or `nil` if it does not exist. A default implementation
+     is provided through an extension.
+     
+     -Parameter key: The key of the desired child
+     -Returns: The child node, or `nil` if not found
+     */
     public subscript(_ index: Int) -> DecodeableNode {
         return contents[index]
     }
 }
 
 extension CodingKey {
+    /**
+     Determines if two coding keys are equal
+     
+     - Parameter rhs: The other `CodingKey` to compare to
+     - Returns: `true` if they are the same, `false` otherwise
+    */
     func equals(rhs:CodingKey)->Bool{
         guard let lhsInt = self.intValue, let rhsInt = rhs.intValue else {
             return self.stringValue == rhs.stringValue
@@ -42,15 +109,25 @@ extension CodingKey {
     }
 }
 
+/// Extends all `HetrogeneousAST`'s to be decodable.
 extension HeterogenousAST : DecodeableNode {
+    
+    /**
+     Returns the sub string captured by this node (that is, what it matched)
+     
+     - Parameter source: The `String` that the `DecodeableNode` was created from
+     - Returns: The sub-string
+     */
     public func stringValue(source: String) -> String {
         return children[0].matchedString(source)
     }
     
+    /// The `CodingKey` for this node. This is normally generated using the name of the `Token`.
     public var key: CodingKey {
         return (children[0] as! DecodeableNode).key
     }
     
+    /// The children of this node
     public var contents: [DecodeableNode] {
         return children[0].value as! [DecodeableNode]
     }
@@ -58,18 +135,25 @@ extension HeterogenousAST : DecodeableNode {
     
 }
 
+/// Extends all `HeterogeneousNode`'s to be decodable.
 extension HeterogeneousNode : DecodeableNode{
     
-
-    
+    /// The children of this node
     public var contents: [DecodeableNode] {
         return value as? [HeterogeneousNode] ?? []
     }
     
+    /**
+     Returns the sub string captured by this node (that is, what it matched)
+     
+     - Parameter source: The `String` that the `DecodeableNode` was created from
+     - Returns: The sub-string
+     */
     public func stringValue(source: String) -> String {
         return matchedString(source)
     }
     
+    /// The `CodingKey` for this node. This is normally generated using the name of the `Token`.
     public var key: CodingKey {
         return _ParsingKey(token: token)
     }
@@ -77,6 +161,13 @@ extension HeterogeneousNode : DecodeableNode{
     
 }
 
+/**
+ Provides strucured textual output of any HeterogeneousNode and its children. Useful for debugging.
+ 
+ - Parameter nodes: An `Array` of nodes to print
+ - Parameter source: The string the nodes were created from
+ - Parameter indenting: Any indentation required of the string. As this recursive function decends the node tree it adds and additional \\t each time
+ */
 internal func prettyPrint(nodes:[HeterogeneousNode], from source:String, indenting indent:String=""){
     for node in nodes {
         if node.children.isEmpty {
@@ -88,12 +179,34 @@ internal func prettyPrint(nodes:[HeterogeneousNode], from source:String, indenti
     }
 }
 
+/**
+ A standard decoder that can use any supplied `Parser` to decode `Data` into a `Decodable` conforming type.
+ 
+        do{
+            let command : Command = try ParsingDecoder().decode(Command.self, from: userInput.data(using: .utf8) ?? Data(), with: Bork.generatedLanguage)
+     
+            ...
+        } catch {
+            print("Something went wrong: \(error.localizedDescription)")
+        }
+ 
+    The names of the `Token`s generated by the supplied `Parser` are used as keys into the `Decodable` type being populated.
+ */
 public struct ParsingDecoder{
     
+    /// Create an instance of `ParsingDecoder`
     public init(){
         
     }
     
+    /**
+     Decodes the supplied data using the supplied parser into the specified object. The names of the `Token`s generated by the
+     supplied `Parser` are used as keys into the `Decodable` type being populated.
+     
+     - Parameter type: A type conforming to `Decodable`
+     - Parameter from: The `Data` to decode, it is expected that this is a `String` with UTF8 encoding
+     - Parameter with: The `Parser` to use to build the AST used to provide the keys
+    */
     public func decode<T>(_ type: T.Type, from data: Data, with parser:Parser) throws -> T where T : Decodable{
         guard let source = String(data: data,encoding: .utf8) else {
             throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: [], debugDescription: "Data is not in utf8 format"))
@@ -984,7 +1097,7 @@ fileprivate struct _STLRUnkeyedDecodingContainer : UnkeyedDecodingContainer {
     }
 }
 
-extension _ParsingDecoder {
+fileprivate extension _ParsingDecoder {
     /// Returns the given value unboxed from a container.
     fileprivate func unbox(_ value: Any, as type: Bool.Type) throws -> Bool? {
         guard !(value is NSNull) else { return nil }
@@ -1325,8 +1438,15 @@ extension _ParsingDecoder {
 }
 
 
-
+/// Adds some utility functions
 public extension HeterogenousAST where NodeType == HeterogeneousNode{
+    
+    /**
+     Returns the child at the specified `index`, which is bounds checked.
+     
+     - Parameter child: The index of the desired child, it will be bounds checked.
+     - Returns: The child node or `nil` if the supplied index is out of bounds.
+    */
     subscript(child index:Int)->HeterogeneousNode?{
         if index < tokens.count {
             return tokens[index]
@@ -1335,7 +1455,15 @@ public extension HeterogenousAST where NodeType == HeterogeneousNode{
     }
 }
 
+/// Adds some utility functions
 public extension HeterogeneousNode{
+    
+    /**
+     Returns the first child with the specified token.
+     
+     - Parameter child: The token of the desired child
+     - Returns: The child node or `nil` if the supplied index is out of bounds.
+     */
     subscript(child token:Token)->HeterogeneousNode?{
         guard let children = value as? [HeterogeneousNode] else {
             return nil
@@ -1351,6 +1479,12 @@ public extension HeterogeneousNode{
     }
     
     
+    /**
+     Returns the child at the specified `index`, which is bounds checked.
+     
+     - Parameter child: The index of the desired child, it will be bounds checked.
+     - Returns: The child node or `nil` if the supplied index is out of bounds.
+     */
     subscript(child index:Int)->HeterogeneousNode?{
         guard let children = value as? [HeterogeneousNode] else {
             return nil
@@ -1361,6 +1495,7 @@ public extension HeterogeneousNode{
         return nil
     }
     
+    /// All children of the node in an array of `HeterogeneousNode`s.
     var children : [HeterogeneousNode] {
         guard let children = value as? [HeterogeneousNode] else {
             return []

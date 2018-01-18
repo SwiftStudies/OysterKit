@@ -14,7 +14,7 @@
     <a title="StringScanner Class Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">OysterKit Docs</a> (21% documented)</p>
+        <p><a href="../index.html">OysterKit Docs</a> (58% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -158,9 +158,6 @@
                 <a href="../Extensions/Array.html">Array</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Extensions/Array/Wrapper.html">– Wrapper</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Extensions/CharacterSet.html">CharacterSet</a>
               </li>
               <li class="nav-group-task">
@@ -208,9 +205,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Protocols/HumanConsumableError.html">HumanConsumableError</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/IRIndependantNode.html">IRIndependantNode</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a>
@@ -273,6 +267,9 @@
               <li class="nav-group-task">
                 <a href="../Typealiases.html#/s:9OysterKit17CustomRuleClosurea">CustomRuleClosure</a>
               </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9OysterKit23DefaultHeterogeneousASTa">DefaultHeterogeneousAST</a>
+              </li>
             </ul>
           </li>
         </ul>
@@ -287,7 +284,14 @@
 
                 </div>
               </div>
-            <p>Undocumented</p>
+            <p>A pure Swift implementation of a <code>String</code> scanner, that can leverage some of the strengths of swift (over using <code>NSScanner</code>). In general consumers of
+OysterKit do not need to use this class directly as it is abstracted away by a concrete implementation of <code>Lexical Analyzer</code>.</p>
+
+<p>At this point (Swift 4.0) the Swift <code>String</code> subsystem is still enjoying a reasonable amount of churn so details of the implementation will change to
+fully leverage any improved performance affordances. However at this point the implementation is based around the <code>UnicodeScalarView</code> of a <code>String</code>
+as it enables direct cosumption of other useful classes such as <code>CharacterSet</code>.</p>
+
+<p>This may change in the future as Swift strings evolve.</p>
 
           </section>
           <section class="section task-group-section">
@@ -306,7 +310,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The string being scanned</p>
 
                       </div>
                       <div class="declaration">
@@ -333,7 +337,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The current scanning index in <code>scalars</code></p>
 
                       </div>
                       <div class="declaration">
@@ -360,7 +364,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p><code>true</code> if the scanner is at the end of the <code>String</code></p>
 
                       </div>
                       <div class="declaration">
@@ -387,7 +391,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Create a new instance of the class.</p>
 
                       </div>
                       <div class="declaration">
@@ -398,15 +402,34 @@
 
                         </div>
                       </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>string</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>String</code> to be scanned</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
                     </section>
                   </div>
                 </li>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:s23CustomStringConvertibleP11descriptionSSv"></a>
+                    <a name="/s:9OysterKit13StringScannerC11descriptionSSv"></a>
                     <a name="//apple_ref/swift/Property/description" class="dashAnchor"></a>
-                    <a class="token" href="#/s:s23CustomStringConvertibleP11descriptionSSv">description</a>
+                    <a class="token" href="#/s:9OysterKit13StringScannerC11descriptionSSv">description</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -414,7 +437,8 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        
+                        <p>A useful description of the state of the scanner</p>
+
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
@@ -440,7 +464,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Advances the scan-head by one position. If it is at the end of the String it will not move (that is the scan-head will not advance past the last character in the <code>String</code>.</p>
 
                       </div>
                       <div class="declaration">
@@ -450,6 +474,10 @@
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">scanNext</span><span class="p">()</span><span class="o">-&gt;</span><span class="kt">UnicodeScalar</span><span class="p">?</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The <code>UnicodeScalar</code> currently at the new scan-head position, or nil if the end of the <code>String</code> has been reached.</p>
                       </div>
                     </section>
                   </div>
@@ -467,7 +495,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>: Scans all characters from the supplied set, continuing until the scanner hits a character not in the set. Returns true if at least one is found</p>
+                        <p>Scans all characters from the supplied set, continuing until the scanner hits a character not in the set.</p>
 
                       </div>
                       <div class="declaration">
@@ -477,6 +505,29 @@
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">scan</span><span class="p">(</span><span class="n">charactersFrom</span> <span class="nv">set</span><span class="p">:</span><span class="kt">CharacterSet</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">Bool</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>charactersFrom</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>CharacterSet</code> to scan for</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p><code>true</code> if at least one is found, <code>false</code> otherwise</p>
                       </div>
                     </section>
                   </div>
@@ -494,7 +545,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>: Scan a single character from thet set, returning true if the character is found</p>
+                        <p>Scans a single character from the supplied set</p>
 
                       </div>
                       <div class="declaration">
@@ -504,6 +555,29 @@
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">scan</span><span class="p">(</span><span class="n">characterFrom</span> <span class="nv">set</span><span class="p">:</span><span class="kt">CharacterSet</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">Bool</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>charactersFrom</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>CharacterSet</code> to scan for</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p><code>true</code> if one is found, <code>false</code> otherwise</p>
                       </div>
                     </section>
                   </div>
@@ -521,7 +595,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>: Scan a single character from thet set, returning true if the character is found</p>
+                        <p>Advances the scan-head until a character from the supplied <code>CharacterSet</code> is found, or the end of the <code>String</code> is reached.</p>
 
                       </div>
                       <div class="declaration">
@@ -531,6 +605,29 @@
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">scanUpTo</span><span class="p">(</span><span class="n">characterFrom</span> <span class="nv">set</span><span class="p">:</span><span class="kt">CharacterSet</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">Bool</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>charactersFrom</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>CharacterSet</code> that should stop scanning</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p><code>true</code> if a character from the supplied set is found before the end of the string.</p>
                       </div>
                     </section>
                   </div>
@@ -548,7 +645,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Advances the scan-head until a character from the supplied <code>String</code> is found, or the end of the <code>String</code> is reached.</p>
 
                       </div>
                       <div class="declaration">
@@ -558,6 +655,29 @@
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">scanUpTo</span><span class="p">(</span><span class="nv">string</span><span class="p">:</span><span class="kt">String</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">Bool</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>string</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>String</code> that should stop scanning</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p><code>true</code> if <code><a href="../Classes/StringScanner.html#/s:9OysterKit13StringScannerC6stringSSv">string</a></code> is found before the end of the source.</p>
                       </div>
                     </section>
                   </div>
@@ -575,7 +695,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Advances the scan-head to the end of the supplied string providing it matches.</p>
 
                       </div>
                       <div class="declaration">
@@ -586,6 +706,29 @@
 
                         </div>
                       </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>string</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>String</code> that should be matched</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p><code>true</code> if <code><a href="../Classes/StringScanner.html#/s:9OysterKit13StringScannerC6stringSSv">string</a></code> is sfound strating from the current scan-head position and before the end of the source.</p>
+                      </div>
                     </section>
                   </div>
                 </li>
@@ -594,7 +737,7 @@
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-01-17)</p>
+          <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-01-18)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

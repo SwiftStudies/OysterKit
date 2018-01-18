@@ -14,7 +14,7 @@
     <a title="ValuedNode Protocol Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">OysterKit Docs</a> (21% documented)</p>
+        <p><a href="../index.html">OysterKit Docs</a> (58% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -158,9 +158,6 @@
                 <a href="../Extensions/Array.html">Array</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Extensions/Array/Wrapper.html">– Wrapper</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Extensions/CharacterSet.html">CharacterSet</a>
               </li>
               <li class="nav-group-task">
@@ -208,9 +205,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Protocols/HumanConsumableError.html">HumanConsumableError</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/IRIndependantNode.html">IRIndependantNode</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a>
@@ -273,6 +267,9 @@
               <li class="nav-group-task">
                 <a href="../Typealiases.html#/s:9OysterKit17CustomRuleClosurea">CustomRuleClosure</a>
               </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:9OysterKit23DefaultHeterogeneousASTa">DefaultHeterogeneousAST</a>
+              </li>
             </ul>
           </li>
         </ul>
@@ -287,7 +284,7 @@
 
                 </div>
               </div>
-            <p>Undocumented</p>
+            <p>An extension of the base <code><a href="../Protocols/Node.html">Node</a></code> type used by the standard ASTs that supports values of type <code>Any</code>. This is used primarily by <code>HeterogeousAST</code>s</p>
 
           </section>
           <section class="section task-group-section">
@@ -306,7 +303,12 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Create a new instance</p>
+
+<p>-Parameter for: The <code><a href="../Protocols/Token.html">Token</a></code> the node captures
+-Parameter at: The range the token was matched at in the original source string
+-Parameter value: The value, if any
+-Prameter annotations: Any annotations that should be stored with the node</p>
 
                       </div>
                       <div class="declaration">
@@ -333,7 +335,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The value associated with the Node</p>
 
                       </div>
                       <div class="declaration">
@@ -367,7 +369,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>A human readable description of the node</p>
 
                       </div>
                       <div class="declaration">
@@ -397,7 +399,11 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Casts the node&rsquo;s value to the receiving data type. For example:</p>
+<pre class="highlight swift"><code>    <span class="k">guard</span> <span class="k">let</span> <span class="nv">value</span> <span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="n">valuedNode</span><span class="o">.</span><span class="nf">cast</span><span class="p">()</span> <span class="nf">else</span> <span class="p">{</span>
+       <span class="nf">fatalError</span><span class="p">(</span><span class="s">"Expected the value of </span><span class="se">\(</span><span class="n">node</span><span class="se">)</span><span class="s"> to be an Int"</span><span class="p">)</span>
+    <span class="p">}</span>
+</code></pre>
 
                       </div>
                       <div class="declaration">
@@ -408,6 +414,117 @@
 
                         </div>
                       </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The value as type <code>N</code></p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit10ValuedNodePAAE9subscriptxSgAA5Token_pci"></a>
+                    <a name="//apple_ref/swift/Method/subscript(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit10ValuedNodePAAE9subscriptxSgAA5Token_pci">subscript(_:)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>If the value is an array of child nodes, and a child node exists with the specified token, returns that node. If more than
+one child has that token, the first is returned.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">subscript</span><span class="p">(</span><span class="n">_</span> <span class="nv">token</span><span class="p">:</span><span class="kt"><a href="../Protocols/Token.html">Token</a></span><span class="p">)</span><span class="o">-&gt;</span><span class="k">Self</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>token</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code><a href="../Protocols/Token.html">Token</a></code> to retreive</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The requested <code><a href="../Protocols/Token.html">Token</a></code> or <code>nil</code></p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit10ValuedNodePAAE9subscriptxSgSici"></a>
+                    <a name="//apple_ref/swift/Method/subscript(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit10ValuedNodePAAE9subscriptxSgSici">subscript(_:)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>If the value is an array of child nodes, and a child node exists at the specified index, returns that node</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">subscript</span><span class="p">(</span><span class="n">_</span> <span class="nv">index</span><span class="p">:</span><span class="kt">Int</span><span class="p">)</span><span class="o">-&gt;</span><span class="k">Self</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>token</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The index of the child to retreive</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The requested <code><a href="../Protocols/Token.html">Token</a></code> or <code>nil</code></p>
+                      </div>
                     </section>
                   </div>
                 </li>
@@ -416,7 +533,7 @@
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-01-17)</p>
+          <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-01-18)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
