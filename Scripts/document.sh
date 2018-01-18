@@ -1,1 +1,1 @@
-jazzy -o Documentation -c -x -scheme,OysterKit-Package -m OysterKit
+jazzy -o Documentation -c --theme fullwidth -x -scheme,OysterKit-Package -m OysterKit 

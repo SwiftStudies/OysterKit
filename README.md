@@ -4,7 +4,7 @@ OysterKit is a framework that provides a native Swift scanning, lexical analysis
 
 There is a command line tool that enables you to test grammars defined in STLR and generate parsers in Swift based on grammars [available here](https://github.com/SwiftStudies/STLR/). 
 
-You can find the API documentation both in the repository and here [API Documentation](https://rawgit.com/SwiftStudies/OysterKit/master/Documentation/index.html). I am currently working to get complete coverage of documentation (see Projects). 
+You can find the API documentation both in the repository and here [API Documentation](https://rawgit.com/SwiftStudies/OysterKit/master/Documentation/index.html).
 
 For those that used v1.0 there are significant performance and capability benefits of moving to v2. I have not yet built an OKScript translator, but that could quite easily be done if there is demand. 
 
@@ -22,4 +22,3 @@ For those that used v1.0 there are significant performance and capability benefi
 ## Status
 
   - All tests are passing
-  - Public API Documentation Progress: **72%**

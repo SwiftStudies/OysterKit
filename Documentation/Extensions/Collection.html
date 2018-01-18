@@ -4,282 +4,297 @@
     <title>Collection Extension Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
-    <meta charset='utf-8'>
+    <meta charset="utf-8">
     <script src="../js/jquery.min.js" defer></script>
     <script src="../js/jazzy.js" defer></script>
     
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
   </head>
   <body>
+
     <a name="//apple_ref/swift/Extension/Collection" class="dashAnchor"></a>
+
     <a title="Collection Extension Reference"></a>
-    <header>
-      <div class="content-wrapper">
-        <p><a href="../index.html">OysterKit Docs</a> (73% documented)</p>
-      </div>
-    </header>
-    <div class="content-wrapper">
-      <p id="breadcrumbs">
-        <a href="../index.html">OysterKit Reference</a>
-        <img id="carat" src="../img/carat.png" />
-        Collection Extension Reference
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="../index.html">
+          OysterKit Docs
+        </a>
+         (95% documented)
       </p>
-    </div>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="../search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../index.html">OysterKit Reference</a>
+      <img class="carat" src="../img/carat.png" />
+      Collection Extension Reference
+    </p>
+
     <div class="content-wrapper">
-      <nav class="sidebar">
+      <nav class="navigation">
         <ul class="nav-groups">
           <li class="nav-group-name">
-            <a href="../Classes.html">Classes</a>
+            <a class="nav-group-name-link" href="../Classes.html">Classes</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="../Classes/DebuggingDelegate.html">DebuggingDelegate</a>
+                <a class="nav-group-task-link" href="../Classes/DebuggingDelegate.html">DebuggingDelegate</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/DefaultHeterogenousConstructor.html">DefaultHeterogenousConstructor</a>
+                <a class="nav-group-task-link" href="../Classes/DefaultHeterogenousConstructor.html">DefaultHeterogenousConstructor</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/DefaultHomogenousAST.html">DefaultHomogenousAST</a>
+                <a class="nav-group-task-link" href="../Classes/DefaultHomogenousAST.html">DefaultHomogenousAST</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/ForwardingIR.html">ForwardingIR</a>
+                <a class="nav-group-task-link" href="../Classes/ForwardingIR.html">ForwardingIR</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/HeterogenousAST.html">HeterogenousAST</a>
+                <a class="nav-group-task-link" href="../Classes/HeterogenousAST.html">HeterogenousAST</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/HomogenousAST.html">HomogenousAST</a>
+                <a class="nav-group-task-link" href="../Classes/HomogenousAST.html">HomogenousAST</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/Lexer.html">Lexer</a>
+                <a class="nav-group-task-link" href="../Classes/Lexer.html">Lexer</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/NodeIterator.html">NodeIterator</a>
+                <a class="nav-group-task-link" href="../Classes/NodeIterator.html">NodeIterator</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/NodeStack.html">NodeStack</a>
+                <a class="nav-group-task-link" href="../Classes/NodeStack.html">NodeStack</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/NodeStackEntry.html">NodeStackEntry</a>
+                <a class="nav-group-task-link" href="../Classes/NodeStackEntry.html">NodeStackEntry</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/Parser.html">Parser</a>
+                <a class="nav-group-task-link" href="../Classes/Parser.html">Parser</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/RecursiveRule.html">RecursiveRule</a>
+                <a class="nav-group-task-link" href="../Classes/RecursiveRule.html">RecursiveRule</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/STLRIntermediateRepresentation.html">STLRIntermediateRepresentation</a>
+                <a class="nav-group-task-link" href="../Classes/STLRIntermediateRepresentation.html">STLRIntermediateRepresentation</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/STLRIntermediateRepresentation/Expression.html">– Expression</a>
+                <a class="nav-group-task-link" href="../Classes/STLRIntermediateRepresentation/Expression.html">– Expression</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/STLRIntermediateRepresentation/Modifier.html">– Modifier</a>
+                <a class="nav-group-task-link" href="../Classes/STLRIntermediateRepresentation/Modifier.html">– Modifier</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/STLRIntermediateRepresentation/Element.html">– Element</a>
+                <a class="nav-group-task-link" href="../Classes/STLRIntermediateRepresentation/Element.html">– Element</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/STLRIntermediateRepresentation/Identifier.html">– Identifier</a>
+                <a class="nav-group-task-link" href="../Classes/STLRIntermediateRepresentation/Identifier.html">– Identifier</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/STLRIntermediateRepresentation/ElementAnnotationInstance.html">– ElementAnnotationInstance</a>
+                <a class="nav-group-task-link" href="../Classes/STLRIntermediateRepresentation/ElementAnnotationInstance.html">– ElementAnnotationInstance</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/STLRIntermediateRepresentation/ElementAnnotationValue.html">– ElementAnnotationValue</a>
+                <a class="nav-group-task-link" href="../Classes/STLRIntermediateRepresentation/ElementAnnotationValue.html">– ElementAnnotationValue</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/STLRIntermediateRepresentation/TerminalCharacterSet.html">– TerminalCharacterSet</a>
+                <a class="nav-group-task-link" href="../Classes/STLRIntermediateRepresentation/TerminalCharacterSet.html">– TerminalCharacterSet</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/STLRIntermediateRepresentation/Terminal.html">– Terminal</a>
+                <a class="nav-group-task-link" href="../Classes/STLRIntermediateRepresentation/Terminal.html">– Terminal</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/STLRIntermediateRepresentation/Text.html">– Text</a>
+                <a class="nav-group-task-link" href="../Classes/STLRIntermediateRepresentation/GrammarRule.html">– GrammarRule</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/STLRIntermediateRepresentation/GrammarRule.html">– GrammarRule</a>
+                <a class="nav-group-task-link" href="../Classes/STLRIntermediateRepresentation/ElementAnnotation.html">– ElementAnnotation</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/STLRIntermediateRepresentation/ElementAnnotation.html">– ElementAnnotation</a>
+                <a class="nav-group-task-link" href="../Classes/STLRParser.html">STLRParser</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/STLRParser.html">STLRParser</a>
+                <a class="nav-group-task-link" href="../Classes/StateCache.html">StateCache</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/StateCache.html">StateCache</a>
+                <a class="nav-group-task-link" href="../Classes/StreamConstructor.html">StreamConstructor</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/StreamConstructor.html">StreamConstructor</a>
+                <a class="nav-group-task-link" href="../Classes/StreamRepresentation.html">StreamRepresentation</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/StreamRepresentation.html">StreamRepresentation</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/StringScanner.html">StringScanner</a>
+                <a class="nav-group-task-link" href="../Classes/StringScanner.html">StringScanner</a>
               </li>
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Enums.html">Enumerations</a>
+            <a class="nav-group-name-link" href="../Enums.html">Enumerations</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="../Enums/BackgroundTimer.html">BackgroundTimer</a>
+                <a class="nav-group-task-link" href="../Enums/BackgroundTimer.html">BackgroundTimer</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Enums/GrammarError.html">GrammarError</a>
+                <a class="nav-group-task-link" href="../Enums/GrammarError.html">GrammarError</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Enums/LanguageError.html">LanguageError</a>
+                <a class="nav-group-task-link" href="../Enums/LanguageError.html">LanguageError</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Enums/MatchResult.html">MatchResult</a>
+                <a class="nav-group-task-link" href="../Enums/MatchResult.html">MatchResult</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Enums/ParserRule.html">ParserRule</a>
+                <a class="nav-group-task-link" href="../Enums/ParserRule.html">ParserRule</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Enums/Platform.html">Platform</a>
+                <a class="nav-group-task-link" href="../Enums/Platform.html">Platform</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Enums/RuleAnnotation.html">RuleAnnotation</a>
+                <a class="nav-group-task-link" href="../Enums/RuleAnnotation.html">RuleAnnotation</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Enums/RuleAnnotationValue.html">RuleAnnotationValue</a>
+                <a class="nav-group-task-link" href="../Enums/RuleAnnotationValue.html">RuleAnnotationValue</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Enums/ScannerRule.html">ScannerRule</a>
+                <a class="nav-group-task-link" href="../Enums/ScannerRule.html">ScannerRule</a>
               </li>
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Extensions.html">Extensions</a>
+            <a class="nav-group-name-link" href="../Extensions.html">Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="../Extensions/Array.html">Array</a>
+                <a class="nav-group-task-link" href="../Extensions/Array.html">Array</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Extensions/CharacterSet.html">CharacterSet</a>
+                <a class="nav-group-task-link" href="../Extensions/CharacterSet.html">CharacterSet</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Extensions/Collection.html">Collection</a>
+                <a class="nav-group-task-link" href="../Extensions/Collection.html">Collection</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Extensions/DispatchTimeInterval.html">DispatchTimeInterval</a>
+                <a class="nav-group-task-link" href="../Extensions/DispatchTimeInterval.html">DispatchTimeInterval</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Extensions/Int.html">Int</a>
+                <a class="nav-group-task-link" href="../Extensions/Int.html">Int</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Extensions/String.html">String</a>
+                <a class="nav-group-task-link" href="../Extensions/String.html">String</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Extensions/String/UnicodeScalarView.html">– UnicodeScalarView</a>
+                <a class="nav-group-task-link" href="../Extensions/String/UnicodeScalarView.html">– UnicodeScalarView</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Extensions/StringProtocol.html">StringProtocol</a>
+                <a class="nav-group-task-link" href="../Extensions/StringProtocol.html">StringProtocol</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Extensions/_ParsingDecoder.html">_ParsingDecoder</a>
+                <a class="nav-group-task-link" href="../Extensions/_ParsingDecoder.html">_ParsingDecoder</a>
               </li>
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Functions.html">Functions</a>
+            <a class="nav-group-name-link" href="../Functions.html">Functions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="../Functions.html#/s:9OysterKit2eeoiSbAA30STLRIntermediateRepresentationC10IdentifierC_AFtF">==(_:_:)</a>
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit2eeoiSbAA30STLRIntermediateRepresentationC10IdentifierC_AFtF">==(_:_:)</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Functions.html#/s:9OysterKit2eeoiSbAA5Token_p_AaC_ptF">==(_:_:)</a>
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit2eeoiSbAA5Token_p_AaC_ptF">==(_:_:)</a>
               </li>
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Protocols.html">Protocols</a>
+            <a class="nav-group-name-link" href="../Protocols.html">Protocols</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="../Protocols/ASTNodeConstructor.html">ASTNodeConstructor</a>
+                <a class="nav-group-task-link" href="../Protocols/ASTNodeConstructor.html">ASTNodeConstructor</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Protocols/DecodeableNode.html">DecodeableNode</a>
+                <a class="nav-group-task-link" href="../Protocols/DecodeableNode.html">DecodeableNode</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Protocols/HumanConsumableError.html">HumanConsumableError</a>
+                <a class="nav-group-task-link" href="../Protocols/HumanConsumableError.html">HumanConsumableError</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a>
+                <a class="nav-group-task-link" href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Protocols/Language.html">Language</a>
+                <a class="nav-group-task-link" href="../Protocols/Language.html">Language</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a>
+                <a class="nav-group-task-link" href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Protocols/LexicalContext.html">LexicalContext</a>
+                <a class="nav-group-task-link" href="../Protocols/LexicalContext.html">LexicalContext</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Protocols/Matcher.html">Matcher</a>
+                <a class="nav-group-task-link" href="../Protocols/Matcher.html">Matcher</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Protocols/Node.html">Node</a>
+                <a class="nav-group-task-link" href="../Protocols/Node.html">Node</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Protocols/Rule.html">Rule</a>
+                <a class="nav-group-task-link" href="../Protocols/Rule.html">Rule</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Protocols/STLRExpressionOptimizer.html">STLRExpressionOptimizer</a>
+                <a class="nav-group-task-link" href="../Protocols/STLRExpressionOptimizer.html">STLRExpressionOptimizer</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Protocols.html#/s:9OysterKit13STLROptimizerP">STLROptimizer</a>
+                <a class="nav-group-task-link" href="../Protocols.html#/s:9OysterKit13STLROptimizerP">STLROptimizer</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Protocols/Token.html">Token</a>
+                <a class="nav-group-task-link" href="../Protocols/Token.html">Token</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Protocols/ValuedNode.html">ValuedNode</a>
+                <a class="nav-group-task-link" href="../Protocols/ValuedNode.html">ValuedNode</a>
               </li>
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Structs.html">Structures</a>
+            <a class="nav-group-name-link" href="../Structs.html">Structures</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="../Structs/CharacterSetOnlyChoiceOptimizer.html">CharacterSetOnlyChoiceOptimizer</a>
+                <a class="nav-group-task-link" href="../Structs/CharacterSetOnlyChoiceOptimizer.html">CharacterSetOnlyChoiceOptimizer</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Structs/HeterogeneousNode.html">HeterogeneousNode</a>
+                <a class="nav-group-task-link" href="../Structs/HeterogeneousNode.html">HeterogeneousNode</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Structs/HomogenousNode.html">HomogenousNode</a>
+                <a class="nav-group-task-link" href="../Structs/HomogenousNode.html">HomogenousNode</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Structs/InlineIdentifierOptimization.html">InlineIdentifierOptimization</a>
+                <a class="nav-group-task-link" href="../Structs/InlineIdentifierOptimization.html">InlineIdentifierOptimization</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Structs/ParsingDecoder.html">ParsingDecoder</a>
+                <a class="nav-group-task-link" href="../Structs/ParsingDecoder.html">ParsingDecoder</a>
               </li>
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Typealiases.html">Type Aliases</a>
+            <a class="nav-group-name-link" href="../Typealiases.html">Type Aliases</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="../Typealiases.html#/s:9OysterKit17CustomRuleClosurea">CustomRuleClosure</a>
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit17CustomRuleClosurea">CustomRuleClosure</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Typealiases.html#/s:9OysterKit23DefaultHeterogeneousASTa">DefaultHeterogeneousAST</a>
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit23DefaultHeterogeneousASTa">DefaultHeterogeneousAST</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a>
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a>
               </li>
             </ul>
           </li>
         </ul>
       </nav>
       <article class="main-content">
-        <section>
-          <section class="section">
+
+        <section class="section">
+          <div class="section-content">
             <h1>Collection</h1>
               <div class="declaration">
                 <div class="language">
@@ -289,10 +304,13 @@
               </div>
             <p>An extension for any collection containing a <code><a href="../Protocols/ValuedNode.html">ValuedNode</a></code></p>
 
-          </section>
-          <section class="section task-group-section">
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
             <div class="task-group">
-              <ul>
+              <ul class="item-container">
                 <li class="item">
                   <div>
                     <code>
@@ -381,7 +399,7 @@
               </ul>
             </div>
             <div class="task-group">
-              <ul>
+              <ul class="item-container">
                 <li class="item">
                   <div>
                     <code>
@@ -412,7 +430,7 @@
               </ul>
             </div>
             <div class="task-group">
-              <ul>
+              <ul class="item-container">
                 <li class="item">
                   <div>
                     <code>
@@ -490,7 +508,7 @@ this object</p>
               </ul>
             </div>
             <div class="task-group">
-              <ul>
+              <ul class="item-container">
                 <li class="item">
                   <div>
                     <code>
@@ -610,7 +628,7 @@ this object</p>
               </ul>
             </div>
             <div class="task-group">
-              <ul>
+              <ul class="item-container">
                 <li class="item">
                   <div>
                     <code>
@@ -624,7 +642,7 @@ this object</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The collection as <code><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></code> usable directly by <code><a href="../Protocols/Rule.html">Rule</a></code></p>
 
                       </div>
                       <div class="declaration">
@@ -651,7 +669,7 @@ this object</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The annotations in STLR source form</p>
 
                       </div>
                       <div class="declaration">
@@ -678,7 +696,7 @@ this object</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Determines if the given annotation is present in the collection</p>
 
                       </div>
                       <div class="declaration">
@@ -686,6 +704,52 @@ this object</p>
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">isSet</span><span class="p">(</span><span class="n">_</span> <span class="nv">annotation</span><span class="p">:</span><span class="kt"><a href="../Classes/STLRIntermediateRepresentation.html">STLRIntermediateRepresentation</a></span><span class="o">.</span><span class="kt">ElementAnnotation</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>annotation</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The annotation to look for</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:s10CollectionP9OysterKitsAARzAC30STLRIntermediateRepresentationC25ElementAnnotationInstanceV0F0RtzlE9subscriptAE0fG5ValueOSgAC04RuleG0O10annotation_tci"></a>
+                    <a name="//apple_ref/swift/Method/subscript(annotation:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:s10CollectionP9OysterKitsAARzAC30STLRIntermediateRepresentationC25ElementAnnotationInstanceV0F0RtzlE9subscriptAE0fG5ValueOSgAC04RuleG0O10annotation_tci">subscript(annotation:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The value for the given annotation</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">subscript</span><span class="p">(</span><span class="n">annotation</span> <span class="nv">key</span><span class="p">:</span><span class="kt"><a href="../Classes/STLRIntermediateRepresentation.html">STLRIntermediateRepresentation</a></span><span class="o">.</span><span class="kt">ElementAnnotation</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt"><a href="../Classes/STLRIntermediateRepresentation.html">STLRIntermediateRepresentation</a></span><span class="o">.</span><span class="kt">ElementAnnotationValue</span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -705,7 +769,7 @@ this object</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Removes the annotation with the given key from the Collection and returns a new collection with the annotation removed</p>
 
                       </div>
                       <div class="declaration">
@@ -715,6 +779,25 @@ this object</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">remove</span><span class="p">(</span><span class="n">_</span> <span class="nv">annotation</span><span class="p">:</span><span class="kt"><a href="../Classes/STLRIntermediateRepresentation.html">STLRIntermediateRepresentation</a></span><span class="o">.</span><span class="kt">ElementAnnotation</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt"><a href="../Classes/STLRIntermediateRepresentation.html">STLRIntermediateRepresentation</a></span><span class="o">.</span><span class="kt">ElementAnnotations</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>annotation</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The annotation to remove</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -732,7 +815,7 @@ this object</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Merges the incoming annotations with the existing list. Incoming annotations override those already there</p>
 
                       </div>
                       <div class="declaration">
@@ -743,19 +826,43 @@ this object</p>
 
                         </div>
                       </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>with</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The annotations which should augment or override the existing annotations</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The resultant <code>ElementAnnotations</code></p>
+                      </div>
                     </section>
                   </div>
                 </li>
               </ul>
             </div>
-          </section>
+          </div>
         </section>
-        <section id="footer">
-          <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-01-18)</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
-        </section>
+
       </article>
     </div>
+    <section class="footer">
+      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-01-18)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
   </body>
 </div>
 </html>

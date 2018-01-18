@@ -7,7 +7,8 @@ import Cocoa
 
 // 
 // STLR Parser
-// 
+//
+/// The automatically generated STLR grammar
 enum STLR : Int, Token {
 
 	// Convenience alias

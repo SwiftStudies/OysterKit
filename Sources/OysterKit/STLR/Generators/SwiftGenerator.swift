@@ -1,10 +1,26 @@
+//    Copyright (c) 2016, RED When Excited
+//    All rights reserved.
 //
-//  SwiftGenerator.swift
-//  OysterKit
+//    Redistribution and use in source and binary forms, with or without
+//    modification, are permitted provided that the following conditions are met:
 //
-//  
-//  Copyright © 2016 RED When Excited. All rights reserved.
+//    * Redistributions of source code must retain the above copyright notice, this
+//    list of conditions and the following disclaimer.
 //
+//    * Redistributions in binary form must reproduce the above copyright notice,
+//    this list of conditions and the following disclaimer in the documentation
+//    and/or other materials provided with the distribution.
+//
+//    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+//    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+//    IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+//    DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+//    FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+//    DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+//    SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+//    CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+//    OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+//    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Foundation
 
@@ -34,8 +50,18 @@ private extension String {
     }
 }
 
+/**
+ Captures the different platforms supported by Swift which will influence code generation
+ */
 public enum Platform{
-    case macOS, iOS, foundation
+    /// The Mac platform
+    case macOS
+    
+    /// iOS
+    case iOS
+    
+    /// Linux or other platforms
+    case foundation
     
     fileprivate var colorType : String {
         switch self {
@@ -60,6 +86,12 @@ public enum Platform{
         }
     }
     
+    /**
+     Generates the appropriate Swift source for a color on this platform
+     
+     - Parameter: A tuple containing the RGB values for the color (each a float from 0-1)
+     - Returns: A String containing the Swift source
+    */
     func colorLiteral(rgb:(r:Float,g:Float,b:Float))->String{
         switch self {
         case .macOS,.iOS:
@@ -70,7 +102,16 @@ public enum Platform{
     }
 }
 
+/// Generates Swift code that implements the specified grammar in Swift using OysterKit
 public extension STLRIntermediateRepresentation {
+    /**
+     Generates Swift code that uses OysterKit to implement the parsed grammar
+     
+     - Parameter grammar: The name of the class that will be generated
+     - Parameter platform: The target platform for the class (note this will be depricated in a subsequent release so it is no longer required)
+     - Parameter colors: A dictionary of colors that can be used by syntax coloring engines
+     - Returns: A `String` containing the Swift source or `nil` if an error occured.
+    */
     func swift(grammar name:String, platform : Platform = .macOS, colors : [String : (r:Float,g:Float,b:Float)]?  = nil)->String?{
         var output = ""
         
@@ -209,7 +250,9 @@ public extension STLRIntermediateRepresentation {
     }
 }
 
+/// Extends with Swift Generation
 internal extension STLRIntermediateRepresentation.GrammarRule{
+    
     func swift(depth:Int = 0, from ast:STLRIntermediateRepresentation, creating token:Token, annotations:STLRIntermediateRepresentation.ElementAnnotations)->String{
         let depth = depth + 1
         var result = ""
