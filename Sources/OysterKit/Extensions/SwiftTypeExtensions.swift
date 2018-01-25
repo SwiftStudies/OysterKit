@@ -20,21 +20,7 @@ public extension String {
     func consume(annotations:RuleAnnotations?=nil)->Rule {
         return terminal(token: ConsumedToken.skip).consume(annotations: annotations)
     }
-    
-    func  dynamicRule(token:Token)->Rule? {
-        let grammarDef = "_ = \(self)"
-        
-        let compiler = STLRParser(source: grammarDef)
-        
-        let ast = compiler.ast 
-        
-        guard ast.rules.count > 0 else {
-            return nil
-        }
-        
-        
-        return ast.rules[0].rule(from: ast, creating: token)
-    }
+
 }
 
 public extension CharacterSet {
