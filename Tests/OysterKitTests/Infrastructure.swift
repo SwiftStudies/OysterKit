@@ -8,6 +8,7 @@
 
 import Foundation
 @testable import OysterKit
+import STLR
 
 
 

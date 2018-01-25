@@ -24,6 +24,7 @@
 
 
 import Foundation
+import OysterKit
 
 /// A parser for [STLR](https://github.com/SwiftStudies/OysterKit/blob/master/STLR.md) source files
 public class STLRParser : Parser{

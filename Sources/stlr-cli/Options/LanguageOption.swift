@@ -7,6 +7,7 @@
 
 import Foundation
 import OysterKit
+import STLR
 
 class LanguageOption : Option, IndexableParameterized {
     typealias ParameterIndexType    = Parameters

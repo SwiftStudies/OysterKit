@@ -23,6 +23,7 @@
 //    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Foundation
+import OysterKit
 
 private func tabs(_ depth:Int)->String{
     return String(repeating: "\t", count: depth)

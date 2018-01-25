@@ -8,6 +8,7 @@
 
 import XCTest
 @testable import OysterKit
+@testable import STLR
 
 extension String {
     mutating func add(line: String){

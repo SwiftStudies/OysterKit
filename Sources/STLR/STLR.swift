@@ -4,6 +4,7 @@
 // Generated: 2017-12-07 02:44:18 +0000
 // 
 import Cocoa
+import OysterKit
 
 // 
 // STLR Parser

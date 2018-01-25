@@ -23,6 +23,7 @@
 //    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Foundation
+import OysterKit
 
 /// Extensions to provide validation functions
 public extension STLRIntermediateRepresentation{

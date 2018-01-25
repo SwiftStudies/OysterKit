@@ -10,6 +10,7 @@ import Foundation
 
 import XCTest
 @testable import OysterKit
+import STLR
 
 
 class STLRTest: XCTestCase {

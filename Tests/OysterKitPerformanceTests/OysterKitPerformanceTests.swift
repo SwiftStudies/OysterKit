@@ -8,6 +8,7 @@
 
 import XCTest
 import OysterKit
+import STLR
 import ExampleLanguages
 
 class OysterKitPerformanceTests: XCTestCase {
@@ -155,6 +156,7 @@ class OysterKitPerformanceTests: XCTestCase {
                 
             }
         }
+        
         let parser = STLRParser(source: stlrSource)
         
         // This is an example of a performance test case.

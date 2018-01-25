@@ -23,6 +23,7 @@
 //    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Foundation
+import OysterKit
 
 extension STLRIntermediateRepresentation : ASTNodeConstructor {
     public typealias NodeType = HeterogeneousNode

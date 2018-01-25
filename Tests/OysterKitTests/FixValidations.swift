@@ -8,6 +8,7 @@
 
 import XCTest
 @testable import OysterKit
+import STLR
 
 class FixValidations: XCTestCase {
 

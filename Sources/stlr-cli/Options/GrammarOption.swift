@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import OysterKit
+import STLR
 
 protocol GrammarConsumer {
 }

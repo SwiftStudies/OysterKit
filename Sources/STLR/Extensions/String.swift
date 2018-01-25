@@ -24,17 +24,20 @@
 
 import OysterKit
 
-func  dynamicRule(token:Token)->Rule? {
-    let grammarDef = "_ = \(self)"
-    
-    let compiler = STLRParser(source: grammarDef)
-    
-    let ast = compiler.ast
-    
-    guard ast.rules.count > 0 else {
-        return nil
+public extension String {
+    public func  dynamicRule(token:Token)->Rule? {
+        let grammarDef = "_ = \(self)"
+        
+        let compiler = STLRParser(source: grammarDef)
+        
+        let ast = compiler.ast
+        
+        guard ast.rules.count > 0 else {
+            return nil
+        }
+        
+        
+        return ast.rules[0].rule(from: ast, creating: token)
     }
-    
-    
-    return ast.rules[0].rule(from: ast, creating: token)
 }
+

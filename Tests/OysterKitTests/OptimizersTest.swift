@@ -8,6 +8,7 @@
 
 import XCTest
 import OysterKit
+import STLR
 
 class OptimizersTest: GrammarTest {
 
