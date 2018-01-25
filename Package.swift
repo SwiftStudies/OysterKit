@@ -48,9 +48,12 @@ let package = Package(
             dependencies: ["OysterKit"]),
         .testTarget(
             name: "OysterKitTests",
+            dependencies: ["OysterKit","ExampleLanguages"]),
+        .testTarget(
+            name: "STLRTests",
             dependencies: ["OysterKit","ExampleLanguages","STLR"]),
         .testTarget(
-            name: "OysterKitPerformanceTests",
+            name: "PerformanceTests",
             dependencies: ["OysterKit","ExampleLanguages","STLR"]),
     ]
 )
