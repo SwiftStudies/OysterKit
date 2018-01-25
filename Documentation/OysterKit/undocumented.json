@@ -1,0 +1,152 @@
+{
+  "warnings": [
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Decoding/Parsing Decoder.swift",
+      "line": null,
+      "symbol": "_ParsingDecoder",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/DynamicParserGenerator.swift",
+      "line": 38,
+      "symbol": "STLRIntermediateRepresentation.runtimeLanguage",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/DynamicParserGenerator.swift",
+      "line": 156,
+      "symbol": "STLRIntermediateRepresentation.GrammarRule.rule(from:creating:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/DynamicParserGenerator.swift",
+      "line": 212,
+      "symbol": "STLRIntermediateRepresentation.Identifier.token",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/DynamicParserGenerator.swift",
+      "line": 216,
+      "symbol": "STLRIntermediateRepresentation.Identifier.rule(from:creating:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/DynamicParserGenerator.swift",
+      "line": 314,
+      "symbol": "STLRIntermediateRepresentation.Element.token",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/SwiftTypeExtensions.swift",
+      "line": 12,
+      "symbol": "String.until(token:annotations:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/SwiftTypeExtensions.swift",
+      "line": 16,
+      "symbol": "String.terminal(token:annotations:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/SwiftTypeExtensions.swift",
+      "line": 20,
+      "symbol": "String.consume(annotations:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/SwiftTypeExtensions.swift",
+      "line": 24,
+      "symbol": "String.dynamicRule(token:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/SwiftTypeExtensions.swift",
+      "line": 44,
+      "symbol": "CharacterSet.until(token:annotations:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/SwiftTypeExtensions.swift",
+      "line": 48,
+      "symbol": "CharacterSet.terminal(token:annotations:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/SwiftTypeExtensions.swift",
+      "line": 52,
+      "symbol": "CharacterSet.consume(greedily:annotations:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HomogenousAST.swift",
+      "line": 36,
+      "symbol": "ASTNodeConstructor.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HomogenousNode.swift",
+      "line": 11,
+      "symbol": "HomogenousNode",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/IntermediateRepresentation.swift",
+      "line": 60,
+      "symbol": "IntermediateRepresentation.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/Optimisers/CharacterSetOnlyChoiceOptimizer.swift",
+      "line": 42,
+      "symbol": "CharacterSetOnlyChoiceOptimizer",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/Optimisers/CharacterSetOnlyChoiceOptimizer.swift",
+      "line": 49,
+      "symbol": "CharacterSetOnlyChoiceOptimizer.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/Optimisers/InlineIdentifierOptimizer.swift",
+      "line": 11,
+      "symbol": "InlineIdentifierOptimization",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/Optimisers/InlineIdentifierOptimizer.swift",
+      "line": 18,
+      "symbol": "InlineIdentifierOptimization.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/STLR/STLRParser.swift",
+      "line": 30,
+      "symbol": "STLRParser.ast",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Volumes/Personal/SPM/OysterKit"
+}

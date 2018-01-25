@@ -13,9 +13,18 @@ let package = Package(
             targets: ["OysterKit"]
         ),
         .library(
+            name: "STLR",
+            type: .static,
+            targets: ["STLR"]
+        ),
+        .library(
             name: "ExampleLanguages",
             type: .static,
             targets: ["ExampleLanguages"]
+        ),
+        .executable(
+            name:"stlr",
+            targets: ["stlr-cli"]
         ),
     ],
     dependencies: [
@@ -26,8 +35,14 @@ let package = Package(
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
+            name: "STLR",
+            dependencies: ["OysterKit"]),
+        .target(
             name: "OysterKit",
             dependencies: []),
+        .target(
+            name: "stlr-cli",
+            dependencies: ["OysterKit","STLR"]),
         .target(
             name: "ExampleLanguages",
             dependencies: ["OysterKit"]),
