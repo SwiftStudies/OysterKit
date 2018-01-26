@@ -11,28 +11,22 @@ The first thing you need to do is actually create the package. To do this open T
     cd Bork
     swift package init --type executable
     
-This creates a package of the right type and gets all the basics set-up. We are going to use XCode to edit our code so lets automatically generate that an Xcode project to do that. 
+This creates a package of the right type and gets all the basics set-up. The first thing we need to do is add OysterKit as a dependency to the SPM package file. We'll do this using Xcode:  
 
-    swift package generate-xcodeproj
-    open Bork.xcodeproj
+    open Package.swift
     
-Xcode will open, and you can start editing. The first thing we need to do is set up our new package so that it can access OysterKit. This pretty simple. In Xcode edit Package.swift. We are going to require a specific version of OysterKit to ensure this tutorial keeps working!
+The first thing we need to do is set up our new package so that it can access OysterKit. This pretty simple. We are going to require a specific version of OysterKit to ensure this tutorial keeps working!
 
     // swift-tools-version:4.0
-    // The swift-tools-version declares the minimum version of Swift required to build this package.
 
     import PackageDescription
 
     let package = Package(
         name: "Bork",
         dependencies: [
-            // Dependencies declare other packages that this package depends on.
-            // .package(url: /* package url */, from: "1.0.0"),
-            .package(url: "https://github.com/SwiftStudies/OysterKit.git", .exact("0.1.2"))
+            .package(url: "https://github.com/SwiftStudies/OysterKit.git", .branch("master")
         ],
         targets: [
-            // Targets are the basic building blocks of a package. A target can     define a module or a test suite.
-            // Targets can depend on other targets in this package, and on products in packages which this package depends on.
             .target(
                 name: "Bork",
                 dependencies: ["OysterKit"]),
@@ -41,12 +35,13 @@ Xcode will open, and you can start editing. The first thing we need to do is set
 
 SPM will need to download OysterKit from github, and we'll need to update our Xcode project. We can do that pretty easily (note you don't need to close Xcode, it will spot the changes to the project and update)
 
-    swift package update
     swift package generate-xcodeproj
     
-The first line will cause SPM to go away and fetch the right version of OysterKit, and the second you are already familiar with... will update the Xcode project. 
+This will create the Xcode project. We can close the editor we had open for ````Package.swift```` now and open the full generated project:
 
-Let's go back to Xcode pick File->New->File... from the main menu. Scroll through the file types until you get to "Empty File". Click OK so that you can pick a location for our empty file. You should be in the root directory of your package (Bork). Create a New Folder and call it Grammars, and in that folder create a file called Bork.stlr. 
+	open Bork.xcodeproj
+
+Pick File->New->File... from the main menu. Scroll through the file types until you get to "Empty File". Click OK so that you can pick a location for our empty file. You should be in the root directory of your package (Bork). Create a New Folder and call it Grammars, and in that folder create a file called Bork.stlr. 
 
 ## Defining our Grammar
 
@@ -94,13 +89,13 @@ We've got a few nested groups here but really we are saying create a ```command`
 
 ## Testing the grammar
 
-So how do we use this grammar? How do we even know it works? Luckily I have made a command line tool to enable you to process STLR grammars, interactively test them and generate Swift source code from them. Let's start with testing, but first we'll need to download and build the command line tool (stlr). 
+So how do we use this grammar? How do we even know it works? Luckily I have made a command line tool to enable you to process STLR grammars, interactively test them and generate Swift source code from them. Let's start with testing, but first we'll need to build the command line tool (````stlr````). 
 
 I'm going to put this project in the same place as Bork, but again, you can change the first line of the commands below to be where you like to keep things! I am however assuming that the STLR and Bork directories have the same location. If you have put them in different places just make sure you specify the right location for Bork.stlr
 
     cd ~/Documents/Code
-    git clone https://github.com/SwiftStudies/STLR.git
-	cd STLR
+    git clone https://github.com/SwiftStudies/OysterKit.git
+	cd OysterKit
 	swift run stlr -g ../Bork/Grammars/Bork.stlr
 
 stlr will start up, parse the supplied grammar and then drop into interactive mode. Try typing some commands you should see output like the below:
