@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>DefaultHeterogenousConstructor Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Class/DefaultHeterogenousConstructor" class="dashAnchor"></a>
+
+    <a title="DefaultHeterogenousConstructor Class Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="../index.html">
+          OysterKit Docs
+        </a>
+         (97% documented)
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="../search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../index.html">OysterKit Reference</a>
+      <img class="carat" src="../img/carat.png" />
+      DefaultHeterogenousConstructor Class Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DebuggingDelegate.html">DebuggingDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DefaultHeterogenousConstructor.html">DefaultHeterogenousConstructor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DefaultHomogenousAST.html">DefaultHomogenousAST</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ForwardingIR.html">ForwardingIR</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/HeterogenousAST.html">HeterogenousAST</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/HomogenousAST.html">HomogenousAST</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/Lexer.html">Lexer</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/NodeIterator.html">NodeIterator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/NodeStack.html">NodeStack</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/NodeStackEntry.html">NodeStackEntry</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/Parser.html">Parser</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/RecursiveRule.html">RecursiveRule</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/StateCache.html">StateCache</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/StreamConstructor.html">StreamConstructor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/StreamRepresentation.html">StreamRepresentation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/StringScanner.html">StringScanner</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Global Variables.html">Global Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Global Variables.html#/s:9OysterKit19transientTokenValueSiv">transientTokenValue</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BackgroundTimer.html">BackgroundTimer</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/GrammarError.html">GrammarError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/LanguageError.html">LanguageError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/MatchResult.html">MatchResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/ParserRule.html">ParserRule</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/RuleAnnotation.html">RuleAnnotation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/RuleAnnotationValue.html">RuleAnnotationValue</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/ScannerRule.html">ScannerRule</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Array.html">Array</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/CharacterSet.html">CharacterSet</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Collection.html">Collection</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/DispatchTimeInterval.html">DispatchTimeInterval</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Int.html">Int</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/String.html">String</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/String/UnicodeScalarView.html">– UnicodeScalarView</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/StringProtocol.html">StringProtocol</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/_ParsingDecoder.html">_ParsingDecoder</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Functions.html">Functions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit2eeoiSbAA5Token_p_AaC_ptF">==(_:_:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ASTNodeConstructor.html">ASTNodeConstructor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/DecodeableNode.html">DecodeableNode</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HumanConsumableError.html">HumanConsumableError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/Language.html">Language</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/LexicalContext.html">LexicalContext</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/Node.html">Node</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/Rule.html">Rule</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/Token.html">Token</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ValuedNode.html">ValuedNode</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/HeterogeneousNode.html">HeterogeneousNode</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/HomogenousNode.html">HomogenousNode</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ParsingDecoder.html">ParsingDecoder</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit17CustomRuleClosurea">CustomRuleClosure</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit23DefaultHeterogeneousASTa">DefaultHeterogeneousAST</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            <h1>DefaultHeterogenousConstructor</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">DefaultHeterogenousConstructor</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/ASTNodeConstructor.html">ASTNodeConstructor</a></span></code></pre>
+
+                </div>
+              </div>
+            <p>Provides a default implementation of an <code><a href="../Protocols/ASTNodeConstructor.html">ASTNodeConstructor</a></code> that is expected to construct nodes that can have different fundamental data types. All nodes
+are of type <code><a href="../Structs/HeterogeneousNode.html">HeterogeneousNode</a></code>.</p>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit30DefaultHeterogenousConstructorC8NodeTypea"></a>
+                    <a name="//apple_ref/swift/Alias/NodeType" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit30DefaultHeterogenousConstructorC8NodeTypea">NodeType</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>All nodes must conform to the protocol <code><a href="../Structs/HeterogeneousNode.html">HeterogeneousNode</a></code></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">NodeType</span> <span class="o">=</span>  <span class="kt"><a href="../Structs/HeterogeneousNode.html">HeterogeneousNode</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit30DefaultHeterogenousConstructorCACycfc"></a>
+                    <a name="//apple_ref/swift/Method/init()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit30DefaultHeterogenousConstructorCACycfc">init()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Create a new instance of the constructor</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit30DefaultHeterogenousConstructorC5beginySS4with_tF"></a>
+                    <a name="//apple_ref/swift/Method/begin(with:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit30DefaultHeterogenousConstructorC5beginySS4with_tF">begin(with:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Does nothing</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">begin</span><span class="p">(</span><span class="n">with</span> <span class="nv">source</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>with</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The source <code>String</code> being parsed</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit30DefaultHeterogenousConstructorC5matchAA17HeterogeneousNodeVSgAA5Token_p5token_s10DictionaryVyAA14RuleAnnotationOAA0lM5ValueOG11annotationsAA14LexicalContext_p7contextSayAFG8childrentF"></a>
+                    <a name="//apple_ref/swift/Method/match(token:annotations:context:children:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit30DefaultHeterogenousConstructorC5matchAA17HeterogeneousNodeVSgAA5Token_p5token_s10DictionaryVyAA14RuleAnnotationOAA0lM5ValueOG11annotationsAA14LexicalContext_p7contextSayAFG8childrentF">match(token:annotations:context:children:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>If the token is transient <code>nil</code> is returned. Otherwise the behaviour is determined by the number of children</p>
+
+<ul>
+<li>0: A new instance of <code><a href="../Structs/HeterogeneousNode.html">HeterogeneousNode</a></code> is created and returned</li>
+<li>1: Providing the token is not @pin&rsquo;d a new <code>HeterogeousNode</code> is created for the child&rsquo;s range and value and returned If it is @pin&rsquo;d behaviour falls through to</li>
+<li><p><em>n</em>: Return a new <code><a href="../Structs/HeterogeneousNode.html">HeterogeneousNode</a></code> with the combined range of all children and the children are set as the node&rsquo;s value</p></li>
+</ul>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">final</span> <span class="kd">public</span> <span class="kd">func</span> <span class="nf">match</span><span class="p">(</span><span class="nv">token</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Token.html">Token</a></span><span class="p">,</span> <span class="nv">annotations</span><span class="p">:</span><span class="kt"><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></span><span class="p">,</span> <span class="nv">context</span><span class="p">:</span> <span class="kt"><a href="../Protocols/LexicalContext.html">LexicalContext</a></span><span class="p">,</span> <span class="nv">children</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/HeterogeneousNode.html">HeterogeneousNode</a></span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/HeterogeneousNode.html">HeterogeneousNode</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>token</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The token that has been successfully identified in the source</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>annotations</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The annotations that had been marked on this instance of the token</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>context</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code><a href="../Protocols/LexicalContext.html">LexicalContext</a></code> from the <code><a href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a></code> from which an implementation can extract the matched range.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>children</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Any <code><a href="../Protocols/Node.html">Node</a></code>s that were created while this token was being evaluated.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Any <code><a href="../Protocols/Node.html">Node</a></code> that was created, or <code>nil</code> if not</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit30DefaultHeterogenousConstructorC17ignoreableFailureAA17HeterogeneousNodeVSgAA5Token_p5token_s10DictionaryVyAA14RuleAnnotationOAA0mN5ValueOG11annotationsSS5IndexV5indextF"></a>
+                    <a name="//apple_ref/swift/Method/ignoreableFailure(token:annotations:index:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit30DefaultHeterogenousConstructorC17ignoreableFailureAA17HeterogeneousNodeVSgAA5Token_p5token_s10DictionaryVyAA14RuleAnnotationOAA0mN5ValueOG11annotationsSS5IndexV5indextF">ignoreableFailure(token:annotations:index:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>If the token is not transient but is pinned a node is created with a range at the current scan-head but no value. Otherwise <code>nil</code> is returned.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">ignoreableFailure</span><span class="p">(</span><span class="nv">token</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Token.html">Token</a></span><span class="p">,</span> <span class="nv">annotations</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Enums/RuleAnnotation.html">RuleAnnotation</a></span> <span class="p">:</span> <span class="kt"><a href="../Enums/RuleAnnotationValue.html">RuleAnnotationValue</a></span><span class="p">],</span> <span class="nv">index</span><span class="p">:</span> <span class="kt">String</span><span class="o">.</span><span class="kt">UnicodeScalarView</span><span class="o">.</span><span class="kt">Index</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt"><a href="../Structs/HeterogeneousNode.html">HeterogeneousNode</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>token</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The token that failed to be matched identified in the source</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>annotations</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The annotations that had been marked on this instance of the token</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Any <code><a href="../Protocols/Node.html">Node</a></code> that was created, or <code>nil</code> if not</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit30DefaultHeterogenousConstructorC6failedyAA5Token_p5token_tF"></a>
+                    <a name="//apple_ref/swift/Method/failed(token:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit30DefaultHeterogenousConstructorC6failedyAA5Token_p5token_tF">failed(token:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>No behaviour</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">failed</span><span class="p">(</span><span class="nv">token</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Token.html">Token</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit30DefaultHeterogenousConstructorC8completeSays5Error_pGAF13parsingErrors_tF"></a>
+                    <a name="//apple_ref/swift/Method/complete(parsingErrors:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit30DefaultHeterogenousConstructorC8completeSays5Error_pGAF13parsingErrors_tF">complete(parsingErrors:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns the supplied errors without modification</p>
+
+<p>-Parameter parsingErrors: The errors created during parsing
+-Returns: A potentially modified <code>Array</code> of errors.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">complete</span><span class="p">(</span><span class="nv">parsingErrors</span><span class="p">:</span> <span class="p">[</span><span class="kt">Error</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">Error</span><span class="p">]</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-01-25)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>

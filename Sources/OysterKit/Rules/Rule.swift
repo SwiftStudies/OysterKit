@@ -25,7 +25,7 @@
 import Foundation
 
 /// A constant for the integer value of a transient token
-internal let transientTokenValue = -1
+public let transientTokenValue = -1
 
 /// Extensions to enable any Int to be used as a token. Note that **only positive integers should be used**
 extension Int {

@@ -13,9 +13,18 @@ let package = Package(
             targets: ["OysterKit"]
         ),
         .library(
+            name: "STLR",
+            type: .static,
+            targets: ["STLR"]
+        ),
+        .library(
             name: "ExampleLanguages",
             type: .static,
             targets: ["ExampleLanguages"]
+        ),
+        .executable(
+            name:"stlr",
+            targets: ["stlr-cli"]
         ),
     ],
     dependencies: [
@@ -29,13 +38,22 @@ let package = Package(
             name: "OysterKit",
             dependencies: []),
         .target(
+            name: "STLR",
+            dependencies: ["OysterKit"]),
+        .target(
+            name: "stlr-cli",
+            dependencies: ["OysterKit","STLR"]),
+        .target(
             name: "ExampleLanguages",
             dependencies: ["OysterKit"]),
         .testTarget(
             name: "OysterKitTests",
             dependencies: ["OysterKit","ExampleLanguages"]),
         .testTarget(
-            name: "OysterKitPerformanceTests",
-            dependencies: ["OysterKit","ExampleLanguages"]),
+            name: "STLRTests",
+            dependencies: ["OysterKit","ExampleLanguages","STLR"]),
+        .testTarget(
+            name: "PerformanceTests",
+            dependencies: ["OysterKit","ExampleLanguages","STLR"]),
     ]
 )

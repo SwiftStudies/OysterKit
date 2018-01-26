@@ -8,6 +8,7 @@
 
 import XCTest
 @testable import OysterKit
+@testable import STLR
 
 private enum Tokens : Int, Token {
     case tokenA = 1
