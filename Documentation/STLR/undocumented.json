@@ -1,0 +1,82 @@
+{
+  "warnings": [
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/Extensions/String.swift",
+      "line": 28,
+      "symbol": "String.dynamicRule(token:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/Generators/DynamicParserGenerator.swift",
+      "line": 39,
+      "symbol": "STLRIntermediateRepresentation.runtimeLanguage",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/Generators/DynamicParserGenerator.swift",
+      "line": 157,
+      "symbol": "STLRIntermediateRepresentation.GrammarRule.rule(from:creating:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/Generators/DynamicParserGenerator.swift",
+      "line": 213,
+      "symbol": "STLRIntermediateRepresentation.Identifier.token",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/Generators/DynamicParserGenerator.swift",
+      "line": 217,
+      "symbol": "STLRIntermediateRepresentation.Identifier.rule(from:creating:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/Generators/DynamicParserGenerator.swift",
+      "line": 315,
+      "symbol": "STLRIntermediateRepresentation.Element.token",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/Optimisers/CharacterSetOnlyChoiceOptimizer.swift",
+      "line": 42,
+      "symbol": "CharacterSetOnlyChoiceOptimizer",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/Optimisers/CharacterSetOnlyChoiceOptimizer.swift",
+      "line": 49,
+      "symbol": "CharacterSetOnlyChoiceOptimizer.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/Optimisers/InlineIdentifierOptimizer.swift",
+      "line": 11,
+      "symbol": "InlineIdentifierOptimization",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/Optimisers/InlineIdentifierOptimizer.swift",
+      "line": 18,
+      "symbol": "InlineIdentifierOptimization.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/STLRParser.swift",
+      "line": 31,
+      "symbol": "STLRParser.ast",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Volumes/Personal/SPM/OysterKit"
+}
