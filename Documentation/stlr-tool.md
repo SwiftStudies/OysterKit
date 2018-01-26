@@ -44,12 +44,6 @@ Parses a set of input files according using the supplied grammar
 
 Type the following commands to build and install ````stlr````. 
 
-### MacOS
-
 	swift build --configuration release --static-swift-stdlib --product stlr
-	cp .build/x86_64-apple-macosx10.10/release/stlr /usr/local/bin/ 
-	
-### Linux
+	cp .build/release/stlr /usr/local/bin/ 
 
-	swift build --configuration release --static-swift-stdlib --product stlr
-	cp .build/???????/release/stlr /usr/local/bin/
