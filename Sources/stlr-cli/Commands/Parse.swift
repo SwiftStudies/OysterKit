@@ -1,6 +1,12 @@
 import Foundation
 import OysterKit
 
+fileprivate extension String {
+    var escaped : String {
+        return self.replacingOccurrences(of: "\n", with: "\\n").replacingOccurrences(of: "\t", with: "\\t")
+    }
+}
+
 class ParseCommand : Command, IndexableOptioned, IndexableParameterized, GrammarConsumer {
     typealias OptionIndexType = Options
     typealias ParameterIndexType = Parameters
@@ -47,13 +53,19 @@ class ParseCommand : Command, IndexableOptioned, IndexableParameterized, Grammar
     }
     
     init(){
-        super.init("parse", description: "Parses a set of input files using the supplied grammar", options: Options.all, parameters: Parameters.all)
+        super.init("parse", description: "Parses a set of input files using the supplied grammar",
+                   options: Options.all,
+                   parameters: Parameters.all)
     }
     
     func prettyPrint(source:String, contents:[HeterogeneousNode], indent : String = ""){
         for node in contents {
-            print("\(indent)\(node.token) '\(node.stringValue(source: source))'")
-            prettyPrint(source:source, contents: node.children, indent: indent+"\t")
+            if node.children.count > 0 {
+                print("\(indent)"+"\(node.token)".style(.bold))
+                prettyPrint(source:source, contents: node.children, indent: indent+"\t")
+            } else {
+                print("\(indent)"+"\(node.token)".style(.bold)+" '\(node.stringValue(source: source).escaped)'")
+            }
         }
     }
     
@@ -95,13 +107,17 @@ class ParseCommand : Command, IndexableOptioned, IndexableParameterized, Grammar
             }
         } else {
             do {
-                
+                print("Parsing \(inputFiles.count) input file(s)")
                 for inputFile in inputFiles {
+                    print("\(inputFile.path)".style(.bold))
+
                     let input = try String(contentsOfFile: inputFile.path, encoding: String.Encoding.utf8)
                     
                     do {
                         try parseInput(language: language, input: input)
+                        print("Done".color(.green))
                     } catch {
+                        print("\(error)".color(.red).style(.blink))
                         return RunnableReturnValue.failure(error: error, code: -1)
                     }
                 }
