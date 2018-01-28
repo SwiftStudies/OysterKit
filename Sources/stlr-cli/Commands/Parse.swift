@@ -73,6 +73,7 @@ class ParseCommand : Command, IndexableOptioned, IndexableParameterized, Grammar
         let ast : DefaultHeterogeneousAST = language.build(source: input)
         
         guard ast.errors.count == 0 else {
+            print("Parsing failed: ".color(.red))
             for error in ast.errors {
                 print("\(error.localizedDescription)")
             }
