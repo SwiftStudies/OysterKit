@@ -75,7 +75,7 @@ class ParseCommand : Command, IndexableOptioned, IndexableParameterized, Grammar
         guard ast.errors.count == 0 else {
             print("Parsing failed: ".color(.red))
             for error in ast.errors {
-                print("\(error.localizedDescription)")
+                print("\(error)")
             }
             throw Errors.couldNotParseInput
         }
