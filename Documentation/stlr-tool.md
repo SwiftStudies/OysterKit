@@ -44,6 +44,10 @@ Parses a set of input files according using the supplied grammar
 
 Type the following commands to build and install ````stlr````. 
 
-	swift build --configuration release --static-swift-stdlib --product stlr
-	cp .build/release/stlr /usr/local/bin/ 
+	swift run -c release stlr install
+	
+This will install the ```stlr``` command in ```/usr/local/bin``` if you would like to specify an alternative location then this can be done with the ````--location```` option. For example, to install into ````/usr/bin```` you would type
+
+	swift run -c release stlr install --location /usr/bin/
+
 
