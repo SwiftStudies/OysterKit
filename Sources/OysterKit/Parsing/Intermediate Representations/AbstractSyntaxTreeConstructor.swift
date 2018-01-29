@@ -104,7 +104,7 @@ public struct AbstractSyntaxTreeNode : Node {
 /**
  An abstract syntax tree allows you to build a data structure from the results of parsing. The root element must be parsable.
  */
-public final class AbstractSyntaxTreeConstructor<RootNode : Parsable>  {
+public class AbstractSyntaxTreeConstructor  {
     /// The original source string
     private let     source    : String
     
@@ -122,7 +122,7 @@ public final class AbstractSyntaxTreeConstructor<RootNode : Parsable>  {
         return _errors
     }
     
-    public init(){
+    public required init(){
         fatalError("TODO: This requirement for an IR should be removed")
     }
 
@@ -139,7 +139,7 @@ public final class AbstractSyntaxTreeConstructor<RootNode : Parsable>  {
      - Parameter lexer: An optional special lexer instance to use. This must be initialized with the same string as the AST
      - Returns: An instance of RootNode or nil (in which case callers should user the errors property to determine the cause of the problems
     */
-    public func parse(using language:Language, andLexicalAnalyzer lexer:LexicalAnalyzer? = nil)->RootNode?{
+    public func parse<RootNode : Parsable>(using language:Language, andLexicalAnalyzer lexer:LexicalAnalyzer? = nil)->RootNode?{
         let _ = language.build(intermediateRepresentation: self, using: lexer ?? Lexer(source: source))
         
         do {
@@ -294,4 +294,16 @@ extension AbstractSyntaxTreeConstructor : IntermediateRepresentation {
 }
 
 /// A standard Homogenous Abstract Syntax Tree constructor
-public typealias HomogenousAbstractSyntaxTreeConstructor = AbstractSyntaxTreeConstructor<HomogenousTree>
+public class HomogenousAbstractSyntaxTreeConstructor : AbstractSyntaxTreeConstructor {
+    /**
+     Parses the source supplied at initialization with supplied language, returning an instance of `RootNode`
+     
+     - Parameter language: The language to use to parse the source
+     - Parameter lexer: An optional special lexer instance to use. This must be initialized with the same string as the AST
+     - Returns: An instance of RootNode or nil (in which case callers should user the errors property to determine the cause of the problems
+     */
+    public func parse(using language:Language, andLexicalAnalyzer lexer:LexicalAnalyzer? = nil)->HomogenousTree?{
+        return super.parse(using: language, andLexicalAnalyzer: lexer)
+    }
+}
+

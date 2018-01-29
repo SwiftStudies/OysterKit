@@ -16,6 +16,21 @@ let tree = HomogenousAbstractSyntaxTreeConstructor(with: "<hello><world>Again</w
 
 print(tree?.description ?? "Failed")
 
+class XTest : Decodable {
+    let openTag : String
+    let nestingTag : XTest?
+    let data : String?
+}
+
+guard let xml = try? XTest.parse(source: "<hello><world>Again</world></hello>", using: stlrParser.ast.runtimeLanguage!) else {
+    fatalError("Could not parse as XML")
+}
+
+xml.openTag
+xml.nestingTag!.openTag
+xml.nestingTag!.data
+
+
 //print(stlrParser.ast.swift(grammar: "XMLTest")!)
 
 //tree.children[0].children[0]
