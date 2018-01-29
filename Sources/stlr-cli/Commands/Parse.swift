@@ -69,39 +69,7 @@ class ParseCommand : Command, IndexableOptioned, IndexableParameterized, Grammar
         }
     }
     
-    func errorMessage(`in` input:String, failedBecause message:String,  at errorIndex:String.Index)->String{
-        
-        func occurencesOf(_ character: Character, `in` asString:String)->(count:Int,lastFound:String.Index) {
-            var lastInstance = asString.startIndex
-            var count = 0
-            
-            for (offset,element) in asString.enumerated() {
-                if character == element {
-                    count += 1
-                    
-                    lastInstance = asString.index(asString.startIndex, offsetBy: offset)
-                }
-            }
-            
-            return (count, lastInstance)
-        }
-        
-        if errorIndex >= input.endIndex {
-            return errorMessage(in: input, failedBecause: message,  at: input.index(before: input.endIndex))
-        }
-        
-        let occurences      = occurencesOf("\n", in: String(input[input.startIndex..<errorIndex]))
-        
-        let offsetInLine    = input.distance(from: occurences.lastFound, to: errorIndex)
-        let inputAfterError = input[input.index(after:errorIndex)..<input.endIndex]
-        let nextCharacter   = inputAfterError.index(of: "\n") ?? inputAfterError.endIndex
-        let errorLine       = String(input[occurences.lastFound..<nextCharacter])
-        let prefix          = "\(message) at line \(occurences.count), column \(offsetInLine): "
-        
-        let pointerLine     = String(repeating:" ", count: prefix.count+offsetInLine)+"^"
-        
-        return "\(prefix)\(errorLine)\n\(pointerLine)"
-    }
+
     
     func parseInput(language:Language, input:String) throws {
         let ast : DefaultHeterogeneousAST = language.build(source: input)
@@ -110,7 +78,7 @@ class ParseCommand : Command, IndexableOptioned, IndexableParameterized, Grammar
             print("Parsing failed: ".color(.red))
             for error in ast.errors {
                 if let humanReadable = error as? HumanConsumableError {
-                    print(errorMessage(in: input, failedBecause: humanReadable.message, at: humanReadable.range.lowerBound))
+                    print(humanReadable.formattedErrorMessage(in: input))
                 } else {
                     print("\(error)")
                 }

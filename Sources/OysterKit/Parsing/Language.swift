@@ -86,6 +86,57 @@ public enum LanguageError : Error, HumanConsumableError, CustomStringConvertible
 }
 
 /**
+ Utility functions
+ */
+public extension HumanConsumableError {
+    /**
+     Provides a formatted version of the error message suitable for printing in a fixed width font, with a pointer highlighting the
+     location of the error
+     
+     - Parameter in: The original source that was being parsed
+     - Returns: A formatted `String` with a human readable and helpful message
+    */
+    func formattedErrorMessage(`in` input:String)->String{
+        
+        func occurencesOf(_ character: Character, `in` asString:String)->(count:Int,lastFound:String.Index) {
+            var lastInstance = asString.startIndex
+            var count = 0
+            
+            for (offset,element) in asString.enumerated() {
+                if character == element {
+                    count += 1
+                    
+                    lastInstance = asString.index(asString.startIndex, offsetBy: offset)
+                }
+            }
+            
+            return (count, lastInstance)
+        }
+        
+        let errorIndex : String.Index
+        
+        
+        if range.lowerBound >= input.endIndex {
+            errorIndex = input.index(before: input.endIndex)
+        } else {
+            errorIndex = range.lowerBound
+        }
+        
+        let occurences      = occurencesOf("\n", in: String(input[input.startIndex..<errorIndex]))
+        
+        let offsetInLine    = input.distance(from: occurences.lastFound, to: errorIndex)
+        let inputAfterError = input[input.index(after:errorIndex)..<input.endIndex]
+        let nextCharacter   = inputAfterError.index(of: "\n") ?? inputAfterError.endIndex
+        let errorLine       = String(input[occurences.lastFound..<nextCharacter])
+        let prefix          = "\(message) at line \(occurences.count), column \(offsetInLine): "
+        
+        let pointerLine     = String(repeating:" ", count: prefix.count+offsetInLine)+"^"
+        
+        return "\(prefix)\(errorLine)\n\(pointerLine)"
+    }
+}
+
+/**
  A language stores a set of grammar rules that can be used to parse `String`s. Extensions provide additional methods (such as parsing) that operate on these rules.
  */
 public protocol Language{

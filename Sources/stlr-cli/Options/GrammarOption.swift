@@ -7,6 +7,7 @@
 
 import Foundation
 import STLR
+import OysterKit
 
 protocol GrammarConsumer {
 }
@@ -73,7 +74,21 @@ class GrammarOption : Option, IndexableParameterized{
         } catch {
             return nil
         }
-        return STLRParser(source: stlrGrammar)
+        
+        let stlrParser = STLRParser(source: stlrGrammar)
+        
+        if stlrParser.ast.errors.count > 0 {
+            for error in stlrParser.ast.errors {
+                if let humanReadable = error as? HumanConsumableError {
+                    print(humanReadable.formattedErrorMessage(in: stlrGrammar))
+                } else {
+                    print("\(error)")
+                }
+            }
+            return nil
+        }
+        
+        return stlrParser
     }()
     
 }
