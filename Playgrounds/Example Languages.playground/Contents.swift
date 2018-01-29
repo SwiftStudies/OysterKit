@@ -4,7 +4,7 @@ import Foundation
 import STLR
 import OysterKit
 
-guard let source = try? String(contentsOfFile: "/Volumes/Personal/SPM/OysterKit/Sources/ExampleLanguages/Grammars/XML.stlr") else {
+guard let source = try? String(contentsOfFile: "/Volumes/Personal/SPM/XMLDecoder/XML.stlr") else {
     print("Could not load grammar")
     exit(0)
 }
@@ -12,15 +12,10 @@ guard let source = try? String(contentsOfFile: "/Volumes/Personal/SPM/OysterKit/
 
 let stlrParser = STLRParser.init(source: source)
 
-stlrParser.grammar[0].produces
+let tree = AbstractSyntaxTree<HomogenousTree>(with: "<hello><world>Again</world></hello>").parse(using: stlrParser.ast.runtimeLanguage!)
 
-
-let ast : DefaultHeterogeneousAST = stlrParser.ast.runtimeLanguage!.build(source: "<hello attr='eh>world</hello>")
-
-for error in ast.errors {
-    print(" - \(error)")
-}
-
-ast.errors
+print(tree?.description ?? "Failed")
 
 //print(stlrParser.ast.swift(grammar: "XMLTest")!)
+
+//tree.children[0].children[0]
