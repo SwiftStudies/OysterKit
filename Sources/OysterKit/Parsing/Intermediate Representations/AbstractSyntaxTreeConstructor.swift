@@ -104,7 +104,7 @@ public struct AbstractSyntaxTreeNode : Node {
 /**
  An abstract syntax tree allows you to build a data structure from the results of parsing. The root element must be parsable.
  */
-public final class AbstractSyntaxTree<RootNode : Parsable>  {
+public final class AbstractSyntaxTreeConstructor<RootNode : Parsable>  {
     /// The original source string
     private let     source    : String
     
@@ -171,7 +171,7 @@ public final class AbstractSyntaxTree<RootNode : Parsable>  {
  Provide the required implementation of the `IntermediateRepresentation` without exposing API consumers to it. This will enable more
  aggressive refactoring without code breaking changes
  */
-extension AbstractSyntaxTree : IntermediateRepresentation {
+extension AbstractSyntaxTreeConstructor : IntermediateRepresentation {
     /// Does nothing
     public func willBuildFrom(source: String, with: Language) {
     }
@@ -292,3 +292,6 @@ extension AbstractSyntaxTree : IntermediateRepresentation {
         
     }
 }
+
+/// A standard Homogenous Abstract Syntax Tree constructor
+typealias HomogenousAbstractSyntaxTreeConstructor = AbstractSyntaxTreeConstructor<HomogenousTree>
