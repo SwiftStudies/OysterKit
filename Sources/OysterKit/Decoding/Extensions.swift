@@ -41,6 +41,9 @@ public extension Decodable {
      - Returns: A new instance of the Type
     */
     static func parse(source:String, using language:Language, using constructor:AbstractSyntaxTreeConstructor.Type = HomogenousAbstractSyntaxTreeConstructor.self) throws ->Self{
+        
+        // TODO: Make it first create the IR using the supplied constructor. It should then check to make sure that the resultant AST is a decodable
+        // node. This essentially allows alternative implementations to be provided for the intermediate form allowing rework of the AST before decoding
         let instance = try ParsingDecoder().decode(Self.self, from: source.data(using: .utf8) ?? Data(), with: Parser(grammar: language.grammar))
         
         return instance
