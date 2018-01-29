@@ -69,15 +69,21 @@ class ParseCommand : Command, IndexableOptioned, IndexableParameterized, Grammar
         }
     }
     
+
+    
     func parseInput(language:Language, input:String) throws {
         let ast : DefaultHeterogeneousAST = language.build(source: input)
         
         guard ast.errors.count == 0 else {
             print("Parsing failed: ".color(.red))
             for error in ast.errors {
-                print("\(error)")
+                if let humanReadable = error as? HumanConsumableError {
+                    print(humanReadable.formattedErrorMessage(in: input))
+                } else {
+                    print("\(error)")
+                }
             }
-            throw Errors.couldNotParseInput
+            return
         }
         
         prettyPrint(source: input, contents: ast.tokens)
