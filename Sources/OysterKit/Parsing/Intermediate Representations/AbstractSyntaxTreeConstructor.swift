@@ -294,4 +294,4 @@ extension AbstractSyntaxTreeConstructor : IntermediateRepresentation {
 }
 
 /// A standard Homogenous Abstract Syntax Tree constructor
-typealias HomogenousAbstractSyntaxTreeConstructor = AbstractSyntaxTreeConstructor<HomogenousTree>
+public typealias HomogenousAbstractSyntaxTreeConstructor = AbstractSyntaxTreeConstructor<HomogenousTree>

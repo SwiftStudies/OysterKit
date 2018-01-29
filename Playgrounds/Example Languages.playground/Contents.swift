@@ -12,7 +12,7 @@ guard let source = try? String(contentsOfFile: "/Volumes/Personal/SPM/XMLDecoder
 
 let stlrParser = STLRParser.init(source: source)
 
-let tree : HomogenousTree? = AbstractSyntaxTree(with: "<hello><world>Again</world></hello>").parse(using: stlrParser.ast.runtimeLanguage!)
+let tree = HomogenousAbstractSyntaxTreeConstructor(with: "<hello><world>Again</world></hello>").parse(using: stlrParser.ast.runtimeLanguage!)
 
 print(tree?.description ?? "Failed")
 
