@@ -8,9 +8,9 @@
 
 # Usage
 
-The basic usage pattern for ````stlr```` is as follows
+The basic usage pattern for ````stlrc```` is as follows
 
-	stlr [command] [[option] parameter], [[option] parameter]
+	stlrc [command] [[option] parameter], [[option] parameter]
 
 ## Commands
 
@@ -37,17 +37,17 @@ Parses a set of input files according using the supplied grammar
 
  * ````--grammar, -g````: Takes a single parameter which identifies the .stlr Grammar to use for parsing
  * ````--langauge, -l````: The output language to generate. Currently the only supported value is ````Swift```` 
- * ````--output-to, -ot````: Takes a single parameter which identifies the file or folder where the generated file should be stored. If the parameter ends with a / the name of the input grammar will be used to determine the name of the expected output grammar. For example ````stlr generate -g MyLang.stlr -ot /Sources/```` would create a Swift source ````/Sources/MyLang.swift```` 
+ * ````--output-to, -ot````: Takes a single parameter which identifies the file or folder where the generated file should be stored. If the parameter ends with a / the name of the input grammar will be used to determine the name of the expected output grammar. For example ````stlrc generate -g MyLang.stlr -ot /Sources/```` would create a Swift source ````/Sources/MyLang.swift```` 
 
 
 ## Installation
 
-Type the following commands to build and install ````stlr````. 
+Type the following commands to build and install ````stlrc````. 
 
-	swift run -c release stlr install
+	swift run -c release stlrc install
 	
-This will install the ```stlr``` command in ```/usr/local/bin``` if you would like to specify an alternative location then this can be done with the ````--location```` option. For example, to install into ````/usr/bin```` you would type
+This will install the ```stlrc``` command in ```/usr/local/bin``` if you would like to specify an alternative location then this can be done with the ````--location```` option. For example, to install into ````/usr/bin```` you would type
 
-	swift run -c release stlr install --location /usr/bin/
+	swift run -c release stlrc install --location /usr/bin/
 
 

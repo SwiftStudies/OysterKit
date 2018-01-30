@@ -23,8 +23,9 @@ let package = Package(
             targets: ["ExampleLanguages"]
         ),
         .executable(
-            name:"stlr",
-            targets: ["stlr-cli"]
+            //Swift Tool for Language Recognition Command
+            name:"stlrc",
+            targets: ["stlrc"]
         ),
     ],
     dependencies: [
@@ -41,7 +42,7 @@ let package = Package(
             name: "STLR",
             dependencies: ["OysterKit"]),
         .target(
-            name: "stlr-cli",
+            name: "stlrc",
             dependencies: ["OysterKit","STLR"]),
         .target(
             name: "ExampleLanguages",

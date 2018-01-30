@@ -23,119 +23,67 @@
 //    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Foundation
-private extension String {
-    var escaped : String  {
-        return self.replacingOccurrences(of:"\n",with:"\\n").replacingOccurrences(of: "\t", with: "\\t")
-    }
-    
-    
-}
-
-/// Errors that can occur during AST creation
-public enum ConstructionError : Error {
-    /// Parsing failed before the AST could be constructed
-    case parsingFailed(causes: [Error])
-    
-    /// One or more AST nodes could not be constructed
-    case constructionFailed(causes: [Error])
-}
-
-/**
- HomogenousTree is used as the default form of AbstractSyntaxTree. Each node in the tree captures its `Token`, the `String` it mtached, and any children.
- */
-public struct HomogenousTree : Parsable, CustomStringConvertible {
-    /**
-     Creates a new instance using the supplied intermediate representation and source
-     
-     - Parameters node: The `AbstractSyntaxTreeNode` in the `IntermediateRepresentation` to create
-     - Parameters source: The original `String` being parsed
-    */
-    public init(with node: AbstractSyntaxTreeNode, from source:String) throws {
-        token = node.token
-        matchedString = String(source[node.range])
-        children = try node.children.map({ try HomogenousTree(with:$0, from: source)})
-    }
-    
-    /// The captured `Token`
-    public let     token         : Token
-    
-    /// The `String` that was matched to satisfy the rules for the `token`.
-    public let     matchedString : String
-    
-    /// Any sub-nodes in the tree
-    public let     children      : [HomogenousTree]
-    
-    private func pretify(prefix:String = "")->String{
-        return "\(prefix)\(token) \(children.count > 0 ? "" : "- '\(matchedString.escaped)'")\(children.count > 0 ? children.reduce("\n", { (previous, current) -> String in return previous+current.pretify(prefix:prefix+"\t")}) : "\n")"
-    }
-    
-    /// A well formatted description of this branch of the tree
-    public var description: String{
-        return pretify()
-    }
-}
-
-/**
- Parsable types can construct themselves from nodes generated during parsing
- */
-public protocol Parsable {
-    /**
-     Create a new instance of the object using the supplied node
-     
-     - Parameter node: The node to use to populate the fields of the type
-    */
-    init(with node:AbstractSyntaxTreeNode, from source:String) throws
-}
-
-/**
- An entry in the tree.
- */
-public struct AbstractSyntaxTreeNode : Node {
-    /// The token created
-    public      let token       : Token
-    /// The range of the match in the source string
-    public      let range       : Range<String.UnicodeScalarView.Index>
-    
-    /// Children of this node
-    public      let children       : [AbstractSyntaxTreeNode]
-    
-    /// Any associated annotations made on the `token`
-    public      let annotations: [RuleAnnotation : RuleAnnotationValue]
-    
-    /**
-     Creates a new instance with no `value`
-     
-     -Parameter for: The `Token` the node captures
-     -Parameter at: The range the token was matched at in the original source string
-     -Prameter annotations: Any annotations that should be stored with the node
-     */
-    public init(for token: Token, at range: Range<String.UnicodeScalarView.Index>, annotations:RuleAnnotations) {
-        self.token = token
-        self.range = range
-        self.children = []
-        self.annotations = annotations
-    }
-    
-    /**
-     Creates a new instance
-     
-     -Parameter for: The `Token` the node captures
-     -Parameter at: The range the token was matched at in the original source string
-     -Parameter children: Any child nodes of this node
-     -Prameter annotations: Any annotations that should be stored with the node
-     */
-    public init(for token: Token, at range: Range<String.UnicodeScalarView.Index>, children:[AbstractSyntaxTreeNode], annotations:RuleAnnotations) {
-        self.token = token
-        self.range = range
-        self.children = children
-        self.annotations = annotations
-    }
-}
 
 /**
  An abstract syntax tree allows you to build a data structure from the results of parsing. The root element must be parsable.
  */
 public class AbstractSyntaxTreeConstructor  {
+    
+    /// Errors that can occur during AST creation
+    public enum ConstructionError : Error {
+        /// Parsing failed before the AST could be constructed
+        case parsingFailed(causes: [Error])
+        
+        /// One or more AST nodes could not be constructed
+        case constructionFailed(causes: [Error])
+    }
+    
+    /**
+     An entry in the tree.
+     */
+    public struct IntermediateRepresentationNode : Node {
+        /// The token created
+        public      let token       : Token
+        /// The range of the match in the source string
+        public      let range       : Range<String.UnicodeScalarView.Index>
+        
+        /// Children of this node
+        public      let children       : [IntermediateRepresentationNode]
+        
+        /// Any associated annotations made on the `token`
+        public      let annotations: [RuleAnnotation : RuleAnnotationValue]
+        
+        /**
+         Creates a new instance with no `value`
+         
+         -Parameter for: The `Token` the node captures
+         -Parameter at: The range the token was matched at in the original source string
+         -Prameter annotations: Any annotations that should be stored with the node
+         */
+        public init(for token: Token, at range: Range<String.UnicodeScalarView.Index>, annotations:RuleAnnotations) {
+            self.token = token
+            self.range = range
+            self.children = []
+            self.annotations = annotations
+        }
+        
+        /**
+         Creates a new instance
+         
+         -Parameter for: The `Token` the node captures
+         -Parameter at: The range the token was matched at in the original source string
+         -Parameter children: Any child nodes of this node
+         -Prameter annotations: Any annotations that should be stored with the node
+         */
+        public init(for token: Token, at range: Range<String.UnicodeScalarView.Index>, children:[IntermediateRepresentationNode], annotations:RuleAnnotations) {
+            self.token = token
+            self.range = range
+            self.children = children
+            self.annotations = annotations
+        }
+    }
+    
+    
     /// The original source string
     private var     source    : String!
     
@@ -143,7 +91,7 @@ public class AbstractSyntaxTreeConstructor  {
     private var     scalars   : String.UnicodeScalarView!
     
     /// The context stack of nodes
-    private var     nodeStack = NodeStack<AbstractSyntaxTreeNode>()
+    private var     nodeStack = NodeStack<IntermediateRepresentationNode>()
     
     /// The _errors collected during parsing
     private var     _errors     = [Error]()
@@ -165,7 +113,7 @@ public class AbstractSyntaxTreeConstructor  {
      - Parameter lexer: An optional special lexer instance to use. This must be initialized with the same string as the AST
      - Returns: An instance of a decodable type
      */
-    public func build<T:Decodable, AST:DecodeableNode>(_ heterogenousType:T.Type, using astType:AST.Type, from source: String, using language: Language) throws -> T{
+    public func build<T:Decodable, AST:DecodeableAbstractSyntaxTree>(_ heterogenousType:T.Type, using astType:AST.Type, from source: String, using language: Language) throws -> T{
         return try heterogenousType.decode(source, with: astType, using: language)
     }
     
@@ -189,15 +137,14 @@ public class AbstractSyntaxTreeConstructor  {
      - Parameter lexer: An optional special lexer instance to use. This must be initialized with the same string as the AST
      - Returns: An instance of a decodable type
      */
-    public func build<AST:DecodeableNode>(_ astType:AST.Type, from source: String, using language: Language) throws -> AST{
-        print("AST Build")
+    public func build<AST:DecodeableAbstractSyntaxTree>(_ astType:AST.Type, from source: String, using language: Language) throws -> AST{
         self.source  = source
         self.scalars = source.unicodeScalars
         
         let _ = language.build(intermediateRepresentation: self, using: Lexer(source: source))
         
         do {
-            let topNode : AbstractSyntaxTreeNode
+            let topNode : IntermediateRepresentationNode
             
             guard let topNodes = nodeStack.top?.nodes, topNodes.count > 0 else {
                 _errors.append(LanguageError.parsingError(at: scalars.startIndex..<scalars.startIndex, message: "No nodes created"))
@@ -206,7 +153,7 @@ public class AbstractSyntaxTreeConstructor  {
             
             if topNodes.count > 1 {
                 // Wrap it in a single node
-                topNode = AbstractSyntaxTreeNode(for: transientTokenValue.token, at: topNodes.combinedRange, annotations: [:])
+                topNode = IntermediateRepresentationNode(for: transientTokenValue.token, at: topNodes.combinedRange, annotations: [:])
             } else {
                 topNode = topNodes[0]
             }
@@ -316,16 +263,16 @@ extension AbstractSyntaxTreeConstructor : IntermediateRepresentation {
      - Parameter children: Any `Node`s that were created while this token was being evaluated.
      - Returns: Any `Node` that was created, or `nil` if not
      */
-    final public func match(token: Token, annotations:RuleAnnotations, context: LexicalContext, children: [AbstractSyntaxTreeNode]) -> AbstractSyntaxTreeNode? {
+    final public func match(token: Token, annotations:RuleAnnotations, context: LexicalContext, children: [IntermediateRepresentationNode]) -> IntermediateRepresentationNode? {
         guard !token.transient else {
             return nil
         }
         
         switch children.count{
         case 0:
-            return AbstractSyntaxTreeNode(for: token, at: context.range,  annotations: annotations)
+            return IntermediateRepresentationNode(for: token, at: context.range,  annotations: annotations)
         default:
-            return AbstractSyntaxTreeNode(for: token, at: children.combinedRange, children: children, annotations: annotations)
+            return IntermediateRepresentationNode(for: token, at: children.combinedRange, children: children, annotations: annotations)
         }
     }
     
@@ -336,10 +283,10 @@ extension AbstractSyntaxTreeConstructor : IntermediateRepresentation {
      - Parameter annotations: The annotations that had been marked on this instance of the token
      - Returns: Any `Node` that was created, or `nil` if not
      */
-    public func ignoreableFailure(token: Token, annotations: [RuleAnnotation : RuleAnnotationValue], index: String.UnicodeScalarView.Index)->AbstractSyntaxTreeNode? {
+    public func ignoreableFailure(token: Token, annotations: [RuleAnnotation : RuleAnnotationValue], index: String.UnicodeScalarView.Index)->IntermediateRepresentationNode? {
         if !token.transient && annotations[RuleAnnotation.pinned] != nil{
             let range = index..<index
-            return AbstractSyntaxTreeNode(for: token, at: range, annotations: annotations)
+            return IntermediateRepresentationNode(for: token, at: range, annotations: annotations)
         }
         return nil
     }
