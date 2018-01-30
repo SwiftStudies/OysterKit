@@ -17,7 +17,7 @@ guard let xmlLanguage = STLRParser.init(source: grammarSource).ast.runtimeLangua
 let xmlSource = """
 <hello attribute='test'>
     <world attribute='test' another-attribute='test2'>
-        Again
+        Again<p />And this in <b>bold</b>
     </world>
 </hello>
 """
@@ -26,11 +26,11 @@ let tree = HomogenousAbstractSyntaxTreeConstructor(with: xmlSource).parse(using:
 
 print(tree?.description ?? "Failed")
 
-class XTest : Decodable {
-    let openTag : String
-    let nestingTag : XTest?
-    let data : String?
-}
+//class ParsedXML : Decodable {
+//    let openTag : String
+//    let nestingTag : XTest?
+//    let data : String?
+//}
 
 //guard let xml = try? XTest.parse(source: xmlSource, using: xmlLanguage) else {
 //    fatalError("Could not parse as XML")
