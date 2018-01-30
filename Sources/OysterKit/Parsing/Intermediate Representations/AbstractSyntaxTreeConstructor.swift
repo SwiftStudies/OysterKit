@@ -23,7 +23,13 @@
 //    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Foundation
-
+private extension String {
+    var escaped : String  {
+        return self.replacingOccurrences(of:"\n",with:"\\n").replacingOccurrences(of: "\t", with: "\\t")
+    }
+    
+    
+}
 public struct HomogenousTree : Parsable, CustomStringConvertible {
     public init(with node: AbstractSyntaxTreeNode, from source:String) throws {
         token = node.token
@@ -36,7 +42,7 @@ public struct HomogenousTree : Parsable, CustomStringConvertible {
     public let     children      : [HomogenousTree]
     
     private func pretify(prefix:String = "")->String{
-        return "\(prefix)\(token) - '\(matchedString)'\(children.count > 0 ? children.reduce("\n", { (previous, current) -> String in return previous+current.pretify(prefix:prefix+"\t")}) : "\n")"
+        return "\(prefix)\(token) \(children.count > 0 ? "" : "- '\(matchedString.escaped)'")\(children.count > 0 ? children.reduce("\n", { (previous, current) -> String in return previous+current.pretify(prefix:prefix+"\t")}) : "\n")"
     }
     
     public var description: String{
@@ -262,11 +268,6 @@ extension AbstractSyntaxTreeConstructor : IntermediateRepresentation {
         switch children.count{
         case 0:
             return AbstractSyntaxTreeNode(for: token, at: context.range,  annotations: annotations)
-        case 1:
-            if children[0].annotations[RuleAnnotation.pinned] == nil {
-                return AbstractSyntaxTreeNode(for: token, at: children[0].range, children: children[0].children, annotations: annotations)
-            }
-            fallthrough
         default:
             return AbstractSyntaxTreeNode(for: token, at: children.combinedRange, children: children, annotations: annotations)
         }
