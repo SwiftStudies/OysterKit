@@ -195,8 +195,10 @@ extension STLRIntermediateRepresentation.Expression{
                 let rules = elements.flatMap(){
                     $0.rule(from: grammar, creating: $0.token, inContext:context, annotations: [:])
                 }
-                let choiceToken = STLRIntermediateRepresentation.DynamicToken(rawValue: transientTokenValue, name: elements.flatMap({"\($0)"}).joined(separator: "|"))
-                return rules.oneOf(token: choiceToken, annotations: annotations)
+                // Replaced the previously generated token which I suspect was done because the transient child behaviour was not right
+                // with the actual supplied token which is lost. This does mean that you will get both the token from the choice and this
+                // token, but that has to be right
+                return rules.oneOf(token: token, annotations: annotations)
             }
         case .sequence(let elements):
             let rules = elements.flatMap(){
@@ -284,14 +286,13 @@ extension STLRIntermediateRepresentation.Element{
             }
             return quantifier.rule(appliedTo: r, producing: quantifierToken, quantifiersAnnotations: mergedQuantifierAnnotations)
         case .group(let expression, _,let lookahead, _):
-            let believeCorrect = STLRIntermediateRepresentation.DynamicToken(rawValue: transientTokenValue, name: "(\(expression))")
-            guard let r = expression.rule(from: grammar, creating: believeCorrect,inContext:context, annotations: mergedElementAnnotations) else {
+            guard let r = expression.rule(from: grammar, creating: elementToken,inContext:context, annotations: mergedElementAnnotations) else {
                 return nil
             }
             if lookahead {
                 return ParserRule.lookahead(r, mergedElementAnnotations)
             }
-            return quantifier.rule(appliedTo: r, producing: quantifier.wrapped(token: believeCorrect, annotations: mergedQuantifierAnnotations), quantifiersAnnotations: mergedQuantifierAnnotations)
+            return quantifier.rule(appliedTo: r, producing: quantifierToken, quantifiersAnnotations: mergedQuantifierAnnotations)
         case .identifier(let identifier, _,let lookahead, _):
             let identifiersAnnotations = identifier.annotations.asRuleAnnotations
             
