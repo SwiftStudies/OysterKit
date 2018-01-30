@@ -30,21 +30,46 @@ private extension String {
     
     
 }
+
+/// Errors that can occur during AST creation
+public enum ConstructionError : Error {
+    /// Parsing failed before the AST could be constructed
+    case parsingFailed(causes: [Error])
+    
+    /// One or more AST nodes could not be constructed
+    case constructionFailed(causes: [Error])
+}
+
+/**
+ HomogenousTree is used as the default form of AbstractSyntaxTree. Each node in the tree captures its `Token`, the `String` it mtached, and any children.
+ */
 public struct HomogenousTree : Parsable, CustomStringConvertible {
+    /**
+     Creates a new instance using the supplied intermediate representation and source
+     
+     - Parameters node: The `AbstractSyntaxTreeNode` in the `IntermediateRepresentation` to create
+     - Parameters source: The original `String` being parsed
+    */
     public init(with node: AbstractSyntaxTreeNode, from source:String) throws {
         token = node.token
         matchedString = String(source[node.range])
         children = try node.children.map({ try HomogenousTree(with:$0, from: source)})
     }
     
+    /// The captured `Token`
     public let     token         : Token
+    
+    /// The `String` that was matched to satisfy the rules for the `token`.
     public let     matchedString : String
+    
+    /// Any sub-nodes in the tree
     public let     children      : [HomogenousTree]
     
     private func pretify(prefix:String = "")->String{
         return "\(prefix)\(token) \(children.count > 0 ? "" : "- '\(matchedString.escaped)'")\(children.count > 0 ? children.reduce("\n", { (previous, current) -> String in return previous+current.pretify(prefix:prefix+"\t")}) : "\n")"
     }
     
+    /// A well formatted description of this branch of the tree
     public var description: String{
         return pretify()
     }
@@ -112,10 +137,10 @@ public struct AbstractSyntaxTreeNode : Node {
  */
 public class AbstractSyntaxTreeConstructor  {
     /// The original source string
-    private let     source    : String
+    private var     source    : String!
     
     /// The original scalars view
-    private let     scalars   : String.UnicodeScalarView
+    private var     scalars   : String.UnicodeScalarView!
     
     /// The context stack of nodes
     private var     nodeStack = NodeStack<AbstractSyntaxTreeNode>()
@@ -128,48 +153,70 @@ public class AbstractSyntaxTreeConstructor  {
         return _errors
     }
     
-    public required init(){
-        fatalError("TODO: This requirement for an IR should be removed")
-    }
-
     /// Creates a new instance, preparing to parse the supplied source
-    public init(with source:String){
-        self.source  = source
-        self.scalars = source.unicodeScalars
+    public required init(){
     }
     
     /**
-     Parses the source supplied at initialization with supplied language, returning an instance of `RootNode`
+     Parses the source supplied at initialization with supplied language, returning an instance of `T` (the return type). The supplied type `P` must be both `Parsable` (can be constructed from the
+     `IntermediateRepresentation` and a `DecodableNode` can be used by the `Decoder`
      
+     - Parameter source: The text to parse and build the tree from
      - Parameter language: The language to use to parse the source
      - Parameter lexer: An optional special lexer instance to use. This must be initialized with the same string as the AST
-     - Returns: An instance of RootNode or nil (in which case callers should user the errors property to determine the cause of the problems
+     - Parameter through: You can supply your own `Parsable` and `DecoableNode` type to enable specialisation of the AST ahead of Decoding into the final Type
+     - Returns: An instance of a decodable type
     */
-    public func parse<RootNode : Parsable>(using language:Language, andLexicalAnalyzer lexer:LexicalAnalyzer? = nil)->RootNode?{
-        let _ = language.build(intermediateRepresentation: self, using: lexer ?? Lexer(source: source))
+    public func parse<T : Decodable, P : Parsable>(_ source:String, using language:Language, through parseableType : P.Type, andLexicalAnalyzer lexer:LexicalAnalyzer.Type = Lexer.self) throws ->T where P : DecodeableNode {
+        return try T.parse(source: source, using: language, and: parseableType)
+    }
+    
+    /**
+     Parses the source supplied at initialization with supplied language, returning an instance of the returned Type
+     
+     - Parameter source: The text to parse and build the tree from
+     - Parameter language: The language to use to parse the source
+     - Parameter lexer: An optional special lexer instance to use. This must be initialized with the same string as the AST
+     - Returns: An instance of a decodable type
+     */
+    public func parse<T : Decodable>(_ source:String, using language:Language, andLexicalAnalyzer lexer:LexicalAnalyzer.Type = Lexer.self) throws ->T {
+        return try T.parse(source: source, using: language)
+    }
+
+    /**
+     Parses the source supplied at initialization with supplied language, returning an instance of a homogenous tree of type `HomogenousTree`
+     
+     - Parameter source: The text to parse and build the tree from
+     - Parameter language: The language to use to parse the source
+     - Parameter lexer: An optional special lexer instance to use. This must be initialized with the same string as the AST
+     - Returns: A `HomogenousTree`. If multiple root children exist following parsing they will be grouped under a top level node
+     */
+    public func parse(_ source:String, using language:Language, andLexicalAnalyzer lexer:LexicalAnalyzer.Type = Lexer.self) throws -> HomogenousTree{
+        self.source  = source
+        self.scalars = source.unicodeScalars
+        
+        let _ = language.build(intermediateRepresentation: self, using: lexer.init(source: source))
         
         do {
             let topNode : AbstractSyntaxTreeNode
-
+            
             guard let topNodes = nodeStack.top?.nodes, topNodes.count > 0 else {
                 _errors.append(LanguageError.parsingError(at: scalars.startIndex..<scalars.startIndex, message: "No nodes created"))
-                return nil
+                throw ConstructionError.parsingFailed(causes: errors)
             }
-
+            
             if topNodes.count > 1 {
                 // Wrap it in a single node
                 topNode = AbstractSyntaxTreeNode(for: transientTokenValue.token, at: topNodes.combinedRange, annotations: [:])
             } else {
                 topNode = topNodes[0]
             }
-            return try RootNode(with: topNode, from: source)
+            return try HomogenousTree(with: topNode, from: source)
         } catch {
-            _errors.append(error)
+            throw ConstructionError.constructionFailed(causes: _errors)
         }
-        
-        return nil
     }
-    
+
 
 }
 
@@ -293,18 +340,3 @@ extension AbstractSyntaxTreeConstructor : IntermediateRepresentation {
         
     }
 }
-
-/// A standard Homogenous Abstract Syntax Tree constructor
-public class HomogenousAbstractSyntaxTreeConstructor : AbstractSyntaxTreeConstructor {
-    /**
-     Parses the source supplied at initialization with supplied language, returning an instance of `RootNode`
-     
-     - Parameter language: The language to use to parse the source
-     - Parameter lexer: An optional special lexer instance to use. This must be initialized with the same string as the AST
-     - Returns: An instance of RootNode or nil (in which case callers should user the errors property to determine the cause of the problems
-     */
-    public func parse(using language:Language, andLexicalAnalyzer lexer:LexicalAnalyzer? = nil)->HomogenousTree?{
-        return super.parse(using: language, andLexicalAnalyzer: lexer)
-    }
-}
-

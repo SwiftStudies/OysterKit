@@ -37,15 +37,27 @@ public extension Decodable {
      
      - Parameter source: The source to be parsed and then decoded
      - Parameter language: The language to parse the source with
-     - Parameter using: Optional special implementation of an AbstractSyntaxTreeConstructor that provides a DecodableNode as it's IntermediateRepresentation. You normally do not need this
+     - Parameter using: The Abstract Syntax Tree Type to use, it must implemented both Parsable and DecodableNode
      - Returns: A new instance of the Type
     */
-    static func parse(source:String, using language:Language, using constructor:AbstractSyntaxTreeConstructor.Type = HomogenousAbstractSyntaxTreeConstructor.self) throws ->Self{
+    static func parse<T>(source:String, using language:Language, and ast:T.Type) throws ->Self where T : Parsable, T:DecodeableNode{
         
         // TODO: Make it first create the IR using the supplied constructor. It should then check to make sure that the resultant AST is a decodable
         // node. This essentially allows alternative implementations to be provided for the intermediate form allowing rework of the AST before decoding
-        let instance = try ParsingDecoder().decode(Self.self, from: source.data(using: .utf8) ?? Data(), with: Parser(grammar: language.grammar))
-        
+        let instance = try ParsingDecoder().decode(Self.self, from: source, with: language, ast: ast)
+
         return instance
     }
+    
+    /**
+     Creates a new instance of the Decoable using the supplied source and language. A `HomogenousTree` will be used as the keyed data source for the decoder
+     
+     - Parameter source: The source to be parsed and then decoded
+     - Parameter language: The language to parse the source with
+     - Returns: A new instance of the Type
+     */
+    static func parse(source:String, using language:Language) throws ->Self{
+        return try parse(source: source, using: language, and: HomogenousTree.self)
+    }
+
 }
