@@ -40,13 +40,8 @@ public extension Decodable {
      - Parameter using: The Abstract Syntax Tree Type to use, it must implemented both Parsable and DecodableNode
      - Returns: A new instance of the Type
     */
-    static func parse<T>(source:String, using language:Language, and ast:T.Type) throws ->Self where T : Parsable, T:DecodeableNode{
-        
-        // TODO: Make it first create the IR using the supplied constructor. It should then check to make sure that the resultant AST is a decodable
-        // node. This essentially allows alternative implementations to be provided for the intermediate form allowing rework of the AST before decoding
-        let instance = try ParsingDecoder().decode(Self.self, from: source, with: language, ast: ast)
-
-        return instance
+    static func decode(source:String, using language:Language) throws ->Self{
+        return try decode(source, with: HomogenousTree.self, using: language)
     }
     
     /**
@@ -56,8 +51,10 @@ public extension Decodable {
      - Parameter language: The language to parse the source with
      - Returns: A new instance of the Type
      */
-    static func parse(source:String, using language:Language) throws ->Self{
-        return try parse(source: source, using: language, and: HomogenousTree.self)
+    static func decode<AST:DecodeableNode>(_ source:String, with astType:AST.Type, using language:Language) throws ->Self{
+        let ast = try AbstractSyntaxTreeConstructor().build(astType, from: source, using: language)
+        
+        return try ParsingDecoder().decode(Self.self, using: ast)
     }
 
 }

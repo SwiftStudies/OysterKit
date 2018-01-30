@@ -158,17 +158,15 @@ public class AbstractSyntaxTreeConstructor  {
     }
     
     /**
-     Parses the source supplied at initialization with supplied language, returning an instance of `T` (the return type). The supplied type `P` must be both `Parsable` (can be constructed from the
-     `IntermediateRepresentation` and a `DecodableNode` can be used by the `Decoder`
+     Parses the source supplied at initialization with supplied language, returning an instance of the returned Type
      
      - Parameter source: The text to parse and build the tree from
      - Parameter language: The language to use to parse the source
      - Parameter lexer: An optional special lexer instance to use. This must be initialized with the same string as the AST
-     - Parameter through: You can supply your own `Parsable` and `DecoableNode` type to enable specialisation of the AST ahead of Decoding into the final Type
      - Returns: An instance of a decodable type
-    */
-    public func parse<T : Decodable, P : Parsable>(_ source:String, using language:Language, through parseableType : P.Type, andLexicalAnalyzer lexer:LexicalAnalyzer.Type = Lexer.self) throws ->T where P : DecodeableNode {
-        return try T.parse(source: source, using: language, and: parseableType)
+     */
+    public func build<T:Decodable, AST:DecodeableNode>(_ heterogenousType:T.Type, using astType:AST.Type, from source: String, using language: Language) throws -> T{
+        return try heterogenousType.decode(source, with: astType, using: language)
     }
     
     /**
@@ -179,23 +177,24 @@ public class AbstractSyntaxTreeConstructor  {
      - Parameter lexer: An optional special lexer instance to use. This must be initialized with the same string as the AST
      - Returns: An instance of a decodable type
      */
-    public func parse<T : Decodable>(_ source:String, using language:Language, andLexicalAnalyzer lexer:LexicalAnalyzer.Type = Lexer.self) throws ->T {
-        return try T.parse(source: source, using: language)
+    public func build<T:Decodable>(_ heterogenousType:T.Type, from source: String, using language: Language) throws -> T{
+        return try build(heterogenousType, using: HomogenousTree.self, from: source, using: language)
     }
-
+    
     /**
-     Parses the source supplied at initialization with supplied language, returning an instance of a homogenous tree of type `HomogenousTree`
+     Parses the source supplied at initialization with supplied language, returning an instance of the returned Type
      
      - Parameter source: The text to parse and build the tree from
      - Parameter language: The language to use to parse the source
      - Parameter lexer: An optional special lexer instance to use. This must be initialized with the same string as the AST
-     - Returns: A `HomogenousTree`. If multiple root children exist following parsing they will be grouped under a top level node
+     - Returns: An instance of a decodable type
      */
-    public func parse(_ source:String, using language:Language, andLexicalAnalyzer lexer:LexicalAnalyzer.Type = Lexer.self) throws -> HomogenousTree{
+    public func build<AST:DecodeableNode>(_ astType:AST.Type, from source: String, using language: Language) throws -> AST{
+        print("AST Build")
         self.source  = source
         self.scalars = source.unicodeScalars
         
-        let _ = language.build(intermediateRepresentation: self, using: lexer.init(source: source))
+        let _ = language.build(intermediateRepresentation: self, using: Lexer(source: source))
         
         do {
             let topNode : AbstractSyntaxTreeNode
@@ -211,12 +210,22 @@ public class AbstractSyntaxTreeConstructor  {
             } else {
                 topNode = topNodes[0]
             }
-            return try HomogenousTree(with: topNode, from: source)
+            return try AST(with: topNode, from: source)
         } catch {
             throw ConstructionError.constructionFailed(causes: _errors)
         }
     }
-
+    
+    /**
+     Parses the source supplied at initialization with supplied language, returning an instance of a homogenous tree of type `HomogenousTree`
+     
+     - Parameter source: The text to parse and build the tree from
+     - Parameter language: The language to use to parse the source
+     - Returns: A `HomogenousTree`. If multiple root children exist following parsing they will be grouped under a top level node
+     */
+    public func build(_ source:String, using language:Language) throws -> HomogenousTree{
+        return try build(HomogenousTree.self, from: source, using: language)
+    }
 
 }
 

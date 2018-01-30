@@ -4,7 +4,7 @@ import Foundation
 import STLR
 import OysterKit
 
-
+print("Hello")
 
 guard let grammarSource = try? String(contentsOfFile: "/Volumes/Personal/SPM/XMLDecoder/XML.stlr") else {
     fatalError("Could not load grammar")
@@ -15,33 +15,35 @@ guard let xmlLanguage = STLRParser.init(source: grammarSource).ast.runtimeLangua
 }
 
 let xmlSource = """
-<hello attribute='test'>
-    <world attribute='test' another-attribute='test2'>
-        Again<p />And this in <b>bold</b>
-    </world>
-</hello>
+<message subject='Hello, OysterKit!' priority="High">
+    It's really <i>good</i> to meet you,
+    <p />
+    I hope you are settling in OK, let me know if you need anything.
+    <p />
+    Phatom Testers
+</message>
 """
 
-let tree = HomogenousAbstractSyntaxTreeConstructor(with: xmlSource).parse(using: xmlLanguage)
+let tree = try? AbstractSyntaxTreeConstructor().build(xmlSource, using: xmlLanguage)
 
 print(tree?.description ?? "Failed")
 
-//class ParsedXML : Decodable {
-//    let openTag : String
-//    let nestingTag : XTest?
-//    let data : String?
-//}
+struct ParsedXML : Decodable {
+    struct Tag : Decodable {
+        struct Attribute : Decodable {
+            let identifier : String
+            let value : String?
+        }
+        struct Content : Decodable {
+            let data : String?
+            let tag  : Tag?
+        }
+        let identifier : String
+        let attributes : [Attribute]
+        let content    : [Content]
+    }
+    
+    let tag : Tag
+}
 
-//guard let xml = try? XTest.parse(source: xmlSource, using: xmlLanguage) else {
-//    fatalError("Could not parse as XML")
-//}
-
-//xml.openTag
-//xml.nestingTag!.openTag
-//xml.nestingTag!.data
-
-
-//print(stlrParser.ast.swift(grammar: "XMLTest")!)
-
-//tree.children[0].children[0]
-
+let parsedXML = try? ParsedXML.decode(source: xmlSource, using: xmlLanguage)
