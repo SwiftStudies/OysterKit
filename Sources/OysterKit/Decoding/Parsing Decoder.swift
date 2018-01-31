@@ -31,7 +31,7 @@ import Foundation
  This protocol identifies as set of additional requirements for `Node`s in order for them to be used for decoding.  Some elements of the implementation are
  provided through an extension.
  */
-public protocol DecodeableNode : Parsable{
+public protocol DecodeableAbstractSyntaxTree : AbstractSyntaxTree{
 
     /// The String the was matched for the node
     var stringValue : String {get}
@@ -40,7 +40,7 @@ public protocol DecodeableNode : Parsable{
     var  key                : CodingKey {get}
     
     /// Should be the children of this node
-    var  contents           : [DecodeableNode] {get}
+    var  contents           : [DecodeableAbstractSyntaxTree] {get}
     
     /**
      Should return the child node at the supplied `index`. A default implementation is provided through an extension.
@@ -48,7 +48,7 @@ public protocol DecodeableNode : Parsable{
      -Parameter index: The index of the desired child
      -Returns: The child node
      */
-    subscript(_ index:Int)->DecodeableNode {get}
+    subscript(_ index:Int)->DecodeableAbstractSyntaxTree {get}
     
     /**
      Should return the child node with the specified `CodingKey` or `nil` if it does not exist. A default implementation
@@ -57,18 +57,18 @@ public protocol DecodeableNode : Parsable{
      -Parameter key: The key of the desired child
      -Returns: The child node, or `nil` if not found
      */
-    subscript(key codingKey:CodingKey)->DecodeableNode? {get}
+    subscript(key codingKey:CodingKey)->DecodeableAbstractSyntaxTree? {get}
 }
 
 /// Provide standard implementations of the subscripting requirements
-public extension DecodeableNode{
+public extension DecodeableAbstractSyntaxTree{
     /**
      Returns the child node at the supplied `index`
      
      -Parameter index: The index of the desired child
      -Returns: The child node
      */
-    public subscript(key codingKey: CodingKey) -> DecodeableNode? {
+    public subscript(key codingKey: CodingKey) -> DecodeableAbstractSyntaxTree? {
         for child in contents {
             if child.key.stringValue == codingKey.stringValue {
                 return child
@@ -84,7 +84,7 @@ public extension DecodeableNode{
      -Parameter key: The key of the desired child
      -Returns: The child node, or `nil` if not found
      */
-    public subscript(_ index: Int) -> DecodeableNode {
+    public subscript(_ index: Int) -> DecodeableAbstractSyntaxTree {
         return contents[index]
     }
 }
@@ -106,7 +106,7 @@ extension CodingKey {
 }
 
 /// Extends the standard `HomogenousTree` so it is Decodable
-extension HomogenousTree : DecodeableNode {
+extension HomogenousTree : DecodeableAbstractSyntaxTree {
     /// The string that was captured by this node
     public var stringValue: String {
         return matchedString
@@ -119,7 +119,7 @@ extension HomogenousTree : DecodeableNode {
     }
     
     /// The children of this node
-    public var contents: [DecodeableNode]{
+    public var contents: [DecodeableAbstractSyntaxTree]{
         return children
     }
 }
@@ -152,7 +152,7 @@ public struct ParsingDecoder{
      - Parameter ast: The AbstractSyntaxTree representation
      - Returns: An instance of the type
     */
-    public func decode<T : Decodable>(_ type: T.Type, using ast:DecodeableNode) throws -> T {
+    public func decode<T : Decodable>(_ type: T.Type, using ast:DecodeableAbstractSyntaxTree) throws -> T {
         let decoder = _ParsingDecoder(referencing: ast)
         return try T(from: decoder)
     }    
@@ -186,7 +186,7 @@ fileprivate class _ParsingDecoder : Decoder{
     
     // MARK: - Initialization
     /// Initializes `self` with the given top-level container and options.
-    fileprivate init(referencing container: DecodeableNode, at codingPath: [CodingKey] = []) {
+    fileprivate init(referencing container: DecodeableAbstractSyntaxTree, at codingPath: [CodingKey] = []) {
         self.storage = _ParsingDecodingStorage()
         self.storage.push(container: container)
         self.codingPath = codingPath
@@ -227,19 +227,19 @@ fileprivate struct _ParsingDecodingStorage {
     // MARK: Properties
     /// The container stack.
     /// Elements may be any one of the JSON types (NSNull, NSNumber, String, Array, [String : Any]).
-    private(set) fileprivate var containers: [DecodeableNode] = []
+    private(set) fileprivate var containers: [DecodeableAbstractSyntaxTree] = []
     
     // MARK: - Modifying the Stack
     fileprivate var count: Int {
         return self.containers.count
     }
     
-    fileprivate var topContainer: DecodeableNode {
+    fileprivate var topContainer: DecodeableAbstractSyntaxTree {
         precondition(self.containers.count > 0, "Empty container stack.")
         return self.containers.last!
     }
     
-    fileprivate mutating func push(container: DecodeableNode) {
+    fileprivate mutating func push(container: DecodeableAbstractSyntaxTree) {
         self.containers.append(container)
     }
     
@@ -284,14 +284,14 @@ fileprivate struct _ParsingKeyedDecodingContainer<K : CodingKey> : KeyedDecoding
     private let decoder: _ParsingDecoder
     
     /// A reference to the container we're reading from.
-    private let container: DecodeableNode
+    private let container: DecodeableAbstractSyntaxTree
     
     /// The path of coding keys taken to get to this point in decoding.
     private(set) public var codingPath: [CodingKey]
     
     // MARK: - Initialization
     /// Initializes `self` by referencing the given decoder and container.
-    fileprivate init(referencing decoder: _ParsingDecoder, wrapping container: DecodeableNode) {
+    fileprivate init(referencing decoder: _ParsingDecoder, wrapping container: DecodeableAbstractSyntaxTree) {
         self.decoder = decoder
         self.container = container
         self.codingPath = decoder.codingPath
@@ -582,7 +582,7 @@ fileprivate struct _ParsingKey : CodingKey{
 
 extension _ParsingDecoder : SingleValueDecodingContainer{
     
-    var node : DecodeableNode {
+    var node : DecodeableAbstractSyntaxTree {
         return storage.topContainer
     }
     
@@ -716,7 +716,7 @@ fileprivate struct _STLRUnkeyedDecodingContainer : UnkeyedDecodingContainer {
     private let decoder: _ParsingDecoder
     
     /// A reference to the container we're reading from.
-    private let container: DecodeableNode
+    private let container: DecodeableAbstractSyntaxTree
     
     /// The path of coding keys taken to get to this point in decoding.
     private(set) public var codingPath: [CodingKey]
@@ -726,7 +726,7 @@ fileprivate struct _STLRUnkeyedDecodingContainer : UnkeyedDecodingContainer {
     
     // MARK: - Initialization
     /// Initializes `self` by referencing the given decoder and container.
-    fileprivate init(referencing decoder: _ParsingDecoder, wrapping container: DecodeableNode) {
+    fileprivate init(referencing decoder: _ParsingDecoder, wrapping container: DecodeableAbstractSyntaxTree) {
         self.decoder = decoder
         self.container = container
         self.codingPath = decoder.codingPath
@@ -1361,7 +1361,7 @@ fileprivate extension _ParsingDecoder {
             guard let decimal = try self.unbox(value, as: Decimal.self) else { return nil }
             decoded = decimal as! T
         } else {
-            self.storage.push(container: value as! DecodeableNode)
+            self.storage.push(container: value as! DecodeableAbstractSyntaxTree)
             decoded = try T(from: self)
             self.storage.popContainer()
         }

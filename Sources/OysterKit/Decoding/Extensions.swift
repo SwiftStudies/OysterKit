@@ -33,25 +33,27 @@ import Foundation
  */
 public extension Decodable {
     /**
-     Creates a new instance of the Decoable using the supplied source and language.
+     Creates a new instance of the ``Decodeable`` using the supplied source and language.
      
      - Parameter source: The source to be parsed and then decoded
      - Parameter language: The language to parse the source with
-     - Parameter using: The Abstract Syntax Tree Type to use, it must implemented both Parsable and DecodableNode
      - Returns: A new instance of the Type
     */
-    static func decode(source:String, using language:Language) throws ->Self{
+    static func decode(_ source:String, using language:Language) throws ->Self{
         return try decode(source, with: HomogenousTree.self, using: language)
     }
     
     /**
-     Creates a new instance of the Decoable using the supplied source and language. A `HomogenousTree` will be used as the keyed data source for the decoder
+     Creates a new instance of the ``Decodeable`` using the supplied source and language. You typically do not need to use this
+     variant of the function and can use the simpler ``decode(_ source:String, using language:Language) throws ->Self`` which
+     does not require the provision of your own ``DecodableAbstractSyntaxTree``
      
      - Parameter source: The source to be parsed and then decoded
+     - Parameter astType: The intermediate ``DecodeableAbstractSyntaxTree``
      - Parameter language: The language to parse the source with
      - Returns: A new instance of the Type
      */
-    static func decode<AST:DecodeableNode>(_ source:String, with astType:AST.Type, using language:Language) throws ->Self{
+    static func decode<AST:DecodeableAbstractSyntaxTree>(_ source:String, with astType:AST.Type, using language:Language) throws ->Self{
         let ast = try AbstractSyntaxTreeConstructor().build(astType, from: source, using: language)
         
         return try ParsingDecoder().decode(Self.self, using: ast)

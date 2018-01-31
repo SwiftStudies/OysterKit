@@ -25,7 +25,10 @@
 import Foundation
 
 /**
- An abstract syntax tree allows you to build a data structure from the results of parsing. The root element must be parsable.
+ AbstractSyntaxTreeConstructor is an `IntermediateRepresentation` responsible for briding between the parsing results and an AbstractSyntaxTree.
+ It encapsulates a parsing strategy that creates it's own lightweight homogenous representation of the parsed data. It can build into any
+ ``AbstractSyntaxTree``, utilizing the `HomogenousTree` by default. In addition it can parse into a heterogenous abstract syntax tree represented by
+ any Swift Type by utlizing the Swift Decoder framework to decode the intermediate representation into a decodable container structure.
  */
 public class AbstractSyntaxTreeConstructor  {
     
@@ -106,11 +109,15 @@ public class AbstractSyntaxTreeConstructor  {
     }
     
     /**
-     Parses the source supplied at initialization with supplied language, returning an instance of the returned Type
+     Constructs a heterogenous AST by first constructing the specified DecodableAbstractSyntaxTree (meeting the requirements of the ``ParsingDecoder`` class).
+     You typically do not need to use this method (where you are specifying your own AST to use) and you should consider
+     ``build<T:Decodable>(_ heterogenousType:T.Type, from source: String, using language: Language)`` which will create a ``HomegenousTree`` which is very
+     easy to use to decode into a concrete type.
      
-     - Parameter source: The text to parse and build the tree from
-     - Parameter language: The language to use to parse the source
-     - Parameter lexer: An optional special lexer instance to use. This must be initialized with the same string as the AST
+     - Parameter heterogenousType: The ``Decodable`` Swift Type being constructed
+     - Parameter using: The ``DecodableAbstractSyntaxTree`` to construct prior to decoding
+     - Parameter from: The text to parse and build the tree from
+     - Parameter using: The language to use to parse the source
      - Returns: An instance of a decodable type
      */
     public func build<T:Decodable, AST:DecodeableAbstractSyntaxTree>(_ heterogenousType:T.Type, using astType:AST.Type, from source: String, using language: Language) throws -> T{
@@ -118,11 +125,12 @@ public class AbstractSyntaxTreeConstructor  {
     }
     
     /**
-     Parses the source supplied at initialization with supplied language, returning an instance of the returned Type
+     Constructs a heterogenous AST by first constructing a ``HomogenousAbstractSyntaxTree`` which is then passed to the ``ParsingDecoder`` to leverage
+     Swift's Decoder framework to create the heterogenous AST.
      
-     - Parameter source: The text to parse and build the tree from
-     - Parameter language: The language to use to parse the source
-     - Parameter lexer: An optional special lexer instance to use. This must be initialized with the same string as the AST
+     - Parameter heterogenousType: The ``Decodable`` Swift Type being constructed
+     - Parameter from: The text to parse and build the tree from
+     - Parameter using: The language to use to parse the source
      - Returns: An instance of a decodable type
      */
     public func build<T:Decodable>(_ heterogenousType:T.Type, from source: String, using language: Language) throws -> T{
@@ -130,14 +138,16 @@ public class AbstractSyntaxTreeConstructor  {
     }
     
     /**
-     Parses the source supplied at initialization with supplied language, returning an instance of the returned Type
+     Constructs a homogenous AST from the supplied source and language. You typically do not need to use this method (where you are
+     specifying your own AST to use) and you should consider ``build(from source: String, using language: Language)`` which creates a
+     ``HomegenousTree`` which is very easy to work with.
      
-     - Parameter source: The text to parse and build the tree from
-     - Parameter language: The language to use to parse the source
-     - Parameter lexer: An optional special lexer instance to use. This must be initialized with the same string as the AST
-     - Returns: An instance of a decodable type
+     - Parameter using: The ``AbstractSyntaxTree`` to construct
+     - Parameter from: The text to parse and build the tree from
+     - Parameter using: The language to use to parse the source
+     - Returns: The ``AbstractSyntaxTree``
      */
-    public func build<AST:DecodeableAbstractSyntaxTree>(_ astType:AST.Type, from source: String, using language: Language) throws -> AST{
+    public func build<AST:AbstractSyntaxTree>(_ astType:AST.Type, from source: String, using language: Language) throws -> AST{
         self.source  = source
         self.scalars = source.unicodeScalars
         
@@ -164,11 +174,11 @@ public class AbstractSyntaxTreeConstructor  {
     }
     
     /**
-     Parses the source supplied at initialization with supplied language, returning an instance of a homogenous tree of type `HomogenousTree`
+     Constructs a homogenous AST from the supplied source and language.
      
-     - Parameter source: The text to parse and build the tree from
-     - Parameter language: The language to use to parse the source
-     - Returns: A `HomogenousTree`. If multiple root children exist following parsing they will be grouped under a top level node
+     - Parameter from: The text to parse and build the tree from
+     - Parameter using: The language to use to parse the source
+     - Returns: A ``HomogenousAbstractSyntaxTree``
      */
     public func build(_ source:String, using language:Language) throws -> HomogenousTree{
         return try build(HomogenousTree.self, from: source, using: language)
