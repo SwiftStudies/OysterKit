@@ -69,6 +69,20 @@
       "symbol": "IntermediateRepresentation.init()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/TokenStream.swift",
+      "line": 44,
+      "symbol": "TokenStream.init(_:using:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/TokenStream.swift",
+      "line": 50,
+      "symbol": "TokenStream.init(_:using:with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
     }
   ],
   "source_directory": "/Volumes/Personal/SPM/OysterKit"

@@ -39,6 +39,10 @@ public class AbstractSyntaxTreeConstructor  {
         
         /// One or more AST nodes could not be constructed
         case constructionFailed(causes: [Error])
+        
+        /// An error that is wholly unexpected, throwers should provide as much information as possible to guide
+        /// developers to what may have gone wrong (at this point it's not something that will be meaningful to consumers
+        case unknownError(message:String)
     }
     
     /**

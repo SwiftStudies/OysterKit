@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>DecodeableNode Protocol Reference</title>
+    <title>Decodable Extension Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset="utf-8">
@@ -14,9 +14,9 @@
   </head>
   <body>
 
-    <a name="//apple_ref/swift/Protocol/DecodeableNode" class="dashAnchor"></a>
+    <a name="//apple_ref/swift/Extension/Decodable" class="dashAnchor"></a>
 
-    <a title="DecodeableNode Protocol Reference"></a>
+    <a title="Decodable Extension Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -38,7 +38,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="../index.html">OysterKit Reference</a>
       <img class="carat" src="../img/carat.png" />
-      DecodeableNode Protocol Reference
+      Decodable Extension Reference
     </p>
 
     <div class="content-wrapper">
@@ -47,6 +47,15 @@
           <li class="nav-group-name">
             <a class="nav-group-name-link" href="../Classes.html">Classes</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/AbstractSyntaxTreeConstructor.html">AbstractSyntaxTreeConstructor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/AbstractSyntaxTreeConstructor/ConstructionError.html">– ConstructionError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/AbstractSyntaxTreeConstructor/IntermediateRepresentationNode.html">– IntermediateRepresentationNode</a>
+              </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DebuggingDelegate.html">DebuggingDelegate</a>
               </li>
@@ -94,6 +103,12 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/StringScanner.html">StringScanner</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/TokenStream.html">TokenStream</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/TokenStreamIterator.html">TokenStreamIterator</a>
               </li>
             </ul>
           </li>
@@ -147,6 +162,9 @@
                 <a class="nav-group-task-link" href="../Extensions/Collection.html">Collection</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Decodable.html">Decodable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Extensions/DispatchTimeInterval.html">DispatchTimeInterval</a>
               </li>
               <li class="nav-group-task">
@@ -181,7 +199,10 @@
                 <a class="nav-group-task-link" href="../Protocols/ASTNodeConstructor.html">ASTNodeConstructor</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/DecodeableNode.html">DecodeableNode</a>
+                <a class="nav-group-task-link" href="../Protocols/AbstractSyntaxTree.html">AbstractSyntaxTree</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/DecodeableAbstractSyntaxTree.html">DecodeableAbstractSyntaxTree</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HumanConsumableError.html">HumanConsumableError</a>
@@ -222,6 +243,9 @@
                 <a class="nav-group-task-link" href="../Structs/HomogenousNode.html">HomogenousNode</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/HomogenousTree.html">HomogenousTree</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/ParsingDecoder.html">ParsingDecoder</a>
               </li>
             </ul>
@@ -238,6 +262,9 @@
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a>
               </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit13StreamedTokena">StreamedToken</a>
+              </li>
             </ul>
           </li>
         </ul>
@@ -246,15 +273,15 @@
 
         <section class="section">
           <div class="section-content">
-            <h1>DecodeableNode</h1>
+            <h1>Decodable</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">DecodeableNode</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">protocol</span> <span class="kt">Decodable</span></code></pre>
 
                 </div>
               </div>
-            <p>This protocol identifies as set of additional requirements for <code><a href="../Protocols/Node.html">Node</a></code>s in order for them to be used for decoding.  Some elements of the implementation are
-provided through an extension.</p>
+            <p>Makes it possible for any <code>Decodable</code> to be constructed using a source string and language. You can specify your own
+<code><a href="../Classes/AbstractSyntaxTreeConstructor.html">AbstractSyntaxTreeConstructor</a></code> should you wish.</p>
 
           </div>
         </section>
@@ -266,9 +293,9 @@ provided through an extension.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit14DecodeableNodeP11stringValueS2S6source_tF"></a>
-                    <a name="//apple_ref/swift/Method/stringValue(source:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit14DecodeableNodeP11stringValueS2S6source_tF">stringValue(source:)</a>
+                    <a name="/s:s9DecodableP9OysterKitE6decodexSS_AC8Language_p5usingtKFZ"></a>
+                    <a name="//apple_ref/swift/Method/decode(_:using:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:s9DecodableP9OysterKitE6decodexSS_AC8Language_p5usingtKFZ">decode(_:using:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -276,14 +303,14 @@ provided through an extension.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Should return the sub string captured by this node (that is, what it matched)</p>
+                        <p>Creates a new instance of the <code>Decodeable</code> using the supplied source and language.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">stringValue</span><span class="p">(</span><span class="nv">source</span> <span class="p">:</span> <span class="kt">String</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">String</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">static</span> <span class="kd">func</span> <span class="nf">decode</span><span class="p">(</span><span class="n">_</span> <span class="nv">source</span><span class="p">:</span><span class="kt">String</span><span class="p">,</span> <span class="n">using</span> <span class="nv">language</span><span class="p">:</span><span class="kt"><a href="../Protocols/Language.html">Language</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span><span class="k">Self</span></code></pre>
 
                         </div>
                       </div>
@@ -299,7 +326,19 @@ provided through an extension.</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>The <code>String</code> that the <code>DecodeableNode</code> was created from</p>
+                                  <p>The source to be parsed and then decoded</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>language</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The language to parse the source with</p>
                                 </div>
                               </td>
                             </tr>
@@ -308,7 +347,7 @@ provided through an extension.</p>
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p>The sub-string</p>
+                        <p>A new instance of the Type</p>
                       </div>
                     </section>
                   </div>
@@ -316,9 +355,9 @@ provided through an extension.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit14DecodeableNodeP3keys9CodingKey_pv"></a>
-                    <a name="//apple_ref/swift/Property/key" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit14DecodeableNodeP3keys9CodingKey_pv">key</a>
+                    <a name="/s:s9DecodableP9OysterKitE6decodexSS_qd__m4withAC8Language_p5usingtKAC28DecodeableAbstractSyntaxTreeRd__lFZ"></a>
+                    <a name="//apple_ref/swift/Method/decode(_:with:using:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:s9DecodableP9OysterKitE6decodexSS_qd__m4withAC8Language_p5usingtKAC28DecodeableAbstractSyntaxTreeRd__lFZ">decode(_:with:using:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -326,127 +365,65 @@ provided through an extension.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Should be the <code>CodingKey</code> for this node. This is normally generated using the name of the <code><a href="../Protocols/Token.html">Token</a></code>.</p>
+                        <p>Creates a new instance of the <code>Decodeable</code> using the supplied source and language. You typically do not need to use this
+variant of the function and can use the simpler <code>decode(_ source:String, using language:Language) throws -&gt;Self</code> which
+does not require the provision of your own <code>DecodableAbstractSyntaxTree</code></p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">var</span>  <span class="nv">key</span>                <span class="p">:</span> <span class="kt">CodingKey</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">static</span> <span class="kd">func</span> <span class="n">decode</span><span class="o">&lt;</span><span class="kt">AST</span><span class="p">:</span><span class="kt"><a href="../Protocols/DecodeableAbstractSyntaxTree.html">DecodeableAbstractSyntaxTree</a></span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">source</span><span class="p">:</span><span class="kt">String</span><span class="p">,</span> <span class="n">with</span> <span class="nv">astType</span><span class="p">:</span><span class="kt">AST</span><span class="o">.</span><span class="k">Type</span><span class="p">,</span> <span class="n">using</span> <span class="nv">language</span><span class="p">:</span><span class="kt"><a href="../Protocols/Language.html">Language</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span><span class="k">Self</span></code></pre>
 
                         </div>
                       </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:9OysterKit14DecodeableNodeP8contentsSayAaB_pGv"></a>
-                    <a name="//apple_ref/swift/Property/contents" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit14DecodeableNodeP8contentsSayAaB_pGv">contents</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Should be the children of this node</p>
-
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>source</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The source to be parsed and then decoded</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>astType</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The intermediate <code><a href="../Protocols/DecodeableAbstractSyntaxTree.html">DecodeableAbstractSyntaxTree</a></code></p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>language</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The language to parse the source with</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">var</span>  <span class="nv">contents</span>           <span class="p">:</span> <span class="p">[</span><span class="kt">DecodeableNode</span><span class="p">]</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:9OysterKit14DecodeableNodeP9subscriptAaB_pSici"></a>
-                    <a name="//apple_ref/swift/Method/subscript(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit14DecodeableNodeP9subscriptAaB_pSici">subscript(_:)</a>
-                    </code>
-                      <span class="declaration-note">
-                        Default implementation
-                      </span>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Should return the child node at the supplied <code>index</code>. A default implementation is provided through an extension.</p>
-
-<p>-Parameter index: The index of the desired child
--Returns: The child node</p>
-
-                      </div>
-                      <h4>Default Implementation</h4>
-                      <div class="default_impl abstract">
-                        <p>Returns the child node with the specified <code>CodingKey</code> or <code>nil</code> if it does not exist. A default implementation
-is provided through an extension.</p>
-
-<p>-Parameter key: The key of the desired child
--Returns: The child node, or <code>nil</code> if not found</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="nf">subscript</span><span class="p">(</span><span class="n">_</span> <span class="nv">index</span><span class="p">:</span><span class="kt">Int</span><span class="p">)</span><span class="o">-&gt;</span><span class="nf">DecodeableNode</span> <span class="p">{</span><span class="k">get</span><span class="p">}</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:9OysterKit14DecodeableNodeP9subscriptAaB_pSgs9CodingKey_p3key_tci"></a>
-                    <a name="//apple_ref/swift/Method/subscript(key:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit14DecodeableNodeP9subscriptAaB_pSgs9CodingKey_p3key_tci">subscript(key:)</a>
-                    </code>
-                      <span class="declaration-note">
-                        Default implementation
-                      </span>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Should return the child node with the specified <code>CodingKey</code> or <code>nil</code> if it does not exist. A default implementation
-is provided through an extension.</p>
-
-<p>-Parameter key: The key of the desired child
--Returns: The child node, or <code>nil</code> if not found</p>
-
-                      </div>
-                      <h4>Default Implementation</h4>
-                      <div class="default_impl abstract">
-                        <p>Returns the child node at the supplied <code>index</code></p>
-
-<p>-Parameter index: The index of the desired child
--Returns: The child node</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="nf">subscript</span><span class="p">(</span><span class="n"><a href="../Protocols/DecodeableNode.html#/s:9OysterKit14DecodeableNodeP3keys9CodingKey_pv">key</a></span> <span class="nv">codingKey</span><span class="p">:</span><span class="kt">CodingKey</span><span class="p">)</span><span class="o">-&gt;</span><span class="nf">DecodeableNode</span><span class="p">?</span> <span class="p">{</span><span class="k">get</span><span class="p">}</span></code></pre>
-
-                        </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A new instance of the Type</p>
                       </div>
                     </section>
                   </div>
@@ -459,7 +436,7 @@ is provided through an extension.</p>
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-01-25)</p>
+      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-01-31)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>AbstractSyntaxTreeConstructor Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Class/AbstractSyntaxTreeConstructor" class="dashAnchor"></a>
+
+    <a title="AbstractSyntaxTreeConstructor Class Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="../index.html">
+          OysterKit Docs
+        </a>
+         (97% documented)
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="../search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../index.html">OysterKit Reference</a>
+      <img class="carat" src="../img/carat.png" />
+      AbstractSyntaxTreeConstructor Class Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/AbstractSyntaxTreeConstructor.html">AbstractSyntaxTreeConstructor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/AbstractSyntaxTreeConstructor/ConstructionError.html">– ConstructionError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/AbstractSyntaxTreeConstructor/IntermediateRepresentationNode.html">– IntermediateRepresentationNode</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DebuggingDelegate.html">DebuggingDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DefaultHeterogenousConstructor.html">DefaultHeterogenousConstructor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DefaultHomogenousAST.html">DefaultHomogenousAST</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ForwardingIR.html">ForwardingIR</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/HeterogenousAST.html">HeterogenousAST</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/HomogenousAST.html">HomogenousAST</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/Lexer.html">Lexer</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/NodeIterator.html">NodeIterator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/NodeStack.html">NodeStack</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/NodeStackEntry.html">NodeStackEntry</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/Parser.html">Parser</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/RecursiveRule.html">RecursiveRule</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/StateCache.html">StateCache</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/StreamConstructor.html">StreamConstructor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/StreamRepresentation.html">StreamRepresentation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/StringScanner.html">StringScanner</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/TokenStream.html">TokenStream</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/TokenStreamIterator.html">TokenStreamIterator</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Global Variables.html">Global Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Global Variables.html#/s:9OysterKit19transientTokenValueSiv">transientTokenValue</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BackgroundTimer.html">BackgroundTimer</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/GrammarError.html">GrammarError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/LanguageError.html">LanguageError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/MatchResult.html">MatchResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/ParserRule.html">ParserRule</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/RuleAnnotation.html">RuleAnnotation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/RuleAnnotationValue.html">RuleAnnotationValue</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/ScannerRule.html">ScannerRule</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Array.html">Array</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/CharacterSet.html">CharacterSet</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Collection.html">Collection</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Decodable.html">Decodable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/DispatchTimeInterval.html">DispatchTimeInterval</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Int.html">Int</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/String.html">String</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/String/UnicodeScalarView.html">– UnicodeScalarView</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/StringProtocol.html">StringProtocol</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/_ParsingDecoder.html">_ParsingDecoder</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Functions.html">Functions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit2eeoiSbAA5Token_p_AaC_ptF">==(_:_:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ASTNodeConstructor.html">ASTNodeConstructor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/AbstractSyntaxTree.html">AbstractSyntaxTree</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/DecodeableAbstractSyntaxTree.html">DecodeableAbstractSyntaxTree</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HumanConsumableError.html">HumanConsumableError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/Language.html">Language</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/LexicalContext.html">LexicalContext</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/Node.html">Node</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/Rule.html">Rule</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/Token.html">Token</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ValuedNode.html">ValuedNode</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/HeterogeneousNode.html">HeterogeneousNode</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/HomogenousNode.html">HomogenousNode</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/HomogenousTree.html">HomogenousTree</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ParsingDecoder.html">ParsingDecoder</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit17CustomRuleClosurea">CustomRuleClosure</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit23DefaultHeterogeneousASTa">DefaultHeterogeneousAST</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit13StreamedTokena">StreamedToken</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            <h1>AbstractSyntaxTreeConstructor</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">AbstractSyntaxTreeConstructor</span></code></pre>
+
+                </div>
+              </div>
+            <p>AbstractSyntaxTreeConstructor is an <code><a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></code> responsible for briding between the parsing results and an AbstractSyntaxTree.
+It encapsulates a parsing strategy that creates it&rsquo;s own lightweight homogenous representation of the parsed data. It can build into any
+<code><a href="../Protocols/AbstractSyntaxTree.html">AbstractSyntaxTree</a></code>, utilizing the <code><a href="../Structs/HomogenousTree.html">HomogenousTree</a></code> by default. In addition it can parse into a heterogenous abstract syntax tree represented by
+any Swift Type by utlizing the Swift Decoder framework to decode the intermediate representation into a decodable container structure.</p>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit29AbstractSyntaxTreeConstructorC17ConstructionErrorO"></a>
+                    <a name="//apple_ref/swift/Enum/ConstructionError" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit29AbstractSyntaxTreeConstructorC17ConstructionErrorO">ConstructionError</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Errors that can occur during AST creation</p>
+
+                        <a href="../Classes/AbstractSyntaxTreeConstructor/ConstructionError.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">ConstructionError</span> <span class="p">:</span> <span class="kt">Error</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit29AbstractSyntaxTreeConstructorC30IntermediateRepresentationNodeV"></a>
+                    <a name="//apple_ref/swift/Struct/IntermediateRepresentationNode" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit29AbstractSyntaxTreeConstructorC30IntermediateRepresentationNodeV">IntermediateRepresentationNode</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>An entry in the tree.</p>
+
+                        <a href="../Classes/AbstractSyntaxTreeConstructor/IntermediateRepresentationNode.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">IntermediateRepresentationNode</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/Node.html">Node</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit29AbstractSyntaxTreeConstructorC6errorsSays5Error_pGv"></a>
+                    <a name="//apple_ref/swift/Property/errors" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit29AbstractSyntaxTreeConstructorC6errorsSays5Error_pGv">errors</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The errors generated during parsing</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span>  <span class="k">var</span>     <span class="nv">errors</span> <span class="p">:</span> <span class="p">[</span><span class="kt">Error</span><span class="p">]</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit29AbstractSyntaxTreeConstructorCACycfc"></a>
+                    <a name="//apple_ref/swift/Method/init()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit29AbstractSyntaxTreeConstructorCACycfc">init()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates a new instance, preparing to parse the supplied source</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">required</span> <span class="nf">init</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit29AbstractSyntaxTreeConstructorC5buildxxm_q_m5usingSS4fromAA8Language_pAEtKs9DecodableRzAA010DecodeablecdE0R_r0_lF"></a>
+                    <a name="//apple_ref/swift/Method/build(_:using:from:using:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit29AbstractSyntaxTreeConstructorC5buildxxm_q_m5usingSS4fromAA8Language_pAEtKs9DecodableRzAA010DecodeablecdE0R_r0_lF">build(_:using:from:using:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Constructs a heterogenous AST by first constructing the specified DecodableAbstractSyntaxTree (meeting the requirements of the <code><a href="../Structs/ParsingDecoder.html">ParsingDecoder</a></code> class).
+You typically do not need to use this method (where you are specifying your own AST to use) and you should consider
+<code>build&lt;T:Decodable&gt;(_ heterogenousType:T.Type, from source: String, using language: Language)</code> which will create a <code>HomegenousTree</code> which is very
+easy to use to decode into a concrete type.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">build</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">:</span><span class="kt">Decodable</span><span class="p">,</span> <span class="kt">AST</span><span class="p">:</span><span class="kt"><a href="../Protocols/DecodeableAbstractSyntaxTree.html">DecodeableAbstractSyntaxTree</a></span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">heterogenousType</span><span class="p">:</span><span class="kt">T</span><span class="o">.</span><span class="k">Type</span><span class="p">,</span> <span class="n">using</span> <span class="nv">astType</span><span class="p">:</span><span class="kt">AST</span><span class="o">.</span><span class="k">Type</span><span class="p">,</span> <span class="n">from</span> <span class="nv">source</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">using</span> <span class="nv">language</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Language.html">Language</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">T</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>heterogenousType</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>Decodable</code> Swift Type being constructed</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>using</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The language to use to parse the source</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>from</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The text to parse and build the tree from</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>using</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The language to use to parse the source</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>An instance of a decodable type</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit29AbstractSyntaxTreeConstructorC5buildxxm_SS4fromAA8Language_p5usingtKs9DecodableRzlF"></a>
+                    <a name="//apple_ref/swift/Method/build(_:from:using:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit29AbstractSyntaxTreeConstructorC5buildxxm_SS4fromAA8Language_p5usingtKs9DecodableRzlF">build(_:from:using:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Constructs a heterogenous AST by first constructing a <code>HomogenousAbstractSyntaxTree</code> which is then passed to the <code><a href="../Structs/ParsingDecoder.html">ParsingDecoder</a></code> to leverage
+Swift&rsquo;s Decoder framework to create the heterogenous AST.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">build</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">:</span><span class="kt">Decodable</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">heterogenousType</span><span class="p">:</span><span class="kt">T</span><span class="o">.</span><span class="k">Type</span><span class="p">,</span> <span class="n">from</span> <span class="nv">source</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">using</span> <span class="nv">language</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Language.html">Language</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">T</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>heterogenousType</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code>Decodable</code> Swift Type being constructed</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>from</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The text to parse and build the tree from</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>using</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The language to use to parse the source</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>An instance of a decodable type</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit29AbstractSyntaxTreeConstructorC5buildxxm_SS4fromAA8Language_p5usingtKAA0cdE0RzlF"></a>
+                    <a name="//apple_ref/swift/Method/build(_:from:using:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit29AbstractSyntaxTreeConstructorC5buildxxm_SS4fromAA8Language_p5usingtKAA0cdE0RzlF">build(_:from:using:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Constructs a homogenous AST from the supplied source and language. You typically do not need to use this method (where you are
+specifying your own AST to use) and you should consider <code>build(from source: String, using language: Language)</code> which creates a
+<code>HomegenousTree</code> which is very easy to work with.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">build</span><span class="o">&lt;</span><span class="kt">AST</span><span class="p">:</span><span class="kt"><a href="../Protocols/AbstractSyntaxTree.html">AbstractSyntaxTree</a></span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">astType</span><span class="p">:</span><span class="kt">AST</span><span class="o">.</span><span class="k">Type</span><span class="p">,</span> <span class="n">from</span> <span class="nv">source</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">using</span> <span class="nv">language</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Language.html">Language</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">AST</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>using</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The language to use to parse the source</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>from</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The text to parse and build the tree from</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>using</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The language to use to parse the source</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The <code><a href="../Protocols/AbstractSyntaxTree.html">AbstractSyntaxTree</a></code></p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit29AbstractSyntaxTreeConstructorC5buildAA010HomogenousE0VSS_AA8Language_p5usingtKF"></a>
+                    <a name="//apple_ref/swift/Method/build(_:using:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit29AbstractSyntaxTreeConstructorC5buildAA010HomogenousE0VSS_AA8Language_p5usingtKF">build(_:using:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Constructs a homogenous AST from the supplied source and language.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">build</span><span class="p">(</span><span class="n">_</span> <span class="nv">source</span><span class="p">:</span><span class="kt">String</span><span class="p">,</span> <span class="n">using</span> <span class="nv">language</span><span class="p">:</span><span class="kt"><a href="../Protocols/Language.html">Language</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/HomogenousTree.html">HomogenousTree</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>from</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The text to parse and build the tree from</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>using</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The language to use to parse the source</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A <code>HomogenousAbstractSyntaxTree</code></p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit29AbstractSyntaxTreeConstructorC13willBuildFromySS6source_AA8Language_p4withtF"></a>
+                    <a name="//apple_ref/swift/Method/willBuildFrom(source:with:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit29AbstractSyntaxTreeConstructorC13willBuildFromySS6source_AA8Language_p4withtF">willBuildFrom(source:with:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Does nothing</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">willBuildFrom</span><span class="p">(</span><span class="nv">source</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">with</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Language.html">Language</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit29AbstractSyntaxTreeConstructorC12willEvaluateAA11MatchResultOSgAA4Rule_p4rule_SS5IndexV2attF"></a>
+                    <a name="//apple_ref/swift/Method/willEvaluate(rule:at:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit29AbstractSyntaxTreeConstructorC12willEvaluateAA11MatchResultOSgAA4Rule_p4rule_SS5IndexV2attF">willEvaluate(rule:at:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Does nothing</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">willEvaluate</span><span class="p">(</span><span class="nv">rule</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Rule.html">Rule</a></span><span class="p">,</span> <span class="n">at</span> <span class="nv">position</span><span class="p">:</span> <span class="kt">String</span><span class="o">.</span><span class="kt">UnicodeScalarView</span><span class="o">.</span><span class="kt">Index</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Enums/MatchResult.html">MatchResult</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit26IntermediateRepresentationP11didEvaluateyAA4Rule_p4rule_AA11MatchResultO05matchJ0tF"></a>
+                    <a name="//apple_ref/swift/Method/didEvaluate(rule:matchResult:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit26IntermediateRepresentationP11didEvaluateyAA4Rule_p4rule_AA11MatchResultO05matchJ0tF">didEvaluate(rule:matchResult:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didEvaluate</span><span class="p">(</span><span class="nv">rule</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Rule.html">Rule</a></span><span class="p">,</span> <span class="nv">matchResult</span><span class="p">:</span> <span class="kt"><a href="../Enums/MatchResult.html">MatchResult</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit26IntermediateRepresentationP8didBuildyyF"></a>
+                    <a name="//apple_ref/swift/Method/didBuild()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit26IntermediateRepresentationP8didBuildyyF">didBuild()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didBuild</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit26IntermediateRepresentationP10resetStateyyF"></a>
+                    <a name="//apple_ref/swift/Method/resetState()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit26IntermediateRepresentationP10resetStateyyF">resetState()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">resetState</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit29AbstractSyntaxTreeConstructorC5matchAC30IntermediateRepresentationNodeVSgAA5Token_p5token_s10DictionaryVyAA14RuleAnnotationOAA0nO5ValueOG11annotationsAA14LexicalContext_p7contextSayAFG8childrentF"></a>
+                    <a name="//apple_ref/swift/Method/match(token:annotations:context:children:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit29AbstractSyntaxTreeConstructorC5matchAC30IntermediateRepresentationNodeVSgAA5Token_p5token_s10DictionaryVyAA14RuleAnnotationOAA0nO5ValueOG11annotationsAA14LexicalContext_p7contextSayAFG8childrentF">match(token:annotations:context:children:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>If the token is transient <code>nil</code> is returned. Otherwise the behaviour is determined by the number of children</p>
+
+<ul>
+<li>0: A new instance of <code><a href="../Structs/HeterogeneousNode.html">HeterogeneousNode</a></code> is created and returned</li>
+<li>1: Providing the token is not @pin&rsquo;d a new <code>HeterogeousNode</code> is created for the child&rsquo;s range and value and returned If it is @pin&rsquo;d behaviour falls through to</li>
+<li><p><em>n</em>: Return a new <code><a href="../Structs/HeterogeneousNode.html">HeterogeneousNode</a></code> with the combined range of all children and the children are set as the node&rsquo;s value</p></li>
+</ul>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">final</span> <span class="kd">public</span> <span class="kd">func</span> <span class="nf">match</span><span class="p">(</span><span class="nv">token</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Token.html">Token</a></span><span class="p">,</span> <span class="nv">annotations</span><span class="p">:</span><span class="kt"><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></span><span class="p">,</span> <span class="nv">context</span><span class="p">:</span> <span class="kt"><a href="../Protocols/LexicalContext.html">LexicalContext</a></span><span class="p">,</span> <span class="nv">children</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Classes/AbstractSyntaxTreeConstructor/IntermediateRepresentationNode.html">IntermediateRepresentationNode</a></span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/AbstractSyntaxTreeConstructor/IntermediateRepresentationNode.html">IntermediateRepresentationNode</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>token</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The token that has been successfully identified in the source</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>annotations</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The annotations that had been marked on this instance of the token</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>context</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code><a href="../Protocols/LexicalContext.html">LexicalContext</a></code> from the <code><a href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a></code> from which an implementation can extract the matched range.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>children</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Any <code><a href="../Protocols/Node.html">Node</a></code>s that were created while this token was being evaluated.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Any <code><a href="../Protocols/Node.html">Node</a></code> that was created, or <code>nil</code> if not</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit29AbstractSyntaxTreeConstructorC17ignoreableFailureAC30IntermediateRepresentationNodeVSgAA5Token_p5token_s10DictionaryVyAA14RuleAnnotationOAA0oP5ValueOG11annotationsSS5IndexV5indextF"></a>
+                    <a name="//apple_ref/swift/Method/ignoreableFailure(token:annotations:index:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit29AbstractSyntaxTreeConstructorC17ignoreableFailureAC30IntermediateRepresentationNodeVSgAA5Token_p5token_s10DictionaryVyAA14RuleAnnotationOAA0oP5ValueOG11annotationsSS5IndexV5indextF">ignoreableFailure(token:annotations:index:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>If the token is not transient but is pinned a node is created with a range at the current scan-head but no value. Otherwise <code>nil</code> is returned.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">ignoreableFailure</span><span class="p">(</span><span class="nv">token</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Token.html">Token</a></span><span class="p">,</span> <span class="nv">annotations</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Enums/RuleAnnotation.html">RuleAnnotation</a></span> <span class="p">:</span> <span class="kt"><a href="../Enums/RuleAnnotationValue.html">RuleAnnotationValue</a></span><span class="p">],</span> <span class="nv">index</span><span class="p">:</span> <span class="kt">String</span><span class="o">.</span><span class="kt">UnicodeScalarView</span><span class="o">.</span><span class="kt">Index</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt"><a href="../Classes/AbstractSyntaxTreeConstructor/IntermediateRepresentationNode.html">IntermediateRepresentationNode</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>token</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The token that failed to be matched identified in the source</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>annotations</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The annotations that had been marked on this instance of the token</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Any <code><a href="../Protocols/Node.html">Node</a></code> that was created, or <code>nil</code> if not</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit29AbstractSyntaxTreeConstructorC6failedyAA5Token_p5token_tF"></a>
+                    <a name="//apple_ref/swift/Method/failed(token:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit29AbstractSyntaxTreeConstructorC6failedyAA5Token_p5token_tF">failed(token:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>No behaviour</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">failed</span><span class="p">(</span><span class="nv">token</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Token.html">Token</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-01-31)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>
