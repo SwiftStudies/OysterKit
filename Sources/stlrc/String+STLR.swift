@@ -10,6 +10,6 @@ import Foundation
 public extension String {
     public var canonicalPath : String {
         
-        return ("\(hasPrefix(".") || hasPrefix("/") || hasPrefix("~") ? "" : "./")\(self)" as NSString).expandingTildeInPath + (hasSuffix("/") ? "/" : "")
+        return NSString(string:"\(hasPrefix(".") || hasPrefix("/") || hasPrefix("~") ? "" : "./")\(self)").expandingTildeInPath + (hasSuffix("/") ? "/" : "")
     }
 }
