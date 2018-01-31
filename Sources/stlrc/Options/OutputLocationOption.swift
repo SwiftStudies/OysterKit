@@ -46,8 +46,8 @@ class OutputFileOption : Option, IndexableParameterized{
             if path.hasSuffix("/"){
                 self.path = path
             } else {
-                self.file = (path as NSString).lastPathComponent
-                self.path = (path as NSString).deletingLastPathComponent
+                self.file = NSString(string:path).lastPathComponent
+                self.path = NSString(string:path).deletingLastPathComponent
             }
         }
         
