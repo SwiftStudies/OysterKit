@@ -64,7 +64,7 @@ class ParseCommand : Command, IndexableOptioned, IndexableParameterized, Grammar
                 print("\(indent)"+"\(node.token)".style(.bold))
                 prettyPrint(source:source, contents: node.children, indent: indent+"\t")
             } else {
-                print("\(indent)"+"\(node.token)".style(.bold)+" '\(node.stringValue(source: source).escaped)'")
+                print("\(indent)"+"\(node.token)".style(.bold)+" '\(String(source[node.range]).escaped)'")
             }
         }
     }
