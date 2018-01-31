@@ -10,7 +10,7 @@ import Foundation
 open class Tool {
     
     static var executableName : String {
-        return (CommandLine.arguments[0] as NSString).lastPathComponent
+        return NSString(string:CommandLine.arguments[0]).lastPathComponent
     }
     
     var name : String {

@@ -3,7 +3,7 @@
 // 
 // Generated: 2017-12-07 02:44:18 +0000
 // 
-import Cocoa
+import Foundation
 import OysterKit
 
 // 
@@ -367,18 +367,6 @@ enum STLR : Int, Token {
 					].sequence(token: T.grammar, annotations: annotations.isEmpty ? [ : ] : annotations)
 		}
 	}
-
-	// Color Definitions
-	fileprivate var color : NSColor? {
-		switch self {
-		case .grammar:	return #colorLiteral(red:0.0, green:0.0, blue:0.0, alpha: 1)
-		default:	return nil
-		}
-	}
-
-
-	// Color Dictionary
-	static var tokenNameColorIndex = ["grammar" : T.grammar.color!]
 
 	// Cache for left-hand recursive rules
 	private static var leftHandRecursiveRules = [ Int : Rule ]()

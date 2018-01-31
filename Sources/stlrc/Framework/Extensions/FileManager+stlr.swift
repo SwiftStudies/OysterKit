@@ -11,8 +11,8 @@ public extension FileManager{
     public func isDirectory(_ url:URL)->Bool{
         var isDirectory : ObjCBool = false
         
-        fileExists(atPath: url.path, isDirectory: &isDirectory)
+        let _ = fileExists(atPath: url.path, isDirectory: &isDirectory)
         
-        return isDirectory.boolValue
+        return isDirectory.description == "true"
     }
 }

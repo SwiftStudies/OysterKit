@@ -191,7 +191,7 @@ class HomegenousASTTests: XCTestCase {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
         
-        let tree = HomogenousAbstractSyntaxTreeConstructor(with: "<a/>").parse(using: XMLGenerated.generatedLanguage)
+        let tree = try? AbstractSyntaxTreeConstructor().build("<a/>",using: XMLGenerated.generatedLanguage)
         print(tree!.description)
     }
 }
