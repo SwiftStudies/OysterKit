@@ -48,6 +48,15 @@
             <a class="nav-group-name-link" href="../Classes.html">Classes</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/AbstractSyntaxTreeConstructor.html">AbstractSyntaxTreeConstructor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/AbstractSyntaxTreeConstructor/ConstructionError.html">– ConstructionError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/AbstractSyntaxTreeConstructor/IntermediateRepresentationNode.html">– IntermediateRepresentationNode</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DebuggingDelegate.html">DebuggingDelegate</a>
               </li>
               <li class="nav-group-task">
@@ -94,6 +103,12 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/StringScanner.html">StringScanner</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/TokenStream.html">TokenStream</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/TokenStreamIterator.html">TokenStreamIterator</a>
               </li>
             </ul>
           </li>
@@ -147,6 +162,9 @@
                 <a class="nav-group-task-link" href="../Extensions/Collection.html">Collection</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Decodable.html">Decodable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Extensions/DispatchTimeInterval.html">DispatchTimeInterval</a>
               </li>
               <li class="nav-group-task">
@@ -181,7 +199,10 @@
                 <a class="nav-group-task-link" href="../Protocols/ASTNodeConstructor.html">ASTNodeConstructor</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/DecodeableNode.html">DecodeableNode</a>
+                <a class="nav-group-task-link" href="../Protocols/AbstractSyntaxTree.html">AbstractSyntaxTree</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/DecodeableAbstractSyntaxTree.html">DecodeableAbstractSyntaxTree</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/HumanConsumableError.html">HumanConsumableError</a>
@@ -222,6 +243,9 @@
                 <a class="nav-group-task-link" href="../Structs/HomogenousNode.html">HomogenousNode</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/HomogenousTree.html">HomogenousTree</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/ParsingDecoder.html">ParsingDecoder</a>
               </li>
             </ul>
@@ -237,6 +261,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit13StreamedTokena">StreamedToken</a>
               </li>
             </ul>
           </li>
@@ -302,9 +329,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit14ParsingDecoderV6decodexxm_10Foundation4DataV4fromAA6ParserC4withtKs9DecodableRzlF"></a>
-                    <a name="//apple_ref/swift/Method/decode(_:from:with:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit14ParsingDecoderV6decodexxm_10Foundation4DataV4fromAA6ParserC4withtKs9DecodableRzlF">decode(_:from:with:)</a>
+                    <a name="/s:9OysterKit14ParsingDecoderV6decodexxm_AA28DecodeableAbstractSyntaxTree_p5usingtKs9DecodableRzlF"></a>
+                    <a name="//apple_ref/swift/Method/decode(_:using:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit14ParsingDecoderV6decodexxm_AA28DecodeableAbstractSyntaxTree_p5usingtKs9DecodableRzlF">decode(_:using:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -320,7 +347,7 @@ supplied <code><a href="../Classes/Parser.html">Parser</a></code> are used as ke
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">decode</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">type</span><span class="p">:</span> <span class="kt">T</span><span class="o">.</span><span class="k">Type</span><span class="p">,</span> <span class="n">from</span> <span class="nv">data</span><span class="p">:</span> <span class="kt">Data</span><span class="p">,</span> <span class="n">with</span> <span class="nv">parser</span><span class="p">:</span><span class="kt"><a href="../Classes/Parser.html">Parser</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">T</span> <span class="k">where</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt">Decodable</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">decode</span><span class="o">&lt;</span><span class="kt">T</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">type</span><span class="p">:</span> <span class="kt">T</span><span class="o">.</span><span class="k">Type</span><span class="p">,</span> <span class="n">using</span> <span class="nv">ast</span><span class="p">:</span><span class="kt"><a href="../Protocols/DecodeableAbstractSyntaxTree.html">DecodeableAbstractSyntaxTree</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">T</span></code></pre>
 
                         </div>
                       </div>
@@ -343,29 +370,84 @@ supplied <code><a href="../Classes/Parser.html">Parser</a></code> are used as ke
                             <tr>
                               <td>
                                 <code>
-                                <em>from</em>
+                                <em>ast</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The <code>Data</code> to decode, it is expected that this is a <code>String</code> with UTF8 encoding</p>
+                                  <p>The AbstractSyntaxTree representation</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>An instance of the type</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit14ParsingDecoderV6decodexxm_SS4fromAA8Language_p5usingtKs9DecodableRzlF"></a>
+                    <a name="//apple_ref/swift/Method/decode(_:from:using:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit14ParsingDecoderV6decodexxm_SS4fromAA8Language_p5usingtKs9DecodableRzlF">decode(_:from:using:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Decodes the supplied data using the supplied parser into the specified object. The names of the <code><a href="../Protocols/Token.html">Token</a></code>s generated by the
+supplied <code><a href="../Classes/Parser.html">Parser</a></code> are used as keys into the <code>Decodable</code> type being populated.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">decode</span><span class="o">&lt;</span><span class="kt">T</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">type</span><span class="p">:</span> <span class="kt">T</span><span class="o">.</span><span class="k">Type</span><span class="p">,</span> <span class="n">from</span> <span class="nv">source</span><span class="p">:</span><span class="kt">String</span><span class="p">,</span> <span class="n">using</span> <span class="nv">language</span><span class="p">:</span><span class="kt"><a href="../Protocols/Language.html">Language</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">T</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>type</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A type conforming to <code>Decodable</code></p>
                                 </div>
                               </td>
                             </tr>
                             <tr>
                               <td>
                                 <code>
-                                <em>with</em>
+                                <em>ast</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The <code><a href="../Classes/Parser.html">Parser</a></code> to use to build the AST used to provide the keys</p>
+                                  <p>The AbstractSyntaxTree representation</p>
                                 </div>
                               </td>
                             </tr>
                           </tbody>
                         </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>An instance of the type</p>
                       </div>
                     </section>
                   </div>
@@ -378,7 +460,7 @@ supplied <code><a href="../Classes/Parser.html">Parser</a></code> are used as ke
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-01-25)</p>
+      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-01-31)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

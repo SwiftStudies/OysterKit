@@ -23,21 +23,21 @@
     },
     {
       "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/Generators/DynamicParserGenerator.swift",
-      "line": 213,
+      "line": 215,
       "symbol": "STLRIntermediateRepresentation.Identifier.token",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/Generators/DynamicParserGenerator.swift",
-      "line": 217,
+      "line": 219,
       "symbol": "STLRIntermediateRepresentation.Identifier.rule(from:creating:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/Generators/DynamicParserGenerator.swift",
-      "line": 315,
+      "line": 316,
       "symbol": "STLRIntermediateRepresentation.Element.token",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"

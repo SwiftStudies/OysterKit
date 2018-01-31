@@ -47,6 +47,15 @@
             <a class="nav-group-name-link" href="Classes.html">Classes</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/AbstractSyntaxTreeConstructor.html">AbstractSyntaxTreeConstructor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/AbstractSyntaxTreeConstructor/ConstructionError.html">– ConstructionError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/AbstractSyntaxTreeConstructor/IntermediateRepresentationNode.html">– IntermediateRepresentationNode</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/DebuggingDelegate.html">DebuggingDelegate</a>
               </li>
               <li class="nav-group-task">
@@ -93,6 +102,12 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/StringScanner.html">StringScanner</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/TokenStream.html">TokenStream</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/TokenStreamIterator.html">TokenStreamIterator</a>
               </li>
             </ul>
           </li>
@@ -146,6 +161,9 @@
                 <a class="nav-group-task-link" href="Extensions/Collection.html">Collection</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/Decodable.html">Decodable</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Extensions/DispatchTimeInterval.html">DispatchTimeInterval</a>
               </li>
               <li class="nav-group-task">
@@ -180,7 +198,10 @@
                 <a class="nav-group-task-link" href="Protocols/ASTNodeConstructor.html">ASTNodeConstructor</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Protocols/DecodeableNode.html">DecodeableNode</a>
+                <a class="nav-group-task-link" href="Protocols/AbstractSyntaxTree.html">AbstractSyntaxTree</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/DecodeableAbstractSyntaxTree.html">DecodeableAbstractSyntaxTree</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/HumanConsumableError.html">HumanConsumableError</a>
@@ -221,6 +242,9 @@
                 <a class="nav-group-task-link" href="Structs/HomogenousNode.html">HomogenousNode</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/HomogenousTree.html">HomogenousTree</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/ParsingDecoder.html">ParsingDecoder</a>
               </li>
             </ul>
@@ -237,6 +261,9 @@
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a>
               </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Typealiases.html#/s:9OysterKit13StreamedTokena">StreamedToken</a>
+              </li>
             </ul>
           </li>
         </ul>
@@ -248,30 +275,43 @@
             
             <h1 id='oysterkit' class='heading'>OysterKit</h1>
 
-<p>OysterKit is a framework that provides a native Swift scanning, lexical analysis, and parsing capabilities. In addition it provides a language that can be used to rapidly define the rules used by OysterKit called STLR (see <a href="https://github.com/SwiftStudies/OysterKit/blob/master/STLR.md">STLR.md</a>). </p>
+<p>OysterKit enables native Swift scanning, lexical analysis, and parsing capabilities as a pure Swift framework. Two additional elements are also provided in this package. The first is a second framework STLR which uses OysterKit to provide a plain text grammar specification language called STLR (Swift Tool for Language Recognition). Finally a command line tool, <code>stlr</code> can be used to automatically generate Swift source code for OysterKit for STLR grammars, as well as dynamically apply STLR grammars to a number of use-cases. The following documentation is available: </p>
 
-<p>There is a command line tool that enables you to test grammars defined in STLR and generate parsers in Swift based on grammars <a href="https://github.com/SwiftStudies/STLR/">available here</a>. </p>
+<ul>
+<li><a href="https://rawgit.com/SwiftStudies/OysterKit/master/Documentation/OysterKit/index.html">OysterKit API Documentation</a> Full API documentation for the OysterKit framework</li>
+<li><a href="https://rawgit.com/SwiftStudies/OysterKit/master/Documentation/STLR/index.html">STLR API Documentation</a> Full API documentation for the STLR framework
 
-<p>You can find the API documentation both in the repository and here <a href="https://rawgit.com/SwiftStudies/OysterKit/master/Documentation/index.html">API Documentation</a>.</p>
-
-<p>For those that used v1.0 there are significant performance and capability benefits of moving to v2. I have not yet built an OKScript translator, but that could quite easily be done if there is demand. </p>
+<ul>
+<li><a href="https://github.com/SwiftStudies/OysterKit/blob/master/Documentation/STLR.md">STLR Language Reference</a> A guide with examples to using the STLR language to define grammars</li>
+<li><a href="https://github.com/SwiftStudies/OysterKit/tree/master/Documentation/Tutorials">Tutorials</a> Tutorials for using OysterKit and STLR for defining and exploiting grammars.</li>
+</ul></li>
+<li><a href="https://github.com/SwiftStudies/OysterKit/blob/master/Documentation/stlrc-tool.md">stlrc Command Line Tool reference</a> Instructions for using the <code>stlrc</code> command line tool. Note that some of the tutorials referenced above also provide some concrete usage examples.</li>
+</ul>
 <h2 id='key-features' class='heading'>Key Features</h2>
 
 <ul>
-<li>Provides support for scanning strings</li>
-<li>Provides support for defining scanning (terminal) and parsing rules</li>
+<li><strong>OysterKit</strong> Provides support for scanning strings
+
+<ul>
 <li>Fully supports direct and indirect left hand recursion in rules</li>
 <li>Provides support for parsing strings using defined rules as streams of tokens or constructing Abstract Syntax Trees (ASTs)</li>
 <li>All of the above provided as implementations of protocols allowing the replacement of any by your own components if you wish</li>
 <li>Create your own file decoders (using Swift 4&rsquo;s Encoding/Decoding framework <code>Encodable</code> and <code>Decodable</code>)</li>
+</ul></li>
+<li><strong>STLR</strong> Provides support for defining scanning (terminal) and parsing rules
+
+<ul>
 <li>A lexical analysis and parser definition language, STLR, which can be compiled at run-time in memory, or from stored files</li>
 <li>Complied STLR can be used immediately at run time, or through the generation of a Swift source file</li>
+</ul></li>
 </ul>
 <h2 id='status' class='heading'>Status</h2>
 
 <ul>
 <li>All tests are passing</li>
 </ul>
+
+<p>For those that used v1.0 there are significant performance and capability benefits of moving to v2. I have not yet built an OKScript translator, but that could quite easily be done if there is demand. </p>
 
           </div>
         </section>
@@ -280,7 +320,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-01-25)</p>
+      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-01-31)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
