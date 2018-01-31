@@ -1,6 +1,6 @@
 # A text adventure using OysterKit and STLR
 
-I wanted to create a tutorial that illustrated the complete tool-chain for someone wanting to use OysterKit to do _something_. A text adventure seems like a nice example to get started with! During this tutorial you will use the [Swift Package Manager](https://github.com/apple/swift-package-manager/blob/master/README.md) to create the executable, the command line tool for OysterKit and STLR called... imaginately... stlr as well as your normal XCode-ing to write your code. There's a [complete GitHub repository for the final project](https://github.com/SwiftStudies/Bork). 
+I wanted to create a tutorial that illustrated the complete tool-chain for someone wanting to use OysterKit to do _something_. A text adventure seems like a nice example to get started with! During this tutorial you will use the [Swift Package Manager](https://github.com/apple/swift-package-manager/blob/master/README.md) to create the executable, the command line tool for OysterKit and STLR called... imaginately... stlrc as well as your normal XCode-ing to write your code. There's a [complete GitHub repository for the final project](https://github.com/SwiftStudies/Bork). 
 
 ## Using Swift Package Manager (SPM) to create a new project
 
@@ -89,19 +89,19 @@ We've got a few nested groups here but really we are saying create a ```command`
 
 ## Testing the grammar
 
-So how do we use this grammar? How do we even know it works? Luckily I have made a command line tool to enable you to process STLR grammars, interactively test them and generate Swift source code from them. Let's start with testing, but first we'll need to build the command line tool (````stlr````). 
+So how do we use this grammar? How do we even know it works? Luckily I have made a command line tool to enable you to process STLR grammars, interactively test them and generate Swift source code from them. Let's start with testing, but first we'll need to build the command line tool (````stlrc````). 
 
 I'm going to put this project in the same place as Bork, but again, you can change the first line of the commands below to be where you like to keep things! I am however assuming that the STLR and Bork directories have the same location. If you have put them in different places just make sure you specify the right location for Bork.stlr
 
     cd ~/Documents/Code
     git clone https://github.com/SwiftStudies/OysterKit.git
 	cd OysterKit
-	swift run stlr -g ../Bork/Grammars/Bork.stlr
+	swift run stlrc -g ../Bork/Grammars/Bork.stlr
 
-stlr will start up, parse the supplied grammar and then drop into interactive mode. Try typing some commands you should see output like the below:
+stlrc will start up, parse the supplied grammar and then drop into interactive mode. Try typing some commands you should see output like the below:
 
-	swift run stlr -g ../Bork/Grammars/Bork.stlr 
-	stlr interactive mode. Send a blank line to terminate. Parsing Bork
+	swift run stlrc -g ../Bork/Grammars/Bork.stlr 
+	stlrc interactive mode. Send a blank line to terminate. Parsing Bork
 	ATTACK ANGRY SNAKE WITH SWORD
 	command 'ATTACK ANGRY SNAKE WITH SWORD'
 		verb 'ATTACK'
@@ -121,11 +121,11 @@ That's pretty cool. We can see it's taken the command we gave it and correctly b
 
 ## Building an Lexer, Tokenizer, and Parser
 
-Eurgh. Sounds like a LOT of work. Luckily OysterKit and STLR mean it's not at all. We can use the stlr command line application to generate our Swift code. Let's head back to the terminal where we left off
+Eurgh. Sounds like a LOT of work. Luckily OysterKit and STLR mean it's not at all. We can use the stlrc command line application to generate our Swift code. Let's head back to the terminal where we left off
 
-	swift run stlr generate -g ../Bork/Grammars/Bork.stlr -l swift -ot ../Bork/Sources/Bork/
+	swift run stlrc generate -g ../Bork/Grammars/Bork.stlr -l swift -ot ../Bork/Sources/Bork/
 	
-Here we've used the generate sub-command of stlr, given it the same grammar we've developed, and told it to generate Swift code in Bork's Sources folder. That's it! You now have a Lexer, Tokenizer, and Parser. We can do a quick test after we've updated our Bork Xcode project (remember you don't need to quit). In terminal change back into the Bork directory and do that
+Here we've used the generate sub-command of stlrc, given it the same grammar we've developed, and told it to generate Swift code in Bork's Sources folder. That's it! You now have a Lexer, Tokenizer, and Parser. We can do a quick test after we've updated our Bork Xcode project (remember you don't need to quit). In terminal change back into the Bork directory and do that
 
 	swift package generate-xcodeproj
 	
@@ -304,7 +304,7 @@ Uh-oh. Everything seems good... until we get to ```secondSubject```. It's ```nil
 
 By putting the ```@token("secondSubject")``` annotation before the second instance of subject we tell STLR that instead of generating another ```subject``` token, generate one called ```secondSubject``` instead. Now we just need to rebuild the Bork.swift file. Change back into the STLR directory and type
 
-	swift run stlr generate -g ../Bork/Grammars/Bork.stlr -l swift -ot ../Bork/Sources/Bork/
+	swift run stlrc generate -g ../Bork/Grammars/Bork.stlr -l swift -ot ../Bork/Sources/Bork/
  
 This will recreate the Bork.swift file. You can now re-run in Xcode and you should get
 
@@ -760,7 +760,7 @@ There are just two functions here. The first returns a filtered version using `m
 
 ## Updating main.swift
 
-We need to use our new world and interpreter, for ease I've supplied the full and final contents of main here. You'll note I've just added some hard code for `HELP`. One of the reasons I did it this way is that adding new verbs isn't actually very easy. We have to update the grammar, use `stlr` to rebuild the Swift code for the parser, and then update our `Verb` enumeration with a new case too. There are better ways we could have built this (still using STLR), but for this tutorial you have everything you need to go further should you wish to. 
+We need to use our new world and interpreter, for ease I've supplied the full and final contents of main here. You'll note I've just added some hard code for `HELP`. One of the reasons I did it this way is that adding new verbs isn't actually very easy. We have to update the grammar, use `stlrc` to rebuild the Swift code for the parser, and then update our `Verb` enumeration with a new case too. There are better ways we could have built this (still using STLR), but for this tutorial you have everything you need to go further should you wish to. 
 
     import OysterKit
     import Foundation

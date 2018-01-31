@@ -31,20 +31,16 @@ import Foundation
  This protocol identifies as set of additional requirements for `Node`s in order for them to be used for decoding.  Some elements of the implementation are
  provided through an extension.
  */
-public protocol DecodeableNode{
-    /**
-     Should return the sub string captured by this node (that is, what it matched)
-     
-     - Parameter source: The `String` that the `DecodeableNode` was created from
-     - Returns: The sub-string
-     */
-    func stringValue(source : String)->String
+public protocol DecodeableAbstractSyntaxTree : AbstractSyntaxTree{
+
+    /// The String the was matched for the node
+    var stringValue : String {get}
     
     /// Should be the `CodingKey` for this node. This is normally generated using the name of the `Token`.
     var  key                : CodingKey {get}
     
     /// Should be the children of this node
-    var  contents           : [DecodeableNode] {get}
+    var  contents           : [DecodeableAbstractSyntaxTree] {get}
     
     /**
      Should return the child node at the supplied `index`. A default implementation is provided through an extension.
@@ -52,7 +48,7 @@ public protocol DecodeableNode{
      -Parameter index: The index of the desired child
      -Returns: The child node
      */
-    subscript(_ index:Int)->DecodeableNode {get}
+    subscript(_ index:Int)->DecodeableAbstractSyntaxTree {get}
     
     /**
      Should return the child node with the specified `CodingKey` or `nil` if it does not exist. A default implementation
@@ -61,18 +57,18 @@ public protocol DecodeableNode{
      -Parameter key: The key of the desired child
      -Returns: The child node, or `nil` if not found
      */
-    subscript(key codingKey:CodingKey)->DecodeableNode? {get}
+    subscript(key codingKey:CodingKey)->DecodeableAbstractSyntaxTree? {get}
 }
 
 /// Provide standard implementations of the subscripting requirements
-public extension DecodeableNode{
+public extension DecodeableAbstractSyntaxTree{
     /**
      Returns the child node at the supplied `index`
      
      -Parameter index: The index of the desired child
      -Returns: The child node
      */
-    public subscript(key codingKey: CodingKey) -> DecodeableNode? {
+    public subscript(key codingKey: CodingKey) -> DecodeableAbstractSyntaxTree? {
         for child in contents {
             if child.key.stringValue == codingKey.stringValue {
                 return child
@@ -88,7 +84,7 @@ public extension DecodeableNode{
      -Parameter key: The key of the desired child
      -Returns: The child node, or `nil` if not found
      */
-    public subscript(_ index: Int) -> DecodeableNode {
+    public subscript(_ index: Int) -> DecodeableAbstractSyntaxTree {
         return contents[index]
     }
 }
@@ -109,73 +105,22 @@ extension CodingKey {
     }
 }
 
-/// Extends all `HetrogeneousAST`'s to be decodable.
-extension HeterogenousAST : DecodeableNode {
-    
-    /**
-     Returns the sub string captured by this node (that is, what it matched)
-     
-     - Parameter source: The `String` that the `DecodeableNode` was created from
-     - Returns: The sub-string
-     */
-    public func stringValue(source: String) -> String {
-        return children[0].matchedString(source)
+/// Extends the standard `HomogenousTree` so it is Decodable
+extension HomogenousTree : DecodeableAbstractSyntaxTree {
+    /// The string that was captured by this node
+    public var stringValue: String {
+        return matchedString
     }
     
-    /// The `CodingKey` for this node. This is normally generated using the name of the `Token`.
-    public var key: CodingKey {
-        return (children[0] as! DecodeableNode).key
-    }
-    
-    /// The children of this node
-    public var contents: [DecodeableNode] {
-        return children[0].value as! [DecodeableNode]
-    }
-    
-    
-}
-
-/// Extends all `HeterogeneousNode`'s to be decodable.
-extension HeterogeneousNode : DecodeableNode{
-    
-    /// The children of this node
-    public var contents: [DecodeableNode] {
-        return value as? [HeterogeneousNode] ?? []
-    }
-    
-    /**
-     Returns the sub string captured by this node (that is, what it matched)
-     
-     - Parameter source: The `String` that the `DecodeableNode` was created from
-     - Returns: The sub-string
-     */
-    public func stringValue(source: String) -> String {
-        return matchedString(source)
-    }
-    
-    /// The `CodingKey` for this node. This is normally generated using the name of the `Token`.
+    /// The `CodingKey` for this node. This is normally generated using the name of the
+    /// token.
     public var key: CodingKey {
         return _ParsingKey(token: token)
     }
     
-    
-}
-
-/**
- Provides strucured textual output of any HeterogeneousNode and its children. Useful for debugging.
- 
- - Parameter nodes: An `Array` of nodes to print
- - Parameter source: The string the nodes were created from
- - Parameter indenting: Any indentation required of the string. As this recursive function decends the node tree it adds and additional \\t each time
- */
-internal func prettyPrint(nodes:[HeterogeneousNode], from source:String, indenting indent:String=""){
-    for node in nodes {
-        if node.children.isEmpty {
-            print("\(indent)\(node.token) = \(node.matchedString(source))")
-        } else {
-            print("\(indent)\(node.token)")
-            prettyPrint(nodes: node.children, from:source, indenting: indent + "\t")
-        }
+    /// The children of this node
+    public var contents: [DecodeableAbstractSyntaxTree]{
+        return children
     }
 }
 
@@ -204,27 +149,28 @@ public struct ParsingDecoder{
      supplied `Parser` are used as keys into the `Decodable` type being populated.
      
      - Parameter type: A type conforming to `Decodable`
-     - Parameter from: The `Data` to decode, it is expected that this is a `String` with UTF8 encoding
-     - Parameter with: The `Parser` to use to build the AST used to provide the keys
+     - Parameter ast: The AbstractSyntaxTree representation
+     - Returns: An instance of the type
     */
-    public func decode<T>(_ type: T.Type, from data: Data, with parser:Parser) throws -> T where T : Decodable{
-        guard let source = String(data: data,encoding: .utf8) else {
-            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: [], debugDescription: "Data is not in utf8 format"))
-        }
+    public func decode<T : Decodable>(_ type: T.Type, using ast:DecodeableAbstractSyntaxTree) throws -> T {
+        let decoder = _ParsingDecoder(referencing: ast)
+        return try T(from: decoder)
+    }    
+    
+    /**
+     Decodes the supplied data using the supplied parser into the specified object. The names of the `Token`s generated by the
+     supplied `Parser` are used as keys into the `Decodable` type being populated.
+     
+     - Parameter type: A type conforming to `Decodable`
+     - Parameter ast: The AbstractSyntaxTree representation
+     - Returns: An instance of the type
+     */
+    public func decode<T : Decodable>(_ type: T.Type, from source:String, using language:Language) throws -> T {
+        let ast = try AbstractSyntaxTreeConstructor().build(source, using: language)
         
-        let topLevel : DefaultHeterogeneousAST = parser.build(source: source)
-
-//        prettyPrint(nodes: topLevel.children, from: source)
-        
-        if topLevel.children.count == 0 {
-            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: [], debugDescription: "Could not parse supplied string"))
-        }
-        
-        let decoder = _ParsingDecoder(referencing: topLevel, from: source)
+        let decoder = _ParsingDecoder(referencing: ast)
         return try T(from: decoder)
     }
-    
-    
 }
 
 fileprivate class _ParsingDecoder : Decoder{
@@ -240,8 +186,8 @@ fileprivate class _ParsingDecoder : Decoder{
     
     // MARK: - Initialization
     /// Initializes `self` with the given top-level container and options.
-    fileprivate init(referencing container: DecodeableNode, at codingPath: [CodingKey] = [], from source:String) {
-        self.storage = _ParsingDecodingStorage(source)
+    fileprivate init(referencing container: DecodeableAbstractSyntaxTree, at codingPath: [CodingKey] = []) {
+        self.storage = _ParsingDecodingStorage()
         self.storage.push(container: container)
         self.codingPath = codingPath
     }
@@ -281,28 +227,19 @@ fileprivate struct _ParsingDecodingStorage {
     // MARK: Properties
     /// The container stack.
     /// Elements may be any one of the JSON types (NSNull, NSNumber, String, Array, [String : Any]).
-    private(set) fileprivate var containers: [DecodeableNode] = []
-    
-    // MARK: - Initialization
-    /// Initializes `self` with no containers.
-    fileprivate init(_ source:String) {
-        self.source = source
-        
-    }
-    
-    var source : String
+    private(set) fileprivate var containers: [DecodeableAbstractSyntaxTree] = []
     
     // MARK: - Modifying the Stack
     fileprivate var count: Int {
         return self.containers.count
     }
     
-    fileprivate var topContainer: DecodeableNode {
+    fileprivate var topContainer: DecodeableAbstractSyntaxTree {
         precondition(self.containers.count > 0, "Empty container stack.")
         return self.containers.last!
     }
     
-    fileprivate mutating func push(container: DecodeableNode) {
+    fileprivate mutating func push(container: DecodeableAbstractSyntaxTree) {
         self.containers.append(container)
     }
     
@@ -347,14 +284,14 @@ fileprivate struct _ParsingKeyedDecodingContainer<K : CodingKey> : KeyedDecoding
     private let decoder: _ParsingDecoder
     
     /// A reference to the container we're reading from.
-    private let container: DecodeableNode
+    private let container: DecodeableAbstractSyntaxTree
     
     /// The path of coding keys taken to get to this point in decoding.
     private(set) public var codingPath: [CodingKey]
     
     // MARK: - Initialization
     /// Initializes `self` by referencing the given decoder and container.
-    fileprivate init(referencing decoder: _ParsingDecoder, wrapping container: DecodeableNode) {
+    fileprivate init(referencing decoder: _ParsingDecoder, wrapping container: DecodeableAbstractSyntaxTree) {
         self.decoder = decoder
         self.container = container
         self.codingPath = decoder.codingPath
@@ -400,7 +337,7 @@ fileprivate struct _ParsingKeyedDecodingContainer<K : CodingKey> : KeyedDecoding
             throw DecodingError.keyNotFound(key, DecodingError.Context(codingPath: self.decoder.codingPath, debugDescription: "No value associated with key \(key) (\"\(key.stringValue)\")."))
         }
         
-        guard let result = Int(entry.stringValue(source: decoder.source)) else {
+        guard let result = Int(entry.stringValue) else {
             throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "Expected \(type) but couldn't convert \(entry) to it"))
         }
         
@@ -413,7 +350,7 @@ fileprivate struct _ParsingKeyedDecodingContainer<K : CodingKey> : KeyedDecoding
             throw DecodingError.keyNotFound(key, DecodingError.Context(codingPath: self.decoder.codingPath, debugDescription: "No value associated with key \(key) (\"\(key.stringValue)\")."))
         }
         
-        guard let result = Int8(entry.stringValue(source: decoder.source)) else {
+        guard let result = Int8(entry.stringValue) else {
             throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "Expected \(type) but couldn't convert \(entry) to it"))
         }
         
@@ -425,7 +362,7 @@ fileprivate struct _ParsingKeyedDecodingContainer<K : CodingKey> : KeyedDecoding
             throw DecodingError.keyNotFound(key, DecodingError.Context(codingPath: self.decoder.codingPath, debugDescription: "No value associated with key \(key) (\"\(key.stringValue)\")."))
         }
         
-        guard let result = Int16(entry.stringValue(source: decoder.source)) else {
+        guard let result = Int16(entry.stringValue) else {
             throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "Expected \(type) but couldn't convert \(entry) to it"))
         }
         
@@ -437,7 +374,7 @@ fileprivate struct _ParsingKeyedDecodingContainer<K : CodingKey> : KeyedDecoding
             throw DecodingError.keyNotFound(key, DecodingError.Context(codingPath: self.decoder.codingPath, debugDescription: "No value associated with key \(key) (\"\(key.stringValue)\")."))
         }
         
-        guard let result = Int32(entry.stringValue(source: decoder.source)) else {
+        guard let result = Int32(entry.stringValue) else {
             throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "Expected \(type) but couldn't convert \(entry) to it"))
         }
         
@@ -449,7 +386,7 @@ fileprivate struct _ParsingKeyedDecodingContainer<K : CodingKey> : KeyedDecoding
             throw DecodingError.keyNotFound(key, DecodingError.Context(codingPath: self.decoder.codingPath, debugDescription: "No value associated with key \(key) (\"\(key.stringValue)\")."))
         }
         
-        guard let result = Int64(entry.stringValue(source: decoder.source)) else {
+        guard let result = Int64(entry.stringValue) else {
             throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "Expected \(type) but couldn't convert \(entry) to it"))
         }
         
@@ -461,7 +398,7 @@ fileprivate struct _ParsingKeyedDecodingContainer<K : CodingKey> : KeyedDecoding
             throw DecodingError.keyNotFound(key, DecodingError.Context(codingPath: self.decoder.codingPath, debugDescription: "No value associated with key \(key) (\"\(key.stringValue)\")."))
         }
         
-        guard let result = UInt(entry.stringValue(source: decoder.source)) else {
+        guard let result = UInt(entry.stringValue) else {
             throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "Expected \(type) but couldn't convert \(entry) to it"))
         }
         
@@ -473,7 +410,7 @@ fileprivate struct _ParsingKeyedDecodingContainer<K : CodingKey> : KeyedDecoding
             throw DecodingError.keyNotFound(key, DecodingError.Context(codingPath: self.decoder.codingPath, debugDescription: "No value associated with key \(key) (\"\(key.stringValue)\")."))
         }
         
-        guard let result = UInt8(entry.stringValue(source: decoder.source)) else {
+        guard let result = UInt8(entry.stringValue) else {
             throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "Expected \(type) but couldn't convert \(entry) to it"))
         }
         
@@ -485,7 +422,7 @@ fileprivate struct _ParsingKeyedDecodingContainer<K : CodingKey> : KeyedDecoding
             throw DecodingError.keyNotFound(key, DecodingError.Context(codingPath: self.decoder.codingPath, debugDescription: "No value associated with key \(key) (\"\(key.stringValue)\")."))
         }
         
-        guard let result = UInt16(entry.stringValue(source: decoder.source)) else {
+        guard let result = UInt16(entry.stringValue) else {
             throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "Expected \(type) but couldn't convert \(entry) to it"))
         }
         
@@ -497,7 +434,7 @@ fileprivate struct _ParsingKeyedDecodingContainer<K : CodingKey> : KeyedDecoding
             throw DecodingError.keyNotFound(key, DecodingError.Context(codingPath: self.decoder.codingPath, debugDescription: "No value associated with key \(key) (\"\(key.stringValue)\")."))
         }
         
-        guard let result = UInt32(entry.stringValue(source: decoder.source)) else {
+        guard let result = UInt32(entry.stringValue) else {
             throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "Expected \(type) but couldn't convert \(entry) to it"))
         }
         
@@ -509,7 +446,7 @@ fileprivate struct _ParsingKeyedDecodingContainer<K : CodingKey> : KeyedDecoding
             throw DecodingError.keyNotFound(key, DecodingError.Context(codingPath: self.decoder.codingPath, debugDescription: "No value associated with key \(key) (\"\(key.stringValue)\")."))
         }
         
-        guard let result = UInt64(entry.stringValue(source: decoder.source)) else {
+        guard let result = UInt64(entry.stringValue) else {
             throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "Expected \(type) but couldn't convert \(entry) to it"))
         }
         
@@ -521,7 +458,7 @@ fileprivate struct _ParsingKeyedDecodingContainer<K : CodingKey> : KeyedDecoding
             throw DecodingError.keyNotFound(key, DecodingError.Context(codingPath: self.decoder.codingPath, debugDescription: "No value associated with key \(key) (\"\(key.stringValue)\")."))
         }
         
-        guard let result = Float(entry.stringValue(source: decoder.source)) else {
+        guard let result = Float(entry.stringValue) else {
             throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "Expected \(type) but couldn't convert \(entry) to it"))
         }
         
@@ -533,7 +470,7 @@ fileprivate struct _ParsingKeyedDecodingContainer<K : CodingKey> : KeyedDecoding
             throw DecodingError.keyNotFound(key, DecodingError.Context(codingPath: self.decoder.codingPath, debugDescription: "No value associated with key \(key) (\"\(key.stringValue)\")."))
         }
         
-        guard let result = Double(entry.stringValue(source: decoder.source)) else {
+        guard let result = Double(entry.stringValue) else {
             throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "Expected \(type) but couldn't convert \(entry) to it"))
         }
         
@@ -544,7 +481,7 @@ fileprivate struct _ParsingKeyedDecodingContainer<K : CodingKey> : KeyedDecoding
         guard let entry = self.container[key: key] else {
             throw DecodingError.keyNotFound(key, DecodingError.Context(codingPath: self.decoder.codingPath, debugDescription: "No value associated with key \(key) (\"\(key.stringValue)\")."))
         }
-        let stringValue = entry.stringValue(source: self.decoder.source)
+        let stringValue = entry.stringValue
         
         return stringValue
     }
@@ -600,7 +537,7 @@ fileprivate struct _ParsingKeyedDecodingContainer<K : CodingKey> : KeyedDecoding
     private func _superDecoder(forKey key: CodingKey) throws -> Decoder {
         return self.decoder.with(pushedKey: key) {
             let value = self.container[key: key]
-            return _ParsingDecoder(referencing: value!, at: self.decoder.codingPath, from: decoder.storage.source)
+            return _ParsingDecoder(referencing: value!, at: self.decoder.codingPath)
         }
     }
     
@@ -645,12 +582,8 @@ fileprivate struct _ParsingKey : CodingKey{
 
 extension _ParsingDecoder : SingleValueDecodingContainer{
     
-    var node : DecodeableNode {
+    var node : DecodeableAbstractSyntaxTree {
         return storage.topContainer
-    }
-    
-    var source : String {
-        return storage.source
     }
     
     func decodeNil() -> Bool {
@@ -658,111 +591,111 @@ extension _ParsingDecoder : SingleValueDecodingContainer{
     }
     
     func decode(_ type: Bool.Type) throws -> Bool {
-        if let boolValue = type.init(node.stringValue(source: source)){
+        if let boolValue = type.init(node.stringValue){
             return boolValue
         }
         
-        throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "\(node.stringValue(source: source)) can't be represented as a \(type)"))
+        throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "\(node.stringValue) can't be represented as a \(type)"))
     }
     
     func decode(_ type: Int.Type) throws -> Int {
-        if let value = type.init(node.stringValue(source: source)){
+        if let value = type.init(node.stringValue){
             return value
         }
         
-        throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "\(node.stringValue(source: source)) can't be represented as a \(type)"))
+        throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "\(node.stringValue) can't be represented as a \(type)"))
     }
     
     func decode(_ type: Int8.Type) throws -> Int8 {
-        if let value = type.init(node.stringValue(source: source)){
+        if let value = type.init(node.stringValue){
             return value
         }
         
-        throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "\(node.stringValue(source: source)) can't be represented as a \(type)"))
+        throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "\(node.stringValue) can't be represented as a \(type)"))
     }
     
     func decode(_ type: Int16.Type) throws -> Int16 {
-        if let value = type.init(node.stringValue(source: source)){
+        if let value = type.init(node.stringValue){
             return value
         }
         
-        throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "\(node.stringValue(source: source)) can't be represented as a \(type)"))
+        throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "\(node.stringValue) can't be represented as a \(type)"))
     }
     
     func decode(_ type: Int32.Type) throws -> Int32 {
-        if let value = type.init(node.stringValue(source: source)){
+        if let value = type.init(node.stringValue){
             return value
         }
         
-        throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "\(node.stringValue(source: source)) can't be represented as a \(type)"))
+        throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "\(node.stringValue) can't be represented as a \(type)"))
     }
     
     func decode(_ type: Int64.Type) throws -> Int64 {
-        if let value = type.init(node.stringValue(source: source)){
+        if let value = type.init(node.stringValue){
             return value
         }
         
-        throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "\(node.stringValue(source: source)) can't be represented as a \(type)"))
+        throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "\(node.stringValue) can't be represented as a \(type)"))
     }
     
     func decode(_ type: UInt.Type) throws -> UInt {
-        if let value = type.init(node.stringValue(source: source)){
+        if let value = type.init(node.stringValue){
             return value
         }
         
-        throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "\(node.stringValue(source: source)) can't be represented as a \(type)"))
+        throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "\(node.stringValue) can't be represented as a \(type)"))
     }
     
     func decode(_ type: UInt8.Type) throws -> UInt8 {
-        if let value = type.init(node.stringValue(source: source)){
+        if let value = type.init(node.stringValue){
             return value
         }
         
-        throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "\(node.stringValue(source: source)) can't be represented as a \(type)"))
+        throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "\(node.stringValue) can't be represented as a \(type)"))
     }
     
     func decode(_ type: UInt16.Type) throws -> UInt16 {
-        if let value = type.init(node.stringValue(source: source)){
+        if let value = type.init(node.stringValue){
             return value
         }
         
-        throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "\(node.stringValue(source: source)) can't be represented as a \(type)"))
+        throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "\(node.stringValue) can't be represented as a \(type)"))
     }
     
     func decode(_ type: UInt32.Type) throws -> UInt32 {
-        if let value = type.init(node.stringValue(source: source)){
+        if let value = type.init(node.stringValue){
             return value
         }
         
-        throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "\(node.stringValue(source: source)) can't be represented as a \(type)"))
+        throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "\(node.stringValue) can't be represented as a \(type)"))
     }
     
     func decode(_ type: UInt64.Type) throws -> UInt64 {
-        if let value = type.init(node.stringValue(source: source)){
+        if let value = type.init(node.stringValue){
             return value
         }
         
-        throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "\(node.stringValue(source: source)) can't be represented as a \(type)"))
+        throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "\(node.stringValue) can't be represented as a \(type)"))
     }
     
     func decode(_ type: Float.Type) throws -> Float {
-        if let value = type.init(node.stringValue(source: source)){
+        if let value = type.init(node.stringValue){
             return value
         }
         
-        throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "\(node.stringValue(source: source)) can't be represented as a \(type)"))
+        throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "\(node.stringValue) can't be represented as a \(type)"))
     }
     
     func decode(_ type: Double.Type) throws -> Double {
-        if let value = type.init(node.stringValue(source: source)){
+        if let value = type.init(node.stringValue){
             return value
         }
         
-        throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "\(node.stringValue(source: source)) can't be represented as a \(type)"))
+        throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "\(node.stringValue) can't be represented as a \(type)"))
     }
     
     func decode(_ type: String.Type) throws -> String {
-        return node.stringValue(source: source)
+        return node.stringValue
     }
     
     public func decode<T : Decodable>(_ type: T.Type) throws -> T {
@@ -783,7 +716,7 @@ fileprivate struct _STLRUnkeyedDecodingContainer : UnkeyedDecodingContainer {
     private let decoder: _ParsingDecoder
     
     /// A reference to the container we're reading from.
-    private let container: DecodeableNode
+    private let container: DecodeableAbstractSyntaxTree
     
     /// The path of coding keys taken to get to this point in decoding.
     private(set) public var codingPath: [CodingKey]
@@ -793,7 +726,7 @@ fileprivate struct _STLRUnkeyedDecodingContainer : UnkeyedDecodingContainer {
     
     // MARK: - Initialization
     /// Initializes `self` by referencing the given decoder and container.
-    fileprivate init(referencing decoder: _ParsingDecoder, wrapping container: DecodeableNode) {
+    fileprivate init(referencing decoder: _ParsingDecoder, wrapping container: DecodeableAbstractSyntaxTree) {
         self.decoder = decoder
         self.container = container
         self.codingPath = decoder.codingPath
@@ -1092,7 +1025,7 @@ fileprivate struct _STLRUnkeyedDecodingContainer : UnkeyedDecodingContainer {
             
             let value = self.container[self.currentIndex]
             self.currentIndex += 1
-            return _ParsingDecoder(referencing: value, at: self.decoder.codingPath, from:decoder.storage.source)
+            return _ParsingDecoder(referencing: value, at: self.decoder.codingPath)
         }
     }
 }
@@ -1428,7 +1361,7 @@ fileprivate extension _ParsingDecoder {
             guard let decimal = try self.unbox(value, as: Decimal.self) else { return nil }
             decoded = decimal as! T
         } else {
-            self.storage.push(container: value as! DecodeableNode)
+            self.storage.push(container: value as! DecodeableAbstractSyntaxTree)
             decoded = try T(from: self)
             self.storage.popContainer()
         }
