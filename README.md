@@ -1,3 +1,5 @@
+<!-- [![Build Status](https://travis-ci.org/SwiftStudies/OysterKit.svg?branch=master)](https://travis-ci.org/SwiftStudies/OysterKit) -->
+
 # OysterKit
 
 OysterKit enables native Swift scanning, lexical analysis, and parsing capabilities as a pure Swift framework. Two additional elements are also provided in this package. The first is a second framework STLR which uses OysterKit to provide a plain text grammar specification language called STLR (Swift Tool for Language Recognition). Finally a command line tool, ````stlr```` can be used to automatically generate Swift source code for OysterKit for STLR grammars, as well as dynamically apply STLR grammars to a number of use-cases. The following documentation is available: 
