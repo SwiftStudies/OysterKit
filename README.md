@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/SwiftStudies/OysterKit.svg?branch=master)](https://travis-ci.org/SwiftStudies/OysterKit)
+<!-- [![Build Status](https://travis-ci.org/SwiftStudies/OysterKit.svg?branch=master)](https://travis-ci.org/SwiftStudies/OysterKit) -->
 
 # OysterKit
 
