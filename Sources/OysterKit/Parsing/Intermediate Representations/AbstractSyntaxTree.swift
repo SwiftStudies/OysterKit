@@ -71,7 +71,7 @@ public struct HomogenousTree : AbstractSyntaxTree, CustomStringConvertible {
     }
 }
 
-private extension String {
+extension String {
     var escaped : String  {
         return self.replacingOccurrences(of:"\n",with:"\\n").replacingOccurrences(of: "\t", with: "\\t")
     }

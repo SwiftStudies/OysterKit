@@ -15,6 +15,17 @@ import STLR
 
 class STLRTest: XCTestCase {
     
+    func prettyPrint(nodes contents:[HeterogeneousNode], from source:String , indent : String = ""){
+        for node in contents {
+            if node.children.count > 0 {
+                print("\(indent)"+"\(node.token)")
+                prettyPrint(nodes: node.children,from:source,  indent: indent+"\t")
+            } else {
+                print("\(indent)"+"\(node.token)"+" '\(String(source[node.range]).escaped)'")
+            }
+        }
+    }
+    
     func testBackslash(){
         let backSlash = ".backslash"
         
