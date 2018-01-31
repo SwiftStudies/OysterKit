@@ -13,6 +13,6 @@ public extension FileManager{
         
         fileExists(atPath: url.path, isDirectory: &isDirectory)
         
-        return isDirectory.boolValue
+        return isDirectory.description == "true"
     }
 }

@@ -45,7 +45,7 @@ extension String {
                 spliceEndIndex = self.index(startIndex, offsetBy: splitAttempt + 1)
                 var range = spliceStartIndex..<spliceEndIndex
                 
-                if self[range].hasPrefix(" ") {
+                if String(self[range]).hasPrefix(" ") {
                     spliceStartIndex = self.index(spliceStartIndex, offsetBy: 1)
                     range = spliceStartIndex..<spliceEndIndex
                 }
@@ -61,7 +61,7 @@ extension String {
             spliceEndIndex = self.endIndex
             var range = spliceStartIndex..<spliceEndIndex
             
-            if self[range].hasPrefix(" ") {
+            if String(self[range]).hasPrefix(" ") {
                 spliceStartIndex = self.index(spliceStartIndex, offsetBy: 1)
                 range = spliceStartIndex..<spliceEndIndex
             }
