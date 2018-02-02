@@ -45,6 +45,161 @@ class DynamicGeneratorTest: XCTestCase {
         STLRIntermediateRepresentation.removeAllOptimizations()
     }
 
+    /// Intended to test the fix for Issue #39
+    func testGrammarRuleProductionIdentifierNonRecursive(){
+        let stlr = """
+        @forArrow  arrow  = ">" | "<"
+        @forArrows arrows = arrow
+        """
+        
+        guard let dynamicLangauage = STLRParser(source: stlr).ast.runtimeLanguage else {
+            XCTFail("Could not compile the grammar under test"); return
+        }
+        
+        if let tree = try? AbstractSyntaxTreeConstructor().build(">", using: dynamicLangauage)  {
+            XCTAssertTrue("\(tree.token)" == "arrows", "Root node should be arrows")
+            XCTAssertTrue(tree.isSet(annotation: RuleAnnotation.custom(label: "forArrows")))
+            guard let arrowNode = tree.nodeAtPath(["arrow"]) else {
+                XCTFail("Arrow is not a child of arrows"); return
+            }
+            XCTAssertTrue(arrowNode.isSet(annotation: RuleAnnotation.custom(label: "forArrow")))
+        } else {
+            XCTFail("Could not parse the test source using the generated language"); return
+        }
+    }
+    
+    /// Intended to test the fix for Issue #39
+    func testGrammarRuleProductionIdentifierAnnotationNonRecursive(){
+        let stlr = """
+        @forArrows arrows = @token("arrow") @forArrow ">"
+        """
+        
+        guard let dynamicLangauage = STLRParser(source: stlr).ast.runtimeLanguage else {
+            XCTFail("Could not compile the grammar under test"); return
+        }
+        
+        if let tree = try? AbstractSyntaxTreeConstructor().build(">", using: dynamicLangauage)  {
+            print(tree.description)
+            XCTAssertTrue("\(tree.token)" == "arrows", "Root node should be arrows")
+            XCTAssertTrue(tree.isSet(annotation: RuleAnnotation.custom(label: "forArrows")))
+            guard let arrowNode = tree.nodeAtPath(["arrow"]) else {
+                XCTFail("Arrow is not a child of arrows"); return
+            }
+            XCTAssertTrue(arrowNode.isSet(annotation: RuleAnnotation.custom(label: "forArrow")))
+        } else {
+            XCTFail("Could not parse the test source using the generated language"); return
+        }
+    }
+    
+    /// Intended to test the fix for Issue #39
+    func testGrammarRuleProductionIdentifierRecursive(){
+        let stlr = """
+        @forArrow  arrow  = ">" arrows?
+        @forArrows arrows = arrow
+        """
+        
+        guard let dynamicLangauage = STLRParser(source: stlr).ast.runtimeLanguage else {
+            XCTFail("Could not compile the grammar under test"); return
+        }
+        
+        if let tree = try? AbstractSyntaxTreeConstructor().build(">>", using: dynamicLangauage)  {
+            print(tree.description)
+            XCTAssertTrue("\(tree.token)" == "arrows", "Root node should be arrows")
+            XCTAssertTrue(tree.isSet(annotation: RuleAnnotation.custom(label: "forArrows")))
+            guard let arrowNode = tree.nodeAtPath(["arrow"]) else {
+                XCTFail("Arrow is not a child of arrows"); return
+            }
+            XCTAssertTrue(arrowNode.isSet(annotation: RuleAnnotation.custom(label: "forArrow")))
+        } else {
+            XCTFail("Could not parse the test source using the generated language"); return
+        }
+    }
+    
+    /// Intended to test the fix for Issue #39
+    func testGrammarRuleProductionIdentifierAnnotationRecursive(){
+        let stlr = """
+        @forArrows arrows = @token("arrow") @forArrow ">" arrows?
+        """
+        
+        guard let dynamicLangauage = STLRParser(source: stlr).ast.runtimeLanguage else {
+            XCTFail("Could not compile the grammar under test"); return
+        }
+        
+        if let tree = try? AbstractSyntaxTreeConstructor().build(">", using: dynamicLangauage)  {
+            print(tree.description)
+            XCTAssertTrue("\(tree.token)" == "arrows", "Root node should be arrows")
+            XCTAssertTrue(tree.isSet(annotation: RuleAnnotation.custom(label: "forArrows")))
+            guard let arrowNode = tree.nodeAtPath(["arrow"]) else {
+                XCTFail("Arrow is not a child of arrows"); return
+            }
+            XCTAssertTrue(arrowNode.isSet(annotation: RuleAnnotation.custom(label: "forArrow")))
+        } else {
+            XCTFail("Could not parse the test source using the generated language"); return
+        }
+    }
+    
+    /// Intended to test the fix for Issue #39
+    func testGrammarCumulativeAttributes(){
+        let stlr = """
+        a   =   @one "a"
+        ba  =   "b" @two a
+        ca  =   "c" @three a
+        """
+        
+        guard let dynamicLangauage = STLRParser(source: stlr).ast.runtimeLanguage else {
+            XCTFail("Could not compile the grammar under test"); return
+        }
+        
+        if let tree = try? AbstractSyntaxTreeConstructor().build("baca", using: dynamicLangauage)  {
+            print(tree.description)
+            XCTAssertEqual("\(tree.children[0].token)","ba")
+            XCTAssertTrue(tree.children[0].annotations.isEmpty)
+            XCTAssertEqual("\(tree.children[0].children[0].token)","a")
+            XCTAssertNotNil(tree.children[0].children[0].annotations[RuleAnnotation.custom(label: "one")])
+            XCTAssertNotNil(tree.children[0].children[0].annotations[RuleAnnotation.custom(label: "two")])
+            XCTAssertEqual("\(tree.children[1].token)","ca")
+            XCTAssertEqual("\(tree.children[1].children[0].token)","a")
+            XCTAssertNotNil(tree.children[1].children[0].annotations[RuleAnnotation.custom(label: "one")])
+            XCTAssertNotNil(tree.children[1].children[0].annotations[RuleAnnotation.custom(label: "three")])
+        } else {
+            XCTFail("Could not parse the test source using the generated language"); return
+        }
+    }
+    
+    /// Intended to test the fix for Issue #39
+    func testGrammarTransientVoid(){
+        let stlr = """
+        v    = "v"
+        t    = "t"
+        vs   = -":" v -":" @transient v -":"
+        ts   =  ":" t  ":" @transient t  ":"
+        """
+        
+        guard let dynamicLangauage = STLRParser(source: stlr).ast.runtimeLanguage else {
+            XCTFail("Could not compile the grammar under test"); return
+        }
+        
+        if let tree = try? AbstractSyntaxTreeConstructor().build(":t:t::v:v::t:t:", using: dynamicLangauage)  {
+            print(tree.description)
+            // Transient means it doesn't create child nodes, but is in the range
+            XCTAssertEqual("\(tree.children[0].token)","ts")
+            XCTAssertEqual(tree.children[0].children.count,1)
+            XCTAssertEqual(tree.children[0].matchedString,":t:t:")
+            // Void means it doesn't create child nodes, and is excluded from the range, but anything in the middle will be captured
+            XCTAssertEqual("\(tree.children[1].token)","vs")
+            XCTAssertEqual(tree.children[1].children.count,1)
+            XCTAssertEqual(tree.children[1].matchedString,"v:v")
+            // Transient means it doesn't create child nodes, but is in the range here testing at the end of the file
+            XCTAssertEqual("\(tree.children[2].token)","ts")
+            XCTAssertEqual(tree.children[2].matchedString,":t:t:")
+            XCTAssertEqual(tree.children[2].children.count, 1)
+
+        } else {
+            XCTFail("Could not parse the test source using the generated language"); return
+        }
+    }
+
+    
     func testSimpleChoice(){
         guard let rule = "\"x\" | \"y\" | \"z\"".dynamicRule(token: TT.xyz) else {
             XCTFail("Could not compile")

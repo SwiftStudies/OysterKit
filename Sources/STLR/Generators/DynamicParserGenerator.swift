@@ -121,10 +121,22 @@ fileprivate extension STLRIntermediateRepresentation.GrammarRule{
                 
                 return cachedRule
             }
+            
+            // For both of these code paths... the annotations get passed in to the generated expresion. If the rules are then
+            // wrapped, those annotations could be duplicated. What happens now is, they probably get lost.
             if let _ = identifier , leftHandRecursive {
+                
                 let rule = RecursiveRule()
                 context.cachedRules[token.rawValue] = rule
-                rule.surrogateRule = expression?.rule(from: grammar, creating: token, inContext:context, annotations: annotations)
+                
+                let expressionsRule = expression?.rule(from: grammar, creating: token, inContext:context, annotations: annotations)
+                if expressionsRule?.produces.rawValue != token.rawValue {
+                    let wrappedRule = ParserRule.sequence(produces: token, [rule], [ : ])
+                    rule.surrogateRule = wrappedRule
+                } else {
+                    rule.surrogateRule = expressionsRule
+                }
+
                 return rule
             } else {
                 if let rule = expression?.rule(from: grammar, creating: token, inContext:context, annotations: annotations){
@@ -132,11 +144,14 @@ fileprivate extension STLRIntermediateRepresentation.GrammarRule{
                     if rule.produces.rawValue != token.rawValue {
                         //This is inefficient, but provides a more accurate representation of the rule in the resultant AST
                         //More efficient would be to just change the token returned
-                        let wrappedRule = ParserRule.sequence(produces: token, [rule], [:])
+                        let wrappedRule = ParserRule.sequence(produces: token, [rule], [ : ])
                         
                         // NOTE 1: IF YOU ARE DEBUGGING HERE note the rule.annotations up there could be a bug, it may need to be the passed in annotations
                         // NOTE 2: SO I WAS DEBUGGING HERE and noted that both the sequence and the contained expression were being tagged with the annotations, which did indeed look 
                         //         like a bug, so the line was changed from let wrappedRule = ParserRule.sequence(produces: token, [rule], rule.annotations) to let wrappedRule = ParserRule.sequence(produces: token, [rule], [:])
+                        // NOTE 3: SEE IMPLEMENTATION FOR RECURSIVE RULE. That looks right. The wrappingrule gets the original annotations identified for the token
+                        // So I'm going to chang the line above AGAIN to have annotations instead of an empty block which I think would lose annotations on the token identifier
+                        // NOTE 4: I decided to change it back as duplicates are even worse than lost. This all needs reworking.
                         context.cachedRules[token.rawValue] = wrappedRule
                         return wrappedRule
                     } else {

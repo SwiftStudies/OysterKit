@@ -27,7 +27,7 @@ import Foundation
 /**
  When a rule definition calls itself whilst evaluating itself (left hand recursion) you cannot create the rule directly as it will become caught in an infinite look (creating instances of itself, which create instances of itself etc until the stack is empty).  To avoid this a rule can use this wrapper to manage lazy initialization of itself. The recursive rule enables a reference to be added on the RHS, but the actual rule will not be initiialized until later, and this wrapper will then call that lazily initalized rule.
  */
-public class RecursiveRule : Rule{
+public class RecursiveRule : Rule, CustomStringConvertible{
     
     /// The initializer block responsible for creating the rule
     private var initBlock : (()->Rule)?
@@ -73,11 +73,18 @@ public class RecursiveRule : Rule{
             guard let  newRule = newValue else {
                 return
             }
+            _cachedDescription = "\(newRule)"
             initBlock = nil
             _matcher = newRule.match
             _produces = newRule.produces
         }
     }
+    
+    public var description: String{
+        return _cachedDescription ?? "Not set yet"
+    }
+    
+    var _cachedDescription : String?
     
     /// Delegated to the the surrogate rule
     public func match(with lexer: LexicalAnalyzer, for ir: IntermediateRepresentation) throws -> MatchResult {

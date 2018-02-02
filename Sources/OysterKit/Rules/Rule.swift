@@ -45,6 +45,43 @@ public protocol Token {
 }
 
 /**
+ Provides a convience static variable that returns a transient ``Token``
+ */
+public extension Token {
+    
+    /// A transient token
+    public static var transientToken : Token {
+        return transientTokenValue.token
+    }
+}
+
+/**
+ A generic ``Token`` implementation that is labelled (has an associated ``String`). The value is automatically generated
+ */
+public struct LabelledToken : Token, CustomStringConvertible {
+    /// The label for the token
+    private     let label : String
+    
+    /// The ``Int`` identifier of the Token. It is automatically generated
+    public      let rawValue : Int
+    
+    /**
+     Create a new token instance
+     
+     - Parameter label: The textual representation of the token
+    */
+    public init(withLabel label: String){
+        self.label = label
+        rawValue = label.hashValue
+    }
+    
+    /// A human readable representation of the token
+    public var description: String{
+        return label
+    }
+}
+
+/**
  An extension to allow any `String` to be used as a `Token`.
  */
 extension String : Token {
