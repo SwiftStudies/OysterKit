@@ -155,9 +155,8 @@ public class AbstractSyntaxTreeConstructor  {
         self.source  = source
         self.scalars = source.unicodeScalars
         
-        let _ = language.build(intermediateRepresentation: self, using: Lexer(source: source))
-        
         do {
+            try ParsingStrategy.parse(source, using: language, with: Lexer.self, into: self)
             let topNode : IntermediateRepresentationNode
             
             guard let topNodes = nodeStack.top?.nodes, topNodes.count > 0 else {
@@ -167,7 +166,7 @@ public class AbstractSyntaxTreeConstructor  {
             
             if topNodes.count > 1 {
                 // Wrap it in a single node
-                topNode = IntermediateRepresentationNode(for: transientTokenValue.token, at: topNodes.combinedRange, annotations: [:])
+                topNode = IntermediateRepresentationNode(for: LabelledToken(withLabel: "root"), at: topNodes.combinedRange, children: topNodes , annotations: [:])
             } else {
                 topNode = topNodes[0]
             }
