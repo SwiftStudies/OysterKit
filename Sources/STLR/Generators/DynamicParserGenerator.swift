@@ -123,7 +123,8 @@ fileprivate extension STLRIntermediateRepresentation.GrammarRule{
         if let token = createToken{
             if let cachedRule = context.cachedRules[token.rawValue]{
                 // Should fix Issue #39 - Lost identifier annotations
-                return cachedRule.instance(with: cachedRule.annotations.merge(with: annotations))
+                let finalRule = cachedRule.instance(with: cachedRule.annotations.merge(with: annotations))
+                return finalRule
             }
             
             // For both of these code paths... the annotations get passed in to the generated expresion. If the rules are then
@@ -138,18 +139,19 @@ fileprivate extension STLRIntermediateRepresentation.GrammarRule{
                 if expressionsRule.produces.rawValue != token.rawValue && expressionsRule.produces.rawValue != transientTokenValue{
                     rule.surrogateRule = ParserRule.sequence(produces: token, [expressionsRule], annotations)
                 } else {
-                    rule.surrogateRule = expressionsRule
+                    rule.surrogateRule = expressionsRule.instance(with: token, andAnnotations: annotations)
                 }
 
                 return rule
             } else {
-                if let rule = expression?.rule(from: grammar, creating: token, inContext:context, annotations: [:]){
+                if var rule = expression?.rule(from: grammar, creating: token, inContext:context, annotations: [:]){
                     //Sometimes the thing is folded completely flat
                     if rule.produces.rawValue != token.rawValue && rule.produces.rawValue != transientTokenValue {
                         let wrappedRule = ParserRule.sequence(produces: token, [rule], annotations)
                         context.cachedRules[token.rawValue] = wrappedRule
                         return wrappedRule
                     } else {
+                        rule = rule.instance(with: token, andAnnotations: annotations)
                         context.cachedRules[token.rawValue] = rule
                         return rule
                     }

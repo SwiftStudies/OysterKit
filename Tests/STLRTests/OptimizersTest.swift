@@ -24,8 +24,10 @@ class OptimizersTest: GrammarTest {
     }
     
     func testAttributePreservationOnInline(){
-        source.add(line: "x = @error(\"Expected X\")\"x\"")
-        source.add(line: "xyz = x \"y\" \"z\"")
+        source += """
+            x = @error("Expected X") "x"
+            xyz = x "y" "z"
+        """
 
         STLRIntermediateRepresentation.register(optimizer: InlineIdentifierOptimization())
         let parser = STLRParser(source: source)
