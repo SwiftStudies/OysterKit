@@ -121,11 +121,9 @@ fileprivate extension STLRIntermediateRepresentation.GrammarRule{
         let createToken = token ?? identifier?.token
 
         if let token = createToken{
-            if var cachedRule = context.cachedRules[token.rawValue]{
-                //Replace any cached annotations with those for the current instance
-//                cachedRule.annotations = annotations
-                
-                return cachedRule
+            if let cachedRule = context.cachedRules[token.rawValue]{
+                // Should fix Issue #39 - Lost identifier annotations
+                return cachedRule.instance(with: cachedRule.annotations.merge(with: annotations))
             }
             
             // For both of these code paths... the annotations get passed in to the generated expresion. If the rules are then
