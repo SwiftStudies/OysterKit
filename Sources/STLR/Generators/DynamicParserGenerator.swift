@@ -129,17 +129,14 @@ fileprivate extension STLRIntermediateRepresentation.GrammarRule{
             // For both of these code paths... the annotations get passed in to the generated expresion. If the rules are then
             // wrapped, those annotations could be duplicated. What happens now is, they probably get lost.
             if let _ = identifier , leftHandRecursive {
-                
                 let rule = RecursiveRule(stubFor: token, with: annotations)
-                
                 context.cachedRules[token.rawValue] = rule
                 
                 guard let expressionsRule = expression?.rule(from: grammar, creating: token, inContext:context, annotations: [:]) else {
                     return nil
                 }
-                if expressionsRule.produces.rawValue != token.rawValue || !areEqual(lhs: expressionsRule.annotations,rhs: annotations){
-                    let wrappedRule = ParserRule.sequence(produces: token, [expressionsRule], annotations)
-                    rule.surrogateRule = wrappedRule
+                if expressionsRule.produces.rawValue != token.rawValue && expressionsRule.produces.rawValue != transientTokenValue{
+                    rule.surrogateRule = ParserRule.sequence(produces: token, [expressionsRule], annotations)
                 } else {
                     rule.surrogateRule = expressionsRule
                 }
@@ -148,7 +145,7 @@ fileprivate extension STLRIntermediateRepresentation.GrammarRule{
             } else {
                 if let rule = expression?.rule(from: grammar, creating: token, inContext:context, annotations: [:]){
                     //Sometimes the thing is folded completely flat
-                    if rule.produces.rawValue != token.rawValue || !areEqual(lhs: rule.annotations,rhs: annotations) {
+                    if rule.produces.rawValue != token.rawValue && rule.produces.rawValue != transientTokenValue {
                         let wrappedRule = ParserRule.sequence(produces: token, [rule], annotations)
                         context.cachedRules[token.rawValue] = wrappedRule
                         return wrappedRule
@@ -317,7 +314,7 @@ extension STLRIntermediateRepresentation.Element{
             }
             
             
-            var finalRule = quantifier.rule(appliedTo: r, producing: quantifier.wrapped(token: identifier.token, annotations: mergedQuantifierAnnotations), quantifiersAnnotations: mergedQuantifierAnnotations)
+            let finalRule = quantifier.rule(appliedTo: r, producing: quantifier.wrapped(token: identifier.token, annotations: mergedQuantifierAnnotations), quantifiersAnnotations: mergedQuantifierAnnotations)
             
             return finalRule.instance(with: identifiersAnnotations.merge(with: finalRule.annotations))
         }

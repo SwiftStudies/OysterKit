@@ -191,14 +191,14 @@ enum XML : Int, Token {
         case .nestingTag:
             guard let cachedRule = XML.leftHandRecursiveRules[self.rawValue] else {
                 // Create recursive shell
-                let recursiveRule = RecursiveRule()
+                let recursiveRule = RecursiveRule(stubFor: self, with: annotations.isEmpty ? [ : ] : annotations)
                 XML.leftHandRecursiveRules[self.rawValue] = recursiveRule
                 // Create the rule we would normally generate
                 let rule = [
                     T.openTag._rule([RuleAnnotation.transient : RuleAnnotationValue.set]),
                     T.contents._rule(),
                     T.closeTag._rule([RuleAnnotation.void : RuleAnnotationValue.set,RuleAnnotation.error : RuleAnnotationValue.string("Expected closing tag")]),
-                    ].sequence(token: T.nestingTag, annotations: annotations.isEmpty ? [ : ] : annotations)
+                    ].sequence(token: T._transient, annotations: [:])
                 recursiveRule.surrogateRule = rule
                 return recursiveRule
             }
@@ -207,13 +207,13 @@ enum XML : Int, Token {
         case .tag:
             guard let cachedRule = XML.leftHandRecursiveRules[self.rawValue] else {
                 // Create recursive shell
-                let recursiveRule = RecursiveRule()
+                let recursiveRule = RecursiveRule(stubFor: self, with: annotations)
                 XML.leftHandRecursiveRules[self.rawValue] = recursiveRule
                 // Create the rule we would normally generate
                 let rule = [
                     T.nestingTag._rule([RuleAnnotation.transient : RuleAnnotationValue.set]),
                     T.inlineTag._rule([RuleAnnotation.transient : RuleAnnotationValue.set]),
-                    ].oneOf(token: T.tag, annotations: annotations)
+                    ].oneOf(token: T._transient, annotations: [:])
                 recursiveRule.surrogateRule = rule
                 return recursiveRule
             }
@@ -222,13 +222,13 @@ enum XML : Int, Token {
         case .content:
             guard let cachedRule = XML.leftHandRecursiveRules[self.rawValue] else {
                 // Create recursive shell
-                let recursiveRule = RecursiveRule()
+                let recursiveRule = RecursiveRule(stubFor: self, with: annotations)
                 XML.leftHandRecursiveRules[self.rawValue] = recursiveRule
                 // Create the rule we would normally generate
                 let rule = [
                     T.data._rule(),
                     T.tag._rule(),
-                    ].oneOf(token: T._transient, annotations: annotations).repeated(min: 0, producing: T.content, annotations: annotations)
+                    ].oneOf(token: T._transient, annotations: annotations).repeated(min: 0, producing: T._transient, annotations: [:])
                 recursiveRule.surrogateRule = rule
                 return recursiveRule
             }
@@ -237,7 +237,7 @@ enum XML : Int, Token {
         case .contents:
             guard let cachedRule = XML.leftHandRecursiveRules[self.rawValue] else {
                 // Create recursive shell
-                let recursiveRule = RecursiveRule()
+                let recursiveRule = RecursiveRule(stubFor: self, with: [:])
                 XML.leftHandRecursiveRules[self.rawValue] = recursiveRule
                 // Create the rule we would normally generate
                 let rule = [T.content._rule()].sequence(token: self)
