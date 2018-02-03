@@ -50,8 +50,8 @@ public class RecursiveRule : Rule, CustomStringConvertible{
     /// The surrogate token. This MUST use forced unwrapping as there must always be a token
     private var _produces    : Token
     
-    /// Always appears to be `nil` when read, but when set applies the matcher methods etc from the supplied rule to this so that the `RecursiveRule` behaves
-    /// exactly like the original rule.
+    /// The rule, which can be assigned at any point before actual parsing, to be used. When a new value is assigned to the rule a
+    /// new instance is created (calling ``instance(token, annotations)) with the token and annotations assigned at construction
     public var surrogateRule : Rule? {
         get{
             return rule
