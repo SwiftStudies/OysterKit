@@ -132,7 +132,7 @@ fileprivate extension STLRIntermediateRepresentation.GrammarRule{
             // wrapped, those annotations could be duplicated. What happens now is, they probably get lost.
             if let _ = identifier , leftHandRecursive {
                 
-                let rule = RecursiveRule(stubFor: token)
+                let rule = RecursiveRule(stubFor: token, with: annotations)
                 
                 context.cachedRules[token.rawValue] = rule
                 
@@ -321,9 +321,7 @@ extension STLRIntermediateRepresentation.Element{
             
             var finalRule = quantifier.rule(appliedTo: r, producing: quantifier.wrapped(token: identifier.token, annotations: mergedQuantifierAnnotations), quantifiersAnnotations: mergedQuantifierAnnotations)
             
-            finalRule.annotations = identifiersAnnotations.merge(with: finalRule.annotations)
-            
-            return finalRule
+            return finalRule.instance(with: identifiersAnnotations.merge(with: finalRule.annotations))
         }
     }
 
