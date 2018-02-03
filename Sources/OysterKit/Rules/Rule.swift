@@ -370,14 +370,43 @@ public protocol Rule {
     var  produces : Token {get}
     
     /// The annotations on this rule
-    var  annotations : RuleAnnotations { get set }
+    var  annotations : RuleAnnotations { get }
     
     /// Returns the value of the specific `RuleAnnotationValue` identified by `annotation` if present
     subscript(annotation:RuleAnnotation)->RuleAnnotationValue? { get }
+    
+    /**
+     Create a new instance of the rule with the supplied annotations and token but otherwise exactly the same
+     
+     - Parameter token: The new ``Token`` or ``nil`` if the token should remain the same
+     - Parameter annotations: The new ``Annotations`` or ``nil`` if the annotations are unchanged
+     - Returns: A new instance of the ``Rule``. Callers should be aware that this may be a "deep" copy if the implementation is a value type
+    */
+    func instance(with token:Token?, andAnnotations annotations:RuleAnnotations?)->Rule
 }
 
 /// A set of standard properties and functions for all `Rule`s
 public extension Rule{
+
+    /**
+     Creates a new instance of the rule changing the ``Token`` produced
+     
+     - Parameter token: The new token to produce
+     - Returns: The new instance
+    */
+    public func instance(with token:Token)->Rule{
+        return instance(with: token, andAnnotations: nil)
+    }
+    
+    /**
+     Creates a new instance of the rule changing the ``RuleAnnotations`` associated with the rule
+     
+     - Parameter annotations: The new annotations to associate with the new instance
+     - Returns: The new instance
+     */
+    public func instance(with annotations: RuleAnnotations)->Rule{
+        return instance(with: nil, andAnnotations: annotations)
+    }
     
     /// The user specified (in an annotation) error associated with the rule
     public var error : String? {

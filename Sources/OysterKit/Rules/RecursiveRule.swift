@@ -28,20 +28,24 @@ import Foundation
  When a rule definition calls itself whilst evaluating itself (left hand recursion) you cannot create the rule directly as it will become caught in an infinite look (creating instances of itself, which create instances of itself etc until the stack is empty).  To avoid this a rule can use this wrapper to manage lazy initialization of itself. The recursive rule enables a reference to be added on the RHS, but the actual rule will not be initiialized until later, and this wrapper will then call that lazily initalized rule.
  */
 public class RecursiveRule : Rule, CustomStringConvertible{
-    
     /// Creates a new instance of a rule. If you use this initializer then you should subsequently (when possible) set `surrogateRule`
-    public init(){
-        _produces = transientTokenValue.token
-    }
+//    public init(){
+//        _produces = transientTokenValue.token
+//        _annotations = [ : ]
+//    }
     
     /// Creates a new instance of a rule. If you use this initializer then you should subsequently (when possible) set `surrogateRule`
     /// - Parameter token: The token the rule will create.
-    public init(stubFor token:Token){
+    public init(stubFor token:Token, with annotations:RuleAnnotations){
         _produces = token
+        _annotations = annotations
     }
     
     /// The surrogate matcher
     private var rule     : Rule?
+    
+    /// The surrogate annotations. When the surrogate is assigned its annotations will be replaced with these on the new instance
+    private var _annotations : RuleAnnotations
     
     /// The surrogate token. This MUST use forced unwrapping as there must always be a token
     private var _produces    : Token
@@ -53,10 +57,7 @@ public class RecursiveRule : Rule, CustomStringConvertible{
             return rule
         }
         set {
-            guard let  newRule = newValue else {
-                return
-            }
-            rule = newRule
+            rule = newValue?.instance(with: _produces, andAnnotations: annotations)
         }
     }
     
@@ -78,17 +79,27 @@ public class RecursiveRule : Rule, CustomStringConvertible{
 
     }
     
+    /**
+     Creates a new instance with the specief token and/or anotations
+     
+     - Parameter token: If nil, the current token will be used on the new instance
+     - Parameter annotations: If nil, the current annotations will be used
+     - Returns: The new instance
+    */
+    public func instance(with token: Token?, andAnnotations annotations: RuleAnnotations?) -> Rule {
+        let newInstance = RecursiveRule(stubFor: token ?? self.produces, with: annotations ?? self.annotations)
+        
+        newInstance.surrogateRule = self.rule
+        
+        return newInstance
+    }
+    
+    
+
+    
     /// Delegated to the the surrogate rule
     public var annotations: RuleAnnotations{
-        get {
-            if let rule = rule {
-                return rule.annotations
-            }
-            return [ : ]
-        }
-        set{
-            rule?.annotations = newValue
-        }
+        return rule?.annotations ?? _annotations
     }
     
     
