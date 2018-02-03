@@ -288,6 +288,27 @@ public enum RuleAnnotation : Hashable, CustomStringConvertible{
 /// A dictionary of annotations and their values
 public typealias RuleAnnotations = [RuleAnnotation : RuleAnnotationValue]
 
+/// Compares two ``RuleAnnotations``
+public func areEqual(lhs: RuleAnnotations, rhs: RuleAnnotations)->Bool{
+    func areEqual(lhs:RuleAnnotationValue, rhs:RuleAnnotationValue)->Bool{
+        return lhs.description == rhs.description
+    }
+    if lhs.count != rhs.count {
+        return false
+    }
+    
+    for tuple in lhs {
+        guard let rhsValue = rhs[tuple.key] else {
+            return false
+        }
+        if !areEqual(lhs: rhsValue, rhs: tuple.value) {
+            return false
+        }
+    }
+
+    return true
+}
+
 /// An extension for dictionaries of `RuleAnnotations`
 public extension Collection where Iterator.Element == (key:RuleAnnotation,value:RuleAnnotationValue){
     

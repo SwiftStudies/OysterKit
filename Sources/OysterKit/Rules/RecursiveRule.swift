@@ -29,94 +29,65 @@ import Foundation
  */
 public class RecursiveRule : Rule, CustomStringConvertible{
     
-    /// The initializer block responsible for creating the rule
-    private var initBlock : (()->Rule)?
-    
-    /// Creates a new instance of the rule. If you use this initializer then you should subsequently (when possible) set `surrogateRule`
+    /// Creates a new instance of a rule. If you use this initializer then you should subsequently (when possible) set `surrogateRule`
     public init(){
-        
+        _produces = transientTokenValue.token
     }
     
-    /**
-     Creates a new instance providing a closure which will create the actual rule when the rule is first used
-     
-     Parameters initializeWith: The closure to be used once it is safe to do so
-    */
-    public init(initializeWith lazyBlock:(()->Rule)?){
-        self.initBlock = lazyBlock
+    /// Creates a new instance of a rule. If you use this initializer then you should subsequently (when possible) set `surrogateRule`
+    /// - Parameter token: The token the rule will create.
+    public init(stubFor token:Token){
+        _produces = token
     }
     
     /// The surrogate matcher
-    private var _matcher     : ((_ lexer : LexicalAnalyzer, _ ir:IntermediateRepresentation) throws -> MatchResult)?
+    private var rule     : Rule?
     
     /// The surrogate token. This MUST use forced unwrapping as there must always be a token
-    private var _produces    : Token!
-    
-    /// The surrogate annotations
-    private var _annotations : RuleAnnotations?
-    
-    /// Initiales the various delegated surrogate methods based on the lazily initialized rule
-    private final func lazyInit(_ initBlock: ()->Rule){
-        let rule = initBlock()
-        _matcher     = rule.match
-        _produces    = rule.produces
-        self.initBlock = nil
-    }
+    private var _produces    : Token
     
     /// Always appears to be `nil` when read, but when set applies the matcher methods etc from the supplied rule to this so that the `RecursiveRule` behaves
     /// exactly like the original rule.
     public var surrogateRule : Rule? {
         get{
-            return nil
+            return rule
         }
         set {
             guard let  newRule = newValue else {
                 return
             }
-            _cachedDescription = "\(newRule)"
-            initBlock = nil
-            _matcher = newRule.match
-            _produces = newRule.produces
+            rule = newRule
         }
     }
     
     public var description: String{
-        return _cachedDescription ?? "Not set yet"
+        // Can't actuall print rule because if there is a looping recursion it could go on forwever
+        return "\(rule == nil ? "❌\(_produces)" : "🔃\(rule!.produces)")"
     }
-    
-    var _cachedDescription : String?
     
     /// Delegated to the the surrogate rule
     public func match(with lexer: LexicalAnalyzer, for ir: IntermediateRepresentation) throws -> MatchResult {
-        if let initBlock = initBlock {
-            lazyInit(initBlock)
-        }
-        
-        return try _matcher?(lexer, ir) ?? MatchResult.failure(atIndex: lexer.index)
+        return try rule?.match(with: lexer, for: ir) ?? MatchResult.failure(atIndex: lexer.index)
     }
     
     /// Delegated to the the surrogate rule
     public var produces: Token {
-        if let initBlock = initBlock {
-            lazyInit(initBlock)
+        get {
+            return rule?.produces ?? _produces
         }
-        
-        if _produces == nil {
-            enum DummyToken : Int, Token { case value }
-            print("Warning having to create a dummy token because the rule doesn't produce anything\n\t\(self)")
-            return DummyToken.value
-        }
-        
-        return _produces
+
     }
     
     /// Delegated to the the surrogate rule
     public var annotations: RuleAnnotations{
         get {
-            return _annotations ?? [:]
+            if let rule = rule {
+                return rule.annotations
+            }
+            return [ : ]
         }
         set{
-            _annotations = newValue
+            rule?.annotations = newValue
         }
     }
     

@@ -57,12 +57,16 @@ class DynamicGeneratorTest: XCTestCase {
         }
         
         if let tree = try? AbstractSyntaxTreeConstructor().build(">", using: dynamicLangauage)  {
+            print(tree.description)
             XCTAssertTrue("\(tree.token)" == "arrows", "Root node should be arrows")
             XCTAssertTrue(tree.isSet(annotation: RuleAnnotation.custom(label: "forArrows")))
             guard let arrowNode = tree.nodeAtPath(["arrow"]) else {
                 XCTFail("Arrow is not a child of arrows"); return
             }
             XCTAssertTrue(arrowNode.isSet(annotation: RuleAnnotation.custom(label: "forArrow")))
+            XCTAssertEqual(tree.annotations.count, 1)
+            XCTAssertEqual(arrowNode.annotations.count, 1)
+
         } else {
             XCTFail("Could not parse the test source using the generated language"); return
         }
@@ -82,10 +86,12 @@ class DynamicGeneratorTest: XCTestCase {
             print(tree.description)
             XCTAssertTrue("\(tree.token)" == "arrows", "Root node should be arrows")
             XCTAssertTrue(tree.isSet(annotation: RuleAnnotation.custom(label: "forArrows")))
+            XCTAssertEqual(tree.annotations.count, 1)
             guard let arrowNode = tree.nodeAtPath(["arrow"]) else {
                 XCTFail("Arrow is not a child of arrows"); return
             }
             XCTAssertTrue(arrowNode.isSet(annotation: RuleAnnotation.custom(label: "forArrow")))
+            XCTAssertEqual(arrowNode.annotations.count, 1)
         } else {
             XCTFail("Could not parse the test source using the generated language"); return
         }
@@ -102,7 +108,7 @@ class DynamicGeneratorTest: XCTestCase {
             XCTFail("Could not compile the grammar under test"); return
         }
         
-        if let tree = try? AbstractSyntaxTreeConstructor().build(">>", using: dynamicLangauage)  {
+        if let tree = try? AbstractSyntaxTreeConstructor().build(">", using: dynamicLangauage)  {
             print(tree.description)
             XCTAssertTrue("\(tree.token)" == "arrows", "Root node should be arrows")
             XCTAssertTrue(tree.isSet(annotation: RuleAnnotation.custom(label: "forArrows")))
@@ -110,6 +116,9 @@ class DynamicGeneratorTest: XCTestCase {
                 XCTFail("Arrow is not a child of arrows"); return
             }
             XCTAssertTrue(arrowNode.isSet(annotation: RuleAnnotation.custom(label: "forArrow")))
+            XCTAssertEqual(tree.annotations.count, 1)
+            XCTAssertEqual(arrowNode.annotations.count, 1)
+
         } else {
             XCTFail("Could not parse the test source using the generated language"); return
         }
@@ -133,6 +142,9 @@ class DynamicGeneratorTest: XCTestCase {
                 XCTFail("Arrow is not a child of arrows"); return
             }
             XCTAssertTrue(arrowNode.isSet(annotation: RuleAnnotation.custom(label: "forArrow")))
+            XCTAssertEqual(tree.annotations.count, 1)
+            XCTAssertEqual(arrowNode.annotations.count, 1)
+
         } else {
             XCTFail("Could not parse the test source using the generated language"); return
         }
