@@ -81,6 +81,10 @@ enum ParsingStrategy {
                 }
             }
             
+            if !productionErrors.isEmpty {
+                throw AbstractSyntaxTreeConstructor.ConstructionError.parsingFailed(causes: productionErrors)
+            }
+            
             if context.lexer.index == positionBeforeParsing {
                 throw LanguageError.parsingError(at: context.lexer.index..<context.lexer.index, message: "Lexer not advanced")
             }

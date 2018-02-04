@@ -29,8 +29,9 @@ import STLR
 class HierarchyTests: XCTestCase {
 
     func testExample() {
-        // This needs to be integrated fully
-        return
+        if testForFutureEnhancement(gitHubId: -1){
+            return
+        }
         guard let grammarSource = try? String(contentsOfFile: "/Volumes/Personal/SPM/XMLDecoder/XML.stlr") else {
             fatalError("Could not load grammar")
         }
@@ -279,8 +280,8 @@ enum XML : Int, Token {
     }
     
     // Convient way to apply your grammar to a string
-    public static func parse(source: String) -> DefaultHeterogeneousAST {
-        return XML.generatedLanguage.build(source: source)
+    public static func parse(source: String) -> HomogenousTree {
+        return try! AbstractSyntaxTreeConstructor().build(source, using: XML.generatedLanguage)
     }
 }
 

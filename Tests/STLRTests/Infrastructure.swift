@@ -10,21 +10,19 @@ import Foundation
 @testable import OysterKit
 import STLR
 
-
-
-class TestParser : StreamRepresentation<HomogenousNode, Lexer>{
+class TestParser : TokenStream{
     init(source: String, grammar: [Rule]) {
-        super.init(source: source, language: TestLanguage(grammar: grammar))
+        super.init(source, using: TestLanguage(grammar: grammar))
     }
     
     required init(from source: String, with language: Language) {
-        super.init(source: source, language: language)
+        super.init(source, using: language)
     }
 }
 
-class TestableStream<N:Node> : StreamRepresentation<N,Lexer>{
+class TestableStream : TokenStream{
     init(source: String, _ rules: [Rule]) {
-        super.init(source: source, language: TestLanguage(grammar:rules))
+        super.init(source, using: TestLanguage(grammar: rules))
     }
 }
 

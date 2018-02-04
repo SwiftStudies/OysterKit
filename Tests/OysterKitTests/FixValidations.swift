@@ -82,13 +82,20 @@ class FixValidations: XCTestCase {
             }
             
             // Convient way to apply your grammar to a string
-            public static func parse(source: String) -> DefaultHeterogeneousAST {
-                return STLRStringTest.generatedLanguage.build(source: source)
+            public static func parse(source: String) throws -> HomogenousTree {
+                return try AbstractSyntaxTreeConstructor().build(source, using: STLRStringTest.generatedLanguage)
             }
         }
 
-        let ast = STLRStringTest.parse(source: "\"h")
+        do{
+            let _ = try STLRStringTest.parse(source: "\"h")
+            XCTFail("Expected unterminated string error" )
+        } catch AbstractSyntaxTreeConstructor.ConstructionError.constructionFailed(let errors) {
+            XCTAssertEqual(errors.count, 1)
+            XCTAssertTrue("\(errors[0])".hasPrefix("Missing terminating quote"))
+        } catch {
+            XCTFail("Unexpected error \(error)")
+        }
         
-        XCTAssertEqual(1, ast.errors.count,"Expected unterminated string error")
     }
 }

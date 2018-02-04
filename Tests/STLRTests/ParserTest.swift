@@ -104,7 +104,7 @@ class ParserTest: XCTestCase {
         }
         
         if let expectingEndOfInput = expectingEndOfInput {
-            XCTAssert(expectingEndOfInput == tokenIterator.endOfInput, expectingEndOfInput ? "Expected end of input" : "Unexpected end of input")
+            XCTAssert(expectingEndOfInput == tokenIterator.reachedEndOfInput, expectingEndOfInput ? "Expected end of input" : "Unexpected end of input")
         }
         
         return tokenIterator.parsingErrors
@@ -201,7 +201,8 @@ class ParserTest: XCTestCase {
         
         let parser = Parser(grammar: [string])
         
-        for node : HomogenousNode in parser.stream(source: source){
+        
+        for node in TokenStream(source, using: parser){
             count += 1
             XCTAssert(node.token == Tokens.string)
             let capturedString = String(source[node.range])

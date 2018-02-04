@@ -68,6 +68,9 @@ public class TokenStreamIterator : IteratorProtocol {
     /// The iterator generates elements of type ``StreamedToken``
     public typealias Element = StreamedToken
 
+    /// Any errors encountered during parsing
+    public private (set) var parsingErrors = [Error]()
+    
     /// **DO NOT CALL**
     public required init() {
         fatalError("Do not create an instance of this object directly")
@@ -99,10 +102,16 @@ public class TokenStreamIterator : IteratorProtocol {
                 nextToken = nil
             }
         } catch {
+            parsingErrors.append(error)
             nextToken = nil
         }
         
         return nextToken
+    }
+    
+    /// True if parsing reached the end of input naturally (that is, encountered no errors)
+    public var reachedEndOfInput  : Bool {
+        return parsingContext.complete
     }
     
     /// This must be force unwrapped as the parsing context requies this object in its initializer.

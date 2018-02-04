@@ -37,15 +37,17 @@ class OptimizersTest: GrammarTest {
             return
         }
         
-        let result : DefaultHomogenousAST<HomogenousNode> = compiledLanguage.build(source: "yz")
-        
-        guard let error = result.errors.first else {
-            XCTFail("Expected an error \(parser.ast.rules[0])")
-            return
-        }
-        
-        
-        XCTAssert("\(error)".hasPrefix("Expected X"),"Incorrect error \(error)")
+        do {
+            let _ = try AbstractSyntaxTreeConstructor().build("yz", using: compiledLanguage)
+        } catch AbstractSyntaxTreeConstructor.ConstructionError.parsingFailed(let errors) {
+            guard let error = errors.first else {
+                XCTFail("Expected an error \(parser.ast.rules[1])")
+                return
+            }
+            XCTAssert("\(error)".hasPrefix("Expected X"),"Incorrect error \(error)")
+        } catch {
+            XCTFail("Unexpected error \(error)")
+        }        
     }
     
 }

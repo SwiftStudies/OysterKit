@@ -125,11 +125,11 @@ class OysterKitPerformanceTests: XCTestCase {
         }
         
         let parser = SwiftParser()
-        let _ = parser.build(source: swiftSource) as NullIR
+        let _ = try? AbstractSyntaxTreeConstructor().build(swiftSource, using: parser)
         
         // This is an example of a performance test case.
         self.measure {
-            let _ = parser.build(source: self.swiftSource) as NullIR
+            let _ = try? AbstractSyntaxTreeConstructor().build(swiftSource, using: parser)
         }
         
     }
