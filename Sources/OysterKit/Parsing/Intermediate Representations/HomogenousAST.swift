@@ -28,6 +28,7 @@ import Foundation
  `ASTNodeConstructor`s are responsible for building the data-structures used by the default homogenous and heterogenous `IntermediateRepresentations`. They
   allow you to, by providing your own implementations, control the behaviour of `Node` creation of those default implementations.
  */
+@available(*, deprecated, message: "Use AbstractSyntaxTree() instead")
 public protocol ASTNodeConstructor{
     // The type of Node that the the implementation manages
     associatedtype  NodeType : Node
@@ -81,6 +82,7 @@ public protocol ASTNodeConstructor{
 /**
  A default constructor implementation which can be specialised for specific node types.
 */
+@available(*, deprecated, message: "Use AbstractSyntaxTree() instead")
 final class DefaultConstructor<N:Node> : ASTNodeConstructor{
     /// The `Node` implementation to be used
     typealias NodeType = N
@@ -157,6 +159,7 @@ final class DefaultConstructor<N:Node> : ASTNodeConstructor{
 }
 
 /// A default concrete implementation of a `HomogenousAST` which uses the `DefaultConstructor`
+@available(*, deprecated, message: "Use AbstractSyntaxTree() instead")
 final public class DefaultHomogenousAST<NodeType:Node> : HomogenousAST<NodeType, DefaultConstructor<NodeType>>{
     required public init() {
         super.init()
@@ -169,6 +172,7 @@ final public class DefaultHomogenousAST<NodeType:Node> : HomogenousAST<NodeType,
  
  -SeeAlso: DefaultHomogenousAST<NodeType:Node> which provides a default implementation using `DefaultConstructor<NodeType:Node>`
  */
+@available(*, deprecated, message: "Use AbstractSyntaxTree() instead")
 public class HomogenousAST<NodeType, Constructor : ASTNodeConstructor> : IntermediateRepresentation where Constructor.NodeType == NodeType{
     /// The original scalars view
     private var     scalars   : String.UnicodeScalarView!

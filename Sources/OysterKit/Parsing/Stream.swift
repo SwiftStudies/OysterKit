@@ -34,6 +34,7 @@ public extension Language{
      - Parameter lexer: The `LexicalAnalyzer` to use
      - Returns: A sequence of `Node`s
     */
+    @available(*, deprecated, message: "Use TokenStream() instead")
     public func stream<N:Node,L:LexicalAnalyzer>(lexer:L)->AnySequence<N>{
         return AnySequence<N>(StreamRepresentation<N,L>(source: lexer.source, language: self))
     }
@@ -43,6 +44,7 @@ public extension Language{
      
     - Returns: A sequence of `Node`s
      */
+    @available(*, deprecated, message: "Use TokenStream() instead")
     public func stream<N:Node>(source:String)->AnySequence<N>{
         return stream(lexer: Lexer(source: source))
     }
@@ -52,6 +54,7 @@ public extension Language{
 /**
  A default constructor to be used for streams. Unlike AST constructors it does not attempt to maintain any kind of hierarchy of nodes
  */
+@available(*, deprecated, message: "Use TokenStream() instead")
 final public class StreamConstructor<NodeType:Node> : ASTNodeConstructor{
     
     /// Creates a new instance of the constructor
@@ -116,6 +119,7 @@ final public class StreamConstructor<NodeType:Node> : ASTNodeConstructor{
  A lazy iterator that parses for the next `Token` each time the consumer of the `IteratorProtocol` requests the `next()` entry. These cannot
  be created directly but are supplied from the `stream()` functions of a `Language`
  */
+@available(*, deprecated, message: "Use TokenStream() instead")
 public class NodeIterator<N:Node> : IteratorProtocol{
     /// Elements are always `Node`s
     public typealias Element = N
@@ -204,6 +208,7 @@ public class NodeIterator<N:Node> : IteratorProtocol{
 /**
  Enables a lazy sequence of `Nodes` to be created from a source `String` and `Language` to be applied
  */
+@available(*, deprecated, message: "Use TokenStream() instead")
 public class StreamRepresentation<N:Node,L:LexicalAnalyzer> : Sequence{
     /// The iterator type to use
     public typealias Iterator = NodeIterator<N>

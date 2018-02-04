@@ -8,6 +8,7 @@
 
 import Foundation
 
+@available(*, deprecated, message: "Use AbstractSyntaxTree() instead")
 public struct HomogenousNode : Node {
     /// The token representing the match
     public      let token       : Token
@@ -39,6 +40,7 @@ public struct HomogenousNode : Node {
 }
 
 /// An extension providing convience methods for reporting the underlying matched string captured by the node
+@available(*, deprecated, message: "Use AbstractSyntaxTree() instead")
 public extension Node{
     
     /**
