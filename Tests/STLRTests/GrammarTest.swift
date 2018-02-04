@@ -229,8 +229,8 @@ class GrammarTest: XCTestCase {
     }
     
     func testQuantifiersNotAddedToIdentifierNames(){
-        source.add(line: "whitespace = ws+")
         source.add(line: "ws = .whitespaces")
+        source.add(line: "whitespace = ws+")
         source.add(line: "word = .letters+")
         
         let stlr = STLRParser(source: source)
@@ -238,8 +238,8 @@ class GrammarTest: XCTestCase {
         let ast = stlr.ast
         
         XCTAssert(ast.rules.count == 3, "Found \(ast.rules.count) rules when there should be 1")
-        XCTAssert(ast.rules[0].identifier?.name ?? "fail" == "whitespace")
-        XCTAssert(ast.rules[1].identifier?.name ?? "fail" == "ws")
+        XCTAssert(ast.rules[0].identifier?.name ?? "fail" == "ws")
+        XCTAssert(ast.rules[1].identifier?.name ?? "fail" == "whitespace")
         XCTAssert(ast.rules[2].identifier?.name ?? "fail" == "word")
         
         do {
