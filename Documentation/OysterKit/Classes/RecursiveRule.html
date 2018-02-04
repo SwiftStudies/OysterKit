@@ -124,9 +124,6 @@
             <a class="nav-group-name-link" href="../Enums.html">Enumerations</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Enums/BackgroundTimer.html">BackgroundTimer</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/GrammarError.html">GrammarError</a>
               </li>
               <li class="nav-group-task">
@@ -147,6 +144,9 @@
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/ScannerRule.html">ScannerRule</a>
               </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/TransientToken.html">TransientToken</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -163,9 +163,6 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Extensions/Decodable.html">Decodable</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Extensions/DispatchTimeInterval.html">DispatchTimeInterval</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Extensions/Int.html">Int</a>
@@ -189,6 +186,9 @@
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit2eeoiSbAA5Token_p_AaC_ptF">==(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit8areEqualSbs10DictionaryVyAA14RuleAnnotationOAA0fG5ValueOG3lhs_AI3rhstF">areEqual(lhs:rhs:)</a>
               </li>
             </ul>
           </li>
@@ -246,6 +246,9 @@
                 <a class="nav-group-task-link" href="../Structs/HomogenousTree.html">HomogenousTree</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/LabelledToken.html">LabelledToken</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/ParsingDecoder.html">ParsingDecoder</a>
               </li>
             </ul>
@@ -255,9 +258,6 @@
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit17CustomRuleClosurea">CustomRuleClosure</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit23DefaultHeterogeneousASTa">DefaultHeterogeneousAST</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a>
@@ -276,7 +276,7 @@
             <h1>RecursiveRule</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">RecursiveRule</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/Rule.html">Rule</a></span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">RecursiveRule</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/Rule.html">Rule</a></span><span class="p">,</span> <span class="kt">CustomStringConvertible</span></code></pre>
 
                 </div>
               </div>
@@ -292,9 +292,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit13RecursiveRuleCACycfc"></a>
-                    <a name="//apple_ref/swift/Method/init()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit13RecursiveRuleCACycfc">init()</a>
+                    <a name="/s:9OysterKit13RecursiveRuleCAcA5Token_p7stubFor_s10DictionaryVyAA0D10AnnotationOAA0dI5ValueOG4withtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(stubFor:with:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit13RecursiveRuleCAcA5Token_p7stubFor_s10DictionaryVyAA0D10AnnotationOAA0dI5ValueOG4withtcfc">init(stubFor:with:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -302,45 +302,35 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Creates a new instance of the rule. If you use this initializer then you should subsequently (when possible) set <code><a href="../Classes/RecursiveRule.html#/s:9OysterKit13RecursiveRuleC09surrogateD0AA0D0_pSgv">surrogateRule</a></code></p>
+                        <p>Creates a new instance of a rule. If you use this initializer then you should subsequently (when possible) set <code><a href="../Classes/RecursiveRule.html#/s:9OysterKit13RecursiveRuleC09surrogateD0AA0D0_pSgv">surrogateRule</a></code></p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">()</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">stubFor</span> <span class="nv">token</span><span class="p">:</span><span class="kt"><a href="../Protocols/Token.html">Token</a></span><span class="p">,</span> <span class="n">with</span> <span class="nv">annotations</span><span class="p">:</span><span class="kt"><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:9OysterKit13RecursiveRuleCAcA0D0_pycSg14initializeWith_tcfc"></a>
-                    <a name="//apple_ref/swift/Method/init(initializeWith:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit13RecursiveRuleCAcA0D0_pycSg14initializeWith_tcfc">init(initializeWith:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Creates a new instance providing a closure which will create the actual rule when the rule is first used</p>
-
-<p>Parameters initializeWith: The closure to be used once it is safe to do so</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">initializeWith</span> <span class="nv">lazyBlock</span><span class="p">:(()</span><span class="o">-&gt;</span><span class="kt"><a href="../Protocols/Rule.html">Rule</a></span><span class="p">)?)</span></code></pre>
-
-                        </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>token</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The token the rule will create.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -358,8 +348,8 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Always appears to be <code>nil</code> when read, but when set applies the matcher methods etc from the supplied rule to this so that the <code>RecursiveRule</code> behaves
-exactly like the original rule.</p>
+                        <p>The rule, which can be assigned at any point before actual parsing, to be used. When a new value is assigned to the rule a
+new instance is created (calling &ldquo;instance(token, annotations)) with the token and annotations assigned at construction</p>
 
                       </div>
                       <div class="declaration">
@@ -367,6 +357,32 @@ exactly like the original rule.</p>
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">surrogateRule</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/Rule.html">Rule</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:s23CustomStringConvertibleP11descriptionSSv"></a>
+                    <a name="//apple_ref/swift/Property/description" class="dashAnchor"></a>
+                    <a class="token" href="#/s:s23CustomStringConvertibleP11descriptionSSv">description</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">description</span><span class="p">:</span> <span class="kt">String</span></code></pre>
 
                         </div>
                       </div>
@@ -430,6 +446,68 @@ exactly like the original rule.</p>
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:9OysterKit13RecursiveRuleC8instanceAA0D0_pAA5Token_pSg4with_s10DictionaryVyAA0D10AnnotationOAA0dI5ValueOGSg14andAnnotationstF"></a>
+                    <a name="//apple_ref/swift/Method/instance(with:andAnnotations:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit13RecursiveRuleC8instanceAA0D0_pAA5Token_pSg4with_s10DictionaryVyAA0D10AnnotationOAA0dI5ValueOGSg14andAnnotationstF">instance(with:andAnnotations:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates a new instance with the specief token and/or anotations</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">instance</span><span class="p">(</span><span class="n">with</span> <span class="nv">token</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Token.html">Token</a></span><span class="p">?,</span> <span class="n">andAnnotations</span> <span class="nv">annotations</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Protocols/Rule.html">Rule</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>token</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>If nil, the current token will be used on the new instance</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>annotations</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>If nil, the current annotations will be used</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The new instance</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:9OysterKit13RecursiveRuleC11annotationss10DictionaryVyAA0D10AnnotationOAA0dG5ValueOGv"></a>
                     <a name="//apple_ref/swift/Property/annotations" class="dashAnchor"></a>
                     <a class="token" href="#/s:9OysterKit13RecursiveRuleC11annotationss10DictionaryVyAA0D10AnnotationOAA0dG5ValueOGv">annotations</a>
@@ -462,7 +540,7 @@ exactly like the original rule.</p>
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-01-31)</p>
+      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-02-04)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

@@ -123,9 +123,6 @@
             <a class="nav-group-name-link" href="Enums.html">Enumerations</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Enums/BackgroundTimer.html">BackgroundTimer</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Enums/GrammarError.html">GrammarError</a>
               </li>
               <li class="nav-group-task">
@@ -146,6 +143,9 @@
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Enums/ScannerRule.html">ScannerRule</a>
               </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/TransientToken.html">TransientToken</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -162,9 +162,6 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Extensions/Decodable.html">Decodable</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Extensions/DispatchTimeInterval.html">DispatchTimeInterval</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Extensions/Int.html">Int</a>
@@ -188,6 +185,9 @@
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Functions.html#/s:9OysterKit2eeoiSbAA5Token_p_AaC_ptF">==(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Functions.html#/s:9OysterKit8areEqualSbs10DictionaryVyAA14RuleAnnotationOAA0fG5ValueOG3lhs_AI3rhstF">areEqual(lhs:rhs:)</a>
               </li>
             </ul>
           </li>
@@ -245,6 +245,9 @@
                 <a class="nav-group-task-link" href="Structs/HomogenousTree.html">HomogenousTree</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/LabelledToken.html">LabelledToken</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/ParsingDecoder.html">ParsingDecoder</a>
               </li>
             </ul>
@@ -254,9 +257,6 @@
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Typealiases.html#/s:9OysterKit17CustomRuleClosurea">CustomRuleClosure</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Typealiases.html#/s:9OysterKit23DefaultHeterogeneousASTa">DefaultHeterogeneousAST</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a>
@@ -418,13 +418,45 @@
                 </li>
               </ul>
             </div>
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit13LabelledTokenV"></a>
+                    <a name="//apple_ref/swift/Struct/LabelledToken" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit13LabelledTokenV">LabelledToken</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A generic <code><a href="Protocols/Token.html">Token</a></code> implementation that is labelled (has an associated `<code>String</code>). The value is automatically generated</p>
+
+                        <a href="Structs/LabelledToken.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">LabelledToken</span> <span class="p">:</span> <span class="kt"><a href="Protocols/Token.html">Token</a></span><span class="p">,</span> <span class="kt">CustomStringConvertible</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
         </section>
 
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-01-31)</p>
+      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-02-04)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
