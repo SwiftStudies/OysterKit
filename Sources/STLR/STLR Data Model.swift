@@ -175,8 +175,11 @@ public class STLRIntermediateRepresentation : CustomStringConvertible {
         /// Invert the expression logical result
         case not
         
-        /// Just consume the result
-        case consume
+        /// Do not generate a token, do not cause an extension to the range
+        case void
+        
+        /// Do not generate a token, do cause an extension to the range
+        case transient
         
         /// `true` if it's an isOne case
         public var isOne : Bool {
@@ -220,11 +223,19 @@ public class STLRIntermediateRepresentation : CustomStringConvertible {
         }
 
         /// `true` if it's a consume case
-        public var isConsume : Bool {
+        public var isVoid : Bool {
             switch self {
-            case .consume : return true
+            case .void : return true
             default:        return false
             }
+        }
+        
+        /// `true` if it's the transient case
+        public var isTransient : Bool {
+            if case .transient = self {
+                return true
+            }
+            return false
         }
 
         /**
@@ -240,8 +251,12 @@ public class STLRIntermediateRepresentation : CustomStringConvertible {
                 self = .zeroOrMore
             case "+":
                 self = .oneOrMore
+            case "~":
+                self = .transient
             case "-":
-                self = .consume
+                self = .void
+            case "~":
+                self = .transient
             case "!":
                 self = .not
             default:
@@ -262,15 +277,17 @@ public class STLRIntermediateRepresentation : CustomStringConvertible {
                 return "+"
             case .not:
                 return "!"
-            case .consume:
+            case .void:
                 return "-"
+            case .transient:
+                return "~"
             }
         }
         
         /// The smallest number of matches to satisfy the quantifier
         public var minimumMatches : Int {
             switch self{
-            case .one, .oneOrMore, .not, .consume:
+            case .one, .oneOrMore, .not, .void, .transient:
                 return 1
             case .zeroOrOne, .zeroOrMore:
                 return 0
@@ -283,7 +300,7 @@ public class STLRIntermediateRepresentation : CustomStringConvertible {
             switch self{
             case .oneOrMore, .zeroOrMore:
                 return nil
-            case .one, .zeroOrOne, .consume:
+            case .one, .zeroOrOne, .void, .transient:
                 return 1
             case .not:
                 return 0
@@ -296,10 +313,16 @@ public class STLRIntermediateRepresentation : CustomStringConvertible {
         }
         
         /// Return true if absolutely no action should be taken on successful match (but a match must still occur)
-        public var consume : Bool {
-            return self == .consume
+        public var transient : Bool {
+            return self == .transient
         }
 
+        /// Return true if absolutely no action should be taken on successful match (but a match must still occur)
+        public var void : Bool {
+            return self == .void
+        }
+
+        
         /**
          Creates a rule wrappng the supplied rule and appying the specified modifier
          
@@ -312,8 +335,10 @@ public class STLRIntermediateRepresentation : CustomStringConvertible {
             switch self {
             case .one:
                 return rule
-            case .consume:
-                return rule.consume(annotations: quantifiersAnnotations)
+            case .void:
+                return rule.instance(with: TransientToken.labelled("\(token)-"), andAnnotations: quantifiersAnnotations.merge(with: [RuleAnnotation.void : RuleAnnotationValue.set]))
+            case .transient:
+                return rule.instance(with: TransientToken.labelled("\(token)~"), andAnnotations: quantifiersAnnotations)
             case .not:
                 return rule.not(producing: token, annotations: quantifiersAnnotations)
             case .zeroOrOne:

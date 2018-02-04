@@ -81,6 +81,30 @@ public struct LabelledToken : Token, CustomStringConvertible {
     }
 }
 
+/// Allows easy creation of transient tokens
+public enum TransientToken : Token, CustomStringConvertible {
+    /// Just an anonymous but transient token
+    case anonymous
+    
+    /// A transient token with a name (often useful during custom AST construction)
+    case labelled(String)
+    
+    /// Always returns ``transientTokenValue``
+    public var rawValue : Int {
+        return transientTokenValue
+    }
+    
+    /// A human readable description of the token
+    public var description: String {
+        switch self {
+        case .anonymous:
+            return "transient"
+        case .labelled(let label):
+            return label
+        }
+    }
+}
+
 /**
  An extension to allow any `String` to be used as a `Token`.
  */

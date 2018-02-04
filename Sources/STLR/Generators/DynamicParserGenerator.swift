@@ -268,8 +268,10 @@ fileprivate extension STLRIntermediateRepresentation.Modifier{
             return token
         case .not:
             return STLRIntermediateRepresentation.DynamicToken.init(rawValue: tokenRawValue, name: identifier ?? "!\(token)")
-        case .consume:
-            return STLRIntermediateRepresentation.DynamicToken.init(rawValue: tokenRawValue, name: identifier ?? "\(token)-")
+        case .transient:
+            return TransientToken.labelled(identifier ?? "\(token)~")
+        case .void:
+            return TransientToken.labelled(identifier ?? "\(token)-")
         case .zeroOrOne:
             return STLRIntermediateRepresentation.DynamicToken.init(rawValue: tokenRawValue, name: identifier ?? "\(token)?")
         case .oneOrMore:

@@ -10,6 +10,13 @@ import XCTest
 @testable import OysterKit
 import STLR
 
+
+@available(swift, deprecated: 4.0, message: "TEST DISABLED PENDING IMPLEMENTATION")
+fileprivate func testForFutureEnhancement(gitHubId id:Int)->Bool{
+    print("WARNING: Test for https://github.com/SwiftStudies/OysterKit/issues/\(id) is currently disabled. Enable when implemented")
+    return true
+}
+
 private enum Tokens : Int, Token {
     case tokenA = 1
 }
@@ -178,13 +185,14 @@ class DynamicGeneratorTest: XCTestCase {
         }
     }
     
-    /// Intended to test the fix for Issue #39
+    /// Test to ensure trasnients just omit the token, but not the range
+    /// and voids omit the token and the range
     func testGrammarTransientVoid(){
         let stlr = """
         v    = "v"
         t    = "t"
-        vs   = -":" v -":" @transient v -":"
-        ts   =  ":" t  ":" @transient t  ":"
+        vs   = @void      ":" v @void      ":" @transient v @void      ":"
+        ts   = @transient ":" t @transient ":" @transient t @transient ":"
         """
         
         guard let dynamicLangauage = STLRParser(source: stlr).ast.runtimeLanguage else {
@@ -211,7 +219,44 @@ class DynamicGeneratorTest: XCTestCase {
         }
     }
 
-    
+    /// Test of SLTR short hand for transient and void
+    /// At this point I expect it to fail
+    func testGrammarTransientVoidSyntacticSugar(){
+        if testForFutureEnhancement(gitHubId: 40){
+            return
+        }
+        
+        let stlr = """
+        v    = "v"
+        t    = "t"
+        vs   = ":"- v ":"- ~v ":"-
+        ts   = ":"~ t ":"~ t~ ":"~
+        """
+        
+        guard let dynamicLangauage = STLRParser(source: stlr).ast.runtimeLanguage else {
+            XCTFail("Could not compile the grammar under test"); return
+        }
+        
+        if let tree = try? AbstractSyntaxTreeConstructor().build(":t:t::v:v::t:t:", using: dynamicLangauage)  {
+            print(tree.description)
+            // Transient means it doesn't create child nodes, but is in the range
+            XCTAssertEqual("\(tree.children[0].token)","ts")
+            XCTAssertEqual(tree.children[0].children.count,1)
+            XCTAssertEqual(tree.children[0].matchedString,":t:t:")
+            // Void means it doesn't create child nodes, and is excluded from the range, but anything in the middle will be captured
+            XCTAssertEqual("\(tree.children[1].token)","vs")
+            XCTAssertEqual(tree.children[1].children.count,1)
+            XCTAssertEqual(tree.children[1].matchedString,"v:v")
+            // Transient means it doesn't create child nodes, but is in the range here testing at the end of the file
+            XCTAssertEqual("\(tree.children[2].token)","ts")
+            XCTAssertEqual(tree.children[2].matchedString,":t:t:")
+            XCTAssertEqual(tree.children[2].children.count, 1)
+            
+        } else {
+            XCTFail("Could not parse the test source using the generated language"); return
+        }
+    }
+
     func testSimpleChoice(){
         guard let rule = "\"x\" | \"y\" | \"z\"".dynamicRule(token: TT.xyz) else {
             XCTFail("Could not compile")

@@ -47,4 +47,16 @@ public extension Collection where Iterator.Element : Node {
         
         return finalRange
     }
+    
+    /**
+     Returns a new ``Collection`` with any transient nodes filtered out
+     */
+    public var perpetual : [Element] {        
+        return filter(){ (node)->Bool in
+            if node.token.transient || node.annotations[RuleAnnotation.transient] != nil{
+                return false
+            }
+            return true
+        }
+    }
 }
