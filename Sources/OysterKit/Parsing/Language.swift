@@ -162,6 +162,7 @@ public extension Language {
      - Parameter using: A pre-initialized instance of a `LexicalAnalyzer`
      - Returns: The finished `IntermediateRepresentation`
     */
+    @available(*, deprecated, message: "Use AbstractSyntaxTreeConstructor().build() instead")
     public func build<IR:IntermediateRepresentation>(intermediateRepresentation ir:IR, using lexer:LexicalAnalyzer)->IR{
         let lexer = lexer
         var success : Bool
@@ -210,6 +211,7 @@ public extension Language {
      - Parameter using: A pre-initialized instance of a `LexicalAnalyzer`
      - Returns: The finished `IntermediateRepresentation`
      */
+    @available(*, deprecated, message: "Use AbstractSyntaxTreeConstructor().build() instead")
     public func build<IR:IntermediateRepresentation>(using lexer:LexicalAnalyzer)->IR{
         return build(intermediateRepresentation: IR(), using: lexer)
     }
@@ -221,6 +223,7 @@ public extension Language {
      - Parameter source: The string to parse
      - Returns: The finished `IntermediateRepresentation`
      */
+    @available(*, deprecated, message: "Use AbstractSyntaxTreeConstructor().build() instead")
     public func build<IR:IntermediateRepresentation>(source:String)->IR{
         return build(using: Lexer(source: source))
     }

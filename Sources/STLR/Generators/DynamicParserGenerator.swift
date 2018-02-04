@@ -43,7 +43,7 @@ public extension STLRIntermediateRepresentation {
         
         var rootRules : [STLRIntermediateRepresentation.GrammarRule] = []
         
-        for rootCandidate in self.rules{
+        for rootCandidate in self.rules.reversed(){
             guard let candidateIdentifier = rootCandidate.identifier else {
                 continue
             }
@@ -63,8 +63,14 @@ public extension STLRIntermediateRepresentation {
             }
         }
         
+        // In this case where everything is recursive we don't know which one we should chose, however the last one is
+        // normally THE one
+        if rootRules.isEmpty && self.rules.count > 0{
+            rootRules = self.rules.reversed()
+        }
+        
         for rule in rootRules {
-            if let newRule = rule.rule(from: self,inContext: generationContext, annotations: [:]){
+            if let newRule = rule.rule(from: self,inContext: generationContext, annotations: rule.identifier?.annotations.asRuleAnnotations ?? [:]){
                 rules.append(newRule)
             }
         }
@@ -115,31 +121,38 @@ fileprivate extension STLRIntermediateRepresentation.GrammarRule{
         let createToken = token ?? identifier?.token
 
         if let token = createToken{
-            if var cachedRule = context.cachedRules[token.rawValue]{
-                //Replace any cached annotations with those for the current instance
-                cachedRule.annotations = annotations
-                
-                return cachedRule
+            if let cachedRule = context.cachedRules[token.rawValue]{
+                // Should fix Issue #39 - Lost identifier annotations
+                let finalRule = cachedRule.instance(with: cachedRule.annotations.merge(with: annotations))
+                return finalRule
             }
+            
+            // For both of these code paths... the annotations get passed in to the generated expresion. If the rules are then
+            // wrapped, those annotations could be duplicated. What happens now is, they probably get lost.
             if let _ = identifier , leftHandRecursive {
-                let rule = RecursiveRule()
+                let rule = RecursiveRule(stubFor: token, with: annotations)
                 context.cachedRules[token.rawValue] = rule
-                rule.surrogateRule = expression?.rule(from: grammar, creating: token, inContext:context, annotations: annotations)
+                
+                guard let expressionsRule = expression?.rule(from: grammar, creating: token, inContext:context, annotations: [:]) else {
+                    return nil
+                }
+                if expressionsRule.produces.rawValue != token.rawValue && expressionsRule.produces.rawValue != transientTokenValue{
+                    rule.surrogateRule = ParserRule.sequence(produces: token, [expressionsRule], annotations)
+                } else {
+                    rule.surrogateRule = expressionsRule.instance(with: token, andAnnotations: annotations)
+                }
+
                 return rule
             } else {
-                if let rule = expression?.rule(from: grammar, creating: token, inContext:context, annotations: annotations){
+                if var rule = expression?.rule(from: grammar, creating: token, inContext:context, annotations: [:]){
                     //Sometimes the thing is folded completely flat
-                    if rule.produces.rawValue != token.rawValue {
-                        //This is inefficient, but provides a more accurate representation of the rule in the resultant AST
-                        //More efficient would be to just change the token returned
-                        let wrappedRule = ParserRule.sequence(produces: token, [rule], [:])
-                        
-                        // NOTE 1: IF YOU ARE DEBUGGING HERE note the rule.annotations up there could be a bug, it may need to be the passed in annotations
-                        // NOTE 2: SO I WAS DEBUGGING HERE and noted that both the sequence and the contained expression were being tagged with the annotations, which did indeed look 
-                        //         like a bug, so the line was changed from let wrappedRule = ParserRule.sequence(produces: token, [rule], rule.annotations) to let wrappedRule = ParserRule.sequence(produces: token, [rule], [:])
+                    if rule.produces.rawValue != token.rawValue && rule.produces.rawValue != transientTokenValue {
+                        let wrappedRule = ParserRule.sequence(produces: token, [rule], annotations)
                         context.cachedRules[token.rawValue] = wrappedRule
                         return wrappedRule
                     } else {
+                        //Annotations on the identifier should override or add to those on the transient (or the same) token
+                        rule = rule.instance(with: token, andAnnotations: rule.annotations.merge(with: annotations))
                         context.cachedRules[token.rawValue] = rule
                         return rule
                     }
@@ -255,8 +268,10 @@ fileprivate extension STLRIntermediateRepresentation.Modifier{
             return token
         case .not:
             return STLRIntermediateRepresentation.DynamicToken.init(rawValue: tokenRawValue, name: identifier ?? "!\(token)")
-        case .consume:
-            return STLRIntermediateRepresentation.DynamicToken.init(rawValue: tokenRawValue, name: identifier ?? "\(token)-")
+        case .transient:
+            return TransientToken.labelled(identifier ?? "\(token)~")
+        case .void:
+            return TransientToken.labelled(identifier ?? "\(token)-")
         case .zeroOrOne:
             return STLRIntermediateRepresentation.DynamicToken.init(rawValue: tokenRawValue, name: identifier ?? "\(token)?")
         case .oneOrMore:
@@ -304,11 +319,9 @@ extension STLRIntermediateRepresentation.Element{
             }
             
             
-            var finalRule = quantifier.rule(appliedTo: r, producing: quantifier.wrapped(token: identifier.token, annotations: mergedQuantifierAnnotations), quantifiersAnnotations: mergedQuantifierAnnotations)
+            let finalRule = quantifier.rule(appliedTo: r, producing: quantifier.wrapped(token: identifier.token, annotations: mergedQuantifierAnnotations), quantifiersAnnotations: mergedQuantifierAnnotations)
             
-            finalRule.annotations = identifiersAnnotations.merge(with: finalRule.annotations)
-            
-            return finalRule
+            return finalRule.instance(with: identifiersAnnotations.merge(with: finalRule.annotations))
         }
     }
 

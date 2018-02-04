@@ -4,6 +4,8 @@ import Foundation
 import STLR
 import OysterKit
 
+
+
 guard let grammarSource = try? String(contentsOfFile: "/Volumes/Personal/SPM/XMLDecoder/XML.stlr") else {
     fatalError("Could not load grammar")
 }
@@ -32,7 +34,7 @@ for streamedToken in TokenStream(csvSource, using: STLRParser(source:"value = !\
     print("Got \(streamedToken.token)='\(csvSource[streamedToken.range])'")
 }
 
-let tree = try? AbstractSyntaxTreeConstructor().build(xmlSource, using: xmlLanguage)
+let tree = try? AbstractSyntaxTreeConstructor().build("<message>DataData</message>", using: xmlLanguage)
 
 print(tree?.description ?? "Failed")
 

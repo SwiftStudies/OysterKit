@@ -100,6 +100,7 @@ class GrammarTest: XCTestCase {
             throw CheckError.checkFailed(reason: "Language did not compile")
         }
         
+        
         let stream : AnySequence<HomogenousNode> = language.stream(source: source)
         
         let iterator = stream.makeIterator()
@@ -185,21 +186,21 @@ class GrammarTest: XCTestCase {
     }
     
     func testRecursiveRule(){
-        source.add(line: "xy = x \"y\"")
-        source.add(line: "justX = x")
         source.add(line: "x = \"x\"")
+        source.add(line: "justX = x")
+        source.add(line: "xy = x \"y\"")
         
         let stlr = STLRParser(source: source)
         
         let ast = stlr.ast
         
         XCTAssert(ast.rules.count == 3, "Found \(ast.rules.count) rules when there should be 1")
-        XCTAssert(ast.rules[0].identifier?.name ?? "fail" == "xy")
+        XCTAssert(ast.rules[0].identifier?.name ?? "fail" == "x")
         XCTAssert(ast.rules[1].identifier?.name ?? "fail" == "justX")
-        XCTAssert(ast.rules[2].identifier?.name ?? "fail" == "x")
+        XCTAssert(ast.rules[2].identifier?.name ?? "fail" == "xy")
         
         do {
-            try checkGeneratedLanguage(language: ast.runtimeLanguage, on: "xyx", expecting: [1,3])
+            try checkGeneratedLanguage(language: ast.runtimeLanguage, on: "xyx", expecting: [3,2])
         } catch (let error) {
             XCTFail("\(error)")
         }
@@ -269,7 +270,10 @@ class GrammarTest: XCTestCase {
 
     
     func testShallowFolding(){
-        let source = "space = .whitespaces \nspaces = space+\n"
+        let source = """
+            space = .whitespaces
+            spaces = space+
+            """
         
         let testString = "    "
         

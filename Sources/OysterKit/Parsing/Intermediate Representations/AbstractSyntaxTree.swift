@@ -50,6 +50,7 @@ public struct HomogenousTree : AbstractSyntaxTree, CustomStringConvertible {
         token = node.token
         matchedString = String(source[node.range])
         children = try node.children.map({ try HomogenousTree(with:$0, from: source)})
+        annotations = node.annotations
     }
     
     /// The captured `Token`
@@ -61,8 +62,25 @@ public struct HomogenousTree : AbstractSyntaxTree, CustomStringConvertible {
     /// Any sub-nodes in the tree
     public let     children      : [HomogenousTree]
     
+    /// Any associated annotations made on the node
+    public      let annotations: [RuleAnnotation : RuleAnnotationValue]
+
+    
     private func pretify(prefix:String = "")->String{
-        return "\(prefix)\(token) \(children.count > 0 ? "" : "- '\(matchedString.escaped)'")\(children.count > 0 ? children.reduce("\n", { (previous, current) -> String in return previous+current.pretify(prefix:prefix+"\t")}) : "\n")"
+        let annotatedWith : String = annotations.reduce("", {(last,pair)->String in
+            let label = "\(pair.key)"
+            let value : String
+            switch pair.value {
+            case .set:
+                value = ""
+            case .string(let string):
+                value = "(\"\(string)\")"
+            default:
+                value = "(\(pair.value))"
+            }
+            return last + "@\(label)\(value) "
+        })
+        return "\(prefix)\(annotatedWith)\(token) \(children.count > 0 ? "" : "- '\(matchedString.escaped)'")\(children.count > 0 ? children.reduce("\n", { (previous, current) -> String in return previous+current.pretify(prefix:prefix+"\t")}) : "\n")"
     }
     
     /// A well formatted description of this branch of the tree

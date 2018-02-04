@@ -155,9 +155,8 @@ public class AbstractSyntaxTreeConstructor  {
         self.source  = source
         self.scalars = source.unicodeScalars
         
-        let _ = language.build(intermediateRepresentation: self, using: Lexer(source: source))
-        
         do {
+            try ParsingStrategy.parse(source, using: language, with: Lexer.self, into: self)
             let topNode : IntermediateRepresentationNode
             
             guard let topNodes = nodeStack.top?.nodes, topNodes.count > 0 else {
@@ -167,7 +166,7 @@ public class AbstractSyntaxTreeConstructor  {
             
             if topNodes.count > 1 {
                 // Wrap it in a single node
-                topNode = IntermediateRepresentationNode(for: transientTokenValue.token, at: topNodes.combinedRange, annotations: [:])
+                topNode = IntermediateRepresentationNode(for: LabelledToken(withLabel: "root"), at: topNodes.combinedRange, children: topNodes , annotations: [:])
             } else {
                 topNode = topNodes[0]
             }
@@ -206,19 +205,20 @@ extension AbstractSyntaxTreeConstructor : IntermediateRepresentation {
         return nil
     }
     
+    /// Processes the results of evaluation
     public func didEvaluate(rule: Rule, matchResult: MatchResult) {
         let children = nodeStack.pop()
         
         switch matchResult {
         case .success(let context):
-            //If the rule is void return nothing
+            //If the rule is void return nothing, don't add to range
             if rule.void {
                 return
             }
             
             // If it's transient, or the constructor produces no nodes then the current top should adopt the children
             /// TODO: Is this a defect (see github issue 24 https://github.com/SwiftStudies/OysterKit/issues/24)
-            guard let node = rule.transient ? nil : match(token: rule.produces, annotations: rule.annotations, context: context, children: children.nodes) else {
+            guard let node = match(token: rule.produces, annotations: rule.annotations, context: context, children: children.nodes) else {
                 nodeStack.top?.adopt(children.nodes)
                 return
             }
@@ -256,10 +256,12 @@ extension AbstractSyntaxTreeConstructor : IntermediateRepresentation {
         }
     }
     
+    /// Does nothing
     public func didBuild() {
         
     }
     
+    /// Does nothing
     public func resetState() {
         
     }
@@ -278,15 +280,13 @@ extension AbstractSyntaxTreeConstructor : IntermediateRepresentation {
      - Returns: Any `Node` that was created, or `nil` if not
      */
     final public func match(token: Token, annotations:RuleAnnotations, context: LexicalContext, children: [IntermediateRepresentationNode]) -> IntermediateRepresentationNode? {
-        guard !token.transient else {
-            return nil
-        }
         
         switch children.count{
         case 0:
             return IntermediateRepresentationNode(for: token, at: context.range,  annotations: annotations)
         default:
-            return IntermediateRepresentationNode(for: token, at: children.combinedRange, children: children, annotations: annotations)
+            // Creates a new parent node with the transients filtered out, but their range included
+            return IntermediateRepresentationNode(for: token, at: children.combinedRange, children: children.perpetual, annotations: annotations)
         }
     }
     

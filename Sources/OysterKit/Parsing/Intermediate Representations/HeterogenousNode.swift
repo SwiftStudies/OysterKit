@@ -27,6 +27,7 @@ import Foundation
 /**
  An extension of the base `Node` type used by the standard ASTs that supports values of type `Any`. This is used primarily by `HeterogeousAST`s
  */
+@available(*, deprecated, message: "Use AbstractSyntaxTree() instead")
 public protocol ValuedNode : Node {
     /**
      Create a new instance
@@ -43,6 +44,7 @@ public protocol ValuedNode : Node {
 }
 
 /// A set of extensions to the `ValuedNode` protocol to provide default behaviour
+@available(*, deprecated, message: "Use AbstractSyntaxTree() instead")
 public extension ValuedNode{
     
     /// A human readable description of the node
@@ -103,6 +105,7 @@ public extension ValuedNode{
 }
 
 /// An extension for any collection containing a `ValuedNode`
+@available(*, deprecated, message: "Use AbstractSyntaxTree() instead")
 public extension Collection where Iterator.Element : ValuedNode {
     
     /**
@@ -154,6 +157,7 @@ public extension Collection where Iterator.Element : ValuedNode {
 /**
  The default implementation of `ValuedNode`.
  */
+@available(*, deprecated, message: "Use AbstractSyntaxTree() instead")
 public struct HeterogeneousNode : ValuedNode {
     /// The token created
     public      let token       : Token

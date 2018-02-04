@@ -29,6 +29,7 @@ import Foundation
  Provides a default implementation of an `ASTNodeConstructor` that is expected to construct nodes that can have different fundamental data types. All nodes
  are of type `HeterogeneousNode`.
 */
+@available(*, deprecated, message: "Use AbstractSyntaxTree() instead")
 public final class DefaultHeterogenousConstructor : ASTNodeConstructor{
     /// All nodes must conform to the protocol `HeterogeneousNode`
     public typealias NodeType =  HeterogeneousNode
@@ -111,9 +112,11 @@ public final class DefaultHeterogenousConstructor : ASTNodeConstructor{
 }
 
 /// The default implementation of a `HeterogenousAST` using the `DefaultHeterogenousConstructor`
+@available(*, deprecated, message: "Use AbstractSyntaxTree() instead")
 public typealias DefaultHeterogeneousAST = HeterogenousAST<HeterogeneousNode,DefaultHeterogenousConstructor>
 
 /// The base class for any 'HeterogenousAST'
+@available(*, deprecated, message: "Use AbstractSyntaxTree() instead")
 public final class HeterogenousAST<NodeType : ValuedNode, Constructor : ASTNodeConstructor> : HomogenousAST<NodeType,Constructor> where Constructor.NodeType == NodeType{
     
 }

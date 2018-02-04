@@ -45,6 +45,67 @@ public protocol Token {
 }
 
 /**
+ Provides a convience static variable that returns a transient ``Token``
+ */
+public extension Token {
+    
+    /// A transient token
+    public static var transientToken : Token {
+        return transientTokenValue.token
+    }
+}
+
+/**
+ A generic ``Token`` implementation that is labelled (has an associated ``String`). The value is automatically generated
+ */
+public struct LabelledToken : Token, CustomStringConvertible {
+    /// The label for the token
+    private     let label : String
+    
+    /// The ``Int`` identifier of the Token. It is automatically generated
+    public      let rawValue : Int
+    
+    /**
+     Create a new token instance
+     
+     - Parameter label: The textual representation of the token
+    */
+    public init(withLabel label: String){
+        self.label = label
+        rawValue = label.hashValue
+    }
+    
+    /// A human readable representation of the token
+    public var description: String{
+        return label
+    }
+}
+
+/// Allows easy creation of transient tokens
+public enum TransientToken : Token, CustomStringConvertible {
+    /// Just an anonymous but transient token
+    case anonymous
+    
+    /// A transient token with a name (often useful during custom AST construction)
+    case labelled(String)
+    
+    /// Always returns ``transientTokenValue``
+    public var rawValue : Int {
+        return transientTokenValue
+    }
+    
+    /// A human readable description of the token
+    public var description: String {
+        switch self {
+        case .anonymous:
+            return "transient"
+        case .labelled(let label):
+            return label
+        }
+    }
+}
+
+/**
  An extension to allow any `String` to be used as a `Token`.
  */
 extension String : Token {
@@ -251,6 +312,27 @@ public enum RuleAnnotation : Hashable, CustomStringConvertible{
 /// A dictionary of annotations and their values
 public typealias RuleAnnotations = [RuleAnnotation : RuleAnnotationValue]
 
+/// Compares two ``RuleAnnotations``
+public func areEqual(lhs: RuleAnnotations, rhs: RuleAnnotations)->Bool{
+    func areEqual(lhs:RuleAnnotationValue, rhs:RuleAnnotationValue)->Bool{
+        return lhs.description == rhs.description
+    }
+    if lhs.count != rhs.count {
+        return false
+    }
+    
+    for tuple in lhs {
+        guard let rhsValue = rhs[tuple.key] else {
+            return false
+        }
+        if !areEqual(lhs: rhsValue, rhs: tuple.value) {
+            return false
+        }
+    }
+
+    return true
+}
+
 /// An extension for dictionaries of `RuleAnnotations`
 public extension Collection where Iterator.Element == (key:RuleAnnotation,value:RuleAnnotationValue){
     
@@ -312,14 +394,43 @@ public protocol Rule {
     var  produces : Token {get}
     
     /// The annotations on this rule
-    var  annotations : RuleAnnotations { get set }
+    var  annotations : RuleAnnotations { get }
     
     /// Returns the value of the specific `RuleAnnotationValue` identified by `annotation` if present
     subscript(annotation:RuleAnnotation)->RuleAnnotationValue? { get }
+    
+    /**
+     Create a new instance of the rule with the supplied annotations and token but otherwise exactly the same
+     
+     - Parameter token: The new ``Token`` or ``nil`` if the token should remain the same
+     - Parameter annotations: The new ``Annotations`` or ``nil`` if the annotations are unchanged
+     - Returns: A new instance of the ``Rule``. Callers should be aware that this may be a "deep" copy if the implementation is a value type
+    */
+    func instance(with token:Token?, andAnnotations annotations:RuleAnnotations?)->Rule
 }
 
 /// A set of standard properties and functions for all `Rule`s
 public extension Rule{
+
+    /**
+     Creates a new instance of the rule changing the ``Token`` produced
+     
+     - Parameter token: The new token to produce
+     - Returns: The new instance
+    */
+    public func instance(with token:Token)->Rule{
+        return instance(with: token, andAnnotations: nil)
+    }
+    
+    /**
+     Creates a new instance of the rule changing the ``RuleAnnotations`` associated with the rule
+     
+     - Parameter annotations: The new annotations to associate with the new instance
+     - Returns: The new instance
+     */
+    public func instance(with annotations: RuleAnnotations)->Rule{
+        return instance(with: nil, andAnnotations: annotations)
+    }
     
     /// The user specified (in an annotation) error associated with the rule
     public var error : String? {

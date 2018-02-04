@@ -117,18 +117,16 @@ public enum ScannerRule : Rule, CustomStringConvertible{
     /// Scanner rules cannot have annotations. All scanner rules can be modelled with
     /// full rules if annotations are needed
     public var annotations: RuleAnnotations{
-        get {
-            switch self {
-            case .oneOf(_,_, let annotations):
-                return annotations
-            }
+        switch self {
+        case .oneOf(_,_, let annotations):
+            return annotations
         }
-        
-        set {
-            switch self {
-            case .oneOf(let token, let strings, _):
-                self = .oneOf(token: token, strings, newValue)
-            }
+    }
+    
+    public func instance(with token: Token?, andAnnotations annotations: RuleAnnotations?) -> Rule {
+        switch self {
+        case .oneOf(let oldToken, let strings, let oldAnnotations):
+            return ScannerRule.oneOf(token: token ?? oldToken, strings, annotations ?? oldAnnotations)
         }
     }
 }

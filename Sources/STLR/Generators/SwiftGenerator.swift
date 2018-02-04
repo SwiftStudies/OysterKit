@@ -442,8 +442,13 @@ internal extension STLRIntermediateRepresentation.Modifier{
             return ""
         case .not:
             return ".not(producing: T.\(token)\(annotations?.swiftNthParameter ?? ""))"
-        case .consume:
-            return ".consume(\(annotations?.swiftDictionary ?? ""))"
+        case .void:
+            let finalAnnotations = annotations?.merge(with: [STLRIntermediateRepresentation.ElementAnnotationInstance.init(STLRIntermediateRepresentation.ElementAnnotation.void)])
+            return """
+                .instance(with: TransientToken.labelled("\(token)-"), andAnnotations: \(finalAnnotations?.swiftNthParameter ?? ""))
+            """
+        case .transient:
+            return ".instance(with: TransientToken.anonymous, andAnnotations: \(annotations?.swiftNthParameter ?? ""))"
         case .zeroOrOne:
             return ".optional(producing: T.\(token)\(annotations?.swiftNthParameter ?? ""))"
         case .zeroOrMore:

@@ -326,45 +326,45 @@ public indirect enum ParserRule : Rule, CustomStringConvertible{
         }
     }
     
+    public func instance(with token: Token?, andAnnotations annotations: RuleAnnotations?) -> Rule {
+        switch self{
+        case .terminal(let oldToken,let string, let oldAnnotations):
+            return ParserRule.terminal(produces: token ?? oldToken,string, annotations ?? oldAnnotations)
+        case .terminalFrom(let oldToken, let characterSet, let oldAnnotations):
+            return ParserRule.terminalFrom(produces: token ?? oldToken, characterSet, annotations ?? oldAnnotations)
+        case .terminalUntil(let oldToken,let string, let oldAnnotations):
+            return ParserRule.terminalUntil(produces: token ?? oldToken,string ,annotations ?? oldAnnotations)
+        case .terminalUntilOneOf(let oldToken, let characterSet, let oldAnnotations):
+            return ParserRule.terminalUntilOneOf(produces: token ?? oldToken, characterSet, annotations ?? oldAnnotations)
+        case .consume(let rule, let oldAnnotations):
+            return ParserRule.consume(rule, annotations ?? oldAnnotations)
+        case .repeated(let oldToken, let rule, let min, let limit, let oldAnnotations):
+            return ParserRule.repeated(produces: token ?? oldToken, rule, min: min, limit: limit, annotations ?? oldAnnotations)
+        case .optional(let oldToken, let rule, let oldAnnotations):
+            return ParserRule.optional(produces: token ?? oldToken, rule, annotations ?? oldAnnotations)
+        case .sequence(let oldToken, let rules, let oldAnnotations):
+            return ParserRule.sequence(produces: token ?? oldToken, rules, annotations ?? oldAnnotations)
+        case .oneOf(let oldToken, let rules, let oldAnnotations):
+            return ParserRule.oneOf(produces: token ?? oldToken, rules, annotations ?? oldAnnotations)
+        case .custom(let oldToken, let closure, let description, let oldAnnotations):
+            return ParserRule.custom(produces: oldToken, closure, description, annotations ?? oldAnnotations)
+        case .lookahead(let rule, let oldAnnotations):
+            return ParserRule.lookahead(rule, annotations ?? oldAnnotations)
+        case .not(let oldToken, let rule, let oldAnnotations):
+            return ParserRule.not(produces: token ?? oldToken, rule, annotations ?? oldAnnotations)
+        }
+
+    }
+    
     /// The annotations associated with the `Rule`
     public var annotations: RuleAnnotations{
-        get {
-            let definedAnnotations : RuleAnnotations?
-            switch self {
-            case .terminal(_, _, let annotations), .terminalFrom(_, _, let annotations), .terminalUntil(_, _, let annotations), .terminalUntilOneOf(_, _, let annotations), .consume(_, let annotations), .repeated(_, _, _, _, let annotations), .optional(_, _, let annotations), .sequence(_, _, let annotations), .oneOf(_, _, let annotations), .custom(_, _, _, let annotations), .lookahead(_, let annotations), .not(_, _, let annotations):
-                definedAnnotations = annotations
-            }
-            
-            return definedAnnotations ?? [:]
+        let definedAnnotations : RuleAnnotations?
+        switch self {
+        case .terminal(_, _, let annotations), .terminalFrom(_, _, let annotations), .terminalUntil(_, _, let annotations), .terminalUntilOneOf(_, _, let annotations), .consume(_, let annotations), .repeated(_, _, _, _, let annotations), .optional(_, _, let annotations), .sequence(_, _, let annotations), .oneOf(_, _, let annotations), .custom(_, _, _, let annotations), .lookahead(_, let annotations), .not(_, _, let annotations):
+            definedAnnotations = annotations
         }
-        set {
-            switch self{
-            case .terminal(let token,let string, _):
-                self = .terminal(produces: token,string ,newValue)
-            case .terminalFrom(let token, let characterSet, _):
-                self = .terminalFrom(produces: token, characterSet, newValue)
-            case .terminalUntil(let token,let string, _):
-                self = .terminalUntil(produces: token,string ,newValue)
-            case .terminalUntilOneOf(let token, let characterSet, _):
-                self = .terminalUntilOneOf(produces: token, characterSet, newValue)
-            case .consume(let rule, _):
-                self = .consume(rule, newValue)
-            case .repeated(let token, let rule, let min, let limit, _):
-                self = .repeated(produces: token, rule, min: min, limit: limit, newValue)
-            case .optional(let token, let rule, _):
-                self = .optional(produces: token, rule, newValue)
-            case .sequence(let token, let rules, _):
-                self = .sequence(produces: token, rules, newValue)
-            case .oneOf(let token, let rules, _):
-                self = .oneOf(produces: token, rules, newValue)
-            case .custom(let token, let closure, let description, _):
-                self = .custom(produces: token, closure, description, newValue)
-            case .lookahead(let rule, _):
-                self = .lookahead(rule, newValue)
-            case .not(let token, let rule, _):
-                self = .not(produces: token, rule, newValue)
-            }
-        }
+        
+        return definedAnnotations ?? [:]
     }
     
     /// A human readable description of the `Rule` almost in STLR

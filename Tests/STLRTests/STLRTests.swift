@@ -69,18 +69,16 @@ class STLRTest: XCTestCase {
         print(stlr.ast.swift(grammar: "Test")!)
         
         var source = "abc 123"
-        var ast : DefaultHeterogeneousAST = Parser(grammar: testLanguage.grammar).build(source: source)
+        var ast = try! AbstractSyntaxTreeConstructor().build(source, using: testLanguage)
        
-        prettyPrint(nodes: ast.children, from: source)
+        print(ast.description)
         
         XCTAssertNotNil(ast.children.first?.token , "Basic parsing did not work")
 
         source = "abc "
-        ast = Parser(grammar: testLanguage.grammar).build(source: source)
-
-        prettyPrint(nodes: ast.children, from: source)
-
-        XCTAssert(ast.children.first?.children[0].matchedString(source) ?? "fail" == "abc" , "Letters node does not exist or contains the wrong value")
+        ast = try! AbstractSyntaxTreeConstructor().build(source, using: testLanguage)
+        
+        XCTAssert(ast.children.first?.matchedString ?? "fail" == "abc" , "Letters node does not exist or contains the wrong value")
 
         
         
