@@ -151,7 +151,8 @@ fileprivate extension STLRIntermediateRepresentation.GrammarRule{
                         context.cachedRules[token.rawValue] = wrappedRule
                         return wrappedRule
                     } else {
-                        rule = rule.instance(with: token, andAnnotations: annotations)
+                        //Annotations on the identifier should override or add to those on the transient (or the same) token
+                        rule = rule.instance(with: token, andAnnotations: rule.annotations.merge(with: annotations))
                         context.cachedRules[token.rawValue] = rule
                         return rule
                     }
