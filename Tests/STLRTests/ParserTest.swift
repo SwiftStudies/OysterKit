@@ -85,10 +85,25 @@ class ParserTest: XCTestCase {
     
     @discardableResult
     private func check(_ source:String, produces output: [Token], using rules:[Rule], expectingEndOfInput:Bool? = nil)->[Error]{
+        let debugOutput = false
         let parser = TestParser(source: source, grammar: rules)
         
         let tokenIterator       = parser.makeIterator()
         var expectationIterator = output.makeIterator()
+        
+        defer {
+            if debugOutput {
+                print("Debugging:")
+                print("\tSource: \(source)")
+                print("\tLanguage: \(rules.reduce("", {(previous,current)->String in return previous+"\n\t\t\(current)"}))")
+                print("Output:")
+                do {
+                    print(try AbstractSyntaxTreeConstructor().build(source, using: TestLanguage(grammar:rules)).description)
+                } catch {
+                    print("Errors: \(error)")
+                }
+            }
+        }
         
         while let token = tokenIterator.next() {
             guard let expected = expectationIterator.next() else {
@@ -227,6 +242,12 @@ class ParserTest: XCTestCase {
     
     func testAllRuleFailure(){
         let errors = check("Hello", produces: [], using: [Tokens.whitespace.rule, Tokens.exlamationMark.rule], expectingEndOfInput: false )
-        XCTAssert(errors.count == 2)
+        
+        if let parsingError = errors.first {
+            if case AbstractSyntaxTreeConstructor.ConstructionError.parsingFailed(let errors) = parsingError {
+                XCTAssertEqual(2, errors.count)
+            }
+        }
+        
     }
 }

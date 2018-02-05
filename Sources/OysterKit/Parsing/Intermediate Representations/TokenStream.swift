@@ -93,9 +93,8 @@ public class TokenStreamIterator : IteratorProtocol {
     */
     public func next() -> StreamedToken? {
         nextToken = nil
-        if depth == 0 {
-            willBuildFrom(source: parsingContext.lexer.source, with: parsingContext.language)
-        }
+        resetState()
+        willBuildFrom(source: parsingContext.lexer.source, with: parsingContext.language)
         
         do {
             if try ParsingStrategy.pass(in: parsingContext) == false{
@@ -106,7 +105,14 @@ public class TokenStreamIterator : IteratorProtocol {
             nextToken = nil
         }
         
-        return nextToken
+        if let nextToken = nextToken {
+            if nextToken.token.transient || nextToken.annotations[RuleAnnotation.void] != nil {
+                return next()
+            }
+            return nextToken
+        } else {
+            return nil
+        }
     }
     
     /// True if parsing reached the end of input naturally (that is, encountered no errors)
@@ -147,6 +153,8 @@ extension TokenStreamIterator : IntermediateRepresentation {
                 }
             case .success(let context):
                 nextToken = StreamedToken(for: rule.produces, at: context.range, annotations: rule.annotations)
+            case .consume(let context):
+                nextToken = StreamedToken(for: TransientToken.labelled("\(rule.produces)"), at:context.range, annotations: [RuleAnnotation.void : RuleAnnotationValue.set])
             default:
                 nextToken = nil
             }

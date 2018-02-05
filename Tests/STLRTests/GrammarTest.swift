@@ -96,11 +96,24 @@ class GrammarTest: XCTestCase {
     }
 
     func checkGeneratedLanguage(language:Language?, on source:String, expecting: [Int]) throws {
+        let debugOutput = false
         guard let language = language else {
             throw CheckError.checkFailed(reason: "Language did not compile")
         }
         
-        
+        defer {
+            if debugOutput {
+                print("Debugging:")
+                print("\tSource: \(source)")
+                print("\tLanguage: \(language.grammar)")
+                print("Output:")
+                do {
+                    print(try AbstractSyntaxTreeConstructor().build(source, using: language).description)
+                } catch {
+                    print("Errors: \(error)")
+                }
+            }
+        }
         
         let stream = TokenStream(source, using: language)
         
@@ -177,7 +190,7 @@ class GrammarTest: XCTestCase {
         do {
             let _ = try AbstractSyntaxTreeConstructor().build("xx", using: language)
             return
-        } catch AbstractSyntaxTreeConstructor.ConstructionError.parsingFailed(let errors) {
+        } catch AbstractSyntaxTreeConstructor.ConstructionError.constructionFailed(let errors) {
             XCTAssertEqual(errors.count, 1)
             let errorText = "\(errors[0])"
         
@@ -385,7 +398,7 @@ class GrammarTest: XCTestCase {
         
         do {
             let _ = try AbstractSyntaxTreeConstructor().build("yz", using: compiledLanguage)
-        } catch AbstractSyntaxTreeConstructor.ConstructionError.parsingFailed(let errors) {
+        } catch AbstractSyntaxTreeConstructor.ConstructionError.constructionFailed(let errors) {
             guard let error = errors.first else {
                 XCTFail("Expected an error \(parser.ast.rules[1])")
                 return
@@ -410,12 +423,12 @@ class GrammarTest: XCTestCase {
         do {
             let _ = try AbstractSyntaxTreeConstructor().build("yz", using: compiledLanguage)
             XCTFail("Expected an error \(parser.ast.rules[rangeChecked: 1]?.description ?? "but the rule is missing")")
-        } catch AbstractSyntaxTreeConstructor.ConstructionError.parsingFailed(let errors) {
+        } catch AbstractSyntaxTreeConstructor.ConstructionError.constructionFailed(let errors) {
             guard let error = errors.first else {
                 XCTFail("Expected an error \(parser.ast.rules[1])")
                 return
             }
-            XCTAssert("\(error)".hasPrefix("Expected xy"),"Incorrect error \(error)")
+            XCTAssert("\(error)".hasPrefix("Expected x"),"Incorrect error \(error)")
         } catch {
             XCTFail("Unexpected error \(error)")
         }

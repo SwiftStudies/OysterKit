@@ -39,7 +39,7 @@ class OptimizersTest: GrammarTest {
         
         do {
             let _ = try AbstractSyntaxTreeConstructor().build("yz", using: compiledLanguage)
-        } catch AbstractSyntaxTreeConstructor.ConstructionError.parsingFailed(let errors) {
+        } catch AbstractSyntaxTreeConstructor.ConstructionError.constructionFailed(let errors) {
             guard let error = errors.first else {
                 XCTFail("Expected an error \(parser.ast.rules[1])")
                 return

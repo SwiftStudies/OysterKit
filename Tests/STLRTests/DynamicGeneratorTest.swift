@@ -185,7 +185,8 @@ class DynamicGeneratorTest: XCTestCase {
             XCTFail("Could not compile the grammar under test"); return
         }
         
-        if let tree = try? AbstractSyntaxTreeConstructor().build("baca", using: dynamicLangauage)  {
+        do {
+            let tree = try AbstractSyntaxTreeConstructor().build("baca", using: dynamicLangauage)
             print(tree.description)
             XCTAssertEqual("\(tree.children[0].token)","ba")
             XCTAssertTrue(tree.children[0].annotations.isEmpty)
@@ -196,8 +197,8 @@ class DynamicGeneratorTest: XCTestCase {
             XCTAssertEqual("\(tree.children[1].children[0].token)","a")
             XCTAssertNotNil(tree.children[1].children[0].annotations[RuleAnnotation.custom(label: "one")])
             XCTAssertNotNil(tree.children[1].children[0].annotations[RuleAnnotation.custom(label: "three")])
-        } else {
-            XCTFail("Could not parse the test source using the generated language"); return
+        } catch {
+            XCTFail("Could not parse the test source using the generated language: \(error)")
         }
     }
     

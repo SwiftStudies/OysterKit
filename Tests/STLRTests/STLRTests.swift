@@ -30,12 +30,12 @@ class STLRTest: XCTestCase {
         
         do {
             let ast = try AbstractSyntaxTreeConstructor().build(source, using: testLanguage)
-            if ast.children.count != 1 {
-                XCTFail("Expected one token")
+            if ast.children.count != 0 {
+                XCTFail("Expected one node, no children")
                 print(ast.description)
                 return
             }
-            XCTAssertEqual(ast.children[0].token.rawValue, 1)
+            XCTAssertEqual(ast.token.rawValue, 1)
         } catch {
             XCTFail("Parsing failed, but it should have succeeded")
         }
