@@ -10,6 +10,7 @@ import Foundation
 
 import XCTest
 @testable import OysterKit
+@testable import ExampleLanguages
 import STLR
 
 
@@ -77,6 +78,24 @@ class STLRTest: XCTestCase {
         
         
         print("Done")
+    }
+    
+    func testParseSelf(){
+        
+        for bundle in Bundle.allBundles{
+            print("BUNDLE PATH: \(bundle)")
+        }
+        
+        do {
+            let result = try Reader().read(resource: "STLR",ofType: "stlr")
+            
+            print(result)
+        } catch {
+            XCTFail("Could not get resource \(error)")
+        }
+        
+        
+        print(FileManager.default.currentDirectoryPath)
     }
     
 }
