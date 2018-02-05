@@ -68,6 +68,9 @@ public class TokenStreamIterator : IteratorProtocol {
     /// The iterator generates elements of type ``StreamedToken``
     public typealias Element = StreamedToken
 
+    /// Any errors encountered during parsing
+    public private (set) var parsingErrors = [Error]()
+    
     /// **DO NOT CALL**
     public required init() {
         fatalError("Do not create an instance of this object directly")
@@ -90,19 +93,31 @@ public class TokenStreamIterator : IteratorProtocol {
     */
     public func next() -> StreamedToken? {
         nextToken = nil
-        if depth == 0 {
-            willBuildFrom(source: parsingContext.lexer.source, with: parsingContext.language)
-        }
+        resetState()
+        willBuildFrom(source: parsingContext.lexer.source, with: parsingContext.language)
         
         do {
             if try ParsingStrategy.pass(in: parsingContext) == false{
                 nextToken = nil
             }
         } catch {
+            parsingErrors.append(error)
             nextToken = nil
         }
         
-        return nextToken
+        if let nextToken = nextToken {
+            if nextToken.token.transient || nextToken.annotations[RuleAnnotation.void] != nil {
+                return next()
+            }
+            return nextToken
+        } else {
+            return nil
+        }
+    }
+    
+    /// True if parsing reached the end of input naturally (that is, encountered no errors)
+    public var reachedEndOfInput  : Bool {
+        return parsingContext.complete
     }
     
     /// This must be force unwrapped as the parsing context requies this object in its initializer.
@@ -138,6 +153,8 @@ extension TokenStreamIterator : IntermediateRepresentation {
                 }
             case .success(let context):
                 nextToken = StreamedToken(for: rule.produces, at: context.range, annotations: rule.annotations)
+            case .consume(let context):
+                nextToken = StreamedToken(for: TransientToken.labelled("\(rule.produces)"), at:context.range, annotations: [RuleAnnotation.void : RuleAnnotationValue.set])
             default:
                 nextToken = nil
             }

@@ -85,10 +85,25 @@ class ParserTest: XCTestCase {
     
     @discardableResult
     private func check(_ source:String, produces output: [Token], using rules:[Rule], expectingEndOfInput:Bool? = nil)->[Error]{
+        let debugOutput = false
         let parser = TestParser(source: source, grammar: rules)
         
         let tokenIterator       = parser.makeIterator()
         var expectationIterator = output.makeIterator()
+        
+        defer {
+            if debugOutput {
+                print("Debugging:")
+                print("\tSource: \(source)")
+                print("\tLanguage: \(rules.reduce("", {(previous,current)->String in return previous+"\n\t\t\(current)"}))")
+                print("Output:")
+                do {
+                    print(try AbstractSyntaxTreeConstructor().build(source, using: TestLanguage(grammar:rules)).description)
+                } catch {
+                    print("Errors: \(error)")
+                }
+            }
+        }
         
         while let token = tokenIterator.next() {
             guard let expected = expectationIterator.next() else {
@@ -104,7 +119,7 @@ class ParserTest: XCTestCase {
         }
         
         if let expectingEndOfInput = expectingEndOfInput {
-            XCTAssert(expectingEndOfInput == tokenIterator.endOfInput, expectingEndOfInput ? "Expected end of input" : "Unexpected end of input")
+            XCTAssert(expectingEndOfInput == tokenIterator.reachedEndOfInput, expectingEndOfInput ? "Expected end of input" : "Unexpected end of input")
         }
         
         return tokenIterator.parsingErrors
@@ -201,7 +216,8 @@ class ParserTest: XCTestCase {
         
         let parser = Parser(grammar: [string])
         
-        for node : HomogenousNode in parser.stream(source: source){
+        
+        for node in TokenStream(source, using: parser){
             count += 1
             XCTAssert(node.token == Tokens.string)
             let capturedString = String(source[node.range])
@@ -226,6 +242,12 @@ class ParserTest: XCTestCase {
     
     func testAllRuleFailure(){
         let errors = check("Hello", produces: [], using: [Tokens.whitespace.rule, Tokens.exlamationMark.rule], expectingEndOfInput: false )
-        XCTAssert(errors.count == 2)
+        
+        if let parsingError = errors.first {
+            if case AbstractSyntaxTreeConstructor.ConstructionError.parsingFailed(let errors) = parsingError {
+                XCTAssertEqual(2, errors.count)
+            }
+        }
+        
     }
 }

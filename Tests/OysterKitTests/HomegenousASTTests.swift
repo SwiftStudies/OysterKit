@@ -170,8 +170,8 @@ enum XMLGenerated : Int, Token {
     }
     
     // Convient way to apply your grammar to a string
-    public static func parse(source: String) -> DefaultHeterogeneousAST {
-        return XMLGenerated.generatedLanguage.build(source: source)
+    public static func parse(source: String) -> HomogenousTree {
+        return try! AbstractSyntaxTreeConstructor().build(source, using: XMLGenerated.generatedLanguage)
     }
 }
 

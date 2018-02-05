@@ -28,7 +28,7 @@ import STLR
 
 
 @available(swift, deprecated: 4.0, message: "TEST DISABLED PENDING IMPLEMENTATION")
-fileprivate func testForFutureEnhancement(gitHubId id:Int)->Bool{
+func testForFutureEnhancement(gitHubId id:Int)->Bool{
     print("WARNING: Test for https://github.com/SwiftStudies/OysterKit/issues/\(id) is currently disabled. Enable when implemented")
     return true
 }
@@ -185,7 +185,8 @@ class DynamicGeneratorTest: XCTestCase {
             XCTFail("Could not compile the grammar under test"); return
         }
         
-        if let tree = try? AbstractSyntaxTreeConstructor().build("baca", using: dynamicLangauage)  {
+        do {
+            let tree = try AbstractSyntaxTreeConstructor().build("baca", using: dynamicLangauage)
             print(tree.description)
             XCTAssertEqual("\(tree.children[0].token)","ba")
             XCTAssertTrue(tree.children[0].annotations.isEmpty)
@@ -196,8 +197,8 @@ class DynamicGeneratorTest: XCTestCase {
             XCTAssertEqual("\(tree.children[1].children[0].token)","a")
             XCTAssertNotNil(tree.children[1].children[0].annotations[RuleAnnotation.custom(label: "one")])
             XCTAssertNotNil(tree.children[1].children[0].annotations[RuleAnnotation.custom(label: "three")])
-        } else {
-            XCTFail("Could not parse the test source using the generated language"); return
+        } catch {
+            XCTFail("Could not parse the test source using the generated language: \(error)")
         }
     }
     
@@ -279,7 +280,7 @@ class DynamicGeneratorTest: XCTestCase {
             return
         }
         
-        let stream = TestableStream<HomogenousNode>(source: "xyz", [rule])
+        let stream = TestableStream(source: "xyz", [rule])
         let iterator = stream.makeIterator()
         
         var count = 0
@@ -300,7 +301,7 @@ class DynamicGeneratorTest: XCTestCase {
             return
         }
         
-        let stream  = TestableStream<HomogenousNode>(source: "xyz", [rule])
+        let stream  = TestableStream(source: "xyz", [rule])
         
         let iterator = stream.makeIterator()
         
@@ -318,7 +319,7 @@ class DynamicGeneratorTest: XCTestCase {
             return
         }
         
-        let stream  = TestableStream<HomogenousNode>(source: "xyzxyz", [rule])
+        let stream  = TestableStream(source: "xyzxyz", [rule])
         
         let iterator = stream.makeIterator()
         
@@ -339,7 +340,7 @@ class DynamicGeneratorTest: XCTestCase {
             return
         }
         
-        let stream = TestableStream<HomogenousNode>(source: "xyzxyz", [rule])
+        let stream = TestableStream(source: "xyzxyz", [rule])
         
         let iterator = stream.makeIterator()
         
@@ -362,7 +363,7 @@ class DynamicGeneratorTest: XCTestCase {
             return
         }
         
-        let stream = TestableStream<HomogenousNode>(source: "xyzxzyz", [rule])
+        let stream = TestableStream(source: "xyzxzyz", [rule])
         
         let iterator = stream.makeIterator()
         
@@ -385,7 +386,7 @@ class DynamicGeneratorTest: XCTestCase {
             return
         }
         
-        let stream = TestableStream<HomogenousNode>(source: "xyzzzzzzzzzxyzxy", [rule])
+        let stream = TestableStream(source: "xyzzzzzzzzzxyzxy", [rule])
         
         let iterator = stream.makeIterator()
         
@@ -407,7 +408,7 @@ class DynamicGeneratorTest: XCTestCase {
             return
         }
         
-        let stream = TestableStream<HomogenousNode>(source: "\"hello\"", [rule])
+        let stream = TestableStream(source: "\"hello\"", [rule])
         
         let iterator = stream.makeIterator()
         
@@ -430,7 +431,7 @@ class DynamicGeneratorTest: XCTestCase {
             return
         }
         
-        let stream = TestableStream<HomogenousNode>(source: "ab\"c", [rule])
+        let stream = TestableStream(source: "ab\"c", [rule])
         
         let iterator = stream.makeIterator()
         
@@ -452,7 +453,7 @@ class DynamicGeneratorTest: XCTestCase {
         }
         
         // \"
-        let stream = TestableStream<HomogenousNode>(source: "\"", [rule])
+        let stream = TestableStream(source: "\"", [rule])
         
         let iterator = stream.makeIterator()
         
@@ -479,7 +480,7 @@ class DynamicGeneratorTest: XCTestCase {
         
         var count = 0
         
-        for node in TestableStream<HomogenousNode>(source: source,[rule]){
+        for node in TestableStream(source: source,[rule]){
             count += 1
             XCTAssert(node.token == TT.comment, "Got unexpected token \(node.token)")
         }
@@ -495,7 +496,7 @@ class DynamicGeneratorTest: XCTestCase {
             return
         }
         
-        let stream = TestableStream<HomogenousNode>(source: "xyzzzzzzzzzxyzxy", [rule])
+        let stream = TestableStream(source: "xyzzzzzzzzzxyzxy", [rule])
         
         let iterator = stream.makeIterator()
         
@@ -519,7 +520,7 @@ class DynamicGeneratorTest: XCTestCase {
             return
         }
         
-        let stream = TestableStream<HomogenousNode>(source: "xyzxyZ", [rule])
+        let stream = TestableStream(source: "xyzxyZ", [rule])
         
         let iterator = stream.makeIterator()
         
@@ -544,7 +545,7 @@ class DynamicGeneratorTest: XCTestCase {
         
         let testSource = "ykfxd"
         
-        let stream = TestableStream<HomogenousNode>(source: testSource, [rule])
+        let stream = TestableStream(source: testSource, [rule])
         
         let iterator = stream.makeIterator()
         var count = 0
@@ -633,7 +634,7 @@ class DynamicGeneratorTest: XCTestCase {
         
         let testSource = "    x"
         
-        let stream = TestableStream<HomogenousNode>(source: testSource, [rule])
+        let stream = TestableStream(source: testSource, [rule])
         
         let iterator = stream.makeIterator()
         var count = 0
@@ -657,7 +658,7 @@ class DynamicGeneratorTest: XCTestCase {
             return
         }
         
-        let stream = TestableStream<HomogenousNode>(source: "\"", [rule])
+        let stream = TestableStream(source: "\"", [rule])
         
         let iterator = stream.makeIterator()
         
@@ -675,7 +676,7 @@ class DynamicGeneratorTest: XCTestCase {
             XCTFail("Could not compile")
             return
         }
-        let stream = TestableStream<HomogenousNode>(source: "x", [rule])
+        let stream = TestableStream(source: "x", [rule])
         
         let iterator = stream.makeIterator()
         
@@ -693,7 +694,7 @@ class DynamicGeneratorTest: XCTestCase {
             XCTFail("Could not compile")
             return
         }
-        let stream = TestableStream<HomogenousNode>(source: "x", [rule])
+        let stream = TestableStream(source: "x", [rule])
 
         let iterator = stream.makeIterator()
         
@@ -712,7 +713,7 @@ class DynamicGeneratorTest: XCTestCase {
             return
         }
         
-        let stream = TestableStream<HomogenousNode>(source: "    \t    ", [rule])
+        let stream = TestableStream(source: "    \t    ", [rule])
         
         let iterator = stream.makeIterator()
         
@@ -734,7 +735,7 @@ class DynamicGeneratorTest: XCTestCase {
             return
         }
         
-        let stream = TestableStream<HomogenousNode>(source: "0123456789x", [rule])
+        let stream = TestableStream(source: "0123456789x", [rule])
         
         let iterator = stream.makeIterator()
         

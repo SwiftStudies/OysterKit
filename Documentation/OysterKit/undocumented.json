@@ -51,14 +51,14 @@
     },
     {
       "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HomogenousAST.swift",
-      "line": 36,
+      "line": 37,
       "symbol": "ASTNodeConstructor.init()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/HomogenousNode.swift",
-      "line": 11,
+      "line": 12,
       "symbol": "HomogenousNode",
       "symbol_kind": "source.lang.swift.decl.struct",
       "warning": "undocumented"

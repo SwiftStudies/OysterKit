@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>DispatchTimeInterval Extension Reference</title>
+    <title>TransientToken Enumeration Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset="utf-8">
@@ -14,9 +14,9 @@
   </head>
   <body>
 
-    <a name="//apple_ref/swift/Extension/DispatchTimeInterval" class="dashAnchor"></a>
+    <a name="//apple_ref/swift/Enum/TransientToken" class="dashAnchor"></a>
 
-    <a title="DispatchTimeInterval Extension Reference"></a>
+    <a title="TransientToken Enumeration Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -38,7 +38,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="../index.html">OysterKit Reference</a>
       <img class="carat" src="../img/carat.png" />
-      DispatchTimeInterval Extension Reference
+      TransientToken Enumeration Reference
     </p>
 
     <div class="content-wrapper">
@@ -124,9 +124,6 @@
             <a class="nav-group-name-link" href="../Enums.html">Enumerations</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Enums/BackgroundTimer.html">BackgroundTimer</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/GrammarError.html">GrammarError</a>
               </li>
               <li class="nav-group-task">
@@ -147,6 +144,9 @@
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/ScannerRule.html">ScannerRule</a>
               </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/TransientToken.html">TransientToken</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -163,9 +163,6 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Extensions/Decodable.html">Decodable</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Extensions/DispatchTimeInterval.html">DispatchTimeInterval</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Extensions/Int.html">Int</a>
@@ -189,6 +186,9 @@
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit2eeoiSbAA5Token_p_AaC_ptF">==(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit8areEqualSbs10DictionaryVyAA14RuleAnnotationOAA0fG5ValueOG3lhs_AI3rhstF">areEqual(lhs:rhs:)</a>
               </li>
             </ul>
           </li>
@@ -246,6 +246,9 @@
                 <a class="nav-group-task-link" href="../Structs/HomogenousTree.html">HomogenousTree</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/LabelledToken.html">LabelledToken</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/ParsingDecoder.html">ParsingDecoder</a>
               </li>
             </ul>
@@ -255,9 +258,6 @@
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit17CustomRuleClosurea">CustomRuleClosure</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit23DefaultHeterogeneousASTa">DefaultHeterogeneousAST</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a>
@@ -273,8 +273,14 @@
 
         <section class="section">
           <div class="section-content">
-            <h1>DispatchTimeInterval</h1>
-            <p>A utility method</p>
+            <h1>TransientToken</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">TransientToken</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/Token.html">Token</a></span><span class="p">,</span> <span class="kt">CustomStringConvertible</span></code></pre>
+
+                </div>
+              </div>
+            <p>Allows easy creation of transient tokens</p>
 
           </div>
         </section>
@@ -286,9 +292,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8Dispatch0A12TimeIntervalO9OysterKitE11fromSecondsACSdFZ"></a>
-                    <a name="//apple_ref/swift/Method/fromSeconds(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8Dispatch0A12TimeIntervalO9OysterKitE11fromSecondsACSdFZ">fromSeconds(_:)</a>
+                    <a name="/s:9OysterKit14TransientTokenO9anonymousA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/anonymous" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit14TransientTokenO9anonymousA2CmF">anonymous</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -296,39 +302,105 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Creates a <code>DispatchTimeInterval</code> using the number of seconds provided</p>
+                        <p>Just an anonymous but transient token</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">fromSeconds</span><span class="p">(</span><span class="n">_</span> <span class="nv">seconds</span><span class="p">:</span> <span class="kt">Double</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">DispatchTimeInterval</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">anonymous</span></code></pre>
 
                         </div>
                       </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>seconds</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The number of seconds (as a double)</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit14TransientTokenO8labelledACSScACmF"></a>
+                    <a name="//apple_ref/swift/Element/labelled" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit14TransientTokenO8labelledACSScACmF">labelled</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A transient token with a name (often useful during custom AST construction)</p>
+
                       </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p>The appropriate <code>DispathTimeInterval</code></p>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">labelled</span><span class="p">(</span><span class="kt">String</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit14TransientTokenO8rawValueSiv"></a>
+                    <a name="//apple_ref/swift/Property/rawValue" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit14TransientTokenO8rawValueSiv">rawValue</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Always returns <code><a href="../Global Variables.html#/s:9OysterKit19transientTokenValueSiv">transientTokenValue</a></code></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">rawValue</span> <span class="p">:</span> <span class="kt">Int</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit14TransientTokenO11descriptionSSv"></a>
+                    <a name="//apple_ref/swift/Property/description" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit14TransientTokenO11descriptionSSv">description</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A human readable description of the token</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">description</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -341,7 +413,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-01-31)</p>
+      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-02-04)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

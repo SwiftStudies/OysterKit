@@ -15,17 +15,6 @@ import STLR
 
 class STLRTest: XCTestCase {
     
-    func prettyPrint(nodes contents:[HeterogeneousNode], from source:String , indent : String = ""){
-        for node in contents {
-            if node.children.count > 0 {
-                print("\(indent)"+"\(node.token)")
-                prettyPrint(nodes: node.children,from:source,  indent: indent+"\t")
-            } else {
-                print("\(indent)"+"\(node.token)"+" '\(String(source[node.range]).escaped)'")
-            }
-        }
-    }
-    
     func testBackslash(){
         let backSlash = ".backslash"
         
@@ -39,13 +28,18 @@ class STLRTest: XCTestCase {
         
         let source = "\\x"
         
-        let ast : DefaultHeterogeneousAST = Parser(grammar: testLanguage.grammar).build(source: source)
-        if ast.children.count != 1 {
-            XCTFail("Expected one token")
-            prettyPrint(nodes: ast.children, from: source)
-            return
+        do {
+            let ast = try AbstractSyntaxTreeConstructor().build(source, using: testLanguage)
+            if ast.children.count != 0 {
+                XCTFail("Expected one node, no children")
+                print(ast.description)
+                return
+            }
+            XCTAssertEqual(ast.token.rawValue, 1)
+        } catch {
+            XCTFail("Parsing failed, but it should have succeeded")
         }
-        XCTAssertEqual(ast.children[0].token.rawValue, 1)
+        
     }
     
     func testPinnedNodes(){

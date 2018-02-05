@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>BackgroundTimer Enumeration Reference</title>
+    <title>LabelledToken Structure Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset="utf-8">
@@ -14,9 +14,9 @@
   </head>
   <body>
 
-    <a name="//apple_ref/swift/Enum/BackgroundTimer" class="dashAnchor"></a>
+    <a name="//apple_ref/swift/Struct/LabelledToken" class="dashAnchor"></a>
 
-    <a title="BackgroundTimer Enumeration Reference"></a>
+    <a title="LabelledToken Structure Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -38,7 +38,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="../index.html">OysterKit Reference</a>
       <img class="carat" src="../img/carat.png" />
-      BackgroundTimer Enumeration Reference
+      LabelledToken Structure Reference
     </p>
 
     <div class="content-wrapper">
@@ -124,9 +124,6 @@
             <a class="nav-group-name-link" href="../Enums.html">Enumerations</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Enums/BackgroundTimer.html">BackgroundTimer</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/GrammarError.html">GrammarError</a>
               </li>
               <li class="nav-group-task">
@@ -147,6 +144,9 @@
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/ScannerRule.html">ScannerRule</a>
               </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/TransientToken.html">TransientToken</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -163,9 +163,6 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Extensions/Decodable.html">Decodable</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Extensions/DispatchTimeInterval.html">DispatchTimeInterval</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Extensions/Int.html">Int</a>
@@ -189,6 +186,9 @@
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit2eeoiSbAA5Token_p_AaC_ptF">==(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit8areEqualSbs10DictionaryVyAA14RuleAnnotationOAA0fG5ValueOG3lhs_AI3rhstF">areEqual(lhs:rhs:)</a>
               </li>
             </ul>
           </li>
@@ -246,6 +246,9 @@
                 <a class="nav-group-task-link" href="../Structs/HomogenousTree.html">HomogenousTree</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/LabelledToken.html">LabelledToken</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/ParsingDecoder.html">ParsingDecoder</a>
               </li>
             </ul>
@@ -255,9 +258,6 @@
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit17CustomRuleClosurea">CustomRuleClosure</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit23DefaultHeterogeneousASTa">DefaultHeterogeneousAST</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a>
@@ -273,15 +273,14 @@
 
         <section class="section">
           <div class="section-content">
-            <h1>BackgroundTimer</h1>
+            <h1>LabelledToken</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">BackgroundTimer</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">LabelledToken</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/Token.html">Token</a></span><span class="p">,</span> <span class="kt">CustomStringConvertible</span></code></pre>
 
                 </div>
               </div>
-            <p>Essentially a singleton you can never create an instance of because it has no cases. It provides a set of methods for scheduling blocks to run
-in the background.</p>
+            <p>A generic <code><a href="../Protocols/Token.html">Token</a></code> implementation that is labelled (has an associated `<code>String</code>). The value is automatically generated</p>
 
           </div>
         </section>
@@ -293,9 +292,9 @@ in the background.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit15BackgroundTimerO8scheduleSo014DispatchSourceD0_p0F00F12TimeIntervalO8interval_yyc7handlertFZ"></a>
-                    <a name="//apple_ref/swift/Method/schedule(interval:handler:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit15BackgroundTimerO8scheduleSo014DispatchSourceD0_p0F00F12TimeIntervalO8interval_yyc7handlertFZ">schedule(interval:handler:)</a>
+                    <a name="/s:9OysterKit13LabelledTokenV8rawValueSiv"></a>
+                    <a name="//apple_ref/swift/Property/rawValue" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit13LabelledTokenV8rawValueSiv">rawValue</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -303,19 +302,14 @@ in the background.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Schedules a block to run on the stadard queue for OysterKit.</p>
-
-<p>-Parameter interval: The delay before executing
--Parameter handler: The block to execute
--Returns: The resultant <code>DispatchSourceTimer</code>
--SeeAlso: <code>DispatchInterval.fromSeconds(seconds: Double)-&gt;DispatchTimeInterval</code> for an easy way to create the interval</p>
+                        <p>The <code>Int</code> identifier of the Token. It is automatically generated</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">schedule</span><span class="p">(</span><span class="nv">interval</span><span class="p">:</span> <span class="kt">DispatchTimeInterval</span><span class="p">,</span><span class="nv">handler</span><span class="p">:</span><span class="kd">@escaping</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">DispatchSourceTimer</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span>      <span class="k">let</span> <span class="nv">rawValue</span> <span class="p">:</span> <span class="kt">Int</span></code></pre>
 
                         </div>
                       </div>
@@ -325,9 +319,9 @@ in the background.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit15BackgroundTimerO8scheduleSo014DispatchSourceD0_pSSSg5queue_0F00F12TimeIntervalO8intervalyyc7handlertFZ"></a>
-                    <a name="//apple_ref/swift/Method/schedule(queue:interval:handler:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit15BackgroundTimerO8scheduleSo014DispatchSourceD0_pSSSg5queue_0F00F12TimeIntervalO8intervalyyc7handlertFZ">schedule(queue:interval:handler:)</a>
+                    <a name="/s:9OysterKit13LabelledTokenVACSS9withLabel_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(withLabel:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit13LabelledTokenVACSS9withLabel_tcfc">init(withLabel:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -335,20 +329,60 @@ in the background.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Schedules a block to run on the <code>name</code>d queue for OysterKit.</p>
-
-<p>-Parameter queue: The name of the queue to perform the task on. If it does not exist it will be created
--Parameter interval: The delay before executing
--Parameter handler: The block to execute
--Returns: The resultant <code>DispatchSourceTimer</code>
--SeeAlso: <code>DispatchInterval.fromSeconds(seconds: Double)-&gt;DispatchTimeInterval</code> for an easy way to create the interval</p>
+                        <p>Create a new token instance</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">schedule</span><span class="p">(</span><span class="n">queue</span> <span class="nv">name</span><span class="p">:</span><span class="kt">String</span><span class="p">?,</span> <span class="nv">interval</span><span class="p">:</span> <span class="kt">DispatchTimeInterval</span><span class="p">,</span><span class="nv">handler</span><span class="p">:</span><span class="kd">@escaping</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">DispatchSourceTimer</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">withLabel</span> <span class="nv">label</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>label</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The textual representation of the token</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit13LabelledTokenV11descriptionSSv"></a>
+                    <a name="//apple_ref/swift/Property/description" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit13LabelledTokenV11descriptionSSv">description</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A human readable representation of the token</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">description</span><span class="p">:</span> <span class="kt">String</span></code></pre>
 
                         </div>
                       </div>
@@ -363,7 +397,7 @@ in the background.</p>
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-01-31)</p>
+      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-02-04)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

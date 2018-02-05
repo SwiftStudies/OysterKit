@@ -16,28 +16,28 @@
     },
     {
       "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/Generators/DynamicParserGenerator.swift",
-      "line": 157,
+      "line": 170,
       "symbol": "STLRIntermediateRepresentation.GrammarRule.rule(from:creating:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/Generators/DynamicParserGenerator.swift",
-      "line": 215,
+      "line": 228,
       "symbol": "STLRIntermediateRepresentation.Identifier.token",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/Generators/DynamicParserGenerator.swift",
-      "line": 219,
+      "line": 232,
       "symbol": "STLRIntermediateRepresentation.Identifier.rule(from:creating:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/Generators/DynamicParserGenerator.swift",
-      "line": 316,
+      "line": 329,
       "symbol": "STLRIntermediateRepresentation.Element.token",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
