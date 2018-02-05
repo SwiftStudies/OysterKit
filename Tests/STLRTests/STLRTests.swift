@@ -11,7 +11,7 @@ import Foundation
 import XCTest
 @testable import OysterKit
 @testable import ExampleLanguages
-import STLR
+@testable import STLR
 
 
 class STLRTest: XCTestCase {
@@ -94,6 +94,10 @@ class STLRTest: XCTestCase {
             XCTFail("Could not get resource \(error)")
         }
         
+        if let stlrSourceStlr = try? String(contentsOfFile: "/Volumes/Personal/SPM/OysterKit/Resources/STLR.stlr") {
+            let homogenousTree = try! AbstractSyntaxTreeConstructor().build(stlrSourceStlr, using: STLR.generatedLanguage)
+            print(homogenousTree.description)
+        }
         
         print(FileManager.default.currentDirectoryPath)
     }
