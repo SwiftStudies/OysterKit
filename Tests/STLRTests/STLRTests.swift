@@ -82,24 +82,46 @@ class STLRTest: XCTestCase {
     
     func testParseSelf(){
         
-        for bundle in Bundle.allBundles{
-            print("BUNDLE PATH: \(bundle)")
+
+        struct GrammarAST : Decodable {
+            
         }
         
-        do {
-            let result = try Reader().read(resource: "STLR",ofType: "stlr")
-            
-            print(result)
-        } catch {
-            XCTFail("Could not get resource \(error)")
-        }
+//        for bundle in Bundle.allBundles{
+//            print("BUNDLE PATH: \(bundle)")
+//        }
         
         if let stlrSourceStlr = try? String(contentsOfFile: "/Volumes/Personal/SPM/OysterKit/Resources/STLR.stlr") {
-            let homogenousTree = try! AbstractSyntaxTreeConstructor().build(stlrSourceStlr, using: STLR.generatedLanguage)
-            print(homogenousTree.description)
+//            // First of all compile it into a run time rule set with the old version
+//            guard let stlrGrammar = STLRParser(source: stlrSourceStlr).ast.runtimeLanguage else {
+//                fatalError("Could not parse STLR with old STLR")
+//            }
+//
+            let source = """
+            a = "a"
+            b = "b"
+            ab= a b
+"""
+            
+            do {
+                let homogenousTree = try AbstractSyntaxTreeConstructor().build(source, using: STLR.generatedLanguage)
+                print(homogenousTree.description)
+                
+                do {
+                    let grammar = try STLRAbstractSyntaxTree(source)
+                    
+                    print(grammar.rules.count)
+                } catch {
+                    print("\(error)")
+                }
+                
+            } catch {
+                print("Could not parse:\n\n\(source)\n\nERROR: \(error)")
+            }
+        } else {
+            print("Could not load source")
         }
-        
-        print(FileManager.default.currentDirectoryPath)
+
     }
     
     var allTests : [(()->Void)]{
@@ -109,3 +131,4 @@ class STLRTest: XCTestCase {
     }
     
 }
+

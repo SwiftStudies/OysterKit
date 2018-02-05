@@ -26,7 +26,7 @@ import Foundation
 import OysterKit
 
 /// Extensions to provide validation functions
-public extension STLRIntermediateRepresentation{
+public extension STLRScope{
     
     /// Validates the AST throwing an exception if validation fails
     public func validate() throws{

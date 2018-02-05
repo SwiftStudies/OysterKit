@@ -9,11 +9,11 @@
 import Foundation
 
 public struct InlineIdentifierOptimization : STLRExpressionOptimizer{
-    private typealias Quantifier           = STLRIntermediateRepresentation.Modifier
-    private typealias Element              = STLRIntermediateRepresentation.Element
-    private typealias Expression           = STLRIntermediateRepresentation.Expression
-    private typealias TerminalCharacterSet = STLRIntermediateRepresentation.TerminalCharacterSet
-    private typealias Terminal             = STLRIntermediateRepresentation.Terminal
+    private typealias Quantifier           = STLRScope.Modifier
+    private typealias Element              = STLRScope.Element
+    private typealias Expression           = STLRScope.Expression
+    private typealias TerminalCharacterSet = STLRScope.TerminalCharacterSet
+    private typealias Terminal             = STLRScope.Terminal
     
     public init(){
     }
@@ -54,7 +54,7 @@ public struct InlineIdentifierOptimization : STLRExpressionOptimizer{
     }
     
     
-    public func optimize(expression: STLRIntermediateRepresentation.Expression) -> STLRIntermediateRepresentation.Expression? {
+    public func optimize(expression: STLRScope.Expression) -> STLRScope.Expression? {
         switch expression {
         case .element(let element):
             if let element = optimize(element: element){

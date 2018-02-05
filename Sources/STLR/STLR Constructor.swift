@@ -25,7 +25,7 @@
 import Foundation
 import OysterKit
 
-extension STLRIntermediateRepresentation : ASTNodeConstructor {
+extension STLRScope : ASTNodeConstructor {
     public typealias NodeType = HeterogeneousNode
     
     public func begin(with source: String) {
@@ -33,11 +33,11 @@ extension STLRIntermediateRepresentation : ASTNodeConstructor {
     }
     
     private func createElement(from node:ValuedNode, _ quantifier:Modifier, _ lookahead:Bool, _ annotations: ElementAnnotations)->Element{
-        if let terminal : STLRIntermediateRepresentation.Terminal = node.cast(){
+        if let terminal : STLRScope.Terminal = node.cast(){
             return Element.terminal(terminal, quantifier, lookahead, annotations)
-        } else if let identifier : STLRIntermediateRepresentation.Identifier = node.cast(){
+        } else if let identifier : STLRScope.Identifier = node.cast(){
             return Element.identifier(identifier, quantifier, lookahead, annotations)
-        } else if let expression : STLRIntermediateRepresentation.Expression = node.cast(){
+        } else if let expression : STLRScope.Expression = node.cast(){
             return Element.group(expression, quantifier, lookahead, annotations)
         } else {
             fatalError("Element should be a terminal, identifier, or group")
@@ -81,7 +81,7 @@ extension STLRIntermediateRepresentation : ASTNodeConstructor {
             
             var annotations : ElementAnnotations    = children[STLR.annotations]?.cast() ?? []
             let transient   : Bool                  = children[STLR.transient]?.cast()   ?? false
-            guard let identifier  : STLRIntermediateRepresentation.Identifier = children[STLR.identifier]?.cast() else {
+            guard let identifier  : STLRScope.Identifier = children[STLR.identifier]?.cast() else {
                 fatalError("Rules must have an identifier")
             }
             
@@ -103,9 +103,9 @@ extension STLRIntermediateRepresentation : ASTNodeConstructor {
             }
 
             
-            if let expression:STLRIntermediateRepresentation.Expression = child.cast(){
+            if let expression:STLRScope.Expression = child.cast(){
                 rule.expression = expression
-            } else if let element:STLRIntermediateRepresentation.Element = child.cast(){
+            } else if let element:STLRScope.Element = child.cast(){
                 rule.expression = Expression.element(element)
             }
             
@@ -226,36 +226,36 @@ extension STLRIntermediateRepresentation : ASTNodeConstructor {
                 fatalError("No elements")
             }
             
-            let elements = elementNodes.flatMap({ (elementNode)->STLRIntermediateRepresentation.Element? in
+            let elements = elementNodes.flatMap({ (elementNode)->STLRScope.Element? in
                 return elementNode.cast()
             })
             
             
             if case .sequence = token {
-                return HeterogeneousNode(for: STLR.expression,at: matchRange , value: STLRIntermediateRepresentation.Expression.sequence(elements), annotations: [:])
+                return HeterogeneousNode(for: STLR.expression,at: matchRange , value: STLRScope.Expression.sequence(elements), annotations: [:])
             } else {
-                return HeterogeneousNode(for: STLR.expression,at: matchRange , value: STLRIntermediateRepresentation.Expression.choice(elements), annotations: [:])
+                return HeterogeneousNode(for: STLR.expression,at: matchRange , value: STLRScope.Expression.choice(elements), annotations: [:])
             }
         case .characterSetName:
             switch context.matchedString {
             case "backslash":
-                return HeterogeneousNode(for: STLR.terminal, at: matchRange, value: STLRIntermediateRepresentation.Terminal(with:"\\\\"), annotations: [:])
+                return HeterogeneousNode(for: STLR.terminal, at: matchRange, value: STLRScope.Terminal(with:"\\\\"), annotations: [:])
             default:
-                let characterSet = STLRIntermediateRepresentation.TerminalCharacterSet(rawValue:context.matchedString) ?? STLRIntermediateRepresentation.TerminalCharacterSet.customString("")
+                let characterSet = STLRScope.TerminalCharacterSet(rawValue:context.matchedString) ?? STLRScope.TerminalCharacterSet.customString("")
                 return HeterogeneousNode(for: STLR.characterSet,at: matchRange , value: characterSet, annotations: [:])
             }
         case .terminal:
             switch children[0].token as? STLR ?? STLR._transient {
             case .characterSet:
-                guard let characterSet : STLRIntermediateRepresentation.TerminalCharacterSet = children[0].cast() else {
+                guard let characterSet : STLRScope.TerminalCharacterSet = children[0].cast() else {
                     fatalError("Expected a TerminalCharacterSet")
                 }
-                return HeterogeneousNode(for: STLR.terminal,at: matchRange , value: STLRIntermediateRepresentation.Terminal(with: characterSet), annotations: [:])
+                return HeterogeneousNode(for: STLR.terminal,at: matchRange , value: STLRScope.Terminal(with: characterSet), annotations: [:])
             case .stringBody:
                 guard let string : String = children[0].cast() else {
                     fatalError("Expected a string")
                 }
-                return HeterogeneousNode(for: STLR.terminal,at: matchRange , value: STLRIntermediateRepresentation.Terminal(with: string), annotations: [:])
+                return HeterogeneousNode(for: STLR.terminal,at: matchRange , value: STLRScope.Terminal(with: string), annotations: [:])
             default:
                 return nil
             }
@@ -264,9 +264,9 @@ extension STLRIntermediateRepresentation : ASTNodeConstructor {
         case .lookahead, .transient:
             return HeterogeneousNode(for: token,at: matchRange , value: true, annotations: [:])
         case .negated:
-            return HeterogeneousNode(for: token,at: matchRange , value: STLRIntermediateRepresentation.Modifier(from: context.matchedString), annotations: [:])
+            return HeterogeneousNode(for: token,at: matchRange , value: STLRScope.Modifier(from: context.matchedString), annotations: [:])
         case .quantifier:
-            return HeterogeneousNode(for: token,at: matchRange , value: STLRIntermediateRepresentation.Modifier(from: context.matchedString), annotations: [:])
+            return HeterogeneousNode(for: token,at: matchRange , value: STLRScope.Modifier(from: context.matchedString), annotations: [:])
         case .annotations:
             let annotations = children.map({ (child)->ElementAnnotationInstance in
                 guard let annotation : ElementAnnotationInstance = child.cast() else {
@@ -336,13 +336,13 @@ extension STLRIntermediateRepresentation : ASTNodeConstructor {
         return validate(parsingErrors: parsingErrors)
     }
     
-    private func getIdentifier(named name:String, at range:Range<String.UnicodeScalarView.Index>)->STLRIntermediateRepresentation.Identifier{
+    private func getIdentifier(named name:String, at range:Range<String.UnicodeScalarView.Index>)->STLRScope.Identifier{
         if let existing = identifiers[name] {
             identifiers[name]?.references.append(range)
             return existing
         }
         
-        let newIdentifier = STLRIntermediateRepresentation.Identifier(name: name, rawValue: identifiers.count+1)
+        let newIdentifier = STLRScope.Identifier(name: name, rawValue: identifiers.count+1)
         newIdentifier.references.append(range)
         identifiers[name] = newIdentifier
         

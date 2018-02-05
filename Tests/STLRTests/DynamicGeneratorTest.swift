@@ -59,13 +59,13 @@ class DynamicGeneratorTest: XCTestCase {
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        STLRIntermediateRepresentation.removeAllOptimizations()
+        STLRScope.removeAllOptimizations()
     }
     
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
-        STLRIntermediateRepresentation.removeAllOptimizations()
+        STLRScope.removeAllOptimizations()
     }
 
     /// Intended to test the fix for Issue #39
@@ -843,8 +843,8 @@ class DynamicGeneratorTest: XCTestCase {
     }
     
     func testTerminalChoiceWithIndividualAnnotationsOptimized(){
-        STLRIntermediateRepresentation.register(optimizer: InlineIdentifierOptimization())
-        STLRIntermediateRepresentation.register(optimizer: CharacterSetOnlyChoiceOptimizer())
+        STLRScope.register(optimizer: InlineIdentifierOptimization())
+        STLRScope.register(optimizer: CharacterSetOnlyChoiceOptimizer())
         do {
             let reference = "tokenA =  (@error(\"error a\") \"a\"|@error(\"error b\") \"b\"|@error(\"error c\") \"c\")"
             let result = try generatedStringSerialization(for: "letter = @error(\"error a\") \"a\"| @error(\"error b\")\"b\"| @error(\"error c\") \"c\"").replacingOccurrences(of: "\n", with: "").replacingOccurrences(of: "\t", with: "")

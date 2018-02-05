@@ -104,7 +104,7 @@ public enum Platform{
 }
 
 /// Generates Swift code that implements the specified grammar in Swift using OysterKit
-public extension STLRIntermediateRepresentation {
+public extension STLRScope {
     /**
      Generates Swift code that uses OysterKit to implement the parsed grammar
      
@@ -252,9 +252,9 @@ public extension STLRIntermediateRepresentation {
 }
 
 /// Extends with Swift Generation
-internal extension STLRIntermediateRepresentation.GrammarRule{
+internal extension STLRScope.GrammarRule{
     
-    func swift(depth:Int = 0, from ast:STLRIntermediateRepresentation, creating token:Token, annotations:STLRIntermediateRepresentation.ElementAnnotations)->String{
+    func swift(depth:Int = 0, from ast:STLRScope, creating token:Token, annotations:STLRScope.ElementAnnotations)->String{
         let depth = depth + 1
         var result = ""
 
@@ -276,11 +276,11 @@ private enum TransientToken : Int, Token, CustomStringConvertible {
     case instance = 0
 }
 
-internal extension STLRIntermediateRepresentation.Expression{
+internal extension STLRScope.Expression{
     
 
     
-    func swift(depth:Int = 0, from ast:STLRIntermediateRepresentation, creating token:Token, annotations: STLRIntermediateRepresentation.ElementAnnotations?)->String{
+    func swift(depth:Int = 0, from ast:STLRScope, creating token:Token, annotations: STLRScope.ElementAnnotations?)->String{
         let depth = depth + 1
         var result = ""
         
@@ -333,7 +333,7 @@ internal extension STLRIntermediateRepresentation.Expression{
     }
 }
 
-internal extension STLRIntermediateRepresentation.ElementAnnotation{
+internal extension STLRScope.ElementAnnotation{
     var swift : String {
         switch self {
         case .pinned:
@@ -352,7 +352,7 @@ internal extension STLRIntermediateRepresentation.ElementAnnotation{
     }
 }
 
-internal extension STLRIntermediateRepresentation.ElementAnnotationValue{
+internal extension STLRScope.ElementAnnotationValue{
     var swift : String {
         switch  self {
         case .set:
@@ -367,19 +367,19 @@ internal extension STLRIntermediateRepresentation.ElementAnnotationValue{
     }
 }
 
-internal extension STLRIntermediateRepresentation.ElementAnnotationInstance{
+internal extension STLRScope.ElementAnnotationInstance{
     var swift : String {
         return "\(annotation.swift) : \(value.swift)"
     }
 }
 
-internal extension STLRIntermediateRepresentation.Element{
-    func swift(depth:Int = 0, from ast:STLRIntermediateRepresentation, creating token:Token, annotations:STLRIntermediateRepresentation.ElementAnnotations?)->String{
+internal extension STLRScope.Element{
+    func swift(depth:Int = 0, from ast:STLRScope, creating token:Token, annotations:STLRScope.ElementAnnotations?)->String{
         let depth = depth + 1
         var result = ""
         
-        var quantifierAnnotations   : STLRIntermediateRepresentation.ElementAnnotations?
-        var elementAnnotations      : STLRIntermediateRepresentation.ElementAnnotations?
+        var quantifierAnnotations   : STLRScope.ElementAnnotations?
+        var elementAnnotations      : STLRScope.ElementAnnotations?
         
         if let annotations = annotations {
             elementAnnotations = self.elementAnnotations.merge(with: annotations)
@@ -411,7 +411,7 @@ internal extension STLRIntermediateRepresentation.Element{
     
 }
 
-internal extension Collection where Self.Iterator.Element == STLRIntermediateRepresentation.ElementAnnotationInstance {
+internal extension Collection where Self.Iterator.Element == STLRScope.ElementAnnotationInstance {
 
     var swiftDictionary : String {
         if count == 0 {
@@ -435,15 +435,15 @@ internal extension Collection where Self.Iterator.Element == STLRIntermediateRep
     }
 }
 
-internal extension STLRIntermediateRepresentation.Modifier{
-    func swift(creating token:Token, annotations: STLRIntermediateRepresentation.ElementAnnotations?)->String{
+internal extension STLRScope.Modifier{
+    func swift(creating token:Token, annotations: STLRScope.ElementAnnotations?)->String{
         switch self {
         case .one:
             return ""
         case .not:
             return ".not(producing: T.\(token)\(annotations?.swiftNthParameter ?? ""))"
         case .void:
-            let finalAnnotations = annotations?.merge(with: [STLRIntermediateRepresentation.ElementAnnotationInstance.init(STLRIntermediateRepresentation.ElementAnnotation.void)])
+            let finalAnnotations = annotations?.merge(with: [STLRScope.ElementAnnotationInstance.init(STLRScope.ElementAnnotation.void)])
             return """
                 .instance(with: TransientToken.labelled("\(token)-"), andAnnotations: \(finalAnnotations?.swiftNthParameter ?? ""))
             """
@@ -459,8 +459,8 @@ internal extension STLRIntermediateRepresentation.Modifier{
     }
 }
 
-internal extension STLRIntermediateRepresentation.Identifier{
-    func swift(depth:Int = 0, from ast:STLRIntermediateRepresentation, creating token:Token)->String{
+internal extension STLRScope.Identifier{
+    func swift(depth:Int = 0, from ast:STLRScope, creating token:Token)->String{
         guard let grammarRule = grammarRule else {
             return "FATAL ERROR: No rule associated with identifier \(token)"
         }
@@ -469,7 +469,7 @@ internal extension STLRIntermediateRepresentation.Identifier{
     }
 }
 
-internal extension STLRIntermediateRepresentation.TerminalCharacterSet{
+internal extension STLRScope.TerminalCharacterSet{
     var swift : String {
         switch self{
         case .alphanumerics, .decimalDigits, .letters, .lowercaseLetters, .newlines, .whitespacesAndNewlines, .whitespaces, .uppercaseLetters:
@@ -498,8 +498,8 @@ internal extension STLRIntermediateRepresentation.TerminalCharacterSet{
 }
 
 
-internal extension STLRIntermediateRepresentation.Terminal{
-    func swift(depth:Int = 0, from ast:STLRIntermediateRepresentation, creating token:Token, annotations: STLRIntermediateRepresentation.ElementAnnotations?, allowOveride: Bool)->String{
+internal extension STLRScope.Terminal{
+    func swift(depth:Int = 0, from ast:STLRScope, creating token:Token, annotations: STLRScope.ElementAnnotations?, allowOveride: Bool)->String{
         let depth = depth + 1
         var result = ""
         

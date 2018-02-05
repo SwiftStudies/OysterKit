@@ -300,7 +300,7 @@ fileprivate struct _ParsingKeyedDecodingContainer<K : CodingKey> : KeyedDecoding
     // MARK: - KeyedDecodingContainerProtocol Methods
     public var allKeys: [Key] {
         return container.contents.map { (node) -> CodingKey in
-            node.key
+            node.key 
         } as! [K]
     }
     
@@ -324,7 +324,7 @@ fileprivate struct _ParsingKeyedDecodingContainer<K : CodingKey> : KeyedDecoding
         }
         
         return try self.decoder.with(pushedKey: key) {
-            guard let value = try self.decoder.unbox(entry, as: Bool.self) else {
+            guard let value = try self.decoder.unbox(entry.stringValue, as: Bool.self) else {
                 throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath, debugDescription: "Expected \(type) value but found null instead."))
             }
             
@@ -1036,6 +1036,9 @@ fileprivate extension _ParsingDecoder {
         guard !(value is NSNull) else { return nil }
         
         guard let number = value as? NSNumber else {
+            if let string = value as? String, let boolean = Bool(string) {
+                return boolean
+            }
             throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "Expected \(type) and got \(value)"))
         }
         

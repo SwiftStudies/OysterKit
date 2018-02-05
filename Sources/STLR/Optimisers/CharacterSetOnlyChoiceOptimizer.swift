@@ -8,7 +8,7 @@
 
 import Foundation
 
-private extension STLRIntermediateRepresentation.Element{
+private extension STLRScope.Element{
     var singleCharacterTerminal : Bool {
         if case let .terminal(terminal, quantifier,lookahead,annotations) = self , quantifier == .one && lookahead == false{
             //If it has annotations, we can't optimize as the failure will be distinct
@@ -24,7 +24,7 @@ private extension STLRIntermediateRepresentation.Element{
             
             //Otherwise return true if it's a character set that already has a custom 
             //string
-            if case STLRIntermediateRepresentation.TerminalCharacterSet.customString(_) = terminalCharacterSet {
+            if case STLRScope.TerminalCharacterSet.customString(_) = terminalCharacterSet {
                 return true
             }
         }
@@ -40,11 +40,11 @@ private extension STLRIntermediateRepresentation.Element{
 }
 
 public struct CharacterSetOnlyChoiceOptimizer : STLRExpressionOptimizer{
-    private typealias Quantifier           = STLRIntermediateRepresentation.Modifier
-    private typealias Element              = STLRIntermediateRepresentation.Element
-    private typealias Expression           = STLRIntermediateRepresentation.Expression
-    private typealias TerminalCharacterSet = STLRIntermediateRepresentation.TerminalCharacterSet
-    private typealias Terminal             = STLRIntermediateRepresentation.Terminal
+    private typealias Quantifier           = STLRScope.Modifier
+    private typealias Element              = STLRScope.Element
+    private typealias Expression           = STLRScope.Expression
+    private typealias TerminalCharacterSet = STLRScope.TerminalCharacterSet
+    private typealias Terminal             = STLRScope.Terminal
     
     public init(){
         
@@ -136,7 +136,7 @@ public struct CharacterSetOnlyChoiceOptimizer : STLRExpressionOptimizer{
         }
     }
     
-    public func optimize(expression: STLRIntermediateRepresentation.Expression) -> STLRIntermediateRepresentation.Expression? {
+    public func optimize(expression: STLRScope.Expression) -> STLRScope.Expression? {
         var others                      = [Element]()
         var combineableCharacterSets    = [Element]()
         var stringCharacterSets         = [Element]()

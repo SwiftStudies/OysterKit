@@ -61,7 +61,7 @@ enum STLR : Int, Token {
 					].oneOf(token: T.whitespace, annotations: annotations.isEmpty ? [RuleAnnotation.void : RuleAnnotationValue.set] : annotations)
 		// ows
 		case .ows:
-			return T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T.ows, annotations: annotations)
+            return T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T.ows, annotations: annotations.merge(with: [RuleAnnotation.void : RuleAnnotationValue.set]))
 		// quantifier
 		case .quantifier:
 			return CharacterSet(charactersIn: "*+?-").terminal(token: T.quantifier, annotations: annotations)
@@ -126,7 +126,7 @@ enum STLR : Int, Token {
 			return [
 					".".terminal(token: T._transient),
 					"..".terminal(token: T._transient, annotations: [RuleAnnotation.error : RuleAnnotationValue.string("Expected ... in character range")]),
-					].sequence(token: T.rangeOperator, annotations: annotations.isEmpty ? [ : ] : annotations)
+                    ].sequence(token: T.rangeOperator, annotations: annotations.isEmpty ? [ RuleAnnotation.void : RuleAnnotationValue.set] : annotations.merge(with: [RuleAnnotation.void : RuleAnnotationValue.set]))
 		// characterRange
 		case .characterRange:
 			return [

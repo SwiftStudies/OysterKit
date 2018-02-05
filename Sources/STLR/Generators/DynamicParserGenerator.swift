@@ -35,13 +35,13 @@ fileprivate struct DynamicLanguage : Language{
 // The key thing is generators are just extensions, so if someone wanted to 
 // create and distribute a generator, they can just create a module with their
 // own extension (perhaps cool if it's somehow scoped) to Grammar.AST
-public extension STLRIntermediateRepresentation {
+public extension STLRScope {
     public var runtimeLanguage:Language?{
         var rules = [Rule]()
         
         let generationContext = GenerationContext()
         
-        var rootRules : [STLRIntermediateRepresentation.GrammarRule] = []
+        var rootRules : [STLRScope.GrammarRule] = []
         
         for rootCandidate in self.rules.reversed(){
             guard let candidateIdentifier = rootCandidate.identifier else {
@@ -81,7 +81,7 @@ public extension STLRIntermediateRepresentation {
     }
 }
 
-fileprivate extension STLRIntermediateRepresentation{
+fileprivate extension STLRScope{
     struct DynamicToken : Token, CustomStringConvertible{
         let rawValue : Int
         let name     : String?
@@ -116,8 +116,8 @@ internal final class GenerationContext{
     }
 }
 
-fileprivate extension STLRIntermediateRepresentation.GrammarRule{
-    fileprivate func rule(from grammar:STLRIntermediateRepresentation, inContext context:GenerationContext, creating token:Token? = nil, annotations: RuleAnnotations)->Rule? {
+fileprivate extension STLRScope.GrammarRule{
+    fileprivate func rule(from grammar:STLRScope, inContext context:GenerationContext, creating token:Token? = nil, annotations: RuleAnnotations)->Rule? {
         let createToken = token ?? identifier?.token
 
         if let token = createToken{
@@ -162,18 +162,18 @@ fileprivate extension STLRIntermediateRepresentation.GrammarRule{
             }
         }
         
-        return expression!.rule(from:grammar, creating:STLRIntermediateRepresentation.DynamicToken(rawValue: -1), inContext:context, annotations: [ : ])
+        return expression!.rule(from:grammar, creating:STLRScope.DynamicToken(rawValue: -1), inContext:context, annotations: [ : ])
     }
 }
 
-public extension STLRIntermediateRepresentation.GrammarRule{
-    public func rule(from grammar:STLRIntermediateRepresentation, creating token:Token? = nil)->Rule? {
+public extension STLRScope.GrammarRule{
+    public func rule(from grammar:STLRScope, creating token:Token? = nil)->Rule? {
         return rule(from:grammar, inContext: GenerationContext(), creating:token, annotations: [:])
     }
 }
 
-extension STLRIntermediateRepresentation.Terminal{
-    func rule(from grammar:STLRIntermediateRepresentation, creating token:Token, with annotations:RuleAnnotations?)->Rule? {
+extension STLRScope.Terminal{
+    func rule(from grammar:STLRScope, creating token:Token, with annotations:RuleAnnotations?)->Rule? {
         if let string = string {
             return ParserRule.terminal(produces: token, string, annotations)
         }
@@ -186,8 +186,8 @@ extension STLRIntermediateRepresentation.Terminal{
     }
 }
 
-extension STLRIntermediateRepresentation.Expression{
-    func rule(from grammar:STLRIntermediateRepresentation, creating token:Token, inContext context:GenerationContext, annotations: RuleAnnotations)->Rule? {
+extension STLRScope.Expression{
+    func rule(from grammar:STLRScope, creating token:Token, inContext context:GenerationContext, annotations: RuleAnnotations)->Rule? {
         switch self{
         case .group:
             return nil
@@ -224,18 +224,18 @@ extension STLRIntermediateRepresentation.Expression{
     }
 }
 
-public extension STLRIntermediateRepresentation.Identifier{
+public extension STLRScope.Identifier{
     public var token : Token {
-        return STLRIntermediateRepresentation.DynamicToken(rawValue: rawValue, name: name)
+        return STLRScope.DynamicToken(rawValue: rawValue, name: name)
     }
     
-    public func rule(from grammar:STLRIntermediateRepresentation, creating token:Token?)->Rule? {
+    public func rule(from grammar:STLRScope, creating token:Token?)->Rule? {
         return rule(from: grammar, creating: token, inContext: GenerationContext(), annotations: [:] )
     }
 }
 
-fileprivate extension STLRIntermediateRepresentation.Identifier{
-    func rule(from grammar:STLRIntermediateRepresentation, creating token:Token?, inContext context:GenerationContext, annotations: RuleAnnotations)->Rule? {
+fileprivate extension STLRScope.Identifier{
+    func rule(from grammar:STLRScope, creating token:Token?, inContext context:GenerationContext, annotations: RuleAnnotations)->Rule? {
         guard let grammarRule = grammarRule else {
             return nil
         }
@@ -244,7 +244,7 @@ fileprivate extension STLRIntermediateRepresentation.Identifier{
     }
 }
 
-fileprivate extension STLRIntermediateRepresentation.Modifier{
+fileprivate extension STLRScope.Modifier{
     func wrapped(token:Token, annotations: RuleAnnotations)->Token{
         var rawValue    : Int?
         var identifier  : String?
@@ -267,28 +267,28 @@ fileprivate extension STLRIntermediateRepresentation.Modifier{
         case .one:
             return token
         case .not:
-            return STLRIntermediateRepresentation.DynamicToken.init(rawValue: tokenRawValue, name: identifier ?? "!\(token)")
+            return STLRScope.DynamicToken.init(rawValue: tokenRawValue, name: identifier ?? "!\(token)")
         case .transient:
             return TransientToken.labelled(identifier ?? "\(token)~")
         case .void:
             return TransientToken.labelled(identifier ?? "\(token)-")
         case .zeroOrOne:
-            return STLRIntermediateRepresentation.DynamicToken.init(rawValue: tokenRawValue, name: identifier ?? "\(token)?")
+            return STLRScope.DynamicToken.init(rawValue: tokenRawValue, name: identifier ?? "\(token)?")
         case .oneOrMore:
-            return STLRIntermediateRepresentation.DynamicToken.init(rawValue: tokenRawValue, name: identifier ?? "\(token)+")
+            return STLRScope.DynamicToken.init(rawValue: tokenRawValue, name: identifier ?? "\(token)+")
         case .zeroOrMore:
-            return STLRIntermediateRepresentation.DynamicToken.init(rawValue: tokenRawValue, name: identifier ?? "\(token)*")
+            return STLRScope.DynamicToken.init(rawValue: tokenRawValue, name: identifier ?? "\(token)*")
         }
     }
 }
 
-extension STLRIntermediateRepresentation.Element{
-    func rule(from grammar:STLRIntermediateRepresentation, creating token:Token, inContext context:GenerationContext, annotations:RuleAnnotations)->Rule? {
+extension STLRScope.Element{
+    func rule(from grammar:STLRScope, creating token:Token, inContext context:GenerationContext, annotations:RuleAnnotations)->Rule? {
         let mergedElementAnnotations     = quantifier == .one ? elementAnnotations.asRuleAnnotations.merge(with: annotations) : elementAnnotations.asRuleAnnotations
         let mergedQuantifierAnnotations  = quantifier == .one ? quantifierAnnotations.asRuleAnnotations                       : quantifierAnnotations.asRuleAnnotations.merge(with: annotations)
         
-        let elementToken        = quantifier == .one ? token : STLRIntermediateRepresentation.DynamicToken(rawValue: transientTokenValue)
-        let quantifierToken     = quantifier != .one ? token : STLRIntermediateRepresentation.DynamicToken(rawValue: transientTokenValue)
+        let elementToken        = quantifier == .one ? token : STLRScope.DynamicToken(rawValue: transientTokenValue)
+        let quantifierToken     = quantifier != .one ? token : STLRScope.DynamicToken(rawValue: transientTokenValue)
 
         //For groups and terminals the token should be attached to the quantifier not the group/terminal rule
         switch self {
@@ -331,9 +331,9 @@ extension STLRIntermediateRepresentation.Element{
         case .identifier(let identifier, _,let lookahead, _) where lookahead == false:
             return identifier.token
         case .terminal(let terminal, _,let lookahead,_) where lookahead == false:
-            return STLRIntermediateRepresentation.DynamicToken(rawValue: transientTokenValue, name: "\(terminal)")
+            return STLRScope.DynamicToken(rawValue: transientTokenValue, name: "\(terminal)")
         default:
-            return STLRIntermediateRepresentation.DynamicToken(rawValue: transientTokenValue)
+            return STLRScope.DynamicToken(rawValue: transientTokenValue)
         }
     }
     

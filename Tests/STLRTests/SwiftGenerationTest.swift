@@ -27,7 +27,7 @@ class SwiftGenerationTest: XCTestCase {
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        STLRIntermediateRepresentation.removeAllOptimizations()
+        STLRScope.removeAllOptimizations()
     }
     
     override func tearDown() {
@@ -61,20 +61,20 @@ class SwiftGenerationTest: XCTestCase {
 
     func testIdentifierElementGenerationWithAnnotations(){
         
-        let stlrIr = STLRIntermediateRepresentation()
+        let stlrIr = STLRScope()
         
-        let terminalElement = STLRIntermediateRepresentation.Element.terminal(
-            STLRIntermediateRepresentation.Terminal(
+        let terminalElement = STLRScope.Element.terminal(
+            STLRScope.Terminal(
                 with: "T"
             ),
-            STLRIntermediateRepresentation.Modifier.one,
+            STLRScope.Modifier.one,
             false,
             [])
         
-        let terminalExpression = STLRIntermediateRepresentation.Expression.element(terminalElement)
+        let terminalExpression = STLRScope.Expression.element(terminalElement)
         
-        let annotations : STLRIntermediateRepresentation.ElementAnnotations = [
-            STLRIntermediateRepresentation.ElementAnnotationInstance(STLRIntermediateRepresentation.ElementAnnotation.error, value: STLRIntermediateRepresentation.ElementAnnotationValue.string("ERRORVALUE"))
+        let annotations : STLRScope.ElementAnnotations = [
+            STLRScope.ElementAnnotationInstance(STLRScope.ElementAnnotation.error, value: STLRScope.ElementAnnotationValue.string("ERRORVALUE"))
         ]
         
         let withoutAnnotations = terminalExpression.swift(depth: 0, from: stlrIr, creating: TestTokens.testToken, annotations: [])
@@ -88,19 +88,19 @@ class SwiftGenerationTest: XCTestCase {
     }
     
     func testOneOfRuleGeneration(){
-        let stlrIr = STLRIntermediateRepresentation()
+        let stlrIr = STLRScope()
         
-        let embeddedChoice = STLRIntermediateRepresentation.Expression.choice([
-            STLRIntermediateRepresentation.Element.identifier(STLRIntermediateRepresentation.Identifier.init(name: "id", rawValue: 1), STLRIntermediateRepresentation.Modifier.one, false, []),
-            STLRIntermediateRepresentation.Element.terminal(STLRIntermediateRepresentation.Terminal.init(with: "c"), STLRIntermediateRepresentation.Modifier.one, false, [])
+        let embeddedChoice = STLRScope.Expression.choice([
+            STLRScope.Element.identifier(STLRScope.Identifier.init(name: "id", rawValue: 1), STLRScope.Modifier.one, false, []),
+            STLRScope.Element.terminal(STLRScope.Terminal.init(with: "c"), STLRScope.Modifier.one, false, [])
             ])
 
         
-        let choiceExpression = STLRIntermediateRepresentation.Expression.choice([
-                STLRIntermediateRepresentation.Element.identifier(STLRIntermediateRepresentation.Identifier.init(name: "id", rawValue: 1), STLRIntermediateRepresentation.Modifier.one, false, []),
-                STLRIntermediateRepresentation.Element.terminal(STLRIntermediateRepresentation.Terminal.init(with: "a"), STLRIntermediateRepresentation.Modifier.one, false, []),
-                STLRIntermediateRepresentation.Element.terminal(STLRIntermediateRepresentation.Terminal.init(with: "b"), STLRIntermediateRepresentation.Modifier.one, false, []),
-                STLRIntermediateRepresentation.Element.group(embeddedChoice, STLRIntermediateRepresentation.Modifier.one, false, [])
+        let choiceExpression = STLRScope.Expression.choice([
+                STLRScope.Element.identifier(STLRScope.Identifier.init(name: "id", rawValue: 1), STLRScope.Modifier.one, false, []),
+                STLRScope.Element.terminal(STLRScope.Terminal.init(with: "a"), STLRScope.Modifier.one, false, []),
+                STLRScope.Element.terminal(STLRScope.Terminal.init(with: "b"), STLRScope.Modifier.one, false, []),
+                STLRScope.Element.group(embeddedChoice, STLRScope.Modifier.one, false, [])
             ])
         
         let swift = choiceExpression.swift(from: stlrIr, creating: TestTokens.testToken, annotations: [])
@@ -109,19 +109,19 @@ class SwiftGenerationTest: XCTestCase {
     }
     
     func testSequenceRuleGeneration(){
-        let stlrIr = STLRIntermediateRepresentation()
+        let stlrIr = STLRScope()
         
-        let embeddedSequence = STLRIntermediateRepresentation.Expression.sequence([
-            STLRIntermediateRepresentation.Element.identifier(STLRIntermediateRepresentation.Identifier.init(name: "id", rawValue: 1), STLRIntermediateRepresentation.Modifier.one, false, []),
-            STLRIntermediateRepresentation.Element.terminal(STLRIntermediateRepresentation.Terminal.init(with: "c"), STLRIntermediateRepresentation.Modifier.one, false, [])
+        let embeddedSequence = STLRScope.Expression.sequence([
+            STLRScope.Element.identifier(STLRScope.Identifier.init(name: "id", rawValue: 1), STLRScope.Modifier.one, false, []),
+            STLRScope.Element.terminal(STLRScope.Terminal.init(with: "c"), STLRScope.Modifier.one, false, [])
             ])
         
         
-        let sequenceExpression = STLRIntermediateRepresentation.Expression.sequence([
-            STLRIntermediateRepresentation.Element.identifier(STLRIntermediateRepresentation.Identifier.init(name: "id", rawValue: 1), STLRIntermediateRepresentation.Modifier.one, false, []),
-            STLRIntermediateRepresentation.Element.terminal(STLRIntermediateRepresentation.Terminal.init(with: "a"), STLRIntermediateRepresentation.Modifier.one, false, []),
-            STLRIntermediateRepresentation.Element.terminal(STLRIntermediateRepresentation.Terminal.init(with: "b"), STLRIntermediateRepresentation.Modifier.one, false, []),
-            STLRIntermediateRepresentation.Element.group(embeddedSequence, STLRIntermediateRepresentation.Modifier.one, false, [])
+        let sequenceExpression = STLRScope.Expression.sequence([
+            STLRScope.Element.identifier(STLRScope.Identifier.init(name: "id", rawValue: 1), STLRScope.Modifier.one, false, []),
+            STLRScope.Element.terminal(STLRScope.Terminal.init(with: "a"), STLRScope.Modifier.one, false, []),
+            STLRScope.Element.terminal(STLRScope.Terminal.init(with: "b"), STLRScope.Modifier.one, false, []),
+            STLRScope.Element.group(embeddedSequence, STLRScope.Modifier.one, false, [])
             ])
         
         let swift = sequenceExpression.swift(from: stlrIr, creating: TestTokens.testToken, annotations: [])
@@ -130,19 +130,19 @@ class SwiftGenerationTest: XCTestCase {
     }
 
     func testSequenceRuleGenerationWithEmbeddedQuantifiers(){
-        let stlrIr = STLRIntermediateRepresentation()
+        let stlrIr = STLRScope()
         
-        let embeddedSequence = STLRIntermediateRepresentation.Expression.sequence([
-            STLRIntermediateRepresentation.Element.identifier(STLRIntermediateRepresentation.Identifier.init(name: "id", rawValue: 1), STLRIntermediateRepresentation.Modifier.one, false, []),
-            STLRIntermediateRepresentation.Element.terminal(STLRIntermediateRepresentation.Terminal.init(with: "c"), STLRIntermediateRepresentation.Modifier.one, false, [])
+        let embeddedSequence = STLRScope.Expression.sequence([
+            STLRScope.Element.identifier(STLRScope.Identifier.init(name: "id", rawValue: 1), STLRScope.Modifier.one, false, []),
+            STLRScope.Element.terminal(STLRScope.Terminal.init(with: "c"), STLRScope.Modifier.one, false, [])
             ])
         
         
-        let sequenceExpression = STLRIntermediateRepresentation.Expression.sequence([
-            STLRIntermediateRepresentation.Element.identifier(STLRIntermediateRepresentation.Identifier.init(name: "id", rawValue: 1), STLRIntermediateRepresentation.Modifier.oneOrMore, false, []),
-            STLRIntermediateRepresentation.Element.terminal(STLRIntermediateRepresentation.Terminal.init(with: "a"), STLRIntermediateRepresentation.Modifier.oneOrMore, false, []),
-            STLRIntermediateRepresentation.Element.terminal(STLRIntermediateRepresentation.Terminal.init(with: "b"), STLRIntermediateRepresentation.Modifier.one, false, []),
-            STLRIntermediateRepresentation.Element.group(embeddedSequence, STLRIntermediateRepresentation.Modifier.oneOrMore, false, [])
+        let sequenceExpression = STLRScope.Expression.sequence([
+            STLRScope.Element.identifier(STLRScope.Identifier.init(name: "id", rawValue: 1), STLRScope.Modifier.oneOrMore, false, []),
+            STLRScope.Element.terminal(STLRScope.Terminal.init(with: "a"), STLRScope.Modifier.oneOrMore, false, []),
+            STLRScope.Element.terminal(STLRScope.Terminal.init(with: "b"), STLRScope.Modifier.one, false, []),
+            STLRScope.Element.group(embeddedSequence, STLRScope.Modifier.oneOrMore, false, [])
             ])
         
         let swift = sequenceExpression.swift(from: stlrIr, creating: TestTokens.testToken, annotations: [])
@@ -201,8 +201,8 @@ class SwiftGenerationTest: XCTestCase {
     }
     
     func testTerminalChoiceWithIndividualAnnotationsOptimized(){
-        STLRIntermediateRepresentation.register(optimizer: InlineIdentifierOptimization())
-        STLRIntermediateRepresentation.register(optimizer: CharacterSetOnlyChoiceOptimizer())
+        STLRScope.register(optimizer: InlineIdentifierOptimization())
+        STLRScope.register(optimizer: CharacterSetOnlyChoiceOptimizer())
         do {
             let result = try swift(for: "letter = @error(\"error a\") \"a\"| @error(\"error b\")\"b\"| @error(\"error c\") \"c\"").replacingOccurrences(of: "\n", with: "").replacingOccurrences(of: "\t", with: "")
             

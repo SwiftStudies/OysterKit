@@ -15,7 +15,7 @@ class FixValidations: XCTestCase {
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        STLRIntermediateRepresentation.removeAllOptimizations()
+        STLRScope.removeAllOptimizations()
     }
     
     override func tearDown() {
@@ -62,7 +62,7 @@ class FixValidations: XCTestCase {
         
         XCTAssert("\(ast.rules[0])" == "variableStart = .letters | \"_\"", "Malformed rule: \(ast.rules[0])")
         
-        STLRIntermediateRepresentation.register(optimizer: CharacterSetOnlyChoiceOptimizer())
+        STLRScope.register(optimizer: CharacterSetOnlyChoiceOptimizer())
         ast.optimize()
         
         XCTAssert("\(ast.rules[0])" == "variableStart = (.letters|(\"_\"))", "Malformed rule: \(ast.rules[0])")
@@ -86,7 +86,7 @@ class FixValidations: XCTestCase {
         
         XCTAssert("\(ast.rules[0])" == "operators = \":=\" | \";\"", "Malformed rule: \(ast.rules[0])")
         
-        STLRIntermediateRepresentation.register(optimizer: CharacterSetOnlyChoiceOptimizer())
+        STLRScope.register(optimizer: CharacterSetOnlyChoiceOptimizer())
         ast.optimize()
         
         XCTAssert("\(ast.rules[0])" == "operators = \":=\" | \";\"", "Malformed rule: \(ast.rules[0])")

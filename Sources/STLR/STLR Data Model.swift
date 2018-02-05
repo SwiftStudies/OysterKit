@@ -30,7 +30,7 @@ import OysterKit
  This classes is a bespoke implementation of an `IntermediateRepresentation` used when parsing STLR. Unlike generic
  implementations it specifies a concrete data structure that is populated during parsing
  */
-public class STLRIntermediateRepresentation : CustomStringConvertible {
+public class STLRScope : CustomStringConvertible {
     // MARK: -
     /// Represents a STLR Expression
     public enum Expression : CustomStringConvertible {
@@ -83,7 +83,7 @@ public class STLRIntermediateRepresentation : CustomStringConvertible {
          - Parameter searchState: The identifiers already searched (to avoid infinite recursion)
          - Returns: `true` if it is, false if it isn't
         */
-        public func firstToken(_ identifier:Identifier, context:STLRIntermediateRepresentation?, searchStack:[String])->Bool{
+        public func firstToken(_ identifier:Identifier, context:STLRScope?, searchStack:[String])->Bool{
             switch self{
             case .element(let element):
                 return element.firstToken(identifier, context: context, searchStack: searchStack)
@@ -109,7 +109,7 @@ public class STLRIntermediateRepresentation : CustomStringConvertible {
          - Parameter searchState: The identifiers already searched (to avoid infinite recursion)
          - Returns: `true` if it is, false if it isn't
          */
-        public func references(_ identifier:Identifier, context:STLRIntermediateRepresentation?, searchStack:[String])->Bool{
+        public func references(_ identifier:Identifier, context:STLRScope?, searchStack:[String])->Bool{
             switch self{
             case .element(let element):
                 return element.references(identifier, context: context, searchStack: searchStack)
@@ -141,7 +141,7 @@ public class STLRIntermediateRepresentation : CustomStringConvertible {
         
         /// `true` if this expression can be entirely scanned (that is, it is just a collection of terminals)
         public var  scannable : Bool {
-            let elements : [STLRIntermediateRepresentation.Element]
+            let elements : [STLRScope.Element]
             
             switch self {
             case .element(let element): elements = [element]
@@ -502,7 +502,7 @@ public class STLRIntermediateRepresentation : CustomStringConvertible {
          - Parameter searchState: The identifiers already searched (to avoid infinite recursion)
          - Returns: `true` if it is, false if it isn't
          */
-        fileprivate func firstToken(_ identifier:Identifier, context:STLRIntermediateRepresentation?, searchStack:[String])->Bool{
+        fileprivate func firstToken(_ identifier:Identifier, context:STLRScope?, searchStack:[String])->Bool{
             switch self{
             case .terminal:
                 return false
@@ -527,7 +527,7 @@ public class STLRIntermediateRepresentation : CustomStringConvertible {
          - Parameter searchState: The identifiers already searched (to avoid infinite recursion)
          - Returns: `true` if it is, false if it isn't
          */
-        public func references(_ identifier:Identifier, context:STLRIntermediateRepresentation?, searchStack:[String])->Bool{
+        public func references(_ identifier:Identifier, context:STLRScope?, searchStack:[String])->Bool{
             switch self{
             case .terminal:
                 return false
@@ -883,7 +883,7 @@ public class STLRIntermediateRepresentation : CustomStringConvertible {
         }
         
         /// The grammar the rule is in
-        let grammar : STLRIntermediateRepresentation
+        let grammar : STLRScope
         
         /**
          Creates a new instance
@@ -891,7 +891,7 @@ public class STLRIntermediateRepresentation : CustomStringConvertible {
          - Parameter ast: The AST the rule is part of
          - Parameter range: The range of the rule in source STLR
         */
-        init(_ ast:STLRIntermediateRepresentation, range:Range<String.UnicodeScalarView.Index>){
+        init(_ ast:STLRScope, range:Range<String.UnicodeScalarView.Index>){
             grammar = ast
             location = range
         }
@@ -939,7 +939,7 @@ public class STLRIntermediateRepresentation : CustomStringConvertible {
          - Parameter searchState: The identifiers already searched (to avoid infinite recursion)
          - Returns: `true` if it is, false if it isn't
          */
-        func firstToken(_ identifier:Identifier, context:STLRIntermediateRepresentation?, searchStack:[String] = [])->Bool{
+        func firstToken(_ identifier:Identifier, context:STLRScope?, searchStack:[String] = [])->Bool{
             let myName = self.identifier?.name ?? ""
             //Don't recurse if I am already being searched (that is, search everything else)
             if searchStack.contains(myName){
@@ -958,7 +958,7 @@ public class STLRIntermediateRepresentation : CustomStringConvertible {
          - Parameter searchState: The identifiers already searched (to avoid infinite recursion)
          - Returns: `true` if it is, false if it isn't
          */
-        func references(_ identifier:Identifier, context:STLRIntermediateRepresentation?, searchStack:[String] = [])->Bool{
+        func references(_ identifier:Identifier, context:STLRScope?, searchStack:[String] = [])->Bool{
             let myName = self.identifier?.name ?? ""
             //Don't recurse if I am already being searched (that is, search everything else)
             if searchStack.contains(myName){
@@ -989,8 +989,8 @@ public class STLRIntermediateRepresentation : CustomStringConvertible {
     
     // MARK: -
     /// All of the rules is the grammar that are never referenced
-    var     rootRules : [STLRIntermediateRepresentation.GrammarRule] {
-        var rootRules : [STLRIntermediateRepresentation.GrammarRule] = []
+    var     rootRules : [STLRScope.GrammarRule] {
+        var rootRules : [STLRScope.GrammarRule] = []
         
         for rootCandidate in rules{
             guard let candidateIdentifier = rootCandidate.identifier else {
@@ -1051,7 +1051,7 @@ public class STLRIntermediateRepresentation : CustomStringConvertible {
     public var errors = [Error]()
     
     /// The symbol table (identifiers and their representation in the AST
-    public var identifiers : [String : STLRIntermediateRepresentation.Identifier] = [ : ]
+    public var identifiers : [String : STLRScope.Identifier] = [ : ]
     
     /// A human readable description of the AST
     public var description: String{
@@ -1077,12 +1077,12 @@ public class STLRIntermediateRepresentation : CustomStringConvertible {
  - Parameter lhs: The first identifier
  - Parameter rhs: The second identifier
  */
-public func==(lhs:STLRIntermediateRepresentation.Identifier, rhs:STLRIntermediateRepresentation.Identifier)->Bool{
+public func==(lhs:STLRScope.Identifier, rhs:STLRScope.Identifier)->Bool{
     return lhs.name == rhs.name && lhs.rawValue == rhs.rawValue
 }
 
 /// An extension to collection that contain instances of annotations
-public extension Collection where Iterator.Element == STLRIntermediateRepresentation.ElementAnnotationInstance{
+public extension Collection where Iterator.Element == STLRScope.ElementAnnotationInstance{
     
     /// The collection as `RuleAnnotations` usable directly by `Rule`
     public var asRuleAnnotations : RuleAnnotations {
@@ -1105,12 +1105,12 @@ public extension Collection where Iterator.Element == STLRIntermediateRepresenta
      
      - Parameter annotation: The annotation to look for
     */
-    public func isSet(_ annotation:STLRIntermediateRepresentation.ElementAnnotation)->Bool{
+    public func isSet(_ annotation:STLRScope.ElementAnnotation)->Bool{
         return self[annotation: annotation] != nil
     }
     
     /// The value for the given annotation
-    public subscript(annotation key:STLRIntermediateRepresentation.ElementAnnotation)->STLRIntermediateRepresentation.ElementAnnotationValue?{
+    public subscript(annotation key:STLRScope.ElementAnnotation)->STLRScope.ElementAnnotationValue?{
         for annotation in self {
             if annotation.annotation == key {
                 return annotation.value
@@ -1125,12 +1125,12 @@ public extension Collection where Iterator.Element == STLRIntermediateRepresenta
      
      - Parameter annotation: The annotation to remove
     */
-    public func remove(_ annotation:STLRIntermediateRepresentation.ElementAnnotation)->STLRIntermediateRepresentation.ElementAnnotations{
+    public func remove(_ annotation:STLRScope.ElementAnnotation)->STLRScope.ElementAnnotations{
         if self.isEmpty{
             return []
         }
         
-        let cleaned = self.flatMap({ (annotationInstance)->STLRIntermediateRepresentation.ElementAnnotationInstance? in
+        let cleaned = self.flatMap({ (annotationInstance)->STLRScope.ElementAnnotationInstance? in
             if annotationInstance.annotation == annotation {
                 return nil
             }
@@ -1147,17 +1147,17 @@ public extension Collection where Iterator.Element == STLRIntermediateRepresenta
      - Parameter with: The annotations which should augment or override the existing annotations
      - Returns: The resultant `ElementAnnotations`
     */
-    public func merge(with incoming:STLRIntermediateRepresentation.ElementAnnotations)->STLRIntermediateRepresentation.ElementAnnotations{
+    public func merge(with incoming:STLRScope.ElementAnnotations)->STLRScope.ElementAnnotations{
         
         if self.isEmpty {
             return incoming
         }
         
-        var merged = STLRIntermediateRepresentation.ElementAnnotations()
+        var merged = STLRScope.ElementAnnotations()
         
         for annotation in self {
             if let incomingAnnotation = incoming[annotation: annotation.annotation]{
-                merged.append(STLRIntermediateRepresentation.ElementAnnotationInstance(annotation.annotation, value: incomingAnnotation))
+                merged.append(STLRScope.ElementAnnotationInstance(annotation.annotation, value: incomingAnnotation))
             } else {
                 merged.append(annotation)
             }
@@ -1174,7 +1174,7 @@ public extension Collection where Iterator.Element == STLRIntermediateRepresenta
 }
 
 /// Provides a utility initialiser to create a new instance of an annotation based on the supplied string
-public extension STLRIntermediateRepresentation.ElementAnnotation{
+public extension STLRScope.ElementAnnotation{
     /**
      Creates a new instance based on the string captured during parsing
      

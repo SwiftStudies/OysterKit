@@ -25,12 +25,12 @@
 import Foundation
 
 /// Provides functions for optimizing the grammar as represented in the AST
-public extension STLRIntermediateRepresentation{
+public extension STLRScope{
     
     /// Optimizes the grammar using the optimizers registered by `register(optimizer:STLROptimizer)`
     public func optimize(){
         
-        func rulesAreEqual(rule1:STLRIntermediateRepresentation.GrammarRule, rule2:STLRIntermediateRepresentation.GrammarRule)->Bool{
+        func rulesAreEqual(rule1:STLRScope.GrammarRule, rule2:STLRScope.GrammarRule)->Bool{
             guard let id1 = rule1.identifier?.name, let id2 = rule2.identifier?.name else {
                 return true
             }
