@@ -98,4 +98,10 @@ class STLRTest: XCTestCase {
         print(FileManager.default.currentDirectoryPath)
     }
     
+    var allTests : [(()->Void)]{
+        return [
+            testParseSelf
+        ]
+    }
+    
 }
