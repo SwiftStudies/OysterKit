@@ -23,6 +23,7 @@
 //    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Foundation
+import OysterKit
 
 /**
  This AST is automically constructed using a decoder.
@@ -36,6 +37,7 @@ struct STLRAbstractSyntaxTree {
         let identifier : String
         let assignmentOperators : AssignmentOperators
         let expression : Expression
+        let annotations : [Annotation]?
     }
     
     struct Group : Decodable {
@@ -98,10 +100,13 @@ struct STLRAbstractSyntaxTree {
         let element     : Element?
     }
     
+    let intermediateRepresentation : HomogenousTree
     let rules : [Rule]
     
     init(_ stlrSource : String) throws {
-        rules = try [Rule].decode(stlrSource, using: STLR.generatedLanguage)
+        intermediateRepresentation = try AbstractSyntaxTreeConstructor().build(stlrSource, using: STLR.generatedLanguage)
+        
+        rules = try ParsingDecoder().decode([Rule].self, using: intermediateRepresentation)
     }
 
 }

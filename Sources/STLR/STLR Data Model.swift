@@ -849,41 +849,27 @@ public class STLRScope : CustomStringConvertible {
             }
         }
 
-        /// The rules location in the source STLR
-        var location    : Range<String.UnicodeScalarView.Index>
+        /// The rule's location in the source STLR
+        var location    : Range<String.UnicodeScalarView.Index>!
         
         /// The expression the rule represents
-        var _expression : Expression?
-        
-        /// The expression the rule represents, if called multiple times the expression is converted into a choice between those two and the values
-        /// added by all subsequent calls
-        var expression  : Expression?{
-            get {
-                return _expression
-            }
-            
-            set {
-                guard let newExpression = newValue else {
-                    _expression = nil
-                    return
-                }
-                
-                guard let oldExpression = _expression else {
-                    _expression = newExpression
-                    return
-                }
-                
-                if oldExpression.isChoice {
-                    _expression?.add(element: Element.group(newExpression, .one, false, ElementAnnotations()))
-                } else {
-                    _expression = Expression.choice([Element.group(oldExpression, .one, false, ElementAnnotations())])
-                    _expression?.add(element: Element.group(newExpression, .one, false, ElementAnnotations()))
-                }
-            }
-        }
+        public internal(set) var expression : Expression?
         
         /// The grammar the rule is in
         let grammar : STLRScope
+        
+        /**
+         Creates a new instance
+         
+         - Parameter identifier: The identifier for the rule
+         - Parameter expression: The expression for the rule
+         - Parameter scope: The ``STLRScope`` this belongs to
+         */
+        init(with identifier:Identifier, _ expression:Expression,in scope:STLRScope){
+            grammar = scope
+            location = nil
+            self.expression = expression
+        }
         
         /**
          Creates a new instance
@@ -895,6 +881,7 @@ public class STLRScope : CustomStringConvertible {
             grammar = ast
             location = range
         }
+        
         
         /// A human readable description of the rule
         public var description: String{

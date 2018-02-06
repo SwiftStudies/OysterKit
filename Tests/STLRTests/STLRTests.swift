@@ -98,7 +98,7 @@ class STLRTest: XCTestCase {
 //            }
 //
             let source = """
-            a = "a"
+            @void a = "a"
             b = "b"
             ab= a b
 """
