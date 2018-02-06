@@ -60,25 +60,10 @@
                 <a class="nav-group-task-link" href="../Classes/DebuggingDelegate.html">DebuggingDelegate</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Classes/DefaultHeterogenousConstructor.html">DefaultHeterogenousConstructor</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Classes/DefaultHomogenousAST.html">DefaultHomogenousAST</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/ForwardingIR.html">ForwardingIR</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Classes/HeterogenousAST.html">HeterogenousAST</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Classes/HomogenousAST.html">HomogenousAST</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/Lexer.html">Lexer</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Classes/NodeIterator.html">NodeIterator</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/NodeStack.html">NodeStack</a>
@@ -94,12 +79,6 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/StateCache.html">StateCache</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Classes/StreamConstructor.html">StreamConstructor</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Classes/StreamRepresentation.html">StreamRepresentation</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/StringScanner.html">StringScanner</a>
@@ -174,9 +153,6 @@
                 <a class="nav-group-task-link" href="../Extensions/String/UnicodeScalarView.html">– UnicodeScalarView</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Extensions/StringProtocol.html">StringProtocol</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Extensions/_ParsingDecoder.html">_ParsingDecoder</a>
               </li>
             </ul>
@@ -195,9 +171,6 @@
           <li class="nav-group-name">
             <a class="nav-group-name-link" href="../Protocols.html">Protocols</a>
             <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/ASTNodeConstructor.html">ASTNodeConstructor</a>
-              </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/AbstractSyntaxTree.html">AbstractSyntaxTree</a>
               </li>
@@ -228,20 +201,11 @@
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/Token.html">Token</a>
               </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/ValuedNode.html">ValuedNode</a>
-              </li>
             </ul>
           </li>
           <li class="nav-group-name">
             <a class="nav-group-name-link" href="../Structs.html">Structures</a>
             <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Structs/HeterogeneousNode.html">HeterogeneousNode</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Structs/HomogenousNode.html">HomogenousNode</a>
-              </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/HomogenousTree.html">HomogenousTree</a>
               </li>
@@ -494,106 +458,13 @@ create an instance of the receiving <code>IR</code></p>
                 </li>
               </ul>
             </div>
-            <div class="task-group">
-              <ul class="item-container">
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:9OysterKit8LanguagePAAE6streams11AnySequenceVyqd__Gqd_0_5lexer_tAA4NodeRd__AA15LexicalAnalyzerRd_0_r0_lF"></a>
-                    <a name="//apple_ref/swift/Method/stream(lexer:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit8LanguagePAAE6streams11AnySequenceVyqd__Gqd_0_5lexer_tAA4NodeRd__AA15LexicalAnalyzerRd_0_r0_lF">stream(lexer:)</a>
-                    </code>
-                      <span class="declaration-note">
-                        Extension method
-                      </span>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Creates a <code>Sequence</code> of <code>Nodes</code> that can be iterated over. The intention is that these are lazily constructed meaning that they appropriate for use
-for large files where a full AST is not necessarily required.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">stream</span><span class="o">&lt;</span><span class="kt">N</span><span class="p">:</span><span class="kt"><a href="../Protocols/Node.html">Node</a></span><span class="p">,</span><span class="kt">L</span><span class="p">:</span><span class="kt"><a href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a></span><span class="o">&gt;</span><span class="p">(</span><span class="nv">lexer</span><span class="p">:</span><span class="kt">L</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">AnySequence</span><span class="o">&lt;</span><span class="kt">N</span><span class="o">&gt;</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>lexer</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The <code><a href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a></code> to use</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p>A sequence of <code><a href="../Protocols/Node.html">Node</a></code>s</p>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:9OysterKit8LanguagePAAE6streams11AnySequenceVyqd__GSS6source_tAA4NodeRd__lF"></a>
-                    <a name="//apple_ref/swift/Method/stream(source:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit8LanguagePAAE6streams11AnySequenceVyqd__GSS6source_tAA4NodeRd__lF">stream(source:)</a>
-                    </code>
-                      <span class="declaration-note">
-                        Extension method
-                      </span>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Creates a <code>Sequence</code> of <code>Nodes</code> that can be iterated over using the standard <code><a href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a></code>, <code><a href="../Classes/Lexer.html">Lexer</a></code>. The intention is that these are lazily constructed meaning that they appropriate for use
- for large files where a full AST is not necessarily required.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">stream</span><span class="o">&lt;</span><span class="kt">N</span><span class="p">:</span><span class="kt"><a href="../Protocols/Node.html">Node</a></span><span class="o">&gt;</span><span class="p">(</span><span class="nv">source</span><span class="p">:</span><span class="kt">String</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">AnySequence</span><span class="o">&lt;</span><span class="kt">N</span><span class="o">&gt;</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p>A sequence of <code><a href="../Protocols/Node.html">Node</a></code>s</p>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
           </div>
         </section>
 
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-02-04)</p>
+      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-02-06)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

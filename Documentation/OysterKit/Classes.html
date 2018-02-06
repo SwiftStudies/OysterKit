@@ -59,25 +59,10 @@
                 <a class="nav-group-task-link" href="Classes/DebuggingDelegate.html">DebuggingDelegate</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/DefaultHeterogenousConstructor.html">DefaultHeterogenousConstructor</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/DefaultHomogenousAST.html">DefaultHomogenousAST</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/ForwardingIR.html">ForwardingIR</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/HeterogenousAST.html">HeterogenousAST</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/HomogenousAST.html">HomogenousAST</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/Lexer.html">Lexer</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/NodeIterator.html">NodeIterator</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/NodeStack.html">NodeStack</a>
@@ -93,12 +78,6 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/StateCache.html">StateCache</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/StreamConstructor.html">StreamConstructor</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/StreamRepresentation.html">StreamRepresentation</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/StringScanner.html">StringScanner</a>
@@ -173,9 +152,6 @@
                 <a class="nav-group-task-link" href="Extensions/String/UnicodeScalarView.html">– UnicodeScalarView</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Extensions/StringProtocol.html">StringProtocol</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Extensions/_ParsingDecoder.html">_ParsingDecoder</a>
               </li>
             </ul>
@@ -194,9 +170,6 @@
           <li class="nav-group-name">
             <a class="nav-group-name-link" href="Protocols.html">Protocols</a>
             <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Protocols/ASTNodeConstructor.html">ASTNodeConstructor</a>
-              </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/AbstractSyntaxTree.html">AbstractSyntaxTree</a>
               </li>
@@ -227,20 +200,11 @@
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/Token.html">Token</a>
               </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Protocols/ValuedNode.html">ValuedNode</a>
-              </li>
             </ul>
           </li>
           <li class="nav-group-name">
             <a class="nav-group-name-link" href="Structs.html">Structures</a>
             <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/HeterogeneousNode.html">HeterogeneousNode</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/HomogenousNode.html">HomogenousNode</a>
-              </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/HomogenousTree.html">HomogenousTree</a>
               </li>
@@ -280,67 +244,6 @@
 
         <section class="section">
           <div class="section-content">
-            <div class="task-group">
-              <ul class="item-container">
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:9OysterKit15HeterogenousASTC"></a>
-                    <a name="//apple_ref/swift/Class/HeterogenousAST" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit15HeterogenousASTC">HeterogenousAST</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The base class for any &lsquo;HeterogenousAST&rsquo;</p>
-
-                        <a href="Classes/HeterogenousAST.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">HeterogenousAST</span><span class="o">&lt;</span><span class="kt">NodeType</span> <span class="p">:</span> <span class="kt"><a href="Protocols/ValuedNode.html">ValuedNode</a></span><span class="p">,</span> <span class="kt">Constructor</span> <span class="p">:</span> <span class="kt"><a href="Protocols/ASTNodeConstructor.html">ASTNodeConstructor</a></span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Classes/HomogenousAST.html">HomogenousAST</a></span><span class="o">&lt;</span><span class="kt">NodeType</span><span class="p">,</span><span class="kt">Constructor</span><span class="o">&gt;</span> <span class="k">where</span> <span class="kt">Constructor</span><span class="o">.</span><span class="kt">NodeType</span> <span class="o">==</span> <span class="kt">NodeType</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:9OysterKit30DefaultHeterogenousConstructorC"></a>
-                    <a name="//apple_ref/swift/Class/DefaultHeterogenousConstructor" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit30DefaultHeterogenousConstructorC">DefaultHeterogenousConstructor</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Provides a default implementation of an <code><a href="Protocols/ASTNodeConstructor.html">ASTNodeConstructor</a></code> that is expected to construct nodes that can have different fundamental data types. All nodes
-are of type <code><a href="Structs/HeterogeneousNode.html">HeterogeneousNode</a></code>.</p>
-
-                        <a href="Classes/DefaultHeterogenousConstructor.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">DefaultHeterogenousConstructor</span> <span class="p">:</span> <span class="kt"><a href="Protocols/ASTNodeConstructor.html">ASTNodeConstructor</a></span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
             <div class="task-group">
               <ul class="item-container">
                 <li class="item">
@@ -527,69 +430,6 @@ multiple <code><a href="Protocols/IntermediateRepresentation.html">IntermediateR
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit20DefaultHomogenousASTC"></a>
-                    <a name="//apple_ref/swift/Class/DefaultHomogenousAST" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit20DefaultHomogenousASTC">DefaultHomogenousAST</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>A default concrete implementation of a <code><a href="Classes/HomogenousAST.html">HomogenousAST</a></code> which uses the <code>DefaultConstructor</code></p>
-
-                        <a href="Classes/DefaultHomogenousAST.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">final</span> <span class="kd">public</span> <span class="kd">class</span> <span class="kt">DefaultHomogenousAST</span><span class="o">&lt;</span><span class="kt">NodeType</span><span class="p">:</span><span class="kt"><a href="Protocols/Node.html">Node</a></span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Classes/HomogenousAST.html">HomogenousAST</a></span><span class="o">&lt;</span><span class="kt">NodeType</span><span class="p">,</span> <span class="kt">DefaultConstructor</span><span class="o">&lt;</span><span class="kt">NodeType</span><span class="o">&gt;&gt;</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:9OysterKit13HomogenousASTC"></a>
-                    <a name="//apple_ref/swift/Class/HomogenousAST" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit13HomogenousASTC">HomogenousAST</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>HomogenousAST is an <code>InternalRepresenation</code> which uses an instance of <code><a href="Protocols/ASTNodeConstructor.html">ASTNodeConstructor</a></code> to build its AST. Each node
-is off the same type.</p>
-
-<p>-SeeAlso: DefaultHomogenousAST<a href="NodeType:Node">NodeType:Node</a> which provides a default implementation using <code>DefaultConstructor&lt;NodeType:Node&gt;</code></p>
-
-                        <a href="Classes/HomogenousAST.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">HomogenousAST</span><span class="o">&lt;</span><span class="kt">NodeType</span><span class="p">,</span> <span class="kt">Constructor</span> <span class="p">:</span> <span class="kt"><a href="Protocols/ASTNodeConstructor.html">ASTNodeConstructor</a></span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></span> <span class="k">where</span> <span class="kt">Constructor</span><span class="o">.</span><span class="kt">NodeType</span> <span class="o">==</span> <span class="kt">NodeType</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul class="item-container">
-                <li class="item">
-                  <div>
-                    <code>
                     <a name="/s:9OysterKit14NodeStackEntryC"></a>
                     <a name="//apple_ref/swift/Class/NodeStackEntry" class="dashAnchor"></a>
                     <a class="token" href="#/s:9OysterKit14NodeStackEntryC">NodeStackEntry</a>
@@ -719,95 +559,6 @@ is off the same type.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit17StreamConstructorC"></a>
-                    <a name="//apple_ref/swift/Class/StreamConstructor" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit17StreamConstructorC">StreamConstructor</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>A default constructor to be used for streams. Unlike AST constructors it does not attempt to maintain any kind of hierarchy of nodes</p>
-
-                        <a href="Classes/StreamConstructor.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">final</span> <span class="kd">public</span> <span class="kd">class</span> <span class="kt">StreamConstructor</span><span class="o">&lt;</span><span class="kt">NodeType</span><span class="p">:</span><span class="kt"><a href="Protocols/Node.html">Node</a></span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/ASTNodeConstructor.html">ASTNodeConstructor</a></span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:9OysterKit12NodeIteratorC"></a>
-                    <a name="//apple_ref/swift/Class/NodeIterator" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit12NodeIteratorC">NodeIterator</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>A lazy iterator that parses for the next <code><a href="Protocols/Token.html">Token</a></code> each time the consumer of the <code>IteratorProtocol</code> requests the <code>next()</code> entry. These cannot
-be created directly but are supplied from the <code>stream()</code> functions of a <code><a href="Protocols/Language.html">Language</a></code></p>
-
-                        <a href="Classes/NodeIterator.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">NodeIterator</span><span class="o">&lt;</span><span class="kt">N</span><span class="p">:</span><span class="kt"><a href="Protocols/Node.html">Node</a></span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">IteratorProtocol</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:9OysterKit20StreamRepresentationC"></a>
-                    <a name="//apple_ref/swift/Class/StreamRepresentation" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit20StreamRepresentationC">StreamRepresentation</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Enables a lazy sequence of <code>Nodes</code> to be created from a source <code>String</code> and <code><a href="Protocols/Language.html">Language</a></code> to be applied</p>
-
-                        <a href="Classes/StreamRepresentation.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">StreamRepresentation</span><span class="o">&lt;</span><span class="kt">N</span><span class="p">:</span><span class="kt"><a href="Protocols/Node.html">Node</a></span><span class="p">,</span><span class="kt">L</span><span class="p">:</span><span class="kt"><a href="Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a></span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">Sequence</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul class="item-container">
-                <li class="item">
-                  <div>
-                    <code>
                     <a name="/s:9OysterKit11TokenStreamC"></a>
                     <a name="//apple_ref/swift/Class/TokenStream" class="dashAnchor"></a>
                     <a class="token" href="#/s:9OysterKit11TokenStreamC">TokenStream</a>
@@ -902,7 +653,7 @@ root rules (those at the lowest level in the language) in the supplied <code><a 
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-02-04)</p>
+      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-02-06)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

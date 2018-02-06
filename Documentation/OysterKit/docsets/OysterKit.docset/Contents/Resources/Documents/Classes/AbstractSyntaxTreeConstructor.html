@@ -60,25 +60,10 @@
                 <a class="nav-group-task-link" href="../Classes/DebuggingDelegate.html">DebuggingDelegate</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Classes/DefaultHeterogenousConstructor.html">DefaultHeterogenousConstructor</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Classes/DefaultHomogenousAST.html">DefaultHomogenousAST</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/ForwardingIR.html">ForwardingIR</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Classes/HeterogenousAST.html">HeterogenousAST</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Classes/HomogenousAST.html">HomogenousAST</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/Lexer.html">Lexer</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Classes/NodeIterator.html">NodeIterator</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/NodeStack.html">NodeStack</a>
@@ -94,12 +79,6 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/StateCache.html">StateCache</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Classes/StreamConstructor.html">StreamConstructor</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Classes/StreamRepresentation.html">StreamRepresentation</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/StringScanner.html">StringScanner</a>
@@ -174,9 +153,6 @@
                 <a class="nav-group-task-link" href="../Extensions/String/UnicodeScalarView.html">– UnicodeScalarView</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Extensions/StringProtocol.html">StringProtocol</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Extensions/_ParsingDecoder.html">_ParsingDecoder</a>
               </li>
             </ul>
@@ -195,9 +171,6 @@
           <li class="nav-group-name">
             <a class="nav-group-name-link" href="../Protocols.html">Protocols</a>
             <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/ASTNodeConstructor.html">ASTNodeConstructor</a>
-              </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/AbstractSyntaxTree.html">AbstractSyntaxTree</a>
               </li>
@@ -228,20 +201,11 @@
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/Token.html">Token</a>
               </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/ValuedNode.html">ValuedNode</a>
-              </li>
             </ul>
           </li>
           <li class="nav-group-name">
             <a class="nav-group-name-link" href="../Structs.html">Structures</a>
             <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Structs/HeterogeneousNode.html">HeterogeneousNode</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Structs/HomogenousNode.html">HomogenousNode</a>
-              </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/HomogenousTree.html">HomogenousTree</a>
               </li>
@@ -859,9 +823,9 @@ specifying your own AST to use) and you should consider <code>build(from source:
                         <p>If the token is transient <code>nil</code> is returned. Otherwise the behaviour is determined by the number of children</p>
 
 <ul>
-<li>0: A new instance of <code><a href="../Structs/HeterogeneousNode.html">HeterogeneousNode</a></code> is created and returned</li>
+<li>0: A new instance of <code>HeterogeneousNode</code> is created and returned</li>
 <li>1: Providing the token is not @pin&rsquo;d a new <code>HeterogeousNode</code> is created for the child&rsquo;s range and value and returned If it is @pin&rsquo;d behaviour falls through to</li>
-<li><p><em>n</em>: Return a new <code><a href="../Structs/HeterogeneousNode.html">HeterogeneousNode</a></code> with the combined range of all children and the children are set as the node&rsquo;s value</p></li>
+<li><p><em>n</em>: Return a new <code>HeterogeneousNode</code> with the combined range of all children and the children are set as the node&rsquo;s value</p></li>
 </ul>
 
                       </div>
@@ -1032,7 +996,7 @@ specifying your own AST to use) and you should consider <code>build(from source:
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-02-04)</p>
+      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-02-06)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

@@ -10,35 +10,35 @@
     {
       "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/Generators/DynamicParserGenerator.swift",
       "line": 39,
-      "symbol": "STLRIntermediateRepresentation.runtimeLanguage",
+      "symbol": "STLRScope.runtimeLanguage",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/Generators/DynamicParserGenerator.swift",
       "line": 170,
-      "symbol": "STLRIntermediateRepresentation.GrammarRule.rule(from:creating:)",
+      "symbol": "STLRScope.GrammarRule.rule(from:creating:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/Generators/DynamicParserGenerator.swift",
       "line": 228,
-      "symbol": "STLRIntermediateRepresentation.Identifier.token",
+      "symbol": "STLRScope.Identifier.token",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/Generators/DynamicParserGenerator.swift",
       "line": 232,
-      "symbol": "STLRIntermediateRepresentation.Identifier.rule(from:creating:)",
+      "symbol": "STLRScope.Identifier.rule(from:creating:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/Generators/DynamicParserGenerator.swift",
       "line": 329,
-      "symbol": "STLRIntermediateRepresentation.Element.token",
+      "symbol": "STLRScope.Element.token",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
@@ -68,6 +68,34 @@
       "line": 18,
       "symbol": "InlineIdentifierOptimization.init()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/STLRCompiler.swift",
+      "line": 28,
+      "symbol": "STLRCompilerError",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/STLRCompiler.swift",
+      "line": 29,
+      "symbol": "STLRCompilerError.unknownIdentifier",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/STLRCompiler.swift",
+      "line": 30,
+      "symbol": "STLRCompilerError.identifierAlreadyDefined",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/STLRCompiler.swift",
+      "line": 31,
+      "symbol": "STLRCompilerError.noTokenNameSpecified",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
