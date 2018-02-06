@@ -20,7 +20,7 @@ class OptimizersTest: GrammarTest {
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
-        STLRIntermediateRepresentation.removeAllOptimizations()
+        STLRScope.removeAllOptimizations()
     }
     
     func testAttributePreservationOnInline(){
@@ -29,7 +29,7 @@ class OptimizersTest: GrammarTest {
             xyz = x "y" "z"
         """
 
-        STLRIntermediateRepresentation.register(optimizer: InlineIdentifierOptimization())
+        STLRScope.register(optimizer: InlineIdentifierOptimization())
         let parser = STLRParser(source: source)
         
         guard let compiledLanguage = parser.ast.runtimeLanguage else {

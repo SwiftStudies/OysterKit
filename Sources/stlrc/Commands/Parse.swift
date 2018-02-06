@@ -1,5 +1,6 @@
 import Foundation
 import OysterKit
+import STLR
 
 fileprivate extension String {
     var escaped : String {
@@ -57,23 +58,10 @@ class ParseCommand : Command, IndexableOptioned, IndexableParameterized, Grammar
                    options: Options.all,
                    parameters: Parameters.all)
     }
-    
-    func prettyPrint(source:String, contents:[HeterogeneousNode], indent : String = ""){
-        for node in contents {
-            if node.children.count > 0 {
-                print("\(indent)"+"\(node.token)".style(.bold))
-                prettyPrint(source:source, contents: node.children, indent: indent+"\t")
-            } else {
-                print("\(indent)"+"\(node.token)".style(.bold)+" '\(String(source[node.range]).escaped)'")
-            }
-        }
-    }
-    
 
-    
     func parseInput(language:Language, input:String) throws {
-        let ast : DefaultHeterogeneousAST = language.build(source: input)
-        
+        let ast = STLRParser(source: input).ast
+
         guard ast.errors.count == 0 else {
             print("Parsing failed: ".color(.red))
             for error in ast.errors {
@@ -86,7 +74,7 @@ class ParseCommand : Command, IndexableOptioned, IndexableParameterized, Grammar
             return
         }
         
-        prettyPrint(source: input, contents: ast.tokens)
+        print(ast.description)
     }
     
     override func run() -> RunnableReturnValue {

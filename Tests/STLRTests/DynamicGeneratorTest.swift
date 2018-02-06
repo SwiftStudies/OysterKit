@@ -24,7 +24,7 @@
 
 import XCTest
 @testable import OysterKit
-import STLR
+@testable import STLR
 
 
 @available(swift, deprecated: 4.0, message: "TEST DISABLED PENDING IMPLEMENTATION")
@@ -59,13 +59,13 @@ class DynamicGeneratorTest: XCTestCase {
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        STLRIntermediateRepresentation.removeAllOptimizations()
+        STLRScope.removeAllOptimizations()
     }
     
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
-        STLRIntermediateRepresentation.removeAllOptimizations()
+        STLRScope.removeAllOptimizations()
     }
 
     /// Intended to test the fix for Issue #39
@@ -80,7 +80,7 @@ class DynamicGeneratorTest: XCTestCase {
         }
         
         if let tree = try? AbstractSyntaxTreeConstructor().build(">", using: dynamicLangauage)  {
-            print(tree.description)
+//            print(tree.description)
             XCTAssertTrue("\(tree.token)" == "arrows", "Root node should be arrows")
             XCTAssertTrue(tree.isSet(annotation: RuleAnnotation.custom(label: "forArrows")))
             guard let arrowNode = tree.nodeAtPath(["arrow"]) else {
@@ -106,7 +106,7 @@ class DynamicGeneratorTest: XCTestCase {
         }
         
         if let tree = try? AbstractSyntaxTreeConstructor().build(">", using: dynamicLangauage)  {
-            print(tree.description)
+//            print(tree.description)
             XCTAssertTrue("\(tree.token)" == "arrows", "Root node should be arrows")
             XCTAssertTrue(tree.isSet(annotation: RuleAnnotation.custom(label: "forArrows")))
             XCTAssertEqual(tree.annotations.count, 1)
@@ -132,7 +132,7 @@ class DynamicGeneratorTest: XCTestCase {
         }
         
         if let tree = try? AbstractSyntaxTreeConstructor().build(">", using: dynamicLangauage)  {
-            print(tree.description)
+//           print(tree.description)
             XCTAssertTrue("\(tree.token)" == "arrows", "Root node should be arrows")
             XCTAssertTrue(tree.isSet(annotation: RuleAnnotation.custom(label: "forArrows")))
             guard let arrowNode = tree.nodeAtPath(["arrow"]) else {
@@ -158,7 +158,7 @@ class DynamicGeneratorTest: XCTestCase {
         }
         
         if let tree = try? AbstractSyntaxTreeConstructor().build(">", using: dynamicLangauage)  {
-            print(tree.description)
+//            print(tree.description)
             XCTAssertTrue("\(tree.token)" == "arrows", "Root node should be arrows")
             XCTAssertTrue(tree.isSet(annotation: RuleAnnotation.custom(label: "forArrows")))
             guard let arrowNode = tree.nodeAtPath(["arrow"]) else {
@@ -187,7 +187,7 @@ class DynamicGeneratorTest: XCTestCase {
         
         do {
             let tree = try AbstractSyntaxTreeConstructor().build("baca", using: dynamicLangauage)
-            print(tree.description)
+//            print(tree.description)
             XCTAssertEqual("\(tree.children[0].token)","ba")
             XCTAssertTrue(tree.children[0].annotations.isEmpty)
             XCTAssertEqual("\(tree.children[0].children[0].token)","a")
@@ -217,7 +217,7 @@ class DynamicGeneratorTest: XCTestCase {
         }
         
         if let tree = try? AbstractSyntaxTreeConstructor().build(":t:t::v:v::t:t:", using: dynamicLangauage)  {
-            print(tree.description)
+//            print(tree.description)
             // Transient means it doesn't create child nodes, but is in the range
             XCTAssertEqual("\(tree.children[0].token)","ts")
             XCTAssertEqual(tree.children[0].children.count,1)
@@ -255,7 +255,7 @@ class DynamicGeneratorTest: XCTestCase {
         }
         
         if let tree = try? AbstractSyntaxTreeConstructor().build(":t:t::v:v::t:t:", using: dynamicLangauage)  {
-            print(tree.description)
+ //           print(tree.description)
             // Transient means it doesn't create child nodes, but is in the range
             XCTAssertEqual("\(tree.children[0].token)","ts")
             XCTAssertEqual(tree.children[0].children.count,1)
@@ -584,7 +584,7 @@ class DynamicGeneratorTest: XCTestCase {
     }
     
     func testIllegalLeftHandRecursionDetection(){
-        let source = "rhs = rhs; expr = lhs; lhs = (expr \" \");"
+        let source = "rhs = rhs\n expr = lhs\n lhs = (expr \" \")\n"
         let stlr = STLRParser(source: source)
         
         for _ in stlr.ast.rules {
@@ -600,8 +600,10 @@ class DynamicGeneratorTest: XCTestCase {
     }
     
     func testDirectLeftHandRecursion(){
-        let source = "rhs = (\">\" rhs) | (\"<\" rhs) ;"
+        let source = "rhs = (\">\" rhs) | (\"<\" rhs)"
         let stlr = STLRParser(source: source)
+        
+        
         
         //To stop the stack overflow for now, but it's the right line
         XCTAssert(stlr.ast.runtimeLanguage != nil)
@@ -609,7 +611,7 @@ class DynamicGeneratorTest: XCTestCase {
         for rule in stlr.ast.rules {
             if let identifier = rule.identifier, let parserRule = rule.rule(from:stlr.ast, creating: identifier.token) {
                 rules.append(parserRule)
-                print("\(parserRule)")
+//                print("\(parserRule)")
             } else {
                 XCTFail("Rule has missing identifier or rule")
             }
@@ -766,7 +768,7 @@ class DynamicGeneratorTest: XCTestCase {
     }
     
     func generatedStringSerialization(for source:String, desiredRule rule: Int = 0)throws ->String {
-        let ast = STLRParser(source: source).ast
+        let ast = STLRScope(building: source)
         
         if ast.rules.count <= rule {
             throw TestError.expected("at least \(rule + 1) rule, but got \(ast.rules.count)")
@@ -843,8 +845,8 @@ class DynamicGeneratorTest: XCTestCase {
     }
     
     func testTerminalChoiceWithIndividualAnnotationsOptimized(){
-        STLRIntermediateRepresentation.register(optimizer: InlineIdentifierOptimization())
-        STLRIntermediateRepresentation.register(optimizer: CharacterSetOnlyChoiceOptimizer())
+        STLRScope.register(optimizer: InlineIdentifierOptimization())
+        STLRScope.register(optimizer: CharacterSetOnlyChoiceOptimizer())
         do {
             let reference = "tokenA =  (@error(\"error a\") \"a\"|@error(\"error b\") \"b\"|@error(\"error c\") \"c\")"
             let result = try generatedStringSerialization(for: "letter = @error(\"error a\") \"a\"| @error(\"error b\")\"b\"| @error(\"error c\") \"c\"").replacingOccurrences(of: "\n", with: "").replacingOccurrences(of: "\t", with: "")

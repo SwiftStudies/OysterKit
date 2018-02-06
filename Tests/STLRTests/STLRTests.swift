@@ -10,7 +10,8 @@ import Foundation
 
 import XCTest
 @testable import OysterKit
-import STLR
+@testable import ExampleLanguages
+@testable import STLR
 
 
 class STLRTest: XCTestCase {
@@ -32,7 +33,7 @@ class STLRTest: XCTestCase {
             let ast = try AbstractSyntaxTreeConstructor().build(source, using: testLanguage)
             if ast.children.count != 0 {
                 XCTFail("Expected one node, no children")
-                print(ast.description)
+//                print(ast.description)
                 return
             }
             XCTAssertEqual(ast.token.rawValue, 1)
@@ -60,12 +61,12 @@ class STLRTest: XCTestCase {
         }
 
 
-        print(stlr.ast.swift(grammar: "Test")!)
+//        print(stlr.ast.swift(grammar: "Test")!)
         
         var source = "abc 123"
         var ast = try! AbstractSyntaxTreeConstructor().build(source, using: testLanguage)
        
-        print(ast.description)
+//        print(ast.description)
         
         XCTAssertNotNil(ast.children.first?.token , "Basic parsing did not work")
 
@@ -76,7 +77,43 @@ class STLRTest: XCTestCase {
 
         
         
-        print("Done")
+//        print("Done")
+    }
+    
+    func testParseSelf(){
+////        for bundle in Bundle.allBundles{
+////            print("BUNDLE PATH: \(bundle)")
+////        }
+//        
+//        if let _ = try? String(contentsOfFile: "/Volumes/Personal/SPM/OysterKit/Resources/STLR.stlr") {
+//            let source = """
+//            @void a = "a"
+//            b = "b"
+//            ab= a b
+//            """
+//            
+//            let compiledScope = STLRScope(building: source)
+//            
+//            compiledScope.errors.forEach(){
+//                XCTFail("\($0)")
+//            }
+//            
+////            compiledScope.rules.forEach(){
+////                print($0.description)
+////            }
+//            
+////            print(compiledScope.swift(grammar: "Test")!)
+//        } else {
+//            XCTFail("Could not load source")
+//        }
+
+    }
+    
+    var allTests : [(()->Void)]{
+        return [
+            testParseSelf
+        ]
     }
     
 }
+

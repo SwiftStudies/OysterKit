@@ -26,7 +26,7 @@ import Foundation
 import OysterKit
 
 /// Extensions to provide validation functions
-public extension STLRIntermediateRepresentation{
+public extension STLRScope{
     
     /// Validates the AST throwing an exception if validation fails
     public func validate() throws{
@@ -42,7 +42,8 @@ public extension STLRIntermediateRepresentation{
         }
         for (_,identifier) in identifiers{
             if identifier.grammarRule == nil {
-                errors.append(LanguageError.semanticError(at: identifier.references[0], referencing: nil, message: "\(identifier.name) is never defined"))
+                errors.append(STLRCompilerError.unknownIdentifier(named: identifier.name))
+//                errors.append(LanguageError.semanticError(at: identifier.references[0], referencing: nil, message: "\(identifier.name) is never defined"))
             }
         }
         

@@ -28,7 +28,7 @@ import OysterKit
 
 /// A parser for [STLR](https://github.com/SwiftStudies/OysterKit/blob/master/STLR.md) source files
 public class STLRParser : Parser{
-    public var ast    : STLRIntermediateRepresentation
+    public var ast    : STLRScope
     
     /**
      Creates a new instance of the parser and parses the source
@@ -36,13 +36,10 @@ public class STLRParser : Parser{
      - Parameter source: The STLR source
     */
     public init(source:String){
-        ast = STLRIntermediateRepresentation()
+        ast = STLRScope(building: source)
 
         super.init(grammar: STLR.generatedLanguage.grammar)
         
-        //We don't need the resultant tree
-        let _ = build(intermediateRepresentation: HeterogenousAST<HeterogeneousNode,STLRIntermediateRepresentation>(constructor: ast), using: Lexer(source: source))
-                
         ast.optimize()
     }
     

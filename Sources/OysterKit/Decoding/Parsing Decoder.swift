@@ -300,7 +300,7 @@ fileprivate struct _ParsingKeyedDecodingContainer<K : CodingKey> : KeyedDecoding
     // MARK: - KeyedDecodingContainerProtocol Methods
     public var allKeys: [Key] {
         return container.contents.map { (node) -> CodingKey in
-            node.key
+            node.key 
         } as! [K]
     }
     
@@ -324,7 +324,7 @@ fileprivate struct _ParsingKeyedDecodingContainer<K : CodingKey> : KeyedDecoding
         }
         
         return try self.decoder.with(pushedKey: key) {
-            guard let value = try self.decoder.unbox(entry, as: Bool.self) else {
+            guard let value = try self.decoder.unbox(entry.stringValue, as: Bool.self) else {
                 throw DecodingError.valueNotFound(type, DecodingError.Context(codingPath: self.decoder.codingPath, debugDescription: "Expected \(type) value but found null instead."))
             }
             
@@ -1036,6 +1036,9 @@ fileprivate extension _ParsingDecoder {
         guard !(value is NSNull) else { return nil }
         
         guard let number = value as? NSNumber else {
+            if let string = value as? String, let boolean = Bool(string) {
+                return boolean
+            }
             throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "Expected \(type) and got \(value)"))
         }
         
@@ -1368,73 +1371,4 @@ fileprivate extension _ParsingDecoder {
         
         return decoded
     }
-}
-
-
-/// Adds some utility functions
-public extension HeterogenousAST where NodeType == HeterogeneousNode{
-    
-    /**
-     Returns the child at the specified `index`, which is bounds checked.
-     
-     - Parameter child: The index of the desired child, it will be bounds checked.
-     - Returns: The child node or `nil` if the supplied index is out of bounds.
-    */
-    subscript(child index:Int)->HeterogeneousNode?{
-        if index < tokens.count {
-            return tokens[index]
-        }
-        return nil
-    }
-}
-
-/// Adds some utility functions
-public extension HeterogeneousNode{
-    
-    /**
-     Returns the first child with the specified token.
-     
-     - Parameter child: The token of the desired child
-     - Returns: The child node or `nil` if the supplied index is out of bounds.
-     */
-    subscript(child token:Token)->HeterogeneousNode?{
-        guard let children = value as? [HeterogeneousNode] else {
-            return nil
-        }
-        
-        for child in children{
-            if child.token == token {
-                return child
-            }
-        }
-        
-        return nil
-    }
-    
-    
-    /**
-     Returns the child at the specified `index`, which is bounds checked.
-     
-     - Parameter child: The index of the desired child, it will be bounds checked.
-     - Returns: The child node or `nil` if the supplied index is out of bounds.
-     */
-    subscript(child index:Int)->HeterogeneousNode?{
-        guard let children = value as? [HeterogeneousNode] else {
-            return nil
-        }
-        if index < children.count {
-            return children[index]
-        }
-        return nil
-    }
-    
-    /// All children of the node in an array of `HeterogeneousNode`s.
-    var children : [HeterogeneousNode] {
-        guard let children = value as? [HeterogeneousNode] else {
-            return []
-        }
-        
-        return children
-    }
-    
 }

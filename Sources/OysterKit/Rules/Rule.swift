@@ -268,6 +268,7 @@ public enum RuleAnnotation : Hashable, CustomStringConvertible{
     ///A custom developer defined annotation that your own AST will interpret
     case custom(label:String)
     
+    ///The searchable hash value of the annotation
     public var hashValue: Int{
         switch self {
         case .token, .error, .void, .transient:

@@ -41,30 +41,4 @@ public extension String.UnicodeScalarView{
     }
 }
 
-/**
- A utility method to easily create a token stream from any string, allowing you to incrementally iterate over the results (lazily)
- 
-        ...
-        for token in "PARSE ME".tokenStream(with: myRules){
-            print("\(token)")
-        }
- 
- */
-public extension StringProtocol {
-    
-    /**
-     Creates an iterable stream of nodes from the String
-     
-     - Parameter with: The rules to use to parse the string
-     - Returns: A `NodeIterator` (which conforms to `IteratorProtocol`) which can be used to iterate through the nodes
-    */
-    public func tokenStream (with rules: [Rule]) -> NodeIterator<HomogenousNode> {
-        let parser = StreamRepresentation<HomogenousNode, Lexer>(
-            source: String(self),
-            language: rules.language
-        )
-        
-        return parser.makeIterator()
-    }
-}
 
