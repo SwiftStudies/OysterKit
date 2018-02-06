@@ -36,13 +36,10 @@ public class STLRParser : Parser{
      - Parameter source: The STLR source
     */
     public init(source:String){
-        ast = STLRScope()
+        ast = STLRScope(building: source)
 
         super.init(grammar: STLR.generatedLanguage.grammar)
         
-        //We don't need the resultant tree
-        let _ = build(intermediateRepresentation: HeterogenousAST<HeterogeneousNode,STLRScope>(constructor: ast), using: Lexer(source: source))
-                
         ast.optimize()
     }
     

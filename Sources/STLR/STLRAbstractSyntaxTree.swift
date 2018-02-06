@@ -45,6 +45,10 @@ struct STLRAbstractSyntaxTree {
     }
     
     struct Literal : Decodable {
+        struct String : Decodable {
+            let body : Swift.String
+            enum CodingKeys : Swift.String, CodingKey { case body = "stringBody" }
+        }
         let string : String?
         let number : Int?
         let boolean : Bool? //Doesn't seem to be able to cast boolean

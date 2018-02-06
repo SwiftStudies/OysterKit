@@ -26,6 +26,7 @@ import Foundation
 import OysterKit
 
 public enum STLRCompilerError : Error {
+    case unknownIdentifier(named:String)
     case identifierAlreadyDefined(named:String)
     case noTokenNameSpecified
 }
@@ -41,6 +42,9 @@ extension STLRScope {
         
         do {
             let ast = try STLRAbstractSyntaxTree(source)
+            
+            print(ast.intermediateRepresentation.description)
+            
             for rule in ast.rules {
                 try rule.compile(from: ast, into: self)
             }
@@ -135,6 +139,8 @@ extension STLRAbstractSyntaxTree.Element {
         if let terminal = element.terminal {
             return STLRScope.Element.terminal(terminal.build(), quantifier, lookahead, annotations)
         } else if let identifier = scope.get(identifier: element.identifier ?? "$ERROR$") {
+            return STLRScope.Element.identifier(identifier, quantifier, lookahead, annotations)
+        } else if let identifierName = element.identifier, let identifier = scope.register(identifier: identifierName) {
             return STLRScope.Element.identifier(identifier, quantifier, lookahead, annotations)
         } else if let expression = element.group?.expression {
             return STLRScope.Element.group(try expression.compile(from: ast, into: scope), quantifier, lookahead, annotations)
@@ -293,7 +299,7 @@ extension STLRAbstractSyntaxTree.Literal {
             return STLRScope.ElementAnnotationValue.bool(boolean)
         }
         if let string = string {
-            return STLRScope.ElementAnnotationValue.string(string)
+            return STLRScope.ElementAnnotationValue.string(string.body)
         }
         if let number = number {
             return STLRScope.ElementAnnotationValue.int(number)
