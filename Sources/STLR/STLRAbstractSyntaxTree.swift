@@ -52,7 +52,7 @@ struct STLRAbstractSyntaxTree {
     
     struct Annotation : Decodable {
         let label : String
-        let literal : Literal
+        let literal : Literal?
     }
     
     struct Element : Decodable {

@@ -85,24 +85,24 @@ class STLRTest: XCTestCase {
 //            print("BUNDLE PATH: \(bundle)")
 //        }
         
-        if let stlrSourceStlr = try? String(contentsOfFile: "/Volumes/Personal/SPM/OysterKit/Resources/STLR.stlr") {
+        if let _ = try? String(contentsOfFile: "/Volumes/Personal/SPM/OysterKit/Resources/STLR.stlr") {
             let source = """
             @void a = "a"
             b = "b"
             ab= a b
             """
             
-            do {
-                let compiledScope = STLRScope(building: source)
-                
-                compiledScope.errors.forEach(){
-                    XCTFail("\($0)")
-                }
-                
-                print(compiledScope.swift(grammar: "Test"))
-            } catch {
-                XCTFail("Could not parse:\n\n\(source)\n\nERROR: \(error)")
+            let compiledScope = STLRScope(building: source)
+            
+            compiledScope.errors.forEach(){
+                XCTFail("\($0)")
             }
+            
+            compiledScope.rules.forEach(){
+                print($0.description)
+            }
+            
+            print(compiledScope.swift(grammar: "Test")!)
         } else {
             XCTFail("Could not load source")
         }

@@ -27,6 +27,7 @@ import OysterKit
 
 public enum STLRCompilerError : Error {
     case identifierAlreadyDefined(named:String)
+    case noTokenNameSpecified
 }
 
 /**
@@ -253,13 +254,18 @@ extension STLRAbstractSyntaxTree.Annotation {
         
         switch label {
         case "token":
+            guard let tokenName = literal?.compile() else {
+                throw STLRCompilerError.noTokenNameSpecified
+            }
+            
+            
             return STLRScope.ElementAnnotationInstance(
                 STLRScope.ElementAnnotation.token,
-                value: literal.compile())
+                value: tokenName)
         case "error":
             return STLRScope.ElementAnnotationInstance(
                 STLRScope.ElementAnnotation.error,
-                value: literal.compile())
+                value: literal?.compile() ?? STLRScope.ElementAnnotationValue.string("Unspecified error"))
         case "void":
             return STLRScope.ElementAnnotationInstance(
                 STLRScope.ElementAnnotation.void,
@@ -275,7 +281,7 @@ extension STLRAbstractSyntaxTree.Annotation {
         default:
             return STLRScope.ElementAnnotationInstance(
                 STLRScope.ElementAnnotation.custom(label: label),
-                value: literal.compile() )
+                value: literal?.compile() ?? STLRScope.ElementAnnotationValue.set)
         }
     }
 
