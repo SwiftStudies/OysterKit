@@ -267,7 +267,7 @@ class GrammarTest: XCTestCase {
     }
     
     func testRuleWithIdentifier(){
-        source.add(line: "x = y ;")
+        source.add(line: "x = y")
         
         let stlr = STLRParser(source: source)
         
@@ -334,40 +334,28 @@ class GrammarTest: XCTestCase {
         XCTAssert(ast.rules[2].identifier?.name ?? "fail" == "z")
     }
     
-    func testCompoundDeclarations(){
-        source.add(line: "xy = \"x\"")
-        source.add(line: "xy = \"y\"")
-        
-        let parser = STLRParser(source: source)
-        
-        guard let compiledLanguage = parser.ast.runtimeLanguage else {
-            XCTFail("Could not compile")
-            return
-        }
-        
-        let test = "xxxxyyyxyxy"
-        do {
-            let result = try AbstractSyntaxTreeConstructor().build(test, using: compiledLanguage)
-            XCTAssert(result.children.count == test.count, "Expected \(test.count) tokens but got \(result.children.count)")
-        } catch {
-            XCTFail("Unexpected error \(error)")
-        }
-        
-    }
-    
     func testUnknownCharacterSet(){
         source.add(line: "hello = \"hello\" .whiteSpacesAndNewlines")
         
         let parser = STLRParser(source: source)
         
-        guard parser.ast.errors.count == 3 else {
-            XCTFail("Expected one error but got \(parser.errors)")
+        guard let rootError = parser.ast.errors.first as? AbstractSyntaxTreeConstructor.ConstructionError  else {
+            XCTFail("Expected a root error")
             return
         }
         
-        XCTAssert("\(parser.ast.errors[0])".hasPrefix("Unknown character set"),"Incorrect error \(parser.ast.errors[0])")
-        XCTAssert("\(parser.ast.errors[1])".hasPrefix("Expected expression"),"Incorrect error \(parser.ast.errors[0])")
-        XCTAssert("\(parser.ast.errors[2])".hasPrefix("hello is never defined"),"Incorrect error \(parser.ast.errors[0])")
+        if case .constructionFailed(let errors) = rootError {
+            guard errors.count == 2 else {
+                XCTFail("Expected 3 errors but got \(errors.count)\n\(errors)")
+                return
+            }
+            
+            XCTAssert("\(errors[0])".hasPrefix("Unknown character set"),"Incorrect error \(parser.ast.errors[0])")
+            XCTAssert("\(errors[1])".hasPrefix("Expected expression"),"Incorrect error \(parser.ast.errors[0])")
+        } else {
+            XCTFail("Incorrect error type")
+        }
+        
     }
     
     func testUnterminatedString(){
@@ -375,13 +363,22 @@ class GrammarTest: XCTestCase {
         
         let parser = STLRParser(source: source)
         
-        guard parser.errors.count == 3 else {
-            XCTFail("Expected three errors but got \(parser.errors)")
+        guard let rootError = parser.ast.errors.first as? AbstractSyntaxTreeConstructor.ConstructionError  else {
+            XCTFail("Expected a root error")
             return
         }
-        XCTAssert("\(parser.ast.errors[0])".hasPrefix("Missing terminating quote"),"Incorrect error \(parser.ast.errors[0])")
-        XCTAssert("\(parser.ast.errors[1])".hasPrefix("Expected expression"),"Incorrect error \(parser.ast.errors[0])")
-        XCTAssert("\(parser.ast.errors[2])".hasPrefix("hello is never defined"),"Incorrect error \(parser.ast.errors[0])")
+        
+        if case .constructionFailed(let errors) = rootError {
+            guard errors.count == 2 else {
+                XCTFail("Expected 2 errors but got \(errors.count)\n\(errors)")
+                return
+            }
+            
+            XCTAssert("\(errors[0])".hasPrefix("Missing terminating quote"),"Incorrect error \(errors[0])")
+            XCTAssert("\(errors[1])".hasPrefix("Expected expression"),"Incorrect error \(errors[0])")
+        } else {
+            XCTFail("Incorrect error type")
+        }
     }
     
     
