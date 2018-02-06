@@ -868,6 +868,7 @@ public class STLRScope : CustomStringConvertible {
         init(with identifier:Identifier, _ expression:Expression?,in scope:STLRScope){
             grammar = scope
             location = nil
+            self.identifier = identifier
             self.expression = expression
         }
         
