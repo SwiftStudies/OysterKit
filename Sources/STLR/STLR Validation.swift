@@ -42,7 +42,8 @@ public extension STLRScope{
         }
         for (_,identifier) in identifiers{
             if identifier.grammarRule == nil {
-                errors.append(LanguageError.semanticError(at: identifier.references[0], referencing: nil, message: "\(identifier.name) is never defined"))
+                errors.append(STLRCompilerError.unknownIdentifier(named: identifier.name))
+//                errors.append(LanguageError.semanticError(at: identifier.references[0], referencing: nil, message: "\(identifier.name) is never defined"))
             }
         }
         
