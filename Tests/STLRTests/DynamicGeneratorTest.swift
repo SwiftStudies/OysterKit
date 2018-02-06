@@ -24,7 +24,7 @@
 
 import XCTest
 @testable import OysterKit
-import STLR
+@testable import STLR
 
 
 @available(swift, deprecated: 4.0, message: "TEST DISABLED PENDING IMPLEMENTATION")
@@ -766,7 +766,7 @@ class DynamicGeneratorTest: XCTestCase {
     }
     
     func generatedStringSerialization(for source:String, desiredRule rule: Int = 0)throws ->String {
-        let ast = STLRParser(source: source).ast
+        let ast = STLRScope(building: source)
         
         if ast.rules.count <= rule {
             throw TestError.expected("at least \(rule + 1) rule, but got \(ast.rules.count)")
