@@ -80,7 +80,7 @@ extension STLRScope {
 
 extension STLRAbstractSyntaxTree.Rule {
     func compile(from ast: STLRAbstractSyntaxTree, into scope:STLRScope) throws {
-        if let _ = scope.get(identifier: self.identifier) {
+        if let identifier = scope.get(identifier: self.identifier), identifier.grammarRule != nil {
             throw STLRCompilerError.identifierAlreadyDefined(named: self.identifier)
         }
 
