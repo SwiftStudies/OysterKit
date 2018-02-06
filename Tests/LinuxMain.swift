@@ -3,5 +3,5 @@ import XCTest
 @testable import STLRTests
 
 XCTMain([
-    testCase(STLRTests.allTests),
+//    testCase(STLRTests.allTests),
 ])
