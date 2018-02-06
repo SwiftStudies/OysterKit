@@ -126,6 +126,13 @@ extension STLRAbstractSyntaxTree.Terminal {
             return STLRScope.Terminal(with: STLRScope.TerminalCharacterSet(from: characterRange[0].terminalBody, to: characterRange[1].terminalBody))
         } else if let terminalString = terminalString?.terminalBody {
             return STLRScope.Terminal.init(with: terminalString)
+        } else if let otherCharacterSet = characterSet {
+            switch otherCharacterSet.characterSetName {
+            case .backslash:
+                return STLRScope.Terminal.init(with: "\\\\")
+            default:
+                fatalError("Standard character set should have covered other cases")
+            }
         }
         
         fatalError("Unimplemented Terminal type")
