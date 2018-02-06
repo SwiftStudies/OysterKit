@@ -375,9 +375,4 @@ enum STLR : Int, Token {
 	public static var generatedLanguage : Parser {
 		return Parser(grammar: [T.grammar._rule()])
 	}
-
-	// Convient way to apply your grammar to a string
-	public static func parse(source: String) -> DefaultHeterogeneousAST {
-		return STLR.generatedLanguage.build(source: source)
-	}
 }
