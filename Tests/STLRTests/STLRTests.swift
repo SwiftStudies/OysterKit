@@ -81,45 +81,30 @@ class STLRTest: XCTestCase {
     }
     
     func testParseSelf(){
-        
-
-        struct GrammarAST : Decodable {
-            
-        }
-        
 //        for bundle in Bundle.allBundles{
 //            print("BUNDLE PATH: \(bundle)")
 //        }
         
         if let stlrSourceStlr = try? String(contentsOfFile: "/Volumes/Personal/SPM/OysterKit/Resources/STLR.stlr") {
-//            // First of all compile it into a run time rule set with the old version
-//            guard let stlrGrammar = STLRParser(source: stlrSourceStlr).ast.runtimeLanguage else {
-//                fatalError("Could not parse STLR with old STLR")
-//            }
-//
             let source = """
             @void a = "a"
             b = "b"
             ab= a b
-"""
+            """
             
             do {
-                let homogenousTree = try AbstractSyntaxTreeConstructor().build(source, using: STLR.generatedLanguage)
-                print(homogenousTree.description)
+                let compiledScope = STLRScope(building: source)
                 
-                do {
-                    let grammar = try STLRAbstractSyntaxTree(source)
-                    
-                    print(grammar.rules.count)
-                } catch {
-                    print("\(error)")
+                compiledScope.errors.forEach(){
+                    XCTFail("\($0)")
                 }
                 
+                print(compiledScope.swift(grammar: "Test"))
             } catch {
-                print("Could not parse:\n\n\(source)\n\nERROR: \(error)")
+                XCTFail("Could not parse:\n\n\(source)\n\nERROR: \(error)")
             }
         } else {
-            print("Could not load source")
+            XCTFail("Could not load source")
         }
 
     }

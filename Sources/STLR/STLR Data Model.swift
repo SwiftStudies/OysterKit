@@ -865,7 +865,7 @@ public class STLRScope : CustomStringConvertible {
          - Parameter expression: The expression for the rule
          - Parameter scope: The ``STLRScope`` this belongs to
          */
-        init(with identifier:Identifier, _ expression:Expression,in scope:STLRScope){
+        init(with identifier:Identifier, _ expression:Expression?,in scope:STLRScope){
             grammar = scope
             location = nil
             self.expression = expression

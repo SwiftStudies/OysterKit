@@ -23,6 +23,7 @@
 //    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Foundation
+import OysterKit
 
 public enum STLRCompilerError : Error {
     case identifierAlreadyDefined(named:String)
@@ -112,23 +113,138 @@ extension STLRAbstractSyntaxTree.Expression {
     }
 }
 
-extension STLRAbstractSyntaxTree.Element {
-    func compile(from ast: STLRAbstractSyntaxTree, into scope:STLRScope) throws -> STLRScope.Element {
-        let annotations = try self.annotations?.map({ return try $0.compile(from:ast, into: scope)}) ?? []
-        let lookahead = self.lookahead ?? "false" == "true"
-        let transient = self.quantifier == .
+extension STLRAbstractSyntaxTree.Terminal {
+    func build()->STLRScope.Terminal {
+        if let characterSet = STLRScope.TerminalCharacterSet(rawValue: characterSet?.characterSetName.rawValue ?? "$ERROR$") {
+            return STLRScope.Terminal(with: characterSet)
+        } else if let characterRange = characterRange {
+            return STLRScope.Terminal(with: STLRScope.TerminalCharacterSet(from: characterRange[0].terminalBody, to: characterRange[1].terminalBody))
+        } else if let terminalString = terminalString?.terminalBody {
+            return STLRScope.Terminal.init(with: terminalString)
+        }
         
-        let transient   : Bool                  = children[STLR.transient]?.cast() ?? false
-        
-        
-        let not : Modifier = not
-        
-        var negated     : Modifier            = children[STLR.negated]?.cast() ?? .one
-        var quantifier  : Modifier            = children[STLR.quantifier]?.cast() ?? .one
+        fatalError("Unimplemented Terminal type")
+    }
+}
 
-        STLRScope.
+extension STLRAbstractSyntaxTree.Element {
+    
+    //// Creates the raw element
+    private func build(using element: STLRAbstractSyntaxTree.Element,from ast: STLRAbstractSyntaxTree, into scope:STLRScope, _ quantifier:STLRScope.Modifier, _ lookahead:Bool, _ annotations: STLRScope.ElementAnnotations) throws ->STLRScope.Element {
+        if let terminal = element.terminal {
+            return STLRScope.Element.terminal(terminal.build(), quantifier, lookahead, annotations)
+        } else if let identifier = scope.get(identifier: element.identifier ?? "$ERROR$") {
+            return STLRScope.Element.identifier(identifier, quantifier, lookahead, annotations)
+        } else if let expression = element.group?.expression {
+            return STLRScope.Element.group(try expression.compile(from: ast, into: scope), quantifier, lookahead, annotations)
+        } else {
+            fatalError("Element should be a terminal, identifier, or group")
+        }
+    }
+
+    func compile(from ast: STLRAbstractSyntaxTree, into scope:STLRScope) throws -> STLRScope.Element {
+        let lookahead = self.lookahead != nil
+        let transient = self.transient != nil
         
-        fatalError("Unimplemented element type")
+        var negated  = self.negated?.compile() ?? STLRScope.Modifier.one
+        var quantifier  = self.quantifier?.compile() ?? STLRScope.Modifier.one
+        var annotations = try self.annotations?.map({ return try $0.compile(from:ast, into: scope)}) ?? []
+
+        //If there is no specific annotation and a transient mark (~) was given then create an annotation for it
+        if transient && annotations[annotation: STLRScope.ElementAnnotation.transient] == nil{
+            annotations.append(STLRScope.ElementAnnotationInstance(STLRScope.ElementAnnotation.transient, value: STLRScope.ElementAnnotationValue.set))
+        }
+        
+        // Try to fold negation into the quantifier
+        if quantifier == .one  {
+            quantifier = negated
+            negated = .one
+        }
+        
+        var element : STLRScope.Element
+        
+        if let inlineIdentifier = annotations[annotation: STLRScope.ElementAnnotation.token], case let STLRScope.ElementAnnotationValue.string(stringValue) = inlineIdentifier {
+            var identifier : STLRScope.Identifier
+            
+            if let existingIdentifier = scope.identifiers[stringValue] {
+                identifier = existingIdentifier
+            } else {
+                identifier = scope.register(identifier: stringValue)
+                
+                // This is a copy from rule and should be refactored into a common sub-method
+                let rule : STLRScope.GrammarRule
+                if identifier.grammarRule == nil {
+                    rule = STLRScope.GrammarRule(with: identifier, nil, in: scope)
+                    identifier.grammarRule = rule
+                    rule.identifier = identifier
+                    
+                    //This may be a bug in rule definition too
+                    scope.rules.append(rule)
+                } else {
+                    rule = identifier.grammarRule!
+                }
+                
+                rule.expression = STLRScope.Expression.element(try build(using: self, from: ast, into: scope, quantifier, lookahead, []))
+                
+                for annotation in annotations.remove(STLRScope.ElementAnnotation.token) {
+                    if identifier.annotations[annotation: annotation.annotation] != nil {
+                        scope.errors.append(LanguageError.warning(at: identifier.references[0], message: "\(identifier.name) has overlapping annotations"))
+                    }
+                    
+                    identifier.annotations.append(annotation)
+                }
+            }
+            
+            //Finally create a new element as if they had always referenced the identifier here
+            annotations = []
+            
+            return STLRScope.Element.identifier(identifier, .one, false, [])
+        } else {
+            //Wrap elements with negation AND another quantifier in a group
+            if negated != .one && quantifier != .one {
+                //Wrap in a lookahead group
+                element = STLRScope.Element.group(
+                    STLRScope.Expression.element(
+                        try build(using: self, from: ast, into: scope, negated, false, [])
+                ), quantifier, lookahead, annotations)
+            } else {
+                element = try build(using: self, from: ast, into: scope, quantifier, lookahead, annotations)
+            }
+        }
+        
+        //Wrap elements with lookahead AND a quantifier in a group
+        if quantifier != .one && lookahead {
+            //Change the lookahead setting on the element
+            element.setLookahead(lookahead: false)
+            
+            //Wrap in a lookahead group
+            element = STLRScope.Element.group(STLRScope.Expression.element(element), STLRScope.Modifier.one, true, annotations)
+        }
+        
+        return element
+    }
+}
+
+extension STLRAbstractSyntaxTree.Quantifier {
+    func compile()->STLRScope.Modifier{
+        switch self {
+        case .noneOrMore:
+            return STLRScope.Modifier.zeroOrMore
+        case .optional:
+            return STLRScope.Modifier.zeroOrOne
+        case .oneOrMore:
+            return STLRScope.Modifier.oneOrMore
+        case .transient:
+            return STLRScope.Modifier.transient
+        case .void:
+            return STLRScope.Modifier.void
+        }
+    }
+}
+
+extension STLRAbstractSyntaxTree.Qualifier{
+    func compile()->STLRScope.Modifier{
+        return STLRScope.Modifier.not
     }
 }
 

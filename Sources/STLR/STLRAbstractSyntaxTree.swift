@@ -58,6 +58,7 @@ struct STLRAbstractSyntaxTree {
     struct Element : Decodable {
         //These apply to all
         let negated  : Qualifier?
+        let transient : Quantifier?
         let quantifier : Quantifier?
         let annotations : [Annotation]?
         let lookahead   : String?
