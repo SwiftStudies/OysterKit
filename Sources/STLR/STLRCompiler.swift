@@ -140,8 +140,8 @@ extension STLRAbstractSyntaxTree.Element {
             return STLRScope.Element.terminal(terminal.build(), quantifier, lookahead, annotations)
         } else if let identifier = scope.get(identifier: element.identifier ?? "$ERROR$") {
             return STLRScope.Element.identifier(identifier, quantifier, lookahead, annotations)
-        } else if let identifierName = element.identifier, let identifier = scope.register(identifier: identifierName) {
-            return STLRScope.Element.identifier(identifier, quantifier, lookahead, annotations)
+        } else if let identifierName = element.identifier {
+            return STLRScope.Element.identifier(scope.register(identifier: identifierName), quantifier, lookahead, annotations)
         } else if let expression = element.group?.expression {
             return STLRScope.Element.group(try expression.compile(from: ast, into: scope), quantifier, lookahead, annotations)
         } else {
