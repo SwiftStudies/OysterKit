@@ -80,8 +80,8 @@ class SwiftGenerationTest: XCTestCase {
         let withoutAnnotations = terminalExpression.swift(depth: 0, from: stlrIr, creating: TestTokens.testToken, annotations: [])
         let withAnnotations    = terminalExpression.swift(depth: 0, from: stlrIr, creating: TestTokens.testToken, annotations: annotations)
 
-        print(withAnnotations)
-        print(withoutAnnotations)
+//        print(withAnnotations)
+//        print(withoutAnnotations)
         
         XCTAssertEqual(withoutAnnotations, "\t\t\t\"T\".terminal(token: T.testToken, annotations: annotations)\n\n")
         XCTAssertEqual(withAnnotations, "\t\t\t\"T\".terminal(token: T.testToken, annotations: annotations.isEmpty ? [RuleAnnotation.error : RuleAnnotationValue.string(\"ERRORVALUE\")] : annotations)\n\n")

@@ -43,7 +43,7 @@ extension STLRScope {
         do {
             let ast = try STLRAbstractSyntaxTree(source)
             
-            print(ast.intermediateRepresentation.description)
+//            print(ast.intermediateRepresentation.description)
             
             for rule in ast.rules {
                 try rule.compile(from: ast, into: self)

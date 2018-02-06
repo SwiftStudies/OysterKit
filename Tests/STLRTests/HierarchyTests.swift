@@ -50,14 +50,14 @@ class HierarchyTests: XCTestCase {
 </message>
 """
         for rule in xmlLanguage.grammar {
-            print("Rule:\n\t\(rule)")
+//            print("Rule:\n\t\(rule)")
         }
 
         do {
             let tree = try AbstractSyntaxTreeConstructor().build(xmlSource, using: XML.generatedLanguage)
-            print(tree.description)
+//            print(tree.description)
         } catch {
-            print(error)
+//            print(error)
             XCTFail("Could not parse source"); return
         }
         

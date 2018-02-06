@@ -80,7 +80,7 @@ class DynamicGeneratorTest: XCTestCase {
         }
         
         if let tree = try? AbstractSyntaxTreeConstructor().build(">", using: dynamicLangauage)  {
-            print(tree.description)
+//            print(tree.description)
             XCTAssertTrue("\(tree.token)" == "arrows", "Root node should be arrows")
             XCTAssertTrue(tree.isSet(annotation: RuleAnnotation.custom(label: "forArrows")))
             guard let arrowNode = tree.nodeAtPath(["arrow"]) else {
@@ -106,7 +106,7 @@ class DynamicGeneratorTest: XCTestCase {
         }
         
         if let tree = try? AbstractSyntaxTreeConstructor().build(">", using: dynamicLangauage)  {
-            print(tree.description)
+//            print(tree.description)
             XCTAssertTrue("\(tree.token)" == "arrows", "Root node should be arrows")
             XCTAssertTrue(tree.isSet(annotation: RuleAnnotation.custom(label: "forArrows")))
             XCTAssertEqual(tree.annotations.count, 1)
@@ -132,7 +132,7 @@ class DynamicGeneratorTest: XCTestCase {
         }
         
         if let tree = try? AbstractSyntaxTreeConstructor().build(">", using: dynamicLangauage)  {
-            print(tree.description)
+//           print(tree.description)
             XCTAssertTrue("\(tree.token)" == "arrows", "Root node should be arrows")
             XCTAssertTrue(tree.isSet(annotation: RuleAnnotation.custom(label: "forArrows")))
             guard let arrowNode = tree.nodeAtPath(["arrow"]) else {
@@ -158,7 +158,7 @@ class DynamicGeneratorTest: XCTestCase {
         }
         
         if let tree = try? AbstractSyntaxTreeConstructor().build(">", using: dynamicLangauage)  {
-            print(tree.description)
+//            print(tree.description)
             XCTAssertTrue("\(tree.token)" == "arrows", "Root node should be arrows")
             XCTAssertTrue(tree.isSet(annotation: RuleAnnotation.custom(label: "forArrows")))
             guard let arrowNode = tree.nodeAtPath(["arrow"]) else {
@@ -187,7 +187,7 @@ class DynamicGeneratorTest: XCTestCase {
         
         do {
             let tree = try AbstractSyntaxTreeConstructor().build("baca", using: dynamicLangauage)
-            print(tree.description)
+//            print(tree.description)
             XCTAssertEqual("\(tree.children[0].token)","ba")
             XCTAssertTrue(tree.children[0].annotations.isEmpty)
             XCTAssertEqual("\(tree.children[0].children[0].token)","a")
@@ -217,7 +217,7 @@ class DynamicGeneratorTest: XCTestCase {
         }
         
         if let tree = try? AbstractSyntaxTreeConstructor().build(":t:t::v:v::t:t:", using: dynamicLangauage)  {
-            print(tree.description)
+//            print(tree.description)
             // Transient means it doesn't create child nodes, but is in the range
             XCTAssertEqual("\(tree.children[0].token)","ts")
             XCTAssertEqual(tree.children[0].children.count,1)
@@ -255,7 +255,7 @@ class DynamicGeneratorTest: XCTestCase {
         }
         
         if let tree = try? AbstractSyntaxTreeConstructor().build(":t:t::v:v::t:t:", using: dynamicLangauage)  {
-            print(tree.description)
+ //           print(tree.description)
             // Transient means it doesn't create child nodes, but is in the range
             XCTAssertEqual("\(tree.children[0].token)","ts")
             XCTAssertEqual(tree.children[0].children.count,1)
@@ -611,7 +611,7 @@ class DynamicGeneratorTest: XCTestCase {
         for rule in stlr.ast.rules {
             if let identifier = rule.identifier, let parserRule = rule.rule(from:stlr.ast, creating: identifier.token) {
                 rules.append(parserRule)
-                print("\(parserRule)")
+//                print("\(parserRule)")
             } else {
                 XCTFail("Rule has missing identifier or rule")
             }
