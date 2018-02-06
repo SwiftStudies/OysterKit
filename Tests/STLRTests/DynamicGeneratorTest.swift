@@ -584,7 +584,7 @@ class DynamicGeneratorTest: XCTestCase {
     }
     
     func testIllegalLeftHandRecursionDetection(){
-        let source = "rhs = rhs; expr = lhs; lhs = (expr \" \");"
+        let source = "rhs = rhs\n expr = lhs\n lhs = (expr \" \")\n"
         let stlr = STLRParser(source: source)
         
         for _ in stlr.ast.rules {
@@ -600,8 +600,10 @@ class DynamicGeneratorTest: XCTestCase {
     }
     
     func testDirectLeftHandRecursion(){
-        let source = "rhs = (\">\" rhs) | (\"<\" rhs) ;"
+        let source = "rhs = (\">\" rhs) | (\"<\" rhs)"
         let stlr = STLRParser(source: source)
+        
+        
         
         //To stop the stack overflow for now, but it's the right line
         XCTAssert(stlr.ast.runtimeLanguage != nil)

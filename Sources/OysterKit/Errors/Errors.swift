@@ -29,6 +29,9 @@ import Foundation
  */
 public enum GrammarError : Error, CustomStringConvertible{
     
+    /// Recursive rule references itself without advancing the scanner
+    case recursiveRuleDoesNotAdvanceScanner
+    
     /// Some element of the implementation has not been provided
     case notImplemented
     
@@ -42,6 +45,8 @@ public enum GrammarError : Error, CustomStringConvertible{
     /// A textual description of the error
     public var description: String{
         switch self {
+        case .recursiveRuleDoesNotAdvanceScanner:
+            return "Recursive rule does not advance scanner"
         case .notImplemented:
             return "Operation not implemented"
         case .noTokenCreatedFromMatch:

@@ -913,7 +913,8 @@ public class STLRScope : CustomStringConvertible {
             if leftHandRecursive {
                 if let identifier = identifier {
                     if firstToken(identifier, context:grammar){
-                        throw LanguageError.semanticError(at: location, referencing: nil, message: "\(identifier.name) references itself without advancing the scanner")
+                        throw GrammarError.recursiveRuleDoesNotAdvanceScanner
+//                        throw LanguageError.semanticError(at: location, referencing: nil, message: "\(identifier.name) references itself without advancing the scanner")
                     }
                 }
             }
