@@ -25,9 +25,27 @@
 import XCTest
 import OysterKit
 
-public enum
+fileprivate struct OneOfEverything : Decodable, Equatable{
+    static func ==(lhs: OneOfEverything, rhs: OneOfEverything) -> Bool {
+        if lhs.boolean != rhs.boolean {return false}
+        if lhs.integer != rhs.integer {return false}
+        if lhs.byte != rhs.byte {return false}
+        if lhs.word != rhs.word {return false}
+        if lhs.longWord != rhs.longWord {return false}
+        if lhs.longLongWord != rhs.longLongWord {return false}
+        if lhs.unsignedInteger != rhs.unsignedInteger {return false}
+        if lhs.unsignedByte != rhs.unsignedByte {return false}
+        if lhs.unsignedWord != rhs.unsignedWord {return false}
+        if lhs.unsignedLongWord != rhs.unsignedLongWord {return false}
+        if lhs.unsignedLongLongWord != rhs.unsignedLongLongWord {return false}
+        if lhs.float != rhs.float {return false}
+        if lhs.double != rhs.double {return false}
+        if lhs.string != rhs.string {return false}
+        if lhs.possiblyNil != rhs.possiblyNil {return false}
 
-fileprivate struct OneOfEverything : Decodable{
+        return true
+    }
+    
     let boolean                 : Bool
     let integer                 : Int
     let byte                    : Int8
@@ -58,19 +76,29 @@ class DecoderTests: XCTestCase {
     }
 
     func testOneOfEverything() {
-        
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        let oneOfEverythingSTLR = """
-        @void ws = .whitesapcesAndNewlines+
-        boolean = "true" | "false" ws
-        """
-        
+        let oneOfEverythingReference = OneOfEverything(boolean: true, integer: 1, byte: 2, word: 3, longWord: 4, longLongWord: 5, unsignedInteger: 6, unsignedByte: 7, unsignedWord: 8, unsignedLongWord: 9, unsignedLongLongWord: 10, float: 11.0, double: 12.0, string: "string", possiblyNil: nil)
         let oneOfEverythingExample = """
-        true
+        true 1 2 3 4 5 6 7 8 9 10 11.0 12.0 string
         """
+
+        do {
+            var decoded = try OneOfEverything.decode(oneOfEverythingExample, using: OneOfEverythingGrammar.generatedLanguage)
+            XCTAssertEqual(decoded, oneOfEverythingReference)
+            
+            decoded = try OneOfEverything.decode(oneOfEverythingExample, with: HomogenousTree.self, using: OneOfEverythingGrammar.generatedLanguage)
+            XCTAssertEqual(decoded, oneOfEverythingReference)
+            
+            decoded = try ParsingDecoder().decode(OneOfEverything.self, from: oneOfEverythingExample, using: OneOfEverythingGrammar.generatedLanguage)
+            XCTAssertEqual(decoded, oneOfEverythingReference)
+
+            decoded = try ParsingDecoder().decode(OneOfEverything.self, using: AbstractSyntaxTreeConstructor().build(oneOfEverythingExample, using: OneOfEverythingGrammar.generatedLanguage))
+            XCTAssertEqual(decoded, oneOfEverythingReference)
+
+            
+        } catch {
+            XCTFail("\(error)")
+        }
         
-        AbstractSyntaxTreeConstructor().build(oneOfEverythingExample, using: STLRParser()
     }
 
 }

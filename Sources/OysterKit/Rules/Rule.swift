@@ -188,9 +188,9 @@ public enum MatchResult : CustomStringConvertible{
     public var description: String{
         switch self {
         case .success(let context):
-            return "Success (\(context.source.unicodeScalars[context.range]))"
+            return "Success (\(String(context.source.unicodeScalars[context.range]))"
         case .consume(let context):
-            return "Consumed (\(context.source.unicodeScalars[context.range]))"
+            return "Consumed (\(String(context.source.unicodeScalars[context.range]))"
         case .ignoreFailure:
             return "Ignore Failure"
         case .failure(let at):

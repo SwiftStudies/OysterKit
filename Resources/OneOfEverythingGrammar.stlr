@@ -1,3 +1,19 @@
-ws = .whitespacesAndNewlines+
-boolean 	= 	"true" | "false"
-
+@void ws 	= 	.whitespacesAndNewlines*
+boolean 	= 	("true" | "false") 	ws
+integer		=	.decimalDigits+ 	ws
+byte		=	.decimalDigits+		ws
+word		=	.decimalDigits+		ws
+longWord	=	.decimalDigits+		ws
+longLongWord	=	.decimalDigits+		ws
+unsignedInteger	=	.decimalDigits+		ws
+unsignedByte	=	.decimalDigits+		ws
+unsignedWord	=	.decimalDigits+		ws
+unsignedLongWord=	.decimalDigits+		ws
+unsignedLongLongWord=	.decimalDigits+		ws
+float		=	.decimalDigits+ "." .decimalDigits+	ws
+double		=	.decimalDigits+	"." .decimalDigits+	ws
+string		=	.letters+		ws
+oneOfEverything	=	boolean integer byte word longWord longLongWord
+			unsignedInteger unsignedByte unsignedWord
+			unsignedLongWord unsignedLongLongWord
+			float double string string? ws 
