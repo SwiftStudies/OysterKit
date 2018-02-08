@@ -1,0 +1,3 @@
+ws = .whitespacesAndNewlines+
+boolean 	= 	"true" | "false"
+
