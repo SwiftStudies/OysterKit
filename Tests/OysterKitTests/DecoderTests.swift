@@ -210,5 +210,25 @@ class DecoderTests: XCTestCase {
         }
         
     }
+    
+    func testOneOfEverythingCached() {
+        let oneOfEverythingReference = OneOfEverything(boolean: true, integer: 1, byte: 2, word: 3, longWord: 4, longLongWord: 5, unsignedInteger: 6, unsignedByte: 7, unsignedWord: 8, unsignedLongWord: 9, unsignedLongLongWord: 10, float: 11.0, double: 12.0, string: "string", possiblyNil: nil)
+        let oneOfEverythingExample = """
+        true 1 2 3 4 5 6 7 8 9 10 11.0 12.0 string
+        """
+        
+        do {
+            let astConstructor = AbstractSyntaxTreeConstructor()
+            astConstructor.initializeCache(depth: 3, breadth: 3)
+            
+            let decoded = try ParsingDecoder().decode(OneOfEverything.self, using: astConstructor.build(oneOfEverythingExample, using: OneOfEverythingGrammar.generatedLanguage))
+            XCTAssertEqual(decoded, oneOfEverythingReference)
+            
+            
+        } catch {
+            XCTFail("\(error)")
+        }
+        
+    }
 
 }

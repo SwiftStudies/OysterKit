@@ -187,11 +187,9 @@ class HomegenousASTTests: XCTestCase {
         super.tearDown()
     }
 
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testCache() {
+        let astConstructor = AbstractSyntaxTreeConstructor()
         
-        let tree = try? AbstractSyntaxTreeConstructor().build("<a/>",using: XMLGenerated.generatedLanguage)
-        print(tree!.description)
+        astConstructor.initializeCache(depth: 3, breadth: 3)
     }
 }

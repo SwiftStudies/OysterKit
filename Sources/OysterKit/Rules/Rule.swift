@@ -197,6 +197,19 @@ public enum MatchResult : CustomStringConvertible{
             return "Failed at \(at)"
         }
     }
+
+    /// The substring of the source that the match was against
+    public var range : String.UnicodeScalarView.Index {
+        switch self {
+        case .ignoreFailure(let index), .failure(let index):
+            return index
+        case .success(let context):
+            return context.range.lowerBound
+        case .consume(let context):
+            return context.range.lowerBound
+        }
+    }
+
     
     /// The substring of the source that the match was against
     public var matchedString : String? {
