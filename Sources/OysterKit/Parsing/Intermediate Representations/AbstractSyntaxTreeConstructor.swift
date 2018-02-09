@@ -108,6 +108,9 @@ public class AbstractSyntaxTreeConstructor  {
         return _errors
     }
     
+    //// A cache which can optionally be used
+    fileprivate var cache : StateCache<String.UnicodeScalarView.Index, Int, MatchResult>?
+    
     /// Creates a new instance, preparing to parse the supplied source
     public required init(){
     }
@@ -126,6 +129,16 @@ public class AbstractSyntaxTreeConstructor  {
      */
     public func build<T:Decodable, AST:DecodeableAbstractSyntaxTree>(_ heterogenousType:T.Type, using astType:AST.Type, from source: String, using language: Language) throws -> T{
         return try heterogenousType.decode(source, with: astType, using: language)
+    }
+    
+    /**
+     Creates a new empty cache. By default a cache is not used, but this can speed up processing of nodes where there can be
+     a series of failures of evaluating a previous set of tokens before failing.
+     
+     - Parameter size The number of entries that can be cached
+     */
+    public func initializeCache(depth:Int, breadth: Int){
+        cache = StateCache<String.UnicodeScalarView.Index, Int, MatchResult>(memorySize: depth, breadth: breadth)
     }
     
     /**
@@ -202,12 +215,16 @@ extension AbstractSyntaxTreeConstructor : IntermediateRepresentation {
     public func willEvaluate(rule: Rule, at position: String.UnicodeScalarView.Index) -> MatchResult? {
         nodeStack.push()
     
-        return nil
+        return cache?.recall(at: position, key: rule.produces.rawValue)
     }
     
     /// Processes the results of evaluation
     public func didEvaluate(rule: Rule, matchResult: MatchResult) {
         let children = nodeStack.pop()
+
+        if !rule.produces.transient {
+            cache?.remember(at: matchResult.range, key: rule.produces.rawValue, value: matchResult)
+        }
         
         switch matchResult {
         case .success(let context):

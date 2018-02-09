@@ -188,15 +188,28 @@ public enum MatchResult : CustomStringConvertible{
     public var description: String{
         switch self {
         case .success(let context):
-            return "Success (\(context.source.unicodeScalars[context.range]))"
+            return "Success (\(String(context.source.unicodeScalars[context.range]))"
         case .consume(let context):
-            return "Consumed (\(context.source.unicodeScalars[context.range]))"
+            return "Consumed (\(String(context.source.unicodeScalars[context.range]))"
         case .ignoreFailure:
             return "Ignore Failure"
         case .failure(let at):
             return "Failed at \(at)"
         }
     }
+
+    /// The substring of the source that the match was against
+    public var range : String.UnicodeScalarView.Index {
+        switch self {
+        case .ignoreFailure(let index), .failure(let index):
+            return index
+        case .success(let context):
+            return context.range.lowerBound
+        case .consume(let context):
+            return context.range.lowerBound
+        }
+    }
+
     
     /// The substring of the source that the match was against
     public var matchedString : String? {
