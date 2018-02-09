@@ -1,7 +1,7 @@
 // 
 // STLR Generated Swift File
 // 
-// Generated: 2018-02-08 23:47:03 +0000
+// Generated: 2018-02-09 00:00:03 +0000
 // 
 #if os(macOS)
 import Cocoa

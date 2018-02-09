@@ -74,6 +74,116 @@ class DecoderTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
+    
+    func testTypeArray<T : Decodable>(testData : String, typeRule:Rule) throws ->T{
+        let grammar : [Rule] = [
+            ParserRule.sequence(produces: OneOfEverythingGrammar.oneOfEverything, [
+                ParserRule.repeated(produces: OneOfEverythingGrammar._transient, typeRule, min: 1, limit: nil, [:])
+                ], [:])
+            
+        ]
+        
+        return try T.decode(testData, using: grammar.language)
+
+    }
+    
+    func testBoolArray(){
+        do{
+            let result : [Bool] = try testTypeArray(
+                testData: "true false true",
+                typeRule: OneOfEverythingGrammar.boolean._rule())
+            XCTAssertEqual(result, [true, false, true])
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+    
+    func testStringArray(){
+        do{
+            let result : [String] = try testTypeArray(
+                testData: "true false true",
+                typeRule: OneOfEverythingGrammar.boolean._rule())
+            XCTAssertEqual(result, ["true", "false", "true"])
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+    
+    func testIntArray(){
+        do{
+            let result : [Int] = try testTypeArray(
+                testData: "1 0 1",
+                typeRule: OneOfEverythingGrammar.integer._rule())
+            XCTAssertEqual(result, [1, 0, 1])
+        } catch {
+            XCTFail("\(error)")
+        }
+        do{
+            let result : [UInt] = try testTypeArray(
+                testData: "1 0 1",
+                typeRule: OneOfEverythingGrammar.integer._rule())
+            XCTAssertEqual(result, [1, 0, 1])
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+    
+    func testWordArray(){
+        do{
+            let result : [Int16] = try testTypeArray(
+                testData: "1 0 1",
+                typeRule: OneOfEverythingGrammar.integer._rule())
+            XCTAssertEqual(result, [1, 0, 1])
+        } catch {
+            XCTFail("\(error)")
+        }
+        do{
+            let result : [UInt16] = try testTypeArray(
+                testData: "1 0 1",
+                typeRule: OneOfEverythingGrammar.integer._rule())
+            XCTAssertEqual(result, [1, 0, 1])
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+
+    func testLongWordArray(){
+        do{
+            let result : [Int32] = try testTypeArray(
+                testData: "1 0 1",
+                typeRule: OneOfEverythingGrammar.integer._rule())
+            XCTAssertEqual(result, [1, 0, 1])
+        } catch {
+            XCTFail("\(error)")
+        }
+        do{
+            let result : [UInt32] = try testTypeArray(
+                testData: "1 0 1",
+                typeRule: OneOfEverythingGrammar.integer._rule())
+            XCTAssertEqual(result, [1, 0, 1])
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+
+    func testLongLongWordArray(){
+        do{
+            let result : [Int64] = try testTypeArray(
+                testData: "1 0 1",
+                typeRule: OneOfEverythingGrammar.integer._rule())
+            XCTAssertEqual(result, [1, 0, 1])
+        } catch {
+            XCTFail("\(error)")
+        }
+        do{
+            let result : [UInt64] = try testTypeArray(
+                testData: "1 0 1",
+                typeRule: OneOfEverythingGrammar.integer._rule())
+            XCTAssertEqual(result, [1, 0, 1])
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
 
     func testOneOfEverything() {
         let oneOfEverythingReference = OneOfEverything(boolean: true, integer: 1, byte: 2, word: 3, longWord: 4, longLongWord: 5, unsignedInteger: 6, unsignedByte: 7, unsignedWord: 8, unsignedLongWord: 9, unsignedLongLongWord: 10, float: 11.0, double: 12.0, string: "string", possiblyNil: nil)
