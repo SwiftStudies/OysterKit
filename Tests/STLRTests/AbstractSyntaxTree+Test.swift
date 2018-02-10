@@ -23,9 +23,10 @@
 //    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Foundation
+import OysterKit
 
-extension HomogenousTree {
-    func nodeAtPath(_ path: [String])->HomogenousTree?{
+public extension HomogenousTree {
+    public func nodeAtPath(_ path: [String])->HomogenousTree?{
         guard let nextNode = path.first else {
             return self
         }
@@ -39,11 +40,11 @@ extension HomogenousTree {
         return nil
     }
     
-    func isSet(annotation: RuleAnnotation)->Bool{
+    public func isSet(annotation: RuleAnnotation)->Bool{
         return annotations.filter({$0.key == annotation}).count == 1
     }
     
-    func value(annotation: RuleAnnotation)->RuleAnnotationValue?{
+    public func value(annotation: RuleAnnotation)->RuleAnnotationValue?{
         return annotations.filter({$0.key == annotation}).first?.value
     }
 
