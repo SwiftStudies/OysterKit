@@ -299,9 +299,10 @@ fileprivate struct _ParsingKeyedDecodingContainer<K : CodingKey> : KeyedDecoding
     
     // MARK: - KeyedDecodingContainerProtocol Methods
     public var allKeys: [Key] {
-        return container.contents.map { (node) -> CodingKey in
-            node.key 
-        } as! [K]
+        return container.contents.map { (node) -> Key in
+            Key(stringValue: node.key.stringValue)!
+//            node.key
+        } 
     }
     
     public func contains(_ key: Key) -> Bool {

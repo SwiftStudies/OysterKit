@@ -65,16 +65,6 @@ fileprivate struct OneOfEverything : Decodable, Equatable{
 
 class DecoderTests: XCTestCase {
 
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-    
     func testTypeArray<T : Decodable>(testData : String, typeRule:Rule) throws ->T{
         let grammar : [Rule] = [
             ParserRule.sequence(produces: OneOfEverythingGrammar.oneOfEverything, [
@@ -210,9 +200,10 @@ class DecoderTests: XCTestCase {
         }
         
     }
-    
+
+    fileprivate let oneOfEverythingReference = OneOfEverything(boolean: true, integer: 1, byte: 2, word: 3, longWord: 4, longLongWord: 5, unsignedInteger: 6, unsignedByte: 7, unsignedWord: 8, unsignedLongWord: 9, unsignedLongLongWord: 10, float: 11.0, double: 12.0, string: "string", possiblyNil: nil)
+
     func testOneOfEverythingCached() {
-        let oneOfEverythingReference = OneOfEverything(boolean: true, integer: 1, byte: 2, word: 3, longWord: 4, longLongWord: 5, unsignedInteger: 6, unsignedByte: 7, unsignedWord: 8, unsignedLongWord: 9, unsignedLongLongWord: 10, float: 11.0, double: 12.0, string: "string", possiblyNil: nil)
         let oneOfEverythingExample = """
         true 1 2 3 4 5 6 7 8 9 10 11.0 12.0 string
         """
@@ -230,5 +221,102 @@ class DecoderTests: XCTestCase {
         }
         
     }
+    
+    func testNestedUnkeyed(){
+        let rules : [Rule] = [
+            ParserRule.sequence(produces: LabelledToken(withLabel:"array"), [
+                ParserRule.terminal(produces: TransientToken.anonymous, "[", [RuleAnnotation.void : RuleAnnotationValue.set ]),
+                ParserRule.sequence(produces: TransientToken.anonymous, [
+                    OneOfEverythingGrammar.oneOfEverything._rule().instance(with: LabelledToken(withLabel: "entry")),
+                    ParserRule.terminal(produces: TransientToken.anonymous, ",", [RuleAnnotation.void : RuleAnnotationValue.set ]).optional()
+                    ], nil).repeated(min: 1, limit: nil, producing: TransientToken.anonymous, annotations: nil),
+                ParserRule.terminal(produces: TransientToken.anonymous, "]", [RuleAnnotation.void : RuleAnnotationValue.set]),
+                ], nil)
+        ]
+        let source = """
+        [true 1 2 3 4 5 6 7 8 9 10 11.0 12.0 string ,true 1 2 3 4 5 6 7 8 9 10 11.0 12.0 string ,true 1 2 3 4 5 6 7 8 9 10 11.0 12.0 string ]
+        """
+        do {
+            let ast = try AbstractSyntaxTreeConstructor().build(source, using: rules.language)
+            
+//            print(ast.description)
+            
+            let decoded = try ParsingDecoder().decode([OneOfEverything].self, using: ast)
+            XCTAssertEqual(3, decoded.count)
+            for entry in decoded {
+                XCTAssertEqual(entry, oneOfEverythingReference)
+            }
+            
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
 
+    func testNestedKeyed(){
+        let rules : [Rule] = [
+            ParserRule.sequence(produces: LabelledToken(withLabel:"array"), [
+                ParserRule.terminal(produces: TransientToken.anonymous, "[", [RuleAnnotation.void : RuleAnnotationValue.set ]),
+                ParserRule.sequence(produces: TransientToken.anonymous, [
+                    OneOfEverythingGrammar.oneOfEverything._rule().instance(with: LabelledToken(withLabel: "entry")),
+                    ParserRule.terminal(produces: TransientToken.anonymous, ",", [RuleAnnotation.void : RuleAnnotationValue.set ]).optional()
+                    ], nil).repeated(min: 1, limit: nil, producing: TransientToken.anonymous, annotations: nil),
+                ParserRule.terminal(produces: TransientToken.anonymous, "]", [RuleAnnotation.void : RuleAnnotationValue.set]),
+                ], nil)
+        ]
+        let source = """
+        [true 1 2 3 4 5 6 7 8 9 10 11.0 12.0 string ,true 1 2 3 4 5 6 7 8 9 10 11.0 12.0 string ,true 1 2 3 4 5 6 7 8 9 10 11.0 12.0 string ]
+        """
+        do {
+            let ast = try AbstractSyntaxTreeConstructor().build(source, using: rules.language)
+            
+//            print(ast.description)
+            
+            let decoded = try ParsingDecoder().decode([[String : String]].self, using: ast)
+            XCTAssertEqual(3, decoded.count)
+            
+            
+            
+            for entry in decoded {
+                XCTAssertEqual(14, entry.count)
+//                XCTAssertEqual(entry, oneOfEverythingReference)
+            }
+            
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+
+    func testNestedKeyedDeep(){
+        let rules : [Rule] = [
+            ParserRule.sequence(produces: LabelledToken(withLabel:"dictionary"), [
+                OneOfEverythingGrammar.oneOfEverything._rule().instance(with: LabelledToken(withLabel: "thing1")),
+                ParserRule.terminal(produces: TransientToken.anonymous, ",", [RuleAnnotation.void : RuleAnnotationValue.set ]).optional(),
+                OneOfEverythingGrammar.oneOfEverything._rule().instance(with: LabelledToken(withLabel: "thing2")),
+                ParserRule.terminal(produces: TransientToken.anonymous, ",", [RuleAnnotation.void : RuleAnnotationValue.set ]).optional(),
+                OneOfEverythingGrammar.oneOfEverything._rule().instance(with: LabelledToken(withLabel: "thing3")),
+                ParserRule.terminal(produces: TransientToken.anonymous, ",", [RuleAnnotation.void : RuleAnnotationValue.set ]).optional(),
+                ], nil),
+        ]
+        let source = """
+        true 1 2 3 4 5 6 7 8 9 10 11.0 12.0 string ,true 1 2 3 4 5 6 7 8 9 10 11.0 12.0 string ,true 1 2 3 4 5 6 7 8 9 10 11.0 12.0 string
+        """
+        do {
+            let ast = try AbstractSyntaxTreeConstructor().build(source, using: rules.language)
+            
+            print(ast.description)
+            
+            let decoded = try ParsingDecoder().decode([String : OneOfEverything].self, using: ast)
+            XCTAssertEqual(3, decoded.count)
+            
+            for entry in decoded {
+                XCTAssertEqual(entry.value, oneOfEverythingReference)
+            }
+            
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+
+    
+    
 }

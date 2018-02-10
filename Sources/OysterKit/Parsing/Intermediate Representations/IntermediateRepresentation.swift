@@ -39,6 +39,9 @@ public protocol Node : CustomStringConvertible{
     /// Annotations that were made on the token
     var annotations         : [RuleAnnotation : RuleAnnotationValue] {get}
     
+    /// Any sub-nodes in the tree
+    var children       : [Self] {get}
+
     /**
      Create a new instance of the node
      

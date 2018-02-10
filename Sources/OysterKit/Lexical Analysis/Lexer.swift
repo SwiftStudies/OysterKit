@@ -25,7 +25,7 @@
 
 import Foundation
 
-private struct LexerContext : LexicalContext {
+internal struct LexerContext : LexicalContext {
     let mark  : Mark
     let endLocation : String.UnicodeScalarView.Index
     let source: String
@@ -41,7 +41,7 @@ private struct LexerContext : LexicalContext {
     
 }
 
-private class Mark : CustomStringConvertible {
+internal class Mark : CustomStringConvertible {
     let preSkipLocation     : String.UnicodeScalarView.Index
     let postSkipLocation    : String.UnicodeScalarView.Index
     

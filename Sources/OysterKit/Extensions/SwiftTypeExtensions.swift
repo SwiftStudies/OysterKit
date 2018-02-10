@@ -25,8 +25,6 @@ public extension String {
 
 public extension CharacterSet {
     
-
-    
     func until(token:Token, annotations:RuleAnnotations? = nil)->Rule{
         return ParserRule.terminalUntilOneOf(produces: token, self, annotations)
     }
