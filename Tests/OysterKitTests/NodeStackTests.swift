@@ -70,5 +70,69 @@ class NodeStackTests: XCTestCase {
         //Key thing is 2 nodes first to make sure it has been reversed
         XCTAssertEqual(stack.all.description,"[2 nodes, with [] errors, 1 nodes, with [] errors]")
     }
+    
+    func testArrayAppend(){
+        var     setLikeArray = [Int]()
+        
+        XCTAssertEqual(0, setLikeArray.count)
+        setLikeArray.append(unique: 0)
+        XCTAssertEqual(1, setLikeArray.count)
+        setLikeArray.append(unique: 0)
+        XCTAssertEqual(1, setLikeArray.count)
+        setLikeArray.append(unique: 1)
+        XCTAssertEqual(2, setLikeArray.count)
+        XCTAssertTrue(setLikeArray.contains(1))
+        XCTAssertTrue(setLikeArray.contains(0))
+    }
 
+    func testAddError(){
+        let source = "Hello"
+        let nodeStack = NodeStack<TestNode>()
+        
+        nodeStack.top?.addError(error: LanguageError.scanningError(at: source.startIndex..<source.endIndex, message: "Top Error"))
+        XCTAssertEqual(1, nodeStack.top!.errors.count)
+        nodeStack.push()
+        nodeStack.top?.addError(error: LanguageError.scanningError(at: source.endIndex..<source.endIndex, message: "Top Error"))
+        nodeStack.top?.addError(error: LanguageError.parsingError(at: source.startIndex..<source.startIndex, message: "Top Error"))
+        //Should not be added as one already exists
+        nodeStack.top?.addError(error: LanguageError.warning(at: source.startIndex..<source.startIndex, message: "Top Error"))
+        XCTAssertEqual(2, nodeStack.top!.errors.count)
+        let _ = nodeStack.pop()
+        XCTAssertEqual(1, nodeStack.top!.errors.count)
+    }
+    
+    func testAddErrors(){
+        let source = "Hello"
+        let nodeStack = NodeStack<TestNode>()
+        
+        nodeStack.top?.addError(error: LanguageError.scanningError(at: source.startIndex..<source.endIndex, message: "Top Error"))
+        nodeStack.top?.addErrors([
+            LanguageError.scanningError(at: source.endIndex..<source.endIndex, message: "Top Error"),
+            LanguageError.scanningError(at: source.endIndex..<source.endIndex, message: "Top Error"),
+            LanguageError.parsingError(at: source.startIndex..<source.startIndex, message: "Top Error"),
+            ])
+        XCTAssertEqual(3, nodeStack.top!.errors.count)
+
+        nodeStack.top?.flushErrors()
+        XCTAssertEqual(0, nodeStack.top!.errors.count)
+    }
+    
+    func testDescription(){
+        let source = "Hello"
+        let nodeStack = NodeStack<TestNode>()
+
+        nodeStack.top?.append(TestNode(for: LabelledToken(withLabel: "hello"), at: source.startIndex..<source.endIndex, annotations: [
+            RuleAnnotation.void : RuleAnnotationValue.set
+            ]))
+        
+        nodeStack.push()
+        nodeStack.top?.addErrors([
+            LanguageError.scanningError(at: source.endIndex..<source.endIndex, message: "Top Error"),
+            LanguageError.scanningError(at: source.endIndex..<source.endIndex, message: "Top Error"),
+            LanguageError.parsingError(at: source.startIndex..<source.startIndex, message: "Top Error"),
+            ])
+
+        XCTAssertEqual(nodeStack.description, "NodeStack: \n0 nodes, with [Top Error from Index(_compoundOffset: 20, _cache: Swift.String.Index._Cache.utf16) to Index(_compoundOffset: 20, _cache: Swift.String.Index._Cache.utf16), Top Error from Index(_compoundOffset: 0, _cache: Swift.String.Index._Cache.utf16) to Index(_compoundOffset: 0, _cache: Swift.String.Index._Cache.utf16)] errors\n1 nodes, with [] errors\n")
+        
+    }
 }
