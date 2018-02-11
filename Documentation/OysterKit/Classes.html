@@ -22,7 +22,7 @@
         <a class="header-link" href="index.html">
           OysterKit Docs
         </a>
-         (97% documented)
+         (96% documented)
       </p>
     
       <p class="header-col--secondary">
@@ -54,12 +54,6 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/AbstractSyntaxTreeConstructor/IntermediateRepresentationNode.html">– IntermediateRepresentationNode</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/DebuggingDelegate.html">DebuggingDelegate</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/ForwardingIR.html">ForwardingIR</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/Lexer.html">Lexer</a>
@@ -147,9 +141,6 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Extensions/String.html">String</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Extensions/String/UnicodeScalarView.html">– UnicodeScalarView</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Extensions/_ParsingDecoder.html">_ParsingDecoder</a>
@@ -359,9 +350,9 @@ any Swift Type by utlizing the Swift Decoder framework to decode the intermediat
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit17DebuggingDelegateC"></a>
-                    <a name="//apple_ref/swift/Class/DebuggingDelegate" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit17DebuggingDelegateC">DebuggingDelegate</a>
+                    <a name="/s:9OysterKit11TokenStreamC"></a>
+                    <a name="//apple_ref/swift/Class/TokenStream" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit11TokenStreamC">TokenStream</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -369,37 +360,28 @@ any Swift Type by utlizing the Swift Decoder framework to decode the intermediat
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>This <code><a href="Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></code> can be used when you are having trouble understanding why your grammar
-is not creating the structure you expect. It does not create any kind of representation of the parsed data,
-but solely reports the progress of the parser as it proceeds. An example usage would be:</p>
-<pre class="highlight swift"><code>   <span class="k">let</span> <span class="nv">debuggingIR</span> <span class="o">=</span> <span class="n">myParser</span><span class="o">.</span><span class="nf">build</span><span class="p">(</span><span class="nv">intermediateRepresentation</span><span class="p">:</span> <span class="nf">DebuggingDelegate</span><span class="p">(),</span> <span class="nv">using</span><span class="p">:</span> <span class="nf">Lexer</span><span class="p">(</span><span class="nv">source</span><span class="p">:</span> <span class="n">mySource</span><span class="p">))</span>
-</code></pre>
+                        <p>A <code>TokenStream</code> provides lazy iterators that minimize memory consumption and overhead allowing you to iterate through the tokens created by the
+root rules (those at the lowest level in the language) in the supplied <code><a href="Protocols/Language.html">Language</a></code></p>
 
-<p>This can also be combined with a <code>ForkedIR</code> to both build your desired AST and debug at the same time.</p>
-
-                        <a href="Classes/DebuggingDelegate.html" class="slightly-smaller">See more</a>
+                        <a href="Classes/TokenStream.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">DebuggingDelegate</span> <span class="p">:</span> <span class="kt"><a href="Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">TokenStream</span> <span class="p">:</span> <span class="kt">Sequence</span></code></pre>
 
                         </div>
                       </div>
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul class="item-container">
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit12ForwardingIRC"></a>
-                    <a name="//apple_ref/swift/Class/ForwardingIR" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit12ForwardingIRC">ForwardingIR</a>
+                    <a name="/s:9OysterKit19TokenStreamIteratorC"></a>
+                    <a name="//apple_ref/swift/Class/TokenStreamIterator" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit19TokenStreamIteratorC">TokenStreamIterator</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -407,16 +389,15 @@ but solely reports the progress of the parser as it proceeds. An example usage w
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>This <code><a href="Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></code> essentially forks the function calls to its two subordinate <code>IntermediateRepresentations</code>. This allows you to combine
-multiple <code><a href="Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></code>s for example your normal data-structure pairs with an instance of <code><a href="Classes/DebuggingDelegate.html">DebuggingDelegate</a></code> for debugging purposes.</p>
+                        <p>The Iterator created by token streams</p>
 
-                        <a href="Classes/ForwardingIR.html" class="slightly-smaller">See more</a>
+                        <a href="Classes/TokenStreamIterator.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">ForwardingIR</span><span class="o">&lt;</span><span class="kt">BaseIR</span><span class="p">:</span><span class="kt"><a href="Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">TokenStreamIterator</span> <span class="p">:</span> <span class="kt">IteratorProtocol</span></code></pre>
 
                         </div>
                       </div>
@@ -559,67 +540,6 @@ multiple <code><a href="Protocols/IntermediateRepresentation.html">IntermediateR
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit11TokenStreamC"></a>
-                    <a name="//apple_ref/swift/Class/TokenStream" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit11TokenStreamC">TokenStream</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>A <code>TokenStream</code> provides lazy iterators that minimize memory consumption and overhead allowing you to iterate through the tokens created by the
-root rules (those at the lowest level in the language) in the supplied <code><a href="Protocols/Language.html">Language</a></code></p>
-
-                        <a href="Classes/TokenStream.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">TokenStream</span> <span class="p">:</span> <span class="kt">Sequence</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:9OysterKit19TokenStreamIteratorC"></a>
-                    <a name="//apple_ref/swift/Class/TokenStreamIterator" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit19TokenStreamIteratorC">TokenStreamIterator</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The Iterator created by token streams</p>
-
-                        <a href="Classes/TokenStreamIterator.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">TokenStreamIterator</span> <span class="p">:</span> <span class="kt">IteratorProtocol</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul class="item-container">
-                <li class="item">
-                  <div>
-                    <code>
                     <a name="/s:9OysterKit13RecursiveRuleC"></a>
                     <a name="//apple_ref/swift/Class/RecursiveRule" class="dashAnchor"></a>
                     <a class="token" href="#/s:9OysterKit13RecursiveRuleC">RecursiveRule</a>
@@ -653,7 +573,7 @@ root rules (those at the lowest level in the language) in the supplied <code><a 
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-02-06)</p>
+      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-02-11)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
