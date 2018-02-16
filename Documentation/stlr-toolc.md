@@ -36,7 +36,7 @@ Parses a set of input files according using the supplied grammar
 ### Command Specific Options
 
  * ````--grammar, -g````: Takes a single parameter which identifies the .stlr Grammar to use for parsing
- * ````--langauge, -l````: The output language to generate. Currently the only supported value is ````Swift```` 
+ * ````--language, -l````: The output language to generate. Currently the only supported value is ````Swift```` 
  * ````--output-to, -ot````: Takes a single parameter which identifies the file or folder where the generated file should be stored. If the parameter ends with a / the name of the input grammar will be used to determine the name of the expected output grammar. For example ````stlrc generate -g MyLang.stlr -ot /Sources/```` would create a Swift source ````/Sources/MyLang.swift```` 
 
 
