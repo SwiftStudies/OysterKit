@@ -12,7 +12,7 @@ OysterKit enables native Swift scanning, lexical analysis, and parsing capabilit
  - [STLR API Documentation](https://rawgit.com/SwiftStudies/OysterKit/master/Documentation/STLR/index.html) Full API documentation for the STLR framework
  	- [STLR Language Reference](https://github.com/SwiftStudies/OysterKit/blob/master/Documentation/STLR.md) A guide with examples to using the STLR language to define grammars
  	- [Tutorials](https://github.com/SwiftStudies/OysterKit/tree/master/Documentation/Tutorials) Tutorials for using OysterKit and STLR for defining and exploiting grammars. 
- - [stlrc Command Line Tool reference](https://github.com/SwiftStudies/OysterKit/blob/master/Documentation/stlrc-tool.md) Instructions for using the ````stlrc```` command line tool. Note that some of the tutorials referenced above also provide some concrete usage examples.
+ - [stlrc Command Line Tool reference](https://github.com/SwiftStudies/OysterKit/blob/master/Documentation/stlr-toolc.md) Instructions for using the ````stlrc```` command line tool. Note that some of the tutorials referenced above also provide some concrete usage examples.
 
 
 ## Key Features
