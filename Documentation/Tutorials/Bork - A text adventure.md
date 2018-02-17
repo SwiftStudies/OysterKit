@@ -17,21 +17,23 @@ This creates a package of the right type and gets all the basics set-up. The fir
     
 The first thing we need to do is set up our new package so that it can access OysterKit. This pretty simple. We are going to require a specific version of OysterKit to ensure this tutorial keeps working!
 
-    // swift-tools-version:4.0
+```swift
+// swift-tools-version:4.0
 
-    import PackageDescription
+import PackageDescription
 
-    let package = Package(
-        name: "Bork",
-        dependencies: [
-            .package(url: "https://github.com/SwiftStudies/OysterKit.git", .branch("master")
-        ],
-        targets: [
-            .target(
-                name: "Bork",
-                dependencies: ["OysterKit"]),
-        ]
-    )
+let package = Package(
+  name: "Bork",
+  dependencies: [
+    .package(url: "https://github.com/SwiftStudies/OysterKit.git", .branch("master")
+  ],
+  targets: [
+    .target(
+      name: "Bork",
+      dependencies: ["OysterKit"]),
+  ]
+)
+```
 
 SPM will need to download OysterKit from github, and we'll need to update our Xcode project. We can do that pretty easily (note you don't need to close Xcode, it will spot the changes to the project and update)
 
@@ -61,8 +63,8 @@ We're now ready to create our grammar. Select Bork.stlr in Xcode and enter the f
     
     // Commands
     //
-    subject     = (adjective .whitespaces)? noun
-    command     = verb (.whitespaces subject (.whitespaces preposition .whitespaces subject)? )? 
+    subject     = (adjective .whitespaces+)? noun
+    command     = .whitespaces* verb (.whitespaces+ subject (.whitespaces+ preposition .whitespaces+ subject)? )? .whitespaces*
 
 You can ignore the @pin annotations for now [1], but they are important!
 
@@ -74,18 +76,18 @@ This line creates a new ```verb``` token that will be created whenever one of th
 
 The first line of the command section is more interesting. As we might have two different snakes we might want to let the user describe the exact snake we want with an adjective (such as ANGRY or DEAD in our vocabulary). We create a new subject token so that we can do that
 
-    subject     = (adjective .whitespaces)? noun
+    subject     = (adjective .whitespaces+)? noun
 
-In STLR if two elements are only separated by whitespace (that is not the ```|``` or operator) it means "then". So if we ignore the brackets and question marks this rule would mean "create a subject token if you find an adjective, then a whitespace then a noun). 
+In STLR if two elements are only separated by whitespace (that is not the ```|``` "or" operator) it means "then". So if we ignore the brackets and question marks this rule would mean "create a subject token if you find an adjective, then one or more whitespace then a noun".  ```+``` postfix operator here means "one or more".
 
-We don't want to force the player to always specify an adjective so we group the first part using ```()```, and then make that group optional with the ```?``` operator. So the rule above means "create a subject token if you find an adjective followed by a whitespace then a noun. It's OK if you don't find the adjective and whitespace."
+We don't want to force the player to always specify an adjective so we group the first part using ```()```, and then make that group optional with the ```?``` operator. So the rule above means "create a subject token if you find an adjective followed by whitespaces then a noun. It's OK if you don't find the adjective and whitespaces."
 
 In terms of grammar concepts we don't need anymore to build the rule for any command. 
 
-    command     = verb (.whitespaces subject (.whitespaces preposition .whitespaces subject)? )? 
+    command     = verb (.whitespaces* subject (.whitespaces+ preposition .whitespaces+ subject)? )? .whitespaces*
     
 
-We've got a few nested groups here but really we are saying create a ```command``` token if you match a ```verb``` which might be followed by a whitespace then ```subject``` which might be followed by a whitespace, a ```preposition```, a whitespace and another ```subject```. 
+We've got a few nested groups here but really we are saying create a ```command``` token if you match a ```verb``` which might be followed by whitespaces then ```subject``` which might be followed by whitespaces, a ```preposition```, whitespaces and another ```subject```, all optionally termined with whitespaces. 
 
 ## Testing the grammar
 
@@ -95,8 +97,8 @@ I'm going to put this project in the same place as Bork, but again, you can chan
 
     cd ~/Documents/Code
     git clone https://github.com/SwiftStudies/OysterKit.git
-	cd OysterKit
-	swift run stlrc -g ../Bork/Grammars/Bork.stlr
+    cd OysterKit
+    swift run stlrc -g ../Bork/Grammars/Bork.stlr
 
 stlrc will start up, parse the supplied grammar and then drop into interactive mode. Try typing some commands you should see output like the below:
 
@@ -133,28 +135,32 @@ We can now jump back into Xcode, if you are interested take a look at the genera
 
 Open up ```main.swift```. At the moment it just prints ```"Hello, world!"``` and really we are going to want to loop around reading input from the user. Let's make those changes. 
 
-	// Welcome the player
-	print("Welcome to Bork brave Adventurer!\nWhat do you want to do now? > ", terminator: "")
+```swift
+// Welcome the player
+print("Welcome to Bork brave Adventurer!\nWhat do you want to do now? > ", terminator: "")
 
-	// Loop forever until they enter QUIT
-	while let userInput = readLine(strippingNewline: true), userInput != "QUIT" {
-	    // Process their input
-    
-	    // Prompt for next command
-	    print("What do you want to do now? > ", terminator: "")
-	}
+// Loop forever until they enter QUIT
+while let userInput = readLine(strippingNewline: true), userInput != "QUIT" {
+    // Process their input
 
-	// Wish them on their way
-	print ("Goodbye adventurer... for now.")
+    // Prompt for next command
+    print("What do you want to do now? > ", terminator: "")
+}
+
+// Wish them on their way
+print ("Goodbye adventurer... for now.")
+```
 
 If you run this as you expect it welcomes you, reads in your input until you type ```QUIT```. OK, but lets use our generated language to parse that user input. Enter the following under the ```// Process their input``` comment
 
-    // Process their input
-    let parsedInput = Bork.parse(source: userInput)
-    guard parsedInput.tokens.count != 0 else {
-        print("I didn't understand '\(userInput)', try again. > ", terminator: "")
-        continue
-    }
+```swift
+// Process their input
+let parsedInput = Bork.parse(source: userInput)
+guard parsedInput.tokens.count != 0 else {
+    print("I didn't understand '\(userInput)', try again. > ", terminator: "")
+    continue
+}
+```
 
 Run it again and try interacting. We can now see if the parser understood our input or not
 
@@ -167,7 +173,9 @@ Run it again and try interacting. We can now see if the parser understood our in
 
 The code you've just entered passes the user string through our Bork parser, if we get some tokens, then the command was understood, if not, then it wasn't. We can now start to _interpret_ that parsed input. Add the following line after the guard block
 
-	    print("Your verb was \(parsedInput.tokens[0].children[0].stringValue(source: userInput))")
+```swift
+print("Your verb was \(parsedInput.tokens[0].children[0].stringValue(source: userInput))")
+```
 	    
 We can now use the knowledge gained from testing this to get the first token (command) and its first child (which we know it will have because ```verb``` wasn't optional) and print out the string that matched it. 
 
@@ -185,51 +193,55 @@ Using Xcode add a new Swift file in the Sources/Bork folder called ```Commands.s
 
 We could do something like this
 
-	struct Subject {
-	    let noun            : String
-	    let adjective       : String?
-	}
+```swift
+struct Subject {
+    let noun            : String
+    let adjective       : String?
+}
 
-	struct Command {
-	    let verb            : String
-	    let subject         : Subject?
-	    let preposition     : String?
-	    let secondSubject   : Subject?
-	}
+struct Command {
+    let verb            : String
+    let subject         : Subject?
+    let preposition     : String?
+    let secondSubject   : Subject?
+}
+```
  
 But all those strings... There is going to be lot's of opportunity to mistype strings, so given at this point we have a fixed vocabulary we can create enums for the different word types and capture our vocabulary in Swift. 
 
 Enter this code into Commands.swift
 
-	import Foundation
+```swift
+import Foundation
 
-	enum Verb : String {
-    	case INVENTORY, GO, PICKUP, DROP, ATTACK
-	}
+enum Verb : String {
+    case INVENTORY, GO, PICKUP, DROP, ATTACK
+}
 
-	enum Noun : String {
-    	case NORTH, SOUTH, KITTEN, SNAKE, CLUB, SWORD
-	}
+enum Noun : String {
+    case NORTH, SOUTH, KITTEN, SNAKE, CLUB, SWORD
+}
 
-	enum Adjective : String {
-    	case FLUFFY, ANGRY, DEAD
-	}
+enum Adjective : String {
+    case FLUFFY, ANGRY, DEAD
+}
 
-	enum Preposition : String {
-    	case WITH, USING
-	}
+enum Preposition : String {
+    case WITH, USING
+}
 
-	struct Subject {
-    	let noun            : Noun
-	    let adjective       : Adjective?
-	}
+struct Subject {
+    let noun            : Noun
+    let adjective       : Adjective?
+}
 
-	struct Command {
-    	let verb            : Verb
-    	let subject         : Subject?
-    	let preposition     : Preposition?
-    	let secondSubject   : Subject?
-	}
+struct Command {
+    let verb            : Verb
+    let subject         : Subject?
+    let preposition     : Preposition?
+    let secondSubject   : Subject?
+}
+```
 
 I know, I know, the enums should really be camel case but bear with me. I think in this case the fact that it will make it really clear it's a vocabulary word is useful, and it makes something else easier shortly!
 
@@ -239,35 +251,37 @@ This is great, but wouldn't it be nice if we could just automatically populate t
 
 Luckily we can. Swift 4.0 added the powerful ability to mark types with the  ```Decodable``` protocol and be able to automagically populate them from ```Data```. Let's do the first part before we leave ```Commands.swift```. Make all of the enums and structs conform to Decodable like this: 
 
-    import Foundation
-    
-    enum Verb : String, Decodable {
-        case INVENTORY, GO, PICKUP, DROP, ATTACK
-    }
-    
-    enum Noun : String, Decodable {
-        case NORTH, SOUTH, KITTEN, SNAKE, CLUB, SWORD
-    }
-    
-    enum Adjective : String, Decodable {
-        case FLUFFY, ANGRY, DEAD
-    }
-    
-    enum Preposition : String, Decodable {
-        case WITH, USING
-    }
-    
-    struct Subject : Decodable {
-        let noun            : Noun
-        let adjective       : Adjective?
-    }
-    
-    struct Command : Decodable {
-        let verb            : Verb
-        let subject         : Subject?
-        let preposition     : Preposition?
-        let secondSubject   : Subject?
-    }
+```swift
+import Foundation
+
+enum Verb : String, Decodable {
+    case INVENTORY, GO, PICKUP, DROP, ATTACK
+}
+
+enum Noun : String, Decodable {
+    case NORTH, SOUTH, KITTEN, SNAKE, CLUB, SWORD
+}
+
+enum Adjective : String, Decodable {
+    case FLUFFY, ANGRY, DEAD
+}
+
+enum Preposition : String, Decodable {
+    case WITH, USING
+}
+
+struct Subject : Decodable {
+    let noun            : Noun
+    let adjective       : Adjective?
+}
+
+struct Command : Decodable {
+    let verb            : Verb
+    let subject         : Subject?
+    let preposition     : Preposition?
+    let secondSubject   : Subject?
+}
+```
 
 Now, I can hear what you are thinking... No-one, not Apple or any of the open-source contributors have even _tried_ to add a standard decoder for Bork. It's a travisty I know. Luckily, OysterKit can build one for you automatically. Let's replace that print statement with something more useful. Go to main.swift and add 
 
@@ -762,39 +776,40 @@ There are just two functions here. The first returns a filtered version using `m
 
 We need to use our new world and interpreter, for ease I've supplied the full and final contents of main here. You'll note I've just added some hard code for `HELP`. One of the reasons I did it this way is that adding new verbs isn't actually very easy. We have to update the grammar, use `stlrc` to rebuild the Swift code for the parser, and then update our `Verb` enumeration with a new case too. There are better ways we could have built this (still using STLR), but for this tutorial you have everything you need to go further should you wish to. 
 
-    import OysterKit
-    import Foundation
-    
-    // Welcome the player
-    let game = Game()
-    let interpreter = Interpreter()
-    print("Welcome to Bork brave Adventurer!\nType HELP for help.\n\n\(game.player.location)\n\nWhat do you want to do now? > ", terminator: "")
-    
-    // Loop forever until they enter QUIT
-    while let userInput = readLine(strippingNewline: true), userInput != "QUIT" {
-        // Provide help
-        if userInput == "HELP" {
-            print("You can type the following commands: \([Verb.INVENTORY, Verb.GO, Verb.PICKUP, Verb.DROP, Verb.ATTACK].list(article: Article.none))")
-        } else {
-            // Process their input
-            do {
-                let command = try ParsingDecoder().decode(Command.self, from: userInput.data(using: .utf8) ?? Data(), with: Bork.generatedLanguage)
-                
-                // Execute the command
-                interpreter.interpret(command, inGame: game)
-            } catch {
-                print("\nI didn't understand '\(userInput)', try again. > ", terminator: "")
-                continue
-            }
+```swift
+import OysterKit
+import Foundation
+
+// Welcome the player
+let game = Game()
+let interpreter = Interpreter()
+print("Welcome to Bork brave Adventurer!\nType HELP for help.\n\n\(game.player.location)\n\nWhat do you want to do now? > ", terminator: "")
+
+// Loop forever until they enter QUIT
+while let userInput = readLine(strippingNewline: true), userInput != "QUIT" {
+    // Provide help
+    if userInput == "HELP" {
+        print("You can type the following commands: \([Verb.INVENTORY, Verb.GO, Verb.PICKUP, Verb.DROP, Verb.ATTACK].list(article: Article.none))")
+    } else {
+        // Process their input
+        do {
+            let command = try ParsingDecoder().decode(Command.self, from: userInput.data(using: .utf8) ?? Data(), with: Bork.generatedLanguage)
+
+            // Execute the command
+            interpreter.interpret(command, inGame: game)
+        } catch {
+            print("\nI didn't understand '\(userInput)', try again. > ", terminator: "")
+            continue
         }
-        
-        // Prompt for next command
-        print("\n\(game.player.location)\n\nWhat do you want to do now? > ", terminator: "")
     }
-    
-    // Wish them on their way
-    print ("Goodbye adventurer... for now.")
-    
+
+    // Prompt for next command
+    print("\n\(game.player.location)\n\nWhat do you want to do now? > ", terminator: "")
+}
+
+// Wish them on their way
+print ("Goodbye adventurer... for now.")
+```
 
 ## And Play!
 
