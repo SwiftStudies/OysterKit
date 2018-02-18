@@ -1,7 +1,7 @@
 # Index
 
  - [Usage](usage)
- - [Installation] (installation)
+ - [Installation](installation)
  - Tutorials
  	- [Bork - A command line text adventure using OysterKit and STLR](https://github.com/SwiftStudies/OysterKit/Documentation/Tutorials/Bork) 
 
