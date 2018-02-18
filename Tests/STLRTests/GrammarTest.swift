@@ -346,7 +346,7 @@ class GrammarTest: XCTestCase {
         
         if case .constructionFailed(let errors) = rootError {
             guard errors.count == 2 else {
-                XCTFail("Expected 3 errors but got \(errors.count)\n\(errors)")
+                XCTFail("Expected 2 errors but got \(errors.count)\n\(errors)")
                 return
             }
             
