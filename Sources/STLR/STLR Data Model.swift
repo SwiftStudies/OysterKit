@@ -27,7 +27,7 @@ import OysterKit
 
 // MARK: -
 /**
- This classes is a bespoke implementation of an `IntermediateRepresentation` used when parsing STLR. Unlike generic
+ This class is a bespoke implementation of an `IntermediateRepresentation` used when parsing STLR. Unlike generic
  implementations it specifies a concrete data structure that is populated during parsing
  */
 public class STLRScope : CustomStringConvertible {
