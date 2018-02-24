@@ -60,11 +60,12 @@ class ParseCommand : Command, IndexableOptioned, IndexableParameterized, Grammar
     }
 
     func parseInput(language:Language, input:String) throws {
-        let ast = STLRParser(source: input).ast
+        let ctr = AbstractSyntaxTreeConstructor()
+        let ast = try ctr.build(input, using: language)
 
-        guard ast.errors.count == 0 else {
+        guard ctr.errors.count == 0 else {
             print("Parsing failed: ".color(.red))
-            for error in ast.errors {
+            for error in ctr.errors {
                 if let humanReadable = error as? HumanConsumableError {
                     print(humanReadable.formattedErrorMessage(in: input))
                 } else {
