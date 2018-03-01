@@ -96,7 +96,11 @@ enum ParsingStrategy {
             }
             
             guard success else {
-                throw AbstractSyntaxTreeConstructor.ConstructionError.parsingFailed(causes: productionErrors)
+                if productionErrors.count == 0 {
+                    throw AbstractSyntaxTreeConstructor.ConstructionError.unknownError(message: "No rules were successfully matched but no errors were found")
+                } else {
+                    throw AbstractSyntaxTreeConstructor.ConstructionError.parsingFailed(causes: productionErrors)
+                }
             }
             
             if context.lexer.endOfInput {

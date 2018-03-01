@@ -12,10 +12,821 @@ import STLR
 import ExampleLanguages
 
 class OysterKitPerformanceTests: XCTestCase {
-    
-    let swiftSource = "// \n// STLR Generated Swift File \n// \n// Generated: 2016-08-19 10:45:49 +0000\n// \nimport OysterKit\n\n// \n// FullSwiftParser Parser\n// \nclass FullSwiftParser : Parser{\n\n\t// Convenience alias\n\tprivate typealias GrammarToken = Tokens\n\n\t// Token & Rules Definition\n\tenum Tokens : Int, Token {\n\t\tcase _transient, comment, ws, eol, access, scope, number, key, entry, dictionary, dictionary, array, string, variable, inherit, parameter, parameters, index, import, class, alias, enum, case, caseBlock, func, switch, return, reference, var, call, guard, assignment, block, statement, swift\n\n\t\tfunc _rule(_ annotations: RuleAnnotations = [ : ])->Rule {\n\t\t\tswitch self {\n\t\t\tcase ._transient:\n\t\t\t\treturn CharacterSet(charactersIn: \"\").terminal(token: GrammarToken._transient)\n\t\t\t// comment\n\t\t\tcase .comment:\n\t\t\t\treturn [\n\t\t\t\t\t\"//\".terminal(token: GrammarToken._transient),\n\t\t\t\t\tCharacterSet.newlines.terminal(token: GrammarToken._transient).not(producing: GrammarToken._transient).repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t].sequence(token: GrammarToken.comment)\n\t\t\t// ws\n\t\t\tcase .ws:\n\t\t\t\treturn [\n\t\t\t\t\tGrammarToken.comment._rule(),\n\t\t\t\t\tCharacterSet.whitespacesAndNewlines.terminal(token: GrammarToken._transient),\n\t\t\t\t\t].oneOf(token: GrammarToken.ws)\n\t\t\t// eol\n\t\t\tcase .eol:\n\t\t\t\treturn [\n\t\t\t\t\tGrammarToken.comment._rule().optional(producing: GrammarToken._transient),\n\t\t\t\t\tCharacterSet.newlines.terminal(token: GrammarToken._transient).not(producing: GrammarToken._transient).repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\tCharacterSet.newlines.terminal(token: GrammarToken._transient).optional(producing: GrammarToken._transient),\n\t\t\t\t\t].sequence(token: GrammarToken.eol)\n\t\t\t// access\n\t\t\tcase .access:\n\t\t\t\treturn ScannerRule.oneOf(token: GrammarToken.access, [\"static\", \"private\", \"fileprivate\", \"open\", \"internal\", \"public\"])\n\t\t\t// scope\n\t\t\tcase .scope:\n\t\t\t\treturn [\n\t\t\t\t\tGrammarToken.access._rule(),\n\t\t\t\t\t[\n\t\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\tGrammarToken.access._rule(),\n\t\t\t\t\t\t\t\t\t].sequence(token: GrammarToken._transient).optional(producing: GrammarToken._transient),\n\t\t\t\t\t].sequence(token: GrammarToken.scope)\n\t\t\t// number\n\t\t\tcase .number:\n\t\t\t\treturn CharacterSet.decimalDigits.terminal(token: GrammarToken._transient).repeated(min: 1, producing: GrammarToken.number)\n\t\t\t// key\n\t\t\tcase .key:\n\t\t\t\treturn [\n\t\t\t\t\tGrammarToken.string._rule(),\n\t\t\t\t\tGrammarToken.number._rule(),\n\t\t\t\t\tGrammarToken.variable._rule(),\n\t\t\t\t\t].oneOf(token: GrammarToken.key)\n\t\t\t// entry\n\t\t\tcase .entry:\n\t\t\t\tguard let cachedRule = FullSwiftParser.leftHandRecursiveRules[self.rawValue] else {\n\t\t\t\t\t// Create recursive shell\n\t\t\t\t\tlet recursiveRule = RecursiveRule()\n\t\t\t\t\tFullSwiftParser.leftHandRecursiveRules[self.rawValue] = recursiveRule\n\t\t\t\t\t// Create the rule we would normally generate\n\t\t\t\t\tlet rule = [\n\t\t\t\t\t\t\t\tGrammarToken.key._rule().optional(producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\":\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\tGrammarToken.reference._rule().optional(producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t].sequence(token: GrammarToken.entry)\n\t\t\t\t\trecursiveRule.surrogateRule = rule\n\t\t\t\t\treturn recursiveRule\n\t\t\t\t}\n\t\t\t\treturn cachedRule\n\t\t\t// dictionary\n\t\t\tcase .dictionary:\n\t\t\t\tguard let cachedRule = FullSwiftParser.leftHandRecursiveRules[self.rawValue] else {\n\t\t\t\t\t// Create recursive shell\n\t\t\t\t\tlet recursiveRule = RecursiveRule()\n\t\t\t\t\tFullSwiftParser.leftHandRecursiveRules[self.rawValue] = recursiveRule\n\t\t\t\t\t// Create the rule we would normally generate\n\t\t\t\t\tlet rule = [\n\t\t\t\t\t[\n\t\t\t\t\t\t\t\t\t\"[\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\tGrammarToken.entry._rule(),\n\t\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\"]\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t].sequence(token: GrammarToken._transient),\n\t\t\t\t\t[\n\t\t\t\t\t\t\t\t\t\"[\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\tGrammarToken.entry._rule().optional(producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t[\n\t\t\t\t\t\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\t\",\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\tGrammarToken.entry._rule(),\n\t\t\t\t\t\t\t\t\t\t\t\t\t].sequence(token: GrammarToken._transient).repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\",\".terminal(token: GrammarToken._transient).optional(producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\"]\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t].sequence(token: GrammarToken._transient),\n\t\t\t\t\t].oneOf(token: GrammarToken.dictionary)\n\t\t\t\t\trecursiveRule.surrogateRule = rule\n\t\t\t\t\treturn recursiveRule\n\t\t\t\t}\n\t\t\t\treturn cachedRule\n\t\t\t// dictionary\n\t\t\tcase .dictionary:\n\t\t\t\tguard let cachedRule = FullSwiftParser.leftHandRecursiveRules[self.rawValue] else {\n\t\t\t\t\t// Create recursive shell\n\t\t\t\t\tlet recursiveRule = RecursiveRule()\n\t\t\t\t\tFullSwiftParser.leftHandRecursiveRules[self.rawValue] = recursiveRule\n\t\t\t\t\t// Create the rule we would normally generate\n\t\t\t\t\tlet rule = [\n\t\t\t\t\t[\n\t\t\t\t\t\t\t\t\t\"[\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\tGrammarToken.entry._rule(),\n\t\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\"]\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t].sequence(token: GrammarToken._transient),\n\t\t\t\t\t[\n\t\t\t\t\t\t\t\t\t\"[\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\tGrammarToken.entry._rule().optional(producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t[\n\t\t\t\t\t\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\t\",\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\tGrammarToken.entry._rule(),\n\t\t\t\t\t\t\t\t\t\t\t\t\t].sequence(token: GrammarToken._transient).repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\",\".terminal(token: GrammarToken._transient).optional(producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\"]\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t].sequence(token: GrammarToken._transient),\n\t\t\t\t\t].oneOf(token: GrammarToken.dictionary)\n\t\t\t\t\trecursiveRule.surrogateRule = rule\n\t\t\t\t\treturn recursiveRule\n\t\t\t\t}\n\t\t\t\treturn cachedRule\n\t\t\t// array\n\t\t\tcase .array:\n\t\t\t\tguard let cachedRule = FullSwiftParser.leftHandRecursiveRules[self.rawValue] else {\n\t\t\t\t\t// Create recursive shell\n\t\t\t\t\tlet recursiveRule = RecursiveRule()\n\t\t\t\t\tFullSwiftParser.leftHandRecursiveRules[self.rawValue] = recursiveRule\n\t\t\t\t\t// Create the rule we would normally generate\n\t\t\t\t\tlet rule = [\n\t\t\t\t\t\"[\".terminal(token: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t[\n\t\t\t\t\t\t\t\t\tGrammarToken.reference._rule(),\n\t\t\t\t\t\t\t\t\t[\n\t\t\t\t\t\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\t\",\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\tGrammarToken.reference._rule(),\n\t\t\t\t\t\t\t\t\t\t\t\t\t].sequence(token: GrammarToken._transient).repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\",\".terminal(token: GrammarToken._transient).optional(producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t].sequence(token: GrammarToken._transient).optional(producing: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\"]\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t].sequence(token: GrammarToken.array)\n\t\t\t\t\trecursiveRule.surrogateRule = rule\n\t\t\t\t\treturn recursiveRule\n\t\t\t\t}\n\t\t\t\treturn cachedRule\n\t\t\t// string\n\t\t\tcase .string:\n\t\t\t\treturn [\n\t\t\t\t\t\"\\\"\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t[\n\t\t\t\t\t\t\t\t\t[\n\t\t\t\t\t\t\t\t\t\t\t\t\t\"\\\\\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\tCharacterSet(charactersIn: \"\\\"\\\\\").terminal(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\t].sequence(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\"\\\"\".terminal(token: GrammarToken._transient).not(producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t].oneOf(token: GrammarToken._transient).repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\"\\\"\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t].sequence(token: GrammarToken.string)\n\t\t\t// variable\n\t\t\tcase .variable:\n\t\t\t\treturn [\n\t\t\t\t\tCharacterSet.letters.union(CharacterSet(charactersIn: \"_\")).terminal(token: GrammarToken._transient),\n\t\t\t\t\tCharacterSet.letters.union(CharacterSet.decimalDigits).union(CharacterSet(charactersIn: \"_\")).terminal(token: GrammarToken._transient).repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t].sequence(token: GrammarToken.variable)\n\t\t\t// inherit\n\t\t\tcase .inherit:\n\t\t\t\treturn [\n\t\t\t\t\t\":\".terminal(token: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.variable._rule(),\n\t\t\t\t\t[\n\t\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\",\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\tGrammarToken.variable._rule(),\n\t\t\t\t\t\t\t\t\t].sequence(token: GrammarToken._transient).repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t].sequence(token: GrammarToken.inherit)\n\t\t\t// parameter\n\t\t\tcase .parameter:\n\t\t\t\tguard let cachedRule = FullSwiftParser.leftHandRecursiveRules[self.rawValue] else {\n\t\t\t\t\t// Create recursive shell\n\t\t\t\t\tlet recursiveRule = RecursiveRule()\n\t\t\t\t\tFullSwiftParser.leftHandRecursiveRules[self.rawValue] = recursiveRule\n\t\t\t\t\t// Create the rule we would normally generate\n\t\t\t\t\tlet rule = [\n\t\t\t\t\t[\n\t\t\t\t\t\t\t\t\t[\n\t\t\t\t\t\t\t\t\t\t\t\t\t[\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tGrammarToken.variable._rule(),\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tGrammarToken.variable._rule().optional(producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t].sequence(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\t[\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\"_\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tGrammarToken.variable._rule(),\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tGrammarToken.variable._rule(),\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t].sequence(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\tGrammarToken.variable._rule(),\n\t\t\t\t\t\t\t\t\t\t\t\t\t].oneOf(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\":\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t].sequence(token: GrammarToken._transient).optional(producing: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.reference._rule(),\n\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t[\n\t\t\t\t\t\t\t\t\t\"=\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t[\n\t\t\t\t\t\t\t\t\t\t\t\t\tGrammarToken.variable._rule(),\n\t\t\t\t\t\t\t\t\t\t\t\t\tGrammarToken.dictionary._rule(),\n\t\t\t\t\t\t\t\t\t\t\t\t\t].oneOf(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t].sequence(token: GrammarToken._transient).optional(producing: GrammarToken._transient),\n\t\t\t\t\t].sequence(token: GrammarToken.parameter)\n\t\t\t\t\trecursiveRule.surrogateRule = rule\n\t\t\t\t\treturn recursiveRule\n\t\t\t\t}\n\t\t\t\treturn cachedRule\n\t\t\t// parameters\n\t\t\tcase .parameters:\n\t\t\t\tguard let cachedRule = FullSwiftParser.leftHandRecursiveRules[self.rawValue] else {\n\t\t\t\t\t// Create recursive shell\n\t\t\t\t\tlet recursiveRule = RecursiveRule()\n\t\t\t\t\tFullSwiftParser.leftHandRecursiveRules[self.rawValue] = recursiveRule\n\t\t\t\t\t// Create the rule we would normally generate\n\t\t\t\t\tlet rule = [\n\t\t\t\t\t\"(\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t[\n\t\t\t\t\t\t\t\t\tGrammarToken.parameter._rule(),\n\t\t\t\t\t\t\t\t\t[\n\t\t\t\t\t\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\t\",\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\tGrammarToken.parameter._rule(),\n\t\t\t\t\t\t\t\t\t\t\t\t\t].sequence(token: GrammarToken._transient).repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t].sequence(token: GrammarToken._transient).optional(producing: GrammarToken._transient),\n\t\t\t\t\t\")\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t].sequence(token: GrammarToken.parameters)\n\t\t\t\t\trecursiveRule.surrogateRule = rule\n\t\t\t\t\treturn recursiveRule\n\t\t\t\t}\n\t\t\t\treturn cachedRule\n\t\t\t// index\n\t\t\tcase .index:\n\t\t\t\tguard let cachedRule = FullSwiftParser.leftHandRecursiveRules[self.rawValue] else {\n\t\t\t\t\t// Create recursive shell\n\t\t\t\t\tlet recursiveRule = RecursiveRule()\n\t\t\t\t\tFullSwiftParser.leftHandRecursiveRules[self.rawValue] = recursiveRule\n\t\t\t\t\t// Create the rule we would normally generate\n\t\t\t\t\tlet rule = [\n\t\t\t\t\t\"[\".terminal(token: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.reference._rule(),\n\t\t\t\t\t\"]\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t].sequence(token: GrammarToken.index)\n\t\t\t\t\trecursiveRule.surrogateRule = rule\n\t\t\t\t\treturn recursiveRule\n\t\t\t\t}\n\t\t\t\treturn cachedRule\n\t\t\t// import\n\t\t\tcase .import:\n\t\t\t\treturn [\n\t\t\t\t\t\"import\".terminal(token: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.variable._rule(),\n\t\t\t\t\tGrammarToken.eol._rule(),\n\t\t\t\t\t].sequence(token: GrammarToken.import)\n\t\t\t// class\n\t\t\tcase .class:\n\t\t\t\tguard let cachedRule = FullSwiftParser.leftHandRecursiveRules[self.rawValue] else {\n\t\t\t\t\t// Create recursive shell\n\t\t\t\t\tlet recursiveRule = RecursiveRule()\n\t\t\t\t\tFullSwiftParser.leftHandRecursiveRules[self.rawValue] = recursiveRule\n\t\t\t\t\t// Create the rule we would normally generate\n\t\t\t\t\tlet rule = [\n\t\t\t\t\tGrammarToken.scope._rule().optional(producing: GrammarToken._transient),\n\t\t\t\t\t\"class\".terminal(token: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.variable._rule(),\n\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.inherit._rule(),\n\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.block._rule(),\n\t\t\t\t\t].sequence(token: GrammarToken.class)\n\t\t\t\t\trecursiveRule.surrogateRule = rule\n\t\t\t\t\treturn recursiveRule\n\t\t\t\t}\n\t\t\t\treturn cachedRule\n\t\t\t// alias\n\t\t\tcase .alias:\n\t\t\t\treturn [\n\t\t\t\t\t[\n\t\t\t\t\t\t\t\t\tGrammarToken.scope._rule(),\n\t\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t].sequence(token: GrammarToken._transient).optional(producing: GrammarToken._transient),\n\t\t\t\t\t\"typealias\".terminal(token: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.variable._rule(),\n\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),\n\t\t\t\t\t\"=\".terminal(token: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.variable._rule(),\n\t\t\t\t\tGrammarToken.eol._rule(),\n\t\t\t\t\t].sequence(token: GrammarToken.alias)\n\t\t\t// enum\n\t\t\tcase .enum:\n\t\t\t\tguard let cachedRule = FullSwiftParser.leftHandRecursiveRules[self.rawValue] else {\n\t\t\t\t\t// Create recursive shell\n\t\t\t\t\tlet recursiveRule = RecursiveRule()\n\t\t\t\t\tFullSwiftParser.leftHandRecursiveRules[self.rawValue] = recursiveRule\n\t\t\t\t\t// Create the rule we would normally generate\n\t\t\t\t\tlet rule = [\n\t\t\t\t\t[\n\t\t\t\t\t\t\t\t\tGrammarToken.scope._rule(),\n\t\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t].sequence(token: GrammarToken._transient).optional(producing: GrammarToken._transient),\n\t\t\t\t\t\"enum\".terminal(token: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.variable._rule(),\n\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.inherit._rule().optional(producing: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.block._rule(),\n\t\t\t\t\t].sequence(token: GrammarToken.enum)\n\t\t\t\t\trecursiveRule.surrogateRule = rule\n\t\t\t\t\treturn recursiveRule\n\t\t\t\t}\n\t\t\t\treturn cachedRule\n\t\t\t// case\n\t\t\tcase .case:\n\t\t\t\treturn [\n\t\t\t\t\t\"case\".terminal(token: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.variable._rule(),\n\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t[\n\t\t\t\t\t\t\t\t\t\",\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\tGrammarToken.variable._rule(),\n\t\t\t\t\t\t\t\t\t].sequence(token: GrammarToken._transient).repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t].sequence(token: GrammarToken.case)\n\t\t\t// caseBlock\n\t\t\tcase .caseBlock:\n\t\t\t\treturn [\n\t\t\t\t\t[\n\t\t\t\t\t\t\t\t\t[\n\t\t\t\t\t\t\t\t\t\t\t\t\t\"case\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\t\".\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\tGrammarToken.variable._rule(),\n\t\t\t\t\t\t\t\t\t\t\t\t\t[\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\",\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\".\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tGrammarToken.variable._rule(),\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t].sequence(token: GrammarToken._transient).repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\t].sequence(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\"default\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t].oneOf(token: GrammarToken._transient),\n\t\t\t\t\t\":\".terminal(token: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t].sequence(token: GrammarToken.caseBlock)\n\t\t\t// func\n\t\t\tcase .func:\n\t\t\t\tguard let cachedRule = FullSwiftParser.leftHandRecursiveRules[self.rawValue] else {\n\t\t\t\t\t// Create recursive shell\n\t\t\t\t\tlet recursiveRule = RecursiveRule()\n\t\t\t\t\tFullSwiftParser.leftHandRecursiveRules[self.rawValue] = recursiveRule\n\t\t\t\t\t// Create the rule we would normally generate\n\t\t\t\t\tlet rule = [\n\t\t\t\t\tGrammarToken.scope._rule().optional(producing: GrammarToken._transient),\n\t\t\t\t\t[\n\t\t\t\t\t\t\t\t\t[\n\t\t\t\t\t\t\t\t\t\t\t\t\t\"func\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\tGrammarToken.variable._rule(),\n\t\t\t\t\t\t\t\t\t\t\t\t\t].sequence(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\"init\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t].oneOf(token: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.parameters._rule(),\n\t\t\t\t\t[\n\t\t\t\t\t\t\t\t\t\"->\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\tGrammarToken.variable._rule(),\n\t\t\t\t\t\t\t\t\t\"?\".terminal(token: GrammarToken._transient).optional(producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t].sequence(token: GrammarToken._transient).optional(producing: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.block._rule(),\n\t\t\t\t\t].sequence(token: GrammarToken.func)\n\t\t\t\t\trecursiveRule.surrogateRule = rule\n\t\t\t\t\treturn recursiveRule\n\t\t\t\t}\n\t\t\t\treturn cachedRule\n\t\t\t// switch\n\t\t\tcase .switch:\n\t\t\t\tguard let cachedRule = FullSwiftParser.leftHandRecursiveRules[self.rawValue] else {\n\t\t\t\t\t// Create recursive shell\n\t\t\t\t\tlet recursiveRule = RecursiveRule()\n\t\t\t\t\tFullSwiftParser.leftHandRecursiveRules[self.rawValue] = recursiveRule\n\t\t\t\t\t// Create the rule we would normally generate\n\t\t\t\t\tlet rule = [\n\t\t\t\t\t\"switch\".terminal(token: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.variable._rule(),\n\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.block._rule(),\n\t\t\t\t\t].sequence(token: GrammarToken.switch)\n\t\t\t\t\trecursiveRule.surrogateRule = rule\n\t\t\t\t\treturn recursiveRule\n\t\t\t\t}\n\t\t\t\treturn cachedRule\n\t\t\t// return\n\t\t\tcase .return:\n\t\t\t\treturn [\n\t\t\t\t\t\"return\".terminal(token: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.reference._rule(),\n\t\t\t\t\t].sequence(token: GrammarToken.return)\n\t\t\t// reference\n\t\t\tcase .reference:\n\t\t\t\tguard let cachedRule = FullSwiftParser.leftHandRecursiveRules[self.rawValue] else {\n\t\t\t\t\t// Create recursive shell\n\t\t\t\t\tlet recursiveRule = RecursiveRule()\n\t\t\t\t\tFullSwiftParser.leftHandRecursiveRules[self.rawValue] = recursiveRule\n\t\t\t\t\t// Create the rule we would normally generate\n\t\t\t\t\tlet rule = [\n\t\t\t\t\t[\n\t\t\t\t\t\t\t\t\tGrammarToken.call._rule(),\n\t\t\t\t\t\t\t\t\t[\n\t\t\t\t\t\t\t\t\t\t\t\t\tGrammarToken.variable._rule(),\n\t\t\t\t\t\t\t\t\t\t\t\t\tGrammarToken.index._rule().optional(producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\t].sequence(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\tGrammarToken.string._rule(),\n\t\t\t\t\t\t\t\t\tGrammarToken.array._rule(),\n\t\t\t\t\t\t\t\t\tGrammarToken.number._rule(),\n\t\t\t\t\t\t\t\t\tGrammarToken.dictionary._rule(),\n\t\t\t\t\t\t\t\t\t].oneOf(token: GrammarToken._transient),\n\t\t\t\t\t[\n\t\t\t\t\t\t\t\t\t\".\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\tGrammarToken.reference._rule(),\n\t\t\t\t\t\t\t\t\t].sequence(token: GrammarToken._transient).optional(producing: GrammarToken._transient),\n\t\t\t\t\t\"!\".terminal(token: GrammarToken._transient).optional(producing: GrammarToken._transient),\n\t\t\t\t\t].sequence(token: GrammarToken.reference)\n\t\t\t\t\trecursiveRule.surrogateRule = rule\n\t\t\t\t\treturn recursiveRule\n\t\t\t\t}\n\t\t\t\treturn cachedRule\n\t\t\t// var\n\t\t\tcase .var:\n\t\t\t\tguard let cachedRule = FullSwiftParser.leftHandRecursiveRules[self.rawValue] else {\n\t\t\t\t\t// Create recursive shell\n\t\t\t\t\tlet recursiveRule = RecursiveRule()\n\t\t\t\t\tFullSwiftParser.leftHandRecursiveRules[self.rawValue] = recursiveRule\n\t\t\t\t\t// Create the rule we would normally generate\n\t\t\t\t\tlet rule = [\n\t\t\t\t\t[\n\t\t\t\t\t\t\t\t\tGrammarToken.scope._rule(),\n\t\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t].sequence(token: GrammarToken._transient).optional(producing: GrammarToken._transient),\n\t\t\t\t\tScannerRule.oneOf(token: GrammarToken._transient, [\"var\", \"let\"]),\n\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.variable._rule(),\n\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t[\n\t\t\t\t\t\t\t\t\t[\n\t\t\t\t\t\t\t\t\t\t\t\t\t\":\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\tGrammarToken.variable._rule(),\n\t\t\t\t\t\t\t\t\t\t\t\t\t\"?\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\tGrammarToken.block._rule().optional(producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\t].sequence(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t[\n\t\t\t\t\t\t\t\t\t\t\t\t\t\"=\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\tGrammarToken.reference._rule(),\n\t\t\t\t\t\t\t\t\t\t\t\t\t].sequence(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t].oneOf(token: GrammarToken._transient),\n\t\t\t\t\t].sequence(token: GrammarToken.var)\n\t\t\t\t\trecursiveRule.surrogateRule = rule\n\t\t\t\t\treturn recursiveRule\n\t\t\t\t}\n\t\t\t\treturn cachedRule\n\t\t\t// call\n\t\t\tcase .call:\n\t\t\t\tguard let cachedRule = FullSwiftParser.leftHandRecursiveRules[self.rawValue] else {\n\t\t\t\t\t// Create recursive shell\n\t\t\t\t\tlet recursiveRule = RecursiveRule()\n\t\t\t\t\tFullSwiftParser.leftHandRecursiveRules[self.rawValue] = recursiveRule\n\t\t\t\t\t// Create the rule we would normally generate\n\t\t\t\t\tlet rule = [\n\t\t\t\t\t[\n\t\t\t\t\t\t\t\t\t\"#\".terminal(token: GrammarToken._transient).optional(producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\tGrammarToken.variable._rule(),\n\t\t\t\t\t\t\t\t\t[\n\t\t\t\t\t\t\t\t\t\t\t\t\t\".\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t\t\t\t\tGrammarToken.variable._rule(),\n\t\t\t\t\t\t\t\t\t\t\t\t\t].sequence(token: GrammarToken._transient).repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\t\t\t\t].sequence(token: GrammarToken._transient).optional(producing: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.parameters._rule(),\n\t\t\t\t\t].sequence(token: GrammarToken.call)\n\t\t\t\t\trecursiveRule.surrogateRule = rule\n\t\t\t\t\treturn recursiveRule\n\t\t\t\t}\n\t\t\t\treturn cachedRule\n\t\t\t// guard\n\t\t\tcase .guard:\n\t\t\t\tguard let cachedRule = FullSwiftParser.leftHandRecursiveRules[self.rawValue] else {\n\t\t\t\t\t// Create recursive shell\n\t\t\t\t\tlet recursiveRule = RecursiveRule()\n\t\t\t\t\tFullSwiftParser.leftHandRecursiveRules[self.rawValue] = recursiveRule\n\t\t\t\t\t// Create the rule we would normally generate\n\t\t\t\t\tlet rule = [\n\t\t\t\t\t\"guard\".terminal(token: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.var._rule(),\n\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\"else\".terminal(token: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.block._rule(),\n\t\t\t\t\t].sequence(token: GrammarToken.guard)\n\t\t\t\t\trecursiveRule.surrogateRule = rule\n\t\t\t\t\treturn recursiveRule\n\t\t\t\t}\n\t\t\t\treturn cachedRule\n\t\t\t// assignment\n\t\t\tcase .assignment:\n\t\t\t\treturn [\n\t\t\t\t\tGrammarToken.reference._rule(),\n\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\"=\".terminal(token: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.reference._rule(),\n\t\t\t\t\t].sequence(token: GrammarToken.assignment)\n\t\t\t// block\n\t\t\tcase .block:\n\t\t\t\tguard let cachedRule = FullSwiftParser.leftHandRecursiveRules[self.rawValue] else {\n\t\t\t\t\t// Create recursive shell\n\t\t\t\t\tlet recursiveRule = RecursiveRule()\n\t\t\t\t\tFullSwiftParser.leftHandRecursiveRules[self.rawValue] = recursiveRule\n\t\t\t\t\t// Create the rule we would normally generate\n\t\t\t\t\tlet rule = [\n\t\t\t\t\t\"{\".terminal(token: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.statement._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),\n\t\t\t\t\t\"}\".terminal(token: GrammarToken._transient),\n\t\t\t\t\t].sequence(token: GrammarToken.block)\n\t\t\t\t\trecursiveRule.surrogateRule = rule\n\t\t\t\t\treturn recursiveRule\n\t\t\t\t}\n\t\t\t\treturn cachedRule\n\t\t\t// statement\n\t\t\tcase .statement:\n\t\t\t\tguard let cachedRule = FullSwiftParser.leftHandRecursiveRules[self.rawValue] else {\n\t\t\t\t\t// Create recursive shell\n\t\t\t\t\tlet recursiveRule = RecursiveRule()\n\t\t\t\t\tFullSwiftParser.leftHandRecursiveRules[self.rawValue] = recursiveRule\n\t\t\t\t\t// Create the rule we would normally generate\n\t\t\t\t\tlet rule = [\n\t\t\t\t\tGrammarToken.import._rule(),\n\t\t\t\t\tGrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),\n\t\t\t\t\tGrammarToken.class._rule(),\n\t\t\t\t\tGrammarToken.enum._rule(),\n\t\t\t\t\tGrammarToken.var._rule(),\n\t\t\t\t\tGrammarToken.case._rule(),\n\t\t\t\t\tGrammarToken.caseBlock._rule(),\n\t\t\t\t\tGrammarToken.func._rule(),\n\t\t\t\t\tGrammarToken.switch._rule(),\n\t\t\t\t\tGrammarToken.return._rule(),\n\t\t\t\t\tGrammarToken.alias._rule(),\n\t\t\t\t\tGrammarToken.call._rule(),\n\t\t\t\t\tGrammarToken.guard._rule(),\n\t\t\t\t\tGrammarToken.assignment._rule(),\n\t\t\t\t\t].oneOf(token: GrammarToken.statement)\n\t\t\t\t\trecursiveRule.surrogateRule = rule\n\t\t\t\t\treturn recursiveRule\n\t\t\t\t}\n\t\t\t\treturn cachedRule\n\t\t\t// swift\n\t\t\tcase .swift:\n\t\t\t\treturn [\n\t\t\t\t\t\t\t\tGrammarToken.ws._rule(),\n\t\t\t\t\t\t\t\tGrammarToken.statement._rule(),\n\t\t\t\t\t\t\t\t].oneOf(token: GrammarToken._transient).repeated(min: 0, producing: GrammarToken.swift)\n\t\t\t}\n\t\t}\n\n\t\t// Color Definitions\n\t\tfileprivate var color : NSColor? {\n\t\t\tswitch self {\n\t\t\tcase .comment:\treturn #colorLiteral(red:0.11457, green:0.506016, blue:0.128891, alpha: 1)\n\t\t\tcase .scope:\treturn #colorLiteral(red:0.207304, green:0.362127, blue:0.401488, alpha: 1)\n\t\t\tcase .number:\treturn #colorLiteral(red:0.0, green:0.589801, blue:1.0, alpha: 1)\n\t\t\tcase .string:\treturn #colorLiteral(red:0.815686, green:0.129412, blue:0.12549, alpha: 1)\n\t\t\tcase .variable:\treturn #colorLiteral(red:0.309804, green:0.541176, blue:0.6, alpha: 1)\n\t\t\tdefault:\treturn nil\n\t\t\t}\n\t\t}\n\n\t}\n\n\t// Color Dictionary\n\tstatic var colors = [\"comment\" : GrammarToken.comment.color!, \"scope\" : GrammarToken.scope.color!, \"number\" : GrammarToken.number.color!, \"string\" : GrammarToken.string.color!, \"variable\" : GrammarToken.variable.color!]\n\n\t// Cache for left-hand recursive rules\n\tprivate static var leftHandRecursiveRules = [ Int : Rule ]()\n\n\t// Initialize the parser with the base rule set\n\tinit(){\n\t\tsuper.init(grammar: [GrammarToken.swift._rule()])\n\t}\n}\n"
-    
-    let stlrSource = "/************************************************************ \n\n\t\t\tSwift Tool for Language Recognition (STLR)  \n\nSTLR can be fully described itself, and this example is \nprovided to both provide  a formal document capturing STLR \nand to illustrate a complex use of the format.\n\nChange log: \n\tv0.0.0\t8  Aug 2016 \tInitial version \n\tv0.0.1\t15 Aug 2016\t\tAdded annotations changed to \n\t\t\t\t\t\t\tremove semi-colons and use \n\t\t\t\t\t\t\t\" not \'\n\tv0.0.2\t16 Aug 2016\t\tAdded look ahead    \n\tv0.0.3\t17 Aug 2016\t\tAdded errors to grammar \n\tv0.0.4\t18 Aug 2016\t\tChanged the format of annotations \n\t\t\t\t\t\t\tto be more Swift like \n\tv0.0.5\t22 Aug 2016 \tAdded support for nested multiline \n\t\t\t\t\t\t\tcomments\n\tv0.0.6 \t24 Aug 2016\t\tChanged position of negation\n\t\t\t\t\t\t\toperator to better match Swift and\n\t\t\t\t\t\t\tadded more error information.\n\tv0.0.7  10 Sep 2017\t\tAdded module importing\n\n*************************************************************/\n\n//\n// Whitespace\n// \nsingleLineComment\t\t= \"//\" !.newlines* .newlines\nmultilineComment\t\t= \"/*\" (multilineComment | !\"*/\")* \"*/\"\ncomment\t\t\t\t\t= singleLineComment | multilineComment\n@void\nwhitespace\t \t\t\t= comment | .whitespacesAndNewlines\nows\t\t\t\t\t\t= whitespace*\n\n//\n// Constants  \n//\n//definition\t\t\t= \"const\"\tows identifier ows \"=\" ows literal .whitespaces* whitespace\n\n//\n// Quantifiers, does this still work?\n//\nquantifier\t\t\t\t= \"*\" | \"+\" | \"?\" | \"-\" \nnegated\t\t\t\t\t= \"!\"\ntransient\t\t\t\t= \"-\"\n\n//\n// Parsing Control \n//\nlookahead\t\t\t\t= \">>\"\n\n//\n// String \n//\nstringQuote\t\t\t\t= \"\\\"\"\nescapedCharacters \t\t= stringQuote | \"r\" | \"n\" | \"t\" | \"\\\\\"\nescapedCharacter \t\t= \"\\\\\" escapedCharacters\n@void\nstringCharacter \t\t= escapedCharacter | !(stringQuote | .newlines)\nterminalBody\t\t\t= stringCharacter+\nstringBody\t\t\t\t= stringCharacter*\nstring\t\t\t\t\t= stringQuote \n\t\t\t\t\t\t\tstringBody \n\t\t\t\t\t\t  @error(\"Missing terminating quote\")\n\t\t\t\t\t\t  stringQuote\nterminalString\t\t\t= stringQuote \n\t\t\t\t\t\t  \t@error(\"Terminals must have at least one character\") \n\t\t\t\t\t\t\tterminalBody \n\t\t\t\t\t\t  @error(\"Missing terminating quote\")\n\t\t\t\t\t\t  stringQuote\n\n//\n// Character Sets and Ranges \n//\ncharacterSetName\t\t= \"letters\" | \n\t\t\t\t\t\t  \"uppercaseLetters\" | \n\t\t\t\t\t\t  \"lowercaseLetters\" | \n\t\t\t\t\t\t  \"alphaNumerics\" | \n\t\t\t\t\t\t  \"decimalDigits\" | \n\t\t\t\t\t\t  \"whitespacesAndNewlines\" | \n\t\t\t\t\t\t  \"whitespaces\" | \n\t\t\t\t\t\t  \"newlines\"\ncharacterSet\t\t\t= (\".\" @error(\"Unknown character set\") characterSetName)\n\nrangeOperator\t\t\t= \".\" @error(\"Expected ... in character range\") \"..\"\ncharacterRange\t\t\t= terminalString rangeOperator @error(\"Range must be terminated\") terminalString\n\n//\n// Types\n//\nnumber \t\t\t\t\t= (\"-\" | \"+\")? .decimalDigits+\nboolean \t\t\t\t= \"true\" | \"false\"\nliteral\t\t\t\t\t= string | number | boolean\n\n//\n// Annotations  \n//\nannotation  \t\t\t= \"@\" \n\t\t\t\t\t\t\t@error(\"Expected an annotation label\") label ( \n\t\t\t\t\t\t\t\t\"(\" \n\t\t\t\t\t\t\t\t@error(\"A value must be specified or the () omitted\") \n\t\t\t\t\t\t\t\tliteral \n\t\t\t\t\t\t\t\t@error(\"Missing \')\'\") \n\t\t\t\t\t\t\t\t\")\" \n\t\t\t\t\t\t\t)?\nannotations \t\t\t= (annotation ows)+\n\ncustomLabel  \t\t\t= @error(\"Labels must start with a letter or _\") (.letters | \"_\") ( .letters | .decimalDigits | \"_\" )*\ndefinedLabel \t\t\t= \"token\" | \"error\" | \"void\" | \"transient\"\nlabel \t\t\t\t\t= definedLabel | customLabel\n\n//\n// Element\n//\nterminal \t\t\t\t= characterSet | characterRange | terminalString \ngroup\t\t\t\t\t= \"(\" whitespace* \n\t\t\t\t\t\t\texpression whitespace* \n\t\t\t\t\t\t\t@error(\"Expected \')\'\") \n\t\t\t\t\t\t   \")\" \nidentifier \t\t\t\t= (.letters | \"_\") ( .letters | .decimalDigits | \"_\" )*  \n\nelement \t\t\t\t= annotations? (lookahead | transient)? negated? ( group | terminal | identifier ) quantifier? \n\n//\n// Expressions\n//\nassignmentOperators\t\t= \"=\" | \"+=\" | \"|=\"\n@void\nor \t\t\t\t\t\t=  whitespace* \"|\" whitespace*\n@void\nthen \t\t\t\t\t= (whitespace* \"+\" whitespace*) | whitespace+\n\nchoice\t\t\t\t\t= element (or @error(\"Expected terminal, identifier, or group\") element)+\nnotNewRule\t\t\t\t= !(annotations? identifier whitespace* assignmentOperators)\nsequence\t\t\t\t= element (then >>notNewRule @error(\"Expected terminal, identifier, or group\")element)+ \n\nexpression \t\t\t\t= choice | sequence | element\n\n//\n// Rule \n//\n@transient\nlhs\t\t\t\t\t\t= whitespace* annotations? transient? identifier whitespace* assignmentOperators\nrule \t\t\t\t\t= lhs whitespace* @error(\"Expected expression\")expression whitespace*\n\n//\n// Importing\n//\nmoduleName\t\t\t\t= (.letters | \"_\") (.letters | \"_\" | .decimalDigits)*\nmoduleImport\t\t\t= whitespace* @token(\"import\") \"import\" .whitespaces+  moduleName whitespace+\n\n// \n// Grammar\n//\n\ngrammar\t\t\t \t\t= @token(\"mark\") >>(!\" \"|\" \") moduleImport* @error(\"Expected at least one rule\") rule+ //NB: Mark is there to ensure there is no automatic reduction of rule into grammar if there is only one rule, this should perhaps become an annotation\n"
+
+    let swiftSource = """
+//
+// STLR Generated Swift File
+//
+// Generated: 2016-08-19 10:45:49 +0000
+//
+import OysterKit
+
+//
+// FullSwiftParser Parser
+//
+class FullSwiftParser : Parser{
+
+    // Convenience alias
+    private typealias GrammarToken = Tokens
+
+    // Token & Rules Definition
+    enum Tokens : Int, Token {
+        case _transient, comment, ws, eol, access, scope, number, key, entry, dictionary, dictionary, array, string, variable, inherit, parameter, parameters, index, import, class, alias, enum, case, caseBlock, func, switch, return, reference, var, call, guard, assignment, block, statement, swift
+
+        func _rule(_ annotations: RuleAnnotations = [ : ])->Rule {
+            switch self {
+            case ._transient:
+                return CharacterSet(charactersIn: "").terminal(token: GrammarToken._transient)
+            // comment
+            case .comment:
+                return [
+                    "//".terminal(token: GrammarToken._transient),
+                    CharacterSet.newlines.terminal(token: GrammarToken._transient).not(producing: GrammarToken._transient).repeated(min: 0, producing: GrammarToken._transient),
+                    ].sequence(token: GrammarToken.comment)
+            // ws
+            case .ws:
+                return [
+                    GrammarToken.comment._rule(),
+                    CharacterSet.whitespacesAndNewlines.terminal(token: GrammarToken._transient),
+                    ].oneOf(token: GrammarToken.ws)
+            // eol
+            case .eol:
+                return [
+                    GrammarToken.comment._rule().optional(producing: GrammarToken._transient),
+                    CharacterSet.newlines.terminal(token: GrammarToken._transient).not(producing: GrammarToken._transient).repeated(min: 0, producing: GrammarToken._transient),
+                    CharacterSet.newlines.terminal(token: GrammarToken._transient).optional(producing: GrammarToken._transient),
+                    ].sequence(token: GrammarToken.eol)
+            // access
+            case .access:
+                return ScannerRule.oneOf(token: GrammarToken.access, ["static", "private", "fileprivate", "open", "internal", "public"])
+            // scope
+            case .scope:
+                return [
+                    GrammarToken.access._rule(),
+                    [
+                                    GrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),
+                                    GrammarToken.access._rule(),
+                                    ].sequence(token: GrammarToken._transient).optional(producing: GrammarToken._transient),
+                    ].sequence(token: GrammarToken.scope)
+            // number
+            case .number:
+                return CharacterSet.decimalDigits.terminal(token: GrammarToken._transient).repeated(min: 1, producing: GrammarToken.number)
+            // key
+            case .key:
+                return [
+                    GrammarToken.string._rule(),
+                    GrammarToken.number._rule(),
+                    GrammarToken.variable._rule(),
+                    ].oneOf(token: GrammarToken.key)
+            // entry
+            case .entry:
+                guard let cachedRule = FullSwiftParser.leftHandRecursiveRules[self.rawValue] else {
+                    // Create recursive shell
+                    let recursiveRule = RecursiveRule()
+                    FullSwiftParser.leftHandRecursiveRules[self.rawValue] = recursiveRule
+                    // Create the rule we would normally generate
+                    let rule = [
+                                GrammarToken.key._rule().optional(producing: GrammarToken._transient),
+                                GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                                ":".terminal(token: GrammarToken._transient),
+                                GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                                GrammarToken.reference._rule().optional(producing: GrammarToken._transient),
+                                ].sequence(token: GrammarToken.entry)
+                    recursiveRule.surrogateRule = rule
+                    return recursiveRule
+                }
+                return cachedRule
+            // dictionary
+            case .dictionary:
+                guard let cachedRule = FullSwiftParser.leftHandRecursiveRules[self.rawValue] else {
+                    // Create recursive shell
+                    let recursiveRule = RecursiveRule()
+                    FullSwiftParser.leftHandRecursiveRules[self.rawValue] = recursiveRule
+                    // Create the rule we would normally generate
+                    let rule = [
+                    [
+                                    "[".terminal(token: GrammarToken._transient),
+                                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                                    GrammarToken.entry._rule(),
+                                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                                    "]".terminal(token: GrammarToken._transient),
+                                    ].sequence(token: GrammarToken._transient),
+                    [
+                                    "[".terminal(token: GrammarToken._transient),
+                                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                                    GrammarToken.entry._rule().optional(producing: GrammarToken._transient),
+                                    [
+                                                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                                                    ",".terminal(token: GrammarToken._transient),
+                                                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                                                    GrammarToken.entry._rule(),
+                                                    ].sequence(token: GrammarToken._transient).repeated(min: 0, producing: GrammarToken._transient),
+                                    ",".terminal(token: GrammarToken._transient).optional(producing: GrammarToken._transient),
+                                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                                    "]".terminal(token: GrammarToken._transient),
+                                    ].sequence(token: GrammarToken._transient),
+                    ].oneOf(token: GrammarToken.dictionary)
+                    recursiveRule.surrogateRule = rule
+                    return recursiveRule
+                }
+                return cachedRule
+            // dictionary
+            case .dictionary:
+                guard let cachedRule = FullSwiftParser.leftHandRecursiveRules[self.rawValue] else {
+                    // Create recursive shell
+                    let recursiveRule = RecursiveRule()
+                    FullSwiftParser.leftHandRecursiveRules[self.rawValue] = recursiveRule
+                    // Create the rule we would normally generate
+                    let rule = [
+                    [
+                                    "[".terminal(token: GrammarToken._transient),
+                                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                                    GrammarToken.entry._rule(),
+                                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                                    "]".terminal(token: GrammarToken._transient),
+                                    ].sequence(token: GrammarToken._transient),
+                    [
+                                    "[".terminal(token: GrammarToken._transient),
+                                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                                    GrammarToken.entry._rule().optional(producing: GrammarToken._transient),
+                                    [
+                                                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                                                    ",".terminal(token: GrammarToken._transient),
+                                                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                                                    GrammarToken.entry._rule(),
+                                                    ].sequence(token: GrammarToken._transient).repeated(min: 0, producing: GrammarToken._transient),
+                                    ",".terminal(token: GrammarToken._transient).optional(producing: GrammarToken._transient),
+                                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                                    "]".terminal(token: GrammarToken._transient),
+                                    ].sequence(token: GrammarToken._transient),
+                    ].oneOf(token: GrammarToken.dictionary)
+                    recursiveRule.surrogateRule = rule
+                    return recursiveRule
+                }
+                return cachedRule
+            // array
+            case .array:
+                guard let cachedRule = FullSwiftParser.leftHandRecursiveRules[self.rawValue] else {
+                    // Create recursive shell
+                    let recursiveRule = RecursiveRule()
+                    FullSwiftParser.leftHandRecursiveRules[self.rawValue] = recursiveRule
+                    // Create the rule we would normally generate
+                    let rule = [
+                    "[".terminal(token: GrammarToken._transient),
+                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                    [
+                                    GrammarToken.reference._rule(),
+                                    [
+                                                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                                                    ",".terminal(token: GrammarToken._transient),
+                                                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                                                    GrammarToken.reference._rule(),
+                                                    ].sequence(token: GrammarToken._transient).repeated(min: 0, producing: GrammarToken._transient),
+                                    ",".terminal(token: GrammarToken._transient).optional(producing: GrammarToken._transient),
+                                    ].sequence(token: GrammarToken._transient).optional(producing: GrammarToken._transient),
+                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                    "]".terminal(token: GrammarToken._transient),
+                    ].sequence(token: GrammarToken.array)
+                    recursiveRule.surrogateRule = rule
+                    return recursiveRule
+                }
+                return cachedRule
+            // string
+            case .string:
+                return [
+                    "\"".terminal(token: GrammarToken._transient),
+                    [
+                                    [
+                                                    "\\".terminal(token: GrammarToken._transient),
+                                                    CharacterSet(charactersIn: "\"\\").terminal(token: GrammarToken._transient),
+                                                    ].sequence(token: GrammarToken._transient),
+                                    "\"".terminal(token: GrammarToken._transient).not(producing: GrammarToken._transient),
+                                    ].oneOf(token: GrammarToken._transient).repeated(min: 0, producing: GrammarToken._transient),
+                    "\"".terminal(token: GrammarToken._transient),
+                    ].sequence(token: GrammarToken.string)
+            // variable
+            case .variable:
+                return [
+                    CharacterSet.letters.union(CharacterSet(charactersIn: "_")).terminal(token: GrammarToken._transient),
+                    CharacterSet.letters.union(CharacterSet.decimalDigits).union(CharacterSet(charactersIn: "_")).terminal(token: GrammarToken._transient).repeated(min: 0, producing: GrammarToken._transient),
+                    ].sequence(token: GrammarToken.variable)
+            // inherit
+            case .inherit:
+                return [
+                    ":".terminal(token: GrammarToken._transient),
+                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                    GrammarToken.variable._rule(),
+                    [
+                                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                                    ",".terminal(token: GrammarToken._transient),
+                                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                                    GrammarToken.variable._rule(),
+                                    ].sequence(token: GrammarToken._transient).repeated(min: 0, producing: GrammarToken._transient),
+                    ].sequence(token: GrammarToken.inherit)
+            // parameter
+            case .parameter:
+                guard let cachedRule = FullSwiftParser.leftHandRecursiveRules[self.rawValue] else {
+                    // Create recursive shell
+                    let recursiveRule = RecursiveRule()
+                    FullSwiftParser.leftHandRecursiveRules[self.rawValue] = recursiveRule
+                    // Create the rule we would normally generate
+                    let rule = [
+                    [
+                                    [
+                                                    [
+                                                                    GrammarToken.variable._rule(),
+                                                                    GrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),
+                                                                    GrammarToken.variable._rule().optional(producing: GrammarToken._transient),
+                                                                    ].sequence(token: GrammarToken._transient),
+                                                    [
+                                                                    "_".terminal(token: GrammarToken._transient),
+                                                                    GrammarToken.variable._rule(),
+                                                                    GrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),
+                                                                    GrammarToken.variable._rule(),
+                                                                    ].sequence(token: GrammarToken._transient),
+                                                    GrammarToken.variable._rule(),
+                                                    ].oneOf(token: GrammarToken._transient),
+                                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                                    ":".terminal(token: GrammarToken._transient),
+                                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                                    ].sequence(token: GrammarToken._transient).optional(producing: GrammarToken._transient),
+                    GrammarToken.reference._rule(),
+                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                    [
+                                    "=".terminal(token: GrammarToken._transient),
+                                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                                    [
+                                                    GrammarToken.variable._rule(),
+                                                    GrammarToken.dictionary._rule(),
+                                                    ].oneOf(token: GrammarToken._transient),
+                                    ].sequence(token: GrammarToken._transient).optional(producing: GrammarToken._transient),
+                    ].sequence(token: GrammarToken.parameter)
+                    recursiveRule.surrogateRule = rule
+                    return recursiveRule
+                }
+                return cachedRule
+            // parameters
+            case .parameters:
+                guard let cachedRule = FullSwiftParser.leftHandRecursiveRules[self.rawValue] else {
+                    // Create recursive shell
+                    let recursiveRule = RecursiveRule()
+                    FullSwiftParser.leftHandRecursiveRules[self.rawValue] = recursiveRule
+                    // Create the rule we would normally generate
+                    let rule = [
+                    "(".terminal(token: GrammarToken._transient),
+                    [
+                                    GrammarToken.parameter._rule(),
+                                    [
+                                                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                                                    ",".terminal(token: GrammarToken._transient),
+                                                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                                                    GrammarToken.parameter._rule(),
+                                                    ].sequence(token: GrammarToken._transient).repeated(min: 0, producing: GrammarToken._transient),
+                                    ].sequence(token: GrammarToken._transient).optional(producing: GrammarToken._transient),
+                    ")".terminal(token: GrammarToken._transient),
+                    ].sequence(token: GrammarToken.parameters)
+                    recursiveRule.surrogateRule = rule
+                    return recursiveRule
+                }
+                return cachedRule
+            // index
+            case .index:
+                guard let cachedRule = FullSwiftParser.leftHandRecursiveRules[self.rawValue] else {
+                    // Create recursive shell
+                    let recursiveRule = RecursiveRule()
+                    FullSwiftParser.leftHandRecursiveRules[self.rawValue] = recursiveRule
+                    // Create the rule we would normally generate
+                    let rule = [
+                    "[".terminal(token: GrammarToken._transient),
+                    GrammarToken.reference._rule(),
+                    "]".terminal(token: GrammarToken._transient),
+                    ].sequence(token: GrammarToken.index)
+                    recursiveRule.surrogateRule = rule
+                    return recursiveRule
+                }
+                return cachedRule
+            // import
+            case .import:
+                return [
+                    "import".terminal(token: GrammarToken._transient),
+                    GrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),
+                    GrammarToken.variable._rule(),
+                    GrammarToken.eol._rule(),
+                    ].sequence(token: GrammarToken.import)
+            // class
+            case .class:
+                guard let cachedRule = FullSwiftParser.leftHandRecursiveRules[self.rawValue] else {
+                    // Create recursive shell
+                    let recursiveRule = RecursiveRule()
+                    FullSwiftParser.leftHandRecursiveRules[self.rawValue] = recursiveRule
+                    // Create the rule we would normally generate
+                    let rule = [
+                    GrammarToken.scope._rule().optional(producing: GrammarToken._transient),
+                    "class".terminal(token: GrammarToken._transient),
+                    GrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),
+                    GrammarToken.variable._rule(),
+                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                    GrammarToken.inherit._rule(),
+                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                    GrammarToken.block._rule(),
+                    ].sequence(token: GrammarToken.class)
+                    recursiveRule.surrogateRule = rule
+                    return recursiveRule
+                }
+                return cachedRule
+            // alias
+            case .alias:
+                return [
+                    [
+                                    GrammarToken.scope._rule(),
+                                    GrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),
+                                    ].sequence(token: GrammarToken._transient).optional(producing: GrammarToken._transient),
+                    "typealias".terminal(token: GrammarToken._transient),
+                    GrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),
+                    GrammarToken.variable._rule(),
+                    GrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),
+                    "=".terminal(token: GrammarToken._transient),
+                    GrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),
+                    GrammarToken.variable._rule(),
+                    GrammarToken.eol._rule(),
+                    ].sequence(token: GrammarToken.alias)
+            // enum
+            case .enum:
+                guard let cachedRule = FullSwiftParser.leftHandRecursiveRules[self.rawValue] else {
+                    // Create recursive shell
+                    let recursiveRule = RecursiveRule()
+                    FullSwiftParser.leftHandRecursiveRules[self.rawValue] = recursiveRule
+                    // Create the rule we would normally generate
+                    let rule = [
+                    [
+                                    GrammarToken.scope._rule(),
+                                    GrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),
+                                    ].sequence(token: GrammarToken._transient).optional(producing: GrammarToken._transient),
+                    "enum".terminal(token: GrammarToken._transient),
+                    GrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),
+                    GrammarToken.variable._rule(),
+                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                    GrammarToken.inherit._rule().optional(producing: GrammarToken._transient),
+                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                    GrammarToken.block._rule(),
+                    ].sequence(token: GrammarToken.enum)
+                    recursiveRule.surrogateRule = rule
+                    return recursiveRule
+                }
+                return cachedRule
+            // case
+            case .case:
+                return [
+                    "case".terminal(token: GrammarToken._transient),
+                    GrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),
+                    GrammarToken.variable._rule(),
+                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                    [
+                                    ",".terminal(token: GrammarToken._transient),
+                                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                                    GrammarToken.variable._rule(),
+                                    ].sequence(token: GrammarToken._transient).repeated(min: 0, producing: GrammarToken._transient),
+                    ].sequence(token: GrammarToken.case)
+            // caseBlock
+            case .caseBlock:
+                return [
+                    [
+                                    [
+                                                    "case".terminal(token: GrammarToken._transient),
+                                                    GrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),
+                                                    ".".terminal(token: GrammarToken._transient),
+                                                    GrammarToken.variable._rule(),
+                                                    [
+                                                                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                                                                    ",".terminal(token: GrammarToken._transient),
+                                                                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                                                                    ".".terminal(token: GrammarToken._transient),
+                                                                    GrammarToken.variable._rule(),
+                                                                    ].sequence(token: GrammarToken._transient).repeated(min: 0, producing: GrammarToken._transient),
+                                                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                                                    ].sequence(token: GrammarToken._transient),
+                                    "default".terminal(token: GrammarToken._transient),
+                                    ].oneOf(token: GrammarToken._transient),
+                    ":".terminal(token: GrammarToken._transient),
+                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                    ].sequence(token: GrammarToken.caseBlock)
+            // func
+            case .func:
+                guard let cachedRule = FullSwiftParser.leftHandRecursiveRules[self.rawValue] else {
+                    // Create recursive shell
+                    let recursiveRule = RecursiveRule()
+                    FullSwiftParser.leftHandRecursiveRules[self.rawValue] = recursiveRule
+                    // Create the rule we would normally generate
+                    let rule = [
+                    GrammarToken.scope._rule().optional(producing: GrammarToken._transient),
+                    [
+                                    [
+                                                    "func".terminal(token: GrammarToken._transient),
+                                                    GrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),
+                                                    GrammarToken.variable._rule(),
+                                                    ].sequence(token: GrammarToken._transient),
+                                    "init".terminal(token: GrammarToken._transient),
+                                    ].oneOf(token: GrammarToken._transient),
+                    GrammarToken.parameters._rule(),
+                    [
+                                    "->".terminal(token: GrammarToken._transient),
+                                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                                    GrammarToken.variable._rule(),
+                                    "?".terminal(token: GrammarToken._transient).optional(producing: GrammarToken._transient),
+                                    ].sequence(token: GrammarToken._transient).optional(producing: GrammarToken._transient),
+                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                    GrammarToken.block._rule(),
+                    ].sequence(token: GrammarToken.func)
+                    recursiveRule.surrogateRule = rule
+                    return recursiveRule
+                }
+                return cachedRule
+            // switch
+            case .switch:
+                guard let cachedRule = FullSwiftParser.leftHandRecursiveRules[self.rawValue] else {
+                    // Create recursive shell
+                    let recursiveRule = RecursiveRule()
+                    FullSwiftParser.leftHandRecursiveRules[self.rawValue] = recursiveRule
+                    // Create the rule we would normally generate
+                    let rule = [
+                    "switch".terminal(token: GrammarToken._transient),
+                    GrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),
+                    GrammarToken.variable._rule(),
+                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                    GrammarToken.block._rule(),
+                    ].sequence(token: GrammarToken.switch)
+                    recursiveRule.surrogateRule = rule
+                    return recursiveRule
+                }
+                return cachedRule
+            // return
+            case .return:
+                return [
+                    "return".terminal(token: GrammarToken._transient),
+                    GrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),
+                    GrammarToken.reference._rule(),
+                    ].sequence(token: GrammarToken.return)
+            // reference
+            case .reference:
+                guard let cachedRule = FullSwiftParser.leftHandRecursiveRules[self.rawValue] else {
+                    // Create recursive shell
+                    let recursiveRule = RecursiveRule()
+                    FullSwiftParser.leftHandRecursiveRules[self.rawValue] = recursiveRule
+                    // Create the rule we would normally generate
+                    let rule = [
+                    [
+                                    GrammarToken.call._rule(),
+                                    [
+                                                    GrammarToken.variable._rule(),
+                                                    GrammarToken.index._rule().optional(producing: GrammarToken._transient),
+                                                    ].sequence(token: GrammarToken._transient),
+                                    GrammarToken.string._rule(),
+                                    GrammarToken.array._rule(),
+                                    GrammarToken.number._rule(),
+                                    GrammarToken.dictionary._rule(),
+                                    ].oneOf(token: GrammarToken._transient),
+                    [
+                                    ".".terminal(token: GrammarToken._transient),
+                                    GrammarToken.reference._rule(),
+                                    ].sequence(token: GrammarToken._transient).optional(producing: GrammarToken._transient),
+                    "!".terminal(token: GrammarToken._transient).optional(producing: GrammarToken._transient),
+                    ].sequence(token: GrammarToken.reference)
+                    recursiveRule.surrogateRule = rule
+                    return recursiveRule
+                }
+                return cachedRule
+            // var
+            case .var:
+                guard let cachedRule = FullSwiftParser.leftHandRecursiveRules[self.rawValue] else {
+                    // Create recursive shell
+                    let recursiveRule = RecursiveRule()
+                    FullSwiftParser.leftHandRecursiveRules[self.rawValue] = recursiveRule
+                    // Create the rule we would normally generate
+                    let rule = [
+                    [
+                                    GrammarToken.scope._rule(),
+                                    GrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),
+                                    ].sequence(token: GrammarToken._transient).optional(producing: GrammarToken._transient),
+                    ScannerRule.oneOf(token: GrammarToken._transient, ["var", "let"]),
+                    GrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),
+                    GrammarToken.variable._rule(),
+                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                    [
+                                    [
+                                                    ":".terminal(token: GrammarToken._transient),
+                                                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                                                    GrammarToken.variable._rule(),
+                                                    "?".terminal(token: GrammarToken._transient),
+                                                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                                                    GrammarToken.block._rule().optional(producing: GrammarToken._transient),
+                                                    ].sequence(token: GrammarToken._transient),
+                                    [
+                                                    "=".terminal(token: GrammarToken._transient),
+                                                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                                                    GrammarToken.reference._rule(),
+                                                    ].sequence(token: GrammarToken._transient),
+                                    ].oneOf(token: GrammarToken._transient),
+                    ].sequence(token: GrammarToken.var)
+                    recursiveRule.surrogateRule = rule
+                    return recursiveRule
+                }
+                return cachedRule
+            // call
+            case .call:
+                guard let cachedRule = FullSwiftParser.leftHandRecursiveRules[self.rawValue] else {
+                    // Create recursive shell
+                    let recursiveRule = RecursiveRule()
+                    FullSwiftParser.leftHandRecursiveRules[self.rawValue] = recursiveRule
+                    // Create the rule we would normally generate
+                    let rule = [
+                    [
+                                    "#".terminal(token: GrammarToken._transient).optional(producing: GrammarToken._transient),
+                                    GrammarToken.variable._rule(),
+                                    [
+                                                    ".".terminal(token: GrammarToken._transient),
+                                                    GrammarToken.variable._rule(),
+                                                    ].sequence(token: GrammarToken._transient).repeated(min: 0, producing: GrammarToken._transient),
+                                    ].sequence(token: GrammarToken._transient).optional(producing: GrammarToken._transient),
+                    GrammarToken.parameters._rule(),
+                    ].sequence(token: GrammarToken.call)
+                    recursiveRule.surrogateRule = rule
+                    return recursiveRule
+                }
+                return cachedRule
+            // guard
+            case .guard:
+                guard let cachedRule = FullSwiftParser.leftHandRecursiveRules[self.rawValue] else {
+                    // Create recursive shell
+                    let recursiveRule = RecursiveRule()
+                    FullSwiftParser.leftHandRecursiveRules[self.rawValue] = recursiveRule
+                    // Create the rule we would normally generate
+                    let rule = [
+                    "guard".terminal(token: GrammarToken._transient),
+                    GrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),
+                    GrammarToken.var._rule(),
+                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                    "else".terminal(token: GrammarToken._transient),
+                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                    GrammarToken.block._rule(),
+                    ].sequence(token: GrammarToken.guard)
+                    recursiveRule.surrogateRule = rule
+                    return recursiveRule
+                }
+                return cachedRule
+            // assignment
+            case .assignment:
+                return [
+                    GrammarToken.reference._rule(),
+                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                    "=".terminal(token: GrammarToken._transient),
+                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                    GrammarToken.reference._rule(),
+                    ].sequence(token: GrammarToken.assignment)
+            // block
+            case .block:
+                guard let cachedRule = FullSwiftParser.leftHandRecursiveRules[self.rawValue] else {
+                    // Create recursive shell
+                    let recursiveRule = RecursiveRule()
+                    FullSwiftParser.leftHandRecursiveRules[self.rawValue] = recursiveRule
+                    // Create the rule we would normally generate
+                    let rule = [
+                    "{".terminal(token: GrammarToken._transient),
+                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                    GrammarToken.statement._rule().repeated(min: 0, producing: GrammarToken._transient),
+                    GrammarToken.ws._rule().repeated(min: 0, producing: GrammarToken._transient),
+                    "}".terminal(token: GrammarToken._transient),
+                    ].sequence(token: GrammarToken.block)
+                    recursiveRule.surrogateRule = rule
+                    return recursiveRule
+                }
+                return cachedRule
+            // statement
+            case .statement:
+                guard let cachedRule = FullSwiftParser.leftHandRecursiveRules[self.rawValue] else {
+                    // Create recursive shell
+                    let recursiveRule = RecursiveRule()
+                    FullSwiftParser.leftHandRecursiveRules[self.rawValue] = recursiveRule
+                    // Create the rule we would normally generate
+                    let rule = [
+                    GrammarToken.import._rule(),
+                    GrammarToken.ws._rule().repeated(min: 1, producing: GrammarToken._transient),
+                    GrammarToken.class._rule(),
+                    GrammarToken.enum._rule(),
+                    GrammarToken.var._rule(),
+                    GrammarToken.case._rule(),
+                    GrammarToken.caseBlock._rule(),
+                    GrammarToken.func._rule(),
+                    GrammarToken.switch._rule(),
+                    GrammarToken.return._rule(),
+                    GrammarToken.alias._rule(),
+                    GrammarToken.call._rule(),
+                    GrammarToken.guard._rule(),
+                    GrammarToken.assignment._rule(),
+                    ].oneOf(token: GrammarToken.statement)
+                    recursiveRule.surrogateRule = rule
+                    return recursiveRule
+                }
+                return cachedRule
+            // swift
+            case .swift:
+                return [
+                                GrammarToken.ws._rule(),
+                                GrammarToken.statement._rule(),
+                                ].oneOf(token: GrammarToken._transient).repeated(min: 0, producing: GrammarToken.swift)
+            }
+        }
+
+        // Color Definitions
+        fileprivate var color : NSColor? {
+            switch self {
+            case .comment:    return #colorLiteral(red:0.11457, green:0.506016, blue:0.128891, alpha: 1)
+            case .scope:    return #colorLiteral(red:0.207304, green:0.362127, blue:0.401488, alpha: 1)
+            case .number:    return #colorLiteral(red:0.0, green:0.589801, blue:1.0, alpha: 1)
+            case .string:    return #colorLiteral(red:0.815686, green:0.129412, blue:0.12549, alpha: 1)
+            case .variable:    return #colorLiteral(red:0.309804, green:0.541176, blue:0.6, alpha: 1)
+            default:    return nil
+            }
+        }
+
+    }
+
+    // Color Dictionary
+    static var colors = ["comment" : GrammarToken.comment.color!, "scope" : GrammarToken.scope.color!, "number" : GrammarToken.number.color!, "string" : GrammarToken.string.color!, "variable" : GrammarToken.variable.color!]
+
+    // Cache for left-hand recursive rules
+    private static var leftHandRecursiveRules = [ Int : Rule ]()
+
+    // Initialize the parser with the base rule set
+    init(){
+        super.init(grammar: [GrammarToken.swift._rule()])
+    }
+}
+"""
+
+    let stlrSource = """
+        /************************************************************
+
+                    Swift Tool for Language Recognition (STLR)
+
+        STLR can be fully described itself, and this example is
+        provided to both provide  a formal document capturing STLR
+        and to illustrate a complex use of the format.
+
+        Change log:
+            v0.0.0    8  Aug 2016     Initial version
+            v0.0.1    15 Aug 2016        Added annotations changed to
+                                    remove semi-colons and use
+                                    " not '
+            v0.0.2    16 Aug 2016        Added look ahead
+            v0.0.3    17 Aug 2016        Added errors to grammar
+            v0.0.4    18 Aug 2016        Changed the format of annotations
+                                    to be more Swift like
+            v0.0.5    22 Aug 2016     Added support for nested multiline
+                                    comments
+            v0.0.6     24 Aug 2016        Changed position of negation
+                                    operator to better match Swift and
+                                    added more error information.
+            v0.0.7  10 Sep 2017        Added module importing
+
+        *************************************************************/
+
+        //
+        // Whitespace
+        //
+        singleLineComment        = "//" !.newline* .newline
+        multilineComment        = "/*" (multilineComment | !"*/")* "*/"
+        comment                    = singleLineComment | multilineComment
+        @void
+        whitespace                 = comment | .whitespaceOrNewline
+        ows                        = whitespace*
+
+        //
+        // Constants
+        //
+        //definition            = "const"    ows identifier ows "=" ows literal .whitespace* whitespace
+
+        //
+        // Quantifiers, does this still work?
+        //
+        quantifier                = "*" | "+" | "?" | "-"
+        negated                   = "!"
+        transient                 = "-"
+
+        //
+        // Parsing Control
+        //
+        lookahead                = ">>"
+
+        //
+        // String
+        //
+        stringQuote                = "\\""
+        escapedCharacters         = stringQuote | "r" | "n" | "t" | .backslash
+        escapedCharacter         = .backslash escapedCharacters
+        @void
+        stringCharacter         = escapedCharacter | !(stringQuote | .newline)
+        terminalBody            = stringCharacter+
+        stringBody                = stringCharacter*
+        string                    = stringQuote
+                                    stringBody
+                                  @error("Missing terminating quote")
+                                  stringQuote
+        terminalString            = stringQuote
+                                      @error("Terminals must have at least one character")
+                                    terminalBody
+                                  @error("Missing terminating quote")
+                                  stringQuote
+
+        //
+        // Character Sets and Ranges
+        //
+        characterSetName        = "letter" |
+                                  "uppercaseLetter" |
+                                  "lowercaseLetter" |
+                                  "alphaNumeric" |
+                                  "decimalDigit" |
+                                  "whitespaceOrNewline" |
+                                  "whitespace" |
+                                  "newline"
+        characterSet            = ("." @error("Unknown character set") characterSetName)
+
+        rangeOperator            = "." @error("Expected ... in character range") ".."
+        characterRange            = terminalString rangeOperator @error("Range must be terminated") terminalString
+
+        //
+        // Types
+        //
+        number                     = ("-" | "+")? .decimalDigit+
+        boolean                 = "true" | "false"
+        literal                    = string | number | boolean
+
+        //
+        // Annotations
+        //
+        annotation              = "@"
+                                    @error("Expected an annotation label") label (
+                                        "("
+                                        @error("A value must be specified or the () omitted")
+                                        literal
+                                        @error("Missing ')'")
+                                        ")"
+                                    )?
+        annotations             = (annotation ows)+
+
+        customLabel              = @error("Labels must start with a letter or _") (.letter | "_") ( .letter | .decimalDigit | "_" )*
+        definedLabel             = "token" | "error" | "void" | "transient"
+        label                     = definedLabel | customLabel
+
+
+        //
+        // Element
+        //
+        terminal                 = characterSet | characterRange | terminalString
+        group                    = "(" whitespace*
+                                    expression whitespace*
+                                    @error("Expected ')'")
+                                   ")"
+        identifier                 = (.letter | "_") ( .letter | .decimalDigit | "_" )*
+
+        element                 = annotations? (lookahead | transient)? negated? ( group | terminal | identifier ) quantifier?
+
+        //
+        // Expressions
+        //
+        assignmentOperators        = "=" | "+=" | "|="
+        @void
+        or                         =  whitespace* "|" whitespace*
+        @void
+        then                     = (whitespace* "+" whitespace*) | whitespace+
+
+        choice                    = element (or @error("Expected terminal, identifier, or group") element)+
+        notNewRule                = !(annotations? identifier whitespace* assignmentOperators)
+        sequence                = element (then >>notNewRule @error("Expected terminal, identifier, or group")element)+
+
+        expression                 = choice | sequence | element
+
+        //
+        // Rule
+        //
+        @transient
+        lhs                        = whitespace* annotations? transient? identifier whitespace* assignmentOperators
+        rule                     = lhs whitespace* @error("Expected expression")expression whitespace*
+
+        //
+        // Importing
+        //
+        moduleName                = (.letter | "_") (.letter | "_" | .decimalDigit)*
+        moduleImport            = whitespace* @token("import") "import" .whitespace+  moduleName .whitespace+
+        //
+        // Grammar
+        //
+     
+
+        //NB: Mark is there to ensure there is no automatic reduction of rule into grammar if there is only one rule, this should perhaps become an annotation
+        grammar                     = @token("mark") >>(!" "|" ") moduleImport* @error("Expected at least one rule") rule+
+    """
+//    */
+
     
     override func setUp() {
         super.setUp()
@@ -91,7 +902,22 @@ class OysterKitPerformanceTests: XCTestCase {
             let stlr = STLRParser(source: self.stlrSource)
             
             let ruleCount = stlr.ast.rules.count
-            XCTAssert(ruleCount == 47,"Got \(ruleCount) rules")
+            guard ruleCount == 47 else {
+                for error in stlr.ast.errors {
+                    if let error = error as? AbstractSyntaxTreeConstructor.ConstructionError {
+                        switch error {
+                        case .constructionFailed(let causes),.parsingFailed(let causes):
+                            causes.map({$0 as? HumanConsumableError}).forEach({print("\($0?.formattedErrorMessage(in: stlrSource) ?? "Not human consumable")")})
+                        case .unknownError(let message):
+                            print(message)
+                        }
+                    } else {
+                        print("\(error)")
+                    }
+                }
+                XCTFail("Expected 47 rules but got \(ruleCount) rules")
+                return
+            }
             
             do {
                 try stlr.ast.validate()

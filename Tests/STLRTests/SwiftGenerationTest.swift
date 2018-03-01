@@ -152,7 +152,7 @@ class SwiftGenerationTest: XCTestCase {
     
     func testPredefinedCharacterSet() {
         do {
-            let result = try swift(for: "letter = @error(\"error\").whitespaces")
+            let result = try swift(for: "letter = @error(\"error\").whitespace")
             
             XCTAssertEqual(result,"CharacterSet.whitespaces.terminal(token: T.tokenA, annotations: annotations.isEmpty ? [RuleAnnotation.error : RuleAnnotationValue.string(\"error\")] : annotations)")
         } catch (let error){
@@ -304,7 +304,7 @@ class SwiftGenerationTest: XCTestCase {
     func testIdentifierAndReferenceInSequence(){
         let stlrSource = """
             @void id    = @error("Expected id") "id"
-            declaration = @error("Declaration requires id") id .letters
+            declaration = @error("Declaration requires id") id .letter
 """
         
         let ast = STLRParser.init(source: stlrSource).ast
@@ -319,7 +319,7 @@ class SwiftGenerationTest: XCTestCase {
     func testIdentifierAndReferenceInGroupedSequence(){
         let stlrSource = """
             @void id    = @error("Expected id") "id"
-            declaration = (@error("Declaration requires id") id .letters) .letters+
+            declaration = (@error("Declaration requires id") id .letter) .letter+
 """
         
         let ast = STLRParser.init(source: stlrSource).ast

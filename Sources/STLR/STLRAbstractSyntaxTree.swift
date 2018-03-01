@@ -82,7 +82,7 @@ struct STLRAbstractSyntaxTree {
     }
     
     enum CharacterSetName : String, Decodable {
-        case letters, uppercaseLetters, lowercaseLetters, alphaNumerics, decimalDigits, whitespacesAndNewlines, whitespaces, newlines, backslash
+        case letter, uppercaseLetter, lowercaseLetter, alphaNumeric, decimalDigit, whitespaceOrNewline, whitespace, newline, backslash
     }
     
     struct Terminal : Decodable {

@@ -57,19 +57,19 @@ More will be added in the future.
 
 You can also use predefined character sets that match multiple characters. These are prefixed by a `.` and followed by the character set name. The following character sets are available at the moment:
 
-  - `.decimalDigits` All decimal digits from 0 to 9
-  - `.letters` All letters 
-  - `.uppercaseLetters` All uppercase letters
-  - `.lowercaseLetters` All lowercase letters
-  - `.alphaNumerics` All letters and digits
-  - `.whitespaces` All whitespaces. For example tabs and spaces. 
-  - `.newlines` All newline characters, matching for example both newline and carriage return
-  - `.whitespacesAndNewlines` All white space and newline characters
+  - `.decimalDigit` All decimal digits from 0 to 9
+  - `.letter` All letters 
+  - `.uppercaseLetter` All uppercase letters
+  - `.lowercaseLetter` All lowercase letters
+  - `.alphaNumeric` All letters and digits
+  - `.whitespace` All whitespaces. For example tabs and spaces. 
+  - `.newline` All newline characters, matching for example both newline and carriage return
+  - `.whitespaceOrNewline` All white space and newline characters
   - `.backslash` The backslash character
   
 For example, a rule to capture a co-ordinate might be
 
-    coord = .decimalDigits "," .decimalDigits
+    coord = .decimalDigit "," .decimalDigit
     
 This would match `3,4` for example. 
 
@@ -144,8 +144,8 @@ This can be convenient if you wish to depend on the order and structure of child
     integer  	= sign? digits
     
     sign 		= "+" | "-"
-    digits 		= .decimalDigits+
-    spaces 		= .whitespacesAndNewlines+
+    digits 		= .decimalDigit+
+    spaces 		= .whitespaceOrNewline+
     point 		= "."
 
 
@@ -163,31 +163,31 @@ This can be convenient if you wish to depend on the order and structure of child
     //
     method              = "GET" | "POST" 
     protocol            = "HTTP/1.1"
-    @transient crlf     = .newlines
+    @transient crlf     = .newline
     
     //
     // Requested path
     //
     path                = pathSep? pathElement? (pathSep pathElement?)* @transient pathSep = "/"
-    pathElement         = (.letters | .decimalDigits)+
+    pathElement         = (.letter | .decimalDigit)+
     
     //
     // Query
     //
-    queryParameterName  = .letters+
-    queryParameterValue = .letters | .decimalDigits 
+    queryParameterName  = .letter+
+    queryParameterValue = .letter | .decimalDigit 
     queryParameter      = queryParameterName ("=" queryParameterValue)?
     query               = "?" queryParameter ("&" queryParameter)* 
     
     //
     // All content before header
     //
-    transaction         = method .whitespaces+ path query? .whitespaces+ protocol crlf
+    transaction         = method .whitespace+ path query? .whitespace+ protocol crlf
     
     //
     // Header
     //
-    headerName          = (.letters | "-")+
+    headerName          = (.letter | "-")+
     headerValue         = !(crlf)+
     header              = headerName ":" .whitespaces headerValue crlf
     
@@ -211,11 +211,11 @@ This can be convenient if you wish to depend on the order and structure of child
     //program					= (line endLine)* line?
     
     //program					= (block | remarkLine)* endLine
-    //block						= ((line | forBlock) .whitespacesAndNewlines*)*
+    //block						= ((line | forBlock) .whitespaceOrNewline*)*
     line						= lineNumber ows statement
     
     remarkLine					= lineNumber ws statementREM endOfLine?
-    endLine						= lineNumber ws statementEND ows .newlines?
+    endLine						= lineNumber ws statementEND ows .newline?
     
     lineNumber					= digit+ 
     
@@ -308,8 +308,8 @@ This can be convenient if you wish to depend on the order and structure of child
     quotedString				= quotationMark quotedStringCharacter* quotationMark
     
     
-    nl = .newlines*
-    ws = .whitespaces+
-    ows = .whitespaces*
+    nl = .newline*
+    ws = .whitespace+
+    ows = .whitespace*
     
-    consume = .whitespaces*
+    consume = .whitespace*
