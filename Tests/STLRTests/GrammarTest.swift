@@ -246,9 +246,9 @@ class GrammarTest: XCTestCase {
     }
     
     func testQuantifiersNotAddedToIdentifierNames(){
-        source.add(line: "ws = .whitespaces")
+        source.add(line: "ws = .whitespace")
         source.add(line: "whitespace = ws+")
-        source.add(line: "word = .letters+")
+        source.add(line: "word = .letter+")
         
         let stlr = STLRParser(source: source)
         

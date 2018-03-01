@@ -114,7 +114,7 @@ enum STLR : Int, Token {
 					].sequence(token: T.terminalString, annotations: annotations.isEmpty ? [ : ] : annotations)
 		// characterSetName
 		case .characterSetName:
-			return ScannerRule.oneOf(token: T.characterSetName, ["letters", "uppercaseLetters", "lowercaseLetters", "alphaNumerics", "decimalDigits", "whitespacesAndNewlines", "whitespaces", "newlines", "backslash"],[ : ].merge(with: annotations))
+			return ScannerRule.oneOf(token: T.characterSetName, ["letter", "uppercaseLetter", "lowercaseLetter", "alphaNumeric", "decimalDigit", "whitespaceOrNewline", "whitespace", "newline", "backslash"],[ : ].merge(with: annotations))
 		// characterSet
 		case .characterSet:
 			return [

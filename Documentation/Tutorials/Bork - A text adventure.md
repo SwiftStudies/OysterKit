@@ -63,8 +63,8 @@ We're now ready to create our grammar. Select Bork.stlr in Xcode and enter the f
     
     // Commands
     //
-    subject     = (adjective .whitespaces+)? noun
-    command     = .whitespaces* verb (.whitespaces+ subject (.whitespaces+ preposition .whitespaces+ subject)? )? .whitespaces*
+    subject     = (adjective .whitespace+)? noun
+    command     = .whitespace* verb (.whitespace+ subject (.whitespace+ preposition .whitespace+ subject)? )? .whitespace*
 
 You can ignore the @pin annotations for now [1], but they are important!
 
@@ -76,7 +76,7 @@ This line creates a new ```verb``` token that will be created whenever one of th
 
 The first line of the command section is more interesting. As we might have two different snakes we might want to let the user describe the exact snake we want with an adjective (such as ANGRY or DEAD in our vocabulary). We create a new subject token so that we can do that
 
-    subject     = (adjective .whitespaces+)? noun
+    subject     = (adjective .whitespace+)? noun
 
 In STLR if two elements are only separated by whitespace (that is not the ```|``` "or" operator) it means "then". So if we ignore the brackets and question marks this rule would mean "create a subject token if you find an adjective, then one or more whitespace then a noun".  ```+``` postfix operator here means "one or more".
 
@@ -84,7 +84,7 @@ We don't want to force the player to always specify an adjective so we group the
 
 In terms of grammar concepts we don't need anymore to build the rule for any command. 
 
-    command     = verb (.whitespaces* subject (.whitespaces+ preposition .whitespaces+ subject)? )? .whitespaces*
+    command     = verb (.whitespace* subject (.whitespace+ preposition .whitespace+ subject)? )? .whitespace*
     
 
 We've got a few nested groups here but really we are saying create a ```command``` token if you match a ```verb``` which might be followed by whitespaces then ```subject``` which might be followed by whitespaces, a ```preposition```, whitespaces and another ```subject```, all optionally termined with whitespaces. 

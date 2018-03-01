@@ -687,21 +687,21 @@ public class STLRScope : CustomStringConvertible {
     /// Represents the different build in character sets that are provided in STLR
     public enum TerminalCharacterSet : CustomStringConvertible {
         /// White space characters
-        case whitespaces
+        case whitespace
         /// New line characters
-        case newlines
+        case newline
         /// Both white spaces and new lines
-        case whitespacesAndNewlines
+        case whitespaceOrNewline
         /// All decimal digits
-        case decimalDigits
+        case decimalDigit
         /// All characters from the Roman alphabet and all decimal digits
-        case alphanumerics
+        case alphanumeric
         /// All characters from the Roman alphabet
-        case letters
+        case letter
         /// All upper case Roman characters
-        case uppercaseLetters
+        case uppercaseLetter
         /// All lower case Roman characters
-        case lowercaseLetters
+        case lowercaseLetter
         /// A custom range
         case customRange(CharacterSet,start:UnicodeScalar,end:UnicodeScalar)
         /// A combination of mulitple sets
@@ -716,14 +716,14 @@ public class STLRScope : CustomStringConvertible {
         */
         public init?(rawValue:String){
             switch rawValue{
-            case "whitespaces": self = .whitespaces
-            case "newlines" : self = .newlines
-            case "whitespacesAndNewlines" : self = .whitespacesAndNewlines
-            case "decimalDigits" : self = .decimalDigits
-            case "alphanumerics" : self = .alphanumerics
-            case "letters" : self = .letters
-            case "uppercaseLetters" : self = .uppercaseLetters
-            case "lowercaseLetters" : self = .lowercaseLetters
+            case "whitespace": self = .whitespace
+            case "newline" : self = .newline
+            case "whitespaceOrNewline" : self = .whitespaceOrNewline
+            case "decimalDigit" : self = .decimalDigit
+            case "alphanumeric" : self = .alphanumeric
+            case "letter" : self = .letter
+            case "uppercaseLetter" : self = .uppercaseLetter
+            case "lowercaseLetter" : self = .lowercaseLetter
             default: return nil
             }
         }
@@ -751,14 +751,14 @@ public class STLRScope : CustomStringConvertible {
         /// The Foundation `CharacterSet` that represents this instance
         var characterSet : CharacterSet {
             switch self {
-            case .whitespaces: return CharacterSet.whitespaces
-            case .newlines: return CharacterSet.newlines
-            case .whitespacesAndNewlines: return CharacterSet.whitespacesAndNewlines
-            case .decimalDigits: return CharacterSet.decimalDigits
-            case .alphanumerics: return CharacterSet.alphanumerics
-            case .uppercaseLetters: return CharacterSet.uppercaseLetters
-            case .lowercaseLetters: return CharacterSet.lowercaseLetters
-            case .letters: return CharacterSet.letters
+            case .whitespace: return CharacterSet.whitespaces
+            case .newline: return CharacterSet.newlines
+            case .whitespaceOrNewline: return CharacterSet.whitespacesAndNewlines
+            case .decimalDigit: return CharacterSet.decimalDigits
+            case .alphanumeric: return CharacterSet.alphanumerics
+            case .uppercaseLetter: return CharacterSet.uppercaseLetters
+            case .lowercaseLetter: return CharacterSet.lowercaseLetters
+            case .letter: return CharacterSet.letters
             case .customRange(let characterSet,_,_): return characterSet
             case .multipleSets(let sets):
                 var baseSet = sets[0].characterSet
@@ -774,14 +774,14 @@ public class STLRScope : CustomStringConvertible {
         /// A human readable description
         public var description: String {
             switch self {
-            case .whitespaces: return ".whitespaces"
-            case .newlines: return ".newlines"
-            case .whitespacesAndNewlines: return ".whitespacesAndNewlines"
-            case .decimalDigits: return ".decimalDigits"
-            case .alphanumerics: return ".alphanumerics"
-            case .uppercaseLetters: return ".uppercaseLetters"
-            case .lowercaseLetters: return ".lowercaseLetters"
-            case .letters: return ".letters"
+            case .whitespace: return ".whitespaces"
+            case .newline: return ".newlines"
+            case .whitespaceOrNewline: return ".whitespacesAndNewlines"
+            case .decimalDigit: return ".decimalDigits"
+            case .alphanumeric: return ".alphanumerics"
+            case .uppercaseLetter: return ".uppercaseLetters"
+            case .lowercaseLetter: return ".lowercaseLetters"
+            case .letter: return ".letters"
             case .customRange(_, let start, let end):
                 return "\"\(start)\"...\"\(end)\""
             case .multipleSets(let sets):
