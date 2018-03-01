@@ -895,7 +895,11 @@ class FullSwiftParser : Parser{
 
     func testPerformanceSTLR() {
         
-        let _ = STLRParser(source: stlrSource)
+        let abstractStlr = STLRParser(source: stlrSource)
+        guard let grammar = abstractStlr.ast.runtimeLanguage else {
+            XCTFail("Could not generate a language from stlr source")
+            return
+        }
         
         // This is an example of a performance test case.
         self.measure {
