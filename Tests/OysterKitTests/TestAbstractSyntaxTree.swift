@@ -24,8 +24,26 @@
 
 import XCTest
 @testable import OysterKit
+import STLR
 
 class TestAbstractSyntaxTree: XCTestCase {
+
+    func testParseFailing(){
+        let source = "wibble = .letters"
+        
+        let stlr = STLRParser(source: source)
+        
+        XCTAssertEqual(1, stlr.ast.errors.count)
+    }
+
+    func testNoRealRule(){
+        let source = ""
+        
+        let stlr = STLRParser(source: source)
+        
+        XCTAssertEqual(1, stlr.ast.errors.count)
+        XCTAssertEqual(0, stlr.ast.rules.count)
+    }
 
     func testConstruction() {
         let exampleString = "Hello World"

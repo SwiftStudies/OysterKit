@@ -478,7 +478,7 @@ internal extension STLRScope.Identifier{
 internal extension STLRScope.TerminalCharacterSet{
     var swift : String {
         switch self{
-        case .alphanumerics, .decimalDigits, .letters, .lowercaseLetters, .newlines, .whitespacesAndNewlines, .whitespaces, .uppercaseLetters:
+        case .alphanumeric, .decimalDigit, .letter, .lowercaseLetter, .newline, .whitespaceOrNewline, .whitespace, .uppercaseLetter:
             return "CharacterSet\(self)"
         case .customRange(_, let first, let last):
             let firstString = "\(first)".swiftSafe

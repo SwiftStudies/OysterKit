@@ -1,18 +1,18 @@
-@void ws 	= 	.whitespacesAndNewlines*
+@void ws 	= 	.whitespaceOrNewline*
 boolean 	= 	("true" | "false") 	ws
-integer		=	.decimalDigits+ 	ws
-byte		=	.decimalDigits+		ws
-word		=	.decimalDigits+		ws
-longWord	=	.decimalDigits+		ws
-longLongWord	=	.decimalDigits+		ws
-unsignedInteger	=	.decimalDigits+		ws
-unsignedByte	=	.decimalDigits+		ws
-unsignedWord	=	.decimalDigits+		ws
-unsignedLongWord=	.decimalDigits+		ws
-unsignedLongLongWord=	.decimalDigits+		ws
-float		=	.decimalDigits+ "." .decimalDigits+	ws
-double		=	.decimalDigits+	"." .decimalDigits+	ws
-string		=	.letters+		ws
+integer		=	.decimalDigit+ 	ws
+byte		=	.decimalDigit+		ws
+word		=	.decimalDigit+		ws
+longWord	=	.decimalDigit+		ws
+longLongWord	=	.decimalDigit+		ws
+unsignedInteger	=	.decimalDigit+		ws
+unsignedByte	=	.decimalDigit+		ws
+unsignedWord	=	.decimalDigit+		ws
+unsignedLongWord=	.decimalDigit+		ws
+unsignedLongLongWord=	.decimalDigit+		ws
+float		=	.decimalDigit+ "." .decimalDigit+	ws
+double		=	.decimalDigit+	"." .decimalDigit+	ws
+string		=	.letter+		ws
 oneOfEverything	=	boolean integer byte word longWord longLongWord
 			unsignedInteger unsignedByte unsignedWord
 			unsignedLongWord unsignedLongLongWord

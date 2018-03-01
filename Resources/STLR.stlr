@@ -22,23 +22,24 @@ operator to better match Swift and
 added more error information.
 v0.0.7  10 Sep 2017             Added module importing
 v0.1.2    7 Dec 2017                Added backslash character set
+v0.1.3    28 Feb 2018           Changed plurality of
 
 *************************************************************/
 
 //
 // Whitespace
 //
-singleLineComment               = "//" !.newlines* .newlines
+singleLineComment               = "//" !.newline* .newline
 multilineComment                = "/*" (multilineComment | !"*/")* "*/"
 comment                                 = singleLineComment | multilineComment
 @void
-whitespace                              = comment | .whitespacesAndNewlines
+whitespace                              = comment | .whitespaceOrNewline
 ows                                             = whitespace*
 
 //
 // Constants
 //
-//definition                    = "const"       ows identifier ows "=" ows literal .whitespaces* whitespace
+//definition                    = "const"       ows identifier ows "=" ows literal .whitespace* whitespace
 
 //
 // Quantifiers, does this still work?
@@ -59,7 +60,7 @@ stringQuote                             = "\""
 escapedCharacters               = stringQuote | "r" | "n" | "t" | "\\"
 escapedCharacter                = "\\" escapedCharacters
 @void
-stringCharacter                 = escapedCharacter | !(stringQuote | .newlines)
+stringCharacter                 = escapedCharacter | !(stringQuote | .newline)
 terminalBody                    = stringCharacter+
 stringBody                              = stringCharacter*
 string                                  = stringQuote
@@ -75,14 +76,14 @@ stringQuote
 //
 // Character Sets and Ranges
 //
-characterSetName                = "letters" |
-"uppercaseLetters" |
-"lowercaseLetters" |
-"alphaNumerics" |
-"decimalDigits" |
-"whitespacesAndNewlines" |
-"whitespaces" |
-"newlines" |
+characterSetName                = "letter" |
+"uppercaseLetter" |
+"lowercaseLetter" |
+"alphaNumeric" |
+"decimalDigit" |
+"whitespaceOrNewline" |
+"whitespace" |
+"newline" |
 "backslash"
 
 characterSet                    = ("." @error("Unknown character set") characterSetName)
@@ -93,7 +94,7 @@ characterRange                  = terminalString rangeOperator @error("Range mus
 //
 // Types
 //
-number                                  = ("-" | "+")? .decimalDigits+
+number                                  = ("-" | "+")? .decimalDigit+
 boolean                                 = "true" | "false"
 literal                                 = string | number | boolean
 
@@ -110,7 +111,7 @@ literal
 )?
 annotations                     = (annotation ows)+
 
-customLabel                     = @error("Labels must start with a letter or _") (.letters | "_") ( .letters | .decimalDigits | "_" )*
+customLabel                     = @error("Labels must start with a letter or _") (.letter | "_") ( .letter | .decimalDigit | "_" )*
 definedLabel                    = "token" | "error" | "void" | "transient"
 label                                   = definedLabel | customLabel
 
@@ -122,7 +123,7 @@ group                                   = "(" whitespace*
 expression whitespace*
 @error("Expected ')'")
 ")"
-identifier                              = (.letters | "_") ( .letters | .decimalDigits | "_" )*
+identifier                              = (.letter | "_") ( .letter | .decimalDigit | "_" )*
 
 element                                 = annotations? (lookahead | transient)? negated? ( group | terminal | identifier ) quantifier?
 
@@ -151,8 +152,8 @@ rule                                    = lhs whitespace* @error("Expected expre
 //
 // Importing
 //
-moduleName                              = (.letters | "_") (.letters | "_" | .decimalDigits)*
-moduleImport                    = whitespace* @token("import") "import" .whitespaces+  moduleName whitespace+
+moduleName                              = (.letter | "_") (.letter | "_" | .decimalDigit)*
+moduleImport                    = whitespace* @token("import") "import" .whitespace+  moduleName whitespace+
 
 //
 // Grammar

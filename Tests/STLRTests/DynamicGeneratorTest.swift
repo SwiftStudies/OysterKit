@@ -469,7 +469,7 @@ class DynamicGeneratorTest: XCTestCase {
     }
     
     func testComment(){
-        let stlrSource = "\"\\\\\\\\\" (!.newlines)* .newlines"
+        let stlrSource = "\"\\\\\\\\\" (!.newline)* .newline"
         
         guard let rule = stlrSource.dynamicRule(token: TT.comment) else {
             XCTFail("Could not compile")
@@ -710,7 +710,7 @@ class DynamicGeneratorTest: XCTestCase {
     func testCharacterSets() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
-        guard let rule = ".whitespaces+".dynamicRule(token: TT.whitespace) else {
+        guard let rule = ".whitespace+".dynamicRule(token: TT.whitespace) else {
             XCTFail("Could not compile")
             return
         }
@@ -785,7 +785,7 @@ class DynamicGeneratorTest: XCTestCase {
     
     func testPredefinedCharacterSet() {
         do {
-            let result = try generatedStringSerialization(for: "letter = @error(\"error\").whitespaces")
+            let result = try generatedStringSerialization(for: "letter = @error(\"error\").whitespace")
             
             XCTAssert(result == "tokenA = @error(\"error\") .characterSet", "Bad generated output '\(result)'")
         } catch (let error){
@@ -914,7 +914,7 @@ class DynamicGeneratorTest: XCTestCase {
     
     func testAnnotationOnQuantifier(){
         do {
-            let result = try generatedStringSerialization(for: "word = @error(\"Expected a letter\") .letters+", desiredRule: 0)
+            let result = try generatedStringSerialization(for: "word = @error(\"Expected a letter\") .letter+", desiredRule: 0)
             
             XCTAssert(result == "tokenA = @error(\"Expected a letter\")  .characterSet+", "Bad generated output '\(result)'")
         } catch (let error){

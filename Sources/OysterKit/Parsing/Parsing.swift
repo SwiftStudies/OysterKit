@@ -95,10 +95,6 @@ enum ParsingStrategy {
                 throw LanguageError.parsingError(at: context.lexer.index..<context.lexer.index, message: "Lexer not advanced")
             }
             
-            guard success else {
-                throw AbstractSyntaxTreeConstructor.ConstructionError.parsingFailed(causes: productionErrors)
-            }
-            
             if context.lexer.endOfInput {
                 context.complete = true
             }

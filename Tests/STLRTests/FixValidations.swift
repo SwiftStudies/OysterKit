@@ -29,7 +29,7 @@ class FixValidations: XCTestCase {
     // .decimalDigits
     //
     func testQuantifierLeak() {
-        let grammarString = "number  = .decimalDigits*\n keyword = \"import\" | \"wibble\""
+        let grammarString = "number  = .decimalDigit*\n keyword = \"import\" | \"wibble\""
         
         let stlr = STLRParser(source: grammarString)
         
@@ -49,7 +49,7 @@ class FixValidations: XCTestCase {
     // and a character set, the single character set is lost.
     //
     func testCharacterSetOmmision() {
-        let grammarString = "variableStart = .letters | \"_\""
+        let grammarString = "variableStart = .letter | \"_\""
         
         let stlr = STLRParser(source: grammarString)
         

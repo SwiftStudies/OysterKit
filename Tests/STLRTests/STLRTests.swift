@@ -49,8 +49,8 @@ class STLRTest: XCTestCase {
         }
         
         let ruleSource = """
-            letters = .letters+
-            digits = .decimalDigits+
+            letters = .letter+
+            digits = .decimalDigit+
 
             pass = letters " " @pin @token("numbers") digits?
 """
