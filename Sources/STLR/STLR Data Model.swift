@@ -255,8 +255,6 @@ public class STLRScope : CustomStringConvertible {
                 self = .transient
             case "-":
                 self = .void
-            case "~":
-                self = .transient
             case "!":
                 self = .not
             default:
@@ -1119,7 +1117,7 @@ public extension Collection where Iterator.Element == STLRScope.ElementAnnotatio
             return []
         }
         
-        let cleaned = self.flatMap({ (annotationInstance)->STLRScope.ElementAnnotationInstance? in
+        let cleaned = self.compactMap({ (annotationInstance)->STLRScope.ElementAnnotationInstance? in
             if annotationInstance.annotation == annotation {
                 return nil
             }

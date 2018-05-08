@@ -69,7 +69,7 @@ extension STLRScope.Expression{
     var optimize : STLRScope.Expression?{
         var optimizedForm : STLRScope.Expression?
 
-        optmizers.flatMap({$0 as? STLRExpressionOptimizer}).forEach(){
+        optmizers.compactMap({$0 as? STLRExpressionOptimizer}).forEach(){
             if let appliedOptimization = $0.optimize(expression: optimizedForm ?? self) {
                 optimizedForm = appliedOptimization
             }

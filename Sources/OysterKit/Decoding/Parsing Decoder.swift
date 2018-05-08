@@ -250,7 +250,7 @@ fileprivate struct _ParsingDecodingStorage {
 }
 
 fileprivate struct TokenKey: Token, CodingKey{
-    var rawValue: Int
+    fileprivate var rawValue: Int
     var stringValue: String
     
     
