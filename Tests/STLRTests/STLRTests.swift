@@ -13,6 +13,9 @@ import XCTest
 @testable import ExampleLanguages
 @testable import STLR
 
+fileprivate enum TestToken : Int, Token{
+    case pass
+}
 
 class STLRTest: XCTestCase {
     
@@ -44,9 +47,7 @@ class STLRTest: XCTestCase {
     }
     
     func testPinnedNodes(){
-        enum TestToken : Int, Token{
-            case pass
-        }
+
         
         let ruleSource = """
             letters = .letter+

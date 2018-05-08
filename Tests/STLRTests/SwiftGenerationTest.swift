@@ -10,19 +10,20 @@ import XCTest
 @testable import OysterKit
 @testable import STLR
 
-private enum Tokens : Int, Token {
+fileprivate enum Tokens : Int, Token {
     case tokenA = 1
 }
 
-private enum TestError : Error {
+fileprivate enum TestError : Error {
     case expected(String)
+}
+
+fileprivate enum TestTokens : Int, Token {
+    case testToken
 }
 
 class SwiftGenerationTest: XCTestCase {
     
-    enum TestTokens : Int, Token {
-        case testToken
-    }
 
     override func setUp() {
         super.setUp()

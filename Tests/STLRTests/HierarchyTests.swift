@@ -49,12 +49,12 @@ class HierarchyTests: XCTestCase {
     Phatom Testers
 </message>
 """
-        for rule in xmlLanguage.grammar {
+        for _ in xmlLanguage.grammar {
 //            print("Rule:\n\t\(rule)")
         }
 
         do {
-            let tree = try AbstractSyntaxTreeConstructor().build(xmlSource, using: XML.generatedLanguage)
+            _ = try AbstractSyntaxTreeConstructor().build(xmlSource, using: XML.generatedLanguage)
 //            print(tree.description)
         } catch {
 //            print(error)
