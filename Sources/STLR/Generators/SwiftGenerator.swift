@@ -144,7 +144,7 @@ public extension STLRScope {
         // Token Definition
         //
         output.add(line: "")
-        output.add(depth: 1, line:      "case _transient = -1, "+self.rules.flatMap({$0.identifier}).map({"`\($0)`"}).joined(separator: ", "))
+        output.add(depth: 1, line:      "case _transient = -1, "+self.rules.compactMap({$0.identifier}).map({"`\($0)`"}).joined(separator: ", "))
 
         //
         // Rules
@@ -241,7 +241,7 @@ public extension STLRScope {
         
         //Note this will need to change to include annotations on the identifier where it says \($0)._rule() it should include $0.annotations.swift but without 
         //the , annotations:
-        output.add(depth: 2, line: "return Parser(grammar: ["+rootRules.flatMap({$0.identifier}).map({"T.\($0)._rule()"}).joined(separator: ", ")+"])")
+        output.add(depth: 2, line: "return Parser(grammar: ["+rootRules.compactMap({$0.identifier}).map({"T.\($0)._rule()"}).joined(separator: ", ")+"])")
         output.add(depth: 1, line: "}")
 
         // Something to make it easy to create an AST
@@ -274,7 +274,7 @@ internal extension STLRScope.GrammarRule{
     }
 }
 
-private enum TransientToken : Int, Token, CustomStringConvertible {
+fileprivate enum TransientToken : Int, Token, CustomStringConvertible {
     fileprivate var description: String{
         return "_transient"
     }

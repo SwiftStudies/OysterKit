@@ -9,7 +9,13 @@
 import XCTest
 @testable import OysterKit
 
-private enum Tokens : Int, Token {
+fileprivate enum QuotedEscapedStringTestTokens : Int, Token {
+    case escapedQuote,quote,character,string
+}
+
+
+
+fileprivate enum Tokens : Int, Token {
     case whitespace
     case whitespaces
     case dummy
@@ -189,26 +195,22 @@ class ParserTest: XCTestCase {
     }
     
     func testQuotedEscapedStringParsing(){
-        enum Tokens : Int, Token {
-            case escapedQuote,quote,character,string
-        }
-        
-        let escapedCharacter = ["\\".terminal(token: Tokens.character), [
-                "'".terminal(token: Tokens.character),
-                "\\".terminal(token: Tokens.character),
-            ].oneOf(token: Tokens.character)
-            ].sequence(token: Tokens.character)
+        let escapedCharacter = ["\\".terminal(token: QuotedEscapedStringTestTokens.character), [
+                "'".terminal(token: QuotedEscapedStringTestTokens.character),
+                "\\".terminal(token: QuotedEscapedStringTestTokens.character),
+            ].oneOf(token: QuotedEscapedStringTestTokens.character)
+            ].sequence(token: QuotedEscapedStringTestTokens.character)
         
         let stringCharacters = [
             escapedCharacter,
-            "'".terminal(token: Tokens.quote).not(),
-            ].oneOf(token: Tokens.character).repeated(min: 1, limit: nil, producing: Tokens.string)
+            "'".terminal(token: QuotedEscapedStringTestTokens.quote).not(),
+            ].oneOf(token: QuotedEscapedStringTestTokens.character).repeated(min: 1, limit: nil, producing: QuotedEscapedStringTestTokens.string)
         
         let string = [
-            "'".terminal(token: Tokens.quote).consume(),
+            "'".terminal(token: QuotedEscapedStringTestTokens.quote).consume(),
             stringCharacters,
-            "'".terminal(token: Tokens.quote).consume(),
-            ].sequence(token: Tokens.string)
+            "'".terminal(token: QuotedEscapedStringTestTokens.quote).consume(),
+            ].sequence(token: QuotedEscapedStringTestTokens.string)
         
         let source = "'\\\\'"
         
@@ -219,7 +221,7 @@ class ParserTest: XCTestCase {
         
         for node in TokenStream(source, using: parser){
             count += 1
-            XCTAssert(node.token == Tokens.string)
+            XCTAssert(node.token == QuotedEscapedStringTestTokens.string)
             let capturedString = String(source[node.range])
             XCTAssert(source == capturedString,"Got \(capturedString)" )
         }

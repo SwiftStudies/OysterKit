@@ -88,7 +88,7 @@ extension String {
         let workingString = self
         let mSplits = workingString.split(separator: "m").map({ String($0) })
         guard let formerCodeString = mSplits.first else { return [] }
-        let formerCodes = formerCodeString.replacingOccurrences(of: ANSIEncoding.escape, with: "").split(separator: ";").flatMap({ Int($0) })
+        let formerCodes = formerCodeString.replacingOccurrences(of: ANSIEncoding.escape, with: "").split(separator: ";").compactMap({ Int($0) })
         
         // Strip String
         self = workingString.replacingOccurrences(of: formerCodeString + "m", with: "")

@@ -253,7 +253,7 @@ extension AbstractSyntaxTreeConstructor : IntermediateRepresentation {
                 let errorEnd = scalars.index(after:index)
                 let parsingError = LanguageError.parsingError(at: index..<errorEnd, message: error)
                 
-                let existing = _errors.flatMap({ (error)->Error? in
+                let existing = _errors.compactMap({ (error)->Error? in
                     if let error = error as? LanguageError {
                         if error == parsingError {
                             return error

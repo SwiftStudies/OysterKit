@@ -82,8 +82,8 @@ public extension STLRScope {
 }
 
 fileprivate extension STLRScope{
-    struct DynamicToken : Token, CustomStringConvertible{
-        let rawValue : Int
+    fileprivate struct DynamicToken : Token, CustomStringConvertible{
+        fileprivate let rawValue : Int
         let name     : String?
         
         init(rawValue: Int) {
@@ -205,7 +205,7 @@ extension STLRScope.Expression{
                 }
                 return ScannerRule.oneOf(token: token, strings, annotations)
             } else {
-                let rules = elements.flatMap(){
+                let rules = elements.compactMap(){
                     $0.rule(from: grammar, creating: $0.token, inContext:context, annotations: [:])
                 }
                 // Replaced the previously generated token which I suspect was done because the transient child behaviour was not right
@@ -214,7 +214,7 @@ extension STLRScope.Expression{
                 return rules.oneOf(token: token, annotations: annotations)
             }
         case .sequence(let elements):
-            let rules = elements.flatMap(){
+            let rules = elements.compactMap(){
                 $0.rule(from: grammar, creating: $0.token, inContext:context, annotations: [:])
             }
             return rules.sequence(token: token, annotations: annotations)

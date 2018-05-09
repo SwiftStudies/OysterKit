@@ -30,28 +30,28 @@
     },
     {
       "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/SwiftTypeExtensions.swift",
-      "line": 30,
+      "line": 28,
       "symbol": "CharacterSet.until(token:annotations:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/SwiftTypeExtensions.swift",
-      "line": 34,
+      "line": 32,
       "symbol": "CharacterSet.terminal(token:annotations:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/SwiftTypeExtensions.swift",
-      "line": 38,
+      "line": 36,
       "symbol": "CharacterSet.consume(greedily:annotations:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/IntermediateRepresentation.swift",
-      "line": 60,
+      "line": 63,
       "symbol": "IntermediateRepresentation.init()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"

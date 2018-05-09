@@ -9,7 +9,7 @@
 import XCTest
 @testable import OysterKit
 
-private enum TestToken : Int, Token{
+fileprivate enum TestToken : Int, Token{
     case dummy
     
     private var productionRule: Rule{

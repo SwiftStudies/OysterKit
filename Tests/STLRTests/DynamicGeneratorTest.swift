@@ -33,17 +33,17 @@ func testForFutureEnhancement(gitHubId id:Int)->Bool{
     return true
 }
 
-private enum Tokens : Int, Token {
+fileprivate enum Tokens : Int, Token {
     case tokenA = 1
 }
 
-private enum TestError : Error {
+fileprivate enum TestError : Error {
     case expected(String)
 }
 
 class DynamicGeneratorTest: XCTestCase {
 
-    private enum TT : Int, Token {
+    fileprivate enum TT : Int, Token {
         case character = 1
         case xyz
         case whitespace

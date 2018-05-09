@@ -896,7 +896,7 @@ class FullSwiftParser : Parser{
     func testPerformanceSTLR() {
         
         let abstractStlr = STLRParser(source: stlrSource)
-        guard let grammar = abstractStlr.ast.runtimeLanguage else {
+        guard let _ = abstractStlr.ast.runtimeLanguage else {
             XCTFail("Could not generate a language from stlr source")
             return
         }
