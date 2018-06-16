@@ -26,13 +26,6 @@ import XCTest
 @testable import OysterKit
 @testable import STLR
 
-
-@available(swift, deprecated: 4.0, message: "TEST DISABLED PENDING IMPLEMENTATION")
-func testForFutureEnhancement(gitHubId id:Int)->Bool{
-    print("WARNING: Test for https://github.com/SwiftStudies/OysterKit/issues/\(id) is currently disabled. Enable when implemented")
-    return true
-}
-
 fileprivate enum Tokens : Int, Token {
     case tokenA = 1
 }
@@ -239,9 +232,7 @@ class DynamicGeneratorTest: XCTestCase {
     /// Test of SLTR short hand for transient and void
     /// At this point I expect it to fail
     func testGrammarTransientVoidSyntacticSugar(){
-        if testForFutureEnhancement(gitHubId: 40){
-            return
-        }
+        #warning("Test disabled pending implementation")
         
         let stlr = """
         v    = "v"

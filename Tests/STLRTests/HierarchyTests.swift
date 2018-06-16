@@ -29,9 +29,8 @@ import STLR
 class HierarchyTests: XCTestCase {
 
     func testExample() {
-        if testForFutureEnhancement(gitHubId: -1){
-            return
-        }
+        #warning("Test disabled pending implementation")
+
         guard let grammarSource = try? String(contentsOfFile: "/Volumes/Personal/SPM/XMLDecoder/XML.stlr") else {
             fatalError("Could not load grammar")
         }
