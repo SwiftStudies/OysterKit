@@ -225,7 +225,7 @@ public enum MatchResult : CustomStringConvertible{
 /**
  Represents the value for a rule annotation
  */
-public enum RuleAnnotationValue : CustomStringConvertible{
+public enum RuleAnnotationValue : CustomStringConvertible, Equatable{
     /// A `String` value
     case    string(String)
     

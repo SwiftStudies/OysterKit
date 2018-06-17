@@ -59,7 +59,14 @@ class TestAbstractSyntaxTree: XCTestCase {
 
         do {
             let homogenousTree = try HomogenousTree(with: helloNode, from: exampleString)
-            XCTAssertEqual(homogenousTree.description, "@void hello \n\t@void @String(\"value\") @Integer(10) @Boolean(true) world - \'World\'\n")
+
+            XCTAssertEqual(homogenousTree.annotations, [RuleAnnotation.void : RuleAnnotationValue.set])
+            XCTAssertEqual(homogenousTree.children[0].annotations, [
+                RuleAnnotation.void : RuleAnnotationValue.set,
+                RuleAnnotation.custom(label: "Integer") : RuleAnnotationValue.int(10),
+                RuleAnnotation.custom(label: "Boolean") : RuleAnnotationValue.bool(true),
+                RuleAnnotation.custom(label: "String") : RuleAnnotationValue.string("value"),
+                ])            
         } catch {
             XCTFail("AST contruction resulted in: \(error)")
         }        
