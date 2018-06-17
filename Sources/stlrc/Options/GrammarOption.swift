@@ -79,7 +79,21 @@ class GrammarOption : Option, IndexableParameterized{
         
         if stlrParser.ast.errors.count > 0 {
             for error in stlrParser.ast.errors {
-                if let humanReadable = error as? HumanConsumableError {
+                if let constructionError = error as? AbstractSyntaxTreeConstructor.ConstructionError {
+                    switch constructionError {
+                    case .constructionFailed(let errors), .parsingFailed(let errors):
+                        for error in errors{
+                            if let rangedError = error as? HumanConsumableError {
+                                let reference = TextFileReference(of: rangedError.range, in: stlrGrammar)
+                                print(reference.report(rangedError.message,file:grammarUrl.lastPathComponent))
+                            } else {
+                                print("\(error)")
+                            }
+                        }
+                    case .unknownError(let message):
+                        print("Unknown error: \(message)")
+                    }
+                } else if let humanReadable = error as? HumanConsumableError {
                     print(humanReadable.formattedErrorMessage(in: stlrGrammar))
                 } else {
                     print("\(error)")
