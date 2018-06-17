@@ -25,7 +25,7 @@ import PackageDescription
 let package = Package(
   name: "Bork",
   dependencies: [
-    .package(url: "https://github.com/SwiftStudies/OysterKit.git", .branch("master")
+    .package(url: "https://github.com/SwiftStudies/OysterKit.git", .branch("master"))
   ],
   targets: [
     .target(
@@ -156,7 +156,7 @@ If you run this as you expect it welcomes you, reads in your input until you typ
 ```swift
 // Process their input
 let parsedInput = Bork.parse(source: userInput)
-guard parsedInput.tokens.count != 0 else {
+guard parsedInput.children.count != 0 else {
     print("I didn't understand '\(userInput)', try again. > ", terminator: "")
     continue
 }
@@ -174,7 +174,7 @@ Run it again and try interacting. We can now see if the parser understood our in
 The code you've just entered passes the user string through our Bork parser, if we get some tokens, then the command was understood, if not, then it wasn't. We can now start to _interpret_ that parsed input. Add the following line after the guard block
 
 ```swift
-print("Your verb was \(parsedInput.tokens[0].children[0].stringValue(source: userInput))")
+print("Your verb was \(parsedInput.children[0].children[0].stringValue(source: userInput))")
 ```
 	    
 We can now use the knowledge gained from testing this to get the first token (command) and its first child (which we know it will have because ```verb``` wasn't optional) and print out the string that matched it. 
@@ -185,7 +185,7 @@ We can now use the knowledge gained from testing this to get the first token (co
 	What do you want to do now? > QUIT
 	Goodbye adventurer... for now.
 
-This is quite exciting. We could switch on ```parsedInput.tokens[0].children[0].stringValue(source:userInput)``` and start doing different things for different verbs. However, this is going to get complicated quickly with lots of String comparisons. Our grammar guarantees that if we have the token, we will have certain values. Really we should be populating some Swift types with this information. 
+This is quite exciting. We could switch on ```parsedInput.children[0].children[0].stringValue(source:userInput)``` and start doing different things for different verbs. However, this is going to get complicated quickly with lots of String comparisons. Our grammar guarantees that if we have the token, we will have certain values. Really we should be populating some Swift types with this information. 
 
 ## Representing a command in Swift
 
@@ -291,7 +291,7 @@ to the top of the file, then replace all of the code for processing user input w
 
     // Process their input
     do {
-        let command = try ParsingDecoder().decode(Command.self, from: userInput.data(using: .utf8) ?? Data(), with: Bork.generatedLanguage)
+        let command = try ParsingDecoder().decode(Command.self, from: userInput, using: Bork.generatedLanguage)
         print(command)
     } catch {
         print("I didn't understand '\(userInput)', try again. > ", terminator: "")
@@ -314,7 +314,7 @@ OysterKit automatically builds a decoder from your grammar and populates our Swi
 
 Uh-oh. Everything seems good... until we get to ```secondSubject```. It's ```nil``` and we typed ```SWORD```. This is because by default Swift decoders look for fields with the same name... and we have two "subject" fields. Now we can't define a ```CodingKey``` as keys have to be unique. We need to change our grammar. Open up Bork.stlr and change the line that defines command to
 
-	command   = verb (.whitespaces subject (.whitespaces preposition .whitespaces @token("secondSubject") subject)? )?
+	command   = verb (.whitespace subject (.whitespace preposition .whitespace @token("secondSubject") subject)? )?
 
 By putting the ```@token("secondSubject")``` annotation before the second instance of subject we tell STLR that instead of generating another ```subject``` token, generate one called ```secondSubject``` instead. Now we just need to rebuild the Bork.swift file. Change back into the STLR directory and type
 
@@ -793,7 +793,7 @@ while let userInput = readLine(strippingNewline: true), userInput != "QUIT" {
     } else {
         // Process their input
         do {
-            let command = try ParsingDecoder().decode(Command.self, from: userInput.data(using: .utf8) ?? Data(), with: Bork.generatedLanguage)
+            let command = try ParsingDecoder().decode(Command.self, from: userInput, using: Bork.generatedLanguage)
 
             // Execute the command
             interpreter.interpret(command, inGame: game)
