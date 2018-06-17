@@ -232,7 +232,7 @@ class DynamicGeneratorTest: XCTestCase {
     /// Test of SLTR short hand for transient and void
     /// At this point I expect it to fail
     func testGrammarTransientVoidSyntacticSugar(){
-        #warning("Test disabled pending implementation")
+        //#warning("Test disabled pending implementation")
         return
         
         let stlr = """
