@@ -25,12 +25,14 @@ class TestErrors: XCTestCase {
         let string = "x"
         
         let startIndex = string.unicodeScalars.startIndex
-        let endEnd = string.unicodeScalars.index(after: startIndex)
+        let endIndex = string.unicodeScalars.index(after: startIndex)
         
-        let endEndEnd = string.unicodeScalars.index(after: endEnd)
+ //       let beyondEndIndex = string.unicodeScalars.index(after: endIndex)
         
-        XCTAssert(string == String(string[startIndex..<endEnd]))
-        XCTAssert(string == String(string.unicodeScalars[startIndex..<endEndEnd]))
+        XCTAssert(string == String(string[startIndex..<endIndex]))
+        //Disabling this check because I would have expected it to _always_ fail, it is now
+        //throwing a fatal error
+//        XCTAssert(string == String(string.unicodeScalars[startIndex..<beyondEndIndex]))
     }
 
     func testDescriptions() {
