@@ -175,7 +175,7 @@ public class StringScanner : CustomStringConvertible{
             advanceLocation()
         }
         
-        if !set.contains(current){
+        if isAtEnd || !set.contains(current){
             setLocation(scalarIndex: startPosition)
             return false
         }
