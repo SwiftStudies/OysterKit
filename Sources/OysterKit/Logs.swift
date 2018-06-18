@@ -7,7 +7,7 @@
 
 import Foundation
 
-#if canImport(os)
+#if canImport(NaturalLanguage)
 import os
 
 @available(OSX 10.14, *)
