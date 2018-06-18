@@ -8,8 +8,7 @@
 import Foundation
 
 #if canImport(os)
-import os.log
-import os.signpost
+import os
 
 @available(OSX 10.14, *)
 public enum Logs {
