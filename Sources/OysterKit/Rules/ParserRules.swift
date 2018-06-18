@@ -86,14 +86,15 @@ public indirect enum ParserRule : Rule, CustomStringConvertible{
      - Returns: The match result (see `Rule` for full documentation on the behviour of a `Rule`)
     */
     public func match(with lexer : LexicalAnalyzer, `for` ir:IntermediateRepresentation) throws -> MatchResult {
+        var matchResult = MatchResult.failure(atIndex: lexer.index)
+
         if #available(OSX 10.14, *){
             Logs.beginRule(rule: self)
-            
             defer {
-                Logs.endRule(rule: self)
+                Logs.endRule(rule: self, result: matchResult)
             }
         }
-        var matchResult = MatchResult.failure(atIndex: lexer.index)
+        
         let endOfInput = lexer.endOfInput
 
         if let knownResult = ir.willEvaluate(rule: self, at: lexer.index){

@@ -162,12 +162,12 @@ public extension STLRScope {
             output.add(depth: 2, comment:   "\(identifier)")
             output.add(depth: 2, line:      "case .\(identifier):")
 
-            let rawRule = rule.swift(depth: 3, from: self, creating: identifier.token, annotations: identifier.annotations).trim
             if rule.leftHandRecursive {
+                let rawRule = rule.swift(depth: 3, from: self, creating: TransientToken.instance, annotations: nil).trim
                 hasLeftHandRecursiveRules = true
                 output.add(depth: 3, line:          "guard let cachedRule = \(name).leftHandRecursiveRules[self.rawValue] else {")
                 output.add(depth: 4, comment:           "Create recursive shell")
-                output.add(depth: 4, line:              "let recursiveRule = RecursiveRule()")
+                output.add(depth: 4, line:              "let recursiveRule = RecursiveRule(stubFor: self, with: annotations.isEmpty ? [ : ] : annotations)")
                 output.add(depth: 4, line:              "\(name).leftHandRecursiveRules[self.rawValue] = recursiveRule")
 
                 output.add(depth: 4, comment:           "Create the rule we would normally generate")
@@ -177,6 +177,7 @@ public extension STLRScope {
                 output.add(depth: 3, line:          "}")
                 output.add(depth: 3, line:          "return cachedRule")
             } else {
+                let rawRule = rule.swift(depth: 3, from: self, creating: identifier.token, annotations: identifier.annotations).trim
                 output.add(depth: 3, line:          "return "+rawRule)
             }
             
@@ -260,7 +261,7 @@ public extension STLRScope {
 /// Extends with Swift Generation
 internal extension STLRScope.GrammarRule{
     
-    func swift(depth:Int = 0, from ast:STLRScope, creating token:Token, annotations:STLRScope.ElementAnnotations)->String{
+    func swift(depth:Int = 0, from ast:STLRScope, creating token:Token, annotations:STLRScope.ElementAnnotations?)->String{
         let depth = depth + 1
         var result = ""
 

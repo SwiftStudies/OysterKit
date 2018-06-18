@@ -27,13 +27,25 @@ public enum Logs {
         os_signpost(type: .begin, log: parsingLog, name: "matches", signpostID: newId, "%{public}@", "\(rule)" as NSString)
     }
     
-    static func endRule(rule:Rule){
+    static func endRule(rule:Rule, result:MatchResult){
         guard parsingLog.signpostsEnabled else {
             return
         }
         let oldId = signPostIdStack.removeLast()
         
-        os_signpost(type: .end, log: parsingLog, name: "matches", signpostID: oldId, "${public}@", "\(rule)" as NSString)
+        let resultDescription : String
+        switch result {
+        case .success( _):
+            resultDescription = "✅"
+        case .consume( _):
+            resultDescription = "👄"
+        case .ignoreFailure( _):
+            resultDescription = "❌"
+        case .failure( _):
+            resultDescription = "☠️"
+        }
+        
+        os_signpost(type: .end, log: parsingLog, name: "matches", signpostID: oldId, "%{public}@ %{public}@", "\(rule)" as NSString, resultDescription as NSString)
     }
 }
 #endif

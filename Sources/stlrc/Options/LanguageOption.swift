@@ -46,9 +46,18 @@ class LanguageOption : Option, IndexableParameterized {
                 }
             }
             
-            func generate(grammarName: String, from stlrParser:STLRParser, outputTo:String) throws {
+            func generate(grammarName: String, from stlrParser:STLRParser, optimize:Bool, outputTo:String) throws {
                 let generatedLanguage : String?
                 
+                if optimize {
+                    STLRScope.register(optimizer: InlineIdentifierOptimization())
+                    STLRScope.register(optimizer: CharacterSetOnlyChoiceOptimizer())
+                } else {
+                    STLRScope.removeAllOptimizations()
+                }
+                
+                stlrParser.ast.optimize()
+
                 switch self {
                 case .swift:
                     generatedLanguage = stlrParser.ast.swift(grammar: grammarName)
