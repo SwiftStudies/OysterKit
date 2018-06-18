@@ -192,9 +192,7 @@ extension Tool {
         } catch {
             if let error = error as? Argument.ParsingError {
                 handle(error)
-            } else {
-                print("\(error)")
-            }
+            } 
             return -1
         }
     }

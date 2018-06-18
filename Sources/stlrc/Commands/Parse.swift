@@ -65,13 +65,7 @@ class ParseCommand : Command, IndexableOptioned, IndexableParameterized, Grammar
 
         guard ctr.errors.count == 0 else {
             print("Parsing failed: ".color(.red))
-            for error in ctr.errors {
-                if let humanReadable = error as? HumanConsumableError {
-                    print(humanReadable.formattedErrorMessage(in: input))
-                } else {
-                    print("\(error)")
-                }
-            }
+            ctr.errors.report(in: input)
             return
         }
         
@@ -98,6 +92,7 @@ class ParseCommand : Command, IndexableOptioned, IndexableParameterized, Grammar
                 do {
                     try parseInput(language: language, input: line)
                 } catch {
+                    print([error].report(in: line, from: "input".style(.italic)))
                     return RunnableReturnValue.failure(error: error, code: -1)
                 }
             }
@@ -113,7 +108,7 @@ class ParseCommand : Command, IndexableOptioned, IndexableParameterized, Grammar
                         try parseInput(language: language, input: input)
                         print("Done".color(.green))
                     } catch {
-                        print("\(error)".color(.red).style(.blink))
+                        print([error].report(in: input, from: inputFile.lastPathComponent))
                         return RunnableReturnValue.failure(error: error, code: -1)
                     }
                 }
