@@ -1,15 +1,20 @@
 // 
 // STLR Generated Swift File
 // 
-// Generated: 2017-12-07 02:44:18 +0000
+// Generated: 2018-06-19 16:57:44 +0000
 // 
+#if os(macOS)
+import Cocoa
+#elseif os(iOS)
+import UIKit
+#else
 import Foundation
+#endif
 import OysterKit
 
 // 
 // STLR Parser
-//
-/// The automatically generated STLR grammar
+// 
 enum STLR : Int, Token {
 
 	// Convenience alias
@@ -32,7 +37,7 @@ enum STLR : Int, Token {
 		case .multilineComment:
 			guard let cachedRule = STLR.leftHandRecursiveRules[self.rawValue] else {
 				// Create recursive shell
-                let recursiveRule = RecursiveRule(stubFor: self, with: annotations.isEmpty ? [ : ] : annotations)
+				let recursiveRule = RecursiveRule(stubFor: self, with: annotations.isEmpty ? [ : ] : annotations)
 				STLR.leftHandRecursiveRules[self.rawValue] = recursiveRule
 				// Create the rule we would normally generate
 				let rule = [
@@ -42,7 +47,7 @@ enum STLR : Int, Token {
 									"*/".terminal(token: T._transient).not(producing: T._transient),
 									].oneOf(token: T._transient).repeated(min: 0, producing: T._transient),
 					"*/".terminal(token: T._transient),
-                    ].sequence(token: T._transient, annotations: [:])
+					].sequence(token: T._transient)
 				recursiveRule.surrogateRule = rule
 				return recursiveRule
 			}
@@ -61,7 +66,7 @@ enum STLR : Int, Token {
 					].oneOf(token: T.whitespace, annotations: annotations.isEmpty ? [RuleAnnotation.void : RuleAnnotationValue.set] : annotations)
 		// ows
 		case .ows:
-            return T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T.ows, annotations: annotations.merge(with: [RuleAnnotation.void : RuleAnnotationValue.set]))
+			return T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T.ows, annotations: annotations.isEmpty ? [RuleAnnotation.void : RuleAnnotationValue.set] : annotations)
 		// quantifier
 		case .quantifier:
 			return CharacterSet(charactersIn: "*+?-").terminal(token: T.quantifier, annotations: annotations)
@@ -124,14 +129,14 @@ enum STLR : Int, Token {
 		// rangeOperator
 		case .rangeOperator:
 			return [
-					".".terminal(token: T._transient),
-					"..".terminal(token: T._transient, annotations: [RuleAnnotation.error : RuleAnnotationValue.string("Expected ... in character range")]),
-                    ].sequence(token: T.rangeOperator, annotations: annotations.isEmpty ? [ RuleAnnotation.void : RuleAnnotationValue.set] : annotations.merge(with: [RuleAnnotation.void : RuleAnnotationValue.set]))
+					"..".terminal(token: T._transient),
+					".".terminal(token: T._transient, annotations: [RuleAnnotation.error : RuleAnnotationValue.string("Expected ... in character range")]),
+					].sequence(token: T.rangeOperator, annotations: annotations.isEmpty ? [RuleAnnotation.void : RuleAnnotationValue.set] : annotations)
 		// characterRange
 		case .characterRange:
 			return [
 					T.terminalString._rule(),
-					T.rangeOperator._rule(),
+					T.rangeOperator._rule([RuleAnnotation.void : RuleAnnotationValue.set]),
 					T.terminalString._rule([RuleAnnotation.error : RuleAnnotationValue.string("Range must be terminated")]),
 					].sequence(token: T.characterRange, annotations: annotations.isEmpty ? [ : ] : annotations)
 		// number
@@ -165,7 +170,7 @@ enum STLR : Int, Token {
 		case .annotations:
 			return [
 								T.annotation._rule(),
-								T.ows._rule(),
+								T.ows._rule([RuleAnnotation.void : RuleAnnotationValue.set]),
 								].sequence(token: T._transient, annotations: annotations.isEmpty ? [ : ] : annotations).repeated(min: 1, producing: T.annotations, annotations: annotations)
 		// customLabel
 		case .customLabel:
@@ -193,7 +198,7 @@ enum STLR : Int, Token {
 		case .group:
 			guard let cachedRule = STLR.leftHandRecursiveRules[self.rawValue] else {
 				// Create recursive shell
-                let recursiveRule = RecursiveRule(stubFor: self, with: annotations.isEmpty ? [ : ] : annotations)
+				let recursiveRule = RecursiveRule(stubFor: self, with: annotations.isEmpty ? [ : ] : annotations)
 				STLR.leftHandRecursiveRules[self.rawValue] = recursiveRule
 				// Create the rule we would normally generate
 				let rule = [
@@ -202,7 +207,7 @@ enum STLR : Int, Token {
 					T.expression._rule(),
 					T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T._transient),
 					")".terminal(token: T._transient, annotations: [RuleAnnotation.error : RuleAnnotationValue.string("Expected ')'")]),
-                    ].sequence(token: T._transient, annotations: [:])
+					].sequence(token: T._transient)
 				recursiveRule.surrogateRule = rule
 				return recursiveRule
 			}
@@ -217,7 +222,7 @@ enum STLR : Int, Token {
 		case .element:
 			guard let cachedRule = STLR.leftHandRecursiveRules[self.rawValue] else {
 				// Create recursive shell
-                let recursiveRule = RecursiveRule(stubFor: T.element, with: annotations.isEmpty ? [ : ] : annotations )
+				let recursiveRule = RecursiveRule(stubFor: self, with: annotations.isEmpty ? [ : ] : annotations)
 				STLR.leftHandRecursiveRules[self.rawValue] = recursiveRule
 				// Create the rule we would normally generate
 				let rule = [
@@ -233,7 +238,7 @@ enum STLR : Int, Token {
 									T.identifier._rule(),
 									].oneOf(token: T._transient),
 					T.quantifier._rule().optional(producing: T._transient),
-                    ].sequence(token: T._transient, annotations: [ : ])
+					].sequence(token: T._transient)
 				recursiveRule.surrogateRule = rule
 				return recursiveRule
 			}
@@ -262,7 +267,7 @@ enum STLR : Int, Token {
 		case .choice:
 			guard let cachedRule = STLR.leftHandRecursiveRules[self.rawValue] else {
 				// Create recursive shell
-                let recursiveRule = RecursiveRule(stubFor: self, with: annotations.isEmpty ? [ : ] : annotations)
+				let recursiveRule = RecursiveRule(stubFor: self, with: annotations.isEmpty ? [ : ] : annotations)
 				STLR.leftHandRecursiveRules[self.rawValue] = recursiveRule
 				// Create the rule we would normally generate
 				let rule = [
@@ -271,7 +276,7 @@ enum STLR : Int, Token {
 									T.or._rule([RuleAnnotation.void : RuleAnnotationValue.set]),
 									T.element._rule([RuleAnnotation.error : RuleAnnotationValue.string("Expected terminal, identifier, or group")]),
 									].sequence(token: T._transient).repeated(min: 1, producing: T._transient),
-                    ].sequence(token: T._transient, annotations: [ : ])
+					].sequence(token: T._transient)
 				recursiveRule.surrogateRule = rule
 				return recursiveRule
 			}
@@ -288,7 +293,7 @@ enum STLR : Int, Token {
 		case .sequence:
 			guard let cachedRule = STLR.leftHandRecursiveRules[self.rawValue] else {
 				// Create recursive shell
-                let recursiveRule = RecursiveRule(stubFor: self, with: annotations.isEmpty ? [ : ] : annotations)
+				let recursiveRule = RecursiveRule(stubFor: self, with: annotations.isEmpty ? [ : ] : annotations)
 				STLR.leftHandRecursiveRules[self.rawValue] = recursiveRule
 				// Create the rule we would normally generate
 				let rule = [
@@ -298,7 +303,7 @@ enum STLR : Int, Token {
 									T.notNewRule._rule().lookahead(),
 									T.element._rule([RuleAnnotation.error : RuleAnnotationValue.string("Expected terminal, identifier, or group")]),
 									].sequence(token: T._transient).repeated(min: 1, producing: T._transient),
-                    ].sequence(token: T._transient, annotations: [ : ])
+					].sequence(token: T._transient)
 				recursiveRule.surrogateRule = rule
 				return recursiveRule
 			}
@@ -307,14 +312,14 @@ enum STLR : Int, Token {
 		case .expression:
 			guard let cachedRule = STLR.leftHandRecursiveRules[self.rawValue] else {
 				// Create recursive shell
-                let recursiveRule = RecursiveRule(stubFor: self, with: annotations)
+				let recursiveRule = RecursiveRule(stubFor: self, with: annotations.isEmpty ? [ : ] : annotations)
 				STLR.leftHandRecursiveRules[self.rawValue] = recursiveRule
 				// Create the rule we would normally generate
 				let rule = [
 					T.choice._rule(),
 					T.sequence._rule(),
 					T.element._rule(),
-                    ].oneOf(token: T._transient, annotations: [:])
+					].oneOf(token: T._transient)
 				recursiveRule.surrogateRule = rule
 				return recursiveRule
 			}
@@ -368,11 +373,17 @@ enum STLR : Int, Token {
 		}
 	}
 
+
 	// Cache for left-hand recursive rules
 	private static var leftHandRecursiveRules = [ Int : Rule ]()
 
 	// Create a language that can be used for parsing etc
 	public static var generatedLanguage : Parser {
 		return Parser(grammar: [T.grammar._rule()])
+	}
+
+	// Convient way to apply your grammar to a string
+	public static func parse(source: String) throws -> HomogenousTree {
+		return try AbstractSyntaxTreeConstructor().build(source, using: generatedLanguage)
 	}
 }
