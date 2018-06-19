@@ -11,17 +11,39 @@ import Foundation
 import os
 
 @available(OSX 10.14, *)
-public enum Logs {
-    public static var parsingLog   = OSLog(subsystem: "com.swift-studies.OysterKit", category: "parsing")
-    public static var decodingLog  = OSLog(subsystem: "com.swift-studies.OysterKit", category: "decoding")
+public enum Log {
+    
+    case parsing, decoding
+    
+    public static let _parsingLog   = OSLog(subsystem: "com.swift-studies.OysterKit", category: "parsing")
+    public static let _decodingLog  = OSLog(subsystem: "com.swift-studies.OysterKit", category: "decoding")
+    
+    public static var parsingLog        : OSLog = .disabled
+    public static var decodingLog       : OSLog = _decodingLog
+    
+    public func enable(){
+        switch self {
+        case .parsing:
+            Log.parsingLog = Log._parsingLog
+            Log.signPostIdStack.removeAll(keepingCapacity: true)
+        case .decoding:
+            Log.decodingLog = Log._decodingLog
+        }
+    }
+    
+    public func disable(){
+        switch self {
+        case .parsing: Log.parsingLog = .disabled
+        case .decoding: Log.decodingLog = .disabled
+        }
+    }
     
     private static var signPostIdStack = [OSSignpostID]()
-
     static func decodingError(_ error:DecodingError){
         guard decodingLog.isEnabled(type: .default) else{
             return
         }
-        os_log("%{public}@", Logs.formatted(decodingError: error))
+        os_log("%{public}@", Log.formatted(decodingError: error))
     }
     
     static func beginRule(rule:Rule){

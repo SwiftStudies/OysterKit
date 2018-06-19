@@ -8,7 +8,7 @@
 import Foundation
 
 @available(OSX 10.14, *)
-extension Logs {
+extension Log {
     static func formatted(codingPath: [CodingKey])->String{
         return codingPath.reduce("") { (result, currentKey) -> String in
             var nextResult = result + (result.isEmpty ? "" : ".")
