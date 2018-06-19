@@ -65,6 +65,20 @@ public struct HomogenousTree : AbstractSyntaxTree, CustomStringConvertible {
     /// Any associated annotations made on the node
     public      let annotations: [RuleAnnotation : RuleAnnotationValue]
 
+    /// Access a child based on the name of the token of the child
+    public subscript(_ tokenName:String)->HomogenousTree?{
+        for child in children {
+            if "\(child.token)" == tokenName {
+                return child
+            }
+        }
+        return nil
+    }
+    
+    /// Access a child based on the index of the child
+    public subscript(_ index:Int)->HomogenousTree{
+        return children[index]
+    }
     
     private func pretify(prefix:String = "")->String{
         let annotatedWith : String = annotations.reduce("", {(last,pair)->String in
