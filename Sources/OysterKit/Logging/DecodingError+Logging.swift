@@ -7,6 +7,7 @@
 
 import Foundation
 
+#if canImport(NaturalLanguage)
 @available(OSX 10.14, *)
 extension Log {
     static func formatted(codingPath: [CodingKey])->String{
@@ -51,3 +52,4 @@ extension Log {
 
     }
 }
+#endif
