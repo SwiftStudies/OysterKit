@@ -184,7 +184,7 @@ public struct ParsingDecoder{
             if let error = error as? DecodingError {
                 if #available(OSX 10.14, *) {
                     #if canImport(NaturalLanguage)
-                    Logs.decodingError(error)
+                    Log.decodingError(error)
                     #endif
                 } else {
                     // Fallback on earlier versions
@@ -215,7 +215,7 @@ public struct ParsingDecoder{
             if let error = error as? DecodingError {
                 if #available(OSX 10.14, *) {
                     #if canImport(NaturalLanguage)
-                    Logs.decodingError(error)
+                    Log.decodingError(error)
                     #endif
                 } else {
                     // Fallback on earlier versions

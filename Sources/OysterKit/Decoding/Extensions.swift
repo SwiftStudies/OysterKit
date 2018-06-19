@@ -45,7 +45,7 @@ public extension Decodable {
         } catch {
             if let error = error as? DecodingError {
                 #if canImport(NaturalLangauge)
-                Logs.decodingError(error)
+                Log.decodingError(error)
                 #endif
             }
             throw error
@@ -70,7 +70,7 @@ public extension Decodable {
         } catch {
             if let error = error as? DecodingError {
                 #if canImport(NaturalLangauge)
-                Logs.decodingError(error)
+                Log.decodingError(error)
                 #endif
             }
             throw error
