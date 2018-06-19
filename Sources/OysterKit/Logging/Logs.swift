@@ -12,9 +12,17 @@ import os
 
 @available(OSX 10.14, *)
 public enum Logs {
-    static var parsingLog = OSLog(subsystem: "com.swift-studies.OysterKit", category: "parsing")
+    public static var parsingLog   = OSLog(subsystem: "com.swift-studies.OysterKit", category: "parsing")
+    public static var decodingLog  = OSLog(subsystem: "com.swift-studies.OysterKit", category: "decoding")
     
     private static var signPostIdStack = [OSSignpostID]()
+
+    static func decodingError(_ error:DecodingError){
+        guard decodingLog.isEnabled(type: .default) else{
+            return
+        }
+        os_log("%{public}@", Logs.formatted(decodingError: error))
+    }
     
     static func beginRule(rule:Rule){
         guard parsingLog.signpostsEnabled else {
