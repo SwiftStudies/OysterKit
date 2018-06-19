@@ -34,6 +34,7 @@ multilineComment                = "/*" (multilineComment | !"*/")* "*/"
 comment                                 = singleLineComment | multilineComment
 @void
 whitespace                              = comment | .whitespaceOrNewline
+@void
 ows                                             = whitespace*
 
 //
@@ -88,6 +89,7 @@ characterSetName                = "letter" |
 
 characterSet                    = ("." @error("Unknown character set") characterSetName)
 
+@void
 rangeOperator                   = ".." @error("Expected ... in character range") "."
 characterRange                  = terminalString rangeOperator @error("Range must be terminated") terminalString
 

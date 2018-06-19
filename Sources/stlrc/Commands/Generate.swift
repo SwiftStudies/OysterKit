@@ -8,13 +8,14 @@ class GenerateCommand : Command, IndexableOptioned, GrammarConsumer, OutputLocat
      How options are indexed
      */
     public enum Options : String, OptionIndex {
-        case language , outputTo = "output-to", grammar
+        case language , outputTo = "output-to", grammar, optimize
         
         var option : Option {
             switch self {
             case .grammar:  return GrammarOption()
             case .language: return LanguageOption()
             case .outputTo: return OutputFileOption()
+            case .optimize: return OptimizeOption()
             }
         }
         
@@ -23,6 +24,7 @@ class GenerateCommand : Command, IndexableOptioned, GrammarConsumer, OutputLocat
                 language.option,
                 outputTo.option,
                 grammar.option,
+                optimize.option,
             ]
         }
     }
@@ -55,10 +57,12 @@ class GenerateCommand : Command, IndexableOptioned, GrammarConsumer, OutputLocat
             return RunnableReturnValue.failure(error: GenerationError.couldNotParseGrammar, code: 0)
         }
         
-        print("Generating \(grammarName.style(.italic)) as \(language)")
+        let optimize = self[optionCalled: Options.optimize.rawValue]?.isSet ?? false
+        
+        print("Generating \(grammarName.style(.italic)) as \(language) (\(optimize ? "Optimized" : "Unoptimized"))")
         
         do {
-            try language.generate(grammarName: grammarName, from: grammar, outputTo: outputLocation.url(defaultName: "\(grammarName).\(language.fileExtension)").path.canonicalPath)
+            try language.generate(grammarName: grammarName, from: grammar, optimize: optimize, outputTo: outputLocation.url(defaultName: "\(grammarName).\(language.fileExtension)").path.canonicalPath)
             
         } catch {
             return RunnableReturnValue.failure(error: error, code: -1)

@@ -40,7 +40,16 @@ public extension Decodable {
      - Returns: A new instance of the Type
     */
     static func decode(_ source:String, using language:Language) throws ->Self{
-        return try decode(source, with: HomogenousTree.self, using: language)
+        do {
+            return try decode(source, with: HomogenousTree.self, using: language)
+        } catch {
+            if let error = error as? DecodingError {
+                #if canImport(NaturalLangauge)
+                Log.decodingError(error)
+                #endif
+            }
+            throw error
+        }
     }
     
     /**
@@ -54,9 +63,18 @@ public extension Decodable {
      - Returns: A new instance of the Type
      */
     static func decode<AST:DecodeableAbstractSyntaxTree>(_ source:String, with astType:AST.Type, using language:Language) throws ->Self{
-        let ast = try AbstractSyntaxTreeConstructor().build(astType, from: source, using: language)
-        
-        return try ParsingDecoder().decode(Self.self, using: ast)
+        do {
+            let ast = try AbstractSyntaxTreeConstructor().build(astType, from: source, using: language)
+            
+            return try ParsingDecoder().decode(Self.self, using: ast)
+        } catch {
+            if let error = error as? DecodingError {
+                #if canImport(NaturalLangauge)
+                Log.decodingError(error)
+                #endif
+            }
+            throw error
+        }
     }
 
 }
