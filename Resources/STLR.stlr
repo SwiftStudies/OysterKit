@@ -34,6 +34,7 @@ multilineComment                = "/*" (multilineComment | !"*/")* "*/"
 comment                                 = singleLineComment | multilineComment
 @void
 whitespace                              = comment | .whitespaceOrNewline
+@void
 ows                                             = whitespace*
 
 //
