@@ -65,20 +65,19 @@ class STLRTest: XCTestCase {
 //        print(stlr.ast.swift(grammar: "Test")!)
         
         var source = "abc 123"
-        var ast = try! AbstractSyntaxTreeConstructor().build(source, using: testLanguage)
+        let ast = try! AbstractSyntaxTreeConstructor().build(source, using: testLanguage)
        
 //        print(ast.description)
-        
-        XCTAssertNotNil(ast.children.first?.token , "Basic parsing did not work")
+        XCTAssertNotNil(ast["letters"])
+        XCTAssertNotNil(ast["numbers"])
+        XCTAssertNil(ast["numbers"]?["digits"]) //Numbers should have directly subsumed the expression from digits, and not just wrapped the node
+        XCTAssertEqual(ast["letters"]?.matchedString ?? "", "abc")
+        XCTAssertEqual(ast["numbers"]?.matchedString ?? "", "123")
 
+        
+        // This should fail
         source = "abc "
-        ast = try! AbstractSyntaxTreeConstructor().build(source, using: testLanguage)
-        
-        XCTAssert(ast.children.first?.matchedString ?? "fail" == "abc" , "Letters node does not exist or contains the wrong value")
-
-        
-        
-//        print("Done")
+        XCTAssertNil(try? AbstractSyntaxTreeConstructor().build(source, using: testLanguage))
     }
     
     func testParseSelf(){

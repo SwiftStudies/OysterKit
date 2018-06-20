@@ -8,7 +8,7 @@
 
 import XCTest
 @testable import OysterKit
-import STLR
+@testable import STLR
 
 class FixValidations: XCTestCase {
 
@@ -90,5 +90,23 @@ class FixValidations: XCTestCase {
         ast.optimize()
         
         XCTAssert("\(ast.rules[0])" == "operators = \":=\" | \";\"", "Malformed rule: \(ast.rules[0])")
+    }
+    
+    //
+    // Effect: When an identifier instance is over-ridden with a new token name the result is a rule that
+    // is a squence containing the overridden symbol. This is both inefficient and undesirable (as the
+    // generated hierarchy has an additional layer
+    //
+    func testTokenOverride(){
+        let source = """
+letter          = .letter
+doubleLetter    = letter "+" letter
+phrase          = doubleLetter .whitespace @token("doubleLetter2") doubleLetter
+"""
+        let compiled = STLRParser(source: source)
+        
+        print()
+        
+        XCTAssertEqual(compiled.ast.identifiers["doubleLetter"]!.grammarRule!.expression!.description, compiled.ast.identifiers["doubleLetter2"]!.grammarRule!.expression!.description)
     }
 }

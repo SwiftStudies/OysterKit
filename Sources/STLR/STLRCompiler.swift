@@ -177,6 +177,7 @@ extension STLRAbstractSyntaxTree.Element {
         
         var element : STLRScope.Element
         
+        /// Do we have an inline specification of a token?
         if let inlineIdentifier = annotations[annotation: STLRScope.ElementAnnotation.token], case let STLRScope.ElementAnnotationValue.string(stringValue) = inlineIdentifier {
             var identifier : STLRScope.Identifier
             
@@ -198,7 +199,23 @@ extension STLRAbstractSyntaxTree.Element {
                     rule = identifier.grammarRule!
                 }
                 
-                rule.expression = STLRScope.Expression.element(try build(using: self, from: ast, into: scope, quantifier, lookahead, []))
+                // If this is a reference to another identifier, this must be compiled next and it's expression used.
+                if let referenceToIdentifier = self.identifier {
+                    var subsummed = false
+                    for surrogageRule in ast.rules {
+                        // If the token is subsuming a top-level rule we can compile that rule and steal its expression
+                        if surrogageRule.identifier == referenceToIdentifier {
+                            rule.expression = try surrogageRule.expression.compile(from: ast, into: scope)
+                            subsummed = true
+                            break
+                        }
+                    }
+                    if !subsummed {
+                        rule.expression = STLRScope.Expression.element(try build(using: self, from: ast, into: scope, quantifier, lookahead, []))
+                    }
+                } else {
+                    rule.expression = STLRScope.Expression.element(try build(using: self, from: ast, into: scope, quantifier, lookahead, []))
+                }
                 
                 for annotation in annotations.remove(STLRScope.ElementAnnotation.token) {
                     if identifier.annotations[annotation: annotation.annotation] != nil {
