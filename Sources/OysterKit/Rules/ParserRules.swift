@@ -91,7 +91,9 @@ public indirect enum ParserRule : Rule, CustomStringConvertible{
         #if canImport(NaturalLanguage)
         if #available(OSX 10.14, *){
             Log.beginRule(rule: self)
-            defer {
+        }
+        defer {
+            if #available(OSX 10.14, *){
                 Log.endRule(rule: self, result: matchResult)
             }
         }
