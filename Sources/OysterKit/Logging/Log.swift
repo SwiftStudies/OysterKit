@@ -59,8 +59,7 @@ public enum Log {
         }
         let newId = OSSignpostID(log: parsingLog)
         signPostIdStack.append(newId)
-        
-        os_signpost(type: .begin, log: parsingLog, name: "matches", signpostID: newId, "%{public}@", "\(describe(rule: rule))" as NSString)
+        os_signpost(.begin, log: parsingLog, name: "matches", signpostID: newId, "%{public}@", "\(describe(rule: rule))" as NSString)
     }
     
     static func endRule(rule:Rule, result:MatchResult){
@@ -81,7 +80,7 @@ public enum Log {
             resultDescription = "☠️"
         }
         
-        os_signpost(type: .end, log: parsingLog, name: "matches", signpostID: oldId, "%{public}@ %{public}@", "\(describe(rule: rule))" as NSString, resultDescription as NSString)
+        os_signpost(.end, log: parsingLog, name: "matches", signpostID: oldId, "%{public}@ %{public}@", "\(describe(rule: rule))" as NSString, resultDescription as NSString)
     }
 }
 #endif
