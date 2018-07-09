@@ -120,7 +120,15 @@ extension STLRAbstractSyntaxTree.Expression {
 
 extension STLRAbstractSyntaxTree.Terminal {
     func build()->STLRScope.Terminal {
-        if let characterSet = STLRScope.TerminalCharacterSet(rawValue: characterSet?.characterSetName.rawValue ?? "$ERROR$") {
+        if let regex = regex {
+            let regularExpression : NSRegularExpression
+            do {
+                regularExpression = try NSRegularExpression(pattern: "^\(regex)", options: [])
+            } catch {
+                fatalError("Could not compile pattern: \(regex), \(error)")
+            }
+            return STLRScope.Terminal(with: regularExpression)
+        } else if let characterSet = STLRScope.TerminalCharacterSet(rawValue: characterSet?.characterSetName.rawValue ?? "$ERROR$") {
             return STLRScope.Terminal(with: characterSet)
         } else if let characterRange = characterRange {
             return STLRScope.Terminal(with: STLRScope.TerminalCharacterSet(from: characterRange[0].terminalBody, to: characterRange[1].terminalBody))

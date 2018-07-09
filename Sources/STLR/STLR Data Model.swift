@@ -797,6 +797,7 @@ public class STLRScope : CustomStringConvertible {
     public struct Terminal : CustomStringConvertible{
         let string       : String?
         let characterSet : TerminalCharacterSet?
+        let regex        : NSRegularExpression?
         
         private static func unescapeString(_ string:String)->String{
             return string.replacingOccurrences(of: "\\\"", with: "\"").replacingOccurrences(of: "\\\\", with: "\\")
@@ -810,6 +811,18 @@ public class STLRScope : CustomStringConvertible {
         public init(with string:String){
             self.string = Terminal.unescapeString(string)
             self.characterSet = nil
+            self.regex = nil
+        }
+        
+        /**
+         Creates a new instance with the supplied regular expression
+         
+         - Parameter with: The regular expression to use
+        */
+        public init(with regex:NSRegularExpression){
+            self.regex = regex
+            self.string = nil
+            self.characterSet = nil
         }
         
         /**
@@ -820,15 +833,18 @@ public class STLRScope : CustomStringConvertible {
         public init(with characterSet:TerminalCharacterSet){
             self.string = nil
             self.characterSet = characterSet
+            self.regex = nil
         }
         
         /// A human readable description
         public var description: String{
-            switch (string,characterSet){
-            case (let sv,_) where sv != nil:
+            switch (string,characterSet, regex){
+            case (let sv,_,_) where sv != nil:
                 return "\"\(sv!)\""
-            case (_, let cs) where cs != nil:
+            case (_, let cs,_) where cs != nil:
                 return "\(cs!)"
+            case (_, _, let reg) where reg != nil:
+                return "/\(reg!.pattern[reg!.pattern.index(after: reg!.pattern.startIndex)...])/"
             default:
                 return "❌ not implemented"
             }

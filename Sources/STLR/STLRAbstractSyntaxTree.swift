@@ -94,6 +94,7 @@ struct STLRAbstractSyntaxTree {
             let characterSetName : CharacterSetName
         }
         
+        let regex : Swift.String?
         let terminalString : String?
         let characterSet   : CharacterSet?
         let characterRange : [String]?

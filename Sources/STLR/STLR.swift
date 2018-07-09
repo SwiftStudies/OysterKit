@@ -208,7 +208,7 @@ enum STLR : Int, Token {
 			return [
 					T.startRegex._rule([RuleAnnotation.void : RuleAnnotationValue.set]),
 					T.regexBody._rule([RuleAnnotation.transient : RuleAnnotationValue.set]),
-					"/".terminal(token: T._transient),
+                    T.regexDelimeter._rule([:])
 					].sequence(token: T.regex, annotations: annotations.isEmpty ? [ : ] : annotations)
 		// terminal
 		case .terminal:

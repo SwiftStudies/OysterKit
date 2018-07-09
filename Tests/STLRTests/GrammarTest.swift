@@ -94,6 +94,23 @@ class GrammarTest: XCTestCase {
         
         XCTAssert(ast.rules[0].identifier?.name ?? "fail" == "x")
     }
+    
+    func testRuleWithRegularExpression(){
+        source.add(line: "animal = /Cat|Dog/")
+        
+        let stlr = STLRParser(source: source)
+        
+        let ast = stlr.ast
+        
+        XCTAssert(ast.rules.count == 1, "Found \(ast.rules.count) rules when there should be 1")
+        
+        if ast.rules.count < 1 {
+            return
+        }
+        
+        XCTAssert(ast.rules[0].identifier?.name ?? "fail" == "animal")
+        XCTAssertEqual(ast.rules[0].description, "animal = /Cat|Dog/")
+    }
 
     func checkGeneratedLanguage(language:Language?, on source:String, expecting: [Int]) throws {
         let debugOutput = false
