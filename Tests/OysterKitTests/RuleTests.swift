@@ -68,7 +68,7 @@ class RuleTests: XCTestCase {
         
         XCTAssertEqual("Success (Hello World)", matchResults.success.description)
         XCTAssertEqual("Consumed (Hello World)", matchResults.consume.description)
-        XCTAssertEqual("Failed at Index(_compoundOffset: 0, _cache: Swift.String.Index._Cache.utf16)", matchResults.fail.description)
+        XCTAssertEqual("Failed at 0", matchResults.fail.description)
         XCTAssertEqual("Ignore Failure", matchResults.ignoreFail.description)
     }
     

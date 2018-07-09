@@ -194,7 +194,7 @@ public enum MatchResult : CustomStringConvertible{
         case .ignoreFailure:
             return "Ignore Failure"
         case .failure(let at):
-            return "Failed at \(at)"
+            return "Failed at \(at.encodedOffset)"
         }
     }
 
