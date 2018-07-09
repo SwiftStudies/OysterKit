@@ -38,6 +38,10 @@ public enum ScannerRule : Rule, CustomStringConvertible{
     /// Produces the specified token when one of the `String`s in the array is found
     case   oneOf(token: Token,  [String], RuleAnnotations)
     
+    /// Produces the specified token when the supplied regular expression is matched
+    case   regularExpression(token:Token, pattern:NSRegularExpression, RuleAnnotations)
+    
+    
     /**
      Performs the actual match check during parsing based on the specific case of `ParserRule` that this instance is.
      
@@ -99,6 +103,14 @@ public enum ScannerRule : Rule, CustomStringConvertible{
                 } catch { }
             }
             throw ScannerError.nothingMatched
+        case .regularExpression(_, let regex, _):
+            do {
+                try lexer.scan(regularExpression: regex)
+                matchResult = .success(context: lexer.proceed())
+                return matchResult
+            } catch {
+                throw ScannerError.nothingMatched
+            }
         }
         
 
@@ -108,7 +120,7 @@ public enum ScannerRule : Rule, CustomStringConvertible{
     /// The `Token` produced when the rule is matched
     public var produces: Token{
         switch self {
-        case .oneOf(let token, _, _):
+        case .oneOf(let token, _, _), .regularExpression(let token, _, _):
             return token
         }
     }
@@ -121,6 +133,8 @@ public enum ScannerRule : Rule, CustomStringConvertible{
                 return "\""+$0+"\""
             })
             return "\(annotations.stlrDescription)("+quotedString.joined(separator: " | ")+")"
+        case .regularExpression(_, let regex, let annotations):
+            return "\(annotations.stlrDescription)/\(regex.pattern)/"
         }
     }
 
@@ -128,13 +142,15 @@ public enum ScannerRule : Rule, CustomStringConvertible{
     /// full rules if annotations are needed
     public var annotations: RuleAnnotations{
         switch self {
-        case .oneOf(_,_, let annotations):
+        case .oneOf(_,_, let annotations), .regularExpression(_, _, let annotations):
             return annotations
         }
     }
     
     public func instance(with token: Token?, andAnnotations annotations: RuleAnnotations?) -> Rule {
         switch self {
+        case .regularExpression(let oldToken, let regex, let oldAnnotations):
+            return ScannerRule.regularExpression(token: token ?? oldToken, pattern: regex, annotations ?? oldAnnotations)
         case .oneOf(let oldToken, let strings, let oldAnnotations):
             return ScannerRule.oneOf(token: token ?? oldToken, strings, annotations ?? oldAnnotations)
         }
