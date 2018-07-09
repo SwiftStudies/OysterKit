@@ -241,6 +241,41 @@ class RuleTests: XCTestCase {
         XCTAssertEqual(newRule.produces.rawValue, transientTokenValue)
     }
     
+    func testScannerRuleForRegularExpression(){
+        let catRegex = try! NSRegularExpression(pattern: "Cat", options: [])
+        
+        let catRule = ScannerRule.regularExpression(token: LabelledToken(withLabel: "Cat"), pattern: catRegex, [:])
+        XCTAssertEqual(catRule.description, "/Cat/")
+        let commaRule = ScannerRule.oneOf(token: transientTokenValue.token, [","], [:])
+        
+        let source = "Cat,Dog"
+        
+        let lexer = Lexer(source: source)
+        let ir = TokenStreamIterator(with: lexer, and: [catRule, commaRule].language)
+        
+        do {
+            _ = try catRule.match(with: lexer, for: ir)
+            _ = try commaRule.match(with: lexer, for: ir)
+        } catch {
+            XCTAssert(false, "Failed to match rules")
+            return
+        }
+        
+        do {
+            _ = try catRule.match(with: lexer, for: ir)
+            XCTAssert(false, "Should not have matched")
+            return
+        } catch {
+            
+        }
+        
+        let felineRule = catRule.instance(with: LabelledToken(withLabel: "Feline"), andAnnotations: [RuleAnnotation.pinned : RuleAnnotationValue.set])
+        
+        XCTAssertEqual("\(felineRule)", "@pin /Cat/")
+        XCTAssertNotEqual(catRule.produces.rawValue, felineRule.produces.rawValue)
+    }
+    
+    
     func testKnownAnnotations(){
         let error = "Valid error"
         let rule = LabelledToken(withLabel: "test").oneOrMore(of: CharacterSet.letters)

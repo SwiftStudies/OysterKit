@@ -134,7 +134,7 @@ public enum ScannerRule : Rule, CustomStringConvertible{
             })
             return "\(annotations.stlrDescription)("+quotedString.joined(separator: " | ")+")"
         case .regularExpression(_, let regex, let annotations):
-            return "\(annotations.stlrDescription)/\(regex.pattern)/"
+            return "\(annotations.stlrDescription)\(annotations.isEmpty ? "" : " ")/\(regex.pattern)/"
         }
     }
 
@@ -147,6 +147,12 @@ public enum ScannerRule : Rule, CustomStringConvertible{
         }
     }
     
+    /** Creates a new instance of the rule producing different tokens or with different annotations
+     
+      - Parameter token: A new token, if `nil` the previously produced token will be created
+      - Parameter annotations: Different annotations, or if `nil` the previous annotations on the rule
+      - Returns: A new instance with the appropriate different token or annotations
+    */
     public func instance(with token: Token?, andAnnotations annotations: RuleAnnotations?) -> Rule {
         switch self {
         case .regularExpression(let oldToken, let regex, let oldAnnotations):
