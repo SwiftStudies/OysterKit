@@ -1,7 +1,7 @@
 // 
 // STLR Generated Swift File
 // 
-// Generated: 2018-06-19 16:57:44 +0000
+// Generated: 2018-07-09 17:39:13 +0000
 // 
 #if os(macOS)
 import Cocoa
@@ -20,7 +20,7 @@ enum STLR : Int, Token {
 	// Convenience alias
 	private typealias T = STLR
 
-	case _transient = -1, `singleLineComment`, `multilineComment`, `comment`, `whitespace`, `ows`, `quantifier`, `negated`, `transient`, `lookahead`, `stringQuote`, `escapedCharacter`, `stringCharacter`, `terminalBody`, `stringBody`, `string`, `terminalString`, `characterSetName`, `characterSet`, `rangeOperator`, `characterRange`, `number`, `boolean`, `literal`, `annotation`, `annotations`, `customLabel`, `definedLabel`, `label`, `terminal`, `group`, `identifier`, `element`, `assignmentOperators`, `or`, `then`, `choice`, `notNewRule`, `sequence`, `expression`, `lhs`, `rule`, `moduleName`, `moduleImport`, `mark`, `grammar`
+	case _transient = -1, `singleLineComment`, `multilineComment`, `comment`, `whitespace`, `ows`, `quantifier`, `negated`, `transient`, `lookahead`, `stringQuote`, `escapedCharacter`, `stringCharacter`, `terminalBody`, `stringBody`, `string`, `terminalString`, `characterSetName`, `characterSet`, `rangeOperator`, `characterRange`, `number`, `boolean`, `literal`, `annotation`, `annotations`, `customLabel`, `definedLabel`, `label`, `regexDelimeter`, `startRegex`, `regexBody`, `regex`, `terminal`, `group`, `identifier`, `element`, `assignmentOperators`, `or`, `then`, `choice`, `notNewRule`, `sequence`, `expression`, `lhs`, `rule`, `moduleName`, `moduleImport`, `mark`, `grammar`
 
 	func _rule(_ annotations: RuleAnnotations = [ : ])->Rule {
 		switch self {
@@ -187,12 +187,36 @@ enum STLR : Int, Token {
 					T.definedLabel._rule(),
 					T.customLabel._rule(),
 					].oneOf(token: T.label, annotations: annotations)
+		// regexDelimeter
+		case .regexDelimeter:
+			return "/".terminal(token: T.regexDelimeter, annotations: annotations.isEmpty ? [RuleAnnotation.void : RuleAnnotationValue.set] : annotations)
+		// startRegex
+		case .startRegex:
+			return [
+					"/".terminal(token: T._transient),
+					"*".terminal(token: T._transient).not(producing: T._transient).lookahead(),
+					"/".terminal(token: T._transient).not(producing: T._transient).lookahead(),
+					].sequence(token: T.startRegex, annotations: annotations.isEmpty ? [RuleAnnotation.void : RuleAnnotationValue.set] : annotations)
+		// regexBody
+		case .regexBody:
+			return [
+											T.regexDelimeter._rule([RuleAnnotation.void : RuleAnnotationValue.set]),
+											T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]),
+											].sequence(token: T._transient, annotations: annotations.isEmpty ? [RuleAnnotation.transient : RuleAnnotationValue.set] : annotations).not(producing: T._transient, annotations: annotations.isEmpty ? [RuleAnnotation.transient : RuleAnnotationValue.set] : annotations).repeated(min: 1, producing: T.regexBody, annotations: annotations.isEmpty ? [RuleAnnotation.transient : RuleAnnotationValue.set] : annotations)
+		// regex
+		case .regex:
+			return [
+					T.startRegex._rule([RuleAnnotation.void : RuleAnnotationValue.set]),
+					T.regexBody._rule([RuleAnnotation.transient : RuleAnnotationValue.set]),
+					"/".terminal(token: T._transient),
+					].sequence(token: T.regex, annotations: annotations.isEmpty ? [ : ] : annotations)
 		// terminal
 		case .terminal:
 			return [
 					T.characterSet._rule(),
 					T.characterRange._rule(),
 					T.terminalString._rule(),
+					T.regex._rule(),
 					].oneOf(token: T.terminal, annotations: annotations)
 		// group
 		case .group:
