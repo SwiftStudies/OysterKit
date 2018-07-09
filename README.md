@@ -27,7 +27,7 @@ OysterKit enables native Swift scanning, lexical analysis, and parsing capabilit
   	- Complied STLR can be used immediately at run time, or through the generation of a Swift source file
 
 ## Status
-
+ -  Swift 4.2 development is proceeding on the 4.2 branch, in addition new features are also being added there. Check the status of the 4.2 pull request to confirm that all tests are passing, but you are safe to use this branch for development if you wish. I have been merging changes into the master branch providing they do not break 4.1.x compatibility.  
   - All tests are passing
 
 For those that used v1.0 there are significant performance and capability benefits of moving to v2. I have not yet built an OKScript translator, but that could quite easily be done if there is demand. 
