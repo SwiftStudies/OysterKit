@@ -132,7 +132,7 @@ class NodeStackTests: XCTestCase {
             LanguageError.parsingError(at: source.startIndex..<source.startIndex, message: "Top Error"),
             ])
 
-        XCTAssertEqual(nodeStack.description, "NodeStack: \n0 nodes, with [Top Error from Index(_compoundOffset: 20, _cache: Swift.String.Index._Cache.utf16) to Index(_compoundOffset: 20, _cache: Swift.String.Index._Cache.utf16), Top Error from Index(_compoundOffset: 0, _cache: Swift.String.Index._Cache.utf16) to Index(_compoundOffset: 0, _cache: Swift.String.Index._Cache.utf16)] errors\n1 nodes, with [] errors\n")
+        XCTAssertEqual(nodeStack.description, "NodeStack: \n0 nodes, with [Top Error from 5 to 5, Top Error from 0 to 0] errors\n1 nodes, with [] errors\n")
         
     }
 }
