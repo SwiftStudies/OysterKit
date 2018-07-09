@@ -228,6 +228,18 @@ open class Lexer : LexicalAnalyzer, CustomStringConvertible{
     }
     
     /**
+     Scan the supplied regular expression (```NSRegularExpression```). If not found an `Error` should be the thrown. The scanner
+     position should be directly after the matched pattern.
+     
+     - Parameter regularExpression: The `NSRegularExpression` to scan for
+     */
+    open func scan(regularExpression regex: NSRegularExpression) throws {
+        if !scanner.scan(regularExpression: regex){
+            throw GrammarError.matchFailed(token: nil)
+        }
+    }
+    
+    /**
      Advances the scanner one character. If the end of the source `String` has already been reached a `GrammarException` will be thrown.
     */
     open func scanNext() throws {

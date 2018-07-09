@@ -130,6 +130,28 @@ class LexerTest: XCTestCase {
         XCTAssert(period.matchedString == ".", "Expected 'period' but got '\(period.matchedString)'")
     }
     
+    func testRegularExpression(){
+        let source = "Cat,Dog"
+        let lexer = Lexer(source: source)
+        
+        let catRegex = try! NSRegularExpression(pattern: "Cat", options: [])
+        
+        do {
+            try lexer.scan(regularExpression: catRegex)
+        } catch {
+            XCTAssert(false,"Regular expression should have matched")
+            return
+        }
+        
+        do {
+            try lexer.scan(regularExpression: catRegex)
+            XCTAssert(false,"Regular expression should have failed to match")
+            return
+        } catch {
+            return
+        }
+
+    }
     
     func testNegativeScanCharacterInSet() {
         // This is an example of a functional test case.
