@@ -815,6 +815,16 @@ class DynamicGeneratorTest: XCTestCase {
         }
     }
     
+    func testRegularExpression(){
+        do {
+            let result = try generatedStringSerialization(for: "letter = @error(\"error\") /hello/ ")
+            
+            XCTAssert(result == "tokenA = @error(\"error\") /hello/", "Bad generated output '\(result)'")
+        } catch (let error){
+            XCTFail("\(error)")
+        }
+    }
+    
     func testSingleCharacterTerminal(){
         do {
             let result = try generatedStringSerialization(for: "letter = @error(\"error\") \"h\"")
@@ -855,7 +865,7 @@ class DynamicGeneratorTest: XCTestCase {
         do {
             let result = try generatedStringSerialization(for: "letter = @error(\"error\") (\"a\"|\"b\"|\"c\")")
             
-            XCTAssertEqual("@error(\"error\")(\"a\" | \"b\" | \"c\")", result)
+            XCTAssertEqual("tokenA = @error(\"error\")(\"a\" | \"b\" | \"c\")", result)
         } catch (let error){
             XCTFail("\(error)")
         }

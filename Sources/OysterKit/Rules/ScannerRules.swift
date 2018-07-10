@@ -129,14 +129,21 @@ public enum ScannerRule : Rule, CustomStringConvertible{
 
     /// A human readable description of the rule
     public var description: String{
+        var body : String
         switch self {
         case .oneOf(_, let choices, let annotations):
             let quotedString = choices.map({
                 return "\""+$0+"\""
             })
-            return "\(annotations.stlrDescription)("+quotedString.joined(separator: " | ")+")"
+            body = "\(annotations.stlrDescription)("+quotedString.joined(separator: " | ")+")"
         case .regularExpression(_, let regex, let annotations):
-            return "\(annotations.stlrDescription)\(annotations.isEmpty ? "" : " ")/\(regex.pattern)/"
+            let pattern = regex.pattern.hasPrefix("^") ? String(regex.pattern[regex.pattern.index(after: regex.pattern.startIndex)...]) : regex.pattern
+            body = "\(annotations.stlrDescription)\(annotations.isEmpty ? "" : " ")/\(pattern)/"
+        }
+        if !produces.transient {
+            return "\(produces) = \(body)"
+        } else {
+            return body
         }
     }
 

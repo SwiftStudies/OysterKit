@@ -174,6 +174,9 @@ public extension STLRScope.GrammarRule{
 
 extension STLRScope.Terminal{
     func rule(from grammar:STLRScope, creating token:Token, with annotations:RuleAnnotations?)->Rule? {
+        if let regex = regex {
+            return ScannerRule.regularExpression(token: token, pattern: regex, annotations ?? [:])
+        }
         if let string = string {
             return ParserRule.terminal(produces: token, string, annotations)
         }

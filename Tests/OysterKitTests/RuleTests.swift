@@ -245,7 +245,7 @@ class RuleTests: XCTestCase {
         let catRegex = try! NSRegularExpression(pattern: "Cat", options: [])
         
         let catRule = ScannerRule.regularExpression(token: LabelledToken(withLabel: "Cat"), pattern: catRegex, [:])
-        XCTAssertEqual(catRule.description, "/Cat/")
+        XCTAssertEqual(catRule.description, "Cat = /Cat/")
         let commaRule = ScannerRule.oneOf(token: transientTokenValue.token, [","], [:])
         
         let source = "Cat,Dog"
@@ -271,7 +271,7 @@ class RuleTests: XCTestCase {
         
         let felineRule = catRule.instance(with: LabelledToken(withLabel: "Feline"), andAnnotations: [RuleAnnotation.pinned : RuleAnnotationValue.set])
         
-        XCTAssertEqual("\(felineRule)", "@pin /Cat/")
+        XCTAssertEqual("\(felineRule)", "Feline = @pin /Cat/")
         XCTAssertNotEqual(catRule.produces.rawValue, felineRule.produces.rawValue)
     }
     
