@@ -28,8 +28,8 @@ public struct InlineIdentifierOptimization : STLRExpressionOptimizer{
                 return nil
             }
             if case .element(let element) = expression{
-                if case .terminal(let terminal, let quantifier,let lookahead,let annotations) = element , quantifier == .one && lookahead == false && annotations.count == 0{
-                    return Element(terminal, originalQuantifier, originalAnnotations)
+                if case .terminal(let terminal, let quantifier,let lookahead,let annotations) = element , quantifier == .one && lookahead == false && annotations.count == 0{                    
+                    return Element(terminal, originalQuantifier, identifier.annotations.merge(with: originalAnnotations))
                 }
             }
         }
