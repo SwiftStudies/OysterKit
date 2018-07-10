@@ -1,7 +1,7 @@
 // 
 // STLR Generated Swift File
 // 
-// Generated: 2018-07-09 17:39:13 +0000
+// Generated: 2018-07-10 00:37:04 +0000
 // 
 #if os(macOS)
 import Cocoa
@@ -20,7 +20,7 @@ enum STLR : Int, Token {
 	// Convenience alias
 	private typealias T = STLR
 
-	case _transient = -1, `singleLineComment`, `multilineComment`, `comment`, `whitespace`, `ows`, `quantifier`, `negated`, `transient`, `lookahead`, `stringQuote`, `escapedCharacter`, `stringCharacter`, `terminalBody`, `stringBody`, `string`, `terminalString`, `characterSetName`, `characterSet`, `rangeOperator`, `characterRange`, `number`, `boolean`, `literal`, `annotation`, `annotations`, `customLabel`, `definedLabel`, `label`, `regexDelimeter`, `startRegex`, `regexBody`, `regex`, `terminal`, `group`, `identifier`, `element`, `assignmentOperators`, `or`, `then`, `choice`, `notNewRule`, `sequence`, `expression`, `lhs`, `rule`, `moduleName`, `moduleImport`, `mark`, `grammar`
+	case _transient = -1, `singleLineComment`, `multilineComment`, `comment`, `whitespace`, `ows`, `quantifier`, `negated`, `transient`, `lookahead`, `stringQuote`, `escapedCharacter`, `stringCharacter`, `terminalBody`, `stringBody`, `string`, `terminalString`, `characterSetName`, `characterSet`, `rangeOperator`, `characterRange`, `number`, `boolean`, `literal`, `annotation`, `annotations`, `customLabel`, `definedLabel`, `label`, `regexDelimeter`, `startRegex`, `endRegex`, `regexBody`, `regex`, `terminal`, `group`, `identifier`, `element`, `assignmentOperators`, `or`, `then`, `choice`, `notNewRule`, `sequence`, `expression`, `lhs`, `rule`, `moduleName`, `moduleImport`, `mark`, `grammar`
 
 	func _rule(_ annotations: RuleAnnotations = [ : ])->Rule {
 		switch self {
@@ -193,10 +193,13 @@ enum STLR : Int, Token {
 		// startRegex
 		case .startRegex:
 			return [
-					"/".terminal(token: T._transient),
+					"/".terminal(token: T._transient, annotations: [RuleAnnotation.void : RuleAnnotationValue.set]),
 					"*".terminal(token: T._transient).not(producing: T._transient).lookahead(),
 					"/".terminal(token: T._transient).not(producing: T._transient).lookahead(),
 					].sequence(token: T.startRegex, annotations: annotations.isEmpty ? [RuleAnnotation.void : RuleAnnotationValue.set] : annotations)
+		// endRegex
+		case .endRegex:
+			return "/".terminal(token: T.endRegex, annotations: annotations.isEmpty ? [RuleAnnotation.void : RuleAnnotationValue.set] : annotations)
 		// regexBody
 		case .regexBody:
 			return [
@@ -208,7 +211,7 @@ enum STLR : Int, Token {
 			return [
 					T.startRegex._rule([RuleAnnotation.void : RuleAnnotationValue.set]),
 					T.regexBody._rule([RuleAnnotation.transient : RuleAnnotationValue.set]),
-                    T.regexDelimeter._rule([:])
+					T.endRegex._rule([RuleAnnotation.void : RuleAnnotationValue.set]),
 					].sequence(token: T.regex, annotations: annotations.isEmpty ? [ : ] : annotations)
 		// terminal
 		case .terminal:
