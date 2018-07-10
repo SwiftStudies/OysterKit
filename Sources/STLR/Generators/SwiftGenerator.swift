@@ -522,10 +522,13 @@ internal extension STLRScope.Terminal{
             annotationParameter = ""
         }
         
-        switch (string,characterSet){
-        case (let sv,_) where sv != nil:
+        switch (string,characterSet, regex){
+        case (_, _, let regex) where regex != nil:
+            let scannerRule = "ScannerRule.regularExpression(token: T.\(token), pattern: try! NSRegularExpression(pattern: \"\(regex!.pattern)\",options: [])\(annotationParameter))"
+            result.add(depth:depth, line:scannerRule)
+        case (let sv,_,_) where sv != nil:
             result.add(depth:depth, line:"\"\(sv!.swiftSafe)\".terminal(token: T.\(token)\(annotationParameter))")
-        case (_, let terminalCharacterSet) where terminalCharacterSet != nil:
+        case (_, let terminalCharacterSet,_) where terminalCharacterSet != nil:
             return "\(terminalCharacterSet!.swift).terminal(token: T.\(token)\(annotationParameter))"
         default:
             return "❌ \(self) not implemented"

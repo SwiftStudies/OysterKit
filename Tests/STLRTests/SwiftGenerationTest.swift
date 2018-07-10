@@ -180,6 +180,16 @@ class SwiftGenerationTest: XCTestCase {
             XCTFail("\(error)")
         }
     }
+    
+    func testRegularExpression(){
+        do {
+            let result = try swift(for: "letter = @error(\"error\") /hello/ ")
+            
+            XCTAssertEqual(result,"ScannerRule.regularExpression(token: T.tokenA, pattern: try! NSRegularExpression(pattern: \"^hello\",options: []), annotations: annotations.isEmpty ? [RuleAnnotation.error : RuleAnnotationValue.string(\"error\")] : annotations)")
+        } catch (let error){
+            XCTFail("\(error)")
+        }
+    }
 
     func testSingleCharacterTerminal(){
         do {
