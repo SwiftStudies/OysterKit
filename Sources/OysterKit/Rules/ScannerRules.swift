@@ -120,7 +120,9 @@ public enum ScannerRule : Rule, CustomStringConvertible{
     /// The `Token` produced when the rule is matched
     public var produces: Token{
         switch self {
-        case .oneOf(let token, _, _), .regularExpression(let token, _, _):
+        case .oneOf(let token, _, _):
+            return token
+        case  .regularExpression(let token, _, _):
             return token
         }
     }
@@ -142,7 +144,9 @@ public enum ScannerRule : Rule, CustomStringConvertible{
     /// full rules if annotations are needed
     public var annotations: RuleAnnotations{
         switch self {
-        case .oneOf(_,_, let annotations), .regularExpression(_, _, let annotations):
+        case .oneOf(_,_, let annotations):
+            return annotations
+        case .regularExpression(_, _, let annotations):
             return annotations
         }
     }
