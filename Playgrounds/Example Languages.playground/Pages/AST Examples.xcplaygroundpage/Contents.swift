@@ -5,53 +5,59 @@ import STLR
 import OysterKit
 
 
+//
+// STLR Generated Swift File
+//
+// Generated: 2018-07-10 01:30:36 +0000
+//
+#if os(macOS)
+import Cocoa
+#elseif os(iOS)
+import UIKit
+#else
+import Foundation
+#endif
+import OysterKit
 
-guard let grammarSource = try? String(contentsOfFile: "/Volumes/Personal/SPM/XMLDecoder/XML.stlr") else {
-    fatalError("Could not load grammar")
+//
+// Pets Parser
+//
+enum Pets : Int, Token {
+    
+    // Convenience alias
+    private typealias T = Pets
+    
+    case _transient = -1, `feline`, `canine`, `pet`
+    
+    func _rule(_ annotations: RuleAnnotations = [ : ])->Rule {
+        switch self {
+        case ._transient:
+            return CharacterSet(charactersIn: "").terminal(token: T._transient)
+        // feline
+        case .feline:
+            return ScannerRule.regularExpression(token: T.feline, pattern: try! NSRegularExpression(pattern: "^(c|C)at(s)?",options: []), annotations: annotations)
+        // canine
+        case .canine:
+            return ScannerRule.regularExpression(token: T.canine, pattern: try! NSRegularExpression(pattern: "^(d|D)og(s|gie)?",options: []), annotations: annotations)
+        // pet
+        case .pet:
+            return [
+                T.feline._rule(),
+                T.canine._rule(),
+                ].oneOf(token: T.pet, annotations: annotations)
+        }
+    }
+    
+    
+    // Create a language that can be used for parsing etc
+    public static var generatedLanguage : Parser {
+        return Parser(grammar: [T.pet._rule()])
+    }
+    
+    // Convient way to apply your grammar to a string
+    public static func parse(source: String) throws -> HomogenousTree {
+        return try AbstractSyntaxTreeConstructor().build(source, using: generatedLanguage)
+    }
 }
 
-guard let xmlLanguage = STLRParser.init(source: grammarSource).ast.runtimeLanguage else {
-    fatalError("Could not create language")
-}
-
-let xmlSource = """
-<message subject='Hello, OysterKit!' priority="High">
-    It's really <i>good</i> to meet you,
-    <p />
-    I hope you are settling in OK, let me know if you need anything.
-    <p />
-    Phatom Testers
-</message>
-"""
-
-enum Tokens : Int {
-    case value
-}
-
-let csvSource = "a,bb,ccc,dddd"
-
-for streamedToken in TokenStream(csvSource, using: STLRParser(source:"value = !\",\"+ \",\"?").ast.runtimeLanguage!){
-    print("Got \(streamedToken.token)='\(csvSource[streamedToken.range])'")
-}
-
-let tree = try? AbstractSyntaxTreeConstructor().build("<message>DataData</message>", using: xmlLanguage)
-
-print(tree?.description ?? "Failed")
-
-
-
-let parsedXML = try? ParsedXML.decode(xmlSource, using: xmlLanguage)
-
-do {
-    let message = try Message.decode(xmlSource, using: xmlLanguage)
-} catch AbstractSyntaxTreeConstructor.ConstructionError.parsingFailed(let errors) {
-    print("\(errors.count) errors constructing")
-    errors.forEach({print($0.localizedDescription)})
-} catch AbstractSyntaxTreeConstructor.ConstructionError.constructionFailed(let errors) {
-    print("\(errors.count) errors parsing")
-    errors.forEach({print($0.localizedDescription)})
-} catch {
-    print(error.localizedDescription)
-}
-
-"Hello"
+Pets.generatedLanguage.grammar.count

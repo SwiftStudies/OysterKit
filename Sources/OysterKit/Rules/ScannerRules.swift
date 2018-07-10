@@ -39,7 +39,7 @@ public enum ScannerRule : Rule, CustomStringConvertible{
     case   oneOf(token: Token,  [String], RuleAnnotations)
     
     /// Produces the specified token when the supplied regular expression is matched
-    case   regularExpression(token:Token, pattern:NSRegularExpression, RuleAnnotations)
+    case   regularExpression(token:Token, regularExpression:NSRegularExpression, annotations: RuleAnnotations)
     
     
     /**
@@ -167,7 +167,7 @@ public enum ScannerRule : Rule, CustomStringConvertible{
     public func instance(with token: Token?, andAnnotations annotations: RuleAnnotations?) -> Rule {
         switch self {
         case .regularExpression(let oldToken, let regex, let oldAnnotations):
-            return ScannerRule.regularExpression(token: token ?? oldToken, pattern: regex, annotations ?? oldAnnotations)
+            return ScannerRule.regularExpression(token: token ?? oldToken, regularExpression: regex, annotations: annotations ?? oldAnnotations)
         case .oneOf(let oldToken, let strings, let oldAnnotations):
             return ScannerRule.oneOf(token: token ?? oldToken, strings, annotations ?? oldAnnotations)
         }

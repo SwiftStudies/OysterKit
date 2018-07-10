@@ -244,7 +244,7 @@ class RuleTests: XCTestCase {
     func testScannerRuleForRegularExpression(){
         let catRegex = try! NSRegularExpression(pattern: "Cat", options: [])
         
-        let catRule = ScannerRule.regularExpression(token: LabelledToken(withLabel: "Cat"), pattern: catRegex, [:])
+        let catRule = ScannerRule.regularExpression(token: LabelledToken(withLabel: "Cat"), regularExpression: catRegex, annotations: [:])
         XCTAssertEqual(catRule.description, "Cat = /Cat/")
         let commaRule = ScannerRule.oneOf(token: transientTokenValue.token, [","], [:])
         
