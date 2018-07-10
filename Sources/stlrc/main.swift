@@ -9,7 +9,15 @@
 
 import Foundation
 
-let stlr = Tool(version: "1.0.0", description: "STLR Command Line Tool", defaultCommand: ParseCommand(), otherCommands: [GenerateCommand(), InstallCommand()])
+
+#if canImport(NaturalLanguage)
+    let commands = [GenerateCommand(), InstallCommand(), ProfileCommand()]
+#else
+    let commands = [GenerateCommand(), InstallCommand()]
+#endif
+
+
+let stlr = Tool(version: "1.0.0", description: "STLR Command Line Tool", defaultCommand: ParseCommand(), otherCommands: commands)
 
 exit(Int32(stlr.execute()))
 
