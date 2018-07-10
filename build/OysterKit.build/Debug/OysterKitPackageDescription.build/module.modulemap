@@ -1,4 +1,0 @@
-framework module OysterKitPackageDescription {
-    header "OysterKitPackageDescription-Swift.h"
-    requires objc
-}
