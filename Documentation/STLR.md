@@ -73,6 +73,12 @@ For example, a rule to capture a co-ordinate might be
     
 This would match `3,4` for example. 
 
+You may also specify terminals using regular expressions. To do this, enclose the regular expression in ```/``` characters. For example
+
+        keyword = /for|next|while|wend/
+
+Would match ```for```, ```next```, ```while```, or ```wend```. The syntax is the same as NSRegularExpression. 
+
 ### Identifiers 
 
 We can also reference other tokens in a sequence or choice by using their identifier (or name). For example we might define a token for our different web protocols earlier and use it in a rule for a URL. 

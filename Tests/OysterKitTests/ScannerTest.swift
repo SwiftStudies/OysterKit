@@ -140,4 +140,17 @@ class ScannerTest: XCTestCase {
         XCTAssert(scanner.scanLocation == source.unicodeScalars.startIndex)        
     }
 
+    func testScanRegularExpression(){
+        let source = "Cat,Dog"
+        let scanner = StringScanner(source)
+        
+        let catRegex = try! NSRegularExpression(pattern: "Cat", options: [])
+        let dogRegex = try! NSRegularExpression(pattern: "Dog", options: [])
+        
+        XCTAssert(scanner.scan(regularExpression: catRegex))
+        XCTAssert(scanner.scan(string: ","))
+        XCTAssert(scanner.scan(regularExpression: dogRegex))
+        XCTAssert(scanner.isAtEnd)
+        XCTAssert(!scanner.scan(regularExpression: catRegex))
+    }
 }

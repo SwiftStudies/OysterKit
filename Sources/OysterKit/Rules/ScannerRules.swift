@@ -38,6 +38,10 @@ public enum ScannerRule : Rule, CustomStringConvertible{
     /// Produces the specified token when one of the `String`s in the array is found
     case   oneOf(token: Token,  [String], RuleAnnotations)
     
+    /// Produces the specified token when the supplied regular expression is matched
+    case   regularExpression(token:Token, regularExpression:NSRegularExpression, annotations: RuleAnnotations)
+    
+    
     /**
      Performs the actual match check during parsing based on the specific case of `ParserRule` that this instance is.
      
@@ -99,6 +103,14 @@ public enum ScannerRule : Rule, CustomStringConvertible{
                 } catch { }
             }
             throw ScannerError.nothingMatched
+        case .regularExpression(_, let regex, _):
+            do {
+                try lexer.scan(regularExpression: regex)
+                matchResult = .success(context: lexer.proceed())
+                return matchResult
+            } catch {
+                throw ScannerError.nothingMatched
+            }
         }
         
 
@@ -110,17 +122,28 @@ public enum ScannerRule : Rule, CustomStringConvertible{
         switch self {
         case .oneOf(let token, _, _):
             return token
+        case  .regularExpression(let token, _, _):
+            return token
         }
     }
 
     /// A human readable description of the rule
     public var description: String{
+        var body : String
         switch self {
         case .oneOf(_, let choices, let annotations):
             let quotedString = choices.map({
                 return "\""+$0+"\""
             })
-            return "\(annotations.stlrDescription)("+quotedString.joined(separator: " | ")+")"
+            body = "\(annotations.stlrDescription)("+quotedString.joined(separator: " | ")+")"
+        case .regularExpression(_, let regex, let annotations):
+            let pattern = regex.pattern.hasPrefix("^") ? String(regex.pattern[regex.pattern.index(after: regex.pattern.startIndex)...]) : regex.pattern
+            body = "\(annotations.stlrDescription)\(annotations.isEmpty ? "" : " ")/\(pattern)/"
+        }
+        if !produces.transient {
+            return "\(produces) = \(body)"
+        } else {
+            return body
         }
     }
 
@@ -130,11 +153,21 @@ public enum ScannerRule : Rule, CustomStringConvertible{
         switch self {
         case .oneOf(_,_, let annotations):
             return annotations
+        case .regularExpression(_, _, let annotations):
+            return annotations
         }
     }
     
+    /** Creates a new instance of the rule producing different tokens or with different annotations
+     
+      - Parameter token: A new token, if `nil` the previously produced token will be created
+      - Parameter annotations: Different annotations, or if `nil` the previous annotations on the rule
+      - Returns: A new instance with the appropriate different token or annotations
+    */
     public func instance(with token: Token?, andAnnotations annotations: RuleAnnotations?) -> Rule {
         switch self {
+        case .regularExpression(let oldToken, let regex, let oldAnnotations):
+            return ScannerRule.regularExpression(token: token ?? oldToken, regularExpression: regex, annotations: annotations ?? oldAnnotations)
         case .oneOf(let oldToken, let strings, let oldAnnotations):
             return ScannerRule.oneOf(token: token ?? oldToken, strings, annotations ?? oldAnnotations)
         }

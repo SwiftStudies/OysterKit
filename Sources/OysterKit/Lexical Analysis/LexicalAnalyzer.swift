@@ -86,6 +86,14 @@ public protocol LexicalAnalyzer : class {
     func scan(oneOf:CharacterSet) throws
     
     /**
+     Scan the supplied regular expression (```NSRegularExpression```). If not found an `Error` should be the thrown. The scanner
+     position should be directly after the matched pattern.
+     
+     - Parameter regularExpression: The `NSRegularExpression` to scan for
+    */
+    func scan(regularExpression:NSRegularExpression) throws
+    
+    /**
      Scan up to (that is, the position of the scanner should be at the start of the match, not after it) the supplied `String`. If the terminal is not found
      an `Error` should be thrown. The scanner position should be at the first character of the matched `terminal`.
      

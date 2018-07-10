@@ -69,7 +69,7 @@ public enum LanguageError : Error, HumanConsumableError, CustomStringConvertible
     public var description: String{
         switch self {
         case .parsingError(let range, let message), .semanticError(let range, _, let message), .scanningError(let range, let message), .warning(let range, let message):
-            return "\(message) from \(range.lowerBound) to \(range.upperBound)"
+            return "\(message) from \(range.lowerBound.encodedOffset) to \(range.upperBound.encodedOffset)"
         }
     }
     

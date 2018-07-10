@@ -45,6 +45,25 @@ class FixValidations: XCTestCase {
     }
 
     //
+    // https://github.com/SwiftStudies/OysterKit/issues/68
+    //
+    // Effect: When an identifier is inlined that was annotated with @void the resulting substituted Terminal looses
+    // the void annotation
+    //
+    func testFixForIssue68() {
+        let grammar = """
+        @void inlined = "/"
+        expr = inlined !inlined+ inlined
+        """
+        
+        STLRScope.register(optimizer: InlineIdentifierOptimization())
+        
+        let stlr = STLRParser(source: grammar)
+        
+        XCTAssertEqual(stlr.ast.rules[1].description, "expr = @void \"/\" (!inlined)+ @void \"/\"")
+    }
+    
+    //
     // Effect: When the CharacterSet optimization is applied to a choice of a single character string
     // and a character set, the single character set is lost.
     //

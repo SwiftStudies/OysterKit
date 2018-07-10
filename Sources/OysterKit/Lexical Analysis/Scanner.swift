@@ -102,6 +102,20 @@ public class StringScanner : CustomStringConvertible{
         advanceLocation()
         return result
     }
+    
+    /**
+     Scans for the supplied regular expression. If the expression is matched the scanner location will be at the end of the match
+ 
+     - Parameter regularExpression: The `NSRegularExpression` to be used
+     - Returns: `true` if the regular expression was matched, `false` otherwise
+    */
+    public func scan(regularExpression regex:NSRegularExpression)->Bool{
+        if let matchingResult = regex.firstMatch(in: string, options: NSRegularExpression.MatchingOptions.anchored, range: NSRange(scanLocation..., in: string)) {
+            setLocation(scalarIndex: string.unicodeScalars.index(scanLocation, offsetBy: matchingResult.range.length))
+            return true
+        }
+        return false
+    }
 
     /**
      Scans all characters from the supplied set, continuing until the scanner hits a character not in the set.
