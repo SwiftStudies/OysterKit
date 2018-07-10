@@ -28,7 +28,7 @@ public struct InlineIdentifierOptimization : STLRExpressionOptimizer{
                 return nil
             }
             if case .element(let element) = expression{
-                if case .terminal(let terminal, let quantifier,let lookahead,let annotations) = element , quantifier == .one && lookahead == false && annotations.count == 0{                    
+                if case .terminal(let terminal, let quantifier,let lookahead,let annotations) = element , quantifier == .one && lookahead == false && annotations.count == 0 && terminal.regex == nil {                    
                     return Element(terminal, originalQuantifier, identifier.annotations.merge(with: originalAnnotations))
                 }
             }

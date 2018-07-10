@@ -130,7 +130,7 @@ group                                   = "(" whitespace*
 expression whitespace*
 @error("Expected ')'")
 ")"
-identifier                              = (.letter | "_") ( .letter | .decimalDigit | "_" )*
+identifier                              = /[:alpha:]\w*|_\w*/
 
 element                                 = annotations? (lookahead | transient)? negated? ( group | terminal | identifier ) quantifier?
 

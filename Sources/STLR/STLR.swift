@@ -1,7 +1,7 @@
 // 
 // STLR Generated Swift File
 // 
-// Generated: 2018-07-10 00:37:04 +0000
+// Generated: 2018-07-10 02:10:04 +0000
 // 
 #if os(macOS)
 import Cocoa
@@ -241,10 +241,7 @@ enum STLR : Int, Token {
 			return cachedRule
 		// identifier
 		case .identifier:
-			return [
-					CharacterSet.letters.union(CharacterSet(charactersIn: "_")).terminal(token: T._transient),
-					CharacterSet.letters.union(CharacterSet.decimalDigits).union(CharacterSet(charactersIn: "_")).terminal(token: T._transient).repeated(min: 0, producing: T._transient),
-					].sequence(token: T.identifier, annotations: annotations.isEmpty ? [ : ] : annotations)
+			return ScannerRule.regularExpression(token: T.identifier, regularExpression: try! NSRegularExpression(pattern: "^[:alpha:]\\w*|_\\w*",options: []), annotations: annotations)
 		// element
 		case .element:
 			guard let cachedRule = STLR.leftHandRecursiveRules[self.rawValue] else {
