@@ -524,7 +524,7 @@ internal extension STLRScope.Terminal{
         
         switch (string,characterSet, regex){
         case (_, _, let regex) where regex != nil:
-            let scannerRule = "ScannerRule.regularExpression(token: T.\(token), regularExpression: try! NSRegularExpression(pattern: \"\(regex!.pattern)\",options: [])\(annotationParameter))"
+            let scannerRule = "ScannerRule.regularExpression(token: T.\(token), regularExpression: try! NSRegularExpression(pattern: \"\(regex!.pattern.swiftSafe)\",options: [])\(annotationParameter))"
             result.add(depth:depth, line:scannerRule)
         case (let sv,_,_) where sv != nil:
             result.add(depth:depth, line:"\"\(sv!.swiftSafe)\".terminal(token: T.\(token)\(annotationParameter))")
