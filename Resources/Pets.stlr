@@ -1,6 +1,8 @@
 /*
-An example grammar using regular expressions
-*/
+ *
+ * An example grammar using regular expressions
+ *
+ */
 
 feline = /(c|C)at(s)?/
 canine = /(d|D)og(s|gie)?/

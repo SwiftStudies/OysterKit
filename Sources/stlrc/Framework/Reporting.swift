@@ -21,10 +21,16 @@ struct TextFileReference {
     let suffix      : String
     
     init(of range:Range<String.Index>, in string:String){
-        let prefix = String(string[string.startIndex...range.lowerBound])
+        let prefix : String
+        
+        if range.lowerBound < string.endIndex {
+            prefix = String(string[string.startIndex...range.lowerBound])
+        } else {
+            prefix = String(string[string.startIndex..<range.lowerBound])
+        }
         self.line = prefix.filter({CharacterSet.newlines.contains($0.unicodeScalars.first!)}).count + 1
         
-        var marker    = range.lowerBound
+        var marker    = range.lowerBound < string.endIndex ? range.lowerBound : string.index(before: range.lowerBound)
         
         while marker != string.startIndex && !string[marker].isNewline{
             marker = string.index(before: marker)
