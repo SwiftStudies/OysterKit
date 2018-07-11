@@ -51,22 +51,12 @@ lookahead                               = ">>"
 //
 // String
 //
-stringQuote                             = "\""
-escapedCharacters               = stringQuote | "r" | "n" | "t" | "\\"
-escapedCharacter                = "\\" escapedCharacters
-@void
-stringCharacter                 = escapedCharacter | !(stringQuote | .newline)
-terminalBody                    = stringCharacter+
-stringBody                              = stringCharacter*
-string                                  = stringQuote
-stringBody
-@error("Missing terminating quote")
-stringQuote
-terminalString                  = stringQuote
-@error("Terminals must have at least one character")
-terminalBody
-@error("Missing terminating quote")
-stringQuote
+stringQuote          = "\""
+terminalBody         = /(\\.|[^"\\\n])+/
+stringBody           = /(\\.|[^"\\\n])*/
+
+string               = stringQuote stringBody @error("Missing terminating quote") stringQuote
+terminalString       = stringQuote @error("Terminals must have at least one character") terminalBody @error("Missing terminating quote") stringQuote
 
 //
 // Character Sets and Ranges
