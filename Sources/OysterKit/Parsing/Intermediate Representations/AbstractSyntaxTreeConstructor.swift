@@ -250,7 +250,7 @@ extension AbstractSyntaxTreeConstructor : IntermediateRepresentation {
         case .failure(let index):
             //If we have an error on the rule
             if let error = rule.error {
-                let errorEnd = scalars.index(after:index)
+                let errorEnd = index < scalars.endIndex ? scalars.index(after:index) : index
                 let parsingError = LanguageError.parsingError(at: index..<errorEnd, message: error)
                 
                 let existing = _errors.compactMap({ (error)->Error? in
