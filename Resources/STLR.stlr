@@ -18,18 +18,16 @@ v0.0.6  24 Aug 2016     Changed position of negation operator to better match
 v0.0.7  10 Sep 2017     Added module importing
 v0.1.2  7  Dec 2017     Added backslash character set
 v0.1.3  28 Feb 2018     Changed plurality of character sets
-v0.1.4  9  Jul 2018     Added regular expression terminals 
+v0.1.4  9  Jul 2018     Added regular expression terminals
+v0.1.5  11 Jul 2018     Removed support for nested inlines, replaced whitespace rules with regular expression increasing parsing performance by over 2x
 
 *************************************************************/
 
 //
 // Whitespace
 //
-singleLineComment               = "//" !.newline* .newline
-multilineComment                = "/*" (multilineComment | !"*/")* "*/"
-comment                                 = singleLineComment | multilineComment
 @void
-whitespace                              = comment | .whitespaceOrNewline
+whitespace                              = /[:space:]+|/\*(?:.|\r?\n)*?\*/|//.*(?:\r?\n|$)/
 @void
 ows                                             = whitespace*
 
