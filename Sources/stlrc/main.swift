@@ -9,11 +9,16 @@
 
 import Foundation
 
+let commands : [Command]
 
 #if canImport(NaturalLanguage)
-    let commands = [GenerateCommand(), InstallCommand(), ProfileCommand()]
+if #available(OSX 10.14, *){
+    commands = [GenerateCommand(), InstallCommand(), ProfileCommand()]
+} else {
+    commands = [GenerateCommand(), InstallCommand()]
+}
 #else
-    let commands = [GenerateCommand(), InstallCommand()]
+    commands = [GenerateCommand(), InstallCommand()]
 #endif
 
 

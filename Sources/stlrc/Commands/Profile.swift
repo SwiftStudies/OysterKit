@@ -9,6 +9,7 @@ import Foundation
 import OysterKit
 
 #if canImport(NaturalLanguage)
+@available(OSX 10.14, *)
 class ProfileCommand : Command, IndexableOptioned, GrammarConsumer {
     typealias OptionIndexType       = Options
     
