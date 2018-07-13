@@ -1,7 +1,7 @@
 // 
 // STLR Generated Swift File
 // 
-// Generated: 2018-07-11 01:17:02 +0000
+// Generated: 2018-07-13 18:46:45 +0000
 // 
 #if os(macOS)
 import Cocoa
@@ -12,11 +12,6 @@ import Foundation
 #endif
 import OysterKit
 
-let whitespaceRegex     = try! NSRegularExpression(pattern: "^[:space:]+|/\\*(?:.|\\r?\\n)*?\\*/|//.*(?:\\r?\\n|$)",options: [])
-let terminalBodyRegex   = try! NSRegularExpression(pattern: "^(\\\\.|[^\"\\\\\\n])+",options: [])
-let stringBodyRegex     = try! NSRegularExpression(pattern: "^(\\\\.|[^\"\\\\\\n])*",options: [])
-let identifierRegex     = try! NSRegularExpression(pattern: "^[:alpha:]\\w*|_\\w*",options: [])
-
 // 
 // STLR Parser
 // 
@@ -24,6 +19,26 @@ enum STLR : Int, Token {
 
 	// Convenience alias
 	private typealias T = STLR
+	// Cache for compiled regular expressions
+	private static var regularExpressionCache = [String : NSRegularExpression]()
+	
+	// Returns a pre-compiled pattern from the cache, or if not in the cache builds
+	// the pattern, caches and returns the regular expression
+	// 
+	//  - Parameter pattern: The pattern the should be built
+	//  - Returns: A compiled version of the pattern
+	private static func regularExpression(_ pattern:String)->NSRegularExpression{
+		    if let cached = regularExpressionCache[pattern] {
+			        return cached
+		    }
+		    do {
+			        let new = try NSRegularExpression(pattern: pattern, options: [])
+			        regularExpressionCache[pattern] = new
+			        return new
+		    } catch {
+			        fatalError("Failed to compile pattern /\(pattern)/\n\(error)")
+		    }
+	}
 
 	case _transient = -1, `whitespace`, `ows`, `quantifier`, `negated`, `transient`, `lookahead`, `terminalBody`, `stringBody`, `string`, `terminalString`, `characterSetName`, `characterSet`, `rangeOperator`, `characterRange`, `number`, `boolean`, `literal`, `annotation`, `annotations`, `customLabel`, `definedLabel`, `label`, `regexDelimeter`, `startRegex`, `endRegex`, `regexBody`, `regex`, `terminal`, `group`, `identifier`, `element`, `assignmentOperators`, `or`, `then`, `choice`, `notNewRule`, `sequence`, `expression`, `lhs`, `rule`, `moduleName`, `moduleImport`, `mark`, `grammar`
 
@@ -33,7 +48,7 @@ enum STLR : Int, Token {
 			return CharacterSet(charactersIn: "").terminal(token: T._transient)
 		// whitespace
 		case .whitespace:
-			return ScannerRule.regularExpression(token: T.whitespace, regularExpression: whitespaceRegex, annotations: annotations.isEmpty ? [RuleAnnotation.void : RuleAnnotationValue.set] : annotations)
+			return ScannerRule.regularExpression(token: T.whitespace, regularExpression: T.regularExpression("^[:space:]+|/\\*(?:.|\\r?\\n)*?\\*/|//.*(?:\\r?\\n|$)"), annotations: annotations.isEmpty ? [RuleAnnotation.void : RuleAnnotationValue.set] : annotations)
 		// ows
 		case .ows:
 			return T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T.ows, annotations: annotations.isEmpty ? [RuleAnnotation.void : RuleAnnotationValue.set] : annotations)
@@ -51,10 +66,10 @@ enum STLR : Int, Token {
 			return ">>".terminal(token: T.lookahead, annotations: annotations)
 		// terminalBody
 		case .terminalBody:
-			return ScannerRule.regularExpression(token: T.terminalBody, regularExpression: terminalBodyRegex, annotations: annotations)
+			return ScannerRule.regularExpression(token: T.terminalBody, regularExpression: T.regularExpression("^(\\\\.|[^\"\\\\\\n])+"), annotations: annotations)
 		// stringBody
 		case .stringBody:
-			return ScannerRule.regularExpression(token: T.stringBody, regularExpression: stringBodyRegex, annotations: annotations)
+			return ScannerRule.regularExpression(token: T.stringBody, regularExpression: T.regularExpression("^(\\\\.|[^\"\\\\\\n])*"), annotations: annotations)
 		// string
 		case .string:
 			return [
@@ -193,7 +208,7 @@ enum STLR : Int, Token {
 			return cachedRule
 		// identifier
 		case .identifier:
-			return ScannerRule.regularExpression(token: T.identifier, regularExpression: identifierRegex, annotations: annotations)
+			return ScannerRule.regularExpression(token: T.identifier, regularExpression: T.regularExpression("^[:alpha:]\\w*|_\\w*"), annotations: annotations)
 		// element
 		case .element:
 			guard let cachedRule = STLR.leftHandRecursiveRules[self.rawValue] else {

@@ -141,6 +141,30 @@ public extension STLRScope {
         output.add(depth: 1, line: "private typealias T = \(name)")
         
         //
+        // Regular Expression Cache
+        //
+        output.add(depth: 1, comment: "Cache for compiled regular expressions")
+        output.add(depth: 1, line   : "private static var regularExpressionCache = [String : NSRegularExpression]()")
+        output.add(depth: 1, line   : "")
+        output.add(depth: 1, comment: "Returns a pre-compiled pattern from the cache, or if not in the cache builds")
+        output.add(depth: 1, comment: "the pattern, caches and returns the regular expression")
+        output.add(depth: 1, comment: "")
+        output.add(depth: 1, comment: " - Parameter pattern: The pattern the should be built")
+        output.add(depth: 1, comment: " - Returns: A compiled version of the pattern")
+        output.add(depth: 1, line   : "private static func regularExpression(_ pattern:String)->NSRegularExpression{")
+        output.add(depth: 2, line   : "    if let cached = regularExpressionCache[pattern] {")
+        output.add(depth: 3, line   : "        return cached")
+        output.add(depth: 2, line   : "    }")
+        output.add(depth: 2, line   : "    do {")
+        output.add(depth: 3, line   : "        let new = try NSRegularExpression(pattern: pattern, options: [])")
+        output.add(depth: 3, line   : "        regularExpressionCache[pattern] = new")
+        output.add(depth: 3, line   : "        return new")
+        output.add(depth: 2, line   : "    } catch {")
+        output.add(depth: 3, line   : "        fatalError(\"Failed to compile pattern /\\(pattern)/\\n\\(error)\")")
+        output.add(depth: 2, line   : "    }")
+        output.add(depth: 1, line   : "}")
+        
+        //
         // Token Definition
         //
         output.add(line: "")
@@ -524,7 +548,7 @@ internal extension STLRScope.Terminal{
         
         switch (string,characterSet, regex){
         case (_, _, let regex) where regex != nil:
-            let scannerRule = "ScannerRule.regularExpression(token: T.\(token), regularExpression: try! NSRegularExpression(pattern: \"\(regex!.pattern.swiftSafe)\",options: [])\(annotationParameter))"
+            let scannerRule = "ScannerRule.regularExpression(token: T.\(token), regularExpression: T.regularExpression(\"\(regex!.pattern.swiftSafe)\")\(annotationParameter))"
             result.add(depth:depth, line:scannerRule)
         case (let sv,_,_) where sv != nil:
             result.add(depth:depth, line:"\"\(sv!.swiftSafe)\".terminal(token: T.\(token)\(annotationParameter))")
