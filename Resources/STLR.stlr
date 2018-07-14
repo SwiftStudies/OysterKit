@@ -37,7 +37,7 @@ ows                                             = whitespace*
 //definition                    = "const"       ows identifier ows "=" ows literal .whitespace* whitespace
 
 //
-// Quantifiers, does this still work?
+// Quantifiers
 //
 quantifier                              = "*" | "+" | "?" | "-"
 negated                                 = "!"
