@@ -1,6 +1,5 @@
 import OysterKit
 
-
 class GenerateCommand : Command, IndexableOptioned, GrammarConsumer, OutputLocationConsumer {
     typealias OptionIndexType       = Options
     
