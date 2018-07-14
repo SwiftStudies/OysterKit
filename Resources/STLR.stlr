@@ -20,16 +20,15 @@ v0.1.2  7  Dec 2017     Added backslash character set
 v0.1.3  28 Feb 2018     Changed plurality of character sets
 v0.1.4  9  Jul 2018     Added regular expression terminals
 v0.1.5  11 Jul 2018     Removed support for nested inlines, replaced whitespace rules with regular expression increasing parsing performance by over 2x
+v0.1.6  14 Jul 2018     Added syntactic sugar for @transient (~) and @void (-) as prefixes to identifier declarations and expression elements
 
 *************************************************************/
 
 //
 // Whitespace
 //
-@void
-whitespace                              = /[:space:]+|/\*(?:.|\r?\n)*?\*/|//.*(?:\r?\n|$)/
-@void
-ows                                             = whitespace*
+-whitespace     = /[:space:]+|/\*(?:.|\r?\n)*?\*/|//.*(?:\r?\n|$)/
+-ows            = whitespace*
 
 //
 // Constants
@@ -74,8 +73,7 @@ characterSetName                = "letter" |
 
 characterSet                    = ("." @error("Unknown character set") characterSetName)
 
-@void
-rangeOperator                   = ".." @error("Expected ... in character range") "."
+-rangeOperator                  = ".." @error("Expected ... in character range") "."
 characterRange                  = terminalString rangeOperator @error("Range must be terminated") terminalString
 
 //
@@ -105,10 +103,10 @@ label                                   = definedLabel | customLabel
 //
 // Regular Expressions
 //
-@void regexDelimeter = "/"
-@void startRegex = regexDelimeter >>!"*" >>!"/"
-@void endRegex = regexDelimeter
-@transient regexBody = !(regexDelimeter whitespace)+
+-regexDelimeter = "/"
+-startRegex = regexDelimeter >>!"*" >>!"/"
+-endRegex = regexDelimeter
+~regexBody = !(regexDelimeter whitespace)+
 regex = startRegex regexBody endRegex
 
 //
@@ -127,10 +125,8 @@ element                                 = annotations? (lookahead | transient | 
 // Expressions
 //
 assignmentOperators             = "=" | "+=" | "|="
-@void
-or                                              =  whitespace* "|" whitespace*
-@void
-then                                    = (whitespace* "+" whitespace*) | whitespace+
+-or                                              =  whitespace* "|" whitespace*
+-then                                    = (whitespace* "+" whitespace*) | whitespace+
 
 choice                                  = element (or @error("Expected terminal, identifier, or group") element)+
 notNewRule                              = !(annotations? identifier whitespace* assignmentOperators)
@@ -141,8 +137,7 @@ expression                              = choice | sequence | element
 //
 // Rule
 //
-@transient
-lhs                                             = whitespace* annotations? transient? void? identifier whitespace* assignmentOperators
+~lhs                                             = whitespace* annotations? transient? void? identifier whitespace* assignmentOperators
 rule                                    = lhs whitespace* @error("Expected expression")expression whitespace*
 
 //
