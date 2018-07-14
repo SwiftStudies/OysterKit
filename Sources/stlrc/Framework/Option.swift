@@ -60,7 +60,7 @@ public extension IndexableOptioned{
         
         
         
-        return option.parameters[parameter.rawValue] as? V
+        return option.parameters[parameter.rawValue].values[0] as? V
     }
 
 }

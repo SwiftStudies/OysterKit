@@ -185,6 +185,7 @@ public class AbstractSyntaxTreeConstructor  {
             }
             return try AST(with: topNode, from: source)
         } catch {
+            _errors.append(error)
             throw ConstructionError.constructionFailed(causes: _errors)
         }
     }
