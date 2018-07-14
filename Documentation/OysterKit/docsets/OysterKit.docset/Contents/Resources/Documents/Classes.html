@@ -14,6 +14,7 @@
   </head>
   <body>
 
+    <a name="//apple_ref/swift/Section/Classes" class="dashAnchor"></a>
 
     <a title="Classes  Reference"></a>
 
@@ -22,7 +23,7 @@
         <a class="header-link" href="index.html">
           OysterKit Docs
         </a>
-         (96% documented)
+         (94% documented)
       </p>
     
       <p class="header-col--secondary">
@@ -88,7 +89,7 @@
             <a class="nav-group-name-link" href="Global Variables.html">Global Variables</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Global Variables.html#/s:9OysterKit19transientTokenValueSiv">transientTokenValue</a>
+                <a class="nav-group-task-link" href="Global Variables.html#/s:9OysterKit19transientTokenValueSivp">transientTokenValue</a>
               </li>
             </ul>
           </li>
@@ -100,6 +101,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Enums/LanguageError.html">LanguageError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/Log.html">Log</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Enums/MatchResult.html">MatchResult</a>
@@ -151,10 +155,10 @@
             <a class="nav-group-name-link" href="Functions.html">Functions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Functions.html#/s:9OysterKit2eeoiSbAA5Token_p_AaC_ptF">==(_:_:)</a>
+                <a class="nav-group-task-link" href="Functions.html#/s:9OysterKit2eeoiySbAA5Token_p_AaC_ptF">==(_:_:)</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Functions.html#/s:9OysterKit8areEqualSbs10DictionaryVyAA14RuleAnnotationOAA0fG5ValueOG3lhs_AI3rhstF">areEqual(lhs:rhs:)</a>
+                <a class="nav-group-task-link" href="Functions.html#/s:9OysterKit8areEqual3lhs3rhsSbSDyAA14RuleAnnotationOAA0gH5ValueOG_AItF">areEqual(lhs:rhs:)</a>
               </li>
             </ul>
           </li>
@@ -429,7 +433,7 @@ root rules (those at the lowest level in the language) in the supplied <code><a 
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">NodeStackEntry</span><span class="o">&lt;</span><span class="kt">NodeType</span><span class="p">:</span><span class="kt"><a href="Protocols/Node.html">Node</a></span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">CustomStringConvertible</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">NodeStackEntry</span><span class="o">&lt;</span><span class="kt">NodeType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">CustomStringConvertible</span> <span class="k">where</span> <span class="kt">NodeType</span> <span class="p">:</span> <span class="kt"><a href="Protocols/Node.html">Node</a></span></code></pre>
 
                         </div>
                       </div>
@@ -457,7 +461,7 @@ root rules (those at the lowest level in the language) in the supplied <code><a 
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">NodeStack</span><span class="o">&lt;</span><span class="kt">NodeType</span><span class="p">:</span><span class="kt"><a href="Protocols/Node.html">Node</a></span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">CustomStringConvertible</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">NodeStack</span><span class="o">&lt;</span><span class="kt">NodeType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">CustomStringConvertible</span> <span class="k">where</span> <span class="kt">NodeType</span> <span class="p">:</span> <span class="kt"><a href="Protocols/Node.html">Node</a></span></code></pre>
 
                         </div>
                       </div>
@@ -526,7 +530,7 @@ root rules (those at the lowest level in the language) in the supplied <code><a 
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">StateCache</span><span class="o">&lt;</span><span class="kt">PositionType</span><span class="p">:</span><span class="kt">Comparable</span><span class="p">,</span><span class="kt">KeyType</span><span class="p">:</span><span class="kt">Hashable</span><span class="p">,</span><span class="kt">CachedType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">CustomStringConvertible</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">StateCache</span><span class="o">&lt;</span><span class="kt">PositionType</span><span class="p">,</span> <span class="kt">KeyType</span><span class="p">,</span> <span class="kt">CachedType</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">CustomStringConvertible</span> <span class="k">where</span> <span class="kt">PositionType</span> <span class="p">:</span> <span class="kt">Comparable</span><span class="p">,</span> <span class="kt">KeyType</span> <span class="p">:</span> <span class="kt">Hashable</span></code></pre>
 
                         </div>
                       </div>
@@ -573,8 +577,8 @@ root rules (those at the lowest level in the language) in the supplied <code><a 
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-02-11)</p>
-      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-07-14)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
 </div>
