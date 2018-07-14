@@ -1,7 +1,7 @@
 // 
 // STLR Generated Swift File
 // 
-// Generated: 2018-07-13 18:46:45 +0000
+// Generated: 2018-07-14 05:14:15 +0000
 // 
 #if os(macOS)
 import Cocoa
@@ -40,7 +40,7 @@ enum STLR : Int, Token {
 		    }
 	}
 
-	case _transient = -1, `whitespace`, `ows`, `quantifier`, `negated`, `transient`, `lookahead`, `terminalBody`, `stringBody`, `string`, `terminalString`, `characterSetName`, `characterSet`, `rangeOperator`, `characterRange`, `number`, `boolean`, `literal`, `annotation`, `annotations`, `customLabel`, `definedLabel`, `label`, `regexDelimeter`, `startRegex`, `endRegex`, `regexBody`, `regex`, `terminal`, `group`, `identifier`, `element`, `assignmentOperators`, `or`, `then`, `choice`, `notNewRule`, `sequence`, `expression`, `lhs`, `rule`, `moduleName`, `moduleImport`, `mark`, `grammar`
+	case _transient = -1, `whitespace`, `ows`, `quantifier`, `negated`, `transient`, `void`, `lookahead`, `terminalBody`, `stringBody`, `string`, `terminalString`, `characterSetName`, `characterSet`, `rangeOperator`, `characterRange`, `number`, `boolean`, `literal`, `annotation`, `annotations`, `customLabel`, `definedLabel`, `label`, `regexDelimeter`, `startRegex`, `endRegex`, `regexBody`, `regex`, `terminal`, `group`, `identifier`, `element`, `assignmentOperators`, `or`, `then`, `choice`, `notNewRule`, `sequence`, `expression`, `lhs`, `rule`, `moduleName`, `moduleImport`, `mark`, `grammar`
 
 	func _rule(_ annotations: RuleAnnotations = [ : ])->Rule {
 		switch self {
@@ -60,7 +60,10 @@ enum STLR : Int, Token {
 			return "!".terminal(token: T.negated, annotations: annotations)
 		// transient
 		case .transient:
-			return "-".terminal(token: T.transient, annotations: annotations)
+			return "~".terminal(token: T.transient, annotations: annotations)
+		// void
+		case .void:
+			return "-".terminal(token: T.void, annotations: annotations)
 		// lookahead
 		case .lookahead:
 			return ">>".terminal(token: T.lookahead, annotations: annotations)
@@ -221,6 +224,7 @@ enum STLR : Int, Token {
 					[
 									T.lookahead._rule(),
 									T.transient._rule(),
+									T.void._rule(),
 									].oneOf(token: T._transient).optional(producing: T._transient),
 					T.negated._rule().optional(producing: T._transient),
 					[
@@ -321,6 +325,7 @@ enum STLR : Int, Token {
 					T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T._transient),
 					T.annotations._rule().optional(producing: T._transient),
 					T.transient._rule().optional(producing: T._transient),
+					T.void._rule().optional(producing: T._transient),
 					T.identifier._rule(),
 					T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T._transient),
 					T.assignmentOperators._rule(),

@@ -80,6 +80,42 @@ class STLRTest: XCTestCase {
         XCTAssertNil(try? AbstractSyntaxTreeConstructor().build(source, using: testLanguage))
     }
     
+    func testVoidSugar(){
+        let expectedAnnotations = [ RuleAnnotation.void : RuleAnnotationValue.set]
+        let rule = "-identifier = -\"/\""
+        let parser = STLRParser.init(source: rule)
+
+        guard let identifier = parser.ast.identifiers["identifier"] else {
+            XCTFail("Rule was not compiled \(parser.ast.errors)")
+            return
+        }
+        XCTAssertEqual(identifier.annotations.asRuleAnnotations,expectedAnnotations)
+        
+        if case let STLRScope.Expression.element(element) = identifier.grammarRule!.expression! {
+            XCTAssertEqual(element.elementAnnotations.asRuleAnnotations, expectedAnnotations)
+        } else {
+            XCTFail("Expected the identifier element to be an element")
+        }
+    }
+    
+    func testTransientSugar(){
+        let expectedAnnotations = [ RuleAnnotation.transient : RuleAnnotationValue.set]
+        let rule = "~identifier = ~(\"/\")"
+        let parser = STLRParser.init(source: rule)
+        
+        guard let identifier = parser.ast.identifiers["identifier"] else {
+            XCTFail("Rule was not compiled \(parser.ast.errors)")
+            return
+        }
+        XCTAssertEqual(identifier.annotations.asRuleAnnotations,[ RuleAnnotation.transient : RuleAnnotationValue.set])
+        
+        if case let STLRScope.Expression.element(element) = identifier.grammarRule!.expression! {
+            XCTAssertEqual(element.elementAnnotations.asRuleAnnotations, expectedAnnotations)
+        } else {
+            XCTFail("Expected the identifier element to be an element")
+        }
+    }
+    
     func testParseSelf(){
 ////        for bundle in Bundle.allBundles{
 ////            print("BUNDLE PATH: \(bundle)")
