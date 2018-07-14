@@ -1,13 +1,3 @@
-//
-//  Compiler.swift
-//  OysterKit
-//
-//  
-//  Copyright © 2016 RED When Excited. All rights reserved.
-//
-
-import Foundation
-
 //    Copyright (c) 2016, RED When Excited
 //    All rights reserved.
 //
@@ -31,6 +21,8 @@ import Foundation
 //    CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 //    OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 //    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+import Foundation
 
 /**
  A default implementation of a `Language`. AST construction is automatically provided by standard extensions to `Language`
