@@ -119,7 +119,7 @@ expression whitespace*
 ")"
 identifier                              = /[:alpha:]\w*|_\w*/
 
-element                                 = annotations? (lookahead | transient | void)? negated? ( group | terminal | identifier ) quantifier?
+element                                 = annotations? (lookahead | transient | void)? negated? ( group | terminal | (identifier >>!(ows "=") ) ) quantifier?
 
 //
 // Expressions

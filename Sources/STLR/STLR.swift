@@ -1,7 +1,7 @@
 // 
 // STLR Generated Swift File
 // 
-// Generated: 2018-07-14 05:14:15 +0000
+// Generated: 2018-07-14 22:07:23 +0000
 // 
 #if os(macOS)
 import Cocoa
@@ -230,7 +230,13 @@ enum STLR : Int, Token {
 					[
 									T.group._rule(),
 									T.terminal._rule(),
-                                    [T.identifier._rule(),[T.ows._rule(),"=".terminal(token: T._transient)].sequence(token:T._transient).not().lookahead()].sequence(token: T._transient),
+									[
+													T.identifier._rule(),
+													[
+																				T.ows._rule([RuleAnnotation.void : RuleAnnotationValue.set]),
+																				"=".terminal(token: T._transient),
+																				].sequence(token: T._transient).not(producing: T._transient).lookahead(),
+													].sequence(token: T._transient),
 									].oneOf(token: T._transient),
 					T.quantifier._rule().optional(producing: T._transient),
 					].sequence(token: T._transient)
