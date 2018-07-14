@@ -88,6 +88,15 @@ extension STLRAbstractSyntaxTree.Rule {
         if let annotations = try annotations?.map({ return try $0.compile(from:ast, into: scope)}) {
             symbolTableEntry.annotations = annotations
         }
+        
+        if let void = void, void == .void {
+            symbolTableEntry.annotations.append(STLRScope.ElementAnnotationInstance(STLRScope.ElementAnnotation.void, value: STLRScope.ElementAnnotationValue.set))
+        }
+        
+        if let transient = transient, transient == .transient {
+            symbolTableEntry.annotations.append(STLRScope.ElementAnnotationInstance(STLRScope.ElementAnnotation.transient, value: STLRScope.ElementAnnotationValue.set))
+        }
+        
         let grammarRule = STLRScope.GrammarRule(with: symbolTableEntry, try expression.compile(from:ast, into:scope), in: scope)
 
         // Update tables
@@ -171,6 +180,11 @@ extension STLRAbstractSyntaxTree.Element {
         var negated  = self.negated?.compile() ?? STLRScope.Modifier.one
         var quantifier  = self.quantifier?.compile() ?? STLRScope.Modifier.one
         var annotations = try self.annotations?.map({ return try $0.compile(from:ast, into: scope)}) ?? []
+
+        //Look for void sugar'd annotation
+        if void != nil {
+            annotations.append(STLRScope.ElementAnnotationInstance(STLRScope.ElementAnnotation.void, value: STLRScope.ElementAnnotationValue.set))
+        }
 
         //If there is no specific annotation and a transient mark (~) was given then create an annotation for it
         if transient && annotations[annotation: STLRScope.ElementAnnotation.transient] == nil{

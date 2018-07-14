@@ -116,15 +116,33 @@ The next element will result in a token with the provided String value.
 
 ### @transient
 
-We do not always want tokens met to be included in the AST. If prefixed with @transient then the token will not be captured in the AST or stream. For example, if we do not want any newlines to be captured in our AST but we do need to capture both types we could define the following rule
+We do not always want tokens met to be included in the AST. If prefixed with @transient then the token will not be captured in the AST or stream. For example, if we do not want any newlines to be captured in our AST but we do need to capture both types of newline we could define the following rule
 
     @transient crlf = "\r\n" | "\n"
     
 However the match will still be included in the range of the parent node and any non-transient child nodes of the annotated node will be adopted by the parent node. If you wish to completely ignore the match and proceed with evaluation you should use the @void annotation. 
 
+You can also use the ```~``` as a prefix as a shortcut to this. It can be applied to either the declaration of a rule
+
+    ~crlf = "\r\n" | "\n"
+    
+Or inline for an element of a rule. For example
+
+    crlf = "\r\n" | "\n"
+    rule = code ~crlf
+
 ### @void
 
 When a token of this type is matched scanning will continue after the match but no nodes will be created and any children of a void node will be completely discarded. The range of this match will not be applied to the range of the parent. 
+
+As with transient annotations you can use a prefix, in this case ```-```, to simplify annotating either the rule itself
+
+    -quote = "'"
+    
+Or inline on an element of a rule's expression
+
+    quote = "'"
+    string = -quote stringBody -quote
 
 ### @error(String)
 

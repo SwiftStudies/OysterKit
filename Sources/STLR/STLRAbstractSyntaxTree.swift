@@ -33,7 +33,8 @@ struct STLRAbstractSyntaxTree {
         enum   AssignmentOperators : String, Decodable {
             case becomesEqualTo = "="
         }
-        
+        let transient : Quantifier?
+        let void : Quantifier?
         let identifier : String
         let assignmentOperators : AssignmentOperators
         let expression : Expression
@@ -63,6 +64,7 @@ struct STLRAbstractSyntaxTree {
         //These apply to all
         let negated  : Qualifier?
         let transient : Quantifier?
+        let void : Quantifier?
         let quantifier : Quantifier?
         let annotations : [Annotation]?
         let lookahead   : String?

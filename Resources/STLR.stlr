@@ -41,7 +41,8 @@ ows                                             = whitespace*
 //
 quantifier                              = "*" | "+" | "?" | "-"
 negated                                 = "!"
-transient                               = "-"
+transient                               = "~"
+void                                    = "-"
 
 //
 // Parsing Control
@@ -120,7 +121,7 @@ expression whitespace*
 ")"
 identifier                              = /[:alpha:]\w*|_\w*/
 
-element                                 = annotations? (lookahead | transient)? negated? ( group | terminal | identifier ) quantifier?
+element                                 = annotations? (lookahead | transient | void)? negated? ( group | terminal | identifier ) quantifier?
 
 //
 // Expressions
@@ -141,7 +142,7 @@ expression                              = choice | sequence | element
 // Rule
 //
 @transient
-lhs                                             = whitespace* annotations? transient? identifier whitespace* assignmentOperators
+lhs                                             = whitespace* annotations? transient? void? identifier whitespace* assignmentOperators
 rule                                    = lhs whitespace* @error("Expected expression")expression whitespace*
 
 //
