@@ -23,7 +23,7 @@
         <a class="header-link" href="../index.html">
           OysterKit Docs
         </a>
-         (96% documented)
+         (94% documented)
       </p>
     
       <p class="header-col--secondary">
@@ -89,7 +89,7 @@
             <a class="nav-group-name-link" href="../Global Variables.html">Global Variables</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Global Variables.html#/s:9OysterKit19transientTokenValueSiv">transientTokenValue</a>
+                <a class="nav-group-task-link" href="../Global Variables.html#/s:9OysterKit19transientTokenValueSivp">transientTokenValue</a>
               </li>
             </ul>
           </li>
@@ -101,6 +101,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/LanguageError.html">LanguageError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/Log.html">Log</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/MatchResult.html">MatchResult</a>
@@ -152,10 +155,10 @@
             <a class="nav-group-name-link" href="../Functions.html">Functions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit2eeoiSbAA5Token_p_AaC_ptF">==(_:_:)</a>
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit2eeoiySbAA5Token_p_AaC_ptF">==(_:_:)</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit8areEqualSbs10DictionaryVyAA14RuleAnnotationOAA0fG5ValueOG3lhs_AI3rhstF">areEqual(lhs:rhs:)</a>
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit8areEqual3lhs3rhsSbSDyAA14RuleAnnotationOAA0gH5ValueOG_AItF">areEqual(lhs:rhs:)</a>
               </li>
             </ul>
           </li>
@@ -235,7 +238,7 @@
 
                 </div>
               </div>
-            <p>The protocol that parsing and scanning rules must adhere to. There is no need to fully implement this protocol unless you are looking for bespoke <code><a href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a></code> or <code><a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></code> control. It is recommended to use <code><a href="../Enums/ParserRule.html#/s:9OysterKit10ParserRuleO6customAcA5Token_p8produces_SbAA15LexicalAnalyzer_pKcSSs10DictionaryVyAA0D10AnnotationOAA0dK5ValueOGSgtcACmF">ParserRule.custom</a></code> in almost all cases.</p>
+            <p>The protocol that parsing and scanning rules must adhere to. There is no need to fully implement this protocol unless you are looking for bespoke <code><a href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a></code> or <code><a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></code> control. It is recommended to use <code>ParserRule.custom</code> in almost all cases.</p>
 
           </div>
         </section>
@@ -247,9 +250,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit4RuleP5matchAA11MatchResultOAA15LexicalAnalyzer_p4with_AA26IntermediateRepresentation_p3fortKF"></a>
+                    <a name="/s:9OysterKit4RuleP5match4with3forAA11MatchResultOAA15LexicalAnalyzer_p_AA26IntermediateRepresentation_ptKF"></a>
                     <a name="//apple_ref/swift/Method/match(with:for:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit4RuleP5matchAA11MatchResultOAA15LexicalAnalyzer_p4with_AA26IntermediateRepresentation_p3fortKF">match(with:for:)</a>
+                    <a class="token" href="#/s:9OysterKit4RuleP5match4with3forAA11MatchResultOAA15LexicalAnalyzer_p_AA26IntermediateRepresentation_ptKF">match(with:for:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -278,7 +281,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">match</span><span class="p">(</span><span class="n">with</span> <span class="nv">lexer</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a></span><span class="p">,</span> <span class="p">`</span><span class="nv">for</span><span class="p">`</span> <span class="nv">ir</span><span class="p">:</span><span class="kt"><a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Enums/MatchResult.html">MatchResult</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">match</span><span class="p">(</span><span class="n">with</span> <span class="nv">lexer</span><span class="p">:</span> <span class="kt"><a href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a></span><span class="p">,</span> <span class="k">for</span> <span class="nv">ir</span><span class="p">:</span> <span class="kt"><a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Enums/MatchResult.html">MatchResult</a></span></code></pre>
 
                         </div>
                       </div>
@@ -323,9 +326,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit4RuleP8producesAA5Token_pv"></a>
+                    <a name="/s:9OysterKit4RuleP8producesAA5Token_pvp"></a>
                     <a name="//apple_ref/swift/Property/produces" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit4RuleP8producesAA5Token_pv">produces</a>
+                    <a class="token" href="#/s:9OysterKit4RuleP8producesAA5Token_pvp">produces</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -340,7 +343,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">var</span>  <span class="nv">produces</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/Token.html">Token</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">produces</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Token.html">Token</a></span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -350,9 +353,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit4RuleP11annotationss10DictionaryVyAA0C10AnnotationOAA0cF5ValueOGv"></a>
+                    <a name="/s:9OysterKit4RuleP11annotationsSDyAA0C10AnnotationOAA0cE5ValueOGvp"></a>
                     <a name="//apple_ref/swift/Property/annotations" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit4RuleP11annotationss10DictionaryVyAA0C10AnnotationOAA0cF5ValueOGv">annotations</a>
+                    <a class="token" href="#/s:9OysterKit4RuleP11annotationsSDyAA0C10AnnotationOAA0cE5ValueOGvp">annotations</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -367,7 +370,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">var</span>  <span class="nv">annotations</span> <span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">annotations</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -377,9 +380,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit4RuleP9subscriptAA0C15AnnotationValueOSgAA0cE0Oci"></a>
+                    <a name="/s:9OysterKit4RulePyAA0C15AnnotationValueOSgAA0cD0Ocip"></a>
                     <a name="//apple_ref/swift/Method/subscript(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit4RuleP9subscriptAA0C15AnnotationValueOSgAA0cE0Oci">subscript(_:)</a>
+                    <a class="token" href="#/s:9OysterKit4RulePyAA0C15AnnotationValueOSgAA0cD0Ocip">subscript(_:)</a>
                     </code>
                       <span class="declaration-note">
                         Default implementation
@@ -402,7 +405,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="nf">subscript</span><span class="p">(</span><span class="nv">annotation</span><span class="p">:</span><span class="kt"><a href="../Enums/RuleAnnotation.html">RuleAnnotation</a></span><span class="p">)</span><span class="o">-&gt;</span><span class="nf">RuleAnnotationValue</span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="nf">subscript</span><span class="p">(</span><span class="nv">annotation</span><span class="p">:</span> <span class="kt"><a href="../Enums/RuleAnnotation.html">RuleAnnotation</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Enums/RuleAnnotationValue.html">RuleAnnotationValue</a></span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -412,9 +415,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit4RuleP8instanceAaB_pAA5Token_pSg4with_s10DictionaryVyAA0C10AnnotationOAA0cH5ValueOGSg14andAnnotationstF"></a>
+                    <a name="/s:9OysterKit4RuleP8instance4with14andAnnotationsAaB_pAA5Token_pSg_SDyAA0C10AnnotationOAA0cI5ValueOGSgtF"></a>
                     <a name="//apple_ref/swift/Method/instance(with:andAnnotations:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit4RuleP8instanceAaB_pAA5Token_pSg4with_s10DictionaryVyAA0C10AnnotationOAA0cH5ValueOGSg14andAnnotationstF">instance(with:andAnnotations:)</a>
+                    <a class="token" href="#/s:9OysterKit4RuleP8instance4with14andAnnotationsAaB_pAA5Token_pSg_SDyAA0C10AnnotationOAA0cI5ValueOGSgtF">instance(with:andAnnotations:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -429,7 +432,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">instance</span><span class="p">(</span><span class="n">with</span> <span class="nv">token</span><span class="p">:</span><span class="kt"><a href="../Protocols/Token.html">Token</a></span><span class="p">?,</span> <span class="n">andAnnotations</span> <span class="nv">annotations</span><span class="p">:</span><span class="kt"><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></span><span class="p">?)</span><span class="o">-&gt;</span><span class="kt">Rule</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">instance</span><span class="p">(</span><span class="n">with</span> <span class="nv">token</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Token.html">Token</a></span><span class="p">?,</span> <span class="n">andAnnotations</span> <span class="nv">annotations</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Rule</span></code></pre>
 
                         </div>
                       </div>
@@ -478,9 +481,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit4RulePAAE8instanceAaB_pAA5Token_p4with_tF"></a>
+                    <a name="/s:9OysterKit4RulePAAE8instance4withAaB_pAA5Token_p_tF"></a>
                     <a name="//apple_ref/swift/Method/instance(with:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit4RulePAAE8instanceAaB_pAA5Token_p4with_tF">instance(with:)</a>
+                    <a class="token" href="#/s:9OysterKit4RulePAAE8instance4withAaB_pAA5Token_p_tF">instance(with:)</a>
                     </code>
                       <span class="declaration-note">
                         Extension method
@@ -498,7 +501,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">instance</span><span class="p">(</span><span class="n">with</span> <span class="nv">token</span><span class="p">:</span><span class="kt"><a href="../Protocols/Token.html">Token</a></span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">Rule</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">instance</span><span class="p">(</span><span class="n">with</span> <span class="nv">token</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Token.html">Token</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Rule</span></code></pre>
 
                         </div>
                       </div>
@@ -531,9 +534,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit4RulePAAE8instanceAaB_ps10DictionaryVyAA0C10AnnotationOAA0cF5ValueOG4with_tF"></a>
+                    <a name="/s:9OysterKit4RulePAAE8instance4withAaB_pSDyAA0C10AnnotationOAA0cF5ValueOG_tF"></a>
                     <a name="//apple_ref/swift/Method/instance(with:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit4RulePAAE8instanceAaB_ps10DictionaryVyAA0C10AnnotationOAA0cF5ValueOG4with_tF">instance(with:)</a>
+                    <a class="token" href="#/s:9OysterKit4RulePAAE8instance4withAaB_pSDyAA0C10AnnotationOAA0cF5ValueOG_tF">instance(with:)</a>
                     </code>
                       <span class="declaration-note">
                         Extension method
@@ -551,7 +554,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">instance</span><span class="p">(</span><span class="n">with</span> <span class="nv">annotations</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">Rule</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">instance</span><span class="p">(</span><span class="n">with</span> <span class="nv">annotations</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Rule</span></code></pre>
 
                         </div>
                       </div>
@@ -584,9 +587,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit4RulePAAE5errorSSSgv"></a>
+                    <a name="/s:9OysterKit4RulePAAE5errorSSSgvp"></a>
                     <a name="//apple_ref/swift/Property/error" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit4RulePAAE5errorSSSgv">error</a>
+                    <a class="token" href="#/s:9OysterKit4RulePAAE5errorSSSgvp">error</a>
                     </code>
                       <span class="declaration-note">
                         Extension method
@@ -604,7 +607,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">error</span> <span class="p">:</span> <span class="kt">String</span><span class="p">?</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -614,9 +617,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit4RulePAAE4voidSbv"></a>
+                    <a name="/s:9OysterKit4RulePAAE4voidSbvp"></a>
                     <a name="//apple_ref/swift/Property/void" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit4RulePAAE4voidSbv">void</a>
+                    <a class="token" href="#/s:9OysterKit4RulePAAE4voidSbvp">void</a>
                     </code>
                       <span class="declaration-note">
                         Extension method
@@ -634,7 +637,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">void</span> <span class="p">:</span> <span class="kt">Bool</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">void</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -644,9 +647,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit4RulePAAE9transientSbv"></a>
+                    <a name="/s:9OysterKit4RulePAAE9transientSbvp"></a>
                     <a name="//apple_ref/swift/Property/transient" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit4RulePAAE9transientSbv">transient</a>
+                    <a class="token" href="#/s:9OysterKit4RulePAAE9transientSbvp">transient</a>
                     </code>
                       <span class="declaration-note">
                         Extension method
@@ -664,7 +667,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">transient</span> <span class="p">:</span> <span class="kt">Bool</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">transient</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -678,9 +681,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit4RulePAAE7consumeAaB_ps10DictionaryVyAA0C10AnnotationOAA0cF5ValueOGSg11annotations_tF"></a>
+                    <a name="/s:9OysterKit4RulePAAE7consume11annotationsAaB_pSDyAA0C10AnnotationOAA0cF5ValueOGSg_tF"></a>
                     <a name="//apple_ref/swift/Method/consume(annotations:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit4RulePAAE7consumeAaB_ps10DictionaryVyAA0C10AnnotationOAA0cF5ValueOGSg11annotations_tF">consume(annotations:)</a>
+                    <a class="token" href="#/s:9OysterKit4RulePAAE7consume11annotationsAaB_pSDyAA0C10AnnotationOAA0cF5ValueOGSg_tF">consume(annotations:)</a>
                     </code>
                       <span class="declaration-note">
                         Extension method
@@ -727,9 +730,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit4RulePAAE9lookaheadAaB_ps10DictionaryVyAA0C10AnnotationOAA0cF5ValueOGSg11annotations_tF"></a>
+                    <a name="/s:9OysterKit4RulePAAE9lookahead11annotationsAaB_pSDyAA0C10AnnotationOAA0cF5ValueOGSg_tF"></a>
                     <a name="//apple_ref/swift/Method/lookahead(annotations:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit4RulePAAE9lookaheadAaB_ps10DictionaryVyAA0C10AnnotationOAA0cF5ValueOGSg11annotations_tF">lookahead(annotations:)</a>
+                    <a class="token" href="#/s:9OysterKit4RulePAAE9lookahead11annotationsAaB_pSDyAA0C10AnnotationOAA0cF5ValueOGSg_tF">lookahead(annotations:)</a>
                     </code>
                       <span class="declaration-note">
                         Extension method
@@ -776,9 +779,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit4RulePAAE8optionalAaB_ps10DictionaryVyAA0C10AnnotationOAA0cF5ValueOGSg11annotations_tF"></a>
+                    <a name="/s:9OysterKit4RulePAAE8optional11annotationsAaB_pSDyAA0C10AnnotationOAA0cF5ValueOGSg_tF"></a>
                     <a name="//apple_ref/swift/Method/optional(annotations:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit4RulePAAE8optionalAaB_ps10DictionaryVyAA0C10AnnotationOAA0cF5ValueOGSg11annotations_tF">optional(annotations:)</a>
+                    <a class="token" href="#/s:9OysterKit4RulePAAE8optional11annotationsAaB_pSDyAA0C10AnnotationOAA0cF5ValueOGSg_tF">optional(annotations:)</a>
                     </code>
                       <span class="declaration-note">
                         Extension method
@@ -825,9 +828,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit4RulePAAE3notAaB_ps10DictionaryVyAA0C10AnnotationOAA0cF5ValueOGSg11annotations_tF"></a>
+                    <a name="/s:9OysterKit4RulePAAE3not11annotationsAaB_pSDyAA0C10AnnotationOAA0cF5ValueOGSg_tF"></a>
                     <a name="//apple_ref/swift/Method/not(annotations:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit4RulePAAE3notAaB_ps10DictionaryVyAA0C10AnnotationOAA0cF5ValueOGSg11annotations_tF">not(annotations:)</a>
+                    <a class="token" href="#/s:9OysterKit4RulePAAE3not11annotationsAaB_pSDyAA0C10AnnotationOAA0cF5ValueOGSg_tF">not(annotations:)</a>
                     </code>
                       <span class="declaration-note">
                         Extension method
@@ -874,9 +877,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit4RulePAAE3notAaB_pAA5Token_p9producing_s10DictionaryVyAA0C10AnnotationOAA0cH5ValueOGSg11annotationstF"></a>
+                    <a name="/s:9OysterKit4RulePAAE3not9producing11annotationsAaB_pAA5Token_p_SDyAA0C10AnnotationOAA0cH5ValueOGSgtF"></a>
                     <a name="//apple_ref/swift/Method/not(producing:annotations:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit4RulePAAE3notAaB_pAA5Token_p9producing_s10DictionaryVyAA0C10AnnotationOAA0cH5ValueOGSg11annotationstF">not(producing:annotations:)</a>
+                    <a class="token" href="#/s:9OysterKit4RulePAAE3not9producing11annotationsAaB_pAA5Token_p_SDyAA0C10AnnotationOAA0cH5ValueOGSgtF">not(producing:annotations:)</a>
                     </code>
                       <span class="declaration-note">
                         Extension method
@@ -935,9 +938,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit4RulePAAE8repeatedAaB_pSi3min_SiSg5limitAA5Token_pSg9producings10DictionaryVyAA0C10AnnotationOAA0cJ5ValueOGSg11annotationstF"></a>
+                    <a name="/s:9OysterKit4RulePAAE8repeated3min5limit9producing11annotationsAaB_pSi_SiSgAA5Token_pSgSDyAA0C10AnnotationOAA0cJ5ValueOGSgtF"></a>
                     <a name="//apple_ref/swift/Method/repeated(min:limit:producing:annotations:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit4RulePAAE8repeatedAaB_pSi3min_SiSg5limitAA5Token_pSg9producings10DictionaryVyAA0C10AnnotationOAA0cJ5ValueOGSg11annotationstF">repeated(min:limit:producing:annotations:)</a>
+                    <a class="token" href="#/s:9OysterKit4RulePAAE8repeated3min5limit9producing11annotationsAaB_pSi_SiSgAA5Token_pSgSDyAA0C10AnnotationOAA0cJ5ValueOGSgtF">repeated(min:limit:producing:annotations:)</a>
                     </code>
                       <span class="declaration-note">
                         Extension method
@@ -1020,9 +1023,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit4RulePAAE8optionalAaB_pAA5Token_p9producing_s10DictionaryVyAA0C10AnnotationOAA0cH5ValueOGSg11annotationstF"></a>
+                    <a name="/s:9OysterKit4RulePAAE8optional9producing11annotationsAaB_pAA5Token_p_SDyAA0C10AnnotationOAA0cH5ValueOGSgtF"></a>
                     <a name="//apple_ref/swift/Method/optional(producing:annotations:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit4RulePAAE8optionalAaB_pAA5Token_p9producing_s10DictionaryVyAA0C10AnnotationOAA0cH5ValueOGSg11annotationstF">optional(producing:annotations:)</a>
+                    <a class="token" href="#/s:9OysterKit4RulePAAE8optional9producing11annotationsAaB_pAA5Token_p_SDyAA0C10AnnotationOAA0cH5ValueOGSgtF">optional(producing:annotations:)</a>
                     </code>
                       <span class="declaration-note">
                         Extension method
@@ -1086,8 +1089,8 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-02-11)</p>
-      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-07-14)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
 </div>

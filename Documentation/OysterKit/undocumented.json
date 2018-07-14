@@ -1,75 +1,138 @@
 {
   "warnings": [
     {
-      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Decoding/Parsing Decoder.swift",
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/OysterKit/Decoding/Parsing Decoder.swift",
       "line": null,
       "symbol": "_ParsingDecoder",
       "symbol_kind": "source.lang.swift.decl.extension",
       "warning": "undocumented"
     },
     {
-      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/SwiftTypeExtensions.swift",
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/OysterKit/Extensions/SwiftTypeExtensions.swift",
       "line": 12,
       "symbol": "String.until(token:annotations:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/SwiftTypeExtensions.swift",
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/OysterKit/Extensions/SwiftTypeExtensions.swift",
       "line": 16,
       "symbol": "String.terminal(token:annotations:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/SwiftTypeExtensions.swift",
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/OysterKit/Extensions/SwiftTypeExtensions.swift",
       "line": 20,
       "symbol": "String.consume(annotations:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/SwiftTypeExtensions.swift",
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/OysterKit/Extensions/SwiftTypeExtensions.swift",
       "line": 28,
       "symbol": "CharacterSet.until(token:annotations:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/SwiftTypeExtensions.swift",
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/OysterKit/Extensions/SwiftTypeExtensions.swift",
       "line": 32,
       "symbol": "CharacterSet.terminal(token:annotations:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Extensions/SwiftTypeExtensions.swift",
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/OysterKit/Extensions/SwiftTypeExtensions.swift",
       "line": 36,
       "symbol": "CharacterSet.consume(greedily:annotations:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/IntermediateRepresentation.swift",
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/OysterKit/Logging/Log.swift",
+      "line": 14,
+      "symbol": "Log",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/OysterKit/Logging/Log.swift",
+      "line": 16,
+      "symbol": "Log.decoding",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/OysterKit/Logging/Log.swift",
+      "line": 16,
+      "symbol": "Log.parsing",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/OysterKit/Logging/Log.swift",
+      "line": 18,
+      "symbol": "Log._parsingLog",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/OysterKit/Logging/Log.swift",
+      "line": 19,
+      "symbol": "Log._decodingLog",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/OysterKit/Logging/Log.swift",
+      "line": 21,
+      "symbol": "Log.parsingLog",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/OysterKit/Logging/Log.swift",
+      "line": 22,
+      "symbol": "Log.decodingLog",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/OysterKit/Logging/Log.swift",
+      "line": 24,
+      "symbol": "Log.enable()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/OysterKit/Logging/Log.swift",
+      "line": 34,
+      "symbol": "Log.disable()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/IntermediateRepresentation.swift",
       "line": 63,
       "symbol": "IntermediateRepresentation.init()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/TokenStream.swift",
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/TokenStream.swift",
       "line": 44,
       "symbol": "TokenStream.init(_:using:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Volumes/Personal/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/TokenStream.swift",
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/OysterKit/Parsing/Intermediate Representations/TokenStream.swift",
       "line": 50,
       "symbol": "TokenStream.init(_:using:with:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     }
   ],
-  "source_directory": "/Volumes/Personal/SPM/OysterKit"
+  "source_directory": "/Users/nhughes/Documents/Code/SPM/OysterKit"
 }

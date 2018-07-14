@@ -1,110 +1,110 @@
 {
   "warnings": [
     {
-      "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/Extensions/String.swift",
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Extensions/String.swift",
       "line": 28,
       "symbol": "String.dynamicRule(token:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/Generators/DynamicParserGenerator.swift",
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generators/DynamicParserGenerator.swift",
       "line": 39,
       "symbol": "STLRScope.runtimeLanguage",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/Generators/DynamicParserGenerator.swift",
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generators/DynamicParserGenerator.swift",
       "line": 170,
       "symbol": "STLRScope.GrammarRule.rule(from:creating:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/Generators/DynamicParserGenerator.swift",
-      "line": 228,
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generators/DynamicParserGenerator.swift",
+      "line": 231,
       "symbol": "STLRScope.Identifier.token",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/Generators/DynamicParserGenerator.swift",
-      "line": 232,
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generators/DynamicParserGenerator.swift",
+      "line": 235,
       "symbol": "STLRScope.Identifier.rule(from:creating:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/Generators/DynamicParserGenerator.swift",
-      "line": 329,
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generators/DynamicParserGenerator.swift",
+      "line": 332,
       "symbol": "STLRScope.Element.token",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/Optimisers/CharacterSetOnlyChoiceOptimizer.swift",
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Optimisers/CharacterSetOnlyChoiceOptimizer.swift",
       "line": 42,
       "symbol": "CharacterSetOnlyChoiceOptimizer",
       "symbol_kind": "source.lang.swift.decl.struct",
       "warning": "undocumented"
     },
     {
-      "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/Optimisers/CharacterSetOnlyChoiceOptimizer.swift",
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Optimisers/CharacterSetOnlyChoiceOptimizer.swift",
       "line": 49,
       "symbol": "CharacterSetOnlyChoiceOptimizer.init()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/Optimisers/InlineIdentifierOptimizer.swift",
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Optimisers/InlineIdentifierOptimizer.swift",
       "line": 11,
       "symbol": "InlineIdentifierOptimization",
       "symbol_kind": "source.lang.swift.decl.struct",
       "warning": "undocumented"
     },
     {
-      "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/Optimisers/InlineIdentifierOptimizer.swift",
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Optimisers/InlineIdentifierOptimizer.swift",
       "line": 18,
       "symbol": "InlineIdentifierOptimization.init()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/STLRCompiler.swift",
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/STLRCompiler.swift",
       "line": 28,
       "symbol": "STLRCompilerError",
       "symbol_kind": "source.lang.swift.decl.enum",
       "warning": "undocumented"
     },
     {
-      "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/STLRCompiler.swift",
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/STLRCompiler.swift",
       "line": 29,
-      "symbol": "STLRCompilerError.unknownIdentifier",
+      "symbol": "STLRCompilerError.unknownIdentifier(named:)",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
-      "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/STLRCompiler.swift",
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/STLRCompiler.swift",
       "line": 30,
-      "symbol": "STLRCompilerError.identifierAlreadyDefined",
+      "symbol": "STLRCompilerError.identifierAlreadyDefined(named:)",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
-      "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/STLRCompiler.swift",
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/STLRCompiler.swift",
       "line": 31,
       "symbol": "STLRCompilerError.noTokenNameSpecified",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
-      "file": "/Volumes/Personal/SPM/OysterKit/Sources/STLR/STLRParser.swift",
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/STLRParser.swift",
       "line": 31,
       "symbol": "STLRParser.ast",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     }
   ],
-  "source_directory": "/Volumes/Personal/SPM/OysterKit"
+  "source_directory": "/Users/nhughes/Documents/Code/SPM/OysterKit"
 }

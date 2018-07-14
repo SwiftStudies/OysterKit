@@ -14,6 +14,7 @@
   </head>
   <body>
 
+    <a name="//apple_ref/swift/Section/Structures" class="dashAnchor"></a>
 
     <a title="Structures  Reference"></a>
 
@@ -22,7 +23,7 @@
         <a class="header-link" href="index.html">
           OysterKit Docs
         </a>
-         (96% documented)
+         (94% documented)
       </p>
     
       <p class="header-col--secondary">
@@ -88,7 +89,7 @@
             <a class="nav-group-name-link" href="Global Variables.html">Global Variables</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Global Variables.html#/s:9OysterKit19transientTokenValueSiv">transientTokenValue</a>
+                <a class="nav-group-task-link" href="Global Variables.html#/s:9OysterKit19transientTokenValueSivp">transientTokenValue</a>
               </li>
             </ul>
           </li>
@@ -100,6 +101,9 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Enums/LanguageError.html">LanguageError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/Log.html">Log</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Enums/MatchResult.html">MatchResult</a>
@@ -151,10 +155,10 @@
             <a class="nav-group-name-link" href="Functions.html">Functions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Functions.html#/s:9OysterKit2eeoiSbAA5Token_p_AaC_ptF">==(_:_:)</a>
+                <a class="nav-group-task-link" href="Functions.html#/s:9OysterKit2eeoiySbAA5Token_p_AaC_ptF">==(_:_:)</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Functions.html#/s:9OysterKit8areEqualSbs10DictionaryVyAA14RuleAnnotationOAA0fG5ValueOG3lhs_AI3rhstF">areEqual(lhs:rhs:)</a>
+                <a class="nav-group-task-link" href="Functions.html#/s:9OysterKit8areEqual3lhs3rhsSbSDyAA14RuleAnnotationOAA0gH5ValueOG_AItF">areEqual(lhs:rhs:)</a>
               </li>
             </ul>
           </li>
@@ -283,11 +287,11 @@
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>A standard decoder that can use any supplied <code><a href="Classes/Parser.html">Parser</a></code> to decode <code>Data</code> into a <code>Decodable</code> conforming type.</p>
-<pre class="highlight swift"><code>   <span class="nf">do</span><span class="p">{</span>
-       <span class="k">let</span> <span class="nv">command</span> <span class="p">:</span> <span class="kt">Command</span> <span class="o">=</span> <span class="k">try</span> <span class="nf">ParsingDecoder</span><span class="p">()</span><span class="o">.</span><span class="nf">decode</span><span class="p">(</span><span class="kt">Command</span><span class="o">.</span><span class="k">self</span><span class="p">,</span> <span class="nv">from</span><span class="p">:</span> <span class="n">userInput</span><span class="o">.</span><span class="nf">data</span><span class="p">(</span><span class="nv">using</span><span class="p">:</span> <span class="o">.</span><span class="n">utf8</span><span class="p">)</span> <span class="p">??</span> <span class="nf">Data</span><span class="p">(),</span> <span class="nv">with</span><span class="p">:</span> <span class="kt">Bork</span><span class="o">.</span><span class="n">generatedLanguage</span><span class="p">)</span>
+<pre class="highlight swift"><code>   <span class="k">do</span><span class="p">{</span>
+       <span class="k">let</span> <span class="nv">command</span> <span class="p">:</span> <span class="kt">Command</span> <span class="o">=</span> <span class="k">try</span> <span class="kt">ParsingDecoder</span><span class="p">()</span><span class="o">.</span><span class="nf">decode</span><span class="p">(</span><span class="kt">Command</span><span class="o">.</span><span class="k">self</span><span class="p">,</span> <span class="nv">from</span><span class="p">:</span> <span class="n">userInput</span><span class="o">.</span><span class="nf">data</span><span class="p">(</span><span class="nv">using</span><span class="p">:</span> <span class="o">.</span><span class="n">utf8</span><span class="p">)</span> <span class="p">??</span> <span class="kt">Data</span><span class="p">(),</span> <span class="nv">with</span><span class="p">:</span> <span class="kt">Bork</span><span class="o">.</span><span class="n">generatedLanguage</span><span class="p">)</span>
 
        <span class="o">...</span>
-   <span class="p">}</span> <span class="nf">catch</span> <span class="p">{</span>
+   <span class="p">}</span> <span class="k">catch</span> <span class="p">{</span>
        <span class="nf">print</span><span class="p">(</span><span class="s">"Something went wrong: </span><span class="se">\(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
    <span class="p">}</span>
 </code></pre>
@@ -347,8 +351,8 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-02-11)</p>
-      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-07-14)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
 </div>
