@@ -108,13 +108,17 @@ struct STLRAbstractSyntaxTree {
         let element     : Element?
     }
     
+    struct Grammar : Decodable {
+        let rules : [Rule]
+    }
+    
     let intermediateRepresentation : HomogenousTree
     let rules : [Rule]
     
     init(_ stlrSource : String) throws {
         intermediateRepresentation = try AbstractSyntaxTreeConstructor().build(stlrSource, using: STLR.generatedLanguage)
         
-        rules = try ParsingDecoder().decode([Rule].self, using: intermediateRepresentation)
+        rules = try ParsingDecoder().decode(Grammar.self, using: intermediateRepresentation).rules
     }
 
 }

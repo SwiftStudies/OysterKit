@@ -150,4 +150,5 @@ moduleImport                    = whitespace* @token("import") "import" .whitesp
 // Grammar
 //
 
-grammar                                 = @token("mark") >>(!" "|" ") moduleImport* @error("Expected at least one rule") rule+ //NB: Mark is there to ensure there is no automatic reduction of rule into grammar if there is only one rule, this should perhaps become an annotation
+grammar         =   @token("modules") (moduleImport*)
+                    @token("rules") (@error("Expected at least one rule") rule+)
