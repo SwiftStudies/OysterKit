@@ -207,7 +207,7 @@ private extension STLRScope.Element {
         switch self {
         case .terminal(_, _, _, _):
             return false
-        case .identifier(let identifier, _, _, let annotations):
+        case .identifier(_, _, _, let annotations):
             if annotations.asRuleAnnotations[RuleAnnotation.transient] == .set || annotations.asRuleAnnotations[RuleAnnotation.void] == .set {
                 return false
             }
