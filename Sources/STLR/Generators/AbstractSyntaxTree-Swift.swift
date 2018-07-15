@@ -115,18 +115,26 @@ public class SwiftStructure : Generator {
         guard identifier.isStructural, let expression = identifier.grammarRule?.expression else {
             return
         }
-        
-        let typeType = identifier.grammarRule?.leftHandRecursive ?? false ? "class" : "struct"
-        
+
         output.print(
-            "/// \(identifier.name.typeName)",
-            "\(typeType) \(identifier.name.typeName) : Decodable {").indent()
-        for field in generate(expression: expression).consolidate() {
+            "/// \(identifier.name.typeName)"
+        )
+
+        if let aliasedType = identifier.typeAlias {
+            output.print("typealias \(identifier.name.typeName) = \(aliasedType)")
+        } else {
+            let typeType = identifier.grammarRule?.leftHandRecursive ?? false ? "class" : "struct"
+            
             output.print(
-                "let \(field.name) : \(field.type)"
-            )
+                "\(typeType) \(identifier.name.typeName) : Decodable {").indent()
+            for field in generate(expression: expression).consolidate() {
+                output.print(
+                    "let \(field.name) : \(field.type)"
+                )
+            }
+            output.outdent().print("}")
         }
-        output.outdent().print("}")
+        
     }
     
     fileprivate static func generate(expression:STLRScope.Expression)->[Field]{
@@ -296,7 +304,7 @@ private extension STLRScope.Element {
     }
 }
 
-private extension STLRScope.Identifier {
+fileprivate extension STLRScope.Identifier {
     var isDiscarded : Bool {
         let annotations = self.annotations.asRuleAnnotations
         if annotations[RuleAnnotation.void] == .set || annotations[RuleAnnotation.transient] == .set{
@@ -306,6 +314,73 @@ private extension STLRScope.Identifier {
     }
     var isStructural : Bool {
         return SwiftStructure.isStructural(identifier: self)
+    }
+    
+    var typeAlias : String? {
+        return grammarRule?.expression?.typeAlias
+    }
+}
+
+fileprivate extension STLRScope.Expression {
+    var typeAlias : String? {
+        switch self {
+        case .element(let element):
+            switch element {
+            case .group(let expression, let modifier, let lookahead, let annotations):
+                if lookahead {
+                    return nil
+                }
+                if annotations.asRuleAnnotations[.void] == .set || annotations.asRuleAnnotations[.transient] == .set {
+                    return nil
+                }
+                
+                guard let typeAlias = expression.typeAlias else {
+                    return nil
+                }
+                
+                switch modifier {
+                case .one:
+                    return typeAlias
+                case .zeroOrOne:
+                    return typeAlias.hasSuffix("?") ? typeAlias :  typeAlias+"?"
+                case .zeroOrMore:
+                    return "[\(typeAlias)]?"
+                case .oneOrMore:
+                    return "[\(typeAlias)]"
+                default:
+                    return nil
+                }
+            case .identifier(let identifier, let modifier, let lookahead, let annotations):
+                if lookahead {
+                    return nil
+                }
+                if annotations.asRuleAnnotations[.void] == .set || annotations.asRuleAnnotations[.transient] == .set {
+                    return nil
+                }
+                switch modifier {
+                case .one:
+                    return identifier.name.typeName
+                case .zeroOrOne:
+                    return identifier.name.typeName+"?"
+                case .zeroOrMore:
+                    return "[\(identifier.name.typeName)]?"
+                case .oneOrMore:
+                    return "[\(identifier.name.typeName)]"
+                default:
+                    return nil
+                }
+            default:
+                return nil
+            }
+        case .sequence(_):
+            return nil
+        case .choice(_):
+            return nil
+        case .group:
+            return nil
+        }
+        
+        return nil
     }
 }
 

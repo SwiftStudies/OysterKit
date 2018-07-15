@@ -12,12 +12,19 @@ import OysterKit
 class FullSwiftGenerationTest: XCTestCase {
 
 
-    func testExample() {
+    func testGeneratedIR() {
         do {
-            for rule in try IR.build("hello = .letter").grammar.rule{
-                rule.expression.element!
-                print(rule.expression.element.debugDescription)
+            let rules = try IR.build("hello = .letter").grammar.rules
+            
+            guard rules.count == 1 else {
+                XCTFail("Expected 1 rule")
+                return
             }
+
+            let helloRule = rules[0]
+
+            XCTAssertNotNil(helloRule.expression.element?.terminal?.characterSet,"Expected the rule to have an expression with just an element")
+            XCTAssertEqual("letter", helloRule.expression.element?.terminal?.characterSet?.characterSetName ?? "NILLED")
         } catch {
             XCTFail("Failed: \(error)")
         }

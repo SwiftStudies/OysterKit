@@ -26,7 +26,7 @@ enum IRTokens : Int, Token {
 		    }
 	}
 
-	case _transient = -1, `whitespace`, `ows`, `quantifier`, `negated`, `transient`, `void`, `lookahead`, `stringQuote`, `terminalBody`, `stringBody`, `string`, `terminalString`, `characterSetName`, `characterSet`, `rangeOperator`, `characterRange`, `number`, `boolean`, `literal`, `annotation`, `annotations`, `customLabel`, `definedLabel`, `label`, `regexDelimeter`, `startRegex`, `endRegex`, `regexBody`, `regex`, `terminal`, `group`, `identifier`, `element`, `assignmentOperators`, `or`, `then`, `choice`, `notNewRule`, `sequence`, `expression`, `lhs`, `rule`, `moduleName`, `import`, `moduleImport`, `mark`, `grammar`
+	case _transient = -1, `whitespace`, `ows`, `quantifier`, `negated`, `transient`, `void`, `lookahead`, `stringQuote`, `terminalBody`, `stringBody`, `string`, `terminalString`, `characterSetName`, `characterSet`, `rangeOperator`, `characterRange`, `number`, `boolean`, `literal`, `annotation`, `annotations`, `customLabel`, `definedLabel`, `label`, `regexDelimeter`, `startRegex`, `endRegex`, `regexBody`, `regex`, `terminal`, `group`, `identifier`, `element`, `assignmentOperators`, `or`, `then`, `choice`, `notNewRule`, `sequence`, `expression`, `lhs`, `rule`, `moduleName`, `import`, `moduleImport`, `modules`, `rules`, `grammar`
 
 	func _rule(_ annotations: RuleAnnotations = [ : ])->Rule {
 		switch self {
@@ -365,18 +365,17 @@ enum IRTokens : Int, Token {
 					T.moduleName._rule(),
 					T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 1, producing: T._transient),
 					].sequence(token: T.moduleImport, annotations: annotations.isEmpty ? [ : ] : annotations)
-		// mark
-		case .mark:
-			return [
-								" ".terminal(token: T._transient).not(producing: T._transient),
-								" ".terminal(token: T._transient),
-								].oneOf(token: T.mark, annotations: annotations).lookahead()
+		// modules
+		case .modules:
+			return T.moduleImport._rule().repeated(min: 0, producing: T.modules, annotations: annotations)
+		// rules
+		case .rules:
+			return T.rule._rule().repeated(min: 1, producing: T.rules, annotations: annotations.isEmpty ? [RuleAnnotation.error : RuleAnnotationValue.string("Expected at least one rule")] : annotations)
 		// grammar
 		case .grammar:
 			return [
-					T.mark._rule(),
-					T.moduleImport._rule().repeated(min: 0, producing: T._transient),
-					T.rule._rule().repeated(min: 1, producing: T._transient),
+					T.modules._rule(),
+					T.rules._rule(),
 					].sequence(token: T.grammar, annotations: annotations.isEmpty ? [ : ] : annotations)
 		}
 	}
@@ -417,9 +416,9 @@ struct IR : Decodable {
     }
     /// Literal
     struct Literal : Decodable {
-        let boolean : Swift.String?
-        let string : String?
         let number : Swift.String?
+        let string : String?
+        let boolean : Swift.String?
     }
     /// Annotation
     struct Annotation : Decodable {
@@ -437,10 +436,10 @@ struct IR : Decodable {
     }
     /// Terminal
     struct Terminal : Decodable {
-        let regex : Swift.String?
         let characterRange : CharacterRange?
         let characterSet : CharacterSet?
         let terminalString : TerminalString?
+        let regex : Swift.String?
     }
     /// Group
     class Group : Decodable {
@@ -448,15 +447,15 @@ struct IR : Decodable {
     }
     /// Element
     class Element : Decodable {
-        let terminal : Terminal?
-        let transient : Swift.String?
-        let lookahead : Swift.String?
-        let void : Swift.String?
-        let annotations : Annotations?
-        let quantifier : Swift.String?
         let negated : Swift.String?
-        let group : Group?
+        let transient : Swift.String?
         let identifier : Swift.String?
+        let terminal : Terminal?
+        let lookahead : Swift.String?
+        let quantifier : Swift.String?
+        let group : Group?
+        let annotations : Annotations?
+        let void : Swift.String?
     }
     /// Choice
     class Choice : Decodable {
@@ -468,9 +467,9 @@ struct IR : Decodable {
     }
     /// Expression
     class Expression : Decodable {
-        let element : Element?
         let sequence : Sequence?
         let choice : Choice?
+        let element : Element?
     }
     /// Rule
     struct Rule : Decodable {
@@ -481,12 +480,19 @@ struct IR : Decodable {
         let `import` : Swift.String
         let moduleName : Swift.String
     }
+    /// Modules
+    typealias Modules = [ModuleImport]?
+    /// Rules
+    typealias Rules = [Rule]
     /// Grammar
     struct Grammar : Decodable {
-        let rule : [Rule]
-        let moduleImport : [ModuleImport]
-        let mark : Swift.String
+        let modules : Modules
+        let rules : Rules
     }
+    
+    /// Root structure
+    let grammar : Grammar
+    
     /**
      Parses the supplied string using the generated grammar into a new instance of
      the generated data structure
@@ -494,8 +500,9 @@ struct IR : Decodable {
      - Parameter source: The string to parse
      - Returns: A new instance of the data-structure
      */
-    func build(grammar source : Swift.String) throws ->IR.Grammar  {
-        let root = HomogenousTree(with: IRTokens.grammar, matching: source, children: [try AbstractSyntaxTreeConstructor().build(source, using: IRTokens.generatedLanguage)])
-        return try ParsingDecoder().decode(IR.Grammar.self, using: root)
+    static func build(_ source : Swift.String) throws ->IR  {
+        let root = HomogenousTree(with: LabelledToken(withLabel: "root"), matching: source, children: [try AbstractSyntaxTreeConstructor().build(source, using: IRTokens.generatedLanguage)])
+        print(root.description)
+        return try ParsingDecoder().decode(IR.self, using: root)
     }
 }
