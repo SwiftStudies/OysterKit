@@ -13,25 +13,14 @@ class FullSwiftGenerationTest: XCTestCase {
 
 
     func testExample() {
-        func build(_ source : String) throws ->[IR.Rule]  {
-            
-            let intermediateRepresentation = try AbstractSyntaxTreeConstructor().build(source, using: IRTokens.generatedLanguage)
-            
-            print(intermediateRepresentation.description)
-            
-            return try ParsingDecoder().decode([IR.Rule].self, using: intermediateRepresentation)
-        }
-        
         do {
-            for rule in try build("hello = .letter"){
+            for rule in try IR.build("hello = .letter").grammar.rule{
                 rule.expression.element!
                 print(rule.expression.element.debugDescription)
             }
         } catch {
-            print("\(error)")
+            XCTFail("Failed: \(error)")
         }
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
 
 }
