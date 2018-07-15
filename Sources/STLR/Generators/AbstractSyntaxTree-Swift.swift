@@ -138,7 +138,7 @@ public class SwiftStructure : Generator {
                 return nil
             }
             let token = annotations.asRuleAnnotations[.token]?.description ?? identifier.name
-            if identifier.grammarRule?.expression?.scannable ?? true {
+            if !identifier.isStructural {
                 field = Field(name: token, type: "Swift.String")
             } else {
                 field = Field(name: token, type: token.typeName)
