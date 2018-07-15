@@ -123,6 +123,33 @@ public class SwiftStructure : Generator {
         return []
     }
     
+    private static var structuralIdentifiers = [String:Bool]()
+    
+    fileprivate static func isStructural(identifier: STLRScope.Identifier)->Bool{
+        if let existingAnswer = structuralIdentifiers[identifier.name] {
+            return existingAnswer
+        }
+        
+        guard let expression = identifier.grammarRule?.expression else {
+            structuralIdentifiers[identifier.name] = false
+            return false
+        }
+        
+        if identifier.isDiscarded {
+            structuralIdentifiers[identifier.name] = false
+            return false
+        }
+        
+        let fields = SwiftStructure.generate(expression: expression)
+        if fields.count == 0 {
+            structuralIdentifiers[identifier.name] = false
+            return false
+        }
+        
+        structuralIdentifiers[identifier.name] = true
+        return true
+    }
+    
     private static func generate(element:STLRScope.Element)->Field?{
         guard element.isStructural else {
             return nil
@@ -147,8 +174,20 @@ public class SwiftStructure : Generator {
             } else {
                 field = Field(name: token, type: token.typeName)
             }
-        default:
-            field = nil
+        case .group(let expression, let modifier, let lookahead, let annotations):
+            if lookahead {
+                return nil
+            }
+            if annotations.asRuleAnnotations[.void] == .set || annotations.asRuleAnnotations[.transient] == .set {
+                return nil
+            }
+            if modifier == .transient || modifier == .void || modifier == .not{
+                return nil
+            }
+
+            let fields = generate(expression: expression)
+            
+            return fields.first
         }
         
         if let field = field {
@@ -245,20 +284,7 @@ private extension STLRScope.Identifier {
         return false
     }
     var isStructural : Bool {
-        guard let expression = grammarRule?.expression else {
-            return false
-        }
-        
-        if isDiscarded {
-            return false
-        }
-        
-        let fields = SwiftStructure.generate(expression: expression)
-        if fields.count == 0 {
-            return false
-        }
-        
-        return true
+        return SwiftStructure.isStructural(identifier: self)
     }
 }
 
