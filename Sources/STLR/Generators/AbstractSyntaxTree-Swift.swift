@@ -78,29 +78,22 @@ public class SwiftStructure : Generator {
             }
         }
         
-        /**
-         Parses the supplied string using the generated grammar into a new instance of
-         the generated data structure
-         
-         - Parameter source: The string to parse
-         - Returns: A new instance of the data-structure
-        */
-        func build(_ source : String) throws ->[IR.Rule]  {
-            
-            let intermediateRepresentation = try AbstractSyntaxTreeConstructor().build(source, using: IRTokens.generatedLanguage)
-            
-            
-            
-            print(intermediateRepresentation.description)
-            
-            return try ParsingDecoder().decode([IR.Rule].self, using: intermediateRepresentation)
-        }
+
         
         // Generate the fields that make up the results of the parser
         for identifier in scope.rootRules.compactMap({$0.identifier}) {
             output.print(
-                "/// Parsing",
-                "let \(identifier.name) : \(identifier.name.typeName)"
+                "/**",
+                " Parses the supplied string using the generated grammar into a new instance of",
+                " the generated data structure",
+                "",
+                " - Parameter source: The string to parse",
+                " - Returns: A new instance of the data-structure",
+                " */",
+                "func build(\(identifier.name) source : Swift.String) throws ->IR.\(identifier.name.typeName)  {",
+                "    let root = HomogenousTree(with: IRTokens.\(identifier.name), matching: source, children: [try AbstractSyntaxTreeConstructor().build(source, using: IRTokens.generatedLanguage)])",
+                "    return try ParsingDecoder().decode(IR.\(identifier.name.typeName).self, using: root)",
+                "}"
             )
         }
         
