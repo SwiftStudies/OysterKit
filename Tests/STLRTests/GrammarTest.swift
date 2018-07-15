@@ -208,7 +208,7 @@ class GrammarTest: XCTestCase {
             let _ = try AbstractSyntaxTreeConstructor().build("xx", using: language)
             return
         } catch AbstractSyntaxTreeConstructor.ConstructionError.constructionFailed(let errors) {
-            XCTAssertEqual(errors.count, 1)
+            XCTAssertEqual(errors.count, 2)
             let errorText = "\(errors[0])"
         
             XCTAssert(errorText.hasPrefix("expected y"), "Unexpected error \(errorText)")
@@ -362,8 +362,8 @@ class GrammarTest: XCTestCase {
         }
         
         if case .constructionFailed(let errors) = rootError {
-            guard errors.count == 2 else {
-                XCTFail("Expected 2 errors but got \(errors.count)\n\(errors)")
+            guard errors.count == 3 else {
+                XCTFail("Expected 3 errors but got \(errors.count)\n\(errors)")
                 return
             }
             
@@ -386,8 +386,8 @@ class GrammarTest: XCTestCase {
         }
         
         if case .constructionFailed(let errors) = rootError {
-            guard errors.count == 2 else {
-                XCTFail("Expected 2 errors but got \(errors.count)\n\(errors)")
+            guard errors.count == 3 else {
+                XCTFail("Expected 3 errors but got \(errors.count)\n\(errors)")
                 return
             }
             

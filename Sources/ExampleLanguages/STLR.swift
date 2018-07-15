@@ -417,14 +417,14 @@ struct IR : Decodable {
     }
     /// Literal
     struct Literal : Decodable {
+        let number : Swift.String?
         let boolean : Swift.String?
         let string : String?
-        let number : Swift.String?
     }
     /// Annotation
     struct Annotation : Decodable {
-        let literal : Literal?
         let label : Label
+        let literal : Literal?
     }
     /// Annotations
     struct Annotations : Decodable {
@@ -437,10 +437,10 @@ struct IR : Decodable {
     }
     /// Terminal
     struct Terminal : Decodable {
-        let regex : Swift.String?
-        let terminalString : TerminalString?
-        let characterSet : CharacterSet?
         let characterRange : CharacterRange?
+        let characterSet : CharacterSet?
+        let terminalString : TerminalString?
+        let regex : Swift.String?
     }
     /// Group
     class Group : Decodable {
@@ -448,15 +448,15 @@ struct IR : Decodable {
     }
     /// Element
     class Element : Decodable {
+        let lookahead : Swift.String?
         let annotations : Annotations?
-        let quantifier : Swift.String?
+        let transient : Swift.String?
+        let void : Swift.String?
+        let identifier : Swift.String?
         let group : Group?
         let negated : Swift.String?
-        let identifier : Swift.String?
-        let lookahead : Swift.String?
         let terminal : Terminal?
-        let void : Swift.String?
-        let transient : Swift.String?
+        let quantifier : Swift.String?
     }
     /// Choice
     class Choice : Decodable {
@@ -469,8 +469,8 @@ struct IR : Decodable {
     /// Expression
     class Expression : Decodable {
         let choice : Choice?
-        let element : Element?
         let sequence : Sequence?
+        let element : Element?
     }
     /// Rule
     struct Rule : Decodable {

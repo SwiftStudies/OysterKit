@@ -13,17 +13,17 @@ class FullSwiftGenerationTest: XCTestCase {
 
 
     func testExample() {
-        func build(_ source : String) throws ->IR.Grammar  {
+        func build(_ source : String) throws ->[IR.Rule]  {
             
             let intermediateRepresentation = try AbstractSyntaxTreeConstructor().build(source, using: IRTokens.generatedLanguage)
             
             print(intermediateRepresentation.description)
             
-            return try ParsingDecoder().decode(IR.Grammar.self, using: intermediateRepresentation)
+            return try ParsingDecoder().decode([IR.Rule].self, using: intermediateRepresentation)
         }
         
         do {
-            for rule in try build("hello = .letter").rule{
+            for rule in try build("hello = .letter"){
                 rule.expression.element!
                 print(rule.expression.element.debugDescription)
             }
