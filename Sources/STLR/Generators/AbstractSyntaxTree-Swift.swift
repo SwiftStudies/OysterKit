@@ -59,8 +59,12 @@ public class SwiftStructure : Generator {
     public static func generate(for scope: STLRScope) throws -> [TextFile] {
         let output = TextFile("IR.swift")
         
+        
+        
         // Generate all of the structural elements required for rules
         output.print(
+            "import Foundation",
+            "",
             "/// Intermediate Representation of the grammar",
             "struct IR {").indent()
         for rule in scope.rules {
@@ -89,8 +93,8 @@ public class SwiftStructure : Generator {
         
         output.print(
             "/// \(identifier.name.typeName)",
-            "struct \(identifier.name.typeName){").indent()
-        for field in generate(expression: expression) {
+            "struct \(identifier.name.typeName) : Decodable {").indent()
+        for field in generate(expression: expression).consolidate() {
             output.print(
                 "let \(field.name) : \(field.type)"
             )
@@ -269,5 +273,34 @@ private extension String {
     }
     var typeName : String {
         return prefix(1).uppercased() + dropFirst()
+    }
+    
+    func arrayElement(`is` type:String)->Bool{
+        guard hasPrefix("[") else {
+            return false
+        }
+        return self.dropFirst().dropLast() == type
+    }
+}
+
+fileprivate extension Array where Element == SwiftStructure.Field {
+    fileprivate func consolidate()->[Element]{
+        var existingFields = [String : String]()
+
+        for field in self {
+            if let existingType = existingFields[field.name] {
+                if existingType == field.type {
+                    existingFields[field.name] = "[\(existingType)]"
+                } else if existingType.arrayElement(is: field.type){
+                    //Do nothing, it will work fine
+                } else {
+                    fatalError("There are multiple fields with the same name (\(field.name)) but different types (\(field.type), and \(existingType). Cannot generate structure")
+                }
+            } else {
+                existingFields[field.name] = field.type
+            }
+        }
+
+        return existingFields.map({SwiftStructure.Field(name: $0, type: $1)})
     }
 }
