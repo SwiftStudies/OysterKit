@@ -66,7 +66,7 @@ public class SwiftStructure : Generator {
             "import Foundation",
             "",
             "/// Intermediate Representation of the grammar",
-            "struct IR {").indent()
+            "struct IR : Decodable {").indent()
         for rule in scope.rules {
             if let identifier = rule.identifier {
                 generate(identifier: identifier, in: scope, to: output)
@@ -91,9 +91,11 @@ public class SwiftStructure : Generator {
             return
         }
         
+        let typeType = identifier.grammarRule?.leftHandRecursive ?? false ? "class" : "struct"
+        
         output.print(
             "/// \(identifier.name.typeName)",
-            "struct \(identifier.name.typeName) : Decodable {").indent()
+            "\(typeType) \(identifier.name.typeName) : Decodable {").indent()
         for field in generate(expression: expression).consolidate() {
             output.print(
                 "let \(field.name) : \(field.type)"
@@ -124,6 +126,7 @@ public class SwiftStructure : Generator {
     }
     
     private static var structuralIdentifiers = [String:Bool]()
+    private static var identiferStack = [String]()
     
     fileprivate static func isStructural(identifier: STLRScope.Identifier)->Bool{
         if let existingAnswer = structuralIdentifiers[identifier.name] {
@@ -140,7 +143,13 @@ public class SwiftStructure : Generator {
             return false
         }
         
+        if identiferStack.contains(identifier.name){
+            return true
+        }
+        
+        identiferStack.append(identifier.name)
         let fields = SwiftStructure.generate(expression: expression)
+        identiferStack.removeLast()
         if fields.count == 0 {
             structuralIdentifiers[identifier.name] = false
             return false

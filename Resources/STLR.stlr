@@ -87,18 +87,18 @@ literal                                 = string | number | boolean
 // Annotations
 //
 annotation                      = "@"
-@error("Expected an annotation label") label (
-"("
-@error("A value must be specified or the () omitted")
-literal
-@error("Missing ')'")
-")"
-)?
+    @error("Expected an annotation label") label (
+    "("
+    @error("A value must be specified or the () omitted")
+    literal
+    @error("Missing ')'")
+    ")"
+    )?
 annotations                     = (annotation ows)+
 
 customLabel                     = @error("Labels must start with a letter or _") (.letter | "_") ( .letter | .decimalDigit | "_" )*
 definedLabel                    = "token" | "error" | "void" | "transient"
-label                                   = definedLabel | customLabel
+label                           = definedLabel | customLabel
 
 //
 // Regular Expressions
