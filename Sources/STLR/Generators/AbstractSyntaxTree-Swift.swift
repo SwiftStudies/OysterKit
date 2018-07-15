@@ -59,14 +59,18 @@ public class SwiftStructure : Generator {
     public static func generate(for scope: STLRScope) throws -> [TextFile] {
         let output = TextFile("IR.swift")
         
-        
+        var tokens = scope.swift(grammar: "IRTokens")!
+        tokens = String(tokens[tokens.range(of: "enum")!.lowerBound...])
         
         // Generate all of the structural elements required for rules
         output.print(
             "import Foundation",
             "",
+            tokens,
+            "",
             "/// Intermediate Representation of the grammar",
-            "struct IR : Decodable {").indent()
+            "struct IR : Decodable {"
+            ).indent()
         for rule in scope.rules {
             if let identifier = rule.identifier {
                 generate(identifier: identifier, in: scope, to: output)
@@ -107,17 +111,21 @@ public class SwiftStructure : Generator {
     fileprivate static func generate(expression:STLRScope.Expression)->[Field]{
         switch expression {
         case .element(let element):
-            if let field = generate(element: element){
-                return [field]
+            if let fields = generate(element: element){
+                return fields
             }
         case .choice(let elements):
-            return elements.compactMap { (element) -> Field? in
-                generate(element: element)?.optional
+            var fields = [Field]()
+            for element in elements {
+                fields.append(contentsOf: generate(element: element) ?? [])
             }
+            return fields.optional
         case .sequence(let elements):
-            return elements.compactMap { (element) -> Field? in
-                generate(element: element)
+            var fields = [Field]()
+            for element in elements {
+                fields.append(contentsOf: generate(element: element) ?? [])
             }
+            return fields
         case .group:
             return []
         }
@@ -159,19 +167,19 @@ public class SwiftStructure : Generator {
         return true
     }
     
-    private static func generate(element:STLRScope.Element)->Field?{
+    private static func generate(element:STLRScope.Element)->[Field]?{
         guard element.isStructural else {
             return nil
         }
         
-        let field : Field?
+        let fields : [Field]?
         
         switch element{
         case .terminal(_, _, _, let annotations):
             if let token = annotations.asRuleAnnotations[.token]?.description {
-                field = Field(name: token, type: token.typeName)
+                fields = [Field(name: token, type: token.typeName)]
             } else {
-                field = nil
+                fields = nil
             }
         case .identifier(let identifier, _, _, let annotations):
             if identifier.isDiscarded {
@@ -179,9 +187,9 @@ public class SwiftStructure : Generator {
             }
             let token = annotations.asRuleAnnotations[.token]?.description ?? identifier.name
             if !identifier.isStructural {
-                field = Field(name: token, type: "Swift.String")
+                fields = [Field(name: token, type: "Swift.String")]
             } else {
-                field = Field(name: token, type: token.typeName)
+                fields = [Field(name: token, type: token.typeName)]
             }
         case .group(let expression, let modifier, let lookahead, let annotations):
             if lookahead {
@@ -194,33 +202,17 @@ public class SwiftStructure : Generator {
                 return nil
             }
 
-            let fields = generate(expression: expression)
-            
-            if fields.count > 1 && annotations.asRuleAnnotations[.token] == nil {
-                guard let token = annotations.asRuleAnnotations[.token]?.description else {
-                    
-                    let tuple = fields.reduce("", { (previous, field) -> String in
-                        let thisField = "\(field.name):\(field.type)"
-                        return "\(previous)\(previous.count == 0 ? "" : ", ")\(thisField)"
-                    }   )
-                    
-                    return Field(name:"tuple", type: "(\(tuple))")
-//                    fatalError("Group has multiple fields, but no defined type. Add @token(\"token-name\") to the reference:\n\t\(element.description) in \n \(identiferStack)")
-                }
-                return Field(name: token, type: "Swift.String")
-            }
-            
-            return fields.first
+            fields = generate(expression: expression)
         }
         
-        if let field = field {
+        if let fields = fields {
             switch element.modifier {
             case .one:
-                return field
+                return fields
             case .zeroOrOne:
-                return field.optional
+                return fields.map({$0.optional})
             case .zeroOrMore, .oneOrMore:
-                return field.array
+                return fields.map({$0.array})
             case .not:
                 return nil
             case .void:
@@ -283,21 +275,6 @@ private extension STLRScope.Element {
     }
 }
 
-//private extension STLRScope.Expression {
-//    var isStructural : Bool {
-//        switch self {
-//        case .element(let element):
-//            return element.isStructural
-//        case .sequence(let elements):
-//            return elements.compactMap({$0.isStructural ? $0 : nil}).count > 0
-//        case .choice(let elements):
-//            return elements.compactMap({$0.isStructural ? $0 : nil}).count > 0
-//        case .group:
-//            return false
-//        }
-//    }
-//}
-
 private extension STLRScope.Identifier {
     var isDiscarded : Bool {
         let annotations = self.annotations.asRuleAnnotations
@@ -338,7 +315,7 @@ fileprivate extension Array where Element == SwiftStructure.Field {
 
         for field in self {
             if let existingType = existingFields[field.name] {
-                if existingType == field.type {
+                if existingType == field.type || field.type.arrayElement(is: existingType){
                     existingFields[field.name] = "[\(existingType)]"
                 } else if existingType.arrayElement(is: field.type){
                     //Do nothing, it will work fine
@@ -351,5 +328,9 @@ fileprivate extension Array where Element == SwiftStructure.Field {
         }
 
         return existingFields.map({SwiftStructure.Field(name: $0, type: $1)})
+    }
+    
+    var optional : [Element] {
+        return map({$0.optional})
     }
 }
