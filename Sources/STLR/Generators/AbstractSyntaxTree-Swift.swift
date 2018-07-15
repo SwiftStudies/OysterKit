@@ -28,15 +28,27 @@ import OysterKit
 /// Generates a Swift structure that you can use a ParsingDecoder with to rapidly build an AST or IR
 public class SwiftStructure : Generator {
     
-    private struct Field {
+    fileprivate struct Field {
         let name : String
         let type : String
+        
+        init(name:String, type:String) {
+            self.name = name.fieldName
+            self.type = type
+        }
         
         var optional : Field {
             if type.hasSuffix("?") {
                 return self
             }
             return Field(name: name, type: type+"?")
+        }
+        
+        var array : Field {
+            if type.hasPrefix("["){
+                return self
+            }
+            return Field(name: name, type: "[\(type)]")
         }
     }
     
@@ -71,18 +83,14 @@ public class SwiftStructure : Generator {
     }
     
     private static func generate(identifier:STLRScope.Identifier, in scope:STLRScope, to output:TextFile){
-        guard let expression = identifier.grammarRule?.expression, !expression.scannable else {
-            return
-        }
-        
-        if expression.scannable{
+        guard identifier.isStructural, let expression = identifier.grammarRule?.expression else {
             return
         }
         
         output.print(
             "/// \(identifier.name.typeName)",
             "struct \(identifier.name.typeName){").indent()
-        for field in generate(expression: expression, in: scope) {
+        for field in generate(expression: expression) {
             output.print(
                 "let \(field.name) : \(field.type)"
             )
@@ -90,49 +98,175 @@ public class SwiftStructure : Generator {
         output.outdent().print("}")
     }
     
-    private static func generate(expression:STLRScope.Expression, in scope:STLRScope)->[Field]{
+    fileprivate static func generate(expression:STLRScope.Expression)->[Field]{
         switch expression {
         case .element(let element):
-            if let field = generate(element: element, in: scope){
+            if let field = generate(element: element){
                 return [field]
             }
         case .choice(let elements):
             return elements.compactMap { (element) -> Field? in
-                generate(element: element, in: scope)?.optional
+                generate(element: element)?.optional
             }
-        default:
+        case .sequence(let elements):
+            return elements.compactMap { (element) -> Field? in
+                generate(element: element)
+            }
+        case .group:
             return []
         }
         
         return []
     }
     
-    private static func generate(element:STLRScope.Element, in scope:STLRScope)->Field?{
-        guard !element.lookahead else {
+    private static func generate(element:STLRScope.Element)->Field?{
+        guard element.isStructural else {
             return nil
         }
         
+        let field : Field?
+        
         switch element{
-        case .terminal(_, let modifier, _, let annotations):
+        case .terminal(_, _, _, let annotations):
             if let token = annotations.asRuleAnnotations[.token]?.description {
-                return Field(name: token, type: token.typeName)
+                field = Field(name: token, type: token.typeName)
+            } else {
+                field = nil
             }
-        case .identifier(let identifier, let modifier, let lookahead, let annotations):
+        case .identifier(let identifier, _, _, let annotations):
+            if identifier.isDiscarded {
+                return nil
+            }
             let token = annotations.asRuleAnnotations[.token]?.description ?? identifier.name
             if identifier.grammarRule?.expression?.scannable ?? true {
-                return Field(name: token, type: "String")
+                field = Field(name: token, type: "Swift.String")
             } else {
-                return Field(name: token, type: token.typeName)
+                field = Field(name: token, type: token.typeName)
             }
         default:
-            return nil
+            field = nil
+        }
+        
+        if let field = field {
+            switch element.modifier {
+            case .one:
+                return field
+            case .zeroOrOne:
+                return field.optional
+            case .zeroOrMore, .oneOrMore:
+                return field.array
+            case .not:
+                return nil
+            case .void:
+                return nil
+            case .transient:
+                return nil
+            }
         }
         
         return nil
     }
 }
 
+private extension STLRScope.Element {
+    var annotations : RuleAnnotations {
+        switch self {
+        case .terminal(_, _, _, let annotations):
+            return annotations.asRuleAnnotations
+        case .identifier(_, _, _, let annotations):
+            return annotations.asRuleAnnotations
+        case .group(_, _, _, let annotations):
+            return annotations.asRuleAnnotations
+        }
+    }
+    
+    var modifier : STLRScope.Modifier {
+        switch self {
+        case .terminal(_, let quantifier, _, _):
+            return quantifier
+        case .identifier(_, let quantifier, _, _):
+            return quantifier
+        case .group(_, let quantifier, _, _):
+            return quantifier
+        }
+    }
+    
+    var isStructural : Bool {
+        if lookahead {
+            return false
+        }
+        
+        if annotations[RuleAnnotation.transient] == .set || annotations[RuleAnnotation.void] == .set {
+            return false
+        }
+        
+        switch self {
+        case .terminal(_, _, _, _):
+            return false
+        case .identifier(let identifier, _, _, let annotations):
+            if annotations.asRuleAnnotations[RuleAnnotation.transient] == .set || annotations.asRuleAnnotations[RuleAnnotation.void] == .set {
+                return false
+            }
+            return true
+        case .group(_, _, _, let annotations):
+            if annotations.asRuleAnnotations[RuleAnnotation.transient] == .set || annotations.asRuleAnnotations[RuleAnnotation.void] == .set {
+                return false
+            }
+            return true
+        }
+    }
+}
+
+//private extension STLRScope.Expression {
+//    var isStructural : Bool {
+//        switch self {
+//        case .element(let element):
+//            return element.isStructural
+//        case .sequence(let elements):
+//            return elements.compactMap({$0.isStructural ? $0 : nil}).count > 0
+//        case .choice(let elements):
+//            return elements.compactMap({$0.isStructural ? $0 : nil}).count > 0
+//        case .group:
+//            return false
+//        }
+//    }
+//}
+
+private extension STLRScope.Identifier {
+    var isDiscarded : Bool {
+        let annotations = self.annotations.asRuleAnnotations
+        if annotations[RuleAnnotation.void] == .set || annotations[RuleAnnotation.transient] == .set{
+            return true
+        }
+        return false
+    }
+    var isStructural : Bool {
+        guard let expression = grammarRule?.expression else {
+            return false
+        }
+        
+        if isDiscarded {
+            return false
+        }
+        
+        let fields = SwiftStructure.generate(expression: expression)
+        if fields.count == 0 {
+            return false
+        }
+        
+        return true
+    }
+}
+
 private extension String {
+    var fieldName : String {
+        let swiftKeywords = ["import"]
+        
+        if swiftKeywords.contains(self){
+            return "`\(self)`"
+        }
+        return self
+    }
     var typeName : String {
         return prefix(1).uppercased() + dropFirst()
     }

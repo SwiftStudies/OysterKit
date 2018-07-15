@@ -55,8 +55,8 @@ stringQuote          = "\""
 terminalBody         = /(\\.|[^"\\\n])+/
 stringBody           = /(\\.|[^"\\\n])*/
 
-string               = stringQuote stringBody @error("Missing terminating quote") stringQuote
-terminalString       = stringQuote @error("Terminals must have at least one character") terminalBody @error("Missing terminating quote") stringQuote
+string               = -stringQuote stringBody @error("Missing terminating quote") -stringQuote
+terminalString       = -stringQuote @error("Terminals must have at least one character") terminalBody @error("Missing terminating quote") -stringQuote
 
 //
 // Character Sets and Ranges
