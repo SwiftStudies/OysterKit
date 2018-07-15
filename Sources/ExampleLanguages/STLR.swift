@@ -417,14 +417,14 @@ struct IR : Decodable {
     }
     /// Literal
     struct Literal : Decodable {
-        let number : Swift.String?
         let boolean : Swift.String?
         let string : String?
+        let number : Swift.String?
     }
     /// Annotation
     struct Annotation : Decodable {
-        let label : Label
         let literal : Literal?
+        let label : Label
     }
     /// Annotations
     struct Annotations : Decodable {
@@ -432,15 +432,15 @@ struct IR : Decodable {
     }
     /// Label
     struct Label : Decodable {
-        let customLabel : Swift.String?
         let definedLabel : Swift.String?
+        let customLabel : Swift.String?
     }
     /// Terminal
     struct Terminal : Decodable {
+        let regex : Swift.String?
         let characterRange : CharacterRange?
         let characterSet : CharacterSet?
         let terminalString : TerminalString?
-        let regex : Swift.String?
     }
     /// Group
     class Group : Decodable {
@@ -448,15 +448,15 @@ struct IR : Decodable {
     }
     /// Element
     class Element : Decodable {
-        let lookahead : Swift.String?
-        let annotations : Annotations?
-        let transient : Swift.String?
-        let void : Swift.String?
-        let identifier : Swift.String?
-        let group : Group?
-        let negated : Swift.String?
         let terminal : Terminal?
+        let transient : Swift.String?
+        let lookahead : Swift.String?
+        let void : Swift.String?
+        let annotations : Annotations?
         let quantifier : Swift.String?
+        let negated : Swift.String?
+        let group : Group?
+        let identifier : Swift.String?
     }
     /// Choice
     class Choice : Decodable {
@@ -468,9 +468,9 @@ struct IR : Decodable {
     }
     /// Expression
     class Expression : Decodable {
-        let choice : Choice?
-        let sequence : Sequence?
         let element : Element?
+        let sequence : Sequence?
+        let choice : Choice?
     }
     /// Rule
     struct Rule : Decodable {
@@ -478,15 +478,24 @@ struct IR : Decodable {
     }
     /// ModuleImport
     struct ModuleImport : Decodable {
-        let moduleName : Swift.String
         let `import` : Swift.String
+        let moduleName : Swift.String
     }
     /// Grammar
     struct Grammar : Decodable {
-        let mark : Swift.String?
-        let moduleImport : [ModuleImport]?
         let rule : [Rule]
+        let moduleImport : [ModuleImport]
+        let mark : Swift.String
     }
-    /// Structure
-    let grammar : Grammar
+    /**
+     Parses the supplied string using the generated grammar into a new instance of
+     the generated data structure
+    
+     - Parameter source: The string to parse
+     - Returns: A new instance of the data-structure
+     */
+    func build(grammar source : Swift.String) throws ->IR.Grammar  {
+        let root = HomogenousTree(with: IRTokens.grammar, matching: source, children: [try AbstractSyntaxTreeConstructor().build(source, using: IRTokens.generatedLanguage)])
+        return try ParsingDecoder().decode(IR.Grammar.self, using: root)
+    }
 }
