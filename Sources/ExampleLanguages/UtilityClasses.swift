@@ -38,6 +38,13 @@ public struct StringCodingKey : CodingKey {
     public init?(intValue: Int) {
         return nil
     }
+}
+
+public func dumpDecoder(decoder:Decoder) throws {
+    let keyedContainer = try decoder.container(keyedBy: StringCodingKey.self)
     
-    
+    print("Keys:")
+    for key in keyedContainer.allKeys {
+        print("\t-\(key.stringValue)")
+    }
 }
