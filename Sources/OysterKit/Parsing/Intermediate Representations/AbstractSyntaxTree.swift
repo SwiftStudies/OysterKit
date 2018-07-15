@@ -53,6 +53,23 @@ public struct HomogenousTree : AbstractSyntaxTree, CustomStringConvertible {
         annotations = node.annotations
     }
     
+    /**
+     Creates a new instance of the node using the supplied parameters. You do not normally need to call this as nodes
+     will be created by an `AbstractSyntaxTreeConstructor`. However if you wish to manually alter a generated tree
+     creating nodes via this method may be appropriate.
+ 
+     - Parameter token: The `Token` for the node
+     - Parameter matchedString: The string that was matched
+     - Parameter children: The child nodes
+     - Parameter annotations: The annotations on the node
+    */
+    public init(with token:Token, matching:String, children:[HomogenousTree], annotations:[RuleAnnotation:RuleAnnotationValue] = [:]){
+        self.token = token
+        self.matchedString = matching
+        self.children = children
+        self.annotations = annotations
+    }
+    
     /// The captured `Token`
     public let     token         : Token
     
