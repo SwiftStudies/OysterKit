@@ -196,6 +196,20 @@ public class SwiftStructure : Generator {
 
             let fields = generate(expression: expression)
             
+            if fields.count > 1 && annotations.asRuleAnnotations[.token] == nil {
+                guard let token = annotations.asRuleAnnotations[.token]?.description else {
+                    
+                    let tuple = fields.reduce("", { (previous, field) -> String in
+                        let thisField = "\(field.name):\(field.type)"
+                        return "\(previous)\(previous.count == 0 ? "" : ", ")\(thisField)"
+                    }   )
+                    
+                    return Field(name:"tuple", type: "(\(tuple))")
+//                    fatalError("Group has multiple fields, but no defined type. Add @token(\"token-name\") to the reference:\n\t\(element.description) in \n \(identiferStack)")
+                }
+                return Field(name: token, type: "Swift.String")
+            }
+            
             return fields.first
         }
         
@@ -329,7 +343,7 @@ fileprivate extension Array where Element == SwiftStructure.Field {
                 } else if existingType.arrayElement(is: field.type){
                     //Do nothing, it will work fine
                 } else {
-                    fatalError("There are multiple fields with the same name (\(field.name)) but different types (\(field.type), and \(existingType). Cannot generate structure")
+                    fatalError("There are multiple fields with the same name (\(field.name)) but different types:\n\t\(field.type)\n\t\(existingType)\nCannot generate structure")
                 }
             } else {
                 existingFields[field.name] = field.type
