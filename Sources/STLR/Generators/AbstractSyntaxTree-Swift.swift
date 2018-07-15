@@ -65,6 +65,7 @@ public class SwiftStructure : Generator {
         // Generate all of the structural elements required for rules
         output.print(
             "import Foundation",
+            "import OysterKit",
             "",
             tokens,
             "",
