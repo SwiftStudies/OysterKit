@@ -73,6 +73,34 @@ public protocol IntermediateRepresentation : class {
      - Returns: A pre-existing `MatchResult` if known for this rule at this position, or `nil` if evaluation should proceed
      */
     func willEvaluate(rule:Rule, at position:String.UnicodeScalarView.Index)->MatchResult?
+
+    /**
+     Called when the parser is about to evaluate a structural rule. This is an oppertunity to prepare any appropriate data structures.
+     It is also possible that `IntermediateRepresentation` could maintain a cache of previous results at this position in order
+     to improve performance, if this is the case and there is already an existing `MatchResult` then it can be returned from this
+     function and will be used instead of reevaluating the result.
+     
+     This variant is used for ExtendedRules where it is known that skipping or scanning behaviours will not cause will Evaluate to
+     be called (i.e. no evaluation of annotations is reuqired)
+     
+     - Parameter token: The token that will be created if the rule is matched
+     - Parameter at: The position in the source of the scan-head
+     - Returns: A pre-existing `MatchResult` if known for this rule at this position, or `nil` if evaluation should proceed
+     */
+    func willEvaluate(token:Token, at position:String.UnicodeScalarView.Index)->MatchResult?
+    
+    /**
+     Called after a `Rule` has been evaluated allowing the AST to make appropriate changes to its structure, or perhaps cache the result
+     to improve performance of subsequent evaluation
+
+     This variant is used for ExtendedRules where it is known that skipping or scanning behaviours will not cause will Evaluate to
+     be called (i.e. no evaluation of annotations is required)
+     
+     - Parameter token: The `Token` that has been evaluated
+     - Parameter annotations: Any annotations required for the resultant node
+     - Parameter matchResult: The result of the evaluation
+     */
+    func didEvaluate(token:Token, annotations:RuleAnnotations,  matchResult:MatchResult)
     
     /**
      Called after a `Rule` has been evaluated allowing the AST to make appropriate changes to its structure, or perhaps cache the result

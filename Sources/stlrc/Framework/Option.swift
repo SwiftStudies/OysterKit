@@ -58,9 +58,13 @@ public extension IndexableOptioned{
             return nil
         }
         
+        let parameter = option.parameters[parameter.rawValue]
         
+        guard parameter.values.count > valueIndex else {
+            return nil
+        }
         
-        return option.parameters[parameter.rawValue] as? V
+        return parameter.values[0] as? V
     }
 
 }

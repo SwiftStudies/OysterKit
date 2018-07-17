@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>BehaviouralRule Protocol Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Protocol/BehaviouralRule" class="dashAnchor"></a>
+
+    <a title="BehaviouralRule Protocol Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="../index.html">
+          OysterKit Docs
+        </a>
+         (95% documented)
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="../search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../index.html">OysterKit Reference</a>
+      <img class="carat" src="../img/carat.png" />
+      BehaviouralRule Protocol Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/AbstractSyntaxTreeConstructor.html">AbstractSyntaxTreeConstructor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/AbstractSyntaxTreeConstructor/ConstructionError.html">– ConstructionError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/AbstractSyntaxTreeConstructor/IntermediateRepresentationNode.html">– IntermediateRepresentationNode</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ClosureRule.html">ClosureRule</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/Lexer.html">Lexer</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/NodeStack.html">NodeStack</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/NodeStackEntry.html">NodeStackEntry</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/Parser.html">Parser</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/RecursiveRule.html">RecursiveRule</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/StateCache.html">StateCache</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/StringScanner.html">StringScanner</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/TokenStream.html">TokenStream</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/TokenStreamIterator.html">TokenStreamIterator</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Global Variables.html">Global Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Global Variables.html#/s:9OysterKit19transientTokenValueSivp">transientTokenValue</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/GrammarError.html">GrammarError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/LanguageError.html">LanguageError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/Log.html">Log</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/MatchResult.html">MatchResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/ParserRule.html">ParserRule</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/RuleAnnotation.html">RuleAnnotation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/RuleAnnotationValue.html">RuleAnnotationValue</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/ScannerRule.html">ScannerRule</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/TransientToken.html">TransientToken</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Array.html">Array</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/CharacterSet.html">CharacterSet</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Collection.html">Collection</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Decodable.html">Decodable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Int.html">Int</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/String.html">String</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/_ParsingDecoder.html">_ParsingDecoder</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Functions.html">Functions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit2eeoiySbAA5Token_p_AaC_ptF">==(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit8areEqual3lhs3rhsSbSDyAA14RuleAnnotationOAA0gH5ValueOG_AItF">areEqual(lhs:rhs:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/AbstractSyntaxTree.html">AbstractSyntaxTree</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/BehaviouralRule.html">BehaviouralRule</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/DecodeableAbstractSyntaxTree.html">DecodeableAbstractSyntaxTree</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HumanConsumableError.html">HumanConsumableError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/Language.html">Language</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/LexicalContext.html">LexicalContext</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/Node.html">Node</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/Rule.html">Rule</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/Token.html">Token</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Behaviour.html">Behaviour</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Behaviour/Kind.html">– Kind</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Cardinality.html">Cardinality</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/HomogenousTree.html">HomogenousTree</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/LabelledToken.html">LabelledToken</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ParsingDecoder.html">ParsingDecoder</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit17CustomRuleClosurea">CustomRuleClosure</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit13StreamedTokena">StreamedToken</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit4Testa">Test</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            <h1>BehaviouralRule</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">BehaviouralRule</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/Rule.html">Rule</a></span></code></pre>
+
+                </div>
+              </div>
+            <p>Behavioural rule is both an extension to and ultimately a replacement for current
+<code><a href="../Protocols/Rule.html">Rule</a></code>. It bakes in the logic for repeating, negation, lookahead, as well as
+transient and void rules both flattening the evaluation hierarchy and making it
+easier to extend (previously implementations would have to add any of this logic
+themselves, and it&rsquo;s easy to get wrong.</p>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit15BehaviouralRuleP9behaviourAA9BehaviourVvp"></a>
+                    <a name="//apple_ref/swift/Property/behaviour" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit15BehaviouralRuleP9behaviourAA9BehaviourVvp">behaviour</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The behaviour for the rule controlling things like cardinality and lookahead</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">behaviour</span><span class="p">:</span> <span class="kt"><a href="../Structs/Behaviour.html">Behaviour</a></span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit15BehaviouralRuleP11annotationsSDyAA0D10AnnotationOAA0dF5ValueOGvp"></a>
+                    <a name="//apple_ref/swift/Property/annotations" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit15BehaviouralRuleP11annotationsSDyAA0D10AnnotationOAA0dF5ValueOGvp">annotations</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The annotations on the rule</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">annotations</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit15BehaviouralRuleP4test4with3foryAA15LexicalAnalyzer_p_AA26IntermediateRepresentation_ptKF"></a>
+                    <a name="//apple_ref/swift/Method/test(with:for:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit15BehaviouralRuleP4test4with3foryAA15LexicalAnalyzer_p_AA26IntermediateRepresentation_ptKF">test(with:for:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This function implements the actual test. It is responsible soley for performing
+the test. The scanner head will be managed correctly based on success (it will be
+left in the position at the end of the test), or returned to its pre-test position
+on failure.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">test</span><span class="p">(</span><span class="n">with</span> <span class="nv">lexer</span><span class="p">:</span> <span class="kt"><a href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a></span><span class="p">,</span> <span class="k">for</span> <span class="nv">ir</span><span class="p">:</span> <span class="kt"><a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></span><span class="p">)</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>lexer</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The lexer controlling the scanner</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>ir</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The intermediate representation</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit15BehaviouralRuleP12instanceWith9behaviour11annotationsxAA9BehaviourVSg_SDyAA0D10AnnotationOAA0dJ5ValueOGSgtF"></a>
+                    <a name="//apple_ref/swift/Method/instanceWith(behaviour:annotations:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit15BehaviouralRuleP12instanceWith9behaviour11annotationsxAA9BehaviourVSg_SDyAA0D10AnnotationOAA0dJ5ValueOGSgtF">instanceWith(behaviour:annotations:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This function should create a new instance of this rule, replacing the behaviour and
+any annotations with those specified in the parameters if not nil, or maintaining the
+current ones if nil.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">instanceWith</span><span class="p">(</span><span class="nv">behaviour</span><span class="p">:</span> <span class="kt"><a href="../Structs/Behaviour.html">Behaviour</a></span><span class="p">?,</span> <span class="nv">annotations</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="k">Self</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>behaviour</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The behaviour for the new instance, if nil the new copy should
+use the same behaviour as this instance.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>annotations</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The annotations for the new instance, if nil the new copy
+should use the same behaviour as this instance.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A new instance with the specified behaviour and annotations.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit15BehaviouralRulePAAE8producesAA5Token_pvp"></a>
+                    <a name="//apple_ref/swift/Property/produces" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit15BehaviouralRulePAAE8producesAA5Token_pvp">produces</a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The token that the rule produces if structural. For backwards compatibility
+<code>Transient</code> tokens are created for skipping and scanning</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">produces</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Token.html">Token</a></span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit15BehaviouralRulePAAE10structuralSbvp"></a>
+                    <a name="//apple_ref/swift/Property/structural" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit15BehaviouralRulePAAE10structuralSbvp">structural</a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p><code>true</code> if the rule creates ndoes, false otherwise</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">structural</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit15BehaviouralRulePAAE5errorSSSgvp"></a>
+                    <a name="//apple_ref/swift/Property/error" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit15BehaviouralRulePAAE5errorSSSgvp">error</a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The user specified (in an annotation) error associated with the rule</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit15BehaviouralRulePAAE12instanceWith4withxAA9BehaviourV_tF"></a>
+                    <a name="//apple_ref/swift/Method/instanceWith(with:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit15BehaviouralRulePAAE12instanceWith4withxAA9BehaviourV_tF">instanceWith(with:)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates a new instance of the rule with the specified behaviour but
+all other attributes maintained.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">instanceWith</span><span class="p">(</span><span class="n">with</span> <span class="nv">behaviour</span><span class="p">:</span> <span class="kt"><a href="../Structs/Behaviour.html">Behaviour</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="k">Self</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>behaviour</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The new behaviour</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit15BehaviouralRulePAAE12instanceWith11annotationsxSDyAA0D10AnnotationOAA0dH5ValueOG_tF"></a>
+                    <a name="//apple_ref/swift/Method/instanceWith(annotations:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit15BehaviouralRulePAAE12instanceWith11annotationsxSDyAA0D10AnnotationOAA0dH5ValueOG_tF">instanceWith(annotations:)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates a new instance of the rule with the specified annotations but
+all other attributes maintained.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">instanceWith</span><span class="p">(</span><span class="nv">annotations</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="k">Self</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>annotations</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The new annotations</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit15BehaviouralRulePAAE8instance4with14andAnnotationsAA0D0_pAA5Token_pSg_SDyAA0D10AnnotationOAA0dJ5ValueOGSgtF"></a>
+                    <a name="//apple_ref/swift/Method/instance(with:andAnnotations:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit15BehaviouralRulePAAE8instance4with14andAnnotationsAA0D0_pAA5Token_pSg_SDyAA0D10AnnotationOAA0dJ5ValueOGSgtF">instance(with:andAnnotations:)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Create a new instance of the rule with the supplied annotations and token but otherwise exactly the same</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">instance</span><span class="p">(</span><span class="n">with</span> <span class="nv">token</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Token.html">Token</a></span><span class="p">?,</span> <span class="n">andAnnotations</span> <span class="nv">annotations</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Protocols/Rule.html">Rule</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>token</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The new <code><a href="../Protocols/Token.html">Token</a></code> or <code>nil</code> if the token should remain the same</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>annotations</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The new <code>Annotations</code> or <code>nil</code> if the annotations are unchanged</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A new instance of the <code><a href="../Protocols/Rule.html">Rule</a></code>. Callers should be aware that this may be a <q>deep</q> copy if the implementation is a value type</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit15BehaviouralRulePAAE12newBehaviour_7negated9lookaheadxAA0F0V4KindOSg_SbSgALtF"></a>
+                    <a name="//apple_ref/swift/Method/newBehaviour(_:negated:lookahead:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit15BehaviouralRulePAAE12newBehaviour_7negated9lookaheadxAA0F0V4KindOSg_SbSgALtF">newBehaviour(_:negated:lookahead:)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates a new instance of the rule with the specified behavioural attributes
+all other attributes maintained. If any of the supplied parameters are nil
+the current values will be used. All parameters default to nil.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">newBehaviour</span><span class="p">(</span><span class="n">_</span> <span class="nv">kind</span><span class="p">:</span><span class="kt"><a href="../Structs/Behaviour.html">Behaviour</a></span><span class="o">.</span><span class="kt">Kind</span><span class="p">?</span><span class="o">=</span><span class="kc">nil</span><span class="p">,</span> <span class="nv">negated</span><span class="p">:</span><span class="kt">Bool</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">lookahead</span><span class="p">:</span><span class="kt">Bool</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span><span class="o">-&gt;</span><span class="k">Self</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>kind</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The kind of behaviour</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>negated</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p><code>true</code> if the results of <code>test()</code> should be negated</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>lookahead</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Is lookahead behaviour required</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit15BehaviouralRulePAAE12newBehaviour_11cardinality7negated9lookaheadxAA0F0V4KindOSg_SNySiGSbSgANtF"></a>
+                    <a name="//apple_ref/swift/Method/newBehaviour(_:cardinality:negated:lookahead:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit15BehaviouralRulePAAE12newBehaviour_11cardinality7negated9lookaheadxAA0F0V4KindOSg_SNySiGSbSgANtF">newBehaviour(_:cardinality:negated:lookahead:)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates a new instance of the rule with the specified behavioural attributes
+all other attributes maintained. If any of the supplied parameters are nil
+the current values will be used. All parameters default to nil.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">newBehaviour</span><span class="p">(</span><span class="n">_</span> <span class="nv">kind</span><span class="p">:</span><span class="kt"><a href="../Structs/Behaviour.html">Behaviour</a></span><span class="o">.</span><span class="kt">Kind</span><span class="p">?</span><span class="o">=</span><span class="kc">nil</span><span class="p">,</span> <span class="nv">cardinality</span><span class="p">:</span> <span class="kt">ClosedRange</span><span class="o">&lt;</span><span class="kt">Int</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">negated</span><span class="p">:</span><span class="kt">Bool</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">lookahead</span><span class="p">:</span><span class="kt">Bool</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span><span class="o">-&gt;</span><span class="k">Self</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>kind</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The kind of behaviour</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>cardinality</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A closed range specifying the range of matches required</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>negated</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p><code>true</code> if the results of <code>test()</code> should be negated</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>lookahead</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Is lookahead behaviour required</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit15BehaviouralRulePAAE12newBehaviour_11cardinality7negated9lookaheadxAA0F0V4KindOSg_s16PartialRangeFromVySiGSbSgAPtF"></a>
+                    <a name="//apple_ref/swift/Method/newBehaviour(_:cardinality:negated:lookahead:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit15BehaviouralRulePAAE12newBehaviour_11cardinality7negated9lookaheadxAA0F0V4KindOSg_s16PartialRangeFromVySiGSbSgAPtF">newBehaviour(_:cardinality:negated:lookahead:)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Creates a new instance of the rule with the specified behavioural attributes
+all other attributes maintained. If any of the supplied parameters are nil
+the current values will be used. All parameters default to nil.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">newBehaviour</span><span class="p">(</span><span class="n">_</span> <span class="nv">kind</span><span class="p">:</span><span class="kt"><a href="../Structs/Behaviour.html">Behaviour</a></span><span class="o">.</span><span class="kt">Kind</span><span class="p">?</span><span class="o">=</span><span class="kc">nil</span><span class="p">,</span> <span class="nv">cardinality</span><span class="p">:</span> <span class="kt">PartialRangeFrom</span><span class="o">&lt;</span><span class="kt">Int</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">negated</span><span class="p">:</span><span class="kt">Bool</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">lookahead</span><span class="p">:</span><span class="kt">Bool</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span><span class="o">-&gt;</span><span class="k">Self</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>kind</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The kind of behaviour</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>cardinality</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A partial range specifying the range of matches required with no maxium</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>negated</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p><code>true</code> if the results of <code>test()</code> should be negated</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>lookahead</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Is lookahead behaviour required</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit15BehaviouralRulePAAE5match4with3forAA11MatchResultOAA15LexicalAnalyzer_p_AA26IntermediateRepresentation_ptKF"></a>
+                    <a name="//apple_ref/swift/Method/match(with:for:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit15BehaviouralRulePAAE5match4with3forAA11MatchResultOAA15LexicalAnalyzer_p_AA26IntermediateRepresentation_ptKF">match(with:for:)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Standard implementation that uses the evaluate function to apply the behaviour of the rule.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">match</span><span class="p">(</span><span class="n">with</span> <span class="nv">lexer</span><span class="p">:</span> <span class="kt"><a href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a></span><span class="p">,</span> <span class="k">for</span> <span class="nv">ir</span><span class="p">:</span> <span class="kt"><a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Enums/MatchResult.html">MatchResult</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>lexer</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The lexer controlling the scanning head</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>ir</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The intermediate representation to use</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The match result</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit15BehaviouralRulePAAE8evaluate_5using3andAA11MatchResultOyAA15LexicalAnalyzer_p_AA26IntermediateRepresentation_ptKXE_AaI_pAaJ_ptKF"></a>
+                    <a name="//apple_ref/swift/Method/evaluate(_:using:and:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit15BehaviouralRulePAAE8evaluate_5using3andAA11MatchResultOyAA15LexicalAnalyzer_p_AA26IntermediateRepresentation_ptKXE_AaI_pAaJ_ptKF">evaluate(_:using:and:)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Standard implementation that applies the behaviour of the rule.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">evaluate</span><span class="p">(</span><span class="n">_</span> <span class="nv">matcher</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:9OysterKit4Testa">Test</a></span><span class="p">,</span> <span class="n">using</span> <span class="nv">lexer</span><span class="p">:</span> <span class="kt"><a href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a></span><span class="p">,</span> <span class="n">and</span> <span class="nv">ir</span><span class="p">:</span> <span class="kt"><a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Enums/MatchResult.html">MatchResult</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>matcher</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The test to use, wrap, in the specified behaviour.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>lexer</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The lexer controlling the scanning head</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>ir</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The intermediate representation to use</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The match result</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-07-17)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>

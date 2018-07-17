@@ -44,7 +44,11 @@ class OutputFileOption : Option, IndexableParameterized{
         
         init(withPath path:String = "./"){
             if path.hasSuffix("/"){
-                self.path = path
+                if path.hasPrefix("~") || path.hasPrefix("/"){
+                    self.path = NSString(string:path).expandingTildeInPath
+                } else {
+                    self.path = path
+                }
             } else {
                 self.file = NSString(string:path).lastPathComponent
                 self.path = NSString(string:path).deletingLastPathComponent

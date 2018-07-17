@@ -465,24 +465,31 @@ public indirect enum ParserRule : Rule, CustomStringConvertible{
 /**
  A dummy `IntermediateRepresentation` used for lookahead evaluation instead of the standard IR so that the lookahead as no impact on the IR
  */
-final private class LookAheadIR : IntermediateRepresentation{
+final class LookAheadIR : IntermediateRepresentation{
+    func willEvaluate(token: Token, at position: String.UnicodeScalarView.Index) -> MatchResult? {
+        return nil
+    }
+    
+    func didEvaluate(token: Token, annotations: RuleAnnotations, matchResult: MatchResult) {
+    }
+    
     
     /// Does nothing
     /// Returns: `nil`
-    final fileprivate func willEvaluate(rule: Rule, at position: String.UnicodeScalarView.Index) -> MatchResult? {
+    final internal func willEvaluate(rule: Rule, at position: String.UnicodeScalarView.Index) -> MatchResult? {
         return nil
     }
     
     /// Does nothing
-    final fileprivate func didEvaluate(rule: Rule, matchResult: MatchResult) {
+    final internal func didEvaluate(rule: Rule, matchResult: MatchResult) {
     }
     
     /// Does nothing
-    final fileprivate func willBuildFrom(source: String, with: Language) {
+    final internal func willBuildFrom(source: String, with: Language) {
     }
     
     /// Does nothing
-    final fileprivate func didBuild() {
+    final internal func didBuild() {
     }
     
     /// Does nothing

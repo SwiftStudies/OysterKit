@@ -24,7 +24,7 @@
 
 
 import Foundation
-import OysterKit
+@testable import OysterKit
 
 final class LightWeightNode : Node, CustomStringConvertible{
     let token   : Token
@@ -58,6 +58,8 @@ final class LightWeightNode : Node, CustomStringConvertible{
 }
 
 final class LightWeightAST : IntermediateRepresentation{
+
+    
     private var     scalars   : String.UnicodeScalarView!
     private var     nodeStack = NodeStack<LightWeightNode>()
     
@@ -73,9 +75,14 @@ final class LightWeightAST : IntermediateRepresentation{
     }
     
     final func willEvaluate(rule: Rule, at position: String.UnicodeScalarView.Index) -> MatchResult? {
+        return willEvaluate(token: rule.produces, at: position)
+    }
+    
+    func willEvaluate(token: Token, at position: String.UnicodeScalarView.Index) -> MatchResult? {
         nodeStack.push()
         return nil
     }
+    
     
     final func willBuildFrom(source: String, with: Language) {
         scalars = source.unicodeScalars
@@ -88,26 +95,31 @@ final class LightWeightAST : IntermediateRepresentation{
     
     let ignoreNodes : Set<String> =  ["whitespace","comment","oneLineComment","oneLineCommentStart","restOfLine","character","newline","step","then","or"]
     
-    final func didEvaluate(rule: Rule, matchResult: MatchResult) {
+    func didEvaluate(token: Token, annotations: RuleAnnotations, matchResult: MatchResult) {
         let children = nodeStack.pop()
         
         switch matchResult {
         case .success(let context):
-            if rule.transient || ignoreNodes.contains("\(rule.produces)"){
+            if (annotations.transient || token.transient) || ignoreNodes.contains("\(token)"){
                 nodeStack.top?.adopt(children.nodes)
                 return
             }
             
             let newNode : LightWeightNode
             if children.nodes.count > 0 {
-                newNode = LightWeightNode(for: rule.produces, range: context.range, children: children.nodes, annotations: rule.annotations)
+                newNode = LightWeightNode(for: token, range: context.range, children: children.nodes, annotations: annotations)
             } else {
-                newNode = LightWeightNode(for: rule.produces, range: context.range, children: nil, annotations: rule.annotations)
+                newNode = LightWeightNode(for: token, range: context.range, children: nil, annotations: annotations)
             }
             
             nodeStack.top?.append(newNode)
         default: return
         }
+    }
+
+    
+    final func didEvaluate(rule: Rule, matchResult: MatchResult) {
+        didEvaluate(token: rule.produces, annotations: rule.annotations, matchResult: matchResult)
     }
     
 }

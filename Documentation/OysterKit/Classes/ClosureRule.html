@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>ClosureRule Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Class/ClosureRule" class="dashAnchor"></a>
+
+    <a title="ClosureRule Class Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="../index.html">
+          OysterKit Docs
+        </a>
+         (95% documented)
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="../search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../index.html">OysterKit Reference</a>
+      <img class="carat" src="../img/carat.png" />
+      ClosureRule Class Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/AbstractSyntaxTreeConstructor.html">AbstractSyntaxTreeConstructor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/AbstractSyntaxTreeConstructor/ConstructionError.html">– ConstructionError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/AbstractSyntaxTreeConstructor/IntermediateRepresentationNode.html">– IntermediateRepresentationNode</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ClosureRule.html">ClosureRule</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/Lexer.html">Lexer</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/NodeStack.html">NodeStack</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/NodeStackEntry.html">NodeStackEntry</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/Parser.html">Parser</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/RecursiveRule.html">RecursiveRule</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/StateCache.html">StateCache</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/StringScanner.html">StringScanner</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/TokenStream.html">TokenStream</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/TokenStreamIterator.html">TokenStreamIterator</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Global Variables.html">Global Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Global Variables.html#/s:9OysterKit19transientTokenValueSivp">transientTokenValue</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/GrammarError.html">GrammarError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/LanguageError.html">LanguageError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/Log.html">Log</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/MatchResult.html">MatchResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/ParserRule.html">ParserRule</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/RuleAnnotation.html">RuleAnnotation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/RuleAnnotationValue.html">RuleAnnotationValue</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/ScannerRule.html">ScannerRule</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/TransientToken.html">TransientToken</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Array.html">Array</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/CharacterSet.html">CharacterSet</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Collection.html">Collection</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Decodable.html">Decodable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Int.html">Int</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/String.html">String</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/_ParsingDecoder.html">_ParsingDecoder</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Functions.html">Functions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit2eeoiySbAA5Token_p_AaC_ptF">==(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit8areEqual3lhs3rhsSbSDyAA14RuleAnnotationOAA0gH5ValueOG_AItF">areEqual(lhs:rhs:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/AbstractSyntaxTree.html">AbstractSyntaxTree</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/BehaviouralRule.html">BehaviouralRule</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/DecodeableAbstractSyntaxTree.html">DecodeableAbstractSyntaxTree</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/HumanConsumableError.html">HumanConsumableError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/Language.html">Language</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/LexicalContext.html">LexicalContext</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/Node.html">Node</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/Rule.html">Rule</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/Token.html">Token</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Behaviour.html">Behaviour</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Behaviour/Kind.html">– Kind</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Cardinality.html">Cardinality</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/HomogenousTree.html">HomogenousTree</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/LabelledToken.html">LabelledToken</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ParsingDecoder.html">ParsingDecoder</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit17CustomRuleClosurea">CustomRuleClosure</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit13StreamedTokena">StreamedToken</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit4Testa">Test</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            <h1>ClosureRule</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">ClosureRule</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/BehaviouralRule.html">BehaviouralRule</a></span></code></pre>
+
+                </div>
+              </div>
+            <p>An implementation of a <code><a href="../Protocols/BehaviouralRule.html">BehaviouralRule</a></code> that allows the specification of a <code><a href="../Typealiases.html#/s:9OysterKit4Testa">Test</a></code>
+closure to provide the required check.</p>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit11ClosureRuleC11annotationsSDyAA0D10AnnotationOAA0dF5ValueOGvp"></a>
+                    <a name="//apple_ref/swift/Property/annotations" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit11ClosureRuleC11annotationsSDyAA0D10AnnotationOAA0dF5ValueOGvp">annotations</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Annotations for the rule</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">annotations</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit11ClosureRuleC9behaviourAA9BehaviourVvp"></a>
+                    <a name="//apple_ref/swift/Property/behaviour" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit11ClosureRuleC9behaviourAA9BehaviourVvp">behaviour</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Behaviour for the rule</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">behaviour</span><span class="p">:</span> <span class="kt"><a href="../Structs/Behaviour.html">Behaviour</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit11ClosureRuleC7matcheryyAA15LexicalAnalyzer_p_AA26IntermediateRepresentation_ptKcvp"></a>
+                    <a name="//apple_ref/swift/Property/matcher" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit11ClosureRuleC7matcheryyAA15LexicalAnalyzer_p_AA26IntermediateRepresentation_ptKcvp">matcher</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The <code><a href="../Typealiases.html#/s:9OysterKit4Testa">Test</a></code> closure used by the rule</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">matcher</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:9OysterKit4Testa">Test</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit11ClosureRuleC4with3and5usingAcA9BehaviourV_SDyAA0D10AnnotationOAA0dI5ValueOGyAA15LexicalAnalyzer_p_AA26IntermediateRepresentation_ptKctcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(with:and:using:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit11ClosureRuleC4with3and5usingAcA9BehaviourV_SDyAA0D10AnnotationOAA0dI5ValueOGyAA15LexicalAnalyzer_p_AA26IntermediateRepresentation_ptKctcfc">init(with:and:using:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Create a an instance supplied annotations and token that will use the supplied <code><a href="../Typealiases.html#/s:9OysterKit4Testa">Test</a></code> closure
+to perform its match</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">with</span> <span class="nv">behaviour</span><span class="p">:</span><span class="kt"><a href="../Structs/Behaviour.html">Behaviour</a></span><span class="p">,</span> <span class="n">and</span> <span class="nv">annotations</span><span class="p">:</span><span class="kt"><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></span> <span class="o">=</span> <span class="p">[:],</span> <span class="n">using</span> <span class="nv">matcher</span><span class="p">:</span><span class="kd">@escaping</span> <span class="kt"><a href="../Typealiases.html#/s:9OysterKit4Testa">Test</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>token</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The new <code><a href="../Protocols/Token.html">Token</a></code> or <code>nil</code> if the token should remain the same</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>annotations</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The new <code>Annotations</code> or <code>nil</code> if the annotations are unchanged</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>matcher</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The <code><a href="../Typealiases.html#/s:9OysterKit4Testa">Test</a></code> closure</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit11ClosureRuleC12instanceWith9behaviour11annotationsAcA9BehaviourVSg_SDyAA0D10AnnotationOAA0dJ5ValueOGSgtF"></a>
+                    <a name="//apple_ref/swift/Method/instanceWith(behaviour:annotations:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit11ClosureRuleC12instanceWith9behaviour11annotationsAcA9BehaviourVSg_SDyAA0D10AnnotationOAA0dJ5ValueOGSgtF">instanceWith(behaviour:annotations:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This function should create a new instance of this rule, replacing the behaviour and
+any annotations with those specified in the parameters if not nil, or maintaining the
+current ones if nil.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">instanceWith</span><span class="p">(</span><span class="nv">behaviour</span><span class="p">:</span> <span class="kt"><a href="../Structs/Behaviour.html">Behaviour</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">annotations</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">ClosureRule</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>behaviour</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The behaviour for the new instance, if nil the new copy should
+use the same behaviour as this instance.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>annotations</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The annotations for the new instance, if nil the new copy
+should use the same behaviour as this instance.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A new instance with the specified behaviour and annotations.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit11ClosureRuleC4test4with3foryAA15LexicalAnalyzer_p_AA26IntermediateRepresentation_ptKF"></a>
+                    <a name="//apple_ref/swift/Method/test(with:for:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit11ClosureRuleC4test4with3foryAA15LexicalAnalyzer_p_AA26IntermediateRepresentation_ptKF">test(with:for:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This function implements the actual test. It is responsible soley for performing
+the test. The scanner head will be managed correctly based on success (it will be
+left in the position at the end of the test), or returned to its pre-test position
+on failure.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">test</span><span class="p">(</span><span class="n">with</span> <span class="nv">lexer</span><span class="p">:</span> <span class="kt"><a href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a></span><span class="p">,</span> <span class="k">for</span> <span class="nv">ir</span><span class="p">:</span> <span class="kt"><a href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></span><span class="p">)</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>lexer</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The lexer controlling the scanner</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>ir</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The intermediate representation</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-07-17)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>

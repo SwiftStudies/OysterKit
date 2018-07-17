@@ -408,6 +408,17 @@ public class STLRScope : CustomStringConvertible {
             }
         }
         
+        var lookahead : Bool {
+            switch self {
+            case .terminal(_,_,let lookahead,_):
+                return lookahead
+            case .identifier(_,_,let lookahead,_):
+                return lookahead
+            case .group(_,_,let lookahead,_):
+                return lookahead
+            }
+        }
+        
         /// Returns the annotations on the quantifier (rather than the element it is applied to)
         public var quantifierAnnotations : ElementAnnotations {
             // If there is no quantifier, there are no quantifier annotations
@@ -487,7 +498,7 @@ public class STLRScope : CustomStringConvertible {
         public var scannable : Bool {
             switch self {
             case .terminal(let terminal, let quantity, let lookahead,  let annotations) where quantity == .one && lookahead == false && annotations.isEmpty:
-                return terminal.string != nil
+                return terminal.string != nil || terminal.regex != nil
             default: return false
             }
         }

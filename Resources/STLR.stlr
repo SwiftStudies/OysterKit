@@ -55,8 +55,8 @@ stringQuote          = "\""
 terminalBody         = /(\\.|[^"\\\n])+/
 stringBody           = /(\\.|[^"\\\n])*/
 
-string               = stringQuote stringBody @error("Missing terminating quote") stringQuote
-terminalString       = stringQuote @error("Terminals must have at least one character") terminalBody @error("Missing terminating quote") stringQuote
+string               = -stringQuote stringBody @error("Missing terminating quote") -stringQuote
+terminalString       = -stringQuote @error("Terminals must have at least one character") terminalBody @error("Missing terminating quote") -stringQuote
 
 //
 // Character Sets and Ranges
@@ -87,18 +87,18 @@ literal                                 = string | number | boolean
 // Annotations
 //
 annotation                      = "@"
-@error("Expected an annotation label") label (
-"("
-@error("A value must be specified or the () omitted")
-literal
-@error("Missing ')'")
-")"
-)?
+    @error("Expected an annotation label") label (
+    "("
+    @error("A value must be specified or the () omitted")
+    literal
+    @error("Missing ')'")
+    ")"
+    )?
 annotations                     = (annotation ows)+
 
 customLabel                     = @error("Labels must start with a letter or _") (.letter | "_") ( .letter | .decimalDigit | "_" )*
 definedLabel                    = "token" | "error" | "void" | "transient"
-label                                   = definedLabel | customLabel
+label                           = definedLabel | customLabel
 
 //
 // Regular Expressions
@@ -150,4 +150,5 @@ moduleImport                    = whitespace* @token("import") "import" .whitesp
 // Grammar
 //
 
-grammar                                 = @token("mark") >>(!" "|" ") moduleImport* @error("Expected at least one rule") rule+ //NB: Mark is there to ensure there is no automatic reduction of rule into grammar if there is only one rule, this should perhaps become an annotation
+grammar         =   @token("modules") (moduleImport*)
+                    @token("rules") (@error("Expected at least one rule") rule+)

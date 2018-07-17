@@ -1,0 +1,8 @@
+name = .letter+ -.whitespace
+age  = .decimalDigit+ -.whitespace
+
+names = name+
+ages  = age+
+
+list = names ages -.whitespaceOrNewline*
+

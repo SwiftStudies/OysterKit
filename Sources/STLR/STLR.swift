@@ -1,7 +1,7 @@
 // 
 // STLR Generated Swift File
 // 
-// Generated: 2018-07-14 22:07:23 +0000
+// Generated: 2018-07-15 20:52:13 +0000
 // 
 #if os(macOS)
 import Cocoa
@@ -40,7 +40,7 @@ enum STLR : Int, Token {
 		    }
 	}
 
-	case _transient = -1, `whitespace`, `ows`, `quantifier`, `negated`, `transient`, `void`, `lookahead`, `terminalBody`, `stringBody`, `string`, `terminalString`, `characterSetName`, `characterSet`, `rangeOperator`, `characterRange`, `number`, `boolean`, `literal`, `annotation`, `annotations`, `customLabel`, `definedLabel`, `label`, `regexDelimeter`, `startRegex`, `endRegex`, `regexBody`, `regex`, `terminal`, `group`, `identifier`, `element`, `assignmentOperators`, `or`, `then`, `choice`, `notNewRule`, `sequence`, `expression`, `lhs`, `rule`, `moduleName`, `moduleImport`, `mark`, `grammar`
+	case _transient = -1, `whitespace`, `ows`, `quantifier`, `negated`, `transient`, `void`, `lookahead`, `terminalBody`, `stringBody`, `string`, `terminalString`, `characterSetName`, `characterSet`, `rangeOperator`, `characterRange`, `number`, `boolean`, `literal`, `annotation`, `annotations`, `customLabel`, `definedLabel`, `label`, `regexDelimeter`, `startRegex`, `endRegex`, `regexBody`, `regex`, `terminal`, `group`, `identifier`, `element`, `assignmentOperators`, `or`, `then`, `choice`, `notNewRule`, `sequence`, `expression`, `lhs`, `rule`, `moduleName`, `moduleImport`, `modules`, `rules`, `grammar`
 
 	func _rule(_ annotations: RuleAnnotations = [ : ])->Rule {
 		switch self {
@@ -76,16 +76,16 @@ enum STLR : Int, Token {
 		// string
 		case .string:
 			return [
-					"\"".terminal(token: T._transient),
+					"\"".terminal(token: T._transient, annotations: [RuleAnnotation.void : RuleAnnotationValue.set]),
 					T.stringBody._rule(),
-					"\"".terminal(token: T._transient, annotations: [RuleAnnotation.error : RuleAnnotationValue.string("Missing terminating quote")]),
+					"\"".terminal(token: T._transient, annotations: [RuleAnnotation.error : RuleAnnotationValue.string("Missing terminating quote"),RuleAnnotation.void : RuleAnnotationValue.set]),
 					].sequence(token: T.string, annotations: annotations.isEmpty ? [ : ] : annotations)
 		// terminalString
 		case .terminalString:
 			return [
-					"\"".terminal(token: T._transient),
+					"\"".terminal(token: T._transient, annotations: [RuleAnnotation.void : RuleAnnotationValue.set]),
 					T.terminalBody._rule([RuleAnnotation.error : RuleAnnotationValue.string("Terminals must have at least one character")]),
-					"\"".terminal(token: T._transient, annotations: [RuleAnnotation.error : RuleAnnotationValue.string("Missing terminating quote")]),
+					"\"".terminal(token: T._transient, annotations: [RuleAnnotation.error : RuleAnnotationValue.string("Missing terminating quote"),RuleAnnotation.void : RuleAnnotationValue.set]),
 					].sequence(token: T.terminalString, annotations: annotations.isEmpty ? [ : ] : annotations)
 		// characterSetName
 		case .characterSetName:
@@ -359,18 +359,17 @@ enum STLR : Int, Token {
 					T.moduleName._rule(),
 					T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 1, producing: T._transient),
 					].sequence(token: T.moduleImport, annotations: annotations.isEmpty ? [ : ] : annotations)
-		// mark
-		case .mark:
-			return [
-								" ".terminal(token: T._transient).not(producing: T._transient),
-								" ".terminal(token: T._transient),
-								].oneOf(token: T.mark, annotations: annotations).lookahead()
+		// modules
+		case .modules:
+			return T.moduleImport._rule().repeated(min: 0, producing: T.modules, annotations: annotations)
+		// rules
+		case .rules:
+			return T.rule._rule().repeated(min: 1, producing: T.rules, annotations: annotations.isEmpty ? [RuleAnnotation.error : RuleAnnotationValue.string("Expected at least one rule")] : annotations)
 		// grammar
 		case .grammar:
 			return [
-					T.mark._rule(),
-					T.moduleImport._rule().repeated(min: 0, producing: T._transient),
-					T.rule._rule().repeated(min: 1, producing: T._transient),
+					T.modules._rule(),
+					T.rules._rule(),
 					].sequence(token: T.grammar, annotations: annotations.isEmpty ? [ : ] : annotations)
 		}
 	}

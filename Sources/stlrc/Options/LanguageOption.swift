@@ -35,14 +35,14 @@ class LanguageOption : Option, IndexableParameterized {
     public struct Language : ParameterType{
         enum Supported : String{
             case swift
-            case test
+            case swiftIR
 
             var fileExtension : String {
                 switch self {
                 case .swift:
                     return rawValue
-                case .test:
-                    return "test"
+                case .swiftIR:
+                    return "swift"
                 }
             }
             
@@ -61,8 +61,8 @@ class LanguageOption : Option, IndexableParameterized {
                 switch self {
                 case .swift:
                     generatedLanguage = stlrParser.ast.swift(grammar: grammarName)
-                case .test:
-                    generatedLanguage = "test"
+                case .swiftIR:
+                    generatedLanguage = (try? SwiftStructure.generate(for: stlrParser.ast))?.first?.content
                 }
                 
                 if let generatedLanguage = generatedLanguage {

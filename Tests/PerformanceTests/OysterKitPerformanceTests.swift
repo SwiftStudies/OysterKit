@@ -933,6 +933,14 @@ class FullSwiftParser : Parser{
     
     func testSwiftParserPerformance(){
         final class NullIR : IntermediateRepresentation{
+            func willEvaluate(token: Token, at position: String.UnicodeScalarView.Index) -> MatchResult? {
+                return nil
+            }
+            
+            func didEvaluate(token: Token, annotations: RuleAnnotations, matchResult: MatchResult) {
+                
+            }
+            
             fileprivate func willBuildFrom(source: String, with: Language) {
                 
             }
@@ -966,6 +974,14 @@ class FullSwiftParser : Parser{
     
     func testPerformanceSTLRParseOnly() {
         final class NullIR : IntermediateRepresentation{
+            func willEvaluate(token: Token, at position: String.UnicodeScalarView.Index) -> MatchResult? {
+                return nil
+            }
+            
+            func didEvaluate(token: Token, annotations: RuleAnnotations, matchResult: MatchResult) {
+                
+            }
+            
             fileprivate func willBuildFrom(source: String, with: Language) {
                 
             }
