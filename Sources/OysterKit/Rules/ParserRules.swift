@@ -466,6 +466,13 @@ public indirect enum ParserRule : Rule, CustomStringConvertible{
  A dummy `IntermediateRepresentation` used for lookahead evaluation instead of the standard IR so that the lookahead as no impact on the IR
  */
 final class LookAheadIR : IntermediateRepresentation{
+    func willEvaluate(token: Token, at position: String.UnicodeScalarView.Index) -> MatchResult? {
+        return nil
+    }
+    
+    func didEvaluate(token: Token, annotations: RuleAnnotations, matchResult: MatchResult) {
+    }
+    
     
     /// Does nothing
     /// Returns: `nil`

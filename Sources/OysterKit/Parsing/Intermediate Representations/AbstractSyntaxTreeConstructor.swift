@@ -101,7 +101,7 @@ public class AbstractSyntaxTreeConstructor  {
     private var     nodeStack = NodeStack<IntermediateRepresentationNode>()
     
     /// The _errors collected during parsing
-    private var     _errors     = [Error]()
+    internal var     _errors     = [Error]()
     
     /// The errors generated during parsing
     public  var     errors : [Error] {
@@ -113,6 +113,12 @@ public class AbstractSyntaxTreeConstructor  {
     
     /// Creates a new instance, preparing to parse the supplied source
     public required init(){
+    }
+    
+    /// Used for testing, creates a new blank instance for manipulation
+    public init(with source:String){
+        self.source = source
+        self.scalars = source.unicodeScalars
     }
     
     /**
@@ -170,6 +176,21 @@ public class AbstractSyntaxTreeConstructor  {
         
         do {
             try ParsingStrategy.parse(source, using: language, with: Lexer.self, into: self)
+            return try generate(astType)
+        } catch {
+            _errors.append(error)
+            throw ConstructionError.constructionFailed(causes: _errors)
+        }
+    }
+    
+    /**
+     Generates a homogenous AST based on the current state of the IR
+     
+     - Parameter using: The ``AbstractSyntaxTree`` to construct
+     - Returns: The ``AbstractSyntaxTree``
+     */
+    func generate<AST:AbstractSyntaxTree>(_ astType:AST.Type) throws ->AST {
+        do {
             let topNode : IntermediateRepresentationNode
             
             guard let topNodes = nodeStack.top?.nodes, topNodes.count > 0 else {
@@ -203,20 +224,115 @@ public class AbstractSyntaxTreeConstructor  {
 
 }
 
+//Adds the ability to quickly access standard annotations
+extension Dictionary where Key == RuleAnnotation, Value == RuleAnnotationValue {
+    var error : String? {
+        if let error = self[.error] {
+            if case let .string(message) = error {
+                return message
+            }
+        }
+        return nil
+    }
+
+    var pinned : Bool {
+        if let value = self[.pinned] {
+            if case .set = value {
+                return true
+            }
+        }
+        return false
+    }
+
+    
+    var void : Bool {
+        if let value = self[.void] {
+            if case .set = value {
+                return true
+            }
+        }
+        return false
+    }
+    
+    var transient : Bool {
+        if let value = self[.transient] {
+            if case .set = value {
+                return true
+            }
+        }
+        return false
+    }
+}
+
 /**
  Provide the required implementation of the `IntermediateRepresentation` without exposing API consumers to it. This will enable more
  aggressive refactoring without code breaking changes
  */
 extension AbstractSyntaxTreeConstructor : IntermediateRepresentation {
+
+    
     /// Does nothing
     public func willBuildFrom(source: String, with: Language) {
     }
     
     /// Does nothing
     public func willEvaluate(rule: Rule, at position: String.UnicodeScalarView.Index) -> MatchResult? {
-        nodeStack.push()
+        return willEvaluate(token: rule.produces, at: position)
+    }
     
-        return cache?.recall(at: position, key: rule.produces.rawValue)
+    /// Prepare for evaluation
+    public func willEvaluate(token: Token, at position: String.UnicodeScalarView.Index) -> MatchResult? {
+        nodeStack.push()
+        
+        return cache?.recall(at: position, key: token.rawValue)
+    }
+    
+    /// Process the results of evalution
+    public func didEvaluate(token: Token, annotations: RuleAnnotations, matchResult: MatchResult) {
+        let children = nodeStack.pop()
+        
+        cache?.remember(at: matchResult.range, key: token.rawValue, value: matchResult)
+        
+        switch matchResult {
+        case .success(let context):
+            // If it's transient, or the constructor produces no nodes then the current top should adopt the children
+            /// TODO: Is this a defect (see github issue 24 https://github.com/SwiftStudies/OysterKit/issues/24)
+            guard let node = match(token: token, annotations: annotations, context: context, children: children.nodes) else {
+                nodeStack.top?.adopt(children.nodes)
+                return
+            }
+            
+            nodeStack.top?.append(node)
+        case .ignoreFailure(let index):
+            if let node = ignoreableFailure(token: token, annotations: annotations, index: index){
+                nodeStack.top?.append(node)
+            } else {
+                nodeStack.top?.adopt(children.nodes)
+            }
+        case .failure(let index):
+            //If we have an error on the rule
+            if let error = annotations.error {
+                let errorEnd = index < scalars.endIndex ? scalars.index(after:index) : index
+                let parsingError = LanguageError.parsingError(at: index..<errorEnd, message: error)
+                
+                let existing = _errors.compactMap({ (error)->Error? in
+                    if let error = error as? LanguageError {
+                        if error == parsingError {
+                            return error
+                        }
+                    }
+                    return nil
+                })
+                
+                if existing.count == 0{
+                    _errors.append(parsingError)
+                }
+                
+            }
+            failed(token: token)
+        case .consume:
+            break
+        }
     }
     
     /// Processes the results of evaluation

@@ -378,9 +378,7 @@ fileprivate extension STLRScope.Expression {
             return nil
         case .group:
             return nil
-        }
-        
-        return nil
+        }        
     }
 }
 

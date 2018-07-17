@@ -26,6 +26,14 @@ import XCTest
 @testable import OysterKit
 
 class TestIR : IntermediateRepresentation {
+    func willEvaluate(token: Token, at position: String.UnicodeScalarView.Index) -> MatchResult? {
+        return nil
+    }
+    
+    func didEvaluate(token: Token, annotations: RuleAnnotations, matchResult: MatchResult) {
+        results.append(matchResult)
+    }
+    
     
     var results = [MatchResult]()
     
@@ -36,7 +44,7 @@ class TestIR : IntermediateRepresentation {
         return nil
     }
     func didEvaluate(rule: Rule, matchResult: MatchResult) {
-        results.append(matchResult)
+        didEvaluate(token: rule.produces, annotations: rule.annotations, matchResult: matchResult)
     }
     func willBuildFrom(source: String, with: Language) {
     }
