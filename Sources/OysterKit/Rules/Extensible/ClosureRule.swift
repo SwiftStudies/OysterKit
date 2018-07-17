@@ -24,18 +24,29 @@
 
 import Foundation
 
-
-
-
-
-public typealias RuleTest = (LexicalAnalyzer, IntermediateRepresentation) throws -> Void
-
-public final class BlockRule : BehaviouralRule {
+/**
+ An implementation of a `BehaviouralRule` that allows the specification of a `Test`
+ closure to provide the required check.
+ */
+public final class ClosureRule : BehaviouralRule {
+    /// Annotations for the rule
     public let annotations: RuleAnnotations
-    public let behaviour: Behaviour
-    public let matcher : RuleTest
 
-    public init(with behaviour:Behaviour, and annotations:RuleAnnotations = [:], using matcher:@escaping RuleTest){
+    /// Behaviour for the rule
+    public let behaviour: Behaviour
+    
+    /// The `Test` closure used by the rule
+    public let matcher : Test
+
+    /**
+     Create a an instance supplied annotations and token that will use the supplied `Test` closure
+     to perform its match
+     
+     - Parameter token: The new ``Token`` or ``nil`` if the token should remain the same
+     - Parameter annotations: The new ``Annotations`` or ``nil`` if the annotations are unchanged
+     - Parameter matcher: The `Test` closure
+     */
+    public init(with behaviour:Behaviour, and annotations:RuleAnnotations = [:], using matcher:@escaping Test){
         self.behaviour = behaviour
         self.annotations = annotations
         self.matcher = matcher
@@ -44,13 +55,34 @@ public final class BlockRule : BehaviouralRule {
         assert((behaviour.negate && behaviour.cardinality.minimumMatches == 0) == false, "Cannot negate an optional (minimum cardinality is 0) rule (negating an ignorable failure makes no sense).")
     }
     
-    public func instanceWith(behaviour: Behaviour? = nil, annotations: RuleAnnotations? = nil) -> BlockRule {
+    
+    /**
+     This function should create a new instance of this rule, replacing the behaviour and
+     any annotations with those specified in the parameters if not nil, or maintaining the
+     current ones if nil.
+     
+     - Parameter behaviour: The behaviour for the new instance, if nil the new copy should
+     use the same behaviour as this instance.
+     - Parameter annotations: The annotations for the new instance, if nil the new copy
+     should use the same behaviour as this instance.
+     - Returns: A new instance with the specified behaviour and annotations.
+     */
+    public func instanceWith(behaviour: Behaviour? = nil, annotations: RuleAnnotations? = nil) -> ClosureRule {
         let newBehaviour = behaviour ?? self.behaviour
         let newAnnotations = annotations ?? self.annotations
         
-        return BlockRule(with: newBehaviour, and: newAnnotations, using: matcher)
+        return ClosureRule(with: newBehaviour, and: newAnnotations, using: matcher)
     }
-    
+
+    /**
+     This function implements the actual test. It is responsible soley for performing
+     the test. The scanner head will be managed correctly based on success (it will be
+     left in the position at the end of the test), or returned to its pre-test position
+     on failure.
+     
+     - Parameter lexer: The lexer controlling the scanner
+     - Parameter ir: The intermediate representation
+     */
     public func test(with lexer: LexicalAnalyzer, for ir: IntermediateRepresentation) throws {
         try matcher(lexer,ir)
     }

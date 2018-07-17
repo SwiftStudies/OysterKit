@@ -43,6 +43,13 @@
       "warning": "undocumented"
     },
     {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generators/SourceGenerator.swift",
+      "line": 33,
+      "symbol": "TextFile.content",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
       "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Optimisers/CharacterSetOnlyChoiceOptimizer.swift",
       "line": 42,
       "symbol": "CharacterSetOnlyChoiceOptimizer",
