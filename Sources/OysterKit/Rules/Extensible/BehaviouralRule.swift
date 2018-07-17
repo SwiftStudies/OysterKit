@@ -22,7 +22,7 @@
 //    OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 //    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-public protocol ExtendedRule : Rule {
+public protocol BehaviouralRule : Rule {
     var  behaviour   : Behaviour {get}
     var  annotations : RuleAnnotations {get}
     
@@ -30,7 +30,7 @@ public protocol ExtendedRule : Rule {
     func instanceWith(behaviour:Behaviour?, annotations:RuleAnnotations?)->Self
 }
 
-public extension ExtendedRule {
+public extension BehaviouralRule {
     public var produces: Token {
         switch behaviour.kind {
         case .skipping:
@@ -90,15 +90,15 @@ public extension ExtendedRule {
         return instanceWith(behaviour: Behaviour(.structural(token: token), cardinality: behaviour.cardinality, negated: behaviour.negate, lookahead: behaviour.lookahead), annotations: annotations ?? self.annotations)
     }
     
-    public func newBehaviour(_ kind:Kind?=nil, negated:Bool? = nil, lookahead:Bool? = nil)->Self{
+    public func newBehaviour(_ kind:Behaviour.Kind?=nil, negated:Bool? = nil, lookahead:Bool? = nil)->Self{
         return instanceWith(behaviour: Behaviour(kind ?? behaviour.kind, cardinality: behaviour.cardinality, negated: negated ?? behaviour.negate, lookahead: lookahead ?? behaviour.lookahead), annotations: annotations)
     }
     
-    public func newBehaviour(_ kind:Kind?=nil, cardinality: ClosedRange<Int>, negated:Bool? = nil, lookahead:Bool? = nil)->Self{
+    public func newBehaviour(_ kind:Behaviour.Kind?=nil, cardinality: ClosedRange<Int>, negated:Bool? = nil, lookahead:Bool? = nil)->Self{
         return instanceWith(behaviour: behaviour.instanceWith(kind, cardinality: cardinality, negated: negated, lookahead: lookahead), annotations: annotations)
     }
     
-    public func newBehaviour(_ kind:Kind?=nil, cardinality: PartialRangeFrom<Int>, negated:Bool? = nil, lookahead:Bool? = nil)->Self{
+    public func newBehaviour(_ kind:Behaviour.Kind?=nil, cardinality: PartialRangeFrom<Int>, negated:Bool? = nil, lookahead:Bool? = nil)->Self{
         return instanceWith(behaviour: behaviour.instanceWith(kind, cardinality: cardinality, negated: negated, lookahead: lookahead), annotations: annotations)
     }
     

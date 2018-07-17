@@ -30,7 +30,7 @@ import Foundation
 
 public typealias RuleTest = (LexicalAnalyzer, IntermediateRepresentation) throws -> Void
 
-public final class BlockRule : ExtendedRule {
+public final class BlockRule : BehaviouralRule {
     public let annotations: RuleAnnotations
     public let behaviour: Behaviour
     public let matcher : RuleTest
