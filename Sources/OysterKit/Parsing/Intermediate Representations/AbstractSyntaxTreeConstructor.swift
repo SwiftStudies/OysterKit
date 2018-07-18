@@ -225,8 +225,8 @@ public class AbstractSyntaxTreeConstructor  {
 }
 
 //Adds the ability to quickly access standard annotations
-extension Dictionary where Key == RuleAnnotation, Value == RuleAnnotationValue {
-    var error : String? {
+public extension Dictionary where Key == RuleAnnotation, Value == RuleAnnotationValue {
+    public var error : String? {
         if let error = self[.error] {
             if case let .string(message) = error {
                 return message
@@ -235,7 +235,7 @@ extension Dictionary where Key == RuleAnnotation, Value == RuleAnnotationValue {
         return nil
     }
 
-    var pinned : Bool {
+    public var pinned : Bool {
         if let value = self[.pinned] {
             if case .set = value {
                 return true
@@ -245,7 +245,7 @@ extension Dictionary where Key == RuleAnnotation, Value == RuleAnnotationValue {
     }
 
     
-    var void : Bool {
+    public var void : Bool {
         if let value = self[.void] {
             if case .set = value {
                 return true
@@ -254,7 +254,7 @@ extension Dictionary where Key == RuleAnnotation, Value == RuleAnnotationValue {
         return false
     }
     
-    var transient : Bool {
+    public var transient : Bool {
         if let value = self[.transient] {
             if case .set = value {
                 return true

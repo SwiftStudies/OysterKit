@@ -1,10 +1,11 @@
 import Foundation
 import OysterKit
 
-enum IRTokens : Int, Token {
+/// Intermediate Representation of the grammar
+fileprivate enum STLRRules : Int, Token {
 
 	// Convenience alias
-	private typealias T = IRTokens
+	private typealias T = STLRRules
 	// Cache for compiled regular expressions
 	private static var regularExpressionCache = [String : NSRegularExpression]()
 	
@@ -189,10 +190,10 @@ enum IRTokens : Int, Token {
 					].oneOf(token: T.terminal, annotations: annotations)
 		// group
 		case .group:
-			guard let cachedRule = IRTokens.leftHandRecursiveRules[self.rawValue] else {
+			guard let cachedRule = STLRRules.leftHandRecursiveRules[self.rawValue] else {
 				// Create recursive shell
 				let recursiveRule = RecursiveRule(stubFor: self, with: annotations.isEmpty ? [ : ] : annotations)
-				IRTokens.leftHandRecursiveRules[self.rawValue] = recursiveRule
+				STLRRules.leftHandRecursiveRules[self.rawValue] = recursiveRule
 				// Create the rule we would normally generate
 				let rule = [
 					"(".terminal(token: T._transient),
@@ -210,10 +211,10 @@ enum IRTokens : Int, Token {
 			return ScannerRule.regularExpression(token: T.identifier, regularExpression: T.regularExpression("^[:alpha:]\\w*|_\\w*"), annotations: annotations)
 		// element
 		case .element:
-			guard let cachedRule = IRTokens.leftHandRecursiveRules[self.rawValue] else {
+			guard let cachedRule = STLRRules.leftHandRecursiveRules[self.rawValue] else {
 				// Create recursive shell
 				let recursiveRule = RecursiveRule(stubFor: self, with: annotations.isEmpty ? [ : ] : annotations)
-				IRTokens.leftHandRecursiveRules[self.rawValue] = recursiveRule
+				STLRRules.leftHandRecursiveRules[self.rawValue] = recursiveRule
 				// Create the rule we would normally generate
 				let rule = [
 					T.annotations._rule().optional(producing: T._transient),
@@ -262,10 +263,10 @@ enum IRTokens : Int, Token {
 					].oneOf(token: T.then, annotations: annotations.isEmpty ? [RuleAnnotation.void : RuleAnnotationValue.set] : annotations)
 		// choice
 		case .choice:
-			guard let cachedRule = IRTokens.leftHandRecursiveRules[self.rawValue] else {
+			guard let cachedRule = STLRRules.leftHandRecursiveRules[self.rawValue] else {
 				// Create recursive shell
 				let recursiveRule = RecursiveRule(stubFor: self, with: annotations.isEmpty ? [ : ] : annotations)
-				IRTokens.leftHandRecursiveRules[self.rawValue] = recursiveRule
+				STLRRules.leftHandRecursiveRules[self.rawValue] = recursiveRule
 				// Create the rule we would normally generate
 				let rule = [
 					T.element._rule(),
@@ -288,10 +289,10 @@ enum IRTokens : Int, Token {
 								].sequence(token: T._transient, annotations: annotations.isEmpty ? [ : ] : annotations).not(producing: T.notNewRule, annotations: annotations)
 		// sequence
 		case .sequence:
-			guard let cachedRule = IRTokens.leftHandRecursiveRules[self.rawValue] else {
+			guard let cachedRule = STLRRules.leftHandRecursiveRules[self.rawValue] else {
 				// Create recursive shell
 				let recursiveRule = RecursiveRule(stubFor: self, with: annotations.isEmpty ? [ : ] : annotations)
-				IRTokens.leftHandRecursiveRules[self.rawValue] = recursiveRule
+				STLRRules.leftHandRecursiveRules[self.rawValue] = recursiveRule
 				// Create the rule we would normally generate
 				let rule = [
 					T.element._rule(),
@@ -307,10 +308,10 @@ enum IRTokens : Int, Token {
 			return cachedRule
 		// expression
 		case .expression:
-			guard let cachedRule = IRTokens.leftHandRecursiveRules[self.rawValue] else {
+			guard let cachedRule = STLRRules.leftHandRecursiveRules[self.rawValue] else {
 				// Create recursive shell
 				let recursiveRule = RecursiveRule(stubFor: self, with: annotations.isEmpty ? [ : ] : annotations)
-				IRTokens.leftHandRecursiveRules[self.rawValue] = recursiveRule
+				STLRRules.leftHandRecursiveRules[self.rawValue] = recursiveRule
 				// Create the rule we would normally generate
 				let rule = [
 					T.choice._rule(),
@@ -395,104 +396,109 @@ enum IRTokens : Int, Token {
 	}
 }
 
-
-/// Intermediate Representation of the grammar
-struct IR : Decodable {
-    /// String
-    struct String : Decodable {
-        let stringBody : Swift.String
-    }
-    /// TerminalString
-    struct TerminalString : Decodable {
-        let terminalBody : Swift.String
-    }
-    /// CharacterSet
-    struct CharacterSet : Decodable {
-        let characterSetName : Swift.String
-    }
-    /// CharacterRange
-    struct CharacterRange : Decodable {
-        let terminalString : [TerminalString]
-    }
-    /// Literal
-    struct Literal : Decodable {
-        let number : Swift.String?
-        let string : String?
-        let boolean : Swift.String?
-    }
-    /// Annotation
-    struct Annotation : Decodable {
-        let literal : Literal?
-        let label : Label
-    }
-    /// Annotations
-    struct Annotations : Decodable {
-        let annotation : [Annotation]
-    }
-    /// Label
-    struct Label : Decodable {
-        let definedLabel : Swift.String?
-        let customLabel : Swift.String?
-    }
-    /// Terminal
-    struct Terminal : Decodable {
-        let characterRange : CharacterRange?
-        let characterSet : CharacterSet?
-        let terminalString : TerminalString?
-        let regex : Swift.String?
-    }
-    /// Group
-    class Group : Decodable {
-        let expression : Expression
-    }
-    /// Element
-    class Element : Decodable {
-        let negated : Swift.String?
-        let transient : Swift.String?
-        let identifier : Swift.String?
-        let terminal : Terminal?
-        let lookahead : Swift.String?
-        let quantifier : Swift.String?
-        let group : Group?
-        let annotations : Annotations?
-        let void : Swift.String?
-    }
-    /// Choice
-    class Choice : Decodable {
-        let element : [Element]
-    }
-    /// Sequence
-    class Sequence : Decodable {
-        let element : [Element]
-    }
-    /// Expression
-    class Expression : Decodable {
-        let sequence : Sequence?
-        let choice : Choice?
-        let element : Element?
-    }
-    /// Rule
-    struct Rule : Decodable {
-        let expression : Expression
-    }
-    /// ModuleImport
-    struct ModuleImport : Decodable {
-        let `import` : Swift.String
-        let moduleName : Swift.String
-    }
-    /// Modules
-    typealias Modules = [ModuleImport]?
-    /// Rules
-    typealias Rules = [Rule]
-    /// Grammar
-    struct Grammar : Decodable {
-        let modules : Modules
-        let rules : Rules
+struct STLR : Codable {
+    
+    /// String 
+    struct String : Codable {
+        let stringBody: Swift.String
     }
     
-    /// Root structure
+    /// TerminalString 
+    struct TerminalString : Codable {
+        let terminalBody: Swift.String
+    }
+    
+    /// CharacterSet 
+    struct CharacterSet : Codable {
+        let characterSetName: Swift.String
+    }
+    
+    typealias CharacterRange = [TerminalString] 
+    
+    /// Literal 
+    struct Literal : Codable {
+        let number: Swift.String?
+        let boolean: Swift.String?
+        let string: String?
+    }
+    
+    /// Annotation 
+    struct Annotation : Codable {
+        let literal: Literal?
+        let label: Label
+    }
+    
+    typealias Annotations = [Annotation] 
+    
+    /// Label 
+    struct Label : Codable {
+        let customLabel: Swift.String?
+        let definedLabel: Swift.String?
+    }
+    
+    /// Terminal 
+    struct Terminal : Codable {
+        let characterRange: CharacterRange?
+        let terminalString: TerminalString?
+        let characterSet: CharacterSet?
+        let regex: Swift.String?
+    }
+    
+    /// Group 
+    class Group : Codable {
+        let expression: Expression
+    }
+    
+    /// Element 
+    class Element : Codable {
+        let group: Group?
+        let transient: Swift.String?
+        let terminal: Terminal?
+        let identifier: Swift.String?
+        let lookahead: Swift.String?
+        let void: Swift.String?
+        let negated: Swift.String?
+        let annotations: Annotations?
+        let quantifier: Swift.String?
+    }
+    
+    typealias Choice = [Element] 
+    
+    typealias Sequence = [Element] 
+    
+    /// Expression 
+    class Expression : Codable {
+        let element: Element?
+        let choice: Choice?
+        let sequence: Sequence?
+    }
+    
+    /// Rule 
+    struct Rule : Codable {
+        let void: Swift.String?
+        let transient: Swift.String?
+        let identifier: Swift.String
+        let annotations: Annotations?
+        let expression: Expression
+        let assignmentOperators: Swift.String
+    }
+    
+    /// ModuleImport 
+    struct ModuleImport : Codable {
+        let `import`: Swift.String
+        let moduleName: Swift.String
+    }
+    
+    typealias Modules = [ModuleImport] 
+    
+    typealias Rules = [Rule] 
+    
+    /// Grammar 
+    struct Grammar : Codable {
+        let modules: Modules
+        let rules: Rules
+    }
     let grammar : Grammar
-    
     /**
      Parses the supplied string using the generated grammar into a new instance of
      the generated data structure
@@ -500,9 +506,9 @@ struct IR : Decodable {
      - Parameter source: The string to parse
      - Returns: A new instance of the data-structure
      */
-    static func build(_ source : Swift.String) throws ->IR  {
-        let root = HomogenousTree(with: LabelledToken(withLabel: "root"), matching: source, children: [try AbstractSyntaxTreeConstructor().build(source, using: IRTokens.generatedLanguage)])
+    static func build(_ source : Swift.String) throws ->STLR{
+        let root = HomogenousTree(with: LabelledToken(withLabel: "root"), matching: source, children: [try AbstractSyntaxTreeConstructor().build(source, using: STLRRules.generatedLanguage)])
         print(root.description)
-        return try ParsingDecoder().decode(IR.self, using: root)
+        return try ParsingDecoder().decode(STLR.self, using: root)
     }
 }

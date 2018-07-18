@@ -14,7 +14,7 @@ class FullSwiftGenerationTest: XCTestCase {
 
     func testGeneratedIR() {
         do {
-            let rules = try IR.build("hello = .letter").grammar.rules
+            let rules = try STLR.build("hello = .letter | .decimalDigit").grammar.rules
             
             guard rules.count == 1 else {
                 XCTFail("Expected 1 rule")

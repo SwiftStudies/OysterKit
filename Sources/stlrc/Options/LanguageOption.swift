@@ -62,7 +62,7 @@ class LanguageOption : Option, IndexableParameterized {
                 case .swift:
                     generatedLanguage = stlrParser.ast.swift(grammar: grammarName)
                 case .swiftIR:
-                    generatedLanguage = (try? SwiftStructure.generate(for: stlrParser.ast))?.first?.content
+                    generatedLanguage = (try? SwiftStructure.generate(for: stlrParser.ast, grammar: grammarName))?.first?.content
                 }
                 
                 if let generatedLanguage = generatedLanguage {

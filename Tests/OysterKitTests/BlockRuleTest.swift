@@ -2,7 +2,7 @@
 //  BlockRuleTest.swift
 //  OysterKitTests
 //
-//  Created by Nigel Hughes on 16/07/2018.
+//  Created on 16/07/2018.
 //
 
 import XCTest
@@ -109,6 +109,20 @@ class BlockRuleTest: XCTestCase {
             return (lexer,ir,MatchResult.failure(atIndex: lexer.index),nil)
         }
         
+    }
+    
+    func testTestLexerIsolation(){
+        let source = "a"
+        
+        let rule = ClosureRule(with: Behaviour(.scanning)) { (lexer, ir) in
+            try lexer.scanNext()
+            //Force scanning past the end
+            try lexer.scanNext()
+        }
+        
+        for failure in validate(lowLevelResult: check(rule:rule, on:source, includeAST: false), index: source.startIndex, errors: ["Match failed"], expectedResult: .failure, token: nil){
+            XCTFail(failure)
+        }
     }
     
     func testStructure(){
