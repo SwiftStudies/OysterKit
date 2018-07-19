@@ -33,17 +33,22 @@ public enum System : Operation {
     
     /// Create a new directory
     case makeDirectory(name:String)
+
+    /// Remove a directory and its contents
+    case removeDirectory(name:String)
+
+    /// Change the working directory in the operation context
+    case changeDirectory(name:String)
     
-    public func perform(in url: URL) throws {
-        let path = url.path
+    public func perform(in context: OperationContext) throws {
+        let path = context.workingDirectory.path
         switch self {
         case .shell(let command, let arguments):
-            var all = [command]; all.append(contentsOf: arguments)
-            let result = execute(launchPath: path, arguments: all)
+            let result = execute(command: command,in:path ,arguments: arguments)
             throw OperationError.information(message: result)
         case .makeDirectory(let name):
             do {
-                try System.shell("mkdir",arguments: [name]).perform(in: url)
+                try System.shell("mkdir",arguments: [name]).perform(in: context)
             } catch OperationError.information(let message) {
                 if message.range(of: "File exists") != nil {
                     throw OperationError.error(message: "File already exists \(name)", exitCode: 255)
@@ -51,13 +56,23 @@ public enum System : Operation {
             } catch {
                 throw OperationError.error(message: "\(error)", exitCode: 255)
             }
+        case .removeDirectory(let name):
+            if name == "/" {
+                throw OperationError.error(message: "Won't remove root directory", exitCode: Int(EXIT_FAILURE))
+            }
+            try System.shell("rm",arguments: ["-r","\(name)"]).perform(in: context)
+        case .changeDirectory(let name):
+            context.workingDirectory = context.workingDirectory.appendingPathComponent(name)
         }
     }
     
     /// Taken from [StackOverflow](https://stackoverflow.com/questions/26971240/how-do-i-run-an-terminal-command-in-a-swift-script-e-g-xcodebuild)
-    private func execute(launchPath: String, arguments: [String]) -> String{
+    private func execute(command: String, in path:String, arguments: [String]) -> String{
+        var arguments = arguments
+        arguments.insert(command, at: 0)
         let task = Process()
-        task.launchPath = launchPath
+        task.launchPath = "/usr/bin/env"
+        task.currentDirectoryPath = path
         task.arguments = arguments
         
         let pipe = Pipe()

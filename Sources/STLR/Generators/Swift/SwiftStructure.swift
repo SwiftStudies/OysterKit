@@ -131,7 +131,9 @@ public class SwiftStructure : Generator {
                 "let root = HomogenousTree(with: LabelledToken(withLabel: \"root\"), matching: source, children: [try AbstractSyntaxTreeConstructor().build(source, using: \(name)Rules.generatedLanguage)])",
                 "print(root.description)",
                 "return try ParsingDecoder().decode(\(name).self, using: root)").outdent().print(
-            "}"
+            "}",
+            "",
+            "static let generatedLanguage = \(name)Rules.generatedLanguage"
         )
         
         output.outdent().print("}")

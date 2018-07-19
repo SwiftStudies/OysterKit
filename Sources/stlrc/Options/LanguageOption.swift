@@ -36,13 +36,14 @@ class LanguageOption : Option, IndexableParameterized {
         enum Supported : String{
             case swift
             case swiftIR
+            case swiftPM
 
-            var fileExtension : String {
+            var fileExtension : String? {
                 switch self {
                 case .swift:
                     return rawValue
-                case .swiftIR:
-                    return "swift"
+                default:
+                    return nil
                 }
             }
             
@@ -52,6 +53,8 @@ class LanguageOption : Option, IndexableParameterized {
                     return nil
                 case .swiftIR:
                     return try SwiftStructure.generate(for: scope, grammar: grammarName)
+                case .swiftPM:
+                    return try SwiftPackageManager.generate(for: scope, grammar: grammarName)
                 }
             }
             
@@ -69,9 +72,10 @@ class LanguageOption : Option, IndexableParameterized {
                 /// Use operation based generators
                 if let operations = try operations(in: stlrParser.ast, for: grammarName) {
                     let workingDirectory = URL(fileURLWithPath: outputTo).deletingLastPathComponent().path
+                    let context = OperationContext(with: URL(fileURLWithPath: workingDirectory))
                     for operation in operations{
                         do {
-                            try operation.perform(in: URL(fileURLWithPath: workingDirectory))
+                            try operation.perform(in: context)
                         } catch {
                             if let error = error as? OperationError {
                                 print(error.message)

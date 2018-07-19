@@ -27,8 +27,8 @@ import Foundation
 /// Captures the output of a source generator
 public class TextFile : Operation {
     /// Writes the file at the specified location
-    public func perform(in url: URL) throws {
-        let writeTo = url.appendingPathComponent(name)
+    public func perform(in context: OperationContext) throws {
+        let writeTo = context.workingDirectory.appendingPathComponent(name)
 
         do {
             try content.write(to: writeTo, atomically: true, encoding: .utf8)
@@ -39,7 +39,7 @@ public class TextFile : Operation {
     
     /// The desired name of the file, including an extension. Any path elements will be considered relative
     /// a location known by the consumer of the TextFile
-    public let name : String
+    public var name : String
     
     public private(set) var content : String = ""
     

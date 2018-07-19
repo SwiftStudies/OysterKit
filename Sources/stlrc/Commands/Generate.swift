@@ -61,7 +61,7 @@ class GenerateCommand : Command, IndexableOptioned, GrammarConsumer, OutputLocat
         print("Generating \(grammarName.style(.italic)) as \(language) (\(optimize ? "Optimized" : "Unoptimized"))")
         
         do {
-            try language.generate(grammarName: grammarName, from: grammar, optimize: optimize, outputTo: outputLocation.url(defaultName: "\(grammarName).\(language.fileExtension)").path.canonicalPath)
+            try language.generate(grammarName: grammarName, from: grammar, optimize: optimize, outputTo: outputLocation.url(defaultName: "\(grammarName).\(language.fileExtension ?? "")").path.canonicalPath)
             
         } catch {
             return RunnableReturnValue.failure(error: error, code: -1)

@@ -62,5 +62,18 @@ public enum OperationError : Error {
  Operations are returned by a generator, and can be integrated into a build process
  */
 public protocol Operation {
-    func perform(in url:URL) throws
+    func perform(in context:OperationContext) throws
+}
+
+/// The context operations work in
+public class OperationContext {
+    /// The working directory, can be changed and all subsequent operations will be affected
+    public var workingDirectory : URL
+    
+    /// Creates a new instance with the specified working directory.
+    ///
+    /// - Parameter workingDirectory: The working directory operations should use
+    public init(with workingDirectory:URL){
+        self.workingDirectory = workingDirectory
+    }
 }
