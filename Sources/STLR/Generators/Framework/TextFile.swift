@@ -38,7 +38,7 @@ public class TextFile {
      Creates a new instance
      
      - Parameter name: The name of the textfile
-    */
+     */
     public init(_ name:String){
         self.name = name
     }
@@ -51,7 +51,7 @@ public class TextFile {
      - Parameter prefix: An optional prefex to add to each supplied item
      - Parameter items: One or more Strings to be appended to the file
      - Returns: Itself for chaining
-    */
+     */
     @discardableResult
     public func print(terminator:String = "\n", separator:String = "\n", prefix : String = "", _ items:String...)->TextFile{
         var first = true
@@ -87,13 +87,4 @@ public class TextFile {
         return self
     }
     
-}
-
-/// A protocol for things which generate source code from a `STLRScope`
-public protocol Generator {
-    
-    /// Generate source code text files for the specified scope
-    ///
-    ///  - Parameter scope: The scope
-    static func generate(for scope:STLRScope, grammar name:String) throws ->[TextFile]
 }

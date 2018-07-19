@@ -25,7 +25,7 @@
 import Foundation
 import OysterKit
 
-public class StructureGenerator {
+public class GrammarStructure {
     enum Cardinality {
         case optional, one, many(Bool)
         
@@ -175,36 +175,7 @@ public class StructureGenerator {
             self.kind = kind
         }
         
-        func dump(to output:TextFile, scope:STLRScope){
-            if type != .unknown {
-                if children.isEmpty{
-                    output.print("let \(name.propertyName): \(dataType)")
-                } else {
-                    if type == .structure {
-                        output.print(
-                            "",
-                            "/// \(dataType) ",
-                            "\(scope.identifierIsLeftHandRecursive(name) ? "class" : "struct") \(dataType) : Codable {"
-                        )
-                    } else {
-                        output.print("",dataType)
-                    }
-                }
-            } else {
-                output.print("\(name): \(dataType) //\(kind)")
-            }
-            if type == .typealias {
-                return
-            }
-            output.indent()
-            for child in children {
-                child.dump(to: output, scope: scope)
-            }
-            output.outdent()
-            if type == .structure && !children.isEmpty {
-                output.print("}")
-            }
-        }
+
         
         func promoteStructure(){
             var oneOrMoreStructural = false
@@ -290,11 +261,7 @@ public class StructureGenerator {
     
     
 
-    func dump(to output:TextFile, scope:STLRScope){
-        for child in structure.children {
-            child.dump(to: output, scope: scope)
-        }
-    }
+
     
     let scope : STLRScope
     var structure : Node
@@ -442,14 +409,14 @@ public class StructureGenerator {
     
 }
 
-fileprivate extension Array where Element == StructureGenerator.Node {
+fileprivate extension Array where Element == GrammarStructure.Node {
     
-    fileprivate subscript(_ name:String)->StructureGenerator.Node? {
+    fileprivate subscript(_ name:String)->GrammarStructure.Node? {
         return self.filter({$0.name == name}).first
     }
     
     fileprivate func consolidate()->[Element]{
-        var existingFields = [String : StructureGenerator.Node]()
+        var existingFields = [String : GrammarStructure.Node]()
         
         for child in self {
             if let existingType = existingFields[child.name]?.dataType {
@@ -470,7 +437,7 @@ fileprivate extension Array where Element == StructureGenerator.Node {
     }
 }
 
-fileprivate extension STLRScope {
+extension STLRScope {
     func identifierIsLeftHandRecursive(_ name:String)->Bool{
         return get(identifier: name)?.grammarRule?.leftHandRecursive ?? false
     }
@@ -483,13 +450,4 @@ fileprivate extension STLRScope {
     }
 }
 
-fileprivate extension String {
-    var propertyName : String {
-        let keywords = ["switch","extension","protocol","in","for","case","if","while","do","catch","func","enum","let","var","struct","class","enum","import","private","fileprivate","internal","public","final","open","typealias","typedef","true","false","return","self","else","default","init","operator","throws","catch"]
-        
-        if keywords.contains(self){
-            return "`\(self)`"
-        }
-        return self
-    }
-}
+

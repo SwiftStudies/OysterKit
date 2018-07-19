@@ -25,6 +25,58 @@
 import Foundation
 import OysterKit
 
+fileprivate extension GrammarStructure {
+    func swift(to output:TextFile, scope:STLRScope){
+        for child in structure.children {
+            child.swift(to: output, scope: scope)
+        }
+    }
+}
+
+fileprivate extension GrammarStructure.Node {
+    func swift(to output:TextFile, scope:STLRScope){
+        if type != .unknown {
+            if children.isEmpty{
+                output.print("let \(name.propertyName): \(dataType)")
+            } else {
+                if type == .structure {
+                    output.print(
+                        "",
+                        "/// \(dataType) ",
+                        "\(scope.identifierIsLeftHandRecursive(name) ? "class" : "struct") \(dataType) : Codable {"
+                    )
+                } else {
+                    output.print("",dataType)
+                }
+            }
+        } else {
+            output.print("\(name): \(dataType) //\(kind)")
+        }
+        if type == .typealias {
+            return
+        }
+        output.indent()
+        for child in children {
+            child.swift(to: output, scope: scope)
+        }
+        output.outdent()
+        if type == .structure && !children.isEmpty {
+            output.print("}")
+        }
+    }
+}
+
+fileprivate extension String {
+    var propertyName : String {
+        let keywords = ["switch","extension","protocol","in","for","case","if","while","do","catch","func","enum","let","var","struct","class","enum","import","private","fileprivate","internal","public","final","open","typealias","typedef","true","false","return","self","else","default","init","operator","throws","catch"]
+        
+        if keywords.contains(self){
+            return "`\(self)`"
+        }
+        return self
+    }
+}
+
 /// Generates a Swift structure that you can use a ParsingDecoder with to rapidly build an AST or IR
 public class SwiftStructure : Generator {
     
@@ -46,7 +98,7 @@ public class SwiftStructure : Generator {
             "",
             "/// Intermediate Representation of the grammar"
             )
-        let structure = StructureGenerator(for: scope)
+        let structure = GrammarStructure(for: scope)
 
         var lines = tokens.components(separatedBy: CharacterSet.newlines)
         let line = lines.removeFirst()
