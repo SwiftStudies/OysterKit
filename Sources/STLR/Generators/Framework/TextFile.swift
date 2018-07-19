@@ -33,8 +33,9 @@ public class TextFile : Operation {
         do {
             try content.write(to: writeTo, atomically: true, encoding: .utf8)
         } catch {
-            throw OperationError.error(message: "\(error.localizedDescription)", exitCode: 255)
+            throw OperationError.error(message: "Failed to write file \(writeTo) \(error.localizedDescription)")
         }
+        context.report("Wrote \(writeTo.path)")
     }
     
     /// The desired name of the file, including an extension. Any path elements will be considered relative

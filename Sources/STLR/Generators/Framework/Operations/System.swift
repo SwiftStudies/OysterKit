@@ -39,30 +39,32 @@ public enum System : Operation {
 
     /// Change the working directory in the operation context
     case changeDirectory(name:String)
+
+    /// Change the working directory in the operation context
+    case setEnv(name:String,value:String)
+
     
     public func perform(in context: OperationContext) throws {
         let path = context.workingDirectory.path
         switch self {
         case .shell(let command, let arguments):
             let result = execute(command: command,in:path ,arguments: arguments)
-            throw OperationError.information(message: result)
+            context.report(result)
         case .makeDirectory(let name):
-            do {
-                try System.shell("mkdir",arguments: [name]).perform(in: context)
-            } catch OperationError.information(let message) {
-                if message.range(of: "File exists") != nil {
-                    throw OperationError.error(message: "File already exists \(name)", exitCode: 255)
-                }
-            } catch {
-                throw OperationError.error(message: "\(error)", exitCode: 255)
-            }
+            try System.shell("mkdir",arguments: [name]).perform(in: context)
+            context.report("Created directory \(name)")
         case .removeDirectory(let name):
             if name == "/" {
-                throw OperationError.error(message: "Won't remove root directory", exitCode: Int(EXIT_FAILURE))
+                throw OperationError.error(message: "Won't remove root directory")
             }
             try System.shell("rm",arguments: ["-r","\(name)"]).perform(in: context)
+            context.report("Removed directory \(name)")
         case .changeDirectory(let name):
             context.workingDirectory = context.workingDirectory.appendingPathComponent(name)
+            context.report("Changed to \(name)")
+        case .setEnv(let name, let value):
+            context.environment[name] = value
+            context.report("Set \(name)=\(value)")
         }
     }
     

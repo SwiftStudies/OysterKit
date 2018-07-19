@@ -72,21 +72,17 @@ class LanguageOption : Option, IndexableParameterized {
                 /// Use operation based generators
                 if let operations = try operations(in: stlrParser.ast, for: grammarName) {
                     let workingDirectory = URL(fileURLWithPath: outputTo).deletingLastPathComponent().path
-                    let context = OperationContext(with: URL(fileURLWithPath: workingDirectory))
-                    for operation in operations{
-                        do {
-                            try operation.perform(in: context)
-                        } catch {
-                            if let error = error as? OperationError {
-                                print(error.message)
-                                if error.terminate {
-                                    exit(EXIT_FAILURE)
-                                }
-                            } else {
-                                print(error.localizedDescription)
-                                throw error
-                            }
-                        }
+                    let context = OperationContext(with: URL(fileURLWithPath: workingDirectory)){
+                        print($0)
+                    }
+                    do {
+                        try operations.perform(in: context)
+                    } catch OperationError.error(let message){
+                        print(message.color(.red))
+                        exit(EXIT_FAILURE)
+                    } catch {
+                        print(error.localizedDescription.color(.red))
+                        exit(EXIT_FAILURE)
                     }
                 } else {
                     switch self {
@@ -98,12 +94,12 @@ class LanguageOption : Option, IndexableParameterized {
                             print("Couldn't generate language".color(.red))
                         }
                     default:
-                        throw OperationError.error(message: "Language did not produce operations", exitCode: Int(EXIT_FAILURE))
+                        throw OperationError.error(message: "Language did not produce operations")
                     }
                 }
                 
                 
-            }
+             }
             
         }
         

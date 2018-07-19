@@ -27,32 +27,29 @@ import Foundation
 /// A generator which creates a library for the grammar using Swift PM
 public class SwiftPackageManager : Generator {
     public static func generate(for scope: STLRScope, grammar name: String) throws -> [Operation] {
-        
-        var newPackageOperations = [Operation]()
+        let writePackageFile = TextFile("Package.swift")
+        writePackageFile.print(packageTemplate.replacingOccurrences(of: "$GRAMMAR_NAME$", with: name))
+        let createMain = TextFile("main.swift")
+        createMain.print(mainTemplate.replacingOccurrences(of: "$GRAMMAR_NAME$", with: name))
 
-        newPackageOperations.append(System.makeDirectory(name: name))
-        newPackageOperations.append(System.changeDirectory(name: name))
-        newPackageOperations.append(System.shell("swift", arguments: ["package","init","--type","executable"]))
-        
-        let packageFile = TextFile("Package.swift")
-        packageFile.print(packageTemplate.replacingOccurrences(of: "$GRAMMAR_NAME$", with: name))
-        newPackageOperations.append(packageFile)
-        
-        var existingPackageOperations = [Operation]()
-        existingPackageOperations.append(System.changeDirectory(name: name))
-
-        var operations = [Operation]()
-        operations.append(BranchingOperation(with: .fileExists(path: "\(name)/Package.swift", ifTrue: existingPackageOperations, ifFalse: newPackageOperations)))
-        
-        operations.append(System.changeDirectory(name: "Sources/Calculator"))
-        #warning("Don't update main if the package exists")
-        let mainFile = TextFile("main.swift")
-        mainFile.print(mainTemplate.replacingOccurrences(of: "$GRAMMAR_NAME$", with: name))
-        operations.append(mainFile)
-        operations.append(contentsOf: try SwiftStructure.generate(for: scope, grammar: name))
-
-
-        return operations
+        return [
+                    Check.ifFileExists(path: "\(name)/Package.swift").then([
+                            System.changeDirectory(name: name),
+                            System.setEnv(name: "new", value: "false")
+                        ], else: [
+                            System.makeDirectory(name: name),
+                            System.changeDirectory(name: name),
+                            System.shell("swift", arguments: ["package","init","--type","executable"]),
+                            writePackageFile,
+                            System.setEnv(name: "new", value: "true")
+                        ]),
+                    System.changeDirectory(name: "Sources/\(name)"),
+                    try SwiftStructure.generate(for: scope, grammar: name),
+                    Check.ifEnvEquals(name: "new", requiredValue: "true").then(
+                        createMain
+                    ),
+                    System.shell("swift", arguments: ["build"])
+        ]
     }
     
     
@@ -89,6 +86,10 @@ print("Welcome to the default $GRAMMAR_NAME$ application. Type any string below 
 var combinedString = ""
 while let userInput = readLine(strippingNewline: false) {
     if combinedString.hasSuffix("\\n") && userInput == "\\n"{
+        if combinedString == userInput {
+            print("Thank you for running $GRAMMAR_NAME$")
+            exit(EXIT_SUCCESS)
+        }
         do{
             let ctr = AbstractSyntaxTreeConstructor()
             let ast = try ctr.build(combinedString, using: $GRAMMAR_NAME$.generatedLanguage)

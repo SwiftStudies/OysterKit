@@ -29,33 +29,7 @@ import Foundation
  */
 public enum OperationError : Error {
     /// Basic failure with a specific message to the user
-    case warning(message:String), information(message:String), error(message:String,exitCode:Int), multiple(errors:[OperationError])
-    
-    /// Does this error mean that the entire process should be stopped?
-    public var terminate : Bool {
-        switch self {
-        case .multiple(let errors):
-            return errors.reduce(false, {$0 || $1.terminate})
-        case .warning,.information:
-            return false
-        case .error:
-            return true
-        }
-    }
-    
-    /// A message that can be displayed to a user
-    public var message : String {
-        switch self {
-        case .multiple(let errors):
-            return errors.reduce("", { return $0.count == 0 ? $1.message : "\($0)\n\($1.message)"})
-        case .error(let message,_):
-            return "Error: \(message)"
-        case .information(let message):
-            return "\(message)"
-        case .warning(let message):
-            return "Warning: \(message)"
-        }
-    }
+    case error(message:String)
 }
 
 /**
@@ -70,10 +44,39 @@ public class OperationContext {
     /// The working directory, can be changed and all subsequent operations will be affected
     public var workingDirectory : URL
     
+    /// Environment variables
+    public var environment : [String : String]
+    
+    private let reporter : (String)->Void
+    
     /// Creates a new instance with the specified working directory.
     ///
     /// - Parameter workingDirectory: The working directory operations should use
-    public init(with workingDirectory:URL){
+    public init(with workingDirectory:URL, reportingTo reporter:@escaping (String)->Void){
         self.workingDirectory = workingDirectory
+        self.environment = [String:String]()
+        self.reporter = reporter
+    }
+    
+    /**
+     Reports a message via the supplied reporting block. Note that only
+     non-critical errors should be reported
+     
+     - Parameter message: The message to report
+    */
+    public func report(_ message:String){
+        reporter(message)
+    }
+}
+
+/// Makes arrays of operations operations themselves
+extension Array : Operation where Element == Operation {
+    
+    /// Performs all operations in the array. If any operation throws a terminating or unknown (not an `OperationError`) error
+    /// then execution will terminate. Otherwise the messages will be collated. 
+    public func perform(in context: OperationContext) throws {
+        for operation in self {
+            try operation.perform(in: context)
+        }
     }
 }

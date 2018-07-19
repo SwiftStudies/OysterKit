@@ -24,43 +24,44 @@
 
 import Foundation
 
-public class BranchingOperation : Operation {
-    public let condition : Condition
+public enum Check {
+    case ifFileExists(path:String)
+    case ifEnvEquals(name:String,requiredValue:String)
     
-    public init(with condition:Condition){
-        self.condition = condition
+    func isMet(in context:OperationContext)->Bool{
+        switch self {
+        case .ifFileExists(let path):
+            return FileManager.default.fileExists(atPath: context.workingDirectory.appendingPathComponent(path).path)
+        case .ifEnvEquals(let name, let requiredValue):
+            return context.environment[name] ?? "" == requiredValue
+            
+        }
     }
     
-    public func perform(in context: OperationContext) throws {
-        let operations = condition.isMet(in: context) ? condition.true : condition.false
-        
-        for operation in operations {
-            try operation.perform(in: context)
-        }
+    func then(_ metOperations:Operation, else unmetOperations:Operation? = nil)->Condition{
+        return Condition(self, ifMet: metOperations, otherwise: unmetOperations ?? [])
     }
 }
 
-public enum Condition {
-    case fileExists(path:String, ifTrue:[Operation], ifFalse:[Operation])
+
+
+public struct Condition : Operation {
+    let check : Check
+    let metOperations : Operation
+    let unmetOperations : Operation
     
-    var `true` : [Operation]{
-        switch self{
-        case .fileExists(_, let operations, _):
-            return operations
-        }
+    init(_ check:Check, ifMet metOperations:Operation, otherwise unmetOperations:Operation){
+        self.check = check
+        self.unmetOperations = unmetOperations
+        self.metOperations = metOperations
     }
     
-    var `false` : [Operation]{
-        switch self{
-        case .fileExists(_, _, let operations):
-            return operations
-        }
+    func evaluate(in context:OperationContext)->Operation{
+        return check.isMet(in: context) ? metOperations : unmetOperations
+    }
+    
+    public func perform(in context: OperationContext) throws {
+        try evaluate(in: context).perform(in: context)
     }
 
-    public func isMet(in context: OperationContext) -> Bool {
-        switch self {
-        case .fileExists(let path,_,_):
-            return FileManager.default.fileExists(atPath: context.workingDirectory.appendingPathComponent(path).path)
-        }
-    }
 }
