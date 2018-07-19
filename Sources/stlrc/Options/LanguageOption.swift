@@ -47,8 +47,6 @@ class LanguageOption : Option, IndexableParameterized {
             }
             
             func generate(grammarName: String, from stlrParser:STLRParser, optimize:Bool, outputTo:String) throws {
-                let generatedLanguage : String?
-                
                 if optimize {
                     STLRScope.register(optimizer: InlineIdentifierOptimization())
                     STLRScope.register(optimizer: CharacterSetOnlyChoiceOptimizer())
@@ -60,16 +58,30 @@ class LanguageOption : Option, IndexableParameterized {
 
                 switch self {
                 case .swift:
-                    generatedLanguage = stlrParser.ast.swift(grammar: grammarName)
+                    let generatedLanguage = stlrParser.ast.swift(grammar: grammarName)
+                    if let generatedLanguage = generatedLanguage {
+                        try generatedLanguage.write(toFile: outputTo, atomically: true, encoding: String.Encoding.utf8)
+                    } else {
+                        print("Couldn't generate language".color(.red))
+                    }
                 case .swiftIR:
-                    generatedLanguage = (try? SwiftStructure.generate(for: stlrParser.ast, grammar: grammarName))?.first?.content
+                    for operation in try SwiftStructure.generate(for: stlrParser.ast, grammar: grammarName) {
+                        do {
+                            try operation.perform(in: URL(fileURLWithPath: outputTo))
+                        } catch {
+                            if let error = error as? OperationError {
+                                print(error.message)
+                                if error.terminate {
+                                    exit(EXIT_FAILURE)
+                                }
+                            } else {
+                                print(error.localizedDescription)
+                                throw error
+                            }
+                        }
+                    }
                 }
                 
-                if let generatedLanguage = generatedLanguage {
-                    try generatedLanguage.write(toFile: outputTo, atomically: true, encoding: String.Encoding.utf8)
-                } else {
-                    print("Couldn't generate language".color(.red))
-                }
             }
             
         }

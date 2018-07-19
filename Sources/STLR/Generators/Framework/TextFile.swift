@@ -25,7 +25,22 @@
 import Foundation
 
 /// Captures the output of a source generator
-public class TextFile {
+public class TextFile : Operation {
+    /// Writes the file at the specified location
+    public func perform(in url: URL) throws {
+        let writeTo : URL
+        if url.isFileURL {
+            writeTo = url
+        } else {
+            writeTo = url.appendingPathComponent(name)
+        }
+        do {
+            try content.write(to: writeTo, atomically: true, encoding: .utf8)
+        } catch {
+            throw OperationError.error(message: "\(error.localizedDescription)", exitCode: 255)
+        }
+    }
+    
     /// The desired name of the file, including an extension. Any path elements will be considered relative
     /// a location known by the consumer of the TextFile
     public let name : String

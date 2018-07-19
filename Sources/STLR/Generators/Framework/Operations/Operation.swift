@@ -24,12 +24,43 @@
 
 import Foundation
 
-
-/// A protocol for things which generate source code from a `STLRScope`
-public protocol Generator {
+/**
+ Errors that can be thrown by any operation
+ */
+public enum OperationError : Error {
+    /// Basic failure with a specific message to the user
+    case warning(message:String), information(message:String), error(message:String,exitCode:Int), multiple(errors:[OperationError])
     
-    /// Generate source code text files for the specified scope
-    ///
-    ///  - Parameter scope: The scope
-    static func generate(for scope:STLRScope, grammar name:String) throws ->[Operation]
+    /// Does this error mean that the entire process should be stopped?
+    public var terminate : Bool {
+        switch self {
+        case .multiple(let errors):
+            return errors.reduce(false, {$0 || $1.terminate})
+        case .warning,.information:
+            return false
+        case .error:
+            return true
+        }
+    }
+    
+    /// A message that can be displayed to a user
+    public var message : String {
+        switch self {
+        case .multiple(let errors):
+            return errors.reduce("", { return $0.count == 0 ? $1.message : "\($0)\n\($1.message)"})
+        case .error(let message,_):
+            return "Error: \(message)"
+        case .information(let message):
+            return "\(message)"
+        case .warning(let message):
+            return "Warning: \(message)"
+        }
+    }
+}
+
+/**
+ Operations are returned by a generator, and can be integrated into a build process
+ */
+public protocol Operation {
+    func perform(in url:URL) throws
 }

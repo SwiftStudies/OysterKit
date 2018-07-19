@@ -85,7 +85,7 @@ public class SwiftStructure : Generator {
     ///
     ///  - Parameter scope: The scope to use to generate
     ///  - Returns: A single `TextFile` containing the Swift source
-    public static func generate(for scope: STLRScope, grammar name:String) throws -> [TextFile] {
+    public static func generate(for scope: STLRScope, grammar name:String) throws -> [Operation] {
         let output = TextFile("\(name).swift")
         
         var tokens = scope.swift(grammar: "\(name)Rules")!
@@ -112,7 +112,7 @@ public class SwiftStructure : Generator {
         output.print("struct \(name) : Codable {").indent()
         
         
-        structure.dump(to: output, scope: scope)
+        structure.swift(to: output, scope: scope)
         
         for rule in scope.rootRules {
             output.print("let \(rule.identifier!.name) : \(rule.identifier!.name.typeName)")
