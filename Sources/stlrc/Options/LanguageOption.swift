@@ -46,6 +46,16 @@ class LanguageOption : Option, IndexableParameterized {
                 }
             }
             
+            func operations(in scope:STLRScope, for grammarName:String) throws ->[STLR.Operation]? {
+                switch self {
+                case .swift:
+                    return nil
+                case .swiftIR:
+                    return try SwiftStructure.generate(for: scope, grammar: grammarName)
+                }
+            }
+            
+            
             func generate(grammarName: String, from stlrParser:STLRParser, optimize:Bool, outputTo:String) throws {
                 if optimize {
                     STLRScope.register(optimizer: InlineIdentifierOptimization())
@@ -55,19 +65,13 @@ class LanguageOption : Option, IndexableParameterized {
                 }
                 
                 stlrParser.ast.optimize()
-
-                switch self {
-                case .swift:
-                    let generatedLanguage = stlrParser.ast.swift(grammar: grammarName)
-                    if let generatedLanguage = generatedLanguage {
-                        try generatedLanguage.write(toFile: outputTo, atomically: true, encoding: String.Encoding.utf8)
-                    } else {
-                        print("Couldn't generate language".color(.red))
-                    }
-                case .swiftIR:
-                    for operation in try SwiftStructure.generate(for: stlrParser.ast, grammar: grammarName) {
+                
+                /// Use operation based generators
+                if let operations = try operations(in: stlrParser.ast, for: grammarName) {
+                    let workingDirectory = URL(fileURLWithPath: outputTo).deletingLastPathComponent().path
+                    for operation in operations{
                         do {
-                            try operation.perform(in: URL(fileURLWithPath: outputTo))
+                            try operation.perform(in: URL(fileURLWithPath: workingDirectory))
                         } catch {
                             if let error = error as? OperationError {
                                 print(error.message)
@@ -80,7 +84,20 @@ class LanguageOption : Option, IndexableParameterized {
                             }
                         }
                     }
+                } else {
+                    switch self {
+                    case .swift:
+                        let generatedLanguage = stlrParser.ast.swift(grammar: grammarName)
+                        if let generatedLanguage = generatedLanguage {
+                            try generatedLanguage.write(toFile: outputTo, atomically: true, encoding: String.Encoding.utf8)
+                        } else {
+                            print("Couldn't generate language".color(.red))
+                        }
+                    default:
+                        throw OperationError.error(message: "Language did not produce operations", exitCode: Int(EXIT_FAILURE))
+                    }
                 }
+                
                 
             }
             

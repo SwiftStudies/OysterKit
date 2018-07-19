@@ -28,12 +28,8 @@ import Foundation
 public class TextFile : Operation {
     /// Writes the file at the specified location
     public func perform(in url: URL) throws {
-        let writeTo : URL
-        if url.isFileURL {
-            writeTo = url
-        } else {
-            writeTo = url.appendingPathComponent(name)
-        }
+        let writeTo = url.appendingPathComponent(name)
+
         do {
             try content.write(to: writeTo, atomically: true, encoding: .utf8)
         } catch {
