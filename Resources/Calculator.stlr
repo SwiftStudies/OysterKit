@@ -1,0 +1,20 @@
+/**
+ A simple calculator example
+ */
+
+evaluate    = expression
+
+// expression = term (
+//                  add : ("+" term) |
+//                  subtract : ("-" term)
+//              )*
+expression = term (@token("add") ("+" term) | @token("subtract") ("-" term))*
+// term       = element (
+//                multiply : ("*" element) |
+//                divide : ("/" element)
+//              )*
+term       = element (@token("multiply") ("*" element) | @token("divide") ("/" element))*
+element    = number | ("(" expression ")")
+
+// number : Double = ("+"|"-")? .decimalDigit+ ("." .decimalDigit+)?
+@type("Int") number = ("+"|"-")? .decimalDigit+ ("." .decimalDigit+)?

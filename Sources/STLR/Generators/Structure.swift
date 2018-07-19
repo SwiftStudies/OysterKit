@@ -136,6 +136,7 @@ public class StructureGenerator {
     }
     
     class Node {
+        let scope : STLRScope
         var name : String
         var kind : Kind
         var cardinality : Cardinality
@@ -148,7 +149,7 @@ public class StructureGenerator {
             case .unknown:
                 coreType = "TBD"
             case .string:
-                coreType = "Swift.String"
+                coreType = scope.type(of: name)
             case .typealias:
                 coreType = "typealias \(name.typeName) = [\(children[0].name.typeName)]\(cardinality.optional ? "?" : " ")"
             case .enumeration:
@@ -167,7 +168,8 @@ public class StructureGenerator {
             return coreType
         }
         
-        init(name:String, cardinality:Cardinality, kind:Kind){
+        init(_ scope:STLRScope, name:String, cardinality:Cardinality, kind:Kind){
+            self.scope = scope
             self.name = name
             self.cardinality = cardinality
             self.kind = kind
@@ -286,7 +288,6 @@ public class StructureGenerator {
         }
     }
     
-    var structure = Node(name:"structure",cardinality:.one, kind: .structural)
     
 
     func dump(to output:TextFile, scope:STLRScope){
@@ -295,7 +296,13 @@ public class StructureGenerator {
         }
     }
     
+    let scope : STLRScope
+    var structure : Node
+
     init(for scope:STLRScope){
+        self.scope = scope
+        self.structure = Node(scope, name:"structure",cardinality:.one, kind: .structural)
+        
         //Create all nodes for rules that appear
         for rule in scope.rules {
             structure.children.append(generate(rule: rule))
@@ -357,7 +364,7 @@ public class StructureGenerator {
     func generate(element:STLRScope.Element)->Node{
         switch element {
         case .terminal(let terminal, let modifier, let lookahead, let annotations):
-            return Node(name: terminal.description, cardinality: Cardinality(modifier: modifier), kind: Kind(modifier: modifier, lookahead: lookahead, annotations: annotations.asRuleAnnotations, defaultValue: .transient))
+            return Node(scope, name: terminal.description, cardinality: Cardinality(modifier: modifier), kind: Kind(modifier: modifier, lookahead: lookahead, annotations: annotations.asRuleAnnotations, defaultValue: .transient))
         case .identifier(let identifier, let modifier, let lookahead, let annotations):
             let evaluatedAnnotations = identifier.annotations.merge(with: annotations)
             let evaluatedName : String
@@ -370,15 +377,15 @@ public class StructureGenerator {
             } else {
                 evaluatedName = identifier.name
             }
-            return Node(name: evaluatedName, cardinality: Cardinality(modifier: modifier), kind: Kind(modifier: modifier, lookahead: lookahead, annotations: evaluatedAnnotations.asRuleAnnotations, defaultValue: .structural))
+            return Node(scope, name: evaluatedName, cardinality: Cardinality(modifier: modifier), kind: Kind(modifier: modifier, lookahead: lookahead, annotations: evaluatedAnnotations.asRuleAnnotations, defaultValue: .structural))
         case .group(let expression, let modifier, let lookahead, let annotations):
             if let tokenAnnotation = annotations.asRuleAnnotations[.token] {
                 if case let .string(tokenName) = tokenAnnotation{
-                    return Node(name: tokenName, cardinality: Cardinality(modifier: modifier), kind: Kind(modifier: modifier, lookahead: lookahead, annotations: annotations.asRuleAnnotations, defaultValue: .structural))
+                    return Node(scope, name: tokenName, cardinality: Cardinality(modifier: modifier), kind: Kind(modifier: modifier, lookahead: lookahead, annotations: annotations.asRuleAnnotations, defaultValue: .structural))
                 }
             }
             let children = generate(expression: expression)
-            let node = Node(name: "$group$", cardinality: Cardinality(modifier: modifier), kind: Kind(modifier: modifier, lookahead: lookahead, annotations: annotations.asRuleAnnotations, defaultValue: .transient))
+            let node = Node(scope, name: "$group$", cardinality: Cardinality(modifier: modifier), kind: Kind(modifier: modifier, lookahead: lookahead, annotations: annotations.asRuleAnnotations, defaultValue: .transient))
             switch children.count {
             case 0:
                 return node
@@ -430,7 +437,7 @@ public class StructureGenerator {
     func generate(rule:STLRScope.GrammarRule)->Node {
         let name = rule.identifier!.name
         
-        return Node(name: name, cardinality: .one, kind: Kind(identifier: rule.identifier!))
+        return Node(scope, name: name, cardinality: .one, kind: Kind(identifier: rule.identifier!))
     }
     
 }
@@ -467,11 +474,18 @@ fileprivate extension STLRScope {
     func identifierIsLeftHandRecursive(_ name:String)->Bool{
         return get(identifier: name)?.grammarRule?.leftHandRecursive ?? false
     }
+    func type(of name:String)->String{
+        guard let type = get(identifier: name)?.annotations.asRuleAnnotations[.custom(label: "type")]?.description else {
+            return "Swift.String"
+        }
+        
+        return String(type.dropLast().dropFirst())
+    }
 }
 
 fileprivate extension String {
     var propertyName : String {
-        let keywords = ["switch","extension","protocol","in","for","case","if","while","do","catch","func","enum","let","var","struct","class","enum","import","private","fileprivate","internal","public","final","open","typealias","typedef","true","false","return"]
+        let keywords = ["switch","extension","protocol","in","for","case","if","while","do","catch","func","enum","let","var","struct","class","enum","import","private","fileprivate","internal","public","final","open","typealias","typedef","true","false","return","self","else","default","init","operator","throws","catch"]
         
         if keywords.contains(self){
             return "`\(self)`"

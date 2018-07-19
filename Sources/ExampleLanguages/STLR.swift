@@ -424,24 +424,24 @@ struct STLR : Codable {
     
     /// Annotation 
     struct Annotation : Codable {
-        let literal: Literal?
         let label: Label
+        let literal: Literal?
     }
     
     typealias Annotations = [Annotation] 
     
     /// Label 
     struct Label : Codable {
-        let customLabel: Swift.String?
         let definedLabel: Swift.String?
+        let customLabel: Swift.String?
     }
     
     /// Terminal 
     struct Terminal : Codable {
-        let characterRange: CharacterRange?
-        let terminalString: TerminalString?
         let characterSet: CharacterSet?
+        let terminalString: TerminalString?
         let regex: Swift.String?
+        let characterRange: CharacterRange?
     }
     
     /// Group 
@@ -452,14 +452,14 @@ struct STLR : Codable {
     /// Element 
     class Element : Codable {
         let group: Group?
-        let transient: Swift.String?
-        let terminal: Terminal?
-        let identifier: Swift.String?
+        let quantifier: Swift.String?
         let lookahead: Swift.String?
+        let transient: Swift.String?
+        let identifier: Swift.String?
+        let annotations: Annotations?
         let void: Swift.String?
         let negated: Swift.String?
-        let annotations: Annotations?
-        let quantifier: Swift.String?
+        let terminal: Terminal?
     }
     
     typealias Choice = [Element] 
@@ -468,25 +468,25 @@ struct STLR : Codable {
     
     /// Expression 
     class Expression : Codable {
+        let sequence: Sequence?
         let element: Element?
         let choice: Choice?
-        let sequence: Sequence?
     }
     
     /// Rule 
     struct Rule : Codable {
-        let void: Swift.String?
         let transient: Swift.String?
+        let void: Swift.String?
         let identifier: Swift.String
         let annotations: Annotations?
-        let expression: Expression
         let assignmentOperators: Swift.String
+        let expression: Expression
     }
     
     /// ModuleImport 
     struct ModuleImport : Codable {
-        let `import`: Swift.String
         let moduleName: Swift.String
+        let `import`: Swift.String
     }
     
     typealias Modules = [ModuleImport] 
@@ -495,8 +495,8 @@ struct STLR : Codable {
     
     /// Grammar 
     struct Grammar : Codable {
-        let modules: Modules
         let rules: Rules
+        let modules: Modules
     }
     let grammar : Grammar
     /**
