@@ -23,8 +23,17 @@ class FullSwiftGenerationTest: XCTestCase {
 
             let helloRule = rules[0]
 
-            XCTAssertNotNil(helloRule.expression.element?.terminal?.characterSet,"Expected the rule to have an expression with just an element")
-            XCTAssertEqual("letter", helloRule.expression.element?.terminal?.characterSet?.characterSetName ?? "NILLED")
+            
+            if case let .element(element) = helloRule.expression {
+                if case .characterSet(let characterSet) = element.terminal ?? STLR.Terminal.regex(regex: "") {
+                    XCTAssertEqual("letter", characterSet.characterSetName)
+                } else {
+                    XCTAssertNotNil("Expected a character set terminal")
+                }
+            } else {
+                XCTFail("Expected the hello rule to create an element expression")
+            }
+            
         } catch {
             XCTFail("Failed: \(error)")
         }

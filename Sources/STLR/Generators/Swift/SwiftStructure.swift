@@ -33,26 +33,144 @@ extension GrammarStructure {
     }
 }
 
+fileprivate extension CharacterSet {
+    func contains(_ character:Character)->Bool{
+        return contains(character.unicodeScalars.first!)
+    }
+}
+
+fileprivate extension Character {
+    var safeVariant : String {
+        let map : [Character : String] = ["1":"One","2":"Two","3":"Three","4":"Four","5":"Five","6":"Six","7":"Seven","8":"Eight","9" : "Nine",
+                                          "-":"Dash","!":"Ping","|":"Pipe","<":"LessThan",">":"GreaterThan","=":"Equals","@":"at","$":"Dollar",
+                                          "#":"Hash","£":"Pound","%":"Percent","^":"Hat","&":"Ampersand","*":"Star",
+                                          "(":"OpenRoundBrace",")":"CloseRoundBrace","+":"Plus","~":"Tilde","`":"OpenQuote",":":"Colon",";":"SemiColon",
+                                          "\"":"DoubleQuote","'":"SingleQuote","\\":"BackSlash","/":"ForwardSlash","?":"QuestionMark",".":"Period",
+                                          ",":"Comma","§":"Snake","±":"PlusOrMinus"," ":"Space","[":"OpenSquareBracket","]":"CloseSquareBracket",
+                                          "{":"OpenCurlyBrace","}":"CloseCurlyBrace"
+                                          ]
+        let safeCharacterSet = CharacterSet.letters.union(CharacterSet.decimalDigits).union(CharacterSet(charactersIn: "_"))
+        if safeCharacterSet.contains(self){
+            return String(self)
+        }
+        
+        if let mappedCharacter = map[self] {
+            return mappedCharacter
+        }
+        
+        return String(self.unicodeScalars.first!.value, radix:16).map({$0.safeVariant}).joined(separator: "")
+    }
+}
+
+fileprivate extension StringProtocol {
+    var caseName : String {
+        var remaining = String(self)
+        var caseName = ""
+        
+        let firstCharacter = remaining.removeFirst()
+        if firstCharacter == "_" || CharacterSet.letters.contains(firstCharacter){
+            caseName += String(firstCharacter)
+        } else {
+            caseName += firstCharacter.safeVariant.instanceName
+        }
+        
+        while let nextCharacter = remaining.first {
+            remaining = String(remaining.dropFirst())
+            caseName += nextCharacter.safeVariant
+        }
+        
+        return caseName
+    }
+}
+
 fileprivate extension GrammarStructure.Node {
+    func stringEnum(to output:TextFile){
+        output.print("","// \(dataType)","enum \(dataType) : Swift.String, Codable {").indent()
+        let cases = children.map({
+            let caseMatchedString = $0.name.dropFirst().dropLast()
+            let caseMatchedName   = caseMatchedString.caseName.propertyName
+            if caseMatchedString == caseMatchedName {
+                return "\(caseMatchedName)"
+            } else {
+                return "\(caseMatchedName) = \"\(caseMatchedString)\""
+            }
+        }).joined(separator: ",")
+        output.print("case \(cases)").outdent().print("}")
+    }
+    
+    func swiftEnum(to output:TextFile, scope:STLRScope){
+        let _ = ""
+        if children.reduce(true, {$0 && $1.dataType == "Swift.String?"}){
+            stringEnum(to: output)
+            return
+        }
+        
+        output.print("","// \(dataType)","enum \(dataType) : Codable {").indent()
+        for child in children {
+            output.print("case \(child.name.propertyName)(\(child.name.propertyName):\(child.dataType.dropLast()))")
+        }
+
+        output.print("")
+        output.print("enum CodingKeys : Swift.String, CodingKey {").indent().print(
+            "case \(children.map({$0.name.propertyName}).joined(separator: ","))"
+        ).outdent().print(
+            "}",
+            ""
+        )
+        
+        output.print("init(from decoder: Decoder) throws {").indent().print(
+            "let container = try decoder.container(keyedBy: CodingKeys.self)",
+            ""
+        )
+        
+        children.map({
+            let propertyName = $0.name.propertyName
+            let dataType = $0.dataType.dropLast()
+            return "if let \(propertyName) = try? container.decode(\(dataType).self, forKey: .\(propertyName)){\n\tself = .\(propertyName)(\(propertyName): \(propertyName))\n\treturn\n}"
+        }).joined(separator: " else ").split(separator: "\n").forEach({output.print(String($0))})
+        
+        output.print(
+            "throw DecodingError.valueNotFound(Expression.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: \"Tried to decode one of \(children.map({$0.dataType.dropLast()}).joined(separator: ",")) but found none of those types\"))"
+        ).outdent().print("}")
+        
+        output.print("func encode(to encoder:Encoder) throws {").indent()
+        output.print(
+            "var container = encoder.container(keyedBy: CodingKeys.self)",
+            "switch self {"
+        )
+        for child in children {
+            output.print("case .\(child.name.propertyName)(let \(child.name.propertyName)):").indent()
+            output.print("try container.encode(\(child.name.propertyName), forKey: .\(child.name.propertyName))").outdent()
+        }
+        output.print("}")
+        output.outdent().print("}")
+
+        output.outdent().print("}")
+    }
+    
+    
     func swift(to output:TextFile, scope:STLRScope){
         if type != .unknown {
             if children.isEmpty{
                 output.print("let \(name.propertyName): \(dataType)")
             } else {
-                if type == .structure {
+                switch type {
+                case .structure:
                     output.print(
                         "",
                         "/// \(dataType) ",
                         "\(scope.identifierIsLeftHandRecursive(name) ? "class" : "struct") \(dataType) : Codable {"
                     )
-                } else {
+                case.enumeration:
+                    swiftEnum(to: output, scope: scope)
+                default:
                     output.print("",dataType)
                 }
             }
         } else {
             output.print("\(name): \(dataType) //\(kind)")
         }
-        if type == .typealias {
+        if type == .typealias ||  type == .enumeration {
             return
         }
         output.indent()
@@ -155,6 +273,11 @@ internal extension String {
     var typeName : String {
         return prefix(1).uppercased() + dropFirst()
     }
+
+    var instanceName : String {
+        return prefix(1).lowercased() + dropFirst()
+    }
+
     
     func arrayElement(`is` type:String)->Bool{
         guard hasPrefix("[") else {

@@ -142,6 +142,11 @@ public class GrammarStructure {
         var cardinality : Cardinality
         var children = [Node]()
         var type = DataType.unknown
+        var partOfChoice = false
+        
+        var canBeEnum : Bool {
+            return children.reduce(true, {$0 && $1.partOfChoice})
+        }
         
         var dataType : String {
             var coreType = ""
@@ -152,9 +157,7 @@ public class GrammarStructure {
                 coreType = scope.type(of: name)
             case .typealias:
                 coreType = "typealias \(name.typeName) = [\(children[0].name.typeName)]\(cardinality.optional ? "?" : " ")"
-            case .enumeration:
-                coreType = "enum(\(children.reduce("", {return "\($0)\($0.count == 0 ? "" : ",")\($1)"})))"
-            case .structure:
+            case .structure, .enumeration:
                 coreType = name.prefix(1).uppercased() + name.dropFirst()
             }
             switch cardinality {
@@ -203,6 +206,16 @@ public class GrammarStructure {
         }
         
         func cullTransientChildren(){
+            let _ = "hello"
+            if !children.isEmpty && canBeEnum  && children.reduce(true, {$0 && ($1.kind == .transient && $1.children.isEmpty && $1.name.hasPrefix("\""))}){
+                for child in children {
+                    child.kind = .structural
+                    child.type = .string
+                }
+                type = .enumeration
+                return
+            }
+            
             children = children.filter({(child) in
                 child.cullTransientChildren()
                 return child.kind != .transient && child.kind != .void
@@ -323,12 +336,17 @@ public class GrammarStructure {
         structure.identifyTypes(baseTypes: structure.children.map({return $0.name}))
         
         //Consolidate children and identify the type of all top level entries
-        for child in structure.children {
+        //Skipping anything that is already an enumeration
+        for child in structure.children where child.type != .enumeration{
             child.consolidateChildren()
             if child.children.count == 1 && child.children[0].cardinality.many {
                 child.type = .typealias
             } else {
-                child.type = .structure
+                if child.canBeEnum {
+                    child.type = .enumeration
+                } else {
+                    child.type = .structure
+                }
             }
         }
         
@@ -390,6 +408,7 @@ public class GrammarStructure {
         case .choice(let elements):
             for element in elements {
                 let node = generate(element: element)
+                node.partOfChoice = true
                 switch node.cardinality {
                 case .one:
                     node.cardinality = .optional
