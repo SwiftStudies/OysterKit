@@ -236,7 +236,20 @@ public extension BehaviouralRule {
         lexer.mark()
         
         if structural {
-            ir.willEvaluate(token: produces, at: lexer.index)
+            if let knownResult = ir.willEvaluate(rule: self, at: lexer.index){
+                
+                ir.didEvaluate(rule: self, matchResult: knownResult)
+                
+                switch knownResult{
+                case .success(let lexicalContext):
+                    lexer.index = lexicalContext.range.upperBound
+                case .failure:
+                    throw GrammarError.matchFailed(token: self.produces)
+                default: break
+                }
+                
+                return knownResult
+            }            
         }
         
         let skippable = behaviour.cardinality.minimumMatches == 0
