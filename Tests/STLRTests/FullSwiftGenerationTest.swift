@@ -26,7 +26,7 @@ class FullSwiftGenerationTest: XCTestCase {
             
             if case let .element(element) = helloRule.expression {
                 if case .characterSet(let characterSet) = element.terminal ?? STLR.Terminal.regex(regex: "") {
-                    XCTAssertEqual("letter", characterSet.characterSetName)
+                    XCTAssertEqual(STLR.CharacterSetName.letter, characterSet.characterSetName)
                 } else {
                     XCTAssertNotNil("Expected a character set terminal")
                 }
