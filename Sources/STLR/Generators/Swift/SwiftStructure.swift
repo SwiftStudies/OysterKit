@@ -246,7 +246,7 @@ public class SwiftStructure : Generator {
             " */",
             "static func build(_ source : Swift.String) throws ->\(name){").indent().print(
                 "let root = HomogenousTree(with: LabelledToken(withLabel: \"root\"), matching: source, children: [try AbstractSyntaxTreeConstructor().build(source, using: \(name)Rules.generatedLanguage)])",
-                "print(root.description)",
+                "\\ print(root.description)",
                 "return try ParsingDecoder().decode(\(name).self, using: root)").outdent().print(
             "}",
             "",
