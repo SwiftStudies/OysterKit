@@ -631,7 +631,7 @@ struct STLR : Codable {
      */
     static func build(_ source : Swift.String) throws ->STLR{
         let root = HomogenousTree(with: LabelledToken(withLabel: "root"), matching: source, children: [try AbstractSyntaxTreeConstructor().build(source, using: STLRRules.generatedLanguage)])
-        print(root.description)
+//        print(root.description)
         return try ParsingDecoder().decode(STLR.self, using: root)
     }
     
