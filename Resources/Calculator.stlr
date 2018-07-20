@@ -4,10 +4,10 @@
 
 total           = expression
 expression      = arithmeticExp
-arithmeticExp   = geometricExp summing*
-geometricExp    = term multiplying*
+arithmeticExp   = geometricExp @token("arithmeticRemainder") (summing*)
+geometricExp    = term @token("geometricRemainder") (multiplying*)
 term            = number | ("(" expression ")")
-multiplying     = (times | divide) element
+multiplying     = (times | divide) term
 summing         = (plus  | minus ) term
 
 // expression = term (
