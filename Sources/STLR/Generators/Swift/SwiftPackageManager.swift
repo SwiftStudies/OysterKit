@@ -48,7 +48,6 @@ public class SwiftPackageManager : Generator {
                     Check.ifEnvEquals(name: "new", requiredValue: "true").then(
                         createMain
                     ),
-                    System.shell("swift", arguments: ["build"])
         ]
     }
     
@@ -80,6 +79,12 @@ fileprivate let mainTemplate = """
 import OysterKit
 import Foundation
 
+// Enables signpost support if you want to debug with Instruments
+if #available(OSX 10.14, *) {
+    Log.parsing.enable()
+}
+
+
 print("Welcome to the default $GRAMMAR_NAME$ application. Type any string below to parse, pressing return twice will cause parsing to begin")
 
 // Loop forever until they enter QUIT
@@ -92,7 +97,7 @@ while let userInput = readLine(strippingNewline: false) {
         }
         do{
             let ctr = AbstractSyntaxTreeConstructor()
-            let ast = try ctr.build(combinedString, using: $GRAMMAR_NAME$.generatedLanguage)
+            let ast = try ctr.build(String(combinedString.dropLast()), using: $GRAMMAR_NAME$.generatedLanguage)
             guard ctr.errors.count == 0 else {
                 print("Parsing failed: \\(ctr.errors)")
                 break

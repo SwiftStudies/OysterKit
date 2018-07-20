@@ -266,6 +266,12 @@ public class GrammarStructure {
     let scope : STLRScope
     var structure : Node
 
+    private func dump(in scope:STLRScope){
+        let temp = TextFile("temp")
+        swift(to: temp, scope: scope)
+        print(temp.content)
+    }
+    
     init(for scope:STLRScope){
         self.scope = scope
         self.structure = Node(scope, name:"structure",cardinality:.one, kind: .structural)
@@ -344,6 +350,9 @@ public class GrammarStructure {
             } else {
                 evaluatedName = identifier.name
             }
+            //If this identifier has not quantity modifier we need to see if the expression has one and promote it up
+            //otherwise it will be lost
+            let modifier = modifier.isOne ? identifier.grammarRule?.expression?.promotableContentModifer?.promotableOptionality ?? .one : modifier
             return Node(scope, name: evaluatedName, cardinality: Cardinality(modifier: modifier), kind: Kind(modifier: modifier, lookahead: lookahead, annotations: evaluatedAnnotations.asRuleAnnotations, defaultValue: .structural))
         case .group(let expression, let modifier, let lookahead, let annotations):
             if let tokenAnnotation = annotations.asRuleAnnotations[.token] {
@@ -434,6 +443,68 @@ fileprivate extension Array where Element == GrammarStructure.Node {
         }
         
         return existingFields.map({return $1})
+    }
+}
+
+extension STLRScope.Modifier{
+    var promotableOptionality : STLRScope.Modifier {
+        switch self {
+        case .zeroOrOne, .zeroOrMore:
+            return .zeroOrOne
+        default:
+            return .one
+        }
+    }
+}
+
+extension STLRScope.Element {
+    var promotableContentModifier : STLRScope.Modifier? {
+        if self.lookahead {
+            return nil
+        }
+        switch self {
+        case .group(let expression, let modifier, _, _):
+            if modifier == .one {
+                return expression.promotableContentModifer
+            }
+            return modifier
+        case .terminal(_, let modifier, _, _):
+            return modifier
+        case .identifier(let identifier, let modifier, _, _):
+            if modifier == .one {
+                return identifier.grammarRule?.expression?.promotableContentModifer
+            }
+            return modifier
+        }
+        
+        return nil
+    }
+}
+
+extension STLRScope.Expression {
+    var promotableContentModifer : STLRScope.Modifier? {
+        switch self {
+        case .element(let element):
+            return element.promotableContentModifier
+        case .sequence(let elements):
+            if elements.count == 1 {
+                return elements[0].quantifier
+            }
+            return nil
+        case .choice(let elements):
+            if elements.isEmpty {
+                return nil
+            }
+            let oneQuantifierType = elements[0].quantifier
+            for element in elements.dropFirst() {
+                if oneQuantifierType != element.quantifier {
+                    return nil
+                }
+            }
+            return oneQuantifierType
+        case .group:
+            return nil
+        }
     }
 }
 

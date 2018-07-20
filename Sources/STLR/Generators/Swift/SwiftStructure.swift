@@ -25,7 +25,7 @@
 import Foundation
 import OysterKit
 
-fileprivate extension GrammarStructure {
+extension GrammarStructure {
     func swift(to output:TextFile, scope:STLRScope){
         for child in structure.children {
             child.swift(to: output, scope: scope)
@@ -98,7 +98,6 @@ public class SwiftStructure : Generator {
             "",
             "/// Intermediate Representation of the grammar"
             )
-        let structure = GrammarStructure(for: scope)
 
         var lines = tokens.components(separatedBy: CharacterSet.newlines)
         let line = lines.removeFirst()
@@ -108,9 +107,9 @@ public class SwiftStructure : Generator {
             output.print(line)
         }
 
-        
+        // Now the structure
+        let structure = GrammarStructure(for: scope)
         output.print("struct \(name) : Codable {").indent()
-        
         
         structure.swift(to: output, scope: scope)
         

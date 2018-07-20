@@ -432,16 +432,16 @@ struct STLR : Codable {
     
     /// Label 
     struct Label : Codable {
-        let definedLabel: Swift.String?
         let customLabel: Swift.String?
+        let definedLabel: Swift.String?
     }
     
     /// Terminal 
     struct Terminal : Codable {
-        let characterSet: CharacterSet?
         let terminalString: TerminalString?
-        let regex: Swift.String?
         let characterRange: CharacterRange?
+        let regex: Swift.String?
+        let characterSet: CharacterSet?
     }
     
     /// Group 
@@ -452,14 +452,14 @@ struct STLR : Codable {
     /// Element 
     class Element : Codable {
         let group: Group?
+        let negated: Swift.String?
         let quantifier: Swift.String?
         let lookahead: Swift.String?
         let transient: Swift.String?
-        let identifier: Swift.String?
-        let annotations: Annotations?
         let void: Swift.String?
-        let negated: Swift.String?
+        let annotations: Annotations?
         let terminal: Terminal?
+        let identifier: Swift.String?
     }
     
     typealias Choice = [Element] 
@@ -468,18 +468,18 @@ struct STLR : Codable {
     
     /// Expression 
     class Expression : Codable {
-        let sequence: Sequence?
         let element: Element?
         let choice: Choice?
+        let sequence: Sequence?
     }
     
     /// Rule 
     struct Rule : Codable {
         let transient: Swift.String?
-        let void: Swift.String?
-        let identifier: Swift.String
-        let annotations: Annotations?
         let assignmentOperators: Swift.String
+        let void: Swift.String?
+        let annotations: Annotations?
+        let identifier: Swift.String
         let expression: Expression
     }
     
@@ -495,8 +495,8 @@ struct STLR : Codable {
     
     /// Grammar 
     struct Grammar : Codable {
+        let modules: Modules?
         let rules: Rules
-        let modules: Modules
     }
     let grammar : Grammar
     /**
@@ -511,4 +511,6 @@ struct STLR : Codable {
         print(root.description)
         return try ParsingDecoder().decode(STLR.self, using: root)
     }
+    
+    static let generatedLanguage = STLRRules.generatedLanguage
 }
