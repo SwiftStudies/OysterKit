@@ -73,7 +73,22 @@ public typealias Test = (LexicalAnalyzer, IntermediateRepresentation) throws -> 
  modify their code.
  */
 public extension BehaviouralRule {
+    /// The specific error specified in the definition of this rule in the @error
+    /// annotation.
+    public  func error(lexer:LexicalAnalyzer, causes:[Error]?)->Error {
+        if let error = annotations.error{
+            switch behaviour.kind {
+            case .skipping, .scanning:
+                return TestError.scanningError(message: error , position: lexer.index, causes: causes ?? [])
+            case .structural:
+                return TestError.parsingError(message: error, range: lexer.index...lexer.index, causes: causes ?? [])
+            }
+        } else {
+            return TestError.undefinedError(at: lexer.index, causes: causes ?? [])
+        }
+    }
     
+
     /// The token that the rule produces if structural. For backwards compatibility
     /// `Transient` tokens are created for skipping and scanning
     public var produces: Token {
@@ -93,19 +108,6 @@ public extension BehaviouralRule {
             return true
         }
         return false
-    }
-    
-    /// The user specified (in an annotation) error associated with the rule
-    public var error : String? {
-        guard let value = self[RuleAnnotation.error] else {
-            return nil
-        }
-        
-        if case let .string(stringValue) = value {
-            return stringValue
-        } else {
-            return "Unexpected annotation value: \(value)"
-        }
     }
     
     /**
@@ -315,5 +317,6 @@ public extension BehaviouralRule {
         
         return result
     }
+    
     
 }

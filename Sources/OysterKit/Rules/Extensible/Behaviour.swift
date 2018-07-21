@@ -93,8 +93,16 @@ public struct Behaviour {
         self.lookahead = lookahead
     }
     
-    /// Used internally to create new instances with different parameters
-    init(_ kind:Kind, cardinality: Cardinality, negated:Bool = false, lookahead:Bool = false){
+    /**
+     Constructs a new instance of the struct with the specified parameters. All except kind can be excluded resulting
+     in requirements for a single match, un-negated without lookahead
+     
+     - Parameter kind: The of behaviour (skipping, scanning, or structural)
+     - Parameter cardinality: The cardinality of the matches
+     - Parameter negated: Specifies if the result of the Matcher should be negated
+     - Parameter lookahead: Specifies if the scanning head should be returned to the pre-matching position even if met.
+     */
+    public init(_ kind:Kind, cardinality: Cardinality, negated:Bool = false, lookahead:Bool = false){
         self.kind = kind
         self.cardinality = cardinality
         self.negate = negated

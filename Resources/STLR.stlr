@@ -21,6 +21,7 @@ v0.1.3  28 Feb 2018     Changed plurality of character sets
 v0.1.4  9  Jul 2018     Added regular expression terminals
 v0.1.5  11 Jul 2018     Removed support for nested inlines, replaced whitespace rules with regular expression increasing parsing performance by over 2x
 v0.1.6  14 Jul 2018     Added syntactic sugar for @transient (~) and @void (-) as prefixes to identifier declarations and expression elements
+v0.2.0  20 Jul 2018     Annotating with new structure, expect incremental (non-breaking) changes to come
 
 *************************************************************/
 
@@ -39,14 +40,16 @@ v0.1.6  14 Jul 2018     Added syntactic sugar for @transient (~) and @void (-) a
 // Quantifiers
 //
 quantifier                              = "*" | "+" | "?" | "-"
+// quantifier = zeroOrMore : "*" | oneOrMore : "+" | zeroOrOne : "?" | whatDoesThisMean : "-"
 negated                                 = "!"
-transient                               = "~"
-void                                    = "-"
 
 //
 // Parsing Control
 //
 lookahead                               = ">>"
+transient                               = "~"
+void                                    = "-"
+// structure = transient : "~" | void : "-"
 
 //
 // String
@@ -79,9 +82,12 @@ characterRange                  = terminalString rangeOperator @error("Range mus
 //
 // Types
 //
-number                                  = ("-" | "+")? .decimalDigit+
-boolean                                 = "true" | "false"
-literal                                 = string | number | boolean
+@type("Int")  number  = ("-" | "+")? .decimalDigit+
+@type("Bool") boolean = "true" | "false"
+literal               = string | number | boolean
+
+// number : Int = sign : ("-" | "+")? .decimalDigit+
+// booolean : Bool = "true" | "false"
 
 //
 // Annotations
@@ -125,6 +131,7 @@ element                                 = annotations? (lookahead | transient | 
 // Expressions
 //
 assignmentOperators             = "=" | "+=" | "|="
+// assignementOperators = equals : "=" | thenEquals = "+=" | orEquals = "|="
 -or                                              =  whitespace* "|" whitespace*
 -then                                    = (whitespace* "+" whitespace*) | whitespace+
 

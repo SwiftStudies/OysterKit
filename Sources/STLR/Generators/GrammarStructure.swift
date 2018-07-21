@@ -148,7 +148,7 @@ public class GrammarStructure {
             return children.reduce(true, {$0 && $1.partOfChoice})
         }
         
-        var dataType : String {
+        func dataType(_ accessLevel:String)->String {
             var coreType = ""
             switch type {
             case .unknown:
@@ -156,7 +156,7 @@ public class GrammarStructure {
             case .string:
                 coreType = scope.type(of: name)
             case .typealias:
-                coreType = "typealias \(name.typeName) = [\(children[0].name.typeName)]\(cardinality.optional ? "?" : " ")"
+                coreType = "\(accessLevel) typealias \(name.typeName) = [\(children[0].name.typeName)]\(cardinality.optional ? "?" : " ")"
             case .structure, .enumeration:
                 coreType = name.prefix(1).uppercased() + name.dropFirst()
             }
@@ -266,8 +266,8 @@ public class GrammarStructure {
             }
         }
         
-        func consolidateChildren(){
-            children = children.consolidate()
+        func consolidateChildren(accessLevel:String){
+            children = children.consolidate(accessLevel:accessLevel)
             //No need to recurse, we are now just one layer deep
         }
     }
@@ -281,11 +281,11 @@ public class GrammarStructure {
 
     private func dump(in scope:STLRScope){
         let temp = TextFile("temp")
-        swift(to: temp, scope: scope)
+        swift(to: temp, scope: scope, accessLevel: "public")
         print(temp.content)
     }
     
-    init(for scope:STLRScope){
+    init(for scope:STLRScope, accessLevel:String){
         self.scope = scope
         self.structure = Node(scope, name:"structure",cardinality:.one, kind: .structural)
         
@@ -338,7 +338,7 @@ public class GrammarStructure {
         //Consolidate children and identify the type of all top level entries
         //Skipping anything that is already an enumeration
         for child in structure.children where child.type != .enumeration{
-            child.consolidateChildren()
+            child.consolidateChildren(accessLevel: accessLevel)
             if child.children.count == 1 && child.children[0].cardinality.many {
                 child.type = .typealias
             } else {
@@ -443,15 +443,15 @@ fileprivate extension Array where Element == GrammarStructure.Node {
         return self.filter({$0.name == name}).first
     }
     
-    fileprivate func consolidate()->[Element]{
+    fileprivate func consolidate(accessLevel:String)->[Element]{
         var existingFields = [String : GrammarStructure.Node]()
         
         for child in self {
-            if let existingType = existingFields[child.name]?.dataType {
-                if existingType == child.dataType || child.dataType.arrayElement(is: existingType){
+            if let existingType = existingFields[child.name]?.dataType(accessLevel) {
+                if existingType == child.dataType(accessLevel) || child.dataType(accessLevel).arrayElement(is: existingType){
                     child.cardinality = .many(false)
                     existingFields[child.name] = child
-                } else if existingType.arrayElement(is: child.dataType){
+                } else if existingType.arrayElement(is: child.dataType(accessLevel)){
                     //Do nothing, it will work fine
                 } else {
                     fatalError("There are multiple fields with the same name (\(child.name)) but different types:\n\t\(child.dataType)\n\t\(existingType)\nCannot generate structure")
@@ -495,8 +495,6 @@ extension STLRScope.Element {
             }
             return modifier
         }
-        
-        return nil
     }
 }
 
