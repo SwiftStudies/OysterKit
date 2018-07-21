@@ -52,9 +52,9 @@ class LanguageOption : Option, IndexableParameterized {
                 case .swift:
                     return nil
                 case .swiftIR:
-                    return try SwiftStructure.generate(for: scope, grammar: grammarName)
+                    return try SwiftStructure.generate(for: scope, grammar: grammarName, accessLevel: "public")
                 case .swiftPM:
-                    return try SwiftPackageManager.generate(for: scope, grammar: grammarName)
+                    return try SwiftPackageManager.generate(for: scope, grammar: grammarName, accessLevel: "public")
                 }
             }
             

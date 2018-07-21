@@ -26,7 +26,7 @@ import Foundation
 
 /// A generator which creates a library for the grammar using Swift PM
 public class SwiftPackageManager : Generator {
-    public static func generate(for scope: STLRScope, grammar name: String) throws -> [Operation] {
+    public static func generate(for scope: STLRScope, grammar name: String, accessLevel:String) throws -> [Operation] {
         let writePackageFile = TextFile("Package.swift")
         writePackageFile.print(packageTemplate.replacingOccurrences(of: "$GRAMMAR_NAME$", with: name))
         let createMain = TextFile("main.swift")
@@ -44,7 +44,7 @@ public class SwiftPackageManager : Generator {
                             System.setEnv(name: "new", value: "true")
                         ]),
                     System.changeDirectory(name: "Sources/\(name)"),
-                    try SwiftStructure.generate(for: scope, grammar: name),
+                    try SwiftStructure.generate(for: scope, grammar: name, accessLevel: accessLevel),
                     Check.ifEnvEquals(name: "new", requiredValue: "true").then(
                         createMain
                     ),

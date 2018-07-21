@@ -31,5 +31,5 @@ public protocol Generator {
     /// Generate source code text files for the specified scope
     ///
     ///  - Parameter scope: The scope
-    static func generate(for scope:STLRScope, grammar name:String) throws ->[Operation]
+    static func generate(for scope:STLRScope, grammar name:String, accessLevel:String) throws ->[Operation]
 }
