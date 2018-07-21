@@ -227,10 +227,6 @@ extension _STLR.Terminal {
 }
 
 fileprivate extension _STLR.Expression {
-
-    
-
-    
     func rule(with behaviour:Behaviour, and annotations:RuleAnnotations, using symbolTable:SymbolTable<Symbol>)->BehaviouralRule {
         switch self {
         case .sequence(let elements):
@@ -270,9 +266,20 @@ fileprivate extension _STLR.Rule {
     }
 
     func rule(using symbolTable:SymbolTable<Symbol>)->BehaviouralRule {
-        let rule = expression.rule(with: behaviour, and: ruleAnnotations, using: symbolTable)
-        symbolTable[identifier] = Symbol(behaviouralRule: rule)
-        return rule
+        if symbolTable[hasRule: identifier] {
+            return symbolTable[identifier].behaviouralRule
+        }
+        
+        if symbolTable.ast.isLeftHandRecursive(identifier: identifier){
+            let rule = BehaviouralRecursiveRule(stubFor: behaviour, with: ruleAnnotations)
+            symbolTable[identifier] = Symbol(behaviouralRule: rule)
+            rule.surrogateRule = expression.rule(with: behaviour, and: ruleAnnotations, using: symbolTable)
+            return rule
+        } else {
+            let rule = expression.rule(with: behaviour, and: ruleAnnotations, using: symbolTable)
+            symbolTable[identifier] = Symbol(behaviouralRule: rule)
+            return rule
+        }
     }
 }
 

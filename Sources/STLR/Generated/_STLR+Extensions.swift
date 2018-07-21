@@ -34,6 +34,10 @@ public extension _STLR.Grammar {
         }
         fatalError("Undefined identifier: \(identifier)")
     }
+    
+    public func isLeftHandRecursive(identifier:String)->Bool{
+        return self[identifier].expression.references(identifier, grammar: self, closedList: [])
+    }
 }
 
 public extension _STLR.Expression {

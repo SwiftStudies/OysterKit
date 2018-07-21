@@ -41,6 +41,10 @@ public class SymbolTable<Symbol:SymbolType> {
         return ast[identifier].expression.references(identifier, grammar: ast, closedList: [])
     }
     
+    subscript(hasRule identifier:String)->Bool{
+        return identifiers[identifier] != nil
+    }
+    
     subscript(_ identifier:String)->Symbol{
         get {
             if let cached = identifiers[identifier] {
