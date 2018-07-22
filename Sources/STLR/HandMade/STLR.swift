@@ -391,7 +391,7 @@ enum STLR : Int, Token {
 			return [
 					[
 									"grammar".terminal(token: T._transient, annotations: [RuleAnnotation.void : RuleAnnotationValue.set]),
-									T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T._transient),
+									T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T._transient, annotations: [RuleAnnotation.void : RuleAnnotationValue.set]),
 									].sequence(token: T._transient, annotations: [RuleAnnotation.void : RuleAnnotationValue.set]),
 					[
 									CharacterSet.letters.terminal(token: T._transient),
