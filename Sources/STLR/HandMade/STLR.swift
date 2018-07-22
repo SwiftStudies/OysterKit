@@ -1,7 +1,7 @@
 // 
 // STLR Generated Swift File
 // 
-// Generated: 2018-07-15 20:52:13 +0000
+// Generated: 2018-07-22 09:13:13 +0000
 // 
 #if os(macOS)
 import Cocoa
@@ -40,7 +40,7 @@ enum STLR : Int, Token {
 		    }
 	}
 
-	case _transient = -1, `whitespace`, `ows`, `quantifier`, `negated`, `transient`, `void`, `lookahead`, `terminalBody`, `stringBody`, `string`, `terminalString`, `characterSetName`, `characterSet`, `rangeOperator`, `characterRange`, `number`, `boolean`, `literal`, `annotation`, `annotations`, `customLabel`, `definedLabel`, `label`, `regexDelimeter`, `startRegex`, `endRegex`, `regexBody`, `regex`, `terminal`, `group`, `identifier`, `element`, `assignmentOperators`, `or`, `then`, `choice`, `notNewRule`, `sequence`, `expression`, `lhs`, `rule`, `moduleName`, `moduleImport`, `modules`, `rules`, `grammar`
+	case _transient = -1, `whitespace`, `ows`, `quantifier`, `negated`, `lookahead`, `transient`, `void`, `terminalBody`, `stringBody`, `string`, `terminalString`, `characterSetName`, `characterSet`, `rangeOperator`, `characterRange`, `number`, `boolean`, `literal`, `annotation`, `annotations`, `customLabel`, `definedLabel`, `label`, `regexDelimeter`, `startRegex`, `endRegex`, `regexBody`, `regex`, `terminal`, `group`, `identifier`, `element`, `assignmentOperators`, `or`, `then`, `choice`, `notNewRule`, `sequence`, `expression`, `lhs`, `rule`, `moduleName`, `moduleImport`, `scopeName`, `modules`, `rules`, `grammar`
 
 	func _rule(_ annotations: RuleAnnotations = [ : ])->Rule {
 		switch self {
@@ -58,15 +58,15 @@ enum STLR : Int, Token {
 		// negated
 		case .negated:
 			return "!".terminal(token: T.negated, annotations: annotations)
+		// lookahead
+		case .lookahead:
+			return ">>".terminal(token: T.lookahead, annotations: annotations)
 		// transient
 		case .transient:
 			return "~".terminal(token: T.transient, annotations: annotations)
 		// void
 		case .void:
 			return "-".terminal(token: T.void, annotations: annotations)
-		// lookahead
-		case .lookahead:
-			return ">>".terminal(token: T.lookahead, annotations: annotations)
 		// terminalBody
 		case .terminalBody:
 			return ScannerRule.regularExpression(token: T.terminalBody, regularExpression: T.regularExpression("^(\\\\.|[^\"\\\\\\n])+"), annotations: annotations)
@@ -114,16 +114,16 @@ enum STLR : Int, Token {
 			return [
 					CharacterSet(charactersIn: "-+").terminal(token: T._transient).optional(producing: T._transient),
 					CharacterSet.decimalDigits.terminal(token: T._transient).repeated(min: 1, producing: T._transient),
-					].sequence(token: T.number, annotations: annotations.isEmpty ? [ : ] : annotations)
+					].sequence(token: T.number, annotations: annotations.isEmpty ? [RuleAnnotation.custom(label: "type") : RuleAnnotationValue.string("Int")] : annotations)
 		// boolean
 		case .boolean:
-			return ScannerRule.oneOf(token: T.boolean, ["true", "false"],[ : ].merge(with: annotations))
+			return ScannerRule.oneOf(token: T.boolean, ["true", "false"],[RuleAnnotation.custom(label: "type") : RuleAnnotationValue.string("Bool")].merge(with: annotations))
 		// literal
 		case .literal:
 			return [
 					T.string._rule(),
-					T.number._rule(),
-					T.boolean._rule(),
+					T.number._rule([RuleAnnotation.custom(label: "type") : RuleAnnotationValue.string("Int")]),
+					T.boolean._rule([RuleAnnotation.custom(label: "type") : RuleAnnotationValue.string("Bool")]),
 					].oneOf(token: T.literal, annotations: annotations)
 		// annotation
 		case .annotation:
@@ -359,6 +359,18 @@ enum STLR : Int, Token {
 					T.moduleName._rule(),
 					T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 1, producing: T._transient),
 					].sequence(token: T.moduleImport, annotations: annotations.isEmpty ? [ : ] : annotations)
+		// scopeName
+		case .scopeName:
+			return [
+					[
+									"grammar".terminal(token: T._transient),
+									T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T._transient),
+									].sequence(token: T._transient, annotations: annotations.isEmpty ? [RuleAnnotation.void : RuleAnnotationValue.set] : annotations),
+					[
+									CharacterSet.letters.terminal(token: T._transient),
+									CharacterSet.letters.union(CharacterSet.decimalDigits).terminal(token: T._transient).repeated(min: 0, producing: T._transient),
+									].sequence(token: T._transient),
+					].sequence(token: T.scopeName, annotations: annotations.isEmpty ? [ : ] : annotations)
 		// modules
 		case .modules:
 			return T.moduleImport._rule().repeated(min: 0, producing: T.modules, annotations: annotations)
@@ -368,6 +380,8 @@ enum STLR : Int, Token {
 		// grammar
 		case .grammar:
 			return [
+					T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T._transient),
+					T.scopeName._rule([RuleAnnotation.error : RuleAnnotationValue.string("You must declare the name of the grammar before any other declarations (e.g. grammar <your-grammar-name>)")]),
 					T.modules._rule(),
 					T.rules._rule(),
 					].sequence(token: T.grammar, annotations: annotations.isEmpty ? [ : ] : annotations)

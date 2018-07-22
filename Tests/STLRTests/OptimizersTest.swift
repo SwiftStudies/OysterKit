@@ -25,6 +25,7 @@ class OptimizersTest: GrammarTest {
     
     func testAttributePreservationOnInline(){
         source += """
+            grammar Test
             x = @error("Expected X") "x"
             xyz = x "y" "z"
         """

@@ -31,6 +31,7 @@ class GrammarStructureTeset: XCTestCase {
     
     func testEnumIdentification() {
         let source =    """
+                        grammar Test
                         quantifier = "*" | "+" | "?" | "-"
                         """
         
@@ -48,6 +49,7 @@ class GrammarStructureTeset: XCTestCase {
 
     func testReferencedEnumIdentification() {
         let source =    """
+                        grammar Test
                         quantifier = "*" | "+" | "?" | "-"
                         quantified = .letter+ quantifier
                         """

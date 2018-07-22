@@ -22,8 +22,11 @@ v0.1.4  9  Jul 2018     Added regular expression terminals
 v0.1.5  11 Jul 2018     Removed support for nested inlines, replaced whitespace rules with regular expression increasing parsing performance by over 2x
 v0.1.6  14 Jul 2018     Added syntactic sugar for @transient (~) and @void (-) as prefixes to identifier declarations and expression elements
 v0.2.0  20 Jul 2018     Annotating with new structure, expect incremental (non-breaking) changes to come
+v0.2.1  22 Jul 2018     Added requirement for grammar name to be declared
 
 *************************************************************/
+
+grammar STLR
 
 //
 // Whitespace
@@ -153,9 +156,16 @@ rule                                    = lhs whitespace* @error("Expected expre
 moduleName                              = (.letter | "_") (.letter | "_" | .decimalDigit)*
 moduleImport                    = whitespace* @token("import") "import" .whitespace+  moduleName whitespace+
 
+///
+/// Scope
+///
+
+scopeName       =   -("grammar" whitespace*) ~(.letter (.letter | .decimalDigit)*)
+
 //
 // Grammar
 //
 
-grammar         =   @token("modules") (moduleImport*)
+grammar         =   -whitespace* @error("You must declare the name of the grammar before any other declarations (e.g. grammar <your-grammar-name>)") scopeName
+                    @token("modules") (moduleImport*)
                     @token("rules") (@error("Expected at least one rule") rule+)

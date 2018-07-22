@@ -36,6 +36,8 @@ fileprivate enum TestError : Error {
 
 class DynamicGeneratorTest: XCTestCase {
 
+    let testGrammarName = "grammar STLRTest\n"
+    
     fileprivate enum TT : Int, Token {
         case character = 1
         case xyz
@@ -63,7 +65,7 @@ class DynamicGeneratorTest: XCTestCase {
 
     /// Intended to test the fix for Issue #39
     func testGrammarRuleProductionIdentifierNonRecursive(){
-        let stlr = """
+        let stlr = testGrammarName+"""
         @forArrow  arrow  = ">" | "<"
         @forArrows arrows = arrow
         """
@@ -90,7 +92,7 @@ class DynamicGeneratorTest: XCTestCase {
     
     /// Intended to test the fix for Issue #39
     func testGrammarRuleProductionIdentifierAnnotationNonRecursive(){
-        let stlr = """
+        let stlr = testGrammarName+"""
         @forArrows arrows = @token("arrow") @forArrow ">"
         """
         
@@ -115,7 +117,7 @@ class DynamicGeneratorTest: XCTestCase {
     
     /// Intended to test the fix for Issue #39
     func testGrammarRuleProductionIdentifierRecursive(){
-        let stlr = """
+        let stlr = testGrammarName+"""
         @forArrow  arrow  = ">" arrows?
         @forArrows arrows = arrow
         """
@@ -142,7 +144,7 @@ class DynamicGeneratorTest: XCTestCase {
     
     /// Intended to test the fix for Issue #39
     func testGrammarRuleProductionIdentifierAnnotationRecursive(){
-        let stlr = """
+        let stlr = testGrammarName+"""
         @forArrows arrows = @token("arrow") @forArrow ">" arrows?
         """
         
@@ -168,7 +170,7 @@ class DynamicGeneratorTest: XCTestCase {
     
     /// Intended to test the fix for Issue #39
     func testGrammarCumulativeAttributes(){
-        let stlr = """
+        let stlr = testGrammarName+"""
         a   =   @one "a"
         ba  =   "b" @two a
         ca  =   "c" @three a
@@ -198,7 +200,7 @@ class DynamicGeneratorTest: XCTestCase {
     /// Test to ensure trasnients just omit the token, but not the range
     /// and voids omit the token and the range
     func testGrammarTransientVoid(){
-        let stlr = """
+        let stlr = testGrammarName+"""
         v    = "v"
         t    = "t"
         vs   = @void      ":" v @void      ":" @transient v @void      ":"
@@ -232,7 +234,7 @@ class DynamicGeneratorTest: XCTestCase {
     /// Test of SLTR short hand for transient and void
     /// At this point I expect it to fail
     func testGrammarTransientVoidSyntacticSugar(){
-        let stlr = """
+        let stlr = testGrammarName+"""
         v    = "v"
         t    = "t"
         vs   = -":" v -":" ~v -":"
@@ -589,7 +591,7 @@ class DynamicGeneratorTest: XCTestCase {
     }
     
     func testDirectLeftHandRecursion(){
-        let source = "rhs = (\">\" rhs) | (\"<\" rhs)"
+        let source = testGrammarName+"rhs = (\">\" rhs) | (\"<\" rhs)"
         let stlr = STLRParser(source: source)
         
         
@@ -757,7 +759,7 @@ class DynamicGeneratorTest: XCTestCase {
     }
     
     func generatedStringSerialization(for source:String, desiredRule rule: Int = 0)throws ->String {
-        let ast = STLRScope(building: source)
+        let ast = STLRScope(building: testGrammarName+source)
         
         if ast.rules.count <= rule {
             throw TestError.expected("at least \(rule + 1) rule, but got \(ast.rules.count)")

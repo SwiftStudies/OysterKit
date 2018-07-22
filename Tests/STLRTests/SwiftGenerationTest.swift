@@ -37,7 +37,7 @@ class SwiftGenerationTest: XCTestCase {
     }
     
     func swift(for source:String, desiredIdentifier identifierName:String)throws ->String {
-        let ast = STLRParser(source: source).ast
+        let ast = STLRParser(source: "grammar SwiftGenerationTest\n"+source).ast
         
         guard let identifier = ast.identifiers[identifierName] else {
             throw TestError.expected("Missing identifier \(identifierName)")
@@ -49,7 +49,7 @@ class SwiftGenerationTest: XCTestCase {
     }
     
     func swift(for source:String, desiredRule rule: Int = 0)throws ->String {
-        let ast = STLRParser(source: source).ast
+        let ast = STLRParser(source: "grammar SwiftGenerationTest\n"+source).ast
         
         if ast.rules.count <= rule {
             throw TestError.expected("at least \(rule + 1) rule, but got \(ast.rules.count)")
@@ -299,6 +299,7 @@ class SwiftGenerationTest: XCTestCase {
     
     func testIdentifierAndReference(){
         let stlrSource = """
+            grammar SwiftGenerationTest
             @void id    = @error("Expected id") "id"
             declaration = @error("Declaration requires id") id
 """
@@ -314,6 +315,7 @@ class SwiftGenerationTest: XCTestCase {
     
     func testIdentifierAndReferenceInSequence(){
         let stlrSource = """
+            grammar SwiftGenerationTest
             @void id    = @error("Expected id") "id"
             declaration = @error("Declaration requires id") id .letter
 """
@@ -329,6 +331,7 @@ class SwiftGenerationTest: XCTestCase {
     
     func testIdentifierAndReferenceInGroupedSequence(){
         let stlrSource = """
+            grammar SwiftGenerationTest
             @void id    = @error("Expected id") "id"
             declaration = (@error("Declaration requires id") id .letter) .letter+
 """

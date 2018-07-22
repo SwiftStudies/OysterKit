@@ -17,6 +17,8 @@ fileprivate enum TestToken : Int, Token{
     case pass
 }
 
+let testGrammarName = "grammar STLRTest\n"
+
 class STLRTest: XCTestCase {
     
     func testBackslash(){
@@ -25,7 +27,7 @@ class STLRTest: XCTestCase {
         let ruleSource = """
         id = \(backSlash) "x"
 """
-        guard let testLanguage = STLRParser(source: ruleSource).ast.runtimeLanguage else {
+        guard let testLanguage = STLRParser(source: testGrammarName+ruleSource).ast.runtimeLanguage else {
             XCTFail("Could not compile")
             return
         }
@@ -56,7 +58,7 @@ class STLRTest: XCTestCase {
             pass = letters " " @pin @token("numbers") digits?
 """
 
-        let stlr = STLRParser(source: ruleSource)
+        let stlr = STLRParser(source: testGrammarName+ruleSource)
         guard let testLanguage = stlr.ast.runtimeLanguage else {
             XCTFail("Compilation failed"); return
         }
@@ -83,7 +85,7 @@ class STLRTest: XCTestCase {
     func testVoidSugar(){
         let expectedAnnotations = [ RuleAnnotation.void : RuleAnnotationValue.set]
         let rule = "-identifier = -\"/\""
-        let parser = STLRParser.init(source: rule)
+        let parser = STLRParser.init(source: testGrammarName+rule)
 
         guard let identifier = parser.ast.identifiers["identifier"] else {
             XCTFail("Rule was not compiled \(parser.ast.errors)")
@@ -101,7 +103,7 @@ class STLRTest: XCTestCase {
     func testTransientSugar(){
         let expectedAnnotations = [ RuleAnnotation.transient : RuleAnnotationValue.set]
         let rule = "~identifier = ~(\"/\")"
-        let parser = STLRParser.init(source: rule)
+        let parser = STLRParser.init(source: testGrammarName+rule)
         
         guard let identifier = parser.ast.identifiers["identifier"] else {
             XCTFail("Rule was not compiled \(parser.ast.errors)")

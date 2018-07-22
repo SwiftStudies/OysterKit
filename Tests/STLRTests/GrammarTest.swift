@@ -82,7 +82,7 @@ class GrammarTest: XCTestCase {
     func testRuleWithTerminal(){
         source.add(line: "x = \"x\"")
         
-        let stlr = STLRParser(source: source)
+        let stlr = STLRParser(source: testGrammarName+source)
         
         let ast = stlr.ast
         
@@ -98,7 +98,7 @@ class GrammarTest: XCTestCase {
     func testRuleWithRegularExpression(){
         source.add(line: "animal = /Cat|Dog/")
         
-        let stlr = STLRParser(source: source)
+        let stlr = STLRParser(source: testGrammarName+source)
         
         let ast = stlr.ast
         
@@ -167,7 +167,7 @@ class GrammarTest: XCTestCase {
     }
     
     func generateAndCheck(grammar:String, parsing testString:String, expecting: [String]) throws {
-        let language = STLRParser(source: grammar)
+        let language = STLRParser(source: testGrammarName+grammar)
         let ast = language.ast
         
         guard let parser = ast.runtimeLanguage else {
@@ -192,7 +192,7 @@ class GrammarTest: XCTestCase {
     func testInlineError(){
         source.add(line: "xy = \"x\" @error(\"expected y\")@custom\"y\"")
         
-        let parser = STLRParser(source: source)
+        let parser = STLRParser(source: testGrammarName+source)
         
         guard parser.ast.rules.count == 1 else {
             XCTFail("Expected just one rule but got \(parser.ast.rules.count): \(parser.ast.rules)")
@@ -224,7 +224,7 @@ class GrammarTest: XCTestCase {
         source.add(line: "justX = x")
         source.add(line: "xy = x \"y\"")
         
-        let stlr = STLRParser(source: source)
+        let stlr = STLRParser(source: testGrammarName+source)
         
         let ast = stlr.ast
         
@@ -244,7 +244,7 @@ class GrammarTest: XCTestCase {
         source.add(line: "x  = \"x\" >>!\"y\" ")
         source.add(line: "xy = \"x\" \"y\" ")
         
-        let stlr = STLRParser(source: source)
+        let stlr = STLRParser(source: testGrammarName+source)
         
         let ast = stlr.ast
         guard ast.rules.count == 2 else {
@@ -262,12 +262,14 @@ class GrammarTest: XCTestCase {
         }
     }
     
+    let testGrammarName = "grammar GrammarTest\n"
+    
     func testQuantifiersNotAddedToIdentifierNames(){
         source.add(line: "ws = .whitespace")
         source.add(line: "whitespace = ws+")
         source.add(line: "word = .letter+")
         
-        let stlr = STLRParser(source: source)
+        let stlr = STLRParser(source: testGrammarName+source)
         
         let ast = stlr.ast
         
@@ -286,7 +288,7 @@ class GrammarTest: XCTestCase {
     func testRuleWithIdentifier(){
         source.add(line: "x = y")
         
-        let stlr = STLRParser(source: source)
+        let stlr = STLRParser(source: testGrammarName+source)
         
         let ast = stlr.ast
         
@@ -336,7 +338,7 @@ class GrammarTest: XCTestCase {
         source.add(line: "y = \"y\"")
         source.add(line: "z=\"z\"")
 
-        let stlr = STLRParser(source: source)
+        let stlr = STLRParser(source: testGrammarName+source)
 
         let ast = stlr.ast
 
@@ -354,7 +356,7 @@ class GrammarTest: XCTestCase {
     func testUnknownCharacterSet(){
         source.add(line: "hello = \"hello\" .whiteSpacesAndNewlines")
         
-        let parser = STLRParser(source: source)
+        let parser = STLRParser(source: testGrammarName+source)
         
         guard let rootError = parser.ast.errors.first as? AbstractSyntaxTreeConstructor.ConstructionError  else {
             XCTFail("Expected a root error")
@@ -378,7 +380,7 @@ class GrammarTest: XCTestCase {
     func testUnterminatedString(){
         source.add(line: "hello = \"hello")
         
-        let parser = STLRParser(source: source)
+        let parser = STLRParser(source: testGrammarName+source)
         
         guard let rootError = parser.ast.errors.first as? AbstractSyntaxTreeConstructor.ConstructionError  else {
             XCTFail("Expected a root error")
@@ -403,7 +405,7 @@ class GrammarTest: XCTestCase {
         source.add(line: "x = \"x\"")
         source.add(line: "xyz = @error(\"Expected X\")\nx \"y\" \"z\"")
         
-        let parser = STLRParser(source: source)
+        let parser = STLRParser(source: testGrammarName+source)
         
         guard let compiledLanguage = parser.ast.runtimeLanguage else {
             XCTFail("Could not compile")
@@ -427,7 +429,7 @@ class GrammarTest: XCTestCase {
         source.add(line: "x = \"x\"")
         source.add(line: "xyz = @error(\"Expected xy\")(@error(\"Expected x\")x \"y\") \"z\"")
         
-        let parser = STLRParser(source: source)
+        let parser = STLRParser(source: testGrammarName+source)
         
         guard let compiledLanguage = parser.ast.runtimeLanguage else {
             XCTFail("Could not compile")

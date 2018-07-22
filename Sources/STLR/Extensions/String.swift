@@ -26,7 +26,7 @@ import OysterKit
 
 public extension String {
     public func  dynamicRule(token:Token)->Rule? {
-        let grammarDef = "_ = \(self)"
+        let grammarDef = "grammar Dynamic\n_ = \(self)"
         
         let compiler = STLRParser(source: grammarDef)
         

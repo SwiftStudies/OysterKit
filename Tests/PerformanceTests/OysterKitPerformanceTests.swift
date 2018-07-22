@@ -690,6 +690,8 @@ class FullSwiftParser : Parser{
 
         *************************************************************/
 
+        grammar STLR
+
         //
         // Whitespace
         //

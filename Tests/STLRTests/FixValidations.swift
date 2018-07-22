@@ -12,6 +12,8 @@ import XCTest
 
 class FixValidations: XCTestCase {
 
+    let testGrammarName = "grammar FixValidations\n"
+    
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -29,7 +31,7 @@ class FixValidations: XCTestCase {
     // .decimalDigits
     //
     func testQuantifierLeak() {
-        let grammarString = "number  = .decimalDigit*\n keyword = \"import\" | \"wibble\""
+        let grammarString = testGrammarName+"number  = .decimalDigit*\n keyword = \"import\" | \"wibble\""
         
         let stlr = STLRParser(source: grammarString)
         
@@ -51,7 +53,7 @@ class FixValidations: XCTestCase {
     // the void annotation
     //
     func testFixForIssue68() {
-        let grammar = """
+        let grammar = testGrammarName+"""
         @void inlined = "/"
         expr = inlined !inlined+ inlined
         """
@@ -68,7 +70,7 @@ class FixValidations: XCTestCase {
     // and a character set, the single character set is lost.
     //
     func testCharacterSetOmmision() {
-        let grammarString = "variableStart = .letter | \"_\""
+        let grammarString = testGrammarName+"variableStart = .letter | \"_\""
         
         let stlr = STLRParser(source: grammarString)
         
@@ -92,7 +94,7 @@ class FixValidations: XCTestCase {
     // and a character set, the single character set is lost.
     //
     func testBadFolding() {
-        let grammarString = "operators = \":=\" | \";\""
+        let grammarString = testGrammarName+"operators = \":=\" | \";\""
         
         let stlr = STLRParser(source: grammarString)
         
@@ -117,7 +119,7 @@ class FixValidations: XCTestCase {
     // generated hierarchy has an additional layer
     //
     func testTokenOverride(){
-        let source = """
+        let source = testGrammarName+"""
 letter          = .letter
 doubleLetter    = letter "+" letter
 phrase          = doubleLetter .whitespace @token("doubleLetter2") doubleLetter
