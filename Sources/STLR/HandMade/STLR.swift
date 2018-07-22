@@ -1,7 +1,7 @@
 // 
 // STLR Generated Swift File
 // 
-// Generated: 2018-07-22 09:13:13 +0000
+// Generated: 2018-07-22 19:41:28 +0000
 // 
 #if os(macOS)
 import Cocoa
@@ -40,7 +40,7 @@ enum STLR : Int, Token {
 		    }
 	}
 
-	case _transient = -1, `whitespace`, `ows`, `quantifier`, `negated`, `lookahead`, `transient`, `void`, `terminalBody`, `stringBody`, `string`, `terminalString`, `characterSetName`, `characterSet`, `rangeOperator`, `characterRange`, `number`, `boolean`, `literal`, `annotation`, `annotations`, `customLabel`, `definedLabel`, `label`, `regexDelimeter`, `startRegex`, `endRegex`, `regexBody`, `regex`, `terminal`, `group`, `identifier`, `element`, `assignmentOperators`, `or`, `then`, `choice`, `notNewRule`, `sequence`, `expression`, `lhs`, `rule`, `moduleName`, `moduleImport`, `scopeName`, `modules`, `rules`, `grammar`
+	case _transient = -1, `whitespace`, `ows`, `quantifier`, `negated`, `lookahead`, `transient`, `void`, `terminalBody`, `stringBody`, `string`, `terminalString`, `characterSetName`, `characterSet`, `rangeOperator`, `characterRange`, `number`, `boolean`, `literal`, `annotation`, `annotations`, `customLabel`, `definedLabel`, `label`, `regexDelimeter`, `startRegex`, `endRegex`, `regexBody`, `regex`, `terminal`, `group`, `identifier`, `element`, `assignmentOperators`, `or`, `then`, `choice`, `notNewRule`, `sequence`, `expression`, `tokenType`, `standardType`, `customType`, `lhs`, `rule`, `moduleName`, `moduleImport`, `scopeName`, `modules`, `rules`, `grammar`
 
 	func _rule(_ annotations: RuleAnnotations = [ : ])->Rule {
 		switch self {
@@ -114,16 +114,16 @@ enum STLR : Int, Token {
 			return [
 					CharacterSet(charactersIn: "-+").terminal(token: T._transient).optional(producing: T._transient),
 					CharacterSet.decimalDigits.terminal(token: T._transient).repeated(min: 1, producing: T._transient),
-					].sequence(token: T.number, annotations: annotations.isEmpty ? [RuleAnnotation.custom(label: "type") : RuleAnnotationValue.string("Int")] : annotations)
+					].sequence(token: T.number, annotations: annotations.isEmpty ? [RuleAnnotation.type : RuleAnnotationValue.string("Int")] : annotations)
 		// boolean
 		case .boolean:
-			return ScannerRule.oneOf(token: T.boolean, ["true", "false"],[RuleAnnotation.custom(label: "type") : RuleAnnotationValue.string("Bool")].merge(with: annotations))
+			return ScannerRule.oneOf(token: T.boolean, ["true", "false"],[RuleAnnotation.type : RuleAnnotationValue.string("Bool")].merge(with: annotations))
 		// literal
 		case .literal:
 			return [
 					T.string._rule(),
-					T.number._rule([RuleAnnotation.custom(label: "type") : RuleAnnotationValue.string("Int")]),
-					T.boolean._rule([RuleAnnotation.custom(label: "type") : RuleAnnotationValue.string("Bool")]),
+					T.number._rule([RuleAnnotation.type : RuleAnnotationValue.string("Int")]),
+					T.boolean._rule([RuleAnnotation.type : RuleAnnotationValue.string("Bool")]),
 					].oneOf(token: T.literal, annotations: annotations)
 		// annotation
 		case .annotation:
@@ -288,6 +288,12 @@ enum STLR : Int, Token {
 								T.annotations._rule().optional(producing: T._transient),
 								T.identifier._rule(),
 								T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T._transient),
+								[
+												":".terminal(token: T._transient),
+												T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T._transient),
+												CharacterSet.letters.terminal(token: T._transient).repeated(min: 1, producing: T._transient),
+												T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T._transient),
+												].sequence(token: T._transient).optional(producing: T._transient),
 								T.assignmentOperators._rule(),
 								].sequence(token: T._transient, annotations: annotations.isEmpty ? [ : ] : annotations).not(producing: T.notNewRule, annotations: annotations)
 		// sequence
@@ -325,6 +331,21 @@ enum STLR : Int, Token {
 				return recursiveRule
 			}
 			return cachedRule
+		// tokenType
+		case .tokenType:
+			return [
+					T.standardType._rule(),
+					T.customType._rule(),
+					].oneOf(token: T.tokenType, annotations: annotations)
+		// standardType
+		case .standardType:
+			return ScannerRule.oneOf(token: T.standardType, ["Int", "Double", "String", "Bool"],[ : ].merge(with: annotations))
+		// customType
+		case .customType:
+			return [
+					CharacterSet.uppercaseLetters.union(CharacterSet(charactersIn: "_")).terminal(token: T._transient),
+					CharacterSet.letters.union(CharacterSet.decimalDigits).union(CharacterSet(charactersIn: "_")).terminal(token: T._transient).repeated(min: 0, producing: T._transient),
+					].sequence(token: T.customType, annotations: annotations.isEmpty ? [ : ] : annotations)
 		// lhs
 		case .lhs:
 			return [
@@ -334,6 +355,12 @@ enum STLR : Int, Token {
 					T.void._rule().optional(producing: T._transient),
 					T.identifier._rule(),
 					T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T._transient),
+					[
+									":".terminal(token: T._transient, annotations: [RuleAnnotation.void : RuleAnnotationValue.set]),
+									T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T._transient),
+									T.tokenType._rule(),
+									T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T._transient),
+									].sequence(token: T._transient).optional(producing: T._transient),
 					T.assignmentOperators._rule(),
 					].sequence(token: T.lhs, annotations: annotations.isEmpty ? [RuleAnnotation.transient : RuleAnnotationValue.set] : annotations)
 		// rule
@@ -370,6 +397,7 @@ enum STLR : Int, Token {
 									CharacterSet.letters.terminal(token: T._transient),
 									CharacterSet.letters.union(CharacterSet.decimalDigits).terminal(token: T._transient).repeated(min: 0, producing: T._transient),
 									].sequence(token: T._transient),
+					T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T._transient),
 					].sequence(token: T.scopeName, annotations: annotations.isEmpty ? [ : ] : annotations)
 		// modules
 		case .modules:

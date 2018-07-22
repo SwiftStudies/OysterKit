@@ -55,11 +55,17 @@ public enum ScannerRule : Rule, CustomStringConvertible{
         #if canImport(NaturalLanguage)
         if #available(OSX 10.14, *){
             Log.beginRule(rule: self)
-            defer {
-                Log.endRule(rule: self, result: matchResult)
-            }
         }
         #endif
+        defer {
+            #if canImport(NaturalLanguage)
+            if #available(OSX 10.14, *){
+                Log.endRule(rule: self, result: matchResult)
+            }
+            #endif
+        }
+
+        
         
         let endOfInput = lexer.endOfInput
         

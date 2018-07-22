@@ -93,6 +93,10 @@ extension STLRAbstractSyntaxTree.Rule {
             symbolTableEntry.annotations.append(STLRScope.ElementAnnotationInstance(STLRScope.ElementAnnotation.void, value: STLRScope.ElementAnnotationValue.set))
         }
         
+        if let type = tokenType {
+            symbolTableEntry.annotations.append(STLRScope.ElementAnnotationInstance(STLRScope.ElementAnnotation.type, value: STLRScope.ElementAnnotationValue.string(type)))
+        }
+        
         if let transient = transient, transient == .transient {
             symbolTableEntry.annotations.append(STLRScope.ElementAnnotationInstance(STLRScope.ElementAnnotation.transient, value: STLRScope.ElementAnnotationValue.set))
         }

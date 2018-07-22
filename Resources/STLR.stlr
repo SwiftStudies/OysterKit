@@ -22,7 +22,7 @@ v0.1.4  9  Jul 2018     Added regular expression terminals
 v0.1.5  11 Jul 2018     Removed support for nested inlines, replaced whitespace rules with regular expression increasing parsing performance by over 2x
 v0.1.6  14 Jul 2018     Added syntactic sugar for @transient (~) and @void (-) as prefixes to identifier declarations and expression elements
 v0.2.0  20 Jul 2018     Annotating with new structure, expect incremental (non-breaking) changes to come
-v0.2.1  22 Jul 2018     Added requirement for grammar name to be declared
+v0.2.1  22 Jul 2018     Added requirement for grammar name to be declared, added ability to define expected type for code generation to rule declaration
 
 *************************************************************/
 
@@ -83,14 +83,11 @@ characterSet                    = ("." @error("Unknown character set") character
 characterRange                  = terminalString rangeOperator @error("Range must be terminated") terminalString
 
 //
-// Types
+// Literals
 //
-@type("Int")  number  = ("-" | "+")? .decimalDigit+
-@type("Bool") boolean = "true" | "false"
-literal               = string | number | boolean
-
-// number : Int = sign : ("-" | "+")? .decimalDigit+
-// booolean : Bool = "true" | "false"
+number : Int = ("-" | "+")? .decimalDigit+
+boolean : Bool = "true" | "false"
+literal  = string | number | boolean
 
 //
 // Annotations
@@ -139,16 +136,36 @@ assignmentOperators             = "=" | "+=" | "|="
 -then                                    = (whitespace* "+" whitespace*) | whitespace+
 
 choice                                  = element (or @error("Expected terminal, identifier, or group") element)+
-notNewRule                              = !(annotations? identifier whitespace* assignmentOperators)
+notNewRule                              = !(annotations? identifier whitespace* (":" whitespace* .letter+ whitespace*)? assignmentOperators)
 sequence                                = element (then >>notNewRule @error("Expected terminal, identifier, or group")element)+
 
 expression                              = choice | sequence | element
 
 //
+// Types
+//
+
+tokenType       = standardType | customType
+standardType    = "Int" | "Double" | "String" | "Bool"
+customType      = ("_"|.uppercaseLetter) ("_"|.letter|.decimalDigit)*
+
+//
 // Rule
 //
-~lhs                                             = whitespace* annotations? transient? void? identifier whitespace* assignmentOperators
-rule                                    = lhs whitespace* @error("Expected expression")expression whitespace*
+~lhs            =   whitespace*
+                    annotations?
+                    transient?
+                    void?
+                    identifier
+                    whitespace*
+                    (
+                        -":"
+                        -whitespace*
+                        tokenType
+                        -whitespace*
+                    )?
+                    assignmentOperators
+rule            = lhs whitespace* @error("Expected expression")expression whitespace*
 
 //
 // Importing
@@ -160,7 +177,7 @@ moduleImport                    = whitespace* @token("import") "import" .whitesp
 /// Scope
 ///
 
-scopeName       =   -("grammar" whitespace*) ~(.letter (.letter | .decimalDigit)*)
+scopeName       =   -("grammar" whitespace*) ~(.letter (.letter | .decimalDigit)*) -whitespace*
 
 //
 // Grammar

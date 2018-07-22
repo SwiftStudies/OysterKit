@@ -581,7 +581,7 @@ extension STLRScope {
         return get(identifier: name)?.grammarRule?.leftHandRecursive ?? false
     }
     func type(of name:String)->String{
-        guard let type = get(identifier: name)?.annotations.asRuleAnnotations[.custom(label: "type")]?.description else {
+        guard let type = get(identifier: name)?.annotations.asRuleAnnotations[.type]?.description else {
             return "Swift.String"
         }
         

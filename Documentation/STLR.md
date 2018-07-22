@@ -38,6 +38,24 @@ A token, `digit` is defined as being any one of the strings separated by the `|`
     
 When STLR compiles this it creates a rule for each token. 
 
+### Defining identifier type
+
+STLR (the library and ```stlrc``` the command line tool) is able to generate the source code to parse and build the abstract syntax tree for your grammar. When it does this it must make a number of inferences about the types (if any) each identifier represents. You can explicitly control this by providing the type name after the identifier of a rule. For example:
+
+    wholeNumber : Int = .decimalDigit+
+    
+The field generated would then have the ```Int``` datatype. The following types are predefined and are treated in output language sensitive way (that is, the source code generator will ensure they
+are an appropriate type for the language being generated)
+
+- Int: An integer
+- Double: A floating point number
+- String: A string
+- Boolean: A boolean value
+
+You may optionally declare any other type you wish, but note that the type name must begin with an upper-case letter. You will also be responsible for ensuring that that type is availble in the build environment of the target language (either it is part of the language or you have defined it yourself such that it can be accessed). 
+
+For Swift there generation the type must also implement the ```Codable``` protocol as decoding this is used for building and persisting the AST. 
+
 ## Expressions 
 
 Expressions are made up of elements and other expressions. Elements can be terminals, groups, or identifiers and can have one or more modifiers that alter the meaning of the element (such as `!` or not) or the number of the element that is expected (for example `+` means one or more). 

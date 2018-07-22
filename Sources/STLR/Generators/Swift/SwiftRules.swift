@@ -367,6 +367,8 @@ internal extension STLRScope.Expression{
 internal extension STLRScope.ElementAnnotation{
     var swift : String {
         switch self {
+        case .type:
+            return "RuleAnnotation.type"
         case .pinned:
             return "RuleAnnotation.pinned"
         case .error:

@@ -87,7 +87,7 @@ fileprivate extension GrammarStructure.Node {
     func stringEnum(to output:TextFile, accessLevel:String){
         output.print("","// \(dataType(accessLevel))","\(accessLevel) enum \(dataType(accessLevel)) : Swift.String, Codable {").indent()
         let cases = children.map({
-            let caseMatchedString = $0.name.dropFirst().dropLast()
+            let caseMatchedString = $0.name.hasPrefix("\"") ? String($0.name.dropFirst().dropLast()) : $0.name
             let caseMatchedName   = caseMatchedString.caseName.propertyName
             if caseMatchedString == caseMatchedName {
                 return "\(caseMatchedName)"
@@ -186,12 +186,14 @@ fileprivate extension GrammarStructure.Node {
 
 fileprivate extension String {
     var propertyName : String {
+        let lowerCased =  String(prefix(1).lowercased()+dropFirst())
+        
         let keywords = ["switch","extension","protocol","in","for","case","if","while","do","catch","func","enum","let","var","struct","class","enum","import","private","fileprivate","internal","public","final","open","typealias","typedef","true","false","return","self","else","default","init","operator","throws","catch"]
         
-        if keywords.contains(self){
-            return "`\(self)`"
+        if keywords.contains(lowerCased){
+            return "`\(lowerCased)`"
         }
-        return self
+        return lowerCased
     }
 }
 

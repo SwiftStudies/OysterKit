@@ -36,6 +36,7 @@ struct STLRAbstractSyntaxTree {
         let transient : Quantifier?
         let void : Quantifier?
         let identifier : String
+        let tokenType : String?
         let assignmentOperators : AssignmentOperators
         let expression : Expression
         let annotations : [Annotation]?

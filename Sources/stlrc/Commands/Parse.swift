@@ -89,6 +89,8 @@ class ParseCommand : Command, IndexableOptioned, IndexableParameterized, Grammar
                     print("Done")
                     return RunnableReturnValue.success
                 }
+                #warning("This needs to be removed it will break other languages")
+                let line = "grammar ParseTest\n"+line
                 do {
                     try parseInput(language: language, input: line)
                 } catch {

@@ -278,13 +278,16 @@ public enum RuleAnnotation : Hashable, CustomStringConvertible{
     ///Nodes will be created for failed optional matches
     case pinned
     
+    ///The type of the token, used to inform code generation
+    case type
+    
     ///A custom developer defined annotation that your own AST will interpret
     case custom(label:String)
     
     ///The searchable hash value of the annotation
     public var hashValue: Int{
         switch self {
-        case .token, .error, .void, .transient:
+        case .token, .error, .void, .transient, .type:
             return "\(self)".hash
         case .pinned:
             return "pin".hash
@@ -307,6 +310,8 @@ public enum RuleAnnotation : Hashable, CustomStringConvertible{
     /// A human readable description of the annotation
     public var description: String{
         switch self {
+        case .type:
+            return "type"
         case .pinned:
             return "pin"
         case .token:
