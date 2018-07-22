@@ -1,7 +1,7 @@
 // 
 // STLR Generated Swift File
 // 
-// Generated: 2018-07-22 20:40:29 +0000
+// Generated: 2018-07-22 20:51:46 +0000
 // 
 #if os(macOS)
 import Cocoa
@@ -386,18 +386,18 @@ enum STLR : Int, Token {
 					T.moduleName._rule(),
 					T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 1, producing: T._transient),
 					].sequence(token: T.moduleImport, annotations: annotations.isEmpty ? [ : ] : annotations)
-		// scopeName with required manual changes
+		// scopeName
 		case .scopeName:
 			return [
-					[
-									"grammar".terminal(token: T._transient, annotations: [RuleAnnotation.void : RuleAnnotationValue.set]),
-									T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T._transient, annotations: [RuleAnnotation.void : RuleAnnotationValue.set]),
-									].sequence(token: T._transient, annotations: [RuleAnnotation.void : RuleAnnotationValue.set]),
+					"grammar".terminal(token: T._transient, annotations: [RuleAnnotation.void : RuleAnnotationValue.set]),
+					T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]),
+					T.ows._rule([RuleAnnotation.void : RuleAnnotationValue.set]),
 					[
 									CharacterSet.letters.terminal(token: T._transient),
 									CharacterSet.letters.union(CharacterSet.decimalDigits).terminal(token: T._transient).repeated(min: 0, producing: T._transient),
 									].sequence(token: T._transient),
-					T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T._transient, annotations: [RuleAnnotation.void : RuleAnnotationValue.set] ),
+					T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]),
+					T.ows._rule([RuleAnnotation.void : RuleAnnotationValue.set]),
 					].sequence(token: T.scopeName, annotations: annotations.isEmpty ? [ : ] : annotations)
 		// modules
 		case .modules:

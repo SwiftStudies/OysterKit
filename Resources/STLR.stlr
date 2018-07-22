@@ -177,7 +177,7 @@ moduleImport                    = whitespace* @token("import") "import" .whitesp
 /// Scope
 ///
 
-scopeName       =   -("grammar" whitespace*) ~(.letter (.letter | .decimalDigit)*) -whitespace*
+scopeName       =   -"grammar" whitespace ows ~(.letter (.letter | .decimalDigit)*) whitespace ows
 
 //
 // Grammar

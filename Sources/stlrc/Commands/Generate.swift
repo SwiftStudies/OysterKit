@@ -57,7 +57,7 @@ class GenerateCommand : Command, IndexableOptioned, GrammarConsumer, OutputLocat
         
         let optimize = self[optionCalled: Options.optimize.rawValue]?.isSet ?? false
         
-        print("Generating \(grammarName.style(.italic)) as \(language) (\(optimize ? "Optimized" : "Unoptimized"))")
+        print("Generating grammar \(grammarName.style(.italic)) as \(language) (\(optimize ? "Optimized" : "Unoptimized"))")
         
         do {
             try language.generate(grammarName: grammarName, from: grammar, optimize: optimize, outputTo: outputLocation.url(defaultName: "\(grammarName).\(language.fileExtension ?? "")").path.canonicalPath)

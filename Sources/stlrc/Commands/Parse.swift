@@ -83,7 +83,7 @@ class ParseCommand : Command, IndexableOptioned, IndexableParameterized, Grammar
         }
 
         if interactiveMode {
-            print("stlr interactive mode. Send a blank line to parse, two to terminate. Parsing \(grammar.ast.name!)")
+            print("stlr interactive mode. Send a blank line to parse, two to terminate. Parsing grammar \(grammar.ast.name!)")
             
             var previous = ""
             var total = ""
