@@ -386,7 +386,7 @@ enum STLR : Int, Token {
 					T.moduleName._rule(),
 					T.whitespace._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 1, producing: T._transient),
 					].sequence(token: T.moduleImport, annotations: annotations.isEmpty ? [ : ] : annotations)
-		// scopeName
+		// scopeName with required manual changes
 		case .scopeName:
 			return [
 					[
