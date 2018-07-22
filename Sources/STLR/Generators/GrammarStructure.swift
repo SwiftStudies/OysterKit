@@ -26,7 +26,9 @@ import Foundation
 import OysterKit
 
 public class GrammarStructure {
-    enum Cardinality {
+    /// The cardinality of the node, with fundamentally four values
+    /// optional (0 or 1), one, or many (optional or not)
+    public enum Cardinality {
         case optional, one, many(Bool)
         
         init(modifier:STLRScope.Modifier){
@@ -81,7 +83,8 @@ public class GrammarStructure {
         }
     }
     
-    enum Kind {
+    /// The nature of the node.
+    public enum Kind {
         case transient, void, pinned, structural, lookahead
         
         init(identifier:STLRScope.Identifier){
@@ -131,17 +134,32 @@ public class GrammarStructure {
         }
     }
     
-    enum DataType {
+    /// The determined data type
+    public enum DataType {
         case unknown,string,enumeration,structure,`typealias`
     }
     
-    class Node {
+    /**
+     `Node` represents an element of the data structure and is the core of the
+     AST derived.
+    */
+    public class Node {
         let scope : STLRScope
-        var name : String
-        var kind : Kind
-        var cardinality : Cardinality
-        var children = [Node]()
-        var type = DataType.unknown
+        /// The name of the element
+        public var name : String
+        
+        /// The kind of the element
+        public var kind : Kind
+        
+        /// The cardinality of the element
+        public var cardinality : Cardinality
+        
+        /// Any child elements
+        public var children = [Node]()
+        
+        /// The type of the element.
+        public var type = DataType.unknown
+        
         var partOfChoice = false
         
         var canBeEnum : Bool {
@@ -207,6 +225,10 @@ public class GrammarStructure {
         
         func cullTransientChildren(){
             let _ = "hello"
+            // Identify string based enums
+            //  - Must have children
+            //  - The must all be from a choice
+            //  - The must all be transient, have no children of their own, and their name must start with a " (they are a terminal)
             if !children.isEmpty && canBeEnum  && children.reduce(true, {$0 && ($1.kind == .transient && $1.children.isEmpty && $1.name.hasPrefix("\""))}){
                 for child in children {
                     child.kind = .structural
@@ -277,7 +299,9 @@ public class GrammarStructure {
 
     
     let scope : STLRScope
-    var structure : Node
+    
+    /// The generated data structure
+    public var structure : Node
 
     private func dump(in scope:STLRScope){
         let temp = TextFile("temp")
@@ -285,7 +309,16 @@ public class GrammarStructure {
         print(temp.content)
     }
     
-    init(for scope:STLRScope, accessLevel:String){
+    /**
+     Parses the AST and infers the fundamental data structure from it. This
+     can subsequently be extended to generate the parsed input data structure
+     in any language.
+     
+     - Parameter scope: The AST being assesed
+     - Parameter accessLevel: The desired access level which should be specified
+     in the target language
+    */
+    public init(for scope:STLRScope, accessLevel:String){
         self.scope = scope
         self.structure = Node(scope, name:"structure",cardinality:.one, kind: .structural)
         
@@ -352,10 +385,24 @@ public class GrammarStructure {
         
     }
     
-    func generate(element:STLRScope.Element)->Node{
+    func generate(element:STLRScope.Element)->[Node]{
         switch element {
         case .terminal(let terminal, let modifier, let lookahead, let annotations):
-            return Node(scope, name: terminal.description, cardinality: Cardinality(modifier: modifier), kind: Kind(modifier: modifier, lookahead: lookahead, annotations: annotations.asRuleAnnotations, defaultValue: .transient))
+            /// The optimizer may have optimized a choice of single character terminals into
+            /// a character set initialized by the combination of that string. We will need
+            /// to break that appart
+            if let characterSetTerminal = terminal.characterSet {
+                if case let .customString(characters) = characterSetTerminal {
+                    var choices = [Node]()
+                    for character in characters {
+                        let choice = Node(scope, name: "\"\(character)\"", cardinality: .optional, kind: .transient)
+                        choice.partOfChoice = true
+                        choices.append(choice)
+                    }
+                    return choices
+                }
+            }
+            return [Node(scope, name: terminal.description, cardinality: Cardinality(modifier: modifier), kind: Kind(modifier: modifier, lookahead: lookahead, annotations: annotations.asRuleAnnotations, defaultValue: .transient))]
         case .identifier(let identifier, let modifier, let lookahead, let annotations):
             let evaluatedAnnotations = identifier.annotations.merge(with: annotations)
             let evaluatedName : String
@@ -371,27 +418,27 @@ public class GrammarStructure {
             //If this identifier has not quantity modifier we need to see if the expression has one and promote it up
             //otherwise it will be lost
             let modifier = modifier.isOne ? identifier.grammarRule?.expression?.promotableContentModifer?.promotableOptionality ?? .one : modifier
-            return Node(scope, name: evaluatedName, cardinality: Cardinality(modifier: modifier), kind: Kind(modifier: modifier, lookahead: lookahead, annotations: evaluatedAnnotations.asRuleAnnotations, defaultValue: .structural))
+            return [Node(scope, name: evaluatedName, cardinality: Cardinality(modifier: modifier), kind: Kind(modifier: modifier, lookahead: lookahead, annotations: evaluatedAnnotations.asRuleAnnotations, defaultValue: .structural))]
         case .group(let expression, let modifier, let lookahead, let annotations):
             if let tokenAnnotation = annotations.asRuleAnnotations[.token] {
                 if case let .string(tokenName) = tokenAnnotation{
-                    return Node(scope, name: tokenName, cardinality: Cardinality(modifier: modifier), kind: Kind(modifier: modifier, lookahead: lookahead, annotations: annotations.asRuleAnnotations, defaultValue: .structural))
+                    return [Node(scope, name: tokenName, cardinality: Cardinality(modifier: modifier), kind: Kind(modifier: modifier, lookahead: lookahead, annotations: annotations.asRuleAnnotations, defaultValue: .structural))]
                 }
             }
             let children = generate(expression: expression)
             let node = Node(scope, name: "$group$", cardinality: Cardinality(modifier: modifier), kind: Kind(modifier: modifier, lookahead: lookahead, annotations: annotations.asRuleAnnotations, defaultValue: .transient))
             switch children.count {
             case 0:
-                return node
+                return [node]
             case 1:
                 node.name = children[0].name
                 node.kind = children[0].kind
                 node.children = children[0].children
                 node.cardinality = node.cardinality.merge(with: children[0].cardinality)
-                return node
+                return [node]
             default:
                 node.children.append(contentsOf: children)
-                return node
+                return [node]
             }
         }
     }
@@ -400,26 +447,30 @@ public class GrammarStructure {
         var nodes = [Node]()
         switch expression {
         case .element(let element):
-            nodes.append(generate(element:element))
+            generate(element: element).forEach({nodes.append($0)})
         case .sequence(let elements):
             for element in elements {
-                nodes.append(generate(element:element))
+                generate(element: element).forEach({nodes.append($0)})
             }
         case .choice(let elements):
             for element in elements {
-                let node = generate(element: element)
-                node.partOfChoice = true
-                switch node.cardinality {
-                case .one:
-                    node.cardinality = .optional
-                case .many(let optional):
-                    if !optional {
-                        node.cardinality = .many(true)
+                let elementNodes = generate(element: element)
+                if let node = elementNodes.first, elementNodes.count == 1 {
+                    node.partOfChoice = true
+                    switch node.cardinality {
+                    case .one:
+                        node.cardinality = .optional
+                    case .many(let optional):
+                        if !optional {
+                            node.cardinality = .many(true)
+                        }
+                    case .optional:
+                        node.cardinality = .optional
                     }
-                case .optional:
-                    node.cardinality = .optional
+                    nodes.append(node)
+                } else {
+                    elementNodes.forEach({nodes.append($0)})
                 }
-                nodes.append(node)
             }
         case .group():
             fatalError("Really do these exist?")

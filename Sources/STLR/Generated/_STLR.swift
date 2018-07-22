@@ -378,6 +378,11 @@ fileprivate enum STLRRules : Int, Token {
 
 public struct _STLR : Codable {
     
+    // Quantifier
+    public enum Quantifier : Swift.String, Codable {
+        case star = "*",plus = "+",questionMark = "?",dash = "-"
+    }
+    
     /// String
     public struct String : Codable {
         public let stringBody: Swift.String
@@ -545,7 +550,7 @@ public struct _STLR : Codable {
         public let group: Group?
         public let negated: Swift.String?
         public let lookahead: Swift.String?
-        public let quantifier: Swift.String?
+        public let quantifier: Quantifier?
         public let terminal: Terminal?
         public let annotations: Annotations?
     }

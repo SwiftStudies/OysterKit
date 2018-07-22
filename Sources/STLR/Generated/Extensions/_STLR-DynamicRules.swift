@@ -140,13 +140,16 @@ fileprivate extension _STLR.Element {
     }
     
     var cardinality : Cardinality {
-        #warning("This is Stringly typed. It should be one of the quantifier types")
+        guard let quantifier = quantifier else {
+            return .one
+        }
+        
         switch quantifier {
-        case "?":
+        case .questionMark:
             return .optionally
-        case "*":
+        case .star:
             return .noneOrMore
-        case "+":
+        case .plus:
             return .oneOrMore
         default:
             return .one
@@ -157,8 +160,6 @@ fileprivate extension _STLR.Element {
         return Behaviour(kind, cardinality: cardinality, negated: isNegated, lookahead: isLookahead)
     }
 
-
-    
     func rule(symbolTable:SymbolTable<Symbol>)->BehaviouralRule {
         if let group = group {
             return group.expression.rule(with: behaviour, and: ruleAnnotations, using: symbolTable)
