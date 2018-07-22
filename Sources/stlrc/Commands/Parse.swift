@@ -83,20 +83,29 @@ class ParseCommand : Command, IndexableOptioned, IndexableParameterized, Grammar
         }
 
         if interactiveMode {
-            print("stlr interactive mode. Send a blank line to terminate. Parsing \(grammarName ?? grammarUrl?.path ?? "Grammar")")
-            while let line = readLine(strippingNewline: true) {
-                if line == "" {
+            print("stlr interactive mode. Send a blank line to parse, two to terminate. Parsing \(grammar.ast.name!)")
+            
+            var previous = ""
+            var total = ""
+            while let line = readLine(strippingNewline: false) {
+                if line + total == "\n\n" {
                     print("Done")
                     return RunnableReturnValue.success
                 }
-                #warning("This needs to be removed it will break other languages")
-                let line = "grammar ParseTest\n"+line
-                do {
-                    try parseInput(language: language, input: line)
-                } catch {
-                    print([error].report(in: line, from: "input".style(.italic)))
-                    return RunnableReturnValue.failure(error: error, code: -1)
+
+                if line == "\n" && previous.hasSuffix("\n"){
+                    do {
+                        try parseInput(language: language, input: String(total.dropLast(1)))
+                    } catch {
+                        print([error].report(in: line, from: "input".style(.italic)))
+                    }
+                    total = ""
+                    previous = ""
+                } else {
+                    previous = line
+                    total += line
                 }
+
             }
         } else {
             do {

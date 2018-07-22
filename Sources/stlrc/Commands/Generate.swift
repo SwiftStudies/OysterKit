@@ -44,9 +44,6 @@ class GenerateCommand : Command, IndexableOptioned, GrammarConsumer, OutputLocat
     }
     
     override func run() -> RunnableReturnValue {
-        guard let grammarName = grammarName else {
-            return RunnableReturnValue.failure(error: GenerationError.missingGrammarFile, code: 0)
-        }
         
         guard let outputLocation = outputLocation else {
             return RunnableReturnValue.failure(error: GenerationError.outputLocationNotSpecified, code: 0)
@@ -55,6 +52,8 @@ class GenerateCommand : Command, IndexableOptioned, GrammarConsumer, OutputLocat
         guard let grammar = grammar else {
             return RunnableReturnValue.failure(error: GenerationError.couldNotParseGrammar, code: 0)
         }
+
+        let grammarName : String = grammar.ast.name
         
         let optimize = self[optionCalled: Options.optimize.rawValue]?.isSet ?? false
         

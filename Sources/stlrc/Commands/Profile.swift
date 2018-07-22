@@ -43,11 +43,11 @@ class ProfileCommand : Command, IndexableOptioned, GrammarConsumer {
     
     
     override func run() -> RunnableReturnValue {
-        guard let grammarName = grammarName else {
+        guard let grammarFileName = grammarFileName else {
             return RunnableReturnValue.failure(error: ProfileError.missingGrammarFile, code: 0)
         }
         
-        print("Parsing \(grammarName.style(.italic))")
+        print("Profiling \(grammarFileName.style(.italic))")
         Log.parsing.enable()
 
         if let _ = grammar {

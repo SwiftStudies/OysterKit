@@ -1078,6 +1078,9 @@ public class STLRScope : CustomStringConvertible {
         return result+"\n"
     }
     
+    /// The name of the scope or grammar
+    public var name : String! 
+    
     /// Creates a new instance of the AST
     public required init(){
         

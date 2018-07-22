@@ -25,10 +25,6 @@ extension GrammarConsumer where Self : Optioned{
     var grammarFileName : String? {
         return grammarUrl?.lastPathComponent
     }
-    
-    var grammarName : String? {
-        return grammarUrl?.deletingPathExtension().lastPathComponent
-    }
 
     var grammar : STLRParser? {
         return grammarOption?.grammar

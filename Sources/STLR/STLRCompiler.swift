@@ -42,6 +42,7 @@ extension STLRScope {
         
         do {
             let ast = try STLRAbstractSyntaxTree(source)
+            name = ast.scopeName
             
 //            print(ast.intermediateRepresentation.description)
             
