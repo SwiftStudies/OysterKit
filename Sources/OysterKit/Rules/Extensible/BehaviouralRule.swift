@@ -236,6 +236,7 @@ public extension BehaviouralRule {
         
         let endOfInput = lexer.endOfInput
         lexer.mark()
+        let startPosition = lexer.index
         
         if structural {
             if let knownResult = ir.willEvaluate(rule: self, at: lexer.index){
@@ -282,10 +283,16 @@ public extension BehaviouralRule {
                         try lexer.scanNext()
                     }
                     let result = MatchResult.success(context: lexer.proceed())
-                    if structural {
+                    switch behaviour.kind {
+                    case .structural(let produces):
                         ir.didEvaluate(token: produces,annotations: annotations,  matchResult: result)
                         return result
+                    case .scanning:
+                        _ = ir.willEvaluate(token: TransientToken.anonymous, at: startPosition)
+                        ir.didEvaluate(token: TransientToken.anonymous, annotations: [:], matchResult: result)
+                    case .skipping: break
                     }
+
                     return result
                 }
                 if let specificError = self.error {
@@ -311,8 +318,14 @@ public extension BehaviouralRule {
         }
         
         let result = MatchResult.success(context: lexer.proceed())
-        if structural {
-            ir.didEvaluate(token: produces, annotations: annotations, matchResult: result)
+        switch behaviour.kind {
+        case .structural(let produces):
+            ir.didEvaluate(token: produces,annotations: annotations,  matchResult: result)
+            return result
+        case .scanning:
+            _ = ir.willEvaluate(token: TransientToken.anonymous, at: startPosition)
+            ir.didEvaluate(token: TransientToken.anonymous, annotations: [:], matchResult: result)
+        case .skipping: break
         }
         
         return result
