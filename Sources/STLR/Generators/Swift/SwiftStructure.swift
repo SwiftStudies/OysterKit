@@ -186,7 +186,14 @@ fileprivate extension GrammarStructure.Node {
 
 fileprivate extension String {
     var propertyName : String {
-        let lowerCased =  String(prefix(1).lowercased()+dropFirst())
+        let lowerCased : String
+        /// If I'm all uppercased, just go all lowercased
+        if self.uppercased() == self {
+            lowerCased = self.lowercased()
+        } else {
+            lowerCased =  String(prefix(1).lowercased()+dropFirst())
+        }
+        
         
         let keywords = ["switch","extension","protocol","in","for","case","if","while","do","catch","func","enum","let","var","struct","class","enum","import","private","fileprivate","internal","public","final","open","typealias","typedef","true","false","return","self","else","default","init","operator","throws","catch"]
         
