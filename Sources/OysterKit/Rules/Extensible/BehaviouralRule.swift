@@ -75,17 +75,23 @@ public typealias Test = (LexicalAnalyzer, IntermediateRepresentation) throws -> 
 public extension BehaviouralRule {
     /// The specific error specified in the definition of this rule in the @error
     /// annotation.
-    public  func error(lexer:LexicalAnalyzer, causes:[Error]?)->Error {
+    public static func makeError(with behaviour:Behaviour, and annotations:RuleAnnotations, whenUsing lexer:LexicalAnalyzer, causes errors:[Error]?)->Error {
         if let error = annotations.error{
             switch behaviour.kind {
             case .skipping, .scanning:
-                return TestError.scanningError(message: error , position: lexer.index, causes: causes ?? [])
+                return TestError.scanningError(message: error , position: lexer.index, causes: errors ?? [])
             case .structural:
-                return TestError.parsingError(message: error, range: lexer.index...lexer.index, causes: causes ?? [])
+                return TestError.parsingError(message: error, range: lexer.index...lexer.index, causes: errors ?? [])
             }
         } else {
-            return TestError.undefinedError(at: lexer.index, causes: causes ?? [])
+            return TestError.undefinedError(at: lexer.index, causes: errors ?? [])
         }
+    }
+    
+    /// The specific error specified in the definition of this rule in the @error
+    /// annotation.
+    public  func error(lexer:LexicalAnalyzer, causes errors:[Error]?)->Error {
+        return Self.makeError(with: behaviour, and: annotations, whenUsing: lexer, causes: errors)
     }
     
 

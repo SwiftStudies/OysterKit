@@ -61,6 +61,16 @@ public struct Behaviour {
     /// The cardinatlity of the matches
     public let cardinality : Cardinality
     
+    /// The token produced if structural or nil otherwise
+    public var token : Token? {
+        switch kind {
+        case .structural(let token):
+            return token
+        default:
+            return nil
+        }
+    }
+    
     /**
      Constructs a new instance of the struct with the specified parameters. All except kind can be excluded resulting
      in requirements for a single match, un-negated without lookahead

@@ -55,7 +55,7 @@ public final class TerminalRule : BehaviouralRule {
      - Parameter ir: The IR building the AST
      */
     public func test(with lexer: LexicalAnalyzer, for ir: IntermediateRepresentation) throws {
-        try terminal.test(lexer: lexer)
+        try terminal.test(lexer: lexer, producing: behaviour.token)
     }
     
     /**

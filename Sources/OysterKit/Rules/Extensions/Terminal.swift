@@ -29,8 +29,11 @@ public protocol Terminal : RuleProducer {
     /**
      Tests the the `Terminal` is available at the current scanner head position,
      throwing an `Error` if not
+     
+     - Parameter lexer: The lexer being used for scanning
+     - Parameter token: The token produced if any. 
     */
-    func test(lexer: LexicalAnalyzer) throws
+    func test(lexer: LexicalAnalyzer, producing token:Token?) throws
 }
 
 /// Extends any terminal to be a `RuleProducer`
@@ -43,7 +46,7 @@ public extension Terminal {
      - Parameter cardinality: The desired cardinality of the match
      - Returns: A rule
      */
-    public func skip(_ cardinality:Cardinality)->BehaviouralRule{
+    public func skip(_ cardinality:Cardinality = .one)->BehaviouralRule{
         return TerminalRule(Behaviour(.skipping, cardinality: .one), and: [:], for: self)
     }
     
@@ -54,7 +57,7 @@ public extension Terminal {
      - Parameter cardinality: The desired cardinality of the match
      - Returns: A rule
      */
-    public func scan(_ cardinality:Cardinality)->BehaviouralRule{
+    public func scan(_ cardinality:Cardinality = .one)->BehaviouralRule{
         return TerminalRule(Behaviour(.scanning, cardinality: .one), and: [:], for: self)
     }
     
@@ -66,8 +69,31 @@ public extension Terminal {
      - Parameter cardinality: The desired cardinality of the match
      - Returns: A rule
      */
-    public func token(_ token:Token,from cardinality:Cardinality)->BehaviouralRule{
+    public func token(_ token:Token,from cardinality:Cardinality = .one)->BehaviouralRule{
         return TerminalRule(Behaviour(.structural(token: token), cardinality: .one), and: [:], for: self)
 
+    }
+}
+
+// Extends collections of terminals to support creation of Choice scanners
+extension Array: Terminal, RuleProducer where Element : Terminal {
+    
+    public func test(lexer: LexicalAnalyzer, producing token:Token?) throws {
+        
+        var errors = [Error]()
+        for terminal in self {
+            do {
+                let _ = try terminal.test(lexer: lexer, producing: token)
+                return
+            } catch {
+                errors.append(error)
+            }
+        }
+        
+        if let token = token {
+            throw TestError.parsingError(message: "Failed to match \(token)", range: lexer.index...lexer.index, causes: errors)
+        } else {
+            throw TestError.scanningError(message: "Expected one of \(map({"\($0)"}).joined(separator: ", "))", position: lexer.index, causes: [])
+        }
     }
 }
