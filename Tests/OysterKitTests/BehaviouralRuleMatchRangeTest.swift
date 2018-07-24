@@ -27,17 +27,35 @@ import XCTest
 
 class BehaviourRuleMatchRangeTest : XCTestCase {
     
+    let voidRule = ClosureRule(with: Behaviour(.skipping, cardinality: .one)) { (lexer, ir) in
+        try lexer.scan(terminal: "\"")
+    }
+    let transientRule = ClosureRule(with: Behaviour(.scanning, cardinality: .oneOrMore)) { (lexer, ir) in
+        try lexer.scan(terminal: " ")
+    }
+    let tokenRule = ClosureRule(with: Behaviour(.structural(token: LabelledToken(withLabel: "stringBody")), cardinality: .oneOrMore)) { (lexer, ir) in
+        try lexer.scan(oneOf: CharacterSet.letters)
+    }
+
+    func testSequence(){
+        let source = """
+                     "   stringBody   "
+                     """
+        let root = LabelledToken(withLabel: "root")
+
+        let choice = SequenceRule(Behaviour(.structural(token: root), cardinality: .one), and: [:], for: [voidRule, transientRule, tokenRule, transientRule, voidRule])
+
+        do {
+            let tree = try AbstractSyntaxTreeConstructor().build(source, using: Parser(grammar: [choice]))
+            XCTAssertEqual("   stringBody   ", tree.matchedString)
+            XCTAssertEqual("stringBody", "\(tree.children[0].token)")
+        } catch {
+            XCTFail("Unexpected failure: \(error)")
+        }
+        
+    }
     
     func testVoidTransientTokenTransientVoid() {
-        let voidRule = ClosureRule(with: Behaviour(.skipping, cardinality: .one)) { (lexer, ir) in
-            try lexer.scan(terminal: "\"")
-        }
-        let transientRule = ClosureRule(with: Behaviour(.scanning, cardinality: .oneOrMore)) { (lexer, ir) in
-            try lexer.scan(terminal: " ")
-        }
-        let tokenRule = ClosureRule(with: Behaviour(.structural(token: LabelledToken(withLabel: "stringBody")), cardinality: .oneOrMore)) { (lexer, ir) in
-            try lexer.scan(oneOf: CharacterSet.letters)
-        }
         
         let source = """
                      "   stringBody   "
@@ -50,7 +68,7 @@ class BehaviourRuleMatchRangeTest : XCTestCase {
         
         do {
             lexer.mark()
-            ir.willEvaluate(token: root, at: lexer.index)
+            _ = ir.willEvaluate(token: root, at: lexer.index)
                 _ = try voidRule.match(with: lexer, for: ir)
                 _ = try transientRule.match(with: lexer, for: ir)
                 _ = try tokenRule.match(with: lexer, for: ir)
