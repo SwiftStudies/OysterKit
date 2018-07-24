@@ -119,19 +119,19 @@ enum XML : Int, Token {
     func _rule(_ annotations: RuleAnnotations = [ : ])->Rule {
         switch self {
         case ._transient:
-            return CharacterSet(charactersIn: "").terminal(token: T._transient)
+            return CharacterSet(charactersIn: "").scan(.one)
         // ws
         case .ws:
-            return CharacterSet.whitespacesAndNewlines.terminal(token: T.ws, annotations: annotations.isEmpty ? [RuleAnnotation.void : RuleAnnotationValue.set] : annotations)
+            return CharacterSet.whitespacesAndNewlines.token(T.ws, from: .one).annotatedWith(annotations.isEmpty ? [RuleAnnotation.void : RuleAnnotationValue.set] : annotations)
         // identifier
         case .identifier:
             return [
-                CharacterSet.letters.terminal(token: T._transient),
+                CharacterSet.letters.scan(.one),
                 [
-                    CharacterSet.letters.terminal(token: T._transient),
+                    CharacterSet.letters.scan(.one),
                     [
-                        "-".terminal(token: T._transient),
-                        CharacterSet.letters.terminal(token: T._transient),
+                        "-".scan(.one),
+                        CharacterSet.letters.scan(.one),
                         ].sequence(token: T._transient),
                     ].oneOf(token: T._transient).repeated(min: 0, producing: T._transient),
                 ].sequence(token: T.identifier, annotations: annotations.isEmpty ? [ : ] : annotations)

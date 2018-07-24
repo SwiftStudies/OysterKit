@@ -32,6 +32,7 @@ public extension Rule {
      
      - Parameter annotations: Optional annotations on the generated rule
     */
+    @available(*, deprecated,message: "This function has been depricated and will be removed in version 1.0")
     func consume(annotations:RuleAnnotations?=nil)->Rule{
         return ParserRule.consume(self, annotations)
     }
@@ -41,6 +42,7 @@ public extension Rule {
 
      - Parameter annotations: Optional annotations on the generated rule
      */
+    @available(*, deprecated,message: "This function has been depricated and will be removed in version 1.0")
     func lookahead(annotations:RuleAnnotations?=nil)->Rule{
         return ParserRule.lookahead(self, annotations)
     }
@@ -50,6 +52,7 @@ public extension Rule {
      
      - Parameter annotations: Optional annotations on the generated rule
      */
+    @available(*, deprecated,message: "This function has been depricated and will be removed in version 1.0")
     func optional(annotations:RuleAnnotations?=nil)->Rule {
         return ParserRule.optional(produces: produces, self,annotations)
     }
@@ -59,6 +62,7 @@ public extension Rule {
      
      - Parameter annotations: Optional annotations on the generated rule
      */
+    @available(*, deprecated,message: "This function has been depricated and will be removed in version 1.0")
     func not(annotations:RuleAnnotations?=nil)->Rule {
         return ParserRule.not(produces: produces, self,annotations)
     }
@@ -69,6 +73,7 @@ public extension Rule {
      - Parameter annotations: Optional annotations on the generated rule
      - Parameter token: The token the new rule should produce
      */
+    @available(*, deprecated,message: "This function has been depricated and will be removed in version 1.0")
     func not(producing token:Token, annotations:RuleAnnotations?=nil)->Rule{
         return ParserRule.not(produces: token, self,annotations)
     }
@@ -82,6 +87,7 @@ public extension Rule {
      - Parameter limit: The maxium number of matches before evaluation stops
      - Parameter producing: An alternative token to produce. If `nil` the wrapped rule's token will be used
      */
+    @available(*, deprecated,message: "This function has been depricated and will be removed in version 1.0")
     func repeated(min:Int = 1, limit:Int? = nil, producing token:Token?  = nil, annotations:RuleAnnotations?=nil)->Rule{
         return ParserRule.repeated(produces: token ?? produces, self, min: min, limit: limit, annotations)
     }
@@ -92,6 +98,7 @@ public extension Rule {
      - Parameter annotations: Optional annotations on the generated rule
      - Parameter producing: An alternative token to produce. If `nil` the wrapped rule's token will be used
      */
+    @available(*, deprecated,message: "This function has been depricated and will be removed in version 1.0")
     func optional(producing token:Token,annotations:RuleAnnotations?=nil)->Rule{
         return ParserRule.optional(produces: token, self,annotations)
     }
@@ -106,6 +113,7 @@ public extension Collection where Self.Iterator.Element == Rule {
      - Parameter token: The token that should be produced
      - Parameter annotations: Any annotations to the rule
     */
+    @available(*, deprecated,message: "This function has been depricated and will be removed in version 1.0")
     func sequence(token:Token,annotations:RuleAnnotations?=nil)->Rule{
         return ParserRule.sequence(produces: token, [Rule](self), annotations)
     }
@@ -116,6 +124,7 @@ public extension Collection where Self.Iterator.Element == Rule {
      - Parameter token: The token that should be produced
      - Parameter annotations: Any annotations to the rule
      */
+    @available(*, deprecated,message: "This function has been depricated and will be removed in version 1.0")
     func oneOf(token:Token,annotations:RuleAnnotations?=nil)->Rule{
         return ParserRule.oneOf(produces: token, [Rule](self), annotations)
     }

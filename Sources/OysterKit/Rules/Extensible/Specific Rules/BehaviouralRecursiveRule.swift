@@ -99,10 +99,7 @@ public final class BehaviouralRecursiveRule : BehaviouralRule, CustomStringConve
         
         return newInstance
     }
-    
-    
-    
-    
+        
     /// Delegated to the the surrogate rule
     public var annotations: RuleAnnotations{
         return rule?.annotations ?? _annotations

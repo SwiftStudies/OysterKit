@@ -57,7 +57,7 @@ public protocol BehaviouralRule : Rule {
      should use the same behaviour as this instance.
      - Returns: A new instance with the specified behaviour and annotations.
     */
-    func instanceWith(behaviour:Behaviour?, annotations:RuleAnnotations?)->Self
+    func instanceWith(behaviour:Behaviour?, annotations:RuleAnnotations?)->Self    
 }
 
 /**
@@ -198,7 +198,6 @@ public extension BehaviouralRule {
     public func newBehaviour(_ kind:Behaviour.Kind?=nil, cardinality: PartialRangeFrom<Int>, negated:Bool? = nil, lookahead:Bool? = nil)->Self{
         return instanceWith(behaviour: behaviour.instanceWith(kind, cardinality: cardinality, negated: negated, lookahead: lookahead), annotations: annotations)
     }
-    
     
     /**
      Standard implementation that uses the evaluate function to apply the behaviour of the rule.
