@@ -24,7 +24,7 @@
 
 /// Represents the cardinality of a rule. It can be specified as a closed range,
 /// including those with no upper bound (`PartialRangeFrom`)
-public struct Cardinality {
+public struct Cardinality : Equatable {
     /// The minimum number of matches, must be >= 0
     public let minimumMatches : Int
     /// The maximum number of matches. If nil, any number can be matched
@@ -67,4 +67,18 @@ public struct Cardinality {
     
     /// A pre-specified constant for required but unbound matches (between 1 and infinity matches)
     public static let oneOrMore = Cardinality(1...)
+    
+    /// The equality function
+    public static func ==(lhs:Cardinality, rhs:Cardinality)->Bool{
+        if lhs.minimumMatches != rhs.minimumMatches {
+            return false
+        }
+        
+        switch (lhs.maximumMatches == nil,rhs.maximumMatches == nil){
+        case (true,false),(false,true):
+            return false
+        default:
+            return true
+        }
+    }
 }
