@@ -24,6 +24,12 @@
 
 import Foundation
 
+/**
+ Lookahead operator for BehaviouralRules
+ */
+prefix operator >>
+prefix operator !
+
 public extension BehaviouralRule {
     /**
      Creates a new instance of the rule annotated with the specified annotations
@@ -33,4 +39,31 @@ public extension BehaviouralRule {
     public func annotatedWith(_ annotations:RuleAnnotations)->BehaviouralRule{
         return instanceWith(annotations: annotations)
     }
+    
+    
+}
+
+public prefix func >>(rule:BehaviouralRule)->BehaviouralRule{
+    if rule.behaviour.cardinality == .one {
+        return rule.newBehaviour(nil, negated: nil, lookahead: true)
+    }
+
+    return ClosureRule(with: Behaviour(.scanning, cardinality: .one, negated: false, lookahead: true), using: { (lexer, ir) in
+        try _ = rule.match(with: lexer,for: ir)
+    })
+}
+
+public prefix func !(rule:BehaviouralRule)->BehaviouralRule{
+    if rule.behaviour.cardinality == .one {
+        return rule.newBehaviour(nil, negated: true, lookahead: nil)
+    }
+    
+    let innerRule = rule.instanceWith(behaviour: Behaviour(.scanning, cardinality: .one, negated: true, lookahead: false), annotations: [:])
+    
+    //Negation has higher precidence than all other operators so should be applied
+    //to the original rule's test,but the wrapper should have the same behaivour and
+    //anootations as the original rule
+    return ClosureRule(with: rule.behaviour, and: rule.annotations, using: { (lexer, ir) in
+        try _ = innerRule.match(with: lexer, for: ir)
+    })
 }

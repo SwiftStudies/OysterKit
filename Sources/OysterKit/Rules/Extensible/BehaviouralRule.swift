@@ -205,6 +205,11 @@ public extension BehaviouralRule {
      - Returns: The match result
      */
     public func evaluate(_ matcher:Test, using lexer:LexicalAnalyzer, and ir:IntermediateRepresentation) throws -> MatchResult {
+        let endOfInput = lexer.endOfInput
+        if endOfInput {
+            throw TestError.scanningError(message: "End of input", position: lexer.index, causes: [])
+        }
+
         //Prepare for any lookahead by putting a fake IR in place if is lookahead
         //as well as taking an additional mark to ensure position will always be
         //where it was
@@ -218,8 +223,6 @@ public extension BehaviouralRule {
             }
         }
         
-        
-        let endOfInput = lexer.endOfInput
         lexer.mark()
         let startPosition = lexer.index
         

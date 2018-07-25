@@ -194,6 +194,36 @@ When an optional non-transient element is not matched a node will be created reg
 
 This can be convenient if you wish to depend on the order and structure of children for some node of your AST without needing to implement your own AST that could implement this behaviour. 
 
+## Order of evaluation
+
+It can be important to understand the order of evaluation of the various matching operators as it can impact both behaviour during matching and the generated structure. 
+
+1. Grouping (i.e. ```( expression )```)
+2. Negation  (i.e. ```!```)
+2. Quantifiers (e.g. ```+```, ```*```,  ```+```, or ```?```)
+3. Annotations (e.g. ```@pin``` ,```@token(token)```, ```~``` or ```-```)
+4. Lookahead (i.e. ```>>```)
+5. Sequences & choices (e.g. ```|```)
+
+For example consider the expression
+
+    name   = @token("forename") !","+ "," @token("surname") !","+
+    
+Will first negate the ```","``` test, then require one or more of those not comma characters and finally if it finds one or more characters that are not whitespace, generate a ```forename``` then, if separated by a ```,```,  a ```surname``` token. Which will be children of a ```name``` token.  
+
+    name - 'John,Appleseed`
+        forename - `John`
+        surname - `Appleseed`
+
+A more complex (although somewhat unnecessarily so) example is
+
+    letter = .letter
+    word   = ~letter+
+    
+Will match multiple letters, discarding all of the ```letter``` tokens created but wrapping the match in a ```name``` token producing
+
+    word - tree
+
 ## Examples
 
 ### Number Parser
