@@ -43,14 +43,14 @@ enum Precidence{
             lookahead   = (inner: false,                        outer:rule.behaviour.lookahead)
         case .cardinality(let newValue):
             negate      = (inner:rule.behaviour.negate,         outer:false)
-            cardinality = (inner:newValue,                      outer:.one)
+            cardinality = (inner:.one,                          outer:newValue)
             annotations = (inner: [:],                          outer:rule.annotations)
             kind        = (inner: .scanning,                    outer:rule.behaviour.kind)
             lookahead   = (inner: false,                        outer:rule.behaviour.lookahead)
         case .annotation(let newValue):
             negate      = (inner:rule.behaviour.negate,         outer:false)
             cardinality = (inner:rule.behaviour.cardinality,    outer:.one)
-            annotations = (inner: newValue,                     outer:rule.annotations)
+            annotations = (inner: rule.annotations,             outer:newValue)
             kind        = (inner: .scanning,                    outer:rule.behaviour.kind)
             lookahead   = (inner: false,                        outer:rule.behaviour.lookahead)
         case .structure(let newValue):
@@ -87,9 +87,10 @@ enum Precidence{
 /**
  Lookahead operator for BehaviouralRules
  */
-prefix operator >>
-prefix operator !
-prefix operator -
+prefix  operator >>
+prefix  operator !
+prefix  operator -
+prefix  operator ~
 
 public extension BehaviouralRule {
     /**
@@ -98,7 +99,27 @@ public extension BehaviouralRule {
      - Returns: A new instance of the rule with the specified annotations
      */
     public func annotatedWith(_ annotations:RuleAnnotations)->BehaviouralRule{
-        return instanceWith(annotations: annotations)
+        if behaviour.cardinality == .one {
+            return instanceWith(annotations: annotations)
+        }
+        
+        return Precidence.annotation(annotations).modify(self)
+    }
+    
+    public var one : BehaviouralRule{
+        return newBehaviour(cardinality: 1...1)
+    }
+
+    public var oneOrMore : BehaviouralRule{
+        return newBehaviour(cardinality: 1...)
+    }
+
+    public var zeroOrMore : BehaviouralRule{
+        return newBehaviour(cardinality: 0...)
+    }
+
+    public var optional : BehaviouralRule {
+        return newBehaviour(cardinality: 0...1)
     }
 }
 
@@ -125,3 +146,22 @@ public prefix func -(rule : BehaviouralRule)->BehaviouralRule{
 
     return Precidence.structure(.skipping).modify(rule)    
 }
+
+public prefix func ~(rule : BehaviouralRule)->BehaviouralRule{
+    if rule.behaviour.cardinality == .one {
+        return rule.instanceWith(behaviour: Behaviour(.scanning, cardinality: rule.behaviour.cardinality, negated: rule.behaviour.negate, lookahead: rule.behaviour.lookahead), annotations: rule.annotations)
+    }
+    
+    return Precidence.structure(.scanning).modify(rule)
+}
+
+public extension Token {
+    func `if`(_ rule:BehaviouralRule)->BehaviouralRule{
+        if rule.behaviour.cardinality == .one {
+            return rule.instanceWith(behaviour: Behaviour(.structural(token: self), cardinality: rule.behaviour.cardinality, negated: rule.behaviour.negate, lookahead: rule.behaviour.lookahead), annotations: rule.annotations)
+        }
+        
+        return Precidence.structure(.structural(token: self)).modify(rule)
+    }
+}
+

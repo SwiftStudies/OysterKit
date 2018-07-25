@@ -45,6 +45,20 @@ class RuleOperatorTests: XCTestCase {
         }
     }
     
+    func isSkipping(_ rule:BehaviouralRule)->Bool{
+        if case .skipping = rule.behaviour.kind {
+            return true
+        }
+        return false
+    }
+
+    func isScanning(_ rule:BehaviouralRule)->Bool{
+        if case .scanning = rule.behaviour.kind {
+            return true
+        }
+        return false
+    }
+
     func testLookaheadOperator() {
         let hello = LabelledToken(withLabel: "hello")
         let singleCardinalityRule = "hello".token(hello, from: .one)
@@ -113,6 +127,7 @@ class RuleOperatorTests: XCTestCase {
         let single = -singleCardinalityRule
         XCTAssertNil(single.behaviour.token, "No token should be produced")
         XCTAssertTrue(matchSucceeds(for: single, with: "hello"))
+        XCTAssertTrue(isSkipping(single))
         do {
             let index = try applyMatch(for: single, with: "hello")
             XCTAssertEqual(5, index, "Scanner should be advanced")
@@ -124,11 +139,88 @@ class RuleOperatorTests: XCTestCase {
         XCTAssertNil(multiple.behaviour.token, "No token should be produced")
         XCTAssertTrue(matchSucceeds(for: multiple, with: "hello"))
         XCTAssertFalse(matchSucceeds(for: multiple, with: "hullo"))
+        XCTAssertTrue(isSkipping(multiple))
         do {
             let index = try applyMatch(for: multiple, with: "hello")
             XCTAssertEqual(5, index, "Scanner should be advanced to the end")
         } catch {
             XCTFail("Match should succeed \(error)")
         }
+    }
+    
+    func testScanOperator(){
+        let hello = LabelledToken(withLabel: "hello")
+        let singleCardinalityRule = "hello".token(hello, from: .one)
+        let multipleCardinalityRule = "hello".token(hello, from: .oneOrMore)
+        
+        let single = ~singleCardinalityRule
+        XCTAssertNil(single.behaviour.token, "No token should be produced")
+        XCTAssertTrue(matchSucceeds(for: single, with: "hello"))
+        XCTAssertTrue(isScanning(single))
+
+        do {
+            let index = try applyMatch(for: single, with: "hello")
+            XCTAssertEqual(5, index, "Scanner should be advanced")
+        } catch {
+            XCTFail("Match should succeed \(error)")
+        }
+        
+        let multiple = ~multipleCardinalityRule
+        XCTAssertNil(multiple.behaviour.token, "No token should be produced")
+        XCTAssertTrue(matchSucceeds(for: multiple, with: "hello"))
+        XCTAssertFalse(matchSucceeds(for: multiple, with: "hullo"))
+        XCTAssertTrue(isScanning(multiple))
+        do {
+            let index = try applyMatch(for: multiple, with: "hello")
+            XCTAssertEqual(5, index, "Scanner should be advanced to the end")
+        } catch {
+            XCTFail("Match should succeed \(error)")
+        }
+    }
+    
+    func testFromOperator(){
+        let hello = LabelledToken(withLabel: "hello")
+        let greeting = LabelledToken(withLabel: "greeting")
+        let singleCardinalityRule = "hello".token(hello, from: .one)
+        let multipleCardinalityRule = "hello".token(hello, from: .oneOrMore)
+        
+        let single = greeting.if(singleCardinalityRule)
+        XCTAssertEqual("\(single.behaviour.token!)","\(greeting)")
+        XCTAssertTrue(matchSucceeds(for: single, with: "hello"))
+        do {
+            let index = try applyMatch(for: single, with: "hello")
+            XCTAssertEqual(5, index, "Scanner should be advanced")
+        } catch {
+            XCTFail("Match should succeed \(error)")
+        }
+        
+        let multiple = greeting.if(multipleCardinalityRule)
+        XCTAssertEqual("\(multiple.behaviour.token!)","\(greeting)")
+        XCTAssertTrue(matchSucceeds(for: multiple, with: "hello"))
+        XCTAssertFalse(matchSucceeds(for: multiple, with: "hullo"))
+        do {
+            let index = try applyMatch(for: multiple, with: "hellohello")
+            XCTAssertEqual(10, index, "Scanner should be advanced to the end")
+        } catch {
+            XCTFail("Match should succeed \(error)")
+        }
+    }
+    
+    func testAnnotationOperator(){
+        let hello = LabelledToken(withLabel: "hello")
+        let single = "hello".token(hello, from: .one).annotatedWith([.custom(label: "test") : .string("set")])
+        let multiple = "hello".token(hello, from: .oneOrMore).annotatedWith([.custom(label: "test") : .string("set")])
+
+        XCTAssertNotNil(single.annotations[.custom(label:"test")], "Annotation not set")
+        XCTAssertNotNil(multiple.annotations[.custom(label:"test")], "Annotation not set")
+    }
+    
+    func testCardinalityChanges(){
+        
+        XCTAssertEqual(Cardinality(1...1),  "hello".scan().behaviour.cardinality)
+        XCTAssertEqual(Cardinality(0...1),  "hello".scan().optional.behaviour.cardinality)
+        XCTAssertEqual(Cardinality(0...),  "hello".scan().zeroOrMore.behaviour.cardinality)
+        XCTAssertEqual(Cardinality(1...),  "hello".scan().oneOrMore.behaviour.cardinality)
+        XCTAssertEqual(Cardinality(1...1),  "hello".scan().one.behaviour.cardinality)
     }
 }
