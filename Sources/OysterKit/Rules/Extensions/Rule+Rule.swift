@@ -165,3 +165,15 @@ public extension Token {
     }
 }
 
+// Extends collections of terminals to support creation of Choice scanners
+public extension Array where Element == BehaviouralRule {
+    
+    public var oneOf : BehaviouralRule{
+        return ChoiceRule(Behaviour(.scanning), and: [:], for: self)
+    }
+    
+    public var sequence : BehaviouralRule{
+        return SequenceRule(Behaviour(.scanning), and: [:], for: self)
+    }
+
+}

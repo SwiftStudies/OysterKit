@@ -178,6 +178,21 @@ class RuleOperatorTests: XCTestCase {
         }
     }
     
+    func testOneOf(){
+        let hello = ["h".scan(),"e".scan(),"l".scan(),"o".scan()].oneOf.oneOrMore
+        
+        XCTAssertTrue(matchSucceeds(for: hello, with: "hello"))
+        XCTAssertFalse(matchSucceeds(for: hello, with: "dello"))
+    }
+    
+    func testSequence(){
+        let hello = ["h".scan(),"e".scan(),"l".scan().oneOrMore,"o".scan()].sequence
+        
+        XCTAssertTrue(matchSucceeds(for: hello, with: "hello"))
+        XCTAssertFalse(matchSucceeds(for: hello, with: "hell0"))
+    }
+    
+    
     func testFromOperator(){
         let hello = LabelledToken(withLabel: "hello")
         let greeting = LabelledToken(withLabel: "greeting")
