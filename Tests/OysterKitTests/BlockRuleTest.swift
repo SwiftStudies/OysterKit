@@ -153,7 +153,7 @@ class BlockRuleTest: XCTestCase {
     func testNegatedStructureFail(){
         let source = "a"
         
-        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(.structural(token: aToken), negated:true), on:source, includeAST: true), index: source.startIndex, errors: ["Failed to match from 0 to 1"], expectedResult: .failure, token: nil){
+        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(.structural(token: aToken), negated:true), on:source, includeAST: true), index: source.startIndex, errors: ["Undefined error at 1"], expectedResult: .failure, token: nil){
             XCTFail(failure)
         }
     }
@@ -207,7 +207,7 @@ class BlockRuleTest: XCTestCase {
     
     func testNotScanFailure(){
         let source = "a"
-        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(negated:true), on:source), index: source.startIndex, errors: ["Failed to match from 0 to 1"], expectedResult: .failure){
+        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(negated:true), on:source), index: source.startIndex, errors: ["Undefined error at 1"], expectedResult: .failure){
             XCTFail(failure)
         }
     }
@@ -253,7 +253,7 @@ class BlockRuleTest: XCTestCase {
     func testNotLookaheadFailure(){
         //Look-ahead, positive, failure
         let source = "a"
-        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(negated:true,lookahead:true), on:source), index: source.startIndex, errors: ["Failed to match from 0 to 1"], expectedResult: .failure){
+        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(negated:true,lookahead:true), on:source), index: source.startIndex, errors: ["Undefined error at 1"], expectedResult: .failure){
             XCTFail(failure)
         }
     }

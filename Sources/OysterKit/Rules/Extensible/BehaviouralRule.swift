@@ -249,7 +249,20 @@ public extension BehaviouralRule {
         var matches = 0
         do {
             while unlimited || matches < behaviour.cardinality.maximumMatches! {
-                try matcher(lexer, ir)
+                do {
+                    try matcher(lexer, ir)
+                } catch {
+                    if behaviour.negate {
+                        matches += 1
+                        try lexer.scanNext()
+                        continue
+                    } else {
+                        throw error
+                    }
+                }
+                if behaviour.negate {
+                    throw TestError(with: behaviour, and: annotations, whenUsing: lexer, causes: nil)
+                }
                 matches += 1
             }
         } catch {
@@ -265,24 +278,6 @@ public extension BehaviouralRule {
             }
             if matches < behaviour.cardinality.minimumMatches {
                 lexer.rewind()
-                if behaviour.negate {
-                    lexer.mark()
-                    if !endOfInput {
-                        try lexer.scanNext()
-                    }
-                    let result = MatchResult.success(context: lexer.proceed())
-                    switch behaviour.kind {
-                    case .structural(let produces):
-                        ir.didEvaluate(token: produces,annotations: annotations,  matchResult: result)
-                        return result
-                    case .scanning:
-                        _ = ir.willEvaluate(token: TransientToken.anonymous, at: startPosition)
-                        ir.didEvaluate(token: TransientToken.anonymous, annotations: [:], matchResult: result)
-                    case .skipping: break
-                    }
-
-                    return result
-                }
                 if let specificError = self.error {
                     if structural {
                         throw LanguageError.parsingError(at: lexer.index..<lexer.index, message: specificError)
@@ -294,17 +289,6 @@ public extension BehaviouralRule {
                 }
             }
         }
-        if behaviour.negate {
-            let successPosotion = lexer.index
-            let errorMessage = error ?? "Failed to match"
-            lexer.rewind()
-            if structural {
-                ir.didEvaluate(token: produces, annotations: annotations, matchResult: MatchResult.failure(atIndex: lexer.index))
-                throw LanguageError.parsingError(at: lexer.index..<successPosotion, message: errorMessage)
-            }
-            throw LanguageError.scanningError(at: lexer.index..<successPosotion, message: errorMessage)
-        }
-        
         let result = MatchResult.success(context: lexer.proceed())
         switch behaviour.kind {
         case .structural(let produces):

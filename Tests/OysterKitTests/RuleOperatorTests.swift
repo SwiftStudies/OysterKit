@@ -107,7 +107,7 @@ class RuleOperatorTests: XCTestCase {
         
         let multipleNegated = !multipleCardinalityRule
         XCTAssertNotNil(multipleNegated.behaviour.token, "Token should be created by wrapping rule")
-        XCTAssertEqual(multipleNegated.behaviour.negate, false, "Negation should occur inside the wrapping rule")
+        XCTAssertEqual(multipleNegated.behaviour.negate, true, "Rule correctly appears to be negated")
         XCTAssertEqual(multipleNegated.behaviour.cardinality, .oneOrMore, "Cardinality should be preserved on the outer rule")
         XCTAssertFalse(matchSucceeds(for: multipleNegated, with: "hello"))
         XCTAssertTrue(matchSucceeds(for: multipleNegated, with: "hullo"))

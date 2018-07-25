@@ -36,7 +36,7 @@ enum Precidence{
         
         switch self {
         case .negate(let newValue):
-            negate      = (inner:newValue,                      outer:false)
+            negate      = (inner:false,                         outer:newValue)
             cardinality = (inner:.one,                          outer:rule.behaviour.cardinality)
             annotations = (inner: [:],                          outer:rule.annotations)
             kind        = (inner: .scanning,                    outer:rule.behaviour.kind)
