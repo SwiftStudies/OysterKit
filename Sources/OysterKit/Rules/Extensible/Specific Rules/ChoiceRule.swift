@@ -65,7 +65,7 @@ public final class ChoiceRule : BehaviouralRule {
                 errors.append(error)
             }
         }
-        throw error(lexer: lexer, causes: errors)
+        throw TestError(with: behaviour, and: annotations, whenUsing: lexer, causes: errors)
     }
     
     /**
