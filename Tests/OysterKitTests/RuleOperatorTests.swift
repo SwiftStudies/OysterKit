@@ -103,6 +103,32 @@ class RuleOperatorTests: XCTestCase {
         } catch {
             XCTFail("Match should succeed")
         }
-
+    }
+    
+    func testSkipOperator(){
+        let hello = LabelledToken(withLabel: "hello")
+        let singleCardinalityRule = "hello".token(hello, from: .one)
+        let multipleCardinalityRule = "hello".token(hello, from: .oneOrMore)
+        
+        let single = -singleCardinalityRule
+        XCTAssertNil(single.behaviour.token, "No token should be produced")
+        XCTAssertTrue(matchSucceeds(for: single, with: "hello"))
+        do {
+            let index = try applyMatch(for: single, with: "hello")
+            XCTAssertEqual(5, index, "Scanner should be advanced")
+        } catch {
+            XCTFail("Match should succeed \(error)")
+        }
+        
+        let multiple = -multipleCardinalityRule
+        XCTAssertNil(multiple.behaviour.token, "No token should be produced")
+        XCTAssertTrue(matchSucceeds(for: multiple, with: "hello"))
+        XCTAssertFalse(matchSucceeds(for: multiple, with: "hullo"))
+        do {
+            let index = try applyMatch(for: multiple, with: "hello")
+            XCTAssertEqual(5, index, "Scanner should be advanced to the end")
+        } catch {
+            XCTFail("Match should succeed \(error)")
+        }
     }
 }

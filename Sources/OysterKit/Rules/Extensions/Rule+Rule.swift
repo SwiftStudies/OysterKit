@@ -24,11 +24,72 @@
 
 import Foundation
 
+enum Precidence{
+    case negate(Bool), cardinality(Cardinality), annotation(RuleAnnotations), structure(Behaviour.Kind), lookahead(Bool)
+    
+    func apply(to rule:BehaviouralRule)->(inner:(behaviour:Behaviour,annotations:RuleAnnotations),outer:(behaviour:Behaviour,annotations:RuleAnnotations)){
+        let kind        : (inner:Behaviour.Kind, outer:Behaviour.Kind)
+        let cardinality : (inner:Cardinality, outer:Cardinality)
+        let negate      : (inner:Bool, outer:Bool)
+        let lookahead   : (inner:Bool, outer:Bool)
+        let annotations : (inner:RuleAnnotations, outer:RuleAnnotations)
+        
+        switch self {
+        case .negate(let newValue):
+            negate      = (inner:newValue,                      outer:false)
+            cardinality = (inner:.one,                          outer:rule.behaviour.cardinality)
+            annotations = (inner: [:],                          outer:rule.annotations)
+            kind        = (inner: .scanning,                    outer:rule.behaviour.kind)
+            lookahead   = (inner: false,                        outer:rule.behaviour.lookahead)
+        case .cardinality(let newValue):
+            negate      = (inner:rule.behaviour.negate,         outer:false)
+            cardinality = (inner:newValue,                      outer:.one)
+            annotations = (inner: [:],                          outer:rule.annotations)
+            kind        = (inner: .scanning,                    outer:rule.behaviour.kind)
+            lookahead   = (inner: false,                        outer:rule.behaviour.lookahead)
+        case .annotation(let newValue):
+            negate      = (inner:rule.behaviour.negate,         outer:false)
+            cardinality = (inner:rule.behaviour.cardinality,    outer:.one)
+            annotations = (inner: newValue,                     outer:rule.annotations)
+            kind        = (inner: .scanning,                    outer:rule.behaviour.kind)
+            lookahead   = (inner: false,                        outer:rule.behaviour.lookahead)
+        case .structure(let newValue):
+            negate      = (inner:rule.behaviour.negate,         outer:false)
+            cardinality = (inner:rule.behaviour.cardinality,    outer:.one)
+            annotations = (inner:rule.annotations,              outer: [:])
+            kind        = (inner:rule.behaviour.kind,           outer:newValue)
+            lookahead   = (inner: false,                        outer:rule.behaviour.lookahead)
+        case .lookahead(let newValue):
+            negate      = (inner:rule.behaviour.negate,         outer:false)
+            cardinality = (inner:rule.behaviour.cardinality,    outer:.one)
+            annotations = (inner:rule.annotations,              outer: [:])
+            kind        = (inner:rule.behaviour.kind,           outer:.scanning)
+            lookahead   = (inner:rule.behaviour.lookahead,      outer:newValue)
+        }
+        
+        return (
+            inner: (Behaviour(kind.inner, cardinality: cardinality.inner, negated: negate.inner, lookahead: lookahead.inner),annotations.inner),
+            outer: (Behaviour(kind.outer, cardinality: cardinality.outer, negated: negate.outer, lookahead: lookahead.outer),annotations.outer)
+        )
+    }
+    
+    func modify(_ rule:BehaviouralRule)->BehaviouralRule{
+        let precidence = apply(to: rule)
+        
+        let innerRule = rule.instanceWith(behaviour: precidence.inner.behaviour, annotations: precidence.inner.annotations)
+        
+        return ClosureRule(with: precidence.outer.behaviour, and: precidence.outer.annotations, using: { (lexer, ir) in
+            try _ = innerRule.match(with: lexer, for: ir)
+        })
+    }
+}
+
 /**
  Lookahead operator for BehaviouralRules
  */
 prefix operator >>
 prefix operator !
+prefix operator -
 
 public extension BehaviouralRule {
     /**
@@ -39,8 +100,6 @@ public extension BehaviouralRule {
     public func annotatedWith(_ annotations:RuleAnnotations)->BehaviouralRule{
         return instanceWith(annotations: annotations)
     }
-    
-    
 }
 
 public prefix func >>(rule:BehaviouralRule)->BehaviouralRule{
@@ -48,9 +107,7 @@ public prefix func >>(rule:BehaviouralRule)->BehaviouralRule{
         return rule.newBehaviour(nil, negated: nil, lookahead: true)
     }
 
-    return ClosureRule(with: Behaviour(.scanning, cardinality: .one, negated: false, lookahead: true), using: { (lexer, ir) in
-        try _ = rule.match(with: lexer,for: ir)
-    })
+    return Precidence.lookahead(true).modify(rule)
 }
 
 public prefix func !(rule:BehaviouralRule)->BehaviouralRule{
@@ -58,12 +115,13 @@ public prefix func !(rule:BehaviouralRule)->BehaviouralRule{
         return rule.newBehaviour(nil, negated: true, lookahead: nil)
     }
     
-    let innerRule = rule.instanceWith(behaviour: Behaviour(.scanning, cardinality: .one, negated: true, lookahead: false), annotations: [:])
-    
-    //Negation has higher precidence than all other operators so should be applied
-    //to the original rule's test,but the wrapper should have the same behaivour and
-    //anootations as the original rule
-    return ClosureRule(with: rule.behaviour, and: rule.annotations, using: { (lexer, ir) in
-        try _ = innerRule.match(with: lexer, for: ir)
-    })
+    return Precidence.negate(true).modify(rule)    
+}
+
+public prefix func -(rule : BehaviouralRule)->BehaviouralRule{
+    if rule.behaviour.cardinality == .one {
+        return rule.instanceWith(behaviour: Behaviour(.skipping, cardinality: rule.behaviour.cardinality, negated: rule.behaviour.negate, lookahead: rule.behaviour.lookahead), annotations: rule.annotations)
+    }
+
+    return Precidence.structure(.skipping).modify(rule)    
 }

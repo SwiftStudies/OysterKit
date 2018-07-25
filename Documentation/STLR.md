@@ -201,7 +201,8 @@ It can be important to understand the order of evaluation of the various matchin
 1. Grouping (i.e. ```( expression )```)
 2. Negation  (i.e. ```!```)
 2. Quantifiers (e.g. ```+```, ```*```,  ```+```, or ```?```)
-3. Annotations (e.g. ```@pin``` ,```@token(token)```, ```~``` or ```-```)
+3. Annotations 
+4. Structural modifiers (e.g. ```~```, ```-```, or  ```token : <expression>```)
 4. Lookahead (i.e. ```>>```)
 5. Sequences & choices (e.g. ```|```)
 
