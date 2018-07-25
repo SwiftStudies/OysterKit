@@ -47,7 +47,7 @@ public extension Terminal {
      - Returns: A rule
      */
     public func skip(_ cardinality:Cardinality = .one)->BehaviouralRule{
-        return TerminalRule(Behaviour(.skipping, cardinality: .one), and: [:], for: self)
+        return TerminalRule(Behaviour(.skipping, cardinality: cardinality), and: [:], for: self)
     }
     
     /**
@@ -58,7 +58,7 @@ public extension Terminal {
      - Returns: A rule
      */
     public func scan(_ cardinality:Cardinality = .one)->BehaviouralRule{
-        return TerminalRule(Behaviour(.scanning, cardinality: .one), and: [:], for: self)
+        return TerminalRule(Behaviour(.scanning, cardinality: cardinality), and: [:], for: self)
     }
     
     /**
@@ -70,7 +70,7 @@ public extension Terminal {
      - Returns: A rule
      */
     public func token(_ token:Token,from cardinality:Cardinality = .one)->BehaviouralRule{
-        return TerminalRule(Behaviour(.structural(token: token), cardinality: .one), and: [:], for: self)
+        return TerminalRule(Behaviour(.structural(token: token), cardinality: cardinality), and: [:], for: self)
 
     }
 }
