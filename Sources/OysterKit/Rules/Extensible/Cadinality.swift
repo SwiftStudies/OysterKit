@@ -81,4 +81,15 @@ public struct Cardinality : Equatable {
             return true
         }
     }
+    
+    
+    /**
+     Creates a new instance of the supplied rule with this instance's cardinality
+     
+     - Parameter rule: The base rule
+     - Returns: A new instance of the rule
+     */
+    public func of(_ rule:BehaviouralRule)->BehaviouralRule{
+        return rule.instanceWith(behaviour: Behaviour(rule.behaviour.kind, cardinality: self, negated: rule.behaviour.negate, lookahead: rule.behaviour.lookahead), annotations: nil)
+    }
 }

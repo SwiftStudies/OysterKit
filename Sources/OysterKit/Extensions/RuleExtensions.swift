@@ -113,7 +113,7 @@ public extension Collection where Self.Iterator.Element == Rule {
      - Parameter token: The token that should be produced
      - Parameter annotations: Any annotations to the rule
     */
-    @available(*, deprecated,message: "This function has been depricated and will be removed in version 1.0")
+    @available(*, deprecated,message: "Use sequence computed var instead ")
     func sequence(token:Token,annotations:RuleAnnotations?=nil)->Rule{
         return ParserRule.sequence(produces: token, [Rule](self), annotations)
     }
@@ -124,7 +124,7 @@ public extension Collection where Self.Iterator.Element == Rule {
      - Parameter token: The token that should be produced
      - Parameter annotations: Any annotations to the rule
      */
-    @available(*, deprecated,message: "This function has been depricated and will be removed in version 1.0")
+    @available(*, deprecated,message: "Use oneOf computed var instead")
     func oneOf(token:Token,annotations:RuleAnnotations?=nil)->Rule{
         return ParserRule.oneOf(produces: token, [Rule](self), annotations)
     }

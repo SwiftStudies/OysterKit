@@ -166,7 +166,18 @@ public extension Token {
 }
 
 // Extends collections of terminals to support creation of Choice scanners
-public extension Array where Element == BehaviouralRule {
+extension Array where Element == BehaviouralRule {
+    public func token(_ token: Token, from cardinality: Cardinality = .one) -> BehaviouralRule {
+        return sequence.newBehaviour(.structural(token:token), cardinality: cardinality)
+    }
+    
+    public func scan(_ cardinality: Cardinality) -> BehaviouralRule {
+        return sequence.newBehaviour(.scanning, cardinality: cardinality)
+    }
+    
+    public func skip(_ cardinality: Cardinality) -> BehaviouralRule {
+        return sequence.newBehaviour(.skipping, cardinality: cardinality)
+    }
     
     public var oneOf : BehaviouralRule{
         return ChoiceRule(Behaviour(.scanning), and: [:], for: self)

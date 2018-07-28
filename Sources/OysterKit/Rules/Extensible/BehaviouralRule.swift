@@ -186,6 +186,21 @@ public extension BehaviouralRule {
     }
     
     /**
+     Creates a new instance of the rule with the specified behavioural attributes
+     all other attributes maintained. If any of the supplied parameters are nil
+     the current values will be used. All parameters default to nil.
+     
+     - Parameter kind: The kind of behaviour
+     - Parameter cardinality: A partial range specifying the range of matches required with no maxium
+     - Parameter negated: `true` if the results of `test()` should be negated
+     - Parameter lookahead: Is lookahead behaviour required
+     */
+    public func newBehaviour(_ kind:Behaviour.Kind?=nil, cardinality: Cardinality, negated:Bool? = nil, lookahead:Bool? = nil)->Self{
+
+        return instanceWith(behaviour: Behaviour(kind ?? behaviour.kind, cardinality: cardinality, negated: negated ?? behaviour.negate, lookahead: lookahead ?? behaviour.lookahead), annotations: annotations)
+    }
+    
+    /**
      Standard implementation that uses the evaluate function to apply the behaviour of the rule.
      
      - Parameter lexer: The lexer controlling the scanning head

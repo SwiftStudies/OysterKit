@@ -81,6 +81,7 @@ public class GrammarStructure {
         func merge(with incoming:Cardinality)->Cardinality{
             return Cardinality(optional: optional || incoming.optional, many: many || incoming.many)
         }
+
     }
     
     /// The nature of the node.

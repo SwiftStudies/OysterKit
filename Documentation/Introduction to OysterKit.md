@@ -81,10 +81,10 @@ Applies skipping behaviour to the rule
 
 Will result in no token being produced and the scan head moving to the end of ```hello```
 
-### Token.from(_rule:Rule)
+### Token.if(_rule:Rule)
 Applies structural token producing behaviour to the rule
 
-    myToken.from("hello".scan)
+    myToken.if("hello".scan)
 
 Would result in a token being created
 
@@ -103,6 +103,9 @@ Creates a new rule which matches any number of matches of the rule
 ### Rule.oneOrMore
 Creates a new rule which matches one or more matches of the rule
 
+### Cardinality.of(_ rule)
+Creates a new rule with the specified cardinality
+
 ### Array<Rule>.oneOf
 
 Creates a choice rule (any one of the contained rules matches this rule)
@@ -110,3 +113,44 @@ Creates a choice rule (any one of the contained rules matches this rule)
 ### Array<Rule>.sequence
 
 Creates a rule where each sub-rule must be matched in order
+
+## Usage Guide
+
+These operators are designed to allow you to chain together a series of calls to rapidly build rules directly in 
+your code. There are some simple guidelines that can be followed to make sure that your rules are highly 
+readable. 
+
+1. Tokens are key to any parser. These can be easily defined as ```Int``` enumerations.
+2. Not all of the rules you may wish to use several times will generate tokens, these can be
+defined as static properties of the enumeration
+3. Start with the core of the rule (for example, matches one or more letters) and chain operators and functions
+to it
+4. Create a function to generate a rule for each of your tokens. 
+
+Here is an example of a simple grammar that uses this methodology
+
+    // Define an enumeration, that conforms to Token. There is no additional work to do
+    enum MyGrammar : Int, Token {
+        //Define a case for each token. Make sure to start at 1
+        case word = 1, sentance, punctuation
+        
+        //Define static variables for non-token creating rules that are used in many 
+        //other rules. 
+        static let whitespace = CharacterSet.whitespaces.skip(.oneOrMore)
+        static let nextWords  = ~[whitespace, MyGrammar.word.rule()].sequence.zeroOrMore
+        
+        //Define a function that generates a rule for each token
+        func rule()->Rule{
+            switch self {
+            case .word:
+                return CharacterSet.letters.token(self, .oneOrMore)
+            case .punctuation:
+                return [".".scan(),"!".scan(),"?".scan()].token(self)
+            case .sentance:
+                return [.word.rule(),[nextWords, .punctuation.rule()].choice].token(self)
+            }
+        }
+    }
+
+
+

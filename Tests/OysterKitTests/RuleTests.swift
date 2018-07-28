@@ -122,7 +122,7 @@ class RuleTests: XCTestCase {
     
     func testOneFromCharacterSetToken(){
         let source = "Hello World"
-        let rule = LabelledToken(withLabel: "letter").from(oneOf: CharacterSet.letters)
+        let rule = LabelledToken(withLabel: "letter").if(CharacterSet.letters.scan())
         let lexer = Lexer(source: source)
         let testIR = TestIR()
         
@@ -141,7 +141,7 @@ class RuleTests: XCTestCase {
     
     func testOneOrMoreFromCharacterSetToken(){
         let source = "Hello World"
-        let rule = LabelledToken(withLabel: "letter").oneOrMore(of: CharacterSet.letters)
+        let rule = LabelledToken(withLabel: "letter").if(CharacterSet.letters.scan(.oneOrMore))
         let lexer = Lexer(source: source)
         let testIR = TestIR()
         
@@ -160,12 +160,16 @@ class RuleTests: XCTestCase {
     
     func testLazyConsumeCharacterSetToken(){
         let source = "Hello World"
-        let rule = LabelledToken(withLabel: "letter").consume(CharacterSet.letters)
+        let rule : BehaviouralRule = [CharacterSet.letters.skip()].token(LabelledToken(withLabel: "letter"))
         let lexer = Lexer(source: source)
         let testIR = TestIR()
         
+        
+        
         do {
             switch try rule.match(with: lexer, for: testIR){
+            case .success(let context):
+                print(context.matchedString)
             case .consume(let context):
                 //Test stuff
                 XCTAssertEqual("H", context.matchedString)
