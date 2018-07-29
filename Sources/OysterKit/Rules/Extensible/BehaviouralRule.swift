@@ -304,15 +304,20 @@ public extension BehaviouralRule {
                 }
             }
         }
-        let result = MatchResult.success(context: lexer.proceed())
+
+        let result : MatchResult
+
         switch behaviour.kind {
         case .structural(let produces):
+            result = MatchResult.success(context: lexer.proceed())
             ir.didEvaluate(token: produces,annotations: annotations,  matchResult: result)
             return result
         case .scanning:
+            result = MatchResult.success(context: lexer.proceed())
             _ = ir.willEvaluate(token: TransientToken.anonymous, at: startPosition)
             ir.didEvaluate(token: TransientToken.anonymous, annotations: [:], matchResult: result)
-        case .skipping: break
+        case .skipping:
+            result = MatchResult.consume(context: lexer.proceed())
         }
         
         return result
