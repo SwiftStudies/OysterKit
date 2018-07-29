@@ -33,7 +33,52 @@ import Foundation
 public class AbstractSyntaxTreeConstructor  {
     
     /// Errors that can occur during AST creation
-    public enum ConstructionError : Error {
+    public enum ConstructionError : Error, TestErrorType {
+        public var causedBy: [Error]?{
+            switch self {
+            case .parsingFailed(let causes):
+                return causes
+            case .constructionFailed(let causes):
+                return causes
+            case .unknownError(let _):
+                return nil
+            }
+        }
+        
+        public var range: ClosedRange<String.Index>?{
+            guard let causes = causedBy else {
+                return nil
+            }
+            var totalRange : ClosedRange<String.Index>?
+            for cause in causes {
+                if let cause = cause as? TestErrorType, let range = cause.range {
+                    if totalRange == nil {
+                        totalRange = range
+                    } else {
+                        totalRange = min(totalRange!.lowerBound, range.lowerBound)...(max(totalRange!.upperBound,range.upperBound))
+                    }
+                }
+            }
+            return totalRange
+        }
+        
+        public var message: String {
+            var messages = [String]()
+            switch self {
+            case .parsingFailed(let causes), .constructionFailed(let causes):
+                messages.append(contentsOf: causes.map({ (error) -> String in
+                    if let error = error as? TestErrorType {
+                        return error.message
+                    } else {
+                        return "\(error)"
+                    }
+                }))
+            case .unknownError(let message):
+                messages.append(message)
+            }
+            return messages.joined(separator: ", ")
+        }
+        
         /// Parsing failed before the AST could be constructed
         case parsingFailed(causes: [Error])
         
