@@ -167,6 +167,15 @@ open class Lexer : LexicalAnalyzer, CustomStringConvertible{
     open func consume(){
         let _ = marks.removeLast()
     }
+
+    /// Removes the top most `Mark` from the stack without creating a new `LexicalContext` effectively advancing the scanning position
+    /// of the new topmost mark to this position.
+    open func fastForward()->LexicalContext{
+        _ = marks.removeLast()
+        let mark = Mark(uniPosition: scanner.scanLocation)
+        return LexerContext(mark: mark, endLocation: scanner.scanLocation, source: source)
+    }
+
     
     /// `true` if the end of the `String` being scanned has been reached
     public var endOfInput: Bool{
