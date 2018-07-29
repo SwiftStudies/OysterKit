@@ -83,11 +83,14 @@ class LexerTest: XCTestCase {
 
     func markAndScan(with lexer:TestLexer, _ characterSet : CharacterSet) {
         let _ = lexer.mark()
-        do{
-            while (true){
+        var passed = true
+        while passed {
+            do{
                 try lexer.scan(oneOf:characterSet)
+                passed = true
+            } catch {
+                return
             }
-        } catch {
             
         }
     }
