@@ -25,6 +25,13 @@
 import OysterKit
 
 public extension String {
+    /**
+     Creates a rule, producing the specified token, by compiling the string as STLR source
+     
+     - Parameter token: The token to produce
+     - Returns: `nil` if compilation failed
+    */
+    @available(*,deprecated,message: "Use .dynamicRule(Behaviour.Kind) instead")
     public func  dynamicRule(token:Token)->Rule? {
         let grammarDef = "grammar Dynamic\n_ = \(self)"
         
@@ -38,6 +45,16 @@ public extension String {
         
         
         return ast.rules[0].rule(from: ast, creating: token)
+    }
+    
+    /**
+     Creates a rule of the specified kind (e.g. ```.structural(token)```)
+     
+     - Parameter kind: The kind of the rule
+     - Returns: `nil` if compilation failed
+     */
+    public func dynamicRule(_ kind:Behaviour.Kind) throws ->BehaviouralRule?{
+        return try _STLR.build("grammar Dynamic\n_ = \(self)").grammar.dynamicRules.first
     }
 }
 
