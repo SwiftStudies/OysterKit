@@ -23,6 +23,7 @@
 //    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Foundation
+import OysterKit
 
 public struct StringCodingKey : CodingKey {
     public var stringValue: String
@@ -47,4 +48,11 @@ public func dumpDecoder(decoder:Decoder) throws {
     for key in keyedContainer.allKeys {
         print("\t-\(key.stringValue)")
     }
+}
+
+func test(_ rule:BehaviouralRule, with source:String) throws ->MatchResult{
+    let lexer = Lexer(source: source)
+    let ir = AbstractSyntaxTreeConstructor(with: source)
+    
+    return try rule.match(with: lexer, for: ir)
 }
