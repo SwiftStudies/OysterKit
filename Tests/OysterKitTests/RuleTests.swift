@@ -164,13 +164,10 @@ class RuleTests: XCTestCase {
         let lexer = Lexer(source: source)
         let testIR = TestIR()
         
-        
-        
         do {
-            switch try rule.match(with: lexer, for: testIR){
+            let matchResult = try rule.match(with: lexer, for: testIR)
+            switch matchResult{
             case .success(let context):
-                print(context.matchedString)
-            case .consume(let context):
                 //Test stuff
                 XCTAssertEqual("H", context.matchedString)
             default:
@@ -183,13 +180,13 @@ class RuleTests: XCTestCase {
 
     func testGreedilyConsumeCharacterSetToken(){
         let source = "Hello World"
-        let rule = LabelledToken(withLabel: "letter").consumeGreedily(CharacterSet.letters)
+        let rule : BehaviouralRule = [CharacterSet.letters.skip(.oneOrMore)].token(LabelledToken(withLabel: "letter"))
         let lexer = Lexer(source: source)
         let testIR = TestIR()
         
         do {
             switch try rule.match(with: lexer, for: testIR){
-            case .consume(let context):
+            case .success(let context):
                 //Test stuff
                 XCTAssertEqual("Hello", context.matchedString)
             default:
@@ -247,7 +244,7 @@ class RuleTests: XCTestCase {
     }
     
     func testInstanceTokenModification(){
-        let rule = LabelledToken(withLabel: "letter").oneOrMore(of: CharacterSet.letters)
+        let rule = CharacterSet.letters.token(LabelledToken(withLabel: "letter"), from: .oneOrMore)
         let newRule = rule.instance(with: transientTokenValue.token)
         
         XCTAssertEqual(newRule.produces.rawValue, transientTokenValue)
@@ -290,7 +287,7 @@ class RuleTests: XCTestCase {
     
     func testKnownAnnotations(){
         let error = "Valid error"
-        let rule = LabelledToken(withLabel: "test").oneOrMore(of: CharacterSet.letters)
+        let rule = CharacterSet.letters.token(LabelledToken(withLabel: "test"), from: .oneOrMore)
         let validError = rule.instance(with: [
             RuleAnnotation.error : RuleAnnotationValue.string(error),
             RuleAnnotation.void  : RuleAnnotationValue.set,
