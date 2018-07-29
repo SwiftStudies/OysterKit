@@ -144,11 +144,19 @@ public enum TestError : TestErrorType {
                 return "Internal Error: \(cause.localizedDescription)"
             }
             return "Internal Error"
-        case .undefinedError(let position, _):
-            return "Undefined error at \(position.encodedOffset)"
-        case .scanningError(let message, let position, _):
-            return "Scanning Error: \(message) at \(position.encodedOffset)"
-        case .parsingError(let message, let range, _):
+        case .undefinedError(let position, let causes):
+            if causes.isEmpty {
+                return "Undefined error at \(position.encodedOffset)"
+            } else {
+                return "Undefined error at \(position.encodedOffset) caused by "+causes.map({"\($0)"}).joined(separator: ", ")
+            }
+        case .scanningError(let message, let position, let causes):
+            if causes.isEmpty{
+                return "Scanning Error: \(message) at \(position.encodedOffset)"
+            } else {
+                return "Scanning Error: \(message) at \(position.encodedOffset) caused by "+causes.map({"\($0)"}).joined(separator: ", ")
+            }
+        case .parsingError(let message, let range, let causes):
             if range.lowerBound == range.upperBound {
                 return "Parsing Error: \(message) at \(range.lowerBound.encodedOffset)"
             }
@@ -156,5 +164,32 @@ public enum TestError : TestErrorType {
         case .interpretationError(let message, _):
             return "Interpretation Error: \(message)"
         }
+    }
+    
+    /// A textual description of the error and its causes
+    public var description: String {
+        return message
+    }
+}
+
+public extension TestErrorType {
+    /**
+     Returns true if the supplied error includes the supplied description in its description
+    
+     - Parameter description: The text being searched for
+     - Returns: True if it contains the message, false if not
+    */
+    public func hasCause(description:String)->Bool{
+        if message.contains(description){
+            return true
+        }
+        for cause in causedBy ?? [] {
+            if let cause = cause as? TestErrorType, cause.hasCause(description: description){
+                return true
+            } else if "\(cause)".contains(description){
+                return true
+            }
+        }
+        return false
     }
 }
