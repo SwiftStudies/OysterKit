@@ -168,7 +168,7 @@ public extension Token {
      - Parameters oneOf: A character set
      - Returns: A `Rule` that will issue the token if one or more of the characters from the set is at the scan head
      */
-    @available(*, deprecated,message: "This function has been depricated and will be removed in version 1.0")
+    @available(*, deprecated,message: "Replace with CharacterSet.token(<token>, from: .oneOrMore), CharacterSet.skip(.oneOrMore), or CharacterSet.skip(.oneOrMore)")
     public func oneOrMore(of characterSet:CharacterSet)->Rule{
         return characterSet.terminal(token:0).repeated(min:1, producing: self)
     }
