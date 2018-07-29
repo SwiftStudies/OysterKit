@@ -106,23 +106,44 @@ public extension BehaviouralRule {
         return Precidence.annotation(annotations).modify(self)
     }
     
+    /**
+     An instance of the rule with a cardinality of one
+     */
     public var one : BehaviouralRule{
         return newBehaviour(cardinality: 1...1)
     }
 
+    /**
+     An instance of the rule with a cardinality of one or more
+     */
     public var oneOrMore : BehaviouralRule{
         return newBehaviour(cardinality: 1...)
     }
 
+    /**
+     An instance of the rule with a cardinality of zero or more
+     */
     public var zeroOrMore : BehaviouralRule{
         return newBehaviour(cardinality: 0...)
     }
 
+    /**
+     An instance of the rule with a cardinality of zero or one
+     */
     public var optional : BehaviouralRule {
         return newBehaviour(cardinality: 0...1)
     }
 }
 
+/**
+ Creates a new instance of the rule set to have lookahead behaviour
+ 
+    // Creates a lookahead version of of the rule
+    let lookahead = >>CharacterSet.letters.skip()
+ 
+ - Parameter rule:The rule to apply to
+ - Returns: A new version of the rule
+ */
 public prefix func >>(rule:BehaviouralRule)->BehaviouralRule{
     if rule.behaviour.cardinality == .one {
         return rule.newBehaviour(nil, negated: nil, lookahead: true)
@@ -131,6 +152,16 @@ public prefix func >>(rule:BehaviouralRule)->BehaviouralRule{
     return Precidence.lookahead(true).modify(rule)
 }
 
+/**
+ Creates a new instance of the rule which negates its match.
+ Note that negate does not "toggle", that is !!rule != rule
+ 
+ // Creates a negated version of of the rule
+ let notLetter = !CharacterSet.letters.skip()
+ 
+ - Parameter rule:The rule to apply to
+ - Returns: A new version of the rule
+ */
 public prefix func !(rule:BehaviouralRule)->BehaviouralRule{
     if rule.behaviour.cardinality == .one {
         return rule.newBehaviour(nil, negated: true, lookahead: nil)
@@ -139,6 +170,15 @@ public prefix func !(rule:BehaviouralRule)->BehaviouralRule{
     return Precidence.negate(true).modify(rule)    
 }
 
+/**
+ Creates a new instance of the rule which skips.
+ 
+ // Creates a skipping version of of the rule
+ let skipLetters = -CharacterSet.letters.scan(.zeroOrMore)
+ 
+ - Parameter rule:The rule to apply to
+ - Returns: A new version of the rule
+ */
 public prefix func -(rule : BehaviouralRule)->BehaviouralRule{
     if rule.behaviour.cardinality == .one {
         return rule.instanceWith(behaviour: Behaviour(.skipping, cardinality: rule.behaviour.cardinality, negated: rule.behaviour.negate, lookahead: rule.behaviour.lookahead), annotations: rule.annotations)
@@ -147,6 +187,15 @@ public prefix func -(rule : BehaviouralRule)->BehaviouralRule{
     return Precidence.structure(.skipping).modify(rule)    
 }
 
+/**
+ Creates a new instance of the rule which scans.
+ 
+ // Creates a scanning version of of the rule
+ let scanLetters = -CharacterSet.letters.token(myToken, .zeroOrMore)
+ 
+ - Parameter rule:The rule to apply to
+ - Returns: A new version of the rule
+ */
 public prefix func ~(rule : BehaviouralRule)->BehaviouralRule{
     if rule.behaviour.cardinality == .one {
         return rule.instanceWith(behaviour: Behaviour(.scanning, cardinality: rule.behaviour.cardinality, negated: rule.behaviour.negate, lookahead: rule.behaviour.lookahead), annotations: rule.annotations)
@@ -156,6 +205,12 @@ public prefix func ~(rule : BehaviouralRule)->BehaviouralRule{
 }
 
 public extension Token {
+    /**
+     Creates a rule which will generate this token if matched
+     
+     - Parameter rule:The rule which must be matched in order to generate the tokekn
+     - Returns: An instance of the rule
+     */
     func `if`(_ rule:BehaviouralRule)->BehaviouralRule{
         if rule.behaviour.cardinality == .one {
             return rule.instanceWith(behaviour: Behaviour(.structural(token: self), cardinality: rule.behaviour.cardinality, negated: rule.behaviour.negate, lookahead: rule.behaviour.lookahead), annotations: rule.annotations)
@@ -167,22 +222,53 @@ public extension Token {
 
 // Extends collections of terminals to support creation of Choice scanners
 extension Array where Element == BehaviouralRule {
+    /**
+     Creates a rule that tests for the producer (with the specified cardinality)
+     that will produce the defined token
+     
+     - Parameter token: The token to be produced
+     - Parameter cardinality: The desired cardinality of the match
+     - Returns: A rule
+     */
     public func token(_ token: Token, from cardinality: Cardinality = .one) -> BehaviouralRule {
         return sequence.newBehaviour(.structural(token:token), cardinality: cardinality)
     }
     
-    public func scan(_ cardinality: Cardinality) -> BehaviouralRule {
+    /**
+     Creates a rule that tests for the producer (with the specified cardinality)
+     that includes the range of the result in any matched string
+     
+     - Parameter cardinality: The desired cardinality of the match
+     - Returns: A rule
+     */
+    public func scan(_ cardinality: Cardinality = .one) -> BehaviouralRule {
         return sequence.newBehaviour(.scanning, cardinality: cardinality)
     }
     
-    public func skip(_ cardinality: Cardinality) -> BehaviouralRule {
+    /**
+     Creates a rule that tests for the producer (with the specified cardinality)
+     moving the scanner head forward but not including the range of the result
+     in any match.
+     
+     - Parameter cardinality: The desired cardinality of the match
+     - Returns: A rule
+     */
+    public func skip(_ cardinality: Cardinality = .one) -> BehaviouralRule {
         return sequence.newBehaviour(.skipping, cardinality: cardinality)
     }
     
+    /**
+     Creates a rule that is satisfied if one of the rules in the araray
+     (which are evaluated in order) is matched
+    */
     public var oneOf : BehaviouralRule{
         return ChoiceRule(Behaviour(.scanning), and: [:], for: self)
     }
     
+    /**
+     Creates a rule that is satisified if all rules in the array are
+     met, in order. 
+     */
     public var sequence : BehaviouralRule{
         return SequenceRule(Behaviour(.scanning), and: [:], for: self)
     }
