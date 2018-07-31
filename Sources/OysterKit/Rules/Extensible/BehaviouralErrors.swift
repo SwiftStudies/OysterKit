@@ -48,19 +48,15 @@ public extension TestErrorType {
     /// A more detailed description of the error including the hierarchy of errors that built to this error
     var debugDescription : String {
         func dumpCauses(_ indent:Int = 1, causes:[Error])->String{
-            if let causedBy = causedBy {
-                var result = ""
-                for cause in causedBy {
-                    if let cause = cause as? TestErrorType {
-                        result += "\(String(repeating:"\t",count:indent))- \(cause.description)\n\(dumpCauses(indent+1,causes: cause.causedBy ?? []))"
-                    } else {
-                        result += "\(String(repeating:"\t",count:indent))- \(cause.localizedDescription)\n"
-                    }
+            var result = ""
+            for cause in causes {
+                if let cause = cause as? TestErrorType {
+                    result += "\(String(repeating:"\t",count:indent))- \(cause.description)\n\(dumpCauses(indent+1,causes: cause.causedBy ?? []))"
+                } else {
+                    result += "\(String(repeating:"\t",count:indent))- \(cause.localizedDescription)\n"
                 }
-                return result
-            } else {
-                return "\(String(repeating:"\t",count:indent))- Unknown"
             }
+            return result
         }
         if let causes = causedBy, !causes.isEmpty {
             return "\(message). Caused by:\n\(dumpCauses(causes: causes))"

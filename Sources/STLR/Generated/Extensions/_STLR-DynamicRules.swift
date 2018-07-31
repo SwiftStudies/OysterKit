@@ -235,7 +235,8 @@ fileprivate extension _STLR.Expression {
         case .choice(let elements):
             return elements.choice(with: behaviour, and: annotations, using: symbolTable)
         case .element(let element):
-            return element.rule(symbolTable: symbolTable)
+            #warning("There is an optimization oppertunity here. If it's a single element with no specific annotations we don't need to wrap in a sequence but can 'merge' and hoist")
+            return [element].sequence(with: behaviour, and: annotations, using: symbolTable)
         }
     }
 }

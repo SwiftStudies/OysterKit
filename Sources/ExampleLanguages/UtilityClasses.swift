@@ -24,6 +24,7 @@
 
 import Foundation
 import OysterKit
+import STLR
 
 public struct StringCodingKey : CodingKey {
     public var stringValue: String
@@ -56,3 +57,5 @@ func test(_ rule:BehaviouralRule, with source:String) throws ->MatchResult{
     
     return try rule.match(with: lexer, for: ir)
 }
+
+

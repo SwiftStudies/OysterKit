@@ -34,6 +34,9 @@ public protocol Terminal : RuleProducer {
      - Parameter token: The token produced if any. 
     */
     func test(lexer: LexicalAnalyzer, producing token:Token?) throws
+    
+    /// Provides a textual description of the match
+    var matchDescription : String {get}
 }
 
 /// Extends any terminal to be a `RuleProducer`
@@ -77,6 +80,10 @@ public extension Terminal {
 
 // Extends collections of terminals to support creation of Choice scanners
 extension Array: Terminal, RuleProducer where Element : Terminal {
+    public var matchDescription: String {
+        return map({"\"\($0)\""}).joined(separator: " | ")
+    }
+    
     
     public func test(lexer: LexicalAnalyzer, producing token:Token?) throws {
         

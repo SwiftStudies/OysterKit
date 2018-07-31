@@ -36,8 +36,11 @@ public final class SequenceRule : BehaviouralRule {
     }
     
     public func test(with lexer: LexicalAnalyzer, for ir: IntermediateRepresentation) throws {
+//        print("Evaluating: \(self)")
         for rule in sequence {
-            let _ = try rule.match(with: lexer, for: ir)
+//            print("\tTrying \(rule)")
+            _ = try rule.match(with: lexer, for: ir)
+//            print("\tPassed")
         }
     }
     
@@ -45,4 +48,8 @@ public final class SequenceRule : BehaviouralRule {
         return SequenceRule(behaviour ?? self.behaviour, and: annotations ?? self.annotations, for: sequence)
     }
     
+    /// A textual description of the rule
+    public var description: String {
+        return behaviour.describe(match:"(\(sequence.map({$0.description}).joined(separator: " "))")
+    }
 }

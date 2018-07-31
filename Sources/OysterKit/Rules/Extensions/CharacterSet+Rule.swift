@@ -26,6 +26,10 @@ import Foundation
 
 /// Extends `CharacterSet` to implement `Terminal`
 extension CharacterSet : Terminal {
+    public var matchDescription: String {
+        return ".\(self)"
+    }
+    
     public func test(lexer: LexicalAnalyzer, producing token:Token?) throws {
         do {
             try lexer.scan(oneOf: self)

@@ -146,4 +146,41 @@ public struct Behaviour {
         let newCardinality = cardinality == nil ? self.cardinality : Cardinality(cardinality!)
         return Behaviour(kind ?? self.kind, cardinality: newCardinality, negated: negated ?? self.negate, lookahead: lookahead ?? self.lookahead)
     }
+    
+    /**
+     Takes a description of a match and wraps it in the behavioural annotations of the rule
+     
+     - Parameter match: A description of the match
+     - Returns: A wrapped description of the match which includes the behaviour
+    */
+    public func describe(match:String)->String{
+        var prefix : String
+        switch kind {
+        case .skipping: prefix = "-"
+        case .scanning: prefix = "~"
+        case .structural(let token): prefix = "\(token):"
+        }
+        var suffix : String
+        
+        if cardinality == Cardinality(1...1){
+            suffix = ""
+        } else if cardinality == Cardinality(1...) {
+            suffix = "+"
+        } else if cardinality == Cardinality(0...) {
+            suffix = "*"
+        } else if cardinality == Cardinality(0...1) {
+            suffix = "?"
+        } else {
+            suffix = "[\(cardinality.minimumMatches)...\(cardinality.maximumMatches == nil ? "" : "\(cardinality.maximumMatches!)")]"
+        }
+        
+        if negate {
+            prefix = "\(prefix)!"
+        }
+        if lookahead {
+            prefix = "\(prefix)>>"
+        }
+        
+        return "\(prefix)\(match)\(suffix)"
+    }
 }

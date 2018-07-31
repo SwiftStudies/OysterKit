@@ -26,6 +26,10 @@ import Foundation
 
 /// Extends `String` to implement `Terminal`
 extension String : Terminal {
+    public var matchDescription: String {
+        return "\"\(self)\""
+    }
+    
     public func test(lexer: LexicalAnalyzer, producing token:Token?) throws {
         do {
             try lexer.scan(terminal: self)

@@ -70,11 +70,15 @@ class DynamicGeneratorTest: XCTestCase {
         @forArrows arrows = arrow
         """
         
-        guard let dynamicLangauage = STLRParser(source: stlr).ast.runtimeLanguage else {
-            XCTFail("Could not compile the grammar under test"); return
+        let dynamicLanguage : Parser
+        do {
+            dynamicLanguage = try Parser(grammar:_STLR.build(stlr).grammar.dynamicRules)
+        } catch {
+            XCTFail("Failed to compile: \(error)")
+            return
         }
         
-        if let tree = try? AbstractSyntaxTreeConstructor().build(">", using: dynamicLangauage)  {
+        if let tree = try? AbstractSyntaxTreeConstructor().build(">", using: dynamicLanguage)  {
 //            print(tree.description)
             XCTAssertTrue("\(tree.token)" == "arrows", "Root node should be arrows")
             XCTAssertTrue(tree.isSet(annotation: RuleAnnotation.custom(label: "forArrows")))
@@ -96,11 +100,15 @@ class DynamicGeneratorTest: XCTestCase {
         @forArrows arrows = @token("arrow") @forArrow ">"
         """
         
-        guard let dynamicLangauage = STLRParser(source: stlr).ast.runtimeLanguage else {
-            XCTFail("Could not compile the grammar under test"); return
+        let dynamicLanguage : Parser
+        do {
+            dynamicLanguage = try Parser(grammar:_STLR.build(stlr).grammar.dynamicRules)
+        } catch {
+            XCTFail("Failed to compile: \(error)")
+            return
         }
         
-        if let tree = try? AbstractSyntaxTreeConstructor().build(">", using: dynamicLangauage)  {
+        if let tree = try? AbstractSyntaxTreeConstructor().build(">", using: dynamicLanguage)  {
 //            print(tree.description)
             XCTAssertTrue("\(tree.token)" == "arrows", "Root node should be arrows")
             XCTAssertTrue(tree.isSet(annotation: RuleAnnotation.custom(label: "forArrows")))
@@ -122,11 +130,15 @@ class DynamicGeneratorTest: XCTestCase {
         @forArrows arrows = arrow
         """
         
-        guard let dynamicLangauage = STLRParser(source: stlr).ast.runtimeLanguage else {
-            XCTFail("Could not compile the grammar under test"); return
+        let dynamicLanguage : Parser
+        do {
+            dynamicLanguage = try Parser(grammar:_STLR.build(stlr).grammar.dynamicRules)
+        } catch {
+            XCTFail("Failed to compile: \(error)")
+            return
         }
         
-        if let tree = try? AbstractSyntaxTreeConstructor().build(">", using: dynamicLangauage)  {
+        if let tree = try? AbstractSyntaxTreeConstructor().build(">", using: dynamicLanguage)  {
 //           print(tree.description)
             XCTAssertTrue("\(tree.token)" == "arrows", "Root node should be arrows")
             XCTAssertTrue(tree.isSet(annotation: RuleAnnotation.custom(label: "forArrows")))
@@ -148,11 +160,15 @@ class DynamicGeneratorTest: XCTestCase {
         @forArrows arrows = @token("arrow") @forArrow ">" arrows?
         """
         
-        guard let dynamicLangauage = STLRParser(source: stlr).ast.runtimeLanguage else {
-            XCTFail("Could not compile the grammar under test"); return
+        let dynamicLanguage : Parser
+        do {
+            dynamicLanguage = try Parser(grammar:_STLR.build(stlr).grammar.dynamicRules)
+        } catch {
+            XCTFail("Failed to compile: \(error)")
+            return
         }
         
-        if let tree = try? AbstractSyntaxTreeConstructor().build(">", using: dynamicLangauage)  {
+        if let tree = try? AbstractSyntaxTreeConstructor().build(">", using: dynamicLanguage)  {
 //            print(tree.description)
             XCTAssertTrue("\(tree.token)" == "arrows", "Root node should be arrows")
             XCTAssertTrue(tree.isSet(annotation: RuleAnnotation.custom(label: "forArrows")))
@@ -176,15 +192,23 @@ class DynamicGeneratorTest: XCTestCase {
         ca  =   "c" @three a
         """
         
-        guard let dynamicLangauage = STLRParser(source: stlr).ast.runtimeLanguage else {
-            XCTFail("Could not compile the grammar under test"); return
+        let dynamicLanguage : Parser
+        do {
+            dynamicLanguage = try Parser(grammar:_STLR.build(stlr).grammar.dynamicRules)
+        } catch {
+            XCTFail("Failed to compile: \(error)")
+            return
         }
         
         do {
-            let tree = try AbstractSyntaxTreeConstructor().build("baca", using: dynamicLangauage)
+            let tree = try AbstractSyntaxTreeConstructor().build("baca", using: dynamicLanguage)
 //            print(tree.description)
             XCTAssertEqual("\(tree.children[0].token)","ba")
             XCTAssertTrue(tree.children[0].annotations.isEmpty)
+            if tree.children[0].children.isEmpty {
+                XCTFail("No children")
+                return
+            }
             XCTAssertEqual("\(tree.children[0].children[0].token)","a")
             XCTAssertNotNil(tree.children[0].children[0].annotations[RuleAnnotation.custom(label: "one")])
             XCTAssertNotNil(tree.children[0].children[0].annotations[RuleAnnotation.custom(label: "two")])
@@ -207,12 +231,20 @@ class DynamicGeneratorTest: XCTestCase {
         ts   = @transient ":" t @transient ":" @transient t @transient ":"
         """
         
-        guard let dynamicLangauage = STLRParser(source: stlr).ast.runtimeLanguage else {
-            XCTFail("Could not compile the grammar under test"); return
+        let dynamicLanguage : Parser
+        do {
+            dynamicLanguage = try Parser(grammar:_STLR.build(stlr).grammar.dynamicRules)
+        } catch {
+            XCTFail("Failed to compile: \(error)")
+            return
         }
         
-        if let tree = try? AbstractSyntaxTreeConstructor().build(":t:t::v:v::t:t:", using: dynamicLangauage)  {
+        if let tree = try? AbstractSyntaxTreeConstructor().build(":t:t::v:v::t:t:", using: dynamicLanguage)  {
 //            print(tree.description)
+            if tree.children.count < 3 {
+                XCTFail("Expected 3 children")
+                return
+            }
             // Transient means it doesn't create child nodes, but is in the range
             XCTAssertEqual("\(tree.children[0].token)","ts")
             XCTAssertEqual(tree.children[0].children.count,1)
@@ -241,12 +273,20 @@ class DynamicGeneratorTest: XCTestCase {
         ts   = ~":" t ~":" ~t ~":"
         """
         
-        guard let dynamicLangauage = STLRParser(source: stlr).ast.runtimeLanguage else {
-            XCTFail("Could not compile the grammar under test"); return
+        let dynamicLanguage : Parser
+        do {
+            dynamicLanguage = try Parser(grammar:_STLR.build(stlr).grammar.dynamicRules)
+        } catch {
+            XCTFail("Failed to compile: \(error)")
+            return
         }
         
-        if let tree = try? AbstractSyntaxTreeConstructor().build(":t:t::v:v::t:t:", using: dynamicLangauage)  {
+        if let tree = try? AbstractSyntaxTreeConstructor().build(":t:t::v:v::t:t:", using: dynamicLanguage)  {
  //           print(tree.description)
+            if tree.children.count < 3 {
+                XCTFail("Expected 3 children")
+                return
+            }
             // Transient means it doesn't create child nodes, but is in the range
             XCTAssertEqual("\(tree.children[0].token)","ts")
             XCTAssertEqual(tree.children[0].children.count,1)
@@ -266,7 +306,8 @@ class DynamicGeneratorTest: XCTestCase {
     }
 
     func testSimpleChoice(){
-        guard let rule = "\"x\" | \"y\" | \"z\"".dynamicRule(token: TT.xyz) else {
+        
+        guard let rule = try? "\"x\" | \"y\" | \"z\"".dynamicRule(.structural(token: TT.xyz)) else {
             XCTFail("Could not compile")
             return
         }
@@ -287,7 +328,7 @@ class DynamicGeneratorTest: XCTestCase {
     
     
     func testSimpleSequence(){
-        guard let rule = "\"x\" \"y\" \"z\"".dynamicRule(token: TT.xyz) else {
+        guard let rule = try? "\"x\" \"y\" \"z\"".dynamicRule(.structural(token:TT.xyz)) else {
             XCTFail("Could not compile")
             return
         }
@@ -305,7 +346,7 @@ class DynamicGeneratorTest: XCTestCase {
     }
     
     func testGroupAtRootOfExpression(){
-        guard let rule = "(\"x\" \"y\" \"z\")".dynamicRule(token: TT.xyz) else {
+        guard let rule = try? "(\"x\" \"y\" \"z\")".dynamicRule(.structural(token: TT.xyz)) else {
             XCTFail("Could not compile")
             return
         }
@@ -326,7 +367,7 @@ class DynamicGeneratorTest: XCTestCase {
     }
     
     func testNestedGroups(){
-        guard let rule = "(\"x\" (\"y\") \"z\")".dynamicRule(token: TT.xyz) else {
+        guard let rule = try? "(\"x\" (\"y\") \"z\")".dynamicRule(.structural(token: TT.xyz)) else {
             XCTFail("Could not compile")
             return
         }
@@ -349,7 +390,7 @@ class DynamicGeneratorTest: XCTestCase {
     func testZeroOrOne() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
-        guard let rule = "(\"x\"? (\"y\")? \"z\")".dynamicRule(token: TT.xyz) else {
+        guard let rule = try? "(\"x\"? (\"y\")? \"z\")".dynamicRule(.structural(token: TT.xyz)) else {
             XCTFail("Could not compile")
             return
         }
@@ -372,7 +413,7 @@ class DynamicGeneratorTest: XCTestCase {
     func testOneOrMore() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
-        guard let rule = "\"xy\" \"z\"+".dynamicRule(token: TT.xyz) else {
+        guard let rule = try? "\"xy\" \"z\"+".dynamicRule(.structural(token: TT.xyz)) else {
             XCTFail("Could not compile")
             return
         }
@@ -393,8 +434,8 @@ class DynamicGeneratorTest: XCTestCase {
     }
 
     func testEscapedQuotedString() {
-        // "\"" ("\""!)+ "\""
-        guard let rule = "\"\\\"\" (!\"\\\"\")+ \"\\\"\"".dynamicRule(token: TT.quote) else {
+        // "\"" (!"\"")+ "\""
+        guard let rule = try? "\"\\\"\" (!\"\\\"\")+ \"\\\"\"".dynamicRule(.structural(token: TT.quote)) else {
             XCTFail("Could not compile")
             return
         }
@@ -416,11 +457,13 @@ class DynamicGeneratorTest: XCTestCase {
     }
     
     func testNotEscapedQuote() {
-        // "\""!
-        guard let rule = "!\"\\\"\"".dynamicRule(token: TT.letters) else {
+        // !"\""
+        guard let rule = try? "!\"\\\"\"".dynamicRule(.structural(token: TT.letters)) else {
             XCTFail("Could not compile")
             return
         }
+        
+        print(rule)
         
         let stream = TestableStream(source: "ab\"c", [rule])
         
@@ -438,7 +481,7 @@ class DynamicGeneratorTest: XCTestCase {
     
     func testEscapedQuote() {
         // "\""
-        guard let rule = "\"\\\"\"".dynamicRule(token: TT.quote) else {
+        guard let rule = try? "\"\\\"\"".dynamicRule(.structural(token: TT.quote)) else {
             XCTFail("Could not compile")
             return
         }
@@ -462,7 +505,7 @@ class DynamicGeneratorTest: XCTestCase {
     func testComment(){
         let stlrSource = "\"\\\\\\\\\" (!.newline)* .newline"
         
-        guard let rule = stlrSource.dynamicRule(token: TT.comment) else {
+        guard let rule = try? stlrSource.dynamicRule(.structural(token: TT.comment)) else {
             XCTFail("Could not compile")
             return
         }
@@ -482,7 +525,7 @@ class DynamicGeneratorTest: XCTestCase {
     func testZeroOrMore() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
-        guard let rule = "\"xy\" \"z\"*".dynamicRule(token: TT.xyz) else {
+        guard let rule = try? "\"xy\" \"z\"*".dynamicRule(.structural(token: TT.xyz)) else {
             XCTFail("Could not compile")
             return
         }
@@ -506,7 +549,7 @@ class DynamicGeneratorTest: XCTestCase {
     func testSimpleGroup() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
-        guard let rule = "( \"x\" \"y\" ) (\"z\" | \"Z\")".dynamicRule(token: TT.xyz) else {
+        guard let rule = try? "( \"x\" \"y\" ) (\"z\" | \"Z\")".dynamicRule(.structural(token: TT.xyz)) else {
             XCTFail("Could not compile")
             return
         }
@@ -529,7 +572,7 @@ class DynamicGeneratorTest: XCTestCase {
     func testNot() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
-        guard let rule = "!\"x\"".dynamicRule(token: TT.character) else {
+        guard let rule = try? "!\"x\"".dynamicRule(.structural(token: TT.character)) else {
             XCTFail("Could not compile")
             return
         }
@@ -554,34 +597,57 @@ class DynamicGeneratorTest: XCTestCase {
     }
 
     func testCheckDirectLeftHandRecursion(){
-        let source = "rhs =  rhs \"|\" rhs ; "
-        let stlr = STLRParser(source: source)
-        
-        for rule in stlr.ast.rules {
-            XCTAssert(rule.directLeftHandRecursive)
+        let source =    """
+                        grammar recursionCheck
+                        rhs =  rhs "|" rhs
+                        """
+        do {
+            let stlr = try _STLR.build(source)
+            for rule in stlr.grammar.rules {
+                XCTAssertTrue(stlr.grammar.isDirectLeftHandRecursive(identifier: rule.identifier))
+            }
+        } catch {
+            XCTFail("Failed to compile: \(error)")
         }
     }
     
     
     func testCheckLeftHandRecursion(){
         // rhs = "|" expr \n expr = ">" rhs
-        let source = "rhs = \"|\" expr \nexpr= \">\" rhs "
-        let stlr = STLRParser(source: source)
+        let source =    """
+                        grammar recursionCheck
+                        rhs = "|" expr
+                        expr= ">" rhs
+                        """
+        let stlr : _STLR
+        do {
+            stlr = try _STLR.build(source)
+        } catch {
+            XCTFail("Failed to compile: \(error)")
+            return
+        }
         
-        for rule in stlr.ast.rules {
-            XCTAssert(rule.leftHandRecursive)
-            XCTAssert(!rule.directLeftHandRecursive)
+        for rule in stlr.grammar.rules {
+            XCTAssertTrue(stlr.grammar.isLeftHandRecursive(identifier: rule.identifier))
+            XCTAssertFalse(stlr.grammar.isDirectLeftHandRecursive(identifier: rule.identifier))
         }
     }
     
     func testIllegalLeftHandRecursionDetection(){
-        let source = "rhs = rhs\n expr = lhs\n lhs = (expr \" \")\n"
-        let stlr = STLRParser(source: source)
-        
-        for _ in stlr.ast.rules {
-            for rule in stlr.ast.rules {
+        let source = "grammar recursionCheck\n rhs = rhs\n expr = lhs\n lhs = (expr \" \")\n"
+
+        let stlr : _STLR
+        do {
+            stlr = try _STLR.build(source)
+        } catch {
+            XCTFail("Failed to compile: \(error)")
+            return
+        }
+
+        for _ in stlr.grammar.rules {
+            for rule in stlr.grammar.rules {
                 do {
-                    try rule.validate()
+                    try stlr.grammar.validate(rule:rule)
                     XCTFail("Validation should have failed")
                 } catch {
                     
@@ -591,16 +657,28 @@ class DynamicGeneratorTest: XCTestCase {
     }
     
     func testDirectLeftHandRecursion(){
-        let source = testGrammarName+"rhs = (\">\" rhs) | (\"<\" rhs)"
-        let stlr = STLRParser(source: source)
-        
+        let source = testGrammarName+"grammar recursionCheck\n rhs = (\">\" rhs) | (\"<\" rhs)"
+
+        let stlr : _STLR
+        do {
+            stlr = try _STLR.build(source)
+        } catch {
+            XCTFail("Failed to compile: \(error)")
+            return
+        }
+
         
         
         //To stop the stack overflow for now, but it's the right line
-        XCTAssert(stlr.ast.runtimeLanguage != nil)
+        XCTAssert(!stlr.grammar.dynamicRules.isEmpty)
         var rules = [Rule]()
-        for rule in stlr.ast.rules {
-            if let identifier = rule.identifier, let parserRule = rule.rule(from:stlr.ast, creating: identifier.token) {
+        for rule in stlr.grammar.rules {
+            if let parserRule = stlr.grammar.dynamicRules.filter({ (compiledRule) -> Bool in
+                if case let .structural(token) = compiledRule.behaviour.kind, "\(token)" == rule.identifier{
+                    return true
+                }
+                return false
+            }).first {
                 rules.append(parserRule)
 //                print("\(parserRule)")
             } else {
@@ -608,9 +686,9 @@ class DynamicGeneratorTest: XCTestCase {
             }
             
             do {
-                try rule.validate()
+                try stlr.grammar.validate(rule:rule)
             } catch {
-                XCTFail("Rule should failed to validate")
+                XCTFail("Rule failed to validate")
             }
         }
         
@@ -620,7 +698,7 @@ class DynamicGeneratorTest: XCTestCase {
     func testConsume() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
-        guard let rule = "(\" \"*)- \"x\"".dynamicRule(token: TT.character) else {
+        guard let rule = try? "(\" \"*)- \"x\"".dynamicRule(.structural(token: TT.character)) else {
             XCTFail("Could not compile")
             return
         }
@@ -646,7 +724,7 @@ class DynamicGeneratorTest: XCTestCase {
     
     
     func testEscapedTerminal() {
-        guard let rule = "\"\\\"\"".dynamicRule(token: TT.character) else {
+        guard let rule = try? "\"\\\"\"".dynamicRule(.structural(token: TT.character)) else {
             XCTFail("Could not compile")
             return
         }
@@ -665,7 +743,7 @@ class DynamicGeneratorTest: XCTestCase {
     func testSimpleLookahead() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
-        guard let rule = "\"x\"".dynamicRule(token: TT.character) else {
+        guard let rule = try? "\"x\"".dynamicRule(.structural(token: TT.character)) else {
             XCTFail("Could not compile")
             return
         }
@@ -683,7 +761,7 @@ class DynamicGeneratorTest: XCTestCase {
     func testSimpleTerminal() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
-        guard let rule = "\"x\"".dynamicRule(token: TT.character) else {
+        guard let rule = try? "\"x\"".dynamicRule(.structural(token: TT.character)) else {
             XCTFail("Could not compile")
             return
         }
@@ -701,7 +779,7 @@ class DynamicGeneratorTest: XCTestCase {
     func testCharacterSets() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
-        guard let rule = ".whitespace+".dynamicRule(token: TT.whitespace) else {
+        guard let rule = try? ".whitespace+".dynamicRule(.structural(token: TT.whitespace)) else {
             XCTFail("Could not compile")
             return
         }
@@ -723,7 +801,7 @@ class DynamicGeneratorTest: XCTestCase {
     func testCharacterRange() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
-        guard let rule = "\"0\"...\"9\"".dynamicRule(token: TT.decimalDigits) else {
+        guard let rule = try? "\"0\"...\"9\"".dynamicRule(.structural(token: TT.decimalDigits)) else {
             XCTFail("Could not compile")
             return
         }
@@ -743,13 +821,21 @@ class DynamicGeneratorTest: XCTestCase {
     }
 
     func generatedStringSerialization(for source:String, desiredIdentifier identifierName:String)throws ->String {
-        let ast = STLRParser(source: source).ast
+        let grammar : _STLR.Grammar
         
-        guard let identifier = ast.identifiers[identifierName] else {
-            throw TestError.expected("Missing identifier \(identifierName)")
+        do {
+            grammar = try _STLR.build(source).grammar
+        } catch {
+            XCTFail("Failed to compile: \(error)")
+            return "Could not compile"
         }
         
-        guard let rule = identifier.rule(from: ast, creating: Tokens.tokenA) else {
+        guard let rule = grammar.dynamicRules.filter({ (compiledRule) -> Bool in
+            if case let .structural(token) = compiledRule.behaviour.kind, "\(token)" == identifierName{
+                return true
+            }
+            return false
+        }).first else {
             return "Could not create rule"
         }
         
@@ -759,16 +845,19 @@ class DynamicGeneratorTest: XCTestCase {
     }
     
     func generatedStringSerialization(for source:String, desiredRule rule: Int = 0)throws ->String {
-        let ast = STLRScope(building: testGrammarName+source)
+        let ast : _STLR.Grammar
+        do {
+            ast = try _STLR.build(source).grammar
+        } catch {
+            throw TestError.expected("compilation but failed with \(error)")
+        }
         
         if ast.rules.count <= rule {
             throw TestError.expected("at least \(rule + 1) rule, but got \(ast.rules.count)")
         }
         
-        guard let rule = ast.rules[rule].rule(from: ast, creating: Tokens.tokenA) else {
-            return "Could not create rule"
-        }
-        
+        let rule = ast.dynamicRules[rule]
+                
         let swift = "\(rule)".trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).replacingOccurrences(of: "\n", with: "").replacingOccurrences(of: "\t", with: "")
         
         return swift

@@ -38,6 +38,43 @@ public extension _STLR.Grammar {
     public func isLeftHandRecursive(identifier:String)->Bool{
         return self[identifier].expression.references(identifier, grammar: self, closedList: [])
     }
+    
+    public func isDirectLeftHandRecursive(identifier:String)->Bool{
+        return self[identifier].expression.directlyReferences(identifier, grammar: self, closedList: [])
+    }
+
+    public func validate(rule:_STLR.Rule) throws {
+        if isDirectLeftHandRecursive(identifier: rule.identifier){
+            throw TestError.interpretationError(message: "\(rule.identifier) is directly left hand recursive (references itself without moving scan head forward)", causes: [])
+        }
+    }
+    
+}
+
+public extension _STLR.Quantifier {
+    /// The minimum number of matches required to satisfy the quantifier
+    public var minimumMatches : Int {
+        switch self {
+        case .star, .questionMark:
+            return 0
+        case .plus:
+            return 1
+        case .dash:
+            fatalError("Should be depricated and not used")
+        }
+    }
+    
+    /// The maximum number of matches required to satisfy the quantifier
+    public var maximumMatches : Int? {
+        switch self {
+        case .questionMark:
+            return 1
+        case .plus, .star:
+            return nil
+        case .dash:
+            fatalError("Should be depricated and not used")
+        }
+    }
 }
 
 public extension _STLR.Expression {
@@ -51,6 +88,21 @@ public extension _STLR.Expression {
             return [element]
         }
     }
+
+    public func directlyReferences(_ identifier:String, grammar:_STLR.Grammar, closedList:[String])->Bool {
+        for element in elements {
+            if element.directlyReferences(identifier, grammar: grammar, closedList: closedList){
+                return true
+            }
+            //If it's not lookahead it's not directly recursive
+            if !(element.lookahead == nil ? false : element.lookahead! == ">>") || (element.quantifier?.minimumMatches ?? 1) > 0{
+                return false
+            }
+            
+        }
+        return false
+    }
+
     
     public func references(_ identifier:String, grammar:_STLR.Grammar, closedList:[String])->Bool {
         for element in elements {
@@ -63,6 +115,23 @@ public extension _STLR.Expression {
 }
 
 public extension _STLR.Element {
+    func directlyReferences(_ identifier:String, grammar:_STLR.Grammar, closedList:[String])->Bool {
+        if let group = group {
+            return group.expression.directlyReferences(identifier, grammar: grammar, closedList: closedList)
+        } else if let _ = terminal {
+            return false
+        } else if let referencedIdentifier = self.identifier{
+            if referencedIdentifier == identifier {
+                return true
+            }
+            if !closedList.contains(referencedIdentifier){
+                return grammar[referencedIdentifier].expression.references(identifier, grammar:grammar, closedList: closedList)
+            }
+        }
+        return false
+    }
+
+
     func references(_ identifier:String, grammar:_STLR.Grammar, closedList:[String])->Bool {
         if let group = group {
             return group.expression.references(identifier, grammar: grammar, closedList: closedList)

@@ -69,4 +69,9 @@ public final class TerminalRule : BehaviouralRule {
         return TerminalRule(behaviour ?? self.behaviour, and: annotations ?? self.annotations, for: terminal)
     }
     
+    /// A textual description of the rule
+    public var description: String {
+        return behaviour.describe(match:"(\(terminal.matchDescription)")
+    }
+    
 }

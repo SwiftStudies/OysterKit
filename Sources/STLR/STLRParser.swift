@@ -35,6 +35,7 @@ public class STLRParser : Parser{
      
      - Parameter source: The STLR source
     */
+    @available(*, deprecated, message: "Replace with _STLR.build(_ source:String)")
     public init(source:String){
         ast = STLRScope(building: source)
 

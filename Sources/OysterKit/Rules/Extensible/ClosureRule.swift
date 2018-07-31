@@ -86,4 +86,10 @@ public final class ClosureRule : BehaviouralRule {
     public func test(with lexer: LexicalAnalyzer, for ir: IntermediateRepresentation) throws {
         try matcher(lexer,ir)
     }
+
+    /// A textual description of the rule
+    public var description: String{
+        return behaviour.describe(match:"{closure}")
+    }
+    
 }

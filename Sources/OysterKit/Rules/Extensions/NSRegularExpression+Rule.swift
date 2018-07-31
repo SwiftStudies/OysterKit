@@ -26,6 +26,10 @@ import Foundation
 
 /// Extends `NSRegularExpresion` to implement `Terminal`
 extension NSRegularExpression : Terminal {
+    public var matchDescription: String {
+        return "/\(pattern)/"
+    }
+    
     public func test(lexer: LexicalAnalyzer, producing token:Token?) throws {
         do {
             try lexer.scan(regularExpression: self)

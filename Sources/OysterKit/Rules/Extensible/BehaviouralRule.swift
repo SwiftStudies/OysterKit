@@ -29,7 +29,7 @@
  easier to extend (previously implementations would have to add any of this logic
  themselves, and it's easy to get wrong.
  */
-public protocol BehaviouralRule : Rule {
+public protocol BehaviouralRule : Rule, CustomStringConvertible{
     /// The behaviour for the rule controlling things like cardinality and lookahead
     var  behaviour   : Behaviour {get}
     /// The annotations on the rule
