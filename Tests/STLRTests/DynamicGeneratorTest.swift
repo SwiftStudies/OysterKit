@@ -117,7 +117,7 @@ class DynamicGeneratorTest: XCTestCase {
                 XCTFail("Arrow is not a child of arrows"); return
             }
             XCTAssertTrue(arrowNode.isSet(annotation: RuleAnnotation.custom(label: "forArrow")))
-            XCTAssertEqual(arrowNode.annotations.count, 1)
+            XCTAssertEqual(arrowNode.annotations.count, 1, arrowNode.annotations.description)
         } else {
             XCTFail("Could not parse the test source using the generated language"); return
         }
@@ -541,7 +541,7 @@ class DynamicGeneratorTest: XCTestCase {
             count += 1
         }
         
-        XCTAssert(count == 3, "Incorrect tokens count \(count)")
+        XCTAssertEqual(3, count)
         
         XCTAssert(iterator.parsingErrors.count == 0, "\(iterator.parsingErrors)")
     }
@@ -857,7 +857,13 @@ class DynamicGeneratorTest: XCTestCase {
             throw TestError.expected("at least \(rule + 1) rule, but got \(ast.rules.count)")
         }
         
-        let rule = ast.dynamicRules[rule]
+        let dynamicRules = ast.dynamicRules
+        
+        if rule >= dynamicRules.count {
+            throw TestError.expected("At least \(rule) rules, but have \(dynamicRules.count)")
+        }
+        
+        let rule = dynamicRules[rule]
         
         let swift = "\(rule)".trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).replacingOccurrences(of: "\n", with: "").replacingOccurrences(of: "\t", with: "")
         

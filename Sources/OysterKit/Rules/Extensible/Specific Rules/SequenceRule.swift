@@ -50,6 +50,7 @@ public final class SequenceRule : BehaviouralRule {
     
     /// A textual description of the rule
     public var description: String {
-        return behaviour.describe(match:"(\(sequence.map({$0.description}).joined(separator: " "))")
+        let    match = sequence.map({$0.description}).joined(separator: " ")
+        return behaviour.describe(match:"(\(match))")
     }
 }

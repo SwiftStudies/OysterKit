@@ -54,19 +54,15 @@ public extension String {
      - Returns: `nil` if compilation failed
      */
     public func dynamicRule(_ kind:Behaviour.Kind) throws ->BehaviouralRule{
-        print("Before")
         let compiled = try _STLR.build("grammar Dynamic\n_ = \(self)")
-        print("Before")
 
-        print(compiled.description)
-        
-        guard let rule =  compiled.grammar.dynamicRules.first else {
+        guard let rule =  compiled.grammar.dynamicRules.first?.instanceWith(with: Behaviour(kind)) else {
             throw TestError.interpretationError(message: "No rules created from \(self)", causes: [])
         }
         
         print(rule.description)
         
-        return rule.instanceWith(with: Behaviour(kind))
+        return rule
     }
 }
 

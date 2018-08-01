@@ -44,7 +44,7 @@ extension _STLR : CustomStringConvertible {
 
 extension _STLR.Rule : CustomStringConvertible{
     public var description : String {
-        return "\(identifier) \(tokenType == nil ? "" : "\(tokenType!)") \(assignmentOperators.rawValue) \(expression)"
+        return "\(identifier)\(tokenType == nil ? "" : "\(tokenType!)") \(assignmentOperators.rawValue) \(expression)"
     }
 }
 
@@ -65,7 +65,7 @@ extension _STLR.Element : CustomStringConvertible {
     public var description : String {
         let quantity = quantifier?.rawValue ?? ""
         let allAttribs = annotations?.map({"\($0)"}).joined(separator: " ") ?? ""
-        let prefix = allAttribs+" "+[lookahead,negated,transient,void].compactMap({$0}).joined(separator: "")
+        let prefix = allAttribs+(allAttribs.isEmpty ? "" : " ")+[lookahead,negated,transient,void].compactMap({$0}).joined(separator: "")
         var core : String
         if let group = group {
             core = "\(prefix)(\(group.expression))\(quantity)"
@@ -107,7 +107,7 @@ extension _STLR.Terminal : CustomStringConvertible {
         case .regex(let regex):
             return "/\(regex)/"
         case .terminalString(let terminalString):
-            return terminalString.terminalBody
+            return terminalString.terminalBody.debugDescription
         case .characterRange(let characterRange):
             return "\(characterRange[0].terminalBody)...\(characterRange[0].terminalBody)"
         }

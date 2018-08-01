@@ -280,8 +280,11 @@ fileprivate extension _STLR.Rule {
 extension _STLR.Grammar {
     var dynamicRules : [BehaviouralRule] {
         let symbolTable = SymbolTable<Symbol>(self)
-        return rules.map({(rule) in
-            rule.rule(using: symbolTable)
+
+        return rules.filter({
+            self.isRoot(identifier: $0.identifier)
+        }).map({
+            $0.rule(using: symbolTable)
         })
     }
 }

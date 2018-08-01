@@ -42,6 +42,15 @@ public extension _STLR.Grammar {
     public func isDirectLeftHandRecursive(identifier:String)->Bool{
         return self[identifier].expression.directlyReferences(identifier, grammar: self, closedList: [])
     }
+    
+    public func isRoot(identifier:String)->Bool{
+        for rule in rules {
+            if rule.identifier != identifier && rule.expression.references(identifier, grammar: self, closedList: []){
+                return false
+            }
+        }
+        return true
+    }
 
     public func validate(rule:_STLR.Rule) throws {
         if isDirectLeftHandRecursive(identifier: rule.identifier){
