@@ -207,22 +207,14 @@ extension _STLR.Terminal {
         switch self {
         case .regex(let regex):
             let regularExpression = try! NSRegularExpression(pattern: regex, options: [])
-            return ClosureRule(with: behaviour, and: annotations){(lexer,ir) in
-                return try lexer.scan(regularExpression: regularExpression)
-            }
+            return TerminalRule(behaviour, and: annotations, for: regularExpression)
         case .characterRange(let characterRange):
             let characterSet = CharacterSet(charactersIn: characterRange[0].terminalBody.first!.unicodeScalars.first!...characterRange[1].terminalBody.first!.unicodeScalars.first!)
-            return ClosureRule(with: behaviour, and: annotations){(lexer,ir) in
-                return try lexer.scan(oneOf: characterSet)
-            }
+            return TerminalRule(behaviour, and: annotations, for: characterSet)
         case .characterSet(let characterSet):
-            return ClosureRule(with: behaviour, and: annotations){(lexer,ir) in
-                return try lexer.scan(oneOf: characterSet.characterSetName.characterSet)
-            }
+            return TerminalRule(behaviour, and: annotations, for: characterSet.terminal)
         case .terminalString(let terminalString):
-            return ClosureRule(with: behaviour, and: annotations){(lexer,ir) in
-                return try lexer.scan(terminal: terminalString.terminalBody)
-            }
+            return TerminalRule(behaviour, and: annotations, for: terminalString.terminal)
         }
     }
 }
@@ -293,3 +285,5 @@ extension _STLR.Grammar {
         })
     }
 }
+
+

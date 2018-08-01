@@ -148,3 +148,54 @@ public extension _STLR.Element {
         return false
     }
 }
+
+extension String {
+    var unescaped: String {
+        let entities = ["\0", "\t", "\n", "\r", "\"", "\'", "\\"]
+        var current = self
+        for entity in entities {
+            let description = String(entity.debugDescription.dropFirst().dropLast())
+            current = current.replacingOccurrences(of: description, with: entity)
+        }
+        return current
+    }
+}
+
+extension _STLR.String {
+    public var terminal : String {
+        return stringBody.unescaped
+    }
+}
+
+extension _STLR.TerminalString {
+    public var terminal : String {
+        return terminalBody.unescaped
+    }
+}
+
+extension _STLR.CharacterSet {
+    /// Creates the appropriate terminal from the character set node
+    public var terminal : Terminal {
+        switch characterSetName {
+        case .letter:
+            return CharacterSet.letters
+        case .uppercaseLetter:
+            return CharacterSet.uppercaseLetters
+        case .lowercaseLetter:
+            return CharacterSet.lowercaseLetters
+        case .alphaNumeric:
+            return CharacterSet.alphanumerics
+        case .decimalDigit:
+            return CharacterSet.decimalDigits
+        case .whitespaceOrNewline:
+            return CharacterSet.whitespacesAndNewlines
+        case .whitespace:
+            return CharacterSet.whitespaces
+        case .newline:
+            return CharacterSet.newlines
+        case .backslash:
+            return "\\"
+        }
+    }
+    
+}

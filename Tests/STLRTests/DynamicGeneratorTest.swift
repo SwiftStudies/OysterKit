@@ -138,8 +138,9 @@ class DynamicGeneratorTest: XCTestCase {
             return
         }
         
-        if let tree = try? AbstractSyntaxTreeConstructor().build(">", using: dynamicLanguage)  {
-//           print(tree.description)
+        do {
+            let tree = try AbstractSyntaxTreeConstructor().build(">", using: dynamicLanguage)
+            //           print(tree.description)
             XCTAssertTrue("\(tree.token)" == "arrows", "Root node should be arrows")
             XCTAssertTrue(tree.isSet(annotation: RuleAnnotation.custom(label: "forArrows")))
             guard let arrowNode = tree.nodeAtPath(["arrow"]) else {
@@ -148,9 +149,8 @@ class DynamicGeneratorTest: XCTestCase {
             XCTAssertTrue(arrowNode.isSet(annotation: RuleAnnotation.custom(label: "forArrow")))
             XCTAssertEqual(tree.annotations.count, 1)
             XCTAssertEqual(arrowNode.annotations.count, 1)
-
-        } else {
-            XCTFail("Could not parse the test source using the generated language"); return
+        } catch {
+            XCTFail("Could not parse: \(error)")
         }
     }
     
@@ -168,8 +168,9 @@ class DynamicGeneratorTest: XCTestCase {
             return
         }
         
-        if let tree = try? AbstractSyntaxTreeConstructor().build(">", using: dynamicLanguage)  {
-//            print(tree.description)
+        do {
+            let tree = try AbstractSyntaxTreeConstructor().build(">", using: dynamicLanguage)
+            //           print(tree.description)
             XCTAssertTrue("\(tree.token)" == "arrows", "Root node should be arrows")
             XCTAssertTrue(tree.isSet(annotation: RuleAnnotation.custom(label: "forArrows")))
             guard let arrowNode = tree.nodeAtPath(["arrow"]) else {
@@ -179,10 +180,10 @@ class DynamicGeneratorTest: XCTestCase {
             XCTAssertEqual(tree.annotations.count, 1)
             XCTAssertEqual(arrowNode.annotations.count, 1)
 
-        } else {
-            XCTFail("Could not parse the test source using the generated language"); return
+        } catch {
+            XCTFail("Could not parse: \(error)")
         }
-    }
+   }
     
     /// Intended to test the fix for Issue #39
     func testGrammarCumulativeAttributes(){
@@ -737,7 +738,7 @@ class DynamicGeneratorTest: XCTestCase {
             XCTAssert(token.token == TT.character, "Unexpected token \(token)")
         }
         
-        XCTAssert(iterator.parsingErrors.count == 0, "\(iterator.parsingErrors)")
+        XCTAssert(iterator.parsingErrors.count == 0, "\(iterator.parsingErrors.map({"\($0)"}).joined(separator: ", "))")
     }
     
     func testSimpleLookahead() {
@@ -824,7 +825,7 @@ class DynamicGeneratorTest: XCTestCase {
         let grammar : _STLR.Grammar
         
         do {
-            grammar = try _STLR.build(source).grammar
+            grammar = try _STLR.build("grammar Test\n"+source).grammar
         } catch {
             XCTFail("Failed to compile: \(error)")
             return "Could not compile"
@@ -847,7 +848,7 @@ class DynamicGeneratorTest: XCTestCase {
     func generatedStringSerialization(for source:String, desiredRule rule: Int = 0)throws ->String {
         let ast : _STLR.Grammar
         do {
-            ast = try _STLR.build(source).grammar
+            ast = try _STLR.build("grammar Test\n"+source).grammar
         } catch {
             throw TestError.expected("compilation but failed with \(error)")
         }
@@ -857,7 +858,7 @@ class DynamicGeneratorTest: XCTestCase {
         }
         
         let rule = ast.dynamicRules[rule]
-                
+        
         let swift = "\(rule)".trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).replacingOccurrences(of: "\n", with: "").replacingOccurrences(of: "\t", with: "")
         
         return swift

@@ -107,9 +107,9 @@ extension _STLR.Terminal : CustomStringConvertible {
         case .regex(let regex):
             return "/\(regex)/"
         case .terminalString(let terminalString):
-            return terminalString.terminalBody.debugDescription
+            return terminalString.terminalBody
         case .characterRange(let characterRange):
-            return "\(characterRange[0].terminalBody.debugDescription)...\(characterRange[0].terminalBody.debugDescription)"
+            return "\(characterRange[0].terminalBody)...\(characterRange[0].terminalBody)"
         }
     }
 }
