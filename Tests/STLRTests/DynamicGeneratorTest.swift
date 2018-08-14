@@ -658,7 +658,7 @@ class DynamicGeneratorTest: XCTestCase {
     }
     
     func testDirectLeftHandRecursion(){
-        let source = testGrammarName+"grammar recursionCheck\n rhs = (\">\" rhs) | (\"<\" rhs)"
+        let source = testGrammarName+"rhs = (\">\" rhs) | (\"<\" rhs)"
 
         let stlr : _STLR
         do {
@@ -989,14 +989,12 @@ class DynamicGeneratorTest: XCTestCase {
     func testAnnotatedNestedIdentifiers(){
         do {
             let source = """
-            a = @error("a internal") "a"
+            @error("a internal") a = "a"
             aa = @error("error a1") a @error("error a2") a
             """
+
             let aRule =  try generatedStringSerialization(for: source, desiredRule: 0)
-            let result = try generatedStringSerialization(for: source, desiredRule: 1)
-            
-            XCTAssertEqual(aRule,"tokenA = @error(\"a internal\") \"a\"")
-            XCTAssertEqual(result,"tokenA = (a = @error(\"error a1\") \"a\" a = @error(\"error a2\") \"a\")")
+            XCTAssertEqual(aRule,"aa = (@error(\"error a1\") a = \"a\" @error(\"error a2\") a = \"a\")")
         } catch (let error){
             XCTFail("\(error)")
         }
