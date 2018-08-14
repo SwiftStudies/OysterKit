@@ -85,14 +85,67 @@ extension _STLR.Annotation {
     }
 }
 
+fileprivate extension _STLR.Label {
+    
+    /// `true` if the impact of the annotation is captured in a rules `Behaviour`
+    var isBehavioural : Bool {
+        switch  self {
+        case .definedLabel(let defined):
+            switch defined {
+                
+            case .token, .void, .transient:
+                return true
+            case .error:
+                return false
+            }
+        default:
+            return false
+        }
+    }
+}
+
 extension Array where Element == _STLR.Annotation {
-    var ruleAnnotations : RuleAnnotations {
-        var ruleAnnotations = [RuleAnnotation : RuleAnnotationValue]()
+    
+    private subscript(_ desiredAnnotation:RuleAnnotation)->RuleAnnotationValue?{
         for annotation in self {
+            if annotation.ruleAnnotation == desiredAnnotation {
+                return annotation.ruleAnnotationValue
+            }
+        }
+        return nil
+    }
+    
+    public var ruleAnnotations : RuleAnnotations {
+        var ruleAnnotations = [RuleAnnotation : RuleAnnotationValue]()
+        for annotation in filter({!$0.label.isBehavioural}){
             ruleAnnotations[annotation.ruleAnnotation]  = annotation.ruleAnnotationValue
         }
         return ruleAnnotations
     }
+    
+    public var token : String? {
+        guard let tokenAnnotationValue = self[RuleAnnotation.token] else {
+            return nil
+        }
+        switch tokenAnnotationValue{
+        case .string(let value):
+            return value
+        case .int(let value):
+            return "\(value)"
+        default:
+            return nil
+        }
+    }
+
+    public var void : Bool {
+        return self[RuleAnnotation.void] != nil
+    }
+
+    public var transient : Bool {
+        return self[RuleAnnotation.transient] != nil
+    }
+
+    
 }
 
 fileprivate extension Array where Element == _STLR.Element {
@@ -111,7 +164,7 @@ fileprivate extension _STLR.Element {
     }
     
     var isVoid : Bool {
-        return void != nil
+        return void != nil || (annotations?.void ?? false)
     }
     
     var isLookahead : Bool {
@@ -123,7 +176,7 @@ fileprivate extension _STLR.Element {
     }
     
     var isTransient : Bool {
-        return transient != nil
+        return transient != nil || (annotations?.transient ?? false)
     }
     
     var kind : Behaviour.Kind {
@@ -132,7 +185,7 @@ fileprivate extension _STLR.Element {
         } else if isTransient {
             return .scanning
         }
-        if let token = ruleAnnotations.token {
+        if let token = annotations?.token {
             return .structural(token: LabelledToken(withLabel: token))
         } else {
             return .scanning
@@ -280,12 +333,17 @@ fileprivate extension _STLR.Rule {
 extension _STLR.Grammar {
     var dynamicRules : [BehaviouralRule] {
         let symbolTable = SymbolTable<Symbol>(self)
-
-        return rules.filter({
-            self.isRoot(identifier: $0.identifier)
-        }).map({
-            $0.rule(using: symbolTable)
-        })
+        
+        let rootRules = rules.filter({self.isRoot(identifier: $0.identifier)})
+        
+        if rootRules.isEmpty {
+            guard let lastRule = rules.last else {
+                return []
+            }
+            return [lastRule.rule(using: symbolTable)]
+        } else {
+            return rootRules.map({$0.rule(using: symbolTable)})
+        }
     }
 }
 
