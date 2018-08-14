@@ -22,12 +22,42 @@
 //    OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 //    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+
+
 import Foundation
+
+//fileprivate let characterSetRangeExpression = try! NSRegularExpression(pattern: "<CFCharacterSet Range\\((\\d+),(\\d+)\\)>", options: [])
+fileprivate let characterSetRangeExpression = try! NSRegularExpression(pattern: "(\\d+),(\\d+)", options: [])
 
 /// Extends `CharacterSet` to implement `Terminal`
 extension CharacterSet : Terminal {
     public var matchDescription: String {
-        return ".\(self)"
+        if self == CharacterSet.letters {
+            return ".letter"
+        } else if self == CharacterSet.decimalDigits {
+            return ".decimalDigit"
+        } else if self == CharacterSet.uppercaseLetters {
+            return ".uppercaseLetter"
+        } else if self == CharacterSet.lowercaseLetters {
+            return ".uppercaseLetter"
+        } else if self == CharacterSet.alphanumerics {
+            return ".alphaNumeric"
+        } else if self == CharacterSet.whitespaces {
+            return ".whitespace"
+        } else if self == CharacterSet.newlines {
+            return ".newline"
+        } else if self == CharacterSet.whitespacesAndNewlines {
+            return ".whitespaceOrNewline"
+        }
+        
+        let selfDescription = "\(self)"
+        
+        if let rangeMatch = characterSetRangeExpression.firstMatch(in: selfDescription, options: [], range: NSRange(location: 0, length: selfDescription.count)){
+            let selfNS = selfDescription as NSString
+            return "\"\(selfNS.substring(with: rangeMatch.range(at: 1)))\"...\"\(selfNS.substring(with: rangeMatch.range(at: 2)))\""
+        }
+        
+        return ".customCharacterSet"
     }
     
     public func test(lexer: LexicalAnalyzer, producing token:Token?) throws {
