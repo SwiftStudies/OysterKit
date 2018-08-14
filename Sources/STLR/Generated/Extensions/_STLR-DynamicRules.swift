@@ -188,6 +188,9 @@ fileprivate extension _STLR.Element {
         if let token = annotations?.token {
             return .structural(token: LabelledToken(withLabel: token))
         } else {
+            if let identifier = identifier {
+                return .structural(token:LabelledToken(withLabel: identifier))
+            }
             return .scanning
         }
     }
@@ -219,7 +222,7 @@ fileprivate extension _STLR.Element {
         } else if let terminal = terminal {
             return terminal.rule(with:behaviour, and: ruleAnnotations)
         } else if let identifier = identifier {
-            return symbolTable[identifier].behaviouralRule
+            return symbolTable[identifier].behaviouralRule.instanceWith(with: behaviour)
         }
         fatalError("Could not generate rule for, \(self) it appears to not be a group, terminal or identifier")
     }
