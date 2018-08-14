@@ -188,14 +188,15 @@ class DynamicGeneratorTest: XCTestCase {
     /// Intended to test the fix for Issue #39
     func testGrammarCumulativeAttributes(){
         let stlr = testGrammarName+"""
-        a   =   @one "a"
+        @one a   =  "a"
         ba  =   "b" @two a
         ca  =   "c" @three a
         """
         
         let dynamicLanguage : Parser
         do {
-            dynamicLanguage = try Parser(grammar:_STLR.build(stlr).grammar.dynamicRules)
+            let ast = try _STLR.build(stlr)
+            dynamicLanguage = Parser(grammar:ast.grammar.dynamicRules)
         } catch {
             XCTFail("Failed to compile: \(error)")
             return
@@ -203,7 +204,6 @@ class DynamicGeneratorTest: XCTestCase {
         
         do {
             let tree = try AbstractSyntaxTreeConstructor().build("baca", using: dynamicLanguage)
-            print(tree.description)
             XCTAssertEqual("\(tree.children[0].token)","ba")
             XCTAssertTrue(tree.children[0].annotations.isEmpty)
             if tree.children[0].children.isEmpty {
