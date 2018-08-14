@@ -220,10 +220,6 @@ public extension BehaviouralRule {
      - Returns: The match result
      */
     public func evaluate(_ matcher:Test, using lexer:LexicalAnalyzer, and ir:IntermediateRepresentation) throws -> MatchResult {
-        let endOfInput = lexer.endOfInput
-        if endOfInput {
-            throw TestError.scanningError(message: "End of input", position: lexer.index, causes: [])
-        }
 
         //Prepare for any lookahead by putting a fake IR in place if is lookahead
         //as well as taking an additional mark to ensure position will always be
@@ -265,6 +261,9 @@ public extension BehaviouralRule {
         do {
             while unlimited || matches < behaviour.cardinality.maximumMatches! {
                 do {
+                    if lexer.endOfInput {
+                        throw TestError.scanningError(message: "End of input", position: lexer.index, causes: [])
+                    }
                     try matcher(lexer, ir)
                 } catch {
                     if behaviour.negate {
@@ -293,6 +292,11 @@ public extension BehaviouralRule {
             }
             if matches < behaviour.cardinality.minimumMatches {
                 lexer.rewind()
+                defer {
+                    if structural {
+                        ir.didEvaluate(rule: self, matchResult: MatchResult.failure(atIndex: lexer.index))
+                    }
+                }
                 if let specificError = self.error {
                     if structural {
                         throw LanguageError.parsingError(at: lexer.index..<lexer.index, message: specificError)
