@@ -222,7 +222,8 @@ fileprivate extension _STLR.Element {
         } else if let terminal = terminal {
             return terminal.rule(with:behaviour, and: ruleAnnotations)
         } else if let identifier = identifier {
-            return symbolTable[identifier].behaviouralRule.instanceWith(with: behaviour)
+            let symbolRule = symbolTable[identifier].behaviouralRule
+            return symbolRule.instanceWith(behaviour: behaviour, annotations: symbolRule.annotations.merge(with: ruleAnnotations))
         }
         fatalError("Could not generate rule for, \(self) it appears to not be a group, terminal or identifier")
     }
