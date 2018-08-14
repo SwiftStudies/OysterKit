@@ -203,7 +203,7 @@ class DynamicGeneratorTest: XCTestCase {
         
         do {
             let tree = try AbstractSyntaxTreeConstructor().build("baca", using: dynamicLanguage)
-//            print(tree.description)
+            print(tree.description)
             XCTAssertEqual("\(tree.children[0].token)","ba")
             XCTAssertTrue(tree.children[0].annotations.isEmpty)
             if tree.children[0].children.isEmpty {
@@ -860,11 +860,10 @@ class DynamicGeneratorTest: XCTestCase {
         let dynamicRules = ast.dynamicRules
         
         if rule >= dynamicRules.count {
-            throw TestError.expected("At least \(rule) rules, but have \(dynamicRules.count)")
+            throw TestError.expected("At least \(rule+1) dynamic rules, but have \(dynamicRules.count)")
         }
         
         let rule = dynamicRules[rule]
-        
         let swift = "\(rule)".trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).replacingOccurrences(of: "\n", with: "").replacingOccurrences(of: "\t", with: "")
         
         return swift
@@ -874,7 +873,7 @@ class DynamicGeneratorTest: XCTestCase {
         do {
             let result = try generatedStringSerialization(for: "letter = @error(\"error\").whitespace")
             
-            XCTAssert(result == "tokenA = @error(\"error\") .characterSet", "Bad generated output '\(result)'")
+            XCTAssert(result == "letter = @error(\"error\") .whitespace", "Bad generated output '\(result)'")
         } catch (let error){
             XCTFail("\(error)")
         }
@@ -884,7 +883,7 @@ class DynamicGeneratorTest: XCTestCase {
         do {
             let result = try generatedStringSerialization(for: "letter = @error(\"error\") \"a\"...\"z\"")
             
-            XCTAssert(result == "tokenA = @error(\"error\") .characterSet", "Bad generated output '\(result)'")
+            XCTAssert(result == "letter = @error(\"error\") .customCharacterSet", "Bad generated output '\(result)'")
         } catch (let error){
             XCTFail("\(error)")
         }
@@ -894,7 +893,7 @@ class DynamicGeneratorTest: XCTestCase {
         do {
             let result = try generatedStringSerialization(for: "a=\"a\"")
             
-            XCTAssert(result == "tokenA =  \"a\"", "Bad generated output '\(result)'")
+            XCTAssert(result == "a = \"a\"", "Bad generated output '\(result)'")
         } catch (let error){
             XCTFail("\(error)")
         }
@@ -904,7 +903,7 @@ class DynamicGeneratorTest: XCTestCase {
         do {
             let result = try generatedStringSerialization(for: "letter = @error(\"error\") \"hello\"")
             
-            XCTAssert(result == "tokenA = @error(\"error\") \"hello\"", "Bad generated output '\(result)'")
+            XCTAssert(result == "letter = @error(\"error\") \"hello\"", "Bad generated output '\(result)'")
         } catch (let error){
             XCTFail("\(error)")
         }
@@ -914,7 +913,7 @@ class DynamicGeneratorTest: XCTestCase {
         do {
             let result = try generatedStringSerialization(for: "letter = @error(\"error\") /hello/ ")
             
-            XCTAssert(result == "tokenA = @error(\"error\") /hello/", "Bad generated output '\(result)'")
+            XCTAssert(result == "letter = @error(\"error\") /hello/", "Bad generated output '\(result)'")
         } catch (let error){
             XCTFail("\(error)")
         }
@@ -924,7 +923,7 @@ class DynamicGeneratorTest: XCTestCase {
         do {
             let result = try generatedStringSerialization(for: "letter = @error(\"error\") \"h\"")
             
-            XCTAssert(result == "tokenA = @error(\"error\") \"h\"", "Bad generated output '\(result)'")
+            XCTAssert(result == "letter = @error(\"error\") \"h\"", "Bad generated output '\(result)'")
         } catch (let error){
             XCTFail("\(error)")
         }
@@ -932,7 +931,7 @@ class DynamicGeneratorTest: XCTestCase {
     
     func testTerminalChoiceWithIndividualAnnotations(){
         do {
-            let reference = "tokenA =  (@error(\"error a\") \"a\"|@error(\"error b\") \"b\"|@error(\"error c\") \"c\")"
+            let reference = "letter = (@error(\"error a\") \"a\" | @error(\"error b\") \"b\" | @error(\"error c\") \"c\")"
             let result = try generatedStringSerialization(for: "letter = @error(\"error a\") \"a\"| @error(\"error b\")\"b\"| @error(\"error c\") \"c\"").replacingOccurrences(of: "\n", with: "").replacingOccurrences(of: "\t", with: "")
             
             XCTAssertEqual(reference, result)
@@ -945,7 +944,7 @@ class DynamicGeneratorTest: XCTestCase {
         STLRScope.register(optimizer: InlineIdentifierOptimization())
         STLRScope.register(optimizer: CharacterSetOnlyChoiceOptimizer())
         do {
-            let reference = "tokenA =  (@error(\"error a\") \"a\"|@error(\"error b\") \"b\"|@error(\"error c\") \"c\")"
+            let reference = "letter = (@error(\"error a\") \"a\" | @error(\"error b\") \"b\" | @error(\"error c\") \"c\")"
             let result = try generatedStringSerialization(for: "letter = @error(\"error a\") \"a\"| @error(\"error b\")\"b\"| @error(\"error c\") \"c\"").replacingOccurrences(of: "\n", with: "").replacingOccurrences(of: "\t", with: "")
             
             
@@ -958,9 +957,9 @@ class DynamicGeneratorTest: XCTestCase {
     
     func testTerminalChoice(){
         do {
-            let result = try generatedStringSerialization(for: "letter = @error(\"error\") (\"a\"|\"b\"|\"c\")")
+            let result = try generatedStringSerialization(for: "letter = @error(\"error\") (\"a\" | \"b\" | \"c\")")
             
-            XCTAssertEqual("tokenA = @error(\"error\")(\"a\" | \"b\" | \"c\")", result)
+            XCTAssertEqual("letter = @error(\"error\") ~(\"a\" | \"b\" | \"c\")", result)
         } catch (let error){
             XCTFail("\(error)")
         }
@@ -969,7 +968,7 @@ class DynamicGeneratorTest: XCTestCase {
     func testTerminalSequence(){
         do {
             let result = try generatedStringSerialization(for: "letter = @error(\"error\") (\"a\" \"b\" \"c\")")
-            let reference = "tokenA = @error(\"error\") ( \"a\"  \"b\"  \"c\")"
+            let reference = "letter = @error(\"error\") ~(\"a\" \"b\" \"c\")"
             XCTAssertEqual(result, reference)
             
         } catch (let error){
@@ -981,7 +980,7 @@ class DynamicGeneratorTest: XCTestCase {
         do {
             let result = try generatedStringSerialization(for: "letter = @error(\"error a\") \"a\"  @error(\"error b\")\"b\"  @error(\"error c\") \"c\"").replacingOccurrences(of: "\n", with: "").replacingOccurrences(of: "\t", with: "")
             
-            XCTAssert(result == "tokenA =  (@error(\"error a\") \"a\" @error(\"error b\") \"b\" @error(\"error c\") \"c\")", "Bad generated output '\(result)'")
+            XCTAssert(result == "letter = (@error(\"error a\") \"a\" @error(\"error b\") \"b\" @error(\"error c\") \"c\")", "Bad generated output '\(result)'")
         } catch (let error){
             XCTFail("\(error)")
         }
@@ -989,11 +988,15 @@ class DynamicGeneratorTest: XCTestCase {
     
     func testAnnotatedNestedIdentifiers(){
         do {
-            let aRule = try generatedStringSerialization(for: "a = @error(\"a internal\")\"a\"\naa = @error(\"error a1\") a @error(\"error a2\") a", desiredRule: 0)
-            let result = try generatedStringSerialization(for: "a = @error(\"a internal\")\"a\"\naa = @error(\"error a1\") a @error(\"error a2\") a", desiredRule: 1)
+            let source = """
+            a = @error("a internal") "a"
+            aa = @error("error a1") a @error("error a2") a
+            """
+            let aRule =  try generatedStringSerialization(for: source, desiredRule: 0)
+            let result = try generatedStringSerialization(for: source, desiredRule: 1)
             
-            XCTAssert(aRule == "tokenA = @error(\"a internal\") \"a\"", "Bad generated output '\(aRule)'")
-            XCTAssert(result == "tokenA =  (a = @error(\"error a1\") \"a\" a = @error(\"error a2\") \"a\")", "Bad generated output '\(result)'")
+            XCTAssertEqual(aRule,"tokenA = @error(\"a internal\") \"a\"")
+            XCTAssertEqual(result,"tokenA = (a = @error(\"error a1\") \"a\" a = @error(\"error a2\") \"a\")")
         } catch (let error){
             XCTFail("\(error)")
         }
@@ -1013,7 +1016,7 @@ class DynamicGeneratorTest: XCTestCase {
         do {
             let result = try generatedStringSerialization(for: "word = @error(\"Expected a letter\") .letter+", desiredRule: 0)
             
-            XCTAssert(result == "tokenA = @error(\"Expected a letter\")  .characterSet+", "Bad generated output '\(result)'")
+            XCTAssert(result == "word = @error(\"Expected a letter\") .letter+", "Bad generated output '\(result)'")
         } catch (let error){
             XCTFail("\(error)")
         }
@@ -1023,7 +1026,7 @@ class DynamicGeneratorTest: XCTestCase {
         do {
             let result = try generatedStringSerialization(for: "@error(\"expected a\")a = @error(\"inner a\") \"a\"\naa = a+ \" \" @error(\"error a2\") a+", desiredRule: 1)
             
-            XCTAssert(result == "tokenA =  (@error(\"expected a\") a = @error(\"expected a\") \"a\"+  \" \" @error(\"error a2\") a = @error(\"expected a\") \"a\"+)", "Bad generated output '\(result)'")
+            XCTAssert(result == "a =  (@error(\"expected a\") a = @error(\"expected a\") \"a\"+  \" \" @error(\"error a2\") a = @error(\"expected a\") \"a\"+)", "Bad generated output '\(result)'")
         } catch (let error){
             XCTFail("\(error)")
         }
@@ -1033,7 +1036,7 @@ class DynamicGeneratorTest: XCTestCase {
         do {
             let result = try generatedStringSerialization(for: "@error(\"Expected a1\") a1 = \"a\" @error(\"Expected 1\") \"1\"\ndoubleA1 = a1 @error(\"Expected second a1\") a1", desiredRule: 1)
             
-            XCTAssert(result == "tokenA =  (a1 = @error(\"Expected a1\") ( \"a\" @error(\"Expected 1\") \"1\") a1 = @error(\"Expected second a1\") ( \"a\" @error(\"Expected 1\") \"1\"))", "Bad generated output '\(result)'")
+            XCTAssert(result == "a1 =  (a1 = @error(\"Expected a1\") ( \"a\" @error(\"Expected 1\") \"1\") a1 = @error(\"Expected second a1\") ( \"a\" @error(\"Expected 1\") \"1\"))", "Bad generated output '\(result)'")
         } catch (let error){
             XCTFail("\(error)")
         }
