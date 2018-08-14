@@ -51,6 +51,11 @@ public final class SequenceRule : BehaviouralRule {
     /// A textual description of the rule
     public var description: String {
         let    match = sequence.map({$0.description}).joined(separator: " ")
-        return behaviour.describe(match:"(\(match))")
+        let    annotates = "\(annotations.isEmpty ? "" : "\(annotations.description) ")"
+        if sequence.count > 1 {
+            return annotates + behaviour.describe(match:"(\(match))")
+        } else {
+            return annotates + behaviour.describe(match: match)
+        }
     }
 }

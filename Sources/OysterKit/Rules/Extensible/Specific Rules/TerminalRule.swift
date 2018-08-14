@@ -71,7 +71,8 @@ public final class TerminalRule : BehaviouralRule {
     
     /// A textual description of the rule
     public var description: String {
-        return behaviour.describe(match:"\(terminal.matchDescription)")
+        
+        return "\(annotations.isEmpty ? "" : "\(annotations.description) ")"+behaviour.describe(match:"\(terminal.matchDescription)", requiresTransient: false)
     }
     
 }

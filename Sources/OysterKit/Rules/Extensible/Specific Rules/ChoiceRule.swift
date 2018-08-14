@@ -81,6 +81,6 @@ public final class ChoiceRule : BehaviouralRule {
     
     /// A textual description of the rule
     public var description: String {
-        return behaviour.describe(match:"(\(choices.map({$0.description}).joined(separator: " | ")))")
+        return "\(annotations.isEmpty ? "" : "\(annotations.description) ")"+behaviour.describe(match:"(\(choices.map({$0.description}).joined(separator: " | ")))")
     }
 }

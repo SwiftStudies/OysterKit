@@ -89,7 +89,7 @@ public final class ClosureRule : BehaviouralRule {
 
     /// A textual description of the rule
     public var description: String{
-        return behaviour.describe(match:"{closure}")
+        return "\(annotations.isEmpty ? "" : "\(annotations.description) ")"+behaviour.describe(match:"{closure}")
     }
     
 }

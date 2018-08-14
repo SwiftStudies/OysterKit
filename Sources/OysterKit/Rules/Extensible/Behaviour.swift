@@ -153,12 +153,12 @@ public struct Behaviour {
      - Parameter match: A description of the match
      - Returns: A wrapped description of the match which includes the behaviour
     */
-    public func describe(match:String)->String{
+    public func describe(match:String, requiresTransient:Bool = true)->String{
         var prefix : String
         switch kind {
         case .skipping: prefix = "-"
-        case .scanning: prefix = "~"
-        case .structural(let token): prefix = "\(token):"
+        case .scanning: prefix = requiresTransient ? "~" : ""
+        case .structural(let token): prefix = "\(token) = "
         }
         var suffix : String
         
