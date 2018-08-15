@@ -159,7 +159,7 @@ class FixValidations: XCTestCase {
             XCTFail("Expected unterminated string error" )
         } catch AbstractSyntaxTreeConstructor.ConstructionError.constructionFailed(let errors) {
             XCTAssertEqual(errors.count, 1)
-            XCTAssertTrue(((errors[0] as? TestErrorType)?.message ?? "").hasPrefix("Missing terminating quote"))
+            XCTAssertTrue("\(errors[0])".hasPrefix("Missing terminating quote"))
         } catch {
             XCTFail("Unexpected error \(error)")
         }
