@@ -282,13 +282,11 @@ public extension BehaviouralRule {
         } catch {
             if matches == 0 && skippable {
                 let lexerContext = lexer.proceed()
+                let result = MatchResult.ignoreFailure(atIndex: lexerContext.range.lowerBound)
                 if structural {
-                    let result = MatchResult.ignoreFailure(atIndex: lexerContext.range.lowerBound)
                     ir.didEvaluate(token: produces, annotations: annotations, matchResult: result)
-                    let _ = lexer.proceed()
-                    return result
                 }
-                return MatchResult.ignoreFailure(atIndex: lexerContext.range.lowerBound)
+                return result
             }
             if matches < behaviour.cardinality.minimumMatches {
                 lexer.rewind()
