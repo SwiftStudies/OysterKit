@@ -339,7 +339,9 @@ extension _STLR.Grammar {
     public var dynamicRules : [BehaviouralRule] {
         let symbolTable = SymbolTable<Symbol>(self)
         
-        let rootRules = rules.filter({self.isRoot(identifier: $0.identifier)})
+        let rootRules = rules.filter({
+            return self.isRoot(identifier: $0.identifier)
+        })
         
         if rootRules.isEmpty {
             guard let lastRule = rules.last else {

@@ -38,7 +38,8 @@ public class SymbolTable<Symbol:SymbolType> {
     }
     
     public func isLeftHandRecursive(_ identifier:String)->Bool{
-        return ast[identifier].expression.references(identifier, grammar: ast, closedList: [])
+        var closedList = [String]()
+        return ast[identifier].expression.references(identifier, grammar: ast, closedList: &closedList)
     }
     
     subscript(hasRule identifier:String)->Bool{

@@ -36,16 +36,19 @@ public extension _STLR.Grammar {
     }
     
     public func isLeftHandRecursive(identifier:String)->Bool{
-        return self[identifier].expression.references(identifier, grammar: self, closedList: [])
+        var closedList = [String]()
+        return self[identifier].expression.references(identifier, grammar: self, closedList: &closedList)
     }
     
     public func isDirectLeftHandRecursive(identifier:String)->Bool{
-        return self[identifier].expression.directlyReferences(identifier, grammar: self, closedList: [])
+        var closedList = [String]()
+        return self[identifier].expression.directlyReferences(identifier, grammar: self, closedList: &closedList)
     }
     
     public func isRoot(identifier:String)->Bool{
+        var closedList = [String]()
         for rule in rules {
-            if rule.identifier != identifier && rule.expression.references(identifier, grammar: self, closedList: []){
+            if rule.identifier != identifier && rule.expression.references(identifier, grammar: self, closedList: &closedList){
                 return false
             }
         }
@@ -98,9 +101,9 @@ public extension _STLR.Expression {
         }
     }
 
-    public func directlyReferences(_ identifier:String, grammar:_STLR.Grammar, closedList:[String])->Bool {
+    public func directlyReferences(_ identifier:String, grammar:_STLR.Grammar, closedList:inout [String])->Bool {
         for element in elements {
-            if element.directlyReferences(identifier, grammar: grammar, closedList: closedList){
+            if element.directlyReferences(identifier, grammar: grammar, closedList: &closedList){
                 return true
             }
             //If it's not lookahead it's not directly recursive
@@ -113,9 +116,9 @@ public extension _STLR.Expression {
     }
 
     
-    public func references(_ identifier:String, grammar:_STLR.Grammar, closedList:[String])->Bool {
+    public func references(_ identifier:String, grammar:_STLR.Grammar, closedList: inout [String])->Bool {
         for element in elements {
-            if element.references(identifier, grammar: grammar, closedList: closedList){
+            if element.references(identifier, grammar: grammar, closedList: &closedList){
                 return true
             }
         }
@@ -124,9 +127,9 @@ public extension _STLR.Expression {
 }
 
 public extension _STLR.Element {
-    func directlyReferences(_ identifier:String, grammar:_STLR.Grammar, closedList:[String])->Bool {
+    func directlyReferences(_ identifier:String, grammar:_STLR.Grammar, closedList:inout [String])->Bool {
         if let group = group {
-            return group.expression.directlyReferences(identifier, grammar: grammar, closedList: closedList)
+            return group.expression.directlyReferences(identifier, grammar: grammar, closedList: &closedList)
         } else if let _ = terminal {
             return false
         } else if let referencedIdentifier = self.identifier{
@@ -134,24 +137,26 @@ public extension _STLR.Element {
                 return true
             }
             if !closedList.contains(referencedIdentifier){
-                return grammar[referencedIdentifier].expression.references(identifier, grammar:grammar, closedList: closedList)
+                return grammar[referencedIdentifier].expression.references(identifier, grammar:grammar, closedList: &closedList)
             }
         }
         return false
     }
 
 
-    func references(_ identifier:String, grammar:_STLR.Grammar, closedList:[String])->Bool {
+    func references(_ identifier:String, grammar:_STLR.Grammar, closedList:inout [String])->Bool {
         if let group = group {
-            return group.expression.references(identifier, grammar: grammar, closedList: closedList)
+            return group.expression.references(identifier, grammar: grammar, closedList: &closedList)
         } else if let _ = terminal {
             return false
         } else if let referencedIdentifier = self.identifier{
             if referencedIdentifier == identifier {
                 return true
             }
+
             if !closedList.contains(referencedIdentifier){
-                return grammar[referencedIdentifier].expression.references(identifier, grammar:grammar, closedList: closedList)
+                closedList.append(referencedIdentifier)
+                return grammar[referencedIdentifier].expression.references(identifier, grammar:grammar, closedList: &closedList)
             }
         }
         return false
