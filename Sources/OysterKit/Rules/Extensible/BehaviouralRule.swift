@@ -295,6 +295,10 @@ public extension BehaviouralRule {
                 defer {
                     if structural {
                         ir.didEvaluate(rule: self, matchResult: MatchResult.failure(atIndex: lexer.index))
+                        #warning("AbstractSyntaxTreeConstructor was trying to manage errors on failure itself, and it no longer needs to do that so at this point flushing IR errors because the IR should no longer manage them. This should be removed and error handling pulled out of the IR once the whole stack is replaced")
+                        if let astConstructor = ir as? AbstractSyntaxTreeConstructor {
+                            astConstructor._errors = []
+                        }
                     }
                 }
                 if let specificError = self.error {
