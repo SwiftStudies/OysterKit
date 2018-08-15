@@ -919,37 +919,37 @@ class FullSwiftParser : Parser{
         }
     }
     
-    func testSwiftParserPerformance(){
-        final class NullIR : IntermediateRepresentation{
-            func willEvaluate(token: Token, at position: String.UnicodeScalarView.Index) -> MatchResult? {
-                return nil
-            }
-            
-            func didEvaluate(token: Token, annotations: RuleAnnotations, matchResult: MatchResult) {
-                
-            }
-            
-            fileprivate func willBuildFrom(source: String, with: Language) {
-                
-            }
-            
-            fileprivate func didBuild() {
-                
-            }
-            
-            fileprivate func didEvaluate(rule: Rule, matchResult: MatchResult) {
-                
-            }
-            
-            fileprivate func willEvaluate(rule: Rule, at position: String.UnicodeScalarView.Index) -> MatchResult? {
-                return nil
-            }
-            
-            func resetState() {
-                
-            }
+    final class NullIR : IntermediateRepresentation{
+        func willEvaluate(token: Token, at position: String.UnicodeScalarView.Index) -> MatchResult? {
+            return nil
         }
         
+        func didEvaluate(token: Token, annotations: RuleAnnotations, matchResult: MatchResult) {
+            
+        }
+        
+        fileprivate func willBuildFrom(source: String, with: Language) {
+            
+        }
+        
+        fileprivate func didBuild() {
+            
+        }
+        
+        fileprivate func didEvaluate(rule: Rule, matchResult: MatchResult) {
+            
+        }
+        
+        fileprivate func willEvaluate(rule: Rule, at position: String.UnicodeScalarView.Index) -> MatchResult? {
+            return nil
+        }
+        
+        func resetState() {
+            
+        }
+    }
+    
+    func testSwiftParserPerformance(){
         let parser = SwiftParser()
         let _ = try? AbstractSyntaxTreeConstructor().build(swiftSource, using: parser)
         
@@ -961,36 +961,6 @@ class FullSwiftParser : Parser{
     }
     
     func testPerformanceSTLRParseOnly() {
-        final class NullIR : IntermediateRepresentation{
-            func willEvaluate(token: Token, at position: String.UnicodeScalarView.Index) -> MatchResult? {
-                return nil
-            }
-            
-            func didEvaluate(token: Token, annotations: RuleAnnotations, matchResult: MatchResult) {
-                
-            }
-            
-            fileprivate func willBuildFrom(source: String, with: Language) {
-                
-            }
-            
-            fileprivate func didBuild() {
-                
-            }
-            
-            fileprivate func didEvaluate(rule: Rule, matchResult: MatchResult) {
-                
-            }
-            
-            fileprivate func willEvaluate(rule: Rule, at position: String.UnicodeScalarView.Index) -> MatchResult? {
-                return nil
-            }
-            
-            func resetState() {
-                
-            }
-        }
-        
         let parser : Parser
         do {
             parser = Parser(grammar: try _STLR.build(stlrSource).grammar.dynamicRules)
