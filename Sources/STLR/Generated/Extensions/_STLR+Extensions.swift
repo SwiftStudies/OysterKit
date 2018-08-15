@@ -137,7 +137,8 @@ public extension _STLR.Element {
                 return true
             }
             if !closedList.contains(referencedIdentifier){
-                return grammar[referencedIdentifier].expression.references(identifier, grammar:grammar, closedList: &closedList)
+                closedList.append(referencedIdentifier)
+                return grammar[referencedIdentifier].expression.directlyReferences(identifier, grammar:grammar, closedList: &closedList)
             }
         }
         return false
