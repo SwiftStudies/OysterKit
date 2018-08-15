@@ -40,7 +40,7 @@ public class AbstractSyntaxTreeConstructor  {
                 return causes
             case .constructionFailed(let causes):
                 return causes
-            case .unknownError(let _):
+            case .unknownError(_):
                 return nil
             }
         }
