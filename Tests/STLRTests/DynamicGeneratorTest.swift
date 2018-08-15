@@ -1025,9 +1025,12 @@ class DynamicGeneratorTest: XCTestCase {
     
     func testMergedAnnotationOnIdentifierReferenceWithQuantifiers(){
         do {
-            let result = try generatedStringSerialization(for: "@error(\"expected a\")a = @error(\"inner a\") \"a\"\naa = a+ \" \" @error(\"error a2\") a+", desiredRule: 1)
+            let result = try generatedStringSerialization(for: """
+                @error("expected a")a = @error("inner a") "a"
+                aa = a+ " " @error("error a2") a+
+                """, desiredRule: 0)
             
-            XCTAssert(result == "a =  (@error(\"expected a\") a = @error(\"expected a\") \"a\"+  \" \" @error(\"error a2\") a = @error(\"expected a\") \"a\"+)", "Bad generated output '\(result)'")
+            XCTAssertEqual(result,"aa = (@error(\"expected a\") a = @error(\"inner a\") \"a\"+ \" \" @error(\"error a2\") a = @error(\"inner a\") \"a\"+)")
         } catch (let error){
             XCTFail("\(error)")
         }
@@ -1035,9 +1038,12 @@ class DynamicGeneratorTest: XCTestCase {
     
     func testRepeatedReference(){
         do {
-            let result = try generatedStringSerialization(for: "@error(\"Expected a1\") a1 = \"a\" @error(\"Expected 1\") \"1\"\ndoubleA1 = a1 @error(\"Expected second a1\") a1", desiredRule: 1)
+            let result = try generatedStringSerialization(for: """
+                @error("Expected a1") a1 = "a" @error("Expected 1") "1"
+                doubleA1 = a1 @error("Expected second a1") a1
+                """, desiredRule: 0)
             
-            XCTAssert(result == "a1 =  (a1 = @error(\"Expected a1\") ( \"a\" @error(\"Expected 1\") \"1\") a1 = @error(\"Expected second a1\") ( \"a\" @error(\"Expected 1\") \"1\"))", "Bad generated output '\(result)'")
+            XCTAssertEqual(result,"doubleA1 = (@error(\"Expected a1\") a1 = (\"a\" @error(\"Expected 1\") \"1\") @error(\"Expected second a1\") a1 = (\"a\" @error(\"Expected 1\") \"1\"))")
         } catch (let error){
             XCTFail("\(error)")
         }
