@@ -907,7 +907,7 @@ class FullSwiftParser : Parser{
         self.measure {
             let stlr = try! _STLR.build(self.stlrSource)
             
-            XCTAssertEqual(47, stlr.grammar.rules.count)
+            XCTAssertEqual(45, stlr.grammar.rules.count)
             
             for rule in stlr.grammar.rules {
                 do {
