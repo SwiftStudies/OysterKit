@@ -74,7 +74,7 @@ public enum TestError : TestErrorType {
     /// to provide a `TestError`
     case internalError(cause:Error)
     /// An error where no specific error message has been defined
-    case undefinedError(at: String.Index, causes:[Error])
+    case undefinedError(message:String, at: String.Index, causes:[Error])
     /// An error during scanning, with a defined message
     case scanningError(message:String,position:String.Index,causes:[Error])
     /// An error during parsing, with a defined message
@@ -99,7 +99,7 @@ public enum TestError : TestErrorType {
                 self = .parsingError(message: error, range: lexer.index...lexer.index, causes: errors ?? [])
             }
         } else {
-            self = .undefinedError(at: lexer.index, causes: errors ?? [])
+            self = .undefinedError(message: "Undefined error", at: lexer.index, causes: errors ?? [])
         }
     }
     
@@ -114,7 +114,7 @@ public enum TestError : TestErrorType {
             return causes
         case .interpretationError(_, let causes):
             return causes
-        case .undefinedError(_, let causes):
+        case .undefinedError(_,_, let causes):
             return causes
         }
     }
@@ -124,7 +124,7 @@ public enum TestError : TestErrorType {
         switch self {
         case .internalError, .interpretationError:
             return nil
-        case .scanningError(_, let position, _), .undefinedError(let position, _):
+        case .scanningError(_, let position, _), .undefinedError(_, let position, _):
             return position...position
         case .parsingError(_, let range, _):
             return range
@@ -140,11 +140,11 @@ public enum TestError : TestErrorType {
                 return "Internal Error: \(cause.localizedDescription)"
             }
             return "Internal Error"
-        case .undefinedError(let position, let causes):
+        case .undefinedError(let message, let position, let causes):
             if causes.isEmpty {
-                return "Undefined error at \(position.encodedOffset)"
+                return "\(message) at \(position.encodedOffset)"
             } else {
-                return "Undefined error at \(position.encodedOffset) caused by "+causes.map({"\($0)"}).joined(separator: ", ")
+                return "\(message) error at \(position.encodedOffset) caused by "+causes.map({"\($0)"}).joined(separator: ", ")
             }
         case .scanningError(let message, let position, let causes):
             if causes.isEmpty{
