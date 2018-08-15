@@ -1002,9 +1002,12 @@ class DynamicGeneratorTest: XCTestCase {
     
     func testMergedAnnotationOnIdentifierReference(){
         do {
-            let result = try generatedStringSerialization(for: "@error(\"expected a\")a = @error(\"inner a\") \"a\"\naa = a @error(\"error a2\") a", desiredRule: 1)
+            let result = try generatedStringSerialization(for: """
+                @error("expected a")a = @error("inner a") "a"
+                aa = a @error("error a2") a
+                """, desiredRule: 0)
             
-            XCTAssert(result == "tokenA =  (a = @error(\"expected a\") \"a\" a = @error(\"error a2\") \"a\")", "Bad generated output '\(result)'")
+            XCTAssertEqual(result,"aa = (@error(\"expected a\") a = @error(\"inner a\") \"a\" @error(\"error a2\") a = @error(\"inner a\") \"a\")")
         } catch (let error){
             XCTFail("\(error)")
         }
