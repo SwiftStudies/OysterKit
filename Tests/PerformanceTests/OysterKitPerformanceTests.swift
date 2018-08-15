@@ -896,39 +896,25 @@ class FullSwiftParser : Parser{
     }
 
     func testPerformanceSTLR() {
-        
-        let abstractStlr = STLRParser(source: stlrSource)
-        guard let _ = abstractStlr.ast.runtimeLanguage else {
-            XCTFail("Could not generate a language from stlr source")
+        do {
+            _ = Parser(grammar: try _STLR.build(stlrSource).grammar.dynamicRules)
+        } catch {
+            XCTFail("Could not compile \(error)")
             return
         }
         
         // This is an example of a performance test case.
         self.measure {
-            let stlr = STLRParser(source: self.stlrSource)
+            let stlr = try! _STLR.build(self.stlrSource)
             
-            let ruleCount = stlr.ast.rules.count
-            guard ruleCount == 47 else {
-                for error in stlr.ast.errors {
-                    if let error = error as? AbstractSyntaxTreeConstructor.ConstructionError {
-                        switch error {
-                        case .constructionFailed(let causes),.parsingFailed(let causes):
-                            causes.map({$0 as? HumanConsumableError}).forEach({print("\($0?.formattedErrorMessage(in: stlrSource) ?? "Not human consumable")")})
-                        case .unknownError(let message):
-                            print(message)
-                        }
-                    } else {
-                        print("\(error)")
-                    }
+            XCTAssertEqual(47, stlr.grammar.rules.count)
+            
+            for rule in stlr.grammar.rules {
+                do {
+                    try stlr.grammar.validate(rule: rule)
+                } catch {
+                    XCTFail("Could not validate \(rule.identifier): \(error)")
                 }
-                XCTFail("Expected 47 rules but got \(ruleCount) rules")
-                return
-            }
-            
-            do {
-                try stlr.ast.validate()
-            } catch (let error){
-                XCTFail("Did not validate \(error)")
             }
         }
     }
@@ -1005,7 +991,13 @@ class FullSwiftParser : Parser{
             }
         }
         
-        let parser = STLRParser(source: stlrSource)
+        let parser : Parser
+        do {
+            parser = Parser(grammar: try _STLR.build(stlrSource).grammar.dynamicRules)
+        } catch {
+            XCTFail("Failed to compile: \(error)")
+            return
+        }
         
         // This is an example of a performance test case.
         self.measure {
