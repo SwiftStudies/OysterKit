@@ -335,7 +335,8 @@ fileprivate extension _STLR.Rule {
 }
 
 extension _STLR.Grammar {
-    var dynamicRules : [BehaviouralRule] {
+    /// Builds a set of `Rule`s that can be used directly at run-time in your application
+    public var dynamicRules : [BehaviouralRule] {
         let symbolTable = SymbolTable<Symbol>(self)
         
         let rootRules = rules.filter({self.isRoot(identifier: $0.identifier)})
