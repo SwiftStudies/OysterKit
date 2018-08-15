@@ -153,10 +153,11 @@ public enum TestError : TestErrorType {
                 return "Scanning Error: \(message) at \(position.encodedOffset) caused by "+causes.map({"\($0)"}).joined(separator: ", ")
             }
         case .parsingError(let message, let range, let causes):
+            let causeText = causes.map({"\($0)"}).joined(separator: ", ")
             if range.lowerBound == range.upperBound {
-                return "Parsing Error: \(message) at \(range.lowerBound.encodedOffset)"
+                return "Parsing Error: \(message) at \(range.lowerBound.encodedOffset)"+(causeText.isEmpty ? "" : " caused by \(causeText)")
             }
-            return "Parsing Error: \(message) between \(range.lowerBound.encodedOffset) and \(range.upperBound.encodedOffset)"
+            return "Parsing Error: \(message) between \(range.lowerBound.encodedOffset) and \(range.upperBound.encodedOffset)"+(causeText.isEmpty ? "" : " caused by \(causeText)")
         case .interpretationError(let message, _):
             return "Interpretation Error: \(message)"
         }
