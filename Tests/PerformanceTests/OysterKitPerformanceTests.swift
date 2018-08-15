@@ -919,7 +919,7 @@ class FullSwiftParser : Parser{
         }
     }
     
-    final class NullIR : IntermediateRepresentation{
+    fileprivate final class NullIR : IntermediateRepresentation{
         func willEvaluate(token: Token, at position: String.UnicodeScalarView.Index) -> MatchResult? {
             return nil
         }
@@ -953,7 +953,6 @@ class FullSwiftParser : Parser{
         let parser = SwiftParser()
         let _ = try? AbstractSyntaxTreeConstructor().build(swiftSource, using: parser)
         
-        // This is an example of a performance test case.
         self.measure {
             let _ = try? AbstractSyntaxTreeConstructor().build(swiftSource, using: parser)
         }
