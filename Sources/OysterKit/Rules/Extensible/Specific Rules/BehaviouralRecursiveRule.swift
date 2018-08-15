@@ -66,7 +66,7 @@ public final class BehaviouralRecursiveRule : BehaviouralRule, CustomStringConve
     /// Delegated to the the surrogate rule
     public func test(with lexer: LexicalAnalyzer, for ir: IntermediateRepresentation) throws {
         guard let rule = rule else {
-            fatalError("Recursive rule has no surrogate set")
+            throw TestError.undefinedError(message: "Recursive rule for \(behaviour.kind) has no surrogate set", at: lexer.index, causes: [])
         }
         try rule.test(with: lexer, for: ir)
     }
