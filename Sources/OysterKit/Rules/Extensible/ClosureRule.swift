@@ -92,4 +92,13 @@ public final class ClosureRule : BehaviouralRule {
         return "\(annotations.isEmpty ? "" : "\(annotations.description) ")"+behaviour.describe(match:"{closure}")
     }
     
+    /// An abreviated description of the rule
+    public var shortDescription: String{
+        if let produces = behaviour.token {
+            return behaviour.describe(match: "\(produces)", requiresStructuralPrefix: false)
+        }
+        return behaviour.describe(match: "{closure}")
+    }
+
+    
 }

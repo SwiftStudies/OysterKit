@@ -57,7 +57,11 @@ public protocol BehaviouralRule : Rule, CustomStringConvertible{
      should use the same behaviour as this instance.
      - Returns: A new instance with the specified behaviour and annotations.
     */
-    func instanceWith(behaviour:Behaviour?, annotations:RuleAnnotations?)->Self    
+    func instanceWith(behaviour:Behaviour?, annotations:RuleAnnotations?)->Self
+    
+    /// An abrieviated description of the rule that should reflect behaviour, but not annotations
+    /// and should not expand references
+    var shortDescription : String {get}
 }
 
 /**
@@ -208,7 +212,15 @@ public extension BehaviouralRule {
      - Returns: The match result
     */
     public func match(with lexer: LexicalAnalyzer, for ir: IntermediateRepresentation) throws -> MatchResult {
-        return try evaluate(test,using: lexer, and: ir)
+        print(String(repeating: "  ", count: lexer.depth)+shortDescription)
+        do {
+            let result = try evaluate(test,using: lexer, and: ir)
+            print(String(repeating: "  ", count: lexer.depth)+shortDescription+" "+result.description)
+            return result
+        } catch {
+            print(String(repeating: "  ", count: lexer.depth)+shortDescription+" \(error)")
+            throw error
+        }
     }
     
     /**
@@ -220,7 +232,6 @@ public extension BehaviouralRule {
      - Returns: The match result
      */
     public func evaluate(_ matcher:Test, using lexer:LexicalAnalyzer, and ir:IntermediateRepresentation) throws -> MatchResult {
-
         //Prepare for any lookahead by putting a fake IR in place if is lookahead
         //as well as taking an additional mark to ensure position will always be
         //where it was

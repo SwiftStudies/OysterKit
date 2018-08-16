@@ -63,6 +63,12 @@ public final class BehaviouralRecursiveRule : BehaviouralRule, CustomStringConve
         return "\(rule == nil ? "❌\(_behaviour.kind)" : "🔃\(rule!.produces)")"
     }
     
+    /// An abreviated description of the rule
+    public var shortDescription: String{
+        return behaviour.describe(match: "\(produces)", requiresStructuralPrefix: false)
+    }
+
+    
     /// Delegated to the the surrogate rule
     public func test(with lexer: LexicalAnalyzer, for ir: IntermediateRepresentation) throws {
         guard let rule = rule else {

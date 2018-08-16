@@ -58,4 +58,13 @@ public final class SequenceRule : BehaviouralRule {
             return annotates + behaviour.describe(match: match)
         }
     }
+    
+    /// An abreviated description of the rule
+    public var shortDescription: String{
+        if let produces = behaviour.token {
+            return behaviour.describe(match: "\(produces)", requiresStructuralPrefix: false)
+        }
+        let match = sequence.map({$0.shortDescription}).joined(separator: " ")
+        return sequence.count > 1 ? behaviour.describe(match: "(\(match))") : behaviour.describe(match: match)
+    }
 }

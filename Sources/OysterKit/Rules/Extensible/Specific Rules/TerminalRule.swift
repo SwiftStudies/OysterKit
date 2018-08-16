@@ -72,7 +72,15 @@ public final class TerminalRule : BehaviouralRule {
     /// A textual description of the rule
     public var description: String {
         
-        return "\(annotations.isEmpty ? "" : "\(annotations.description) ")"+behaviour.describe(match:"\(terminal.matchDescription)", requiresTransient: false)
+        return "\(annotations.isEmpty ? "" : "\(annotations.description) ")"+behaviour.describe(match:"\(terminal.matchDescription)", requiresScanningPrefix: false)
+    }
+    
+    /// An abreviated description of the rule
+    public var shortDescription: String{
+        if let produces = behaviour.token {
+            return behaviour.describe(match: "\(produces)", requiresScanningPrefix: false, requiresStructuralPrefix: false)
+        }
+        return behaviour.describe(match: "\(terminal.matchDescription)", requiresScanningPrefix: false, requiresStructuralPrefix: false)
     }
     
 }
