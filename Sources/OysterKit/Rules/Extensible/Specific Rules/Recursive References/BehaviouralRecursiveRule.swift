@@ -83,33 +83,17 @@ public final class BehaviouralRecursiveRule : BehaviouralRule, CustomStringConve
             return rule?.behaviour ?? _behaviour
         }
     }
-    
-    /// Creates a new instance of itself
-    public func instanceWith(behaviour: Behaviour?, annotations: RuleAnnotations?) -> BehaviouralRule {
-        let newRule = BehaviouralRecursiveRule(stubFor: behaviour ?? self.behaviour, with: annotations ?? self.annotations)
-        newRule.surrogateRule = surrogateRule
-        return newRule
-    }
-    
-    /**
-     Creates a new instance with the specief token and/or anotations
-     
-     - Parameter token: If nil, the current token will be used on the new instance
-     - Parameter annotations: If nil, the current annotations will be used
-     - Returns: The new instance
-     */
-    public func instance(with token: Token?, andAnnotations annotations: RuleAnnotations?) -> Rule {
-        let newInstance = RecursiveRule(stubFor: token ?? self.produces, with: annotations ?? self.annotations)
-        
-        newInstance.surrogateRule = self.rule
-        
-        return newInstance
-    }
-        
+
     /// Delegated to the the surrogate rule
     public var annotations: RuleAnnotations{
         return rule?.annotations ?? _annotations
     }
+    
+    /// Creates a new instance of itself
+    public func instanceWith(behaviour: Behaviour?, annotations: RuleAnnotations?) -> BehaviouralRule {
+        return BehaviouralRecursiveInstance(original: self,behaviour: behaviour ?? self.behaviour, annotations: annotations ?? self.annotations)
+    }
+        
     
     
 }
