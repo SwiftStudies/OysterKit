@@ -46,7 +46,7 @@ let package = Package(
             dependencies: ["OysterKit","STLR"]),
         .target(
             name: "ExampleLanguages",
-            dependencies: ["OysterKit"]),
+            dependencies: ["OysterKit","STLR"]),
         .testTarget(
             name: "OysterKitTests",
             dependencies: ["OysterKit","ExampleLanguages","STLR"]),
