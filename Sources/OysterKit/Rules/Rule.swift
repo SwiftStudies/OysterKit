@@ -192,7 +192,7 @@ public enum MatchResult : CustomStringConvertible{
     public var description: String{
         switch self {
         case .success(let context):
-            return "Success (\(String(context.source.unicodeScalars[context.range])))"
+            return "Success (\(String(context.source.unicodeScalars[context.range]).debugDescription.dropLast().dropFirst()))"
         case .consume(let context):
             return "Consumed (\(String(context.source.unicodeScalars[context.range])))"
         case .ignoreFailure:
