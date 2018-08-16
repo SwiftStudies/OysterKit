@@ -284,6 +284,31 @@ class RuleTests: XCTestCase {
         XCTAssertNotEqual(catRule.produces.rawValue, felineRule.produces.rawValue)
     }
     
+    func testOptionalRepeatedNot(){
+        let source = """
+            //
+            // Something
+            //
+
+            """
+        let singleLineComment = [
+            "//".scan(),
+            CharacterSet.newlines.scan(.noneOrMore).newBehaviour(negated: true),
+            CharacterSet.newlines.scan()
+            ].sequence.newBehaviour(Behaviour.Kind.structural(token: LabelledToken(withLabel: "singleLineComment")))
+        
+        let lexer = Lexer(source: source)
+        let ir = AbstractSyntaxTreeConstructor(with: source)
+        
+        do {
+            while !lexer.endOfInput {
+                _ = try singleLineComment.match(with: lexer, for: ir)
+            }
+        } catch {
+            XCTFail("Unexpected failure \(error)")
+        }
+    }
+    
     
     func testKnownAnnotations(){
         let error = "Valid error"
