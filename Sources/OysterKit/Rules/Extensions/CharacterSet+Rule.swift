@@ -65,9 +65,9 @@ extension CharacterSet : Terminal {
             try lexer.scan(oneOf: self)
         } catch {
             if let token = token {
-                throw TestError.parsingError(message: "Failed to match \(token), expected '\(self)'", range: lexer.index...lexer.index, causes: [error])
+                throw TestError.parsingError(message: "Failed to match \(token), expected \(matchDescription) but got \(lexer.current)", range: lexer.index...lexer.index, causes: [error])
             } else {
-                throw TestError.scanningError(message: "Expected \(self)", position: lexer.index, causes: [])
+                throw TestError.scanningError(message: "Expected \(matchDescription) but got \(lexer.current)", position: lexer.index, causes: [])
             }
         }
     }

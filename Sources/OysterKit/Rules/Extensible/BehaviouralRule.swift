@@ -212,13 +212,16 @@ public extension BehaviouralRule {
      - Returns: The match result
     */
     public func match(with lexer: LexicalAnalyzer, for ir: IntermediateRepresentation) throws -> MatchResult {
-        print(String(repeating: "  ", count: lexer.depth)+shortDescription)
+        // Log entrance
+        if behaviour.token != nil { print(String(repeating: "  ", count: lexer.depth)+shortDescription) }
         do {
             let result = try evaluate(test,using: lexer, and: ir)
-            print(String(repeating: "  ", count: lexer.depth)+shortDescription+" "+result.description)
+            //Log result
+            if behaviour.token != nil { print(String(repeating: "  ", count: lexer.depth)+shortDescription+" "+result.description) }
             return result
         } catch {
-            print(String(repeating: "  ", count: lexer.depth)+shortDescription+" \(error)")
+            // Log failure
+            if behaviour.token != nil { print(String(repeating: "  ", count: lexer.depth)+shortDescription+" \(error)") }
             throw error
         }
     }
