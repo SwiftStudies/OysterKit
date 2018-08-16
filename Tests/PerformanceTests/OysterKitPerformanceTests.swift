@@ -663,6 +663,12 @@ class FullSwiftParser : Parser{
 }
 """
 
+    /// If I'm going to reparse this STLR with rules it has dynamically generated... I'm going to need to remove the grammar declaration
+    /// STLR 0.0.7 didn't support it
+    var stlrSource007 : String {
+        return stlrSource.replacingOccurrences(of: "grammar STLR", with: "")
+    }
+    
     let stlrSource = """
         /************************************************************
 
@@ -971,7 +977,7 @@ class FullSwiftParser : Parser{
         // This is an example of a performance test case.
         self.measure {
             do {
-                let result = try parser.grammar[0].match(with: Lexer(source:self.stlrSource), for: NullIR())
+                let result = try parser.grammar[0].match(with: Lexer(source:self.stlrSource007), for: NullIR())
                 if case .success = result {
                     
                 } else {
