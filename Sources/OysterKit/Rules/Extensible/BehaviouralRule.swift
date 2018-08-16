@@ -57,7 +57,7 @@ public protocol BehaviouralRule : Rule, CustomStringConvertible{
      should use the same behaviour as this instance.
      - Returns: A new instance with the specified behaviour and annotations.
     */
-    func instanceWith(behaviour:Behaviour?, annotations:RuleAnnotations?)->Self
+    func instanceWith(behaviour:Behaviour?, annotations:RuleAnnotations?)->BehaviouralRule
     
     /// An abrieviated description of the rule that should reflect behaviour, but not annotations
     /// and should not expand references
@@ -106,7 +106,7 @@ public extension BehaviouralRule {
      
      - Parameter behaviour: The new behaviour
     */
-    public func instanceWith(with behaviour:Behaviour)->Self{
+    public func instanceWith(with behaviour:Behaviour)->BehaviouralRule{
         return instanceWith(behaviour: behaviour, annotations: annotations)
     }
     
@@ -116,7 +116,7 @@ public extension BehaviouralRule {
      
      - Parameter annotations: The new annotations
      */
-    public func instanceWith(annotations:RuleAnnotations)->Self{
+    public func instanceWith(annotations:RuleAnnotations)->BehaviouralRule{
         return instanceWith(behaviour: behaviour, annotations: annotations)
     }
     
@@ -157,7 +157,7 @@ public extension BehaviouralRule {
      - Parameter negated: `true` if the results of `test()` should be negated
      - Parameter lookahead: Is lookahead behaviour required
      */
-    public func newBehaviour(_ kind:Behaviour.Kind?=nil, negated:Bool? = nil, lookahead:Bool? = nil)->Self{
+    public func newBehaviour(_ kind:Behaviour.Kind?=nil, negated:Bool? = nil, lookahead:Bool? = nil)->BehaviouralRule{
         return instanceWith(behaviour: Behaviour(kind ?? behaviour.kind, cardinality: behaviour.cardinality, negated: negated ?? behaviour.negate, lookahead: lookahead ?? behaviour.lookahead), annotations: annotations)
     }
     
@@ -171,7 +171,7 @@ public extension BehaviouralRule {
      - Parameter negated: `true` if the results of `test()` should be negated
      - Parameter lookahead: Is lookahead behaviour required
      */
-    public func newBehaviour(_ kind:Behaviour.Kind?=nil, cardinality: ClosedRange<Int>, negated:Bool? = nil, lookahead:Bool? = nil)->Self{
+    public func newBehaviour(_ kind:Behaviour.Kind?=nil, cardinality: ClosedRange<Int>, negated:Bool? = nil, lookahead:Bool? = nil)->BehaviouralRule{
         return instanceWith(behaviour: behaviour.instanceWith(kind, cardinality: cardinality, negated: negated, lookahead: lookahead), annotations: annotations)
     }
     
@@ -185,7 +185,7 @@ public extension BehaviouralRule {
      - Parameter negated: `true` if the results of `test()` should be negated
      - Parameter lookahead: Is lookahead behaviour required
      */
-    public func newBehaviour(_ kind:Behaviour.Kind?=nil, cardinality: PartialRangeFrom<Int>, negated:Bool? = nil, lookahead:Bool? = nil)->Self{
+    public func newBehaviour(_ kind:Behaviour.Kind?=nil, cardinality: PartialRangeFrom<Int>, negated:Bool? = nil, lookahead:Bool? = nil)->BehaviouralRule{
         return instanceWith(behaviour: behaviour.instanceWith(kind, cardinality: cardinality, negated: negated, lookahead: lookahead), annotations: annotations)
     }
     
@@ -199,7 +199,7 @@ public extension BehaviouralRule {
      - Parameter negated: `true` if the results of `test()` should be negated
      - Parameter lookahead: Is lookahead behaviour required
      */
-    public func newBehaviour(_ kind:Behaviour.Kind?=nil, cardinality: Cardinality, negated:Bool? = nil, lookahead:Bool? = nil)->Self{
+    public func newBehaviour(_ kind:Behaviour.Kind?=nil, cardinality: Cardinality, negated:Bool? = nil, lookahead:Bool? = nil)->BehaviouralRule{
 
         return instanceWith(behaviour: Behaviour(kind ?? behaviour.kind, cardinality: cardinality, negated: negated ?? behaviour.negate, lookahead: lookahead ?? behaviour.lookahead), annotations: annotations)
     }

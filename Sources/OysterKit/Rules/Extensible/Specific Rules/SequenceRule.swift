@@ -44,7 +44,7 @@ public final class SequenceRule : BehaviouralRule {
         }
     }
     
-    public func instanceWith(behaviour: Behaviour?, annotations: RuleAnnotations?) -> SequenceRule {
+    public func instanceWith(behaviour: Behaviour?, annotations: RuleAnnotations?) -> BehaviouralRule {
         return SequenceRule(behaviour ?? self.behaviour, and: annotations ?? self.annotations, for: sequence)
     }
     

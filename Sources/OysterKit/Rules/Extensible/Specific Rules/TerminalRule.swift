@@ -65,7 +65,7 @@ public final class TerminalRule : BehaviouralRule {
      - Parameter behaviour: If specified will replace this instance's behaviour in the new instance
      - Parameter annotations: If specified will replace this instance's annotations in the new instance
      */
-    public func instanceWith(behaviour: Behaviour?, annotations: RuleAnnotations?) -> TerminalRule {
+    public func instanceWith(behaviour: Behaviour?, annotations: RuleAnnotations?) -> BehaviouralRule {
         return TerminalRule(behaviour ?? self.behaviour, and: annotations ?? self.annotations, for: terminal)
     }
     

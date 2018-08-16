@@ -75,7 +75,7 @@ public final class ChoiceRule : BehaviouralRule {
      - Parameter behaviour: If specified will replace this instance's behaviour in the new instance
      - Parameter annotations: If specified will replace this instance's annotations in the new instance
     */
-    public func instanceWith(behaviour: Behaviour?, annotations: RuleAnnotations?) -> ChoiceRule {
+    public func instanceWith(behaviour: Behaviour?, annotations: RuleAnnotations?) -> BehaviouralRule {
         return ChoiceRule(behaviour ?? self.behaviour, and: annotations ?? self.annotations, for: choices)
     }
     
