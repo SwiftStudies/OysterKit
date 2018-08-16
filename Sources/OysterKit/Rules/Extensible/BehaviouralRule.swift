@@ -213,15 +213,16 @@ public extension BehaviouralRule {
     */
     public func match(with lexer: LexicalAnalyzer, for ir: IntermediateRepresentation) throws -> MatchResult {
         // Log entrance
-        if behaviour.token != nil { print(String(repeating: "  ", count: lexer.depth)+shortDescription) }
+        let log = false //behaviour.token != nil
+        if log { print(String(repeating: "  ", count: lexer.depth)+shortDescription+" evaluating at \(lexer.position) '\(lexer.endOfInput ? "🏁" : lexer.current.debugDescription.dropFirst().dropLast())'") }
         do {
             let result = try evaluate(test,using: lexer, and: ir)
             //Log result
-            if behaviour.token != nil { print(String(repeating: "  ", count: lexer.depth)+shortDescription+" "+result.description) }
+            if log { print(String(repeating: "  ", count: lexer.depth)+shortDescription+" "+result.description) }
             return result
         } catch {
             // Log failure
-            if behaviour.token != nil { print(String(repeating: "  ", count: lexer.depth)+shortDescription+" \(error)") }
+            if log { print(String(repeating: "  ", count: lexer.depth)+shortDescription+" \(error)") }
             throw error
         }
     }
@@ -275,12 +276,25 @@ public extension BehaviouralRule {
         do {
             while unlimited || matches < behaviour.cardinality.maximumMatches! {
                 do {
+                    //If the match is negated success means we need to rewind afterwards
+                    if behaviour.negate {
+                        lexer.mark()
+                    }
+
                     if lexer.endOfInput {
                         throw TestError.scanningError(message: "End of input", position: lexer.index, causes: [])
                     }
+
                     try matcher(lexer, ir)
+
+                    //If it's negated and did match (in this case didn't throw) then we should rewind because we added an extra mark earlier
+                    if behaviour.negate {
+                        lexer.rewind()
+                    }
                 } catch {
                     if behaviour.negate {
+                        //We had taken an extra mark due to negation earlier, now we have to take it out
+                        lexer.rewind()
                         matches += 1
                         try lexer.scanNext()
                         continue
@@ -288,6 +302,7 @@ public extension BehaviouralRule {
                         throw error
                     }
                 }
+                
                 if behaviour.negate {
                     throw TestError(with: behaviour, and: annotations, whenUsing: lexer, causes: nil)
                 }
@@ -295,8 +310,8 @@ public extension BehaviouralRule {
             }
         } catch {
             if matches == 0 && skippable {
-                let lexerContext = lexer.proceed()
-                let result = MatchResult.ignoreFailure(atIndex: lexerContext.range.lowerBound)
+                lexer.rewind()
+                let result = MatchResult.ignoreFailure(atIndex: lexer.index)
                 if structural {
                     ir.didEvaluate(token: produces, annotations: annotations, matchResult: result)
                 }
