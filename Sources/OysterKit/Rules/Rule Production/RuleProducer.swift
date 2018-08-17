@@ -47,6 +47,116 @@ public protocol RuleProducer {
     var defaultAnnotations : RuleAnnotations { get } 
 }
 
+/**
+ Operators for all rule producers
+ */
+
+/// Lookahead
+prefix  operator >>
+
+/// Negate
+prefix  operator !
+
+/// Skip
+prefix  operator -
+
+/// Scan
+prefix  operator ~
+
+public extension RuleProducer {
+    /**
+     Creates a new instance of the rule annotated with the specified annotations
+     - Parameter annotations: The desired annotations
+     - Returns: A new instance of the rule with the specified annotations
+     */
+    public func annotatedWith(_ annotations:RuleAnnotations)->BehaviouralRule{
+        return rule(with: nil, annotations: annotations)
+    }
+    
+    /**
+     Creates a new instance of the rule that requires matches of the specified
+     cardinality
+     
+     - Parameter cardinality: The desired cardinalitiy
+     - Returns: The new rule instance
+     */
+    public func require(_ cardinality:Cardinality)->BehaviouralRule{
+        return newBehaviour(cardinality: cardinality)
+    }
+}
+
+/**
+ Creates a new instance of the rule set to have lookahead behaviour
+ 
+ // Creates a lookahead version of of the rule
+ let lookahead = >>CharacterSet.letters.skip()
+ 
+ - Parameter rule:The rule to apply to
+ - Returns: A new version of the rule
+ */
+public prefix func >>(rule:RuleProducer)->BehaviouralRule{
+    return rule.rule(with: Behaviour(.scanning, cardinality: rule.defaultBehaviour.cardinality, negated: rule.defaultBehaviour.negate, lookahead: true), annotations: rule.defaultAnnotations)
+}
+
+/**
+ Creates a new instance of the rule which negates its match.
+ Note that negate does not "toggle", that is !!rule != rule
+ 
+ // Creates a negated version of of the rule
+ let notLetter = !CharacterSet.letters.skip()
+ 
+ - Parameter rule:The rule to apply to
+ - Returns: A new version of the rule
+ */
+public prefix func !(rule:RuleProducer)->BehaviouralRule{
+    return rule.rule(with: Behaviour(rule.defaultBehaviour.kind, cardinality: rule.defaultBehaviour.cardinality, negated: true, lookahead: rule.defaultBehaviour.lookahead), annotations: rule.defaultAnnotations)
+}
+
+/**
+ Creates a new instance of the rule which skips.
+ 
+ // Creates a skipping version of of the rule
+ let skipLetters = -CharacterSet.letters.scan(.zeroOrMore)
+ 
+ - Parameter rule:The rule to apply to
+ - Returns: A new version of the rule
+ */
+public prefix func -(rule: RuleProducer)->BehaviouralRule{
+    return rule.rule(with: Behaviour(.skipping, cardinality: rule.defaultBehaviour.cardinality, negated: rule.defaultBehaviour.negate, lookahead: rule.defaultBehaviour.lookahead), annotations: rule.defaultAnnotations)
+}
+
+/**
+ Creates a new instance of the rule which scans.
+ 
+ // Creates a scanning version of of the rule
+ let scanLetters = -CharacterSet.letters.token(myToken, .zeroOrMore)
+ 
+ - Parameter rule:The rule to apply to
+ - Returns: A new version of the rule
+ */
+public prefix func ~(rule : RuleProducer)->BehaviouralRule{
+    return rule.rule(with: Behaviour(.scanning, cardinality: rule.defaultBehaviour.cardinality, negated: rule.defaultBehaviour.negate, lookahead: rule.defaultBehaviour.lookahead), annotations: rule.defaultAnnotations)
+}
+
+// Extends collections of terminals to support creation of Choice scanners
+extension Array where Element == RuleProducer {
+    /**
+     Creates a rule that is satisfied if one of the rules in the araray
+     (which are evaluated in order) is matched
+     */
+    public var choice : BehaviouralRule{
+        return ChoiceRule(Behaviour(.scanning), and: [:], for: map({$0.rule(with: nil, annotations: nil)}))
+    }
+    
+    /**
+     Creates a rule that is satisified if all rules in the array are
+     met, in order.
+     */
+    public var sequence : BehaviouralRule{
+        return SequenceRule(Behaviour(.scanning), and: [:], for: map({$0.rule(with: nil, annotations: nil)}))
+    }
+}
+
 extension RuleProducer{
     /**
      Creates a new instance of the rule with the specified behavioural attributes
