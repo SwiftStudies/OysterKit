@@ -29,7 +29,7 @@
  easier to extend (previously implementations would have to add any of this logic
  themselves, and it's easy to get wrong.
  */
-public protocol BehaviouralRule : Rule, CustomStringConvertible{
+public protocol BehaviouralRule : Rule, RuleProducer, CustomStringConvertible{
     /// The behaviour for the rule controlling things like cardinality and lookahead
     var  behaviour   : Behaviour {get}
     /// The annotations on the rule
@@ -45,19 +45,6 @@ public protocol BehaviouralRule : Rule, CustomStringConvertible{
      - Parameter ir: The intermediate representation
     */
     func test(with lexer : LexicalAnalyzer, `for` ir:IntermediateRepresentation) throws
-    
-    /**
-     This function should create a new instance of this rule, replacing the behaviour and
-     any annotations with those specified in the parameters if not nil, or maintaining the
-     current ones if nil.
-     
-     - Parameter behaviour: The behaviour for the new instance, if nil the new copy should
-     use the same behaviour as this instance.
-     - Parameter annotations: The annotations for the new instance, if nil the new copy
-     should use the same behaviour as this instance.
-     - Returns: A new instance with the specified behaviour and annotations.
-    */
-    func instanceWith(behaviour:Behaviour?, annotations:RuleAnnotations?)->BehaviouralRule
     
     /// An abrieviated description of the rule that should reflect behaviour, but not annotations
     /// and should not expand references
@@ -78,6 +65,15 @@ public typealias Test = (LexicalAnalyzer, IntermediateRepresentation) throws -> 
  */
 public extension BehaviouralRule {
 
+    /// The default behaviour for an existing rule is its current values
+    var defaultBehaviour : Behaviour {
+        return behaviour
+    }
+    
+    /// The default annotations for an existing rule are its current annotations
+    var defaultAnnotations : RuleAnnotations {
+        return annotations
+    }
     
     /// The token that the rule produces if structural. For backwards compatibility
     /// `Transient` tokens are created for skipping and scanning
@@ -100,25 +96,7 @@ public extension BehaviouralRule {
         return false
     }
     
-    /**
-     Creates a new instance of the rule with the specified behaviour but
-     all other attributes maintained.
-     
-     - Parameter behaviour: The new behaviour
-    */
-    public func instanceWith(with behaviour:Behaviour)->BehaviouralRule{
-        return instanceWith(behaviour: behaviour, annotations: annotations)
-    }
-    
-    /**
-     Creates a new instance of the rule with the specified annotations but
-     all other attributes maintained.
-     
-     - Parameter annotations: The new annotations
-     */
-    public func instanceWith(annotations:RuleAnnotations)->BehaviouralRule{
-        return instanceWith(behaviour: behaviour, annotations: annotations)
-    }
+
     
     /**
      Create a new instance of the rule with the supplied annotations and token but otherwise exactly the same
@@ -127,6 +105,7 @@ public extension BehaviouralRule {
      - Parameter annotations: The new ``Annotations`` or ``nil`` if the annotations are unchanged
      - Returns: A new instance of the ``Rule``. Callers should be aware that this may be a "deep" copy if the implementation is a value type
      */
+    #warning("We should no longer need this when legacy rules are removed")
     public func instance(with token: Token?, andAnnotations annotations: RuleAnnotations?) -> Rule {
         let currentToken : Token?
         switch behaviour.kind {
@@ -138,71 +117,16 @@ public extension BehaviouralRule {
         guard let token = token ?? currentToken else {
             if (annotations ?? self.annotations)[.void] == .set {
                 
-                return instanceWith(behaviour: Behaviour(.skipping, cardinality: behaviour.cardinality, negated: behaviour.negate, lookahead: behaviour.lookahead), annotations: annotations ?? self.annotations)
+                return rule(with: Behaviour(.skipping, cardinality: behaviour.cardinality, negated: behaviour.negate, lookahead: behaviour.lookahead), annotations: annotations ?? self.annotations)
             } else {
                 
-                return instanceWith(behaviour: Behaviour(.scanning, cardinality: behaviour.cardinality, negated: behaviour.negate, lookahead: behaviour.lookahead), annotations: annotations ?? self.annotations)
+                return rule(with: Behaviour(.scanning, cardinality: behaviour.cardinality, negated: behaviour.negate, lookahead: behaviour.lookahead), annotations: annotations ?? self.annotations)
             }
         }
         
-        return instanceWith(behaviour: Behaviour(.structural(token: token), cardinality: behaviour.cardinality, negated: behaviour.negate, lookahead: behaviour.lookahead), annotations: annotations ?? self.annotations)
+        return rule(with: Behaviour(.structural(token: token), cardinality: behaviour.cardinality, negated: behaviour.negate, lookahead: behaviour.lookahead), annotations: annotations ?? self.annotations)
     }
-    
-    /**
-     Creates a new instance of the rule with the specified behavioural attributes
-     all other attributes maintained. If any of the supplied parameters are nil
-     the current values will be used. All parameters default to nil.
-     
-     - Parameter kind: The kind of behaviour
-     - Parameter negated: `true` if the results of `test()` should be negated
-     - Parameter lookahead: Is lookahead behaviour required
-     */
-    public func newBehaviour(_ kind:Behaviour.Kind?=nil, negated:Bool? = nil, lookahead:Bool? = nil)->BehaviouralRule{
-        return instanceWith(behaviour: Behaviour(kind ?? behaviour.kind, cardinality: behaviour.cardinality, negated: negated ?? behaviour.negate, lookahead: lookahead ?? behaviour.lookahead), annotations: annotations)
-    }
-    
-    /**
-     Creates a new instance of the rule with the specified behavioural attributes
-     all other attributes maintained. If any of the supplied parameters are nil
-     the current values will be used. All parameters default to nil.
-     
-     - Parameter kind: The kind of behaviour
-     - Parameter cardinality: A closed range specifying the range of matches required
-     - Parameter negated: `true` if the results of `test()` should be negated
-     - Parameter lookahead: Is lookahead behaviour required
-     */
-    public func newBehaviour(_ kind:Behaviour.Kind?=nil, cardinality: ClosedRange<Int>, negated:Bool? = nil, lookahead:Bool? = nil)->BehaviouralRule{
-        return instanceWith(behaviour: behaviour.instanceWith(kind, cardinality: cardinality, negated: negated, lookahead: lookahead), annotations: annotations)
-    }
-    
-    /**
-     Creates a new instance of the rule with the specified behavioural attributes
-     all other attributes maintained. If any of the supplied parameters are nil
-     the current values will be used. All parameters default to nil.
-     
-     - Parameter kind: The kind of behaviour
-     - Parameter cardinality: A partial range specifying the range of matches required with no maxium
-     - Parameter negated: `true` if the results of `test()` should be negated
-     - Parameter lookahead: Is lookahead behaviour required
-     */
-    public func newBehaviour(_ kind:Behaviour.Kind?=nil, cardinality: PartialRangeFrom<Int>, negated:Bool? = nil, lookahead:Bool? = nil)->BehaviouralRule{
-        return instanceWith(behaviour: behaviour.instanceWith(kind, cardinality: cardinality, negated: negated, lookahead: lookahead), annotations: annotations)
-    }
-    
-    /**
-     Creates a new instance of the rule with the specified behavioural attributes
-     all other attributes maintained. If any of the supplied parameters are nil
-     the current values will be used. All parameters default to nil.
-     
-     - Parameter kind: The kind of behaviour
-     - Parameter cardinality: A partial range specifying the range of matches required with no maxium
-     - Parameter negated: `true` if the results of `test()` should be negated
-     - Parameter lookahead: Is lookahead behaviour required
-     */
-    public func newBehaviour(_ kind:Behaviour.Kind?=nil, cardinality: Cardinality, negated:Bool? = nil, lookahead:Bool? = nil)->BehaviouralRule{
 
-        return instanceWith(behaviour: Behaviour(kind ?? behaviour.kind, cardinality: cardinality, negated: negated ?? behaviour.negate, lookahead: lookahead ?? behaviour.lookahead), annotations: annotations)
-    }
     
     /**
      Standard implementation that uses the evaluate function to apply the behaviour of the rule.

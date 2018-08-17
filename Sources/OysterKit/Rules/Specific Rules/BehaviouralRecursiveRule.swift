@@ -54,7 +54,7 @@ public final class BehaviouralRecursiveRule : BehaviouralRule, CustomStringConve
             return rule
         }
         set {
-            rule = newValue?.instanceWith(behaviour: _behaviour, annotations: annotations)
+            rule = newValue?.rule(with: _behaviour, annotations: annotations)
         }
     }
     
@@ -90,7 +90,7 @@ public final class BehaviouralRecursiveRule : BehaviouralRule, CustomStringConve
     }
     
     /// Creates a new instance of itself
-    public func instanceWith(behaviour: Behaviour?, annotations: RuleAnnotations?) -> BehaviouralRule {
+    public func rule(with behaviour: Behaviour?, annotations: RuleAnnotations?) -> BehaviouralRule {
         return BehaviouralRecursiveInstance(original: self,behaviour: behaviour ?? self.behaviour, annotations: annotations ?? self.annotations)
     }
         

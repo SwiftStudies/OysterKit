@@ -61,11 +61,11 @@ class RuleOperatorTests: XCTestCase {
 
     func testLookaheadOperator() {
         let hello = LabelledToken(withLabel: "hello")
-        let singleCardinalityRule = "hello".token(hello, from: .one)
-        let multipleCardinalityRule = "hello".token(hello, from: .oneOrMore)
+        let singleCardinalityRule = "hello".parse(as: hello)
+        let multipleCardinalityRule = "hello".parse(as: hello).require(.oneOrMore)
         
         let singleLookahead = >>singleCardinalityRule
-        XCTAssertNotNil(singleLookahead.behaviour.token, "Single cardinality should mean the rule is not wrapped")
+        XCTAssertNil(singleLookahead.behaviour.token, "Lookahead should mean no token is created")
         XCTAssertEqual(singleLookahead.behaviour.lookahead, true)
         XCTAssertFalse(matchSucceeds(for: singleLookahead, with: "hullo"))
         do {
@@ -76,9 +76,9 @@ class RuleOperatorTests: XCTestCase {
         }
 
         let multipleLookahead = >>multipleCardinalityRule
-        XCTAssertNil(multipleLookahead.behaviour.token, "Multiple cardinality should mean the rule is wrapped")
+        XCTAssertNil(multipleLookahead.behaviour.token, "Lookahead should mean no token is created")
         XCTAssertEqual(multipleLookahead.behaviour.lookahead, true)
-        XCTAssertEqual(multipleLookahead.behaviour.cardinality, .one)
+        XCTAssertEqual(multipleLookahead.behaviour.cardinality, .oneOrMore)
         XCTAssertTrue(matchSucceeds(for: multipleLookahead, with: "hello"))
         XCTAssertFalse(matchSucceeds(for: multipleLookahead, with: "hullo"))
         do {
@@ -91,8 +91,8 @@ class RuleOperatorTests: XCTestCase {
     
     func testNotOperator(){
         let hello = LabelledToken(withLabel: "hello")
-        let singleCardinalityRule = "hello".token(hello, from: .one)
-        let multipleCardinalityRule = "hello".token(hello, from: .oneOrMore)
+        let singleCardinalityRule = "hello".parse(as: hello)
+        let multipleCardinalityRule = "hello".parse(as: hello).require(.oneOrMore)
         
         let singleNegated = !singleCardinalityRule
         XCTAssertNotNil(singleNegated.behaviour.token, "Single cardinality should mean the rule is not wrapped")
@@ -121,8 +121,8 @@ class RuleOperatorTests: XCTestCase {
     
     func testSkipOperator(){
         let hello = LabelledToken(withLabel: "hello")
-        let singleCardinalityRule = "hello".token(hello, from: .one)
-        let multipleCardinalityRule = "hello".token(hello, from: .oneOrMore)
+        let singleCardinalityRule = "hello".parse(as: hello)
+        let multipleCardinalityRule = "hello".parse(as: hello).require(.oneOrMore)
         
         let single = -singleCardinalityRule
         XCTAssertNil(single.behaviour.token, "No token should be produced")
@@ -150,9 +150,9 @@ class RuleOperatorTests: XCTestCase {
     
     func testScanOperator(){
         let hello = LabelledToken(withLabel: "hello")
-        let singleCardinalityRule = "hello".token(hello, from: .one)
-        let multipleCardinalityRule = "hello".token(hello, from: .oneOrMore)
-        
+        let singleCardinalityRule = "hello".parse(as: hello)
+        let multipleCardinalityRule = "hello".parse(as: hello).require(.oneOrMore)
+
         let single = ~singleCardinalityRule
         XCTAssertNil(single.behaviour.token, "No token should be produced")
         XCTAssertTrue(matchSucceeds(for: single, with: "hello"))
@@ -179,14 +179,14 @@ class RuleOperatorTests: XCTestCase {
     }
     
     func testOneOf(){
-        let hello = ["h".scan(),"e".scan(),"l".scan(),"o".scan()].oneOf.oneOrMore
+        let hello = ["h","e","l","o"].require(.oneOrMore)
         
         XCTAssertTrue(matchSucceeds(for: hello, with: "hello"))
         XCTAssertFalse(matchSucceeds(for: hello, with: "dello"))
     }
     
     func testSequence(){
-        let hello = ["h".scan(),"e".scan(),"l".scan().oneOrMore,"o".scan()].sequence
+        let hello = ["h","e","l".require(.oneOrMore),"o"].sequence
         
         XCTAssertTrue(matchSucceeds(for: hello, with: "hello"))
         XCTAssertFalse(matchSucceeds(for: hello, with: "hell0"))
@@ -196,10 +196,10 @@ class RuleOperatorTests: XCTestCase {
     func testFromOperator(){
         let hello = LabelledToken(withLabel: "hello")
         let greeting = LabelledToken(withLabel: "greeting")
-        let singleCardinalityRule = "hello".token(hello, from: .one)
-        let multipleCardinalityRule = "hello".token(hello, from: .oneOrMore)
-        
-        let single = greeting.if(singleCardinalityRule)
+        let singleCardinalityRule = "hello".parse(as: hello)
+        let multipleCardinalityRule = "hello".parse(as: hello).require(.oneOrMore)
+
+        let single = greeting.from(singleCardinalityRule)
         XCTAssertEqual("\(single.behaviour.token!)","\(greeting)")
         XCTAssertTrue(matchSucceeds(for: single, with: "hello"))
         do {
@@ -209,7 +209,7 @@ class RuleOperatorTests: XCTestCase {
             XCTFail("Match should succeed \(error)")
         }
         
-        let multiple = greeting.if(multipleCardinalityRule)
+        let multiple = greeting.from(multipleCardinalityRule)
         XCTAssertEqual("\(multiple.behaviour.token!)","\(greeting)")
         XCTAssertTrue(matchSucceeds(for: multiple, with: "hello"))
         XCTAssertFalse(matchSucceeds(for: multiple, with: "hullo"))
@@ -223,8 +223,8 @@ class RuleOperatorTests: XCTestCase {
     
     func testAnnotationOperator(){
         let hello = LabelledToken(withLabel: "hello")
-        let single = "hello".token(hello, from: .one).annotatedWith([.custom(label: "test") : .string("set")])
-        let multiple = "hello".token(hello, from: .oneOrMore).annotatedWith([.custom(label: "test") : .string("set")])
+        let single = "hello".parse(as: hello).annotatedWith([.custom(label: "test") : .string("set")])
+        let multiple = "hello".parse(as: hello).require(.oneOrMore).annotatedWith([.custom(label: "test") : .string("set")])
 
         XCTAssertNotNil(single.annotations[.custom(label:"test")], "Annotation not set")
         XCTAssertNotNil(multiple.annotations[.custom(label:"test")], "Annotation not set")
@@ -232,10 +232,10 @@ class RuleOperatorTests: XCTestCase {
     
     func testCardinalityChanges(){
         
-        XCTAssertEqual(Cardinality(1...1),  "hello".scan().behaviour.cardinality)
-        XCTAssertEqual(Cardinality(0...1),  "hello".scan().optional.behaviour.cardinality)
-        XCTAssertEqual(Cardinality(0...),  "hello".scan().zeroOrMore.behaviour.cardinality)
-        XCTAssertEqual(Cardinality(1...),  "hello".scan().oneOrMore.behaviour.cardinality)
-        XCTAssertEqual(Cardinality(1...1),  "hello".scan().one.behaviour.cardinality)
+        XCTAssertEqual(Cardinality(1...1),  "hello".defaultBehaviour.cardinality)
+        XCTAssertEqual(Cardinality(0...1),  "hello".require(.optionally).behaviour.cardinality)
+        XCTAssertEqual(Cardinality(0...),   "hello".require(.noneOrMore).behaviour.cardinality)
+        XCTAssertEqual(Cardinality(1...),   "hello".require(.oneOrMore).behaviour.cardinality)
+        XCTAssertEqual(Cardinality(1...1),  "hello".require(.one).behaviour.cardinality)
     }
 }

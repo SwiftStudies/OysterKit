@@ -20,34 +20,34 @@ fileprivate enum STLRStringTest : Int, Token {
     func _rule(_ annotations: RuleAnnotations = [ : ])->BehaviouralRule {
         switch self {
         case ._transient:
-            return CharacterSet(charactersIn: "").scan()
+            return ~CharacterSet(charactersIn: "")
         // stringQuote
         case .stringQuote:
-            return "\"".token(T.stringQuote).annotatedWith(annotations)
+            return "\"".parse(as:T.stringQuote).annotatedWith(annotations)
         // escapedCharacters
         case .escapedCharacters:
             return [
                 T.stringQuote._rule(),
-                "r".scan(),
-                "n".scan(),
-                "t".scan(),
-                "\\".scan(),
-                ].oneOf.instanceWith(behaviour: Behaviour(.structural(token: self)), annotations: annotations)
+                ~"r",
+                ~"n",
+                ~"t",
+                ~"\\",
+                ].choice.parse(as: self).annotatedWith(annotations)
         // escapedCharacter
         case .escapedCharacter:
             return [
-                "\\".scan(),
+                ~"\\",
                 T.escapedCharacters._rule(),
-                ].sequence.instanceWith(behaviour: Behaviour(.structural(token: self)), annotations: annotations)
+                ].sequence.parse(as:self).annotatedWith(annotations)
         // stringCharacter
         case .stringCharacter:
             return -[
                 T.escapedCharacter._rule(),
                     ~(![
                         T.stringQuote._rule(),
-                        CharacterSet.newlines.scan(),
-                    ].oneOf),
-                ].oneOf
+                        ~CharacterSet.newlines,
+                    ].choice),
+                ].choice
         // terminalBody
         case .terminalBody:
             return T.stringCharacter._rule().instanceWith(with: Behaviour(.skipping, cardinality: .oneOrMore))
@@ -57,7 +57,7 @@ fileprivate enum STLRStringTest : Int, Token {
                 T.stringQuote._rule(),
                 T.terminalBody._rule([RuleAnnotation.error : RuleAnnotationValue.string("Terminals must have at least one character")]),
                 T.stringQuote._rule([RuleAnnotation.error : RuleAnnotationValue.string("Missing terminating quote")]) ,
-                ].token(T.terminalString).annotatedWith(annotations)
+                ].sequence.parse(as:self).annotatedWith(annotations)
 
         }
     }

@@ -25,47 +25,37 @@
 import Foundation
 
 /**
- A `ChoiceRule` will match if one of the child rules is matched. It can be thought of as a logical OR.
+ A rule that matches the specified Terminal
  */
-public final class ChoiceRule : BehaviouralRule {
+public final class TerminalRule : BehaviouralRule {
     /// The behaviour of the rule
     public var behaviour: Behaviour
     /// Annotations on the rule
     public var annotations: RuleAnnotations
     /// The acceptable matches that would satisfy this rule
-    public var choices : [BehaviouralRule]
+    public var terminal : Terminal
     
     /**
      Creates a new instance of the rule with the specified parameteres.
      
      - Parameter behaviour: The `Behaviour` for the rule
      - Parameter annotations: The `RuleAnnotations` on the rule
-     - Parameter choices: The child rules, any one of which can satisfy this rule
+     - Parameter terminal: The `Terminal` terminal
      */
-    public init(_ behaviour:Behaviour, and annotations:RuleAnnotations, for choices:[BehaviouralRule]){
+    public init(_ behaviour:Behaviour, and annotations:RuleAnnotations, for terminal:Terminal){
         self.behaviour = behaviour
         self.annotations = annotations
-        self.choices = choices
+        self.terminal = terminal
     }
     
     /**
-     The test will be satisfied if any one of the `choices` are satisfied. The child rules are evaluated
-     in order.
+     Tests the specified terminal exists at the scanner head
      
      - Parameter lexer: The `LexicalAnalyzer` managing the scan head
      - Parameter ir: The IR building the AST
      */
     public func test(with lexer: LexicalAnalyzer, for ir: IntermediateRepresentation) throws {
-        var errors = [Error]()
-        for rule in choices {
-            do {
-                let _ = try rule.match(with: lexer, for: ir)
-                return
-            } catch {
-                errors.append(error)
-            }
-        }
-        throw TestError(with: behaviour, and: annotations, whenUsing: lexer, causes: errors)
+        try terminal.test(lexer: lexer, producing: behaviour.token)
     }
     
     /**
@@ -74,23 +64,23 @@ public final class ChoiceRule : BehaviouralRule {
      
      - Parameter behaviour: If specified will replace this instance's behaviour in the new instance
      - Parameter annotations: If specified will replace this instance's annotations in the new instance
-    */
-    public func instanceWith(behaviour: Behaviour?, annotations: RuleAnnotations?) -> BehaviouralRule {
-        return ChoiceRule(behaviour ?? self.behaviour, and: annotations ?? self.annotations, for: choices)
+     */
+    public func rule(with behaviour: Behaviour?, annotations: RuleAnnotations?) -> BehaviouralRule {
+        return TerminalRule(behaviour ?? self.behaviour, and: annotations ?? self.annotations, for: terminal)
     }
     
     /// A textual description of the rule
     public var description: String {
-        return "\(annotations.isEmpty ? "" : "\(annotations.description) ")"+behaviour.describe(match:"(\(choices.map({$0.description}).joined(separator: " | ")))")
+        
+        return "\(annotations.isEmpty ? "" : "\(annotations.description) ")"+behaviour.describe(match:"\(terminal.matchDescription)", requiresScanningPrefix: false)
     }
     
     /// An abreviated description of the rule
     public var shortDescription: String{
         if let produces = behaviour.token {
-            return behaviour.describe(match: "\(produces)", requiresStructuralPrefix: false)
+            return behaviour.describe(match: "\(produces)", requiresScanningPrefix: false, requiresStructuralPrefix: false)
         }
-        let match = choices.map({$0.shortDescription}).joined(separator: "|")
-        return behaviour.describe(match: "(\(match))")
+        return behaviour.describe(match: "\(terminal.matchDescription)", requiresScanningPrefix: false, requiresStructuralPrefix: false)
     }
-
+    
 }

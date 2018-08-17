@@ -24,30 +24,20 @@
 
 import Foundation
 
-struct BehaviouralRecursiveInstance : BehaviouralRule {
-    let original : BehaviouralRecursiveRule
-    let behaviour: Behaviour
-    let annotations: RuleAnnotations
+// Extends collections of terminals to support creation of Choice scanners
+extension Array: RuleProducer where Element : Terminal {
     
-    func test(with lexer: LexicalAnalyzer, for ir: IntermediateRepresentation) throws {
-        try original.test(with: lexer, for: ir)
+    /// The default behaviour is to scan a single match
+    public var defaultBehaviour: Behaviour {
+        return Behaviour(.scanning, cardinality: .one, negated: false, lookahead: false)
     }
     
-    var description: String {
-        return behaviour.describe(match: original.description)
+    /// The default annotations are no annotations
+    public var defaultAnnotations: RuleAnnotations {
+        return [:]
     }
     
-    var shortDescription: String {
-        let indicator : String
-        if let _ = original.surrogateRule {
-            indicator = "🔃"
-        } else {
-            indicator = "❌"
-        }
-        return behaviour.describe(match: "\(indicator)\(produces)", requiresStructuralPrefix: false)
-    }
-    
-    func instanceWith(behaviour: Behaviour?, annotations: RuleAnnotations?) -> BehaviouralRule {
-        return BehaviouralRecursiveInstance(original: original, behaviour: behaviour ?? self.behaviour, annotations: annotations ?? self.annotations)
+    public func rule(with behaviour: Behaviour?, annotations: RuleAnnotations?) -> BehaviouralRule {
+        return self.map({$0.rule(with: nil, annotations: nil)}).choice.rule(with: behaviour, annotations: annotations)
     }
 }

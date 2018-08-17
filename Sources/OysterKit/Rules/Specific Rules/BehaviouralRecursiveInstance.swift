@@ -1,4 +1,4 @@
-//    Copyright (c) 2016, RED When Excited
+//    Copyright (c) 2018, RED When Excited
 //    All rights reserved.
 //
 //    Redistribution and use in source and binary forms, with or without
@@ -22,49 +22,32 @@
 //    OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 //    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import OysterKit
+import Foundation
 
-public extension String {
-    /**
-     Creates a rule, producing the specified token, by compiling the string as STLR source
-     
-     - Parameter token: The token to produce
-     - Returns: `nil` if compilation failed
-    */
-    @available(*,deprecated,message: "Use .dynamicRule(Behaviour.Kind) instead")
-    public func  dynamicRule(token:Token)->Rule? {
-        let grammarDef = "grammar Dynamic\n_ = \(self)"
-        
-        let compiler = STLRParser(source: grammarDef)
-        
-        let ast = compiler.ast
-        
-        guard ast.rules.count > 0 else {
-            return nil
-        }
-        
-        
-        return ast.rules[0].rule(from: ast, creating: token)
+struct BehaviouralRecursiveInstance : BehaviouralRule {
+    let original : BehaviouralRecursiveRule
+    let behaviour: Behaviour
+    let annotations: RuleAnnotations
+    
+    func test(with lexer: LexicalAnalyzer, for ir: IntermediateRepresentation) throws {
+        try original.test(with: lexer, for: ir)
     }
     
-    /**
-     Creates a rule of the specified kind (e.g. ```.structural(token)```)
-     
-     - Parameter kind: The kind of the rule
-     - Returns: `nil` if compilation failed
-     */
-    public func dynamicRule(_ kind:Behaviour.Kind) throws ->BehaviouralRule{
-        let compiled = try _STLR.build("grammar Dynamic\n_ = \(self)")
-
-        
-        
-        guard let rule =  compiled.grammar.dynamicRules.first?.rule(with: Behaviour(kind), annotations: nil) else {
-            throw TestError.interpretationError(message: "No rules created from \(self)", causes: [])
+    var description: String {
+        return behaviour.describe(match: original.description)
+    }
+    
+    var shortDescription: String {
+        let indicator : String
+        if let _ = original.surrogateRule {
+            indicator = "🔃"
+        } else {
+            indicator = "❌"
         }
-        
-        print(rule.description)
-        
-        return rule
+        return behaviour.describe(match: "\(indicator)\(produces)", requiresStructuralPrefix: false)
+    }
+    
+    func rule(with behaviour: Behaviour?, annotations: RuleAnnotations?) -> BehaviouralRule {
+        return BehaviouralRecursiveInstance(original: original, behaviour: behaviour ?? self.behaviour, annotations: annotations ?? self.annotations)
     }
 }
-

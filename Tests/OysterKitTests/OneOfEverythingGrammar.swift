@@ -25,7 +25,7 @@ enum OneOfEverythingGrammar : Int, Token {
 	func _rule(_ annotations: RuleAnnotations = [ : ])->Rule {
 		switch self {
 		case ._transient:
-            return CharacterSet(charactersIn: "").scan()
+            return ~CharacterSet(charactersIn: "")
 		// ws
 		case .ws:
 			return CharacterSet.whitespacesAndNewlines.terminal(token: T._transient, annotations: annotations.isEmpty ? [RuleAnnotation.void : RuleAnnotationValue.set] : annotations).repeated(min: 0, producing: T.ws, annotations: annotations.isEmpty ? [RuleAnnotation.void : RuleAnnotationValue.set] : annotations)

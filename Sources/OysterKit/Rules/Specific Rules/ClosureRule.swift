@@ -67,7 +67,7 @@ public final class ClosureRule : BehaviouralRule {
      should use the same behaviour as this instance.
      - Returns: A new instance with the specified behaviour and annotations.
      */
-    public func instanceWith(behaviour: Behaviour? = nil, annotations: RuleAnnotations? = nil) -> BehaviouralRule {
+    public func rule(with behaviour: Behaviour? = nil, annotations: RuleAnnotations? = nil) -> BehaviouralRule {
         let newBehaviour = behaviour ?? self.behaviour
         let newAnnotations = annotations ?? self.annotations
         

@@ -24,66 +24,6 @@
 
 import Foundation
 
-enum Precidence{
-    case negate(Bool), cardinality(Cardinality), annotation(RuleAnnotations), structure(Behaviour.Kind), lookahead(Bool)
-    
-    func apply(to rule:BehaviouralRule)->(inner:(behaviour:Behaviour,annotations:RuleAnnotations),outer:(behaviour:Behaviour,annotations:RuleAnnotations)){
-        let kind        : (inner:Behaviour.Kind, outer:Behaviour.Kind)
-        let cardinality : (inner:Cardinality, outer:Cardinality)
-        let negate      : (inner:Bool, outer:Bool)
-        let lookahead   : (inner:Bool, outer:Bool)
-        let annotations : (inner:RuleAnnotations, outer:RuleAnnotations)
-        
-        switch self {
-        case .negate(let newValue):
-            negate      = (inner:false,                         outer:newValue)
-            cardinality = (inner:.one,                          outer:rule.behaviour.cardinality)
-            annotations = (inner: [:],                          outer:rule.annotations)
-            kind        = (inner: .scanning,                    outer:rule.behaviour.kind)
-            lookahead   = (inner: false,                        outer:rule.behaviour.lookahead)
-        case .cardinality(let newValue):
-            negate      = (inner:rule.behaviour.negate,         outer:false)
-            cardinality = (inner:.one,                          outer:newValue)
-            annotations = (inner: [:],                          outer:rule.annotations)
-            kind        = (inner: .scanning,                    outer:rule.behaviour.kind)
-            lookahead   = (inner: false,                        outer:rule.behaviour.lookahead)
-        case .annotation(let newValue):
-            negate      = (inner:rule.behaviour.negate,         outer:false)
-            cardinality = (inner:rule.behaviour.cardinality,    outer:.one)
-            annotations = (inner: rule.annotations,             outer:newValue)
-            kind        = (inner: .scanning,                    outer:rule.behaviour.kind)
-            lookahead   = (inner: false,                        outer:rule.behaviour.lookahead)
-        case .structure(let newValue):
-            negate      = (inner:rule.behaviour.negate,         outer:false)
-            cardinality = (inner:rule.behaviour.cardinality,    outer:.one)
-            annotations = (inner:rule.annotations,              outer: [:])
-            kind        = (inner:rule.behaviour.kind,           outer:newValue)
-            lookahead   = (inner: false,                        outer:rule.behaviour.lookahead)
-        case .lookahead(let newValue):
-            negate      = (inner:rule.behaviour.negate,         outer:false)
-            cardinality = (inner:rule.behaviour.cardinality,    outer:.one)
-            annotations = (inner:rule.annotations,              outer: [:])
-            kind        = (inner:rule.behaviour.kind,           outer:.scanning)
-            lookahead   = (inner:rule.behaviour.lookahead,      outer:newValue)
-        }
-        
-        return (
-            inner: (Behaviour(kind.inner, cardinality: cardinality.inner, negated: negate.inner, lookahead: lookahead.inner),annotations.inner),
-            outer: (Behaviour(kind.outer, cardinality: cardinality.outer, negated: negate.outer, lookahead: lookahead.outer),annotations.outer)
-        )
-    }
-    
-    func modify(_ rule:BehaviouralRule)->BehaviouralRule{
-        let precidence = apply(to: rule)
-        
-        let innerRule = rule.instanceWith(behaviour: precidence.inner.behaviour, annotations: precidence.inner.annotations)
-        
-        return ClosureRule(with: precidence.outer.behaviour, and: precidence.outer.annotations, using: { (lexer, ir) in
-            try _ = innerRule.match(with: lexer, for: ir)
-        })
-    }
-}
-
 /**
  Lookahead operator for BehaviouralRules
  */
@@ -92,46 +32,25 @@ prefix  operator !
 prefix  operator -
 prefix  operator ~
 
-public extension BehaviouralRule {
+public extension RuleProducer {
     /**
      Creates a new instance of the rule annotated with the specified annotations
      - Parameter annotations: The desired annotations
      - Returns: A new instance of the rule with the specified annotations
      */
     public func annotatedWith(_ annotations:RuleAnnotations)->BehaviouralRule{
-        if behaviour.cardinality == .one {
-            return instanceWith(annotations: annotations)
-        }
-        
-        return Precidence.annotation(annotations).modify(self)
+        return rule(with: nil, annotations: annotations)
     }
     
     /**
-     An instance of the rule with a cardinality of one
-     */
-    public var one : BehaviouralRule{
-        return newBehaviour(cardinality: 1...1)
-    }
-
-    /**
-     An instance of the rule with a cardinality of one or more
-     */
-    public var oneOrMore : BehaviouralRule{
-        return newBehaviour(cardinality: 1...)
-    }
-
-    /**
-     An instance of the rule with a cardinality of zero or more
-     */
-    public var zeroOrMore : BehaviouralRule{
-        return newBehaviour(cardinality: 0...)
-    }
-
-    /**
-     An instance of the rule with a cardinality of zero or one
-     */
-    public var optional : BehaviouralRule {
-        return newBehaviour(cardinality: 0...1)
+     Creates a new instance of the rule that requires matches of the specified
+     cardinality
+ 
+     - Parameter cardinality: The desired cardinalitiy
+     - Returns: The new rule instance
+    */
+    public func require(_ cardinality:Cardinality)->BehaviouralRule{
+        return newBehaviour(cardinality: cardinality)
     }
 }
 
@@ -144,12 +63,8 @@ public extension BehaviouralRule {
  - Parameter rule:The rule to apply to
  - Returns: A new version of the rule
  */
-public prefix func >>(rule:BehaviouralRule)->BehaviouralRule{
-    if rule.behaviour.cardinality == .one {
-        return rule.newBehaviour(nil, negated: nil, lookahead: true)
-    }
-
-    return Precidence.lookahead(true).modify(rule)
+public prefix func >>(rule:RuleProducer)->BehaviouralRule{
+    return rule.rule(with: Behaviour(.scanning, cardinality: rule.defaultBehaviour.cardinality, negated: rule.defaultBehaviour.negate, lookahead: true), annotations: rule.defaultAnnotations)
 }
 
 /**
@@ -162,12 +77,8 @@ public prefix func >>(rule:BehaviouralRule)->BehaviouralRule{
  - Parameter rule:The rule to apply to
  - Returns: A new version of the rule
  */
-public prefix func !(rule:BehaviouralRule)->BehaviouralRule{
-    if rule.behaviour.cardinality == .one {
-        return rule.newBehaviour(nil, negated: true, lookahead: nil)
-    }
-    
-    return Precidence.negate(true).modify(rule)    
+public prefix func !(rule:RuleProducer)->BehaviouralRule{
+    return rule.rule(with: Behaviour(rule.defaultBehaviour.kind, cardinality: rule.defaultBehaviour.cardinality, negated: true, lookahead: rule.defaultBehaviour.lookahead), annotations: rule.defaultAnnotations)
 }
 
 /**
@@ -179,12 +90,8 @@ public prefix func !(rule:BehaviouralRule)->BehaviouralRule{
  - Parameter rule:The rule to apply to
  - Returns: A new version of the rule
  */
-public prefix func -(rule : BehaviouralRule)->BehaviouralRule{
-    if rule.behaviour.cardinality == .one {
-        return rule.instanceWith(behaviour: Behaviour(.skipping, cardinality: rule.behaviour.cardinality, negated: rule.behaviour.negate, lookahead: rule.behaviour.lookahead), annotations: rule.annotations)
-    }
-
-    return Precidence.structure(.skipping).modify(rule)    
+public prefix func -(rule: RuleProducer)->BehaviouralRule{
+    return rule.rule(with: Behaviour(.skipping, cardinality: rule.defaultBehaviour.cardinality, negated: rule.defaultBehaviour.negate, lookahead: rule.defaultBehaviour.lookahead), annotations: rule.defaultAnnotations)
 }
 
 /**
@@ -196,73 +103,18 @@ public prefix func -(rule : BehaviouralRule)->BehaviouralRule{
  - Parameter rule:The rule to apply to
  - Returns: A new version of the rule
  */
-public prefix func ~(rule : BehaviouralRule)->BehaviouralRule{
-    if rule.behaviour.cardinality == .one {
-        return rule.instanceWith(behaviour: Behaviour(.scanning, cardinality: rule.behaviour.cardinality, negated: rule.behaviour.negate, lookahead: rule.behaviour.lookahead), annotations: rule.annotations)
-    }
-    
-    return Precidence.structure(.scanning).modify(rule)
-}
-
-public extension Token {
-    /**
-     Creates a rule which will generate this token if matched
-     
-     - Parameter rule:The rule which must be matched in order to generate the tokekn
-     - Returns: An instance of the rule
-     */
-    func `if`(_ rule:BehaviouralRule)->BehaviouralRule{
-        if rule.behaviour.cardinality == .one {
-            return rule.instanceWith(behaviour: Behaviour(.structural(token: self), cardinality: rule.behaviour.cardinality, negated: rule.behaviour.negate, lookahead: rule.behaviour.lookahead), annotations: rule.annotations)
-        }
-        
-        return Precidence.structure(.structural(token: self)).modify(rule)
-    }
+public prefix func ~(rule : RuleProducer)->BehaviouralRule{
+    return rule.rule(with: Behaviour(.scanning, cardinality: rule.defaultBehaviour.cardinality, negated: rule.defaultBehaviour.negate, lookahead: rule.defaultBehaviour.lookahead), annotations: rule.defaultAnnotations)
 }
 
 // Extends collections of terminals to support creation of Choice scanners
-extension Array where Element == BehaviouralRule {
-    /**
-     Creates a rule that tests for the producer (with the specified cardinality)
-     that will produce the defined token
-     
-     - Parameter token: The token to be produced
-     - Parameter cardinality: The desired cardinality of the match
-     - Returns: A rule
-     */
-    public func token(_ token: Token, from cardinality: Cardinality = .one) -> BehaviouralRule {
-        return sequence.newBehaviour(.structural(token:token), cardinality: cardinality)
-    }
-    
-    /**
-     Creates a rule that tests for the producer (with the specified cardinality)
-     that includes the range of the result in any matched string
-     
-     - Parameter cardinality: The desired cardinality of the match
-     - Returns: A rule
-     */
-    public func scan(_ cardinality: Cardinality = .one) -> BehaviouralRule {
-        return sequence.newBehaviour(.scanning, cardinality: cardinality)
-    }
-    
-    /**
-     Creates a rule that tests for the producer (with the specified cardinality)
-     moving the scanner head forward but not including the range of the result
-     in any match.
-     
-     - Parameter cardinality: The desired cardinality of the match
-     - Returns: A rule
-     */
-    public func skip(_ cardinality: Cardinality = .one) -> BehaviouralRule {
-        return sequence.newBehaviour(.skipping, cardinality: cardinality)
-    }
-    
+extension Array where Element == RuleProducer {
     /**
      Creates a rule that is satisfied if one of the rules in the araray
      (which are evaluated in order) is matched
     */
-    public var oneOf : BehaviouralRule{
-        return ChoiceRule(Behaviour(.scanning), and: [:], for: self)
+    public var choice : BehaviouralRule{
+        return ChoiceRule(Behaviour(.scanning), and: [:], for: map({$0.rule(with: nil, annotations: nil)}))
     }
     
     /**
@@ -270,7 +122,6 @@ extension Array where Element == BehaviouralRule {
      met, in order. 
      */
     public var sequence : BehaviouralRule{
-        return SequenceRule(Behaviour(.scanning), and: [:], for: self)
+        return SequenceRule(Behaviour(.scanning), and: [:], for: map({$0.rule(with: nil, annotations: nil)}))
     }
-
 }

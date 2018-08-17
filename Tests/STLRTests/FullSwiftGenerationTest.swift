@@ -7,11 +7,25 @@
 
 import XCTest
 import OysterKit
+@testable import STLR
 @testable import ExampleLanguages
 
 class FullSwiftGenerationTest: XCTestCase {
 
+    func testGeneratedCode(){
+        let file = TextFile("Test.swift")
+        let stlr = try! _STLR.build("""
+            grammar Test
 
+            hello = .letter
+            """)
+        stlr.swift(in: file)
+        let context = OperationContext(with: URL(fileURLWithPath: "/Users/nhughes/Desktop/")){
+            print($0)
+        }
+        try! file.perform(in: context)
+    }
+    
     func testGeneratedIR() {
         do {
             let rules = try STLR.build("hello = .letter").grammar.rules

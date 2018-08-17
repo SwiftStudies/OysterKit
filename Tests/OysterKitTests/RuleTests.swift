@@ -122,7 +122,7 @@ class RuleTests: XCTestCase {
     
     func testOneFromCharacterSetToken(){
         let source = "Hello World"
-        let rule = LabelledToken(withLabel: "letter").if(CharacterSet.letters.scan())
+        let rule = LabelledToken(withLabel: "letter").from(~CharacterSet.letters)
         let lexer = Lexer(source: source)
         let testIR = TestIR()
         
@@ -141,7 +141,7 @@ class RuleTests: XCTestCase {
     
     func testOneOrMoreFromCharacterSetToken(){
         let source = "Hello World"
-        let rule = LabelledToken(withLabel: "letter").if(CharacterSet.letters.scan(.oneOrMore))
+        let rule = LabelledToken(withLabel: "letter").from(~CharacterSet.letters.require(.oneOrMore))
         let lexer = Lexer(source: source)
         let testIR = TestIR()
         
@@ -160,7 +160,7 @@ class RuleTests: XCTestCase {
     
     func testLazyConsumeCharacterSetToken(){
         let source = "Hello World"
-        let rule : BehaviouralRule = [CharacterSet.letters.skip()].token(LabelledToken(withLabel: "letter"))
+        let rule : BehaviouralRule = [-CharacterSet.letters].sequence.parse(as: LabelledToken(withLabel: "letter"))
         let lexer = Lexer(source: source)
         let testIR = TestIR()
         
@@ -180,7 +180,7 @@ class RuleTests: XCTestCase {
 
     func testGreedilyConsumeCharacterSetToken(){
         let source = "Hello World"
-        let rule : BehaviouralRule = [CharacterSet.letters.skip(.oneOrMore)].token(LabelledToken(withLabel: "letter"))
+        let rule : BehaviouralRule = [-CharacterSet.letters.require(.oneOrMore)].sequence.parse(as: LabelledToken(withLabel: "letter"))
         let lexer = Lexer(source: source)
         let testIR = TestIR()
         
@@ -244,7 +244,7 @@ class RuleTests: XCTestCase {
     }
     
     func testInstanceTokenModification(){
-        let rule = CharacterSet.letters.token(LabelledToken(withLabel: "letter"), from: .oneOrMore)
+        let rule = CharacterSet.letters.parse(as: LabelledToken(withLabel: "letter")).require(.oneOrMore)
         let newRule = rule.instance(with: transientTokenValue.token)
         
         XCTAssertEqual(newRule.produces.rawValue, transientTokenValue)
@@ -292,10 +292,10 @@ class RuleTests: XCTestCase {
 
             """
         let singleLineComment = [
-            "//".scan(),
-            CharacterSet.newlines.scan(.noneOrMore).newBehaviour(negated: true),
-            CharacterSet.newlines.scan()
-            ].sequence.newBehaviour(Behaviour.Kind.structural(token: LabelledToken(withLabel: "singleLineComment")))
+            ~"//",
+            (!CharacterSet.newlines).require(.noneOrMore),
+            ~CharacterSet.newlines
+            ].sequence.parse(as:LabelledToken(withLabel: "singleLineComment"))
         
         let lexer = Lexer(source: source)
         let ir = AbstractSyntaxTreeConstructor(with: source)
@@ -312,7 +312,7 @@ class RuleTests: XCTestCase {
     
     func testKnownAnnotations(){
         let error = "Valid error"
-        let rule = CharacterSet.letters.token(LabelledToken(withLabel: "test"), from: .oneOrMore)
+        let rule = CharacterSet.letters.parse(as:LabelledToken(withLabel: "test")).require(.oneOrMore)
         let validError = rule.instance(with: [
             RuleAnnotation.error : RuleAnnotationValue.string(error),
             RuleAnnotation.void  : RuleAnnotationValue.set,

@@ -231,7 +231,7 @@ class DecoderTests: XCTestCase {
                 ParserRule.terminal(produces: TransientToken.anonymous, "[", [RuleAnnotation.void : RuleAnnotationValue.set ]),
                 ParserRule.sequence(produces: TransientToken.anonymous, [
                     OneOfEverythingGrammar.oneOfEverything._rule().instance(with: LabelledToken(withLabel: "entry")),
-                    ",".scan().optional
+                    ~",".require(.optionally)
                     ], nil).repeated(min: 1, limit: nil, producing: TransientToken.anonymous, annotations: nil),
                 ParserRule.terminal(produces: TransientToken.anonymous, "]", [RuleAnnotation.void : RuleAnnotationValue.set]),
                 ], nil)

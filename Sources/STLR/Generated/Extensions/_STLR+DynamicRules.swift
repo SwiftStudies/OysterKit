@@ -223,13 +223,13 @@ fileprivate extension _STLR.Element {
             return terminal.rule(with:behaviour, and: ruleAnnotations)
         } else if let identifier = identifier {
             let symbolRule = symbolTable[identifier].behaviouralRule
-            return symbolRule.instanceWith(behaviour: behaviour, annotations: symbolRule.annotations.merge(with: ruleAnnotations))
+            return symbolRule.rule(with: behaviour, annotations: symbolRule.annotations.merge(with: ruleAnnotations))
         }
         fatalError("Could not generate rule for, \(self) it appears to not be a group, terminal or identifier")
     }
     
     func rule(with behaviour:Behaviour, and annotations:RuleAnnotations, using symbolTable:SymbolTable<Symbol>)->BehaviouralRule {
-        return rule(symbolTable: symbolTable).instanceWith(behaviour: behaviour, annotations: ruleAnnotations.merge(with:annotations))
+        return rule(symbolTable: symbolTable).rule(with: behaviour, annotations: ruleAnnotations.merge(with:annotations))
     }
     
 }

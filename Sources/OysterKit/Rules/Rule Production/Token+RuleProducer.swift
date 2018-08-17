@@ -1,4 +1,4 @@
-//    Copyright (c) 2016, RED When Excited
+//    Copyright (c) 2018, RED When Excited
 //    All rights reserved.
 //
 //    Redistribution and use in source and binary forms, with or without
@@ -22,49 +22,28 @@
 //    OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 //    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import OysterKit
+import Foundation
 
-public extension String {
+public extension Token {
     /**
-     Creates a rule, producing the specified token, by compiling the string as STLR source
+     Creates an instance of the rule producer that will generate the token when satisfied
      
-     - Parameter token: The token to produce
-     - Returns: `nil` if compilation failed
+     - Parameter rule: The rule (or thing that can become a rule)
+     - Returns: A rule
     */
-    @available(*,deprecated,message: "Use .dynamicRule(Behaviour.Kind) instead")
-    public func  dynamicRule(token:Token)->Rule? {
-        let grammarDef = "grammar Dynamic\n_ = \(self)"
-        
-        let compiler = STLRParser(source: grammarDef)
-        
-        let ast = compiler.ast
-        
-        guard ast.rules.count > 0 else {
-            return nil
-        }
-        
-        
-        return ast.rules[0].rule(from: ast, creating: token)
-    }
-    
-    /**
-     Creates a rule of the specified kind (e.g. ```.structural(token)```)
-     
-     - Parameter kind: The kind of the rule
-     - Returns: `nil` if compilation failed
-     */
-    public func dynamicRule(_ kind:Behaviour.Kind) throws ->BehaviouralRule{
-        let compiled = try _STLR.build("grammar Dynamic\n_ = \(self)")
-
-        
-        
-        guard let rule =  compiled.grammar.dynamicRules.first?.rule(with: Behaviour(kind), annotations: nil) else {
-            throw TestError.interpretationError(message: "No rules created from \(self)", causes: [])
-        }
-        
-        print(rule.description)
-        
-        return rule
+    public func from(_ rule:RuleProducer)->BehaviouralRule{
+        return rule.rule(with: Behaviour(.structural(token: self), cardinality: rule.defaultBehaviour.cardinality, negated: rule.defaultBehaviour.negate, lookahead: rule.defaultBehaviour.lookahead), annotations: rule.defaultAnnotations)
     }
 }
 
+public extension RuleProducer {
+    /**
+     Changes the behaviour (or creates a rule with the behaviour) to create a token.
+     
+     - Parameter rule: The rule (or thing that can become a rule)
+     - Returns: A rule
+     */
+    public func parse(as token:Token)->BehaviouralRule{
+        return token.from(self)
+    }
+}

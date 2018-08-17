@@ -23,38 +23,3 @@
 //    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Foundation
-
-/**
- Types that implement the `RuleProducer` protocol should provide convience functions for
- generating rules.
- */
-public protocol RuleProducer {
-    /**
-     Creates a rule that tests for the producer (with the specified cardinality)
-     moving the scanner head forward but not including the range of the result
-     in any match.
-     
-     - Parameter cardinality: The desired cardinality of the match
-     - Returns: A rule
-    */
-    func skip(_ cardinality:Cardinality)->BehaviouralRule
-
-    /**
-     Creates a rule that tests for the producer (with the specified cardinality)
-     that includes the range of the result in any matched string
-     
-     - Parameter cardinality: The desired cardinality of the match
-     - Returns: A rule
-     */
-    func scan(_ cardinality:Cardinality)->BehaviouralRule
-
-    /**
-     Creates a rule that tests for the producer (with the specified cardinality)
-     that will produce the defined token
-     
-     - Parameter token: The token to be produced
-     - Parameter cardinality: The desired cardinality of the match
-     - Returns: A rule
-     */
-    func token(_ token:Token,from cardinality:Cardinality)->BehaviouralRule
-}

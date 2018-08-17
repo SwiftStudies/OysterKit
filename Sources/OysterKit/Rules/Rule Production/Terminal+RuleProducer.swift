@@ -1,4 +1,4 @@
-//    Copyright (c) 2016, RED When Excited
+//    Copyright (c) 2018, RED When Excited
 //    All rights reserved.
 //
 //    Redistribution and use in source and binary forms, with or without
@@ -22,49 +22,27 @@
 //    OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 //    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import OysterKit
+import Foundation
 
-public extension String {
-    /**
-     Creates a rule, producing the specified token, by compiling the string as STLR source
-     
-     - Parameter token: The token to produce
-     - Returns: `nil` if compilation failed
-    */
-    @available(*,deprecated,message: "Use .dynamicRule(Behaviour.Kind) instead")
-    public func  dynamicRule(token:Token)->Rule? {
-        let grammarDef = "grammar Dynamic\n_ = \(self)"
-        
-        let compiler = STLRParser(source: grammarDef)
-        
-        let ast = compiler.ast
-        
-        guard ast.rules.count > 0 else {
-            return nil
-        }
-        
-        
-        return ast.rules[0].rule(from: ast, creating: token)
+/// Extends any terminal to be a `RuleProducer`
+public extension Terminal {
+    
+    /// The default behaviour for a terminal is to scan a single instance of the terminal
+    public var defaultBehaviour : Behaviour {
+        return Behaviour(.scanning, cardinality: .one, negated: false, lookahead: false)
     }
     
-    /**
-     Creates a rule of the specified kind (e.g. ```.structural(token)```)
-     
-     - Parameter kind: The kind of the rule
-     - Returns: `nil` if compilation failed
-     */
-    public func dynamicRule(_ kind:Behaviour.Kind) throws ->BehaviouralRule{
-        let compiled = try _STLR.build("grammar Dynamic\n_ = \(self)")
-
-        
-        
-        guard let rule =  compiled.grammar.dynamicRules.first?.rule(with: Behaviour(kind), annotations: nil) else {
-            throw TestError.interpretationError(message: "No rules created from \(self)", causes: [])
-        }
-        
-        print(rule.description)
-        
-        return rule
+    /// The default annotations for a terminal is no annotations
+    public var defaultAnnotations : RuleAnnotations {
+        return [:]
+    }
+    
+    public func rule(with behaviour: Behaviour?, annotations: RuleAnnotations?) -> BehaviouralRule {
+        return TerminalRule(
+            behaviour ?? Behaviour(.scanning, cardinality: .one, negated: false, lookahead: false),
+            and: annotations ?? [:],
+            for: self)
     }
 }
+
 

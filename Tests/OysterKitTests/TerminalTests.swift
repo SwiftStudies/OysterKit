@@ -31,7 +31,7 @@ class TerminalTests: XCTestCase {
     func testStringTerminal() {
         let passSource = "Hello"
         let failSource = "Hullo"
-        let helloToken = "Hello".token(LabelledToken(withLabel: "hello"))
+        let helloToken = "Hello".parse(as: LabelledToken(withLabel: "hello"))
         
         if let tree = try? AbstractSyntaxTreeConstructor().build(passSource, using: Parser(grammar: [helloToken])){
             XCTAssertNotNil(tree.token)
@@ -45,7 +45,7 @@ class TerminalTests: XCTestCase {
         }
 
 
-        if (try? AbstractSyntaxTreeConstructor().build(failSource, using: Parser(grammar: ["Hello".scan()]))) != nil{
+        if (try? AbstractSyntaxTreeConstructor().build(failSource, using: Parser(grammar: [~"Hello"]))) != nil{
             XCTFail("Should have failed")
         }
 
@@ -55,7 +55,7 @@ class TerminalTests: XCTestCase {
         let passSource = "Hello"
         let failSource = "1.233"
         let helloRegex = try! NSRegularExpression(pattern: "[:alpha:]+", options: [])
-        let helloToken = helloRegex.token(LabelledToken(withLabel: "hello"))
+        let helloToken = helloRegex.parse(as: LabelledToken(withLabel: "hello"))
         
         if let tree = try? AbstractSyntaxTreeConstructor().build(passSource, using: Parser(grammar: [helloToken])){
             XCTAssertNotNil(tree.token)
@@ -69,7 +69,7 @@ class TerminalTests: XCTestCase {
         }
         
         
-        if (try? AbstractSyntaxTreeConstructor().build(failSource, using: Parser(grammar: [helloRegex.scan()]))) != nil{
+        if (try? AbstractSyntaxTreeConstructor().build(failSource, using: Parser(grammar: [~helloRegex]))) != nil{
             XCTFail("Should have failed")
         }
         
@@ -79,7 +79,7 @@ class TerminalTests: XCTestCase {
         let passSource = "Hello"
         let failSource = "1.233"
         let letters = CharacterSet.letters
-        let helloToken = letters.token(LabelledToken(withLabel: "hello"), from: .oneOrMore)
+        let helloToken = letters.parse(as: LabelledToken(withLabel: "hello")).require(.oneOrMore)
         
         if let tree = try? AbstractSyntaxTreeConstructor().build(passSource, using: Parser(grammar: [helloToken])){
             XCTAssertNotNil(tree.token)
@@ -93,7 +93,7 @@ class TerminalTests: XCTestCase {
         }
         
         
-        if (try? AbstractSyntaxTreeConstructor().build(failSource, using: Parser(grammar: [letters.scan(.oneOrMore)]))) != nil{
+        if (try? AbstractSyntaxTreeConstructor().build(failSource, using: Parser(grammar: [~letters.require(.oneOrMore)]))) != nil{
             XCTFail("Should have failed")
         }
         
@@ -103,7 +103,7 @@ class TerminalTests: XCTestCase {
         let passSource = "Hello"
         let failSource = "Hullo"
         let choices = ["H","e","l", "o"]
-        let choice = choices.token(LabelledToken(withLabel: "hello"), from: .oneOrMore)
+        let choice = choices.parse(as:LabelledToken(withLabel: "hello")).require(.oneOrMore)
         
         if let tree = try? AbstractSyntaxTreeConstructor().build(passSource, using: Parser(grammar: [choice])){
             XCTAssertNotNil(tree.token)
@@ -117,21 +117,21 @@ class TerminalTests: XCTestCase {
         }
         
         
-        if (try? AbstractSyntaxTreeConstructor().build(failSource, using: Parser(grammar: [choices.scan(.oneOrMore)]))) != nil{
+        if (try? AbstractSyntaxTreeConstructor().build(failSource, using: Parser(grammar: [~choices.require(.oneOrMore)]))) != nil{
             XCTFail("Should have failed")
         }
         
     }
     
     func testTerminalSkip(){
-        var rule = "Hello".skip()
+        var rule = -"Hello"
         
         guard case .skipping = rule.behaviour.kind else {
             XCTFail("Generated rule was not a skip rule")
             return
         }
         
-        rule = "Hello".skip(.noneOrMore)
+        rule = (-"Hello").require(.noneOrMore)
         
         guard rule.behaviour.cardinality.maximumMatches == nil && rule.behaviour.cardinality.minimumMatches == 0 else{
             XCTFail("Cardinality not passed on")

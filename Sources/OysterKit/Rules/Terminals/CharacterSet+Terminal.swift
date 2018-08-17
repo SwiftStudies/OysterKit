@@ -30,7 +30,7 @@ import Foundation
 fileprivate let characterSetRangeExpression = try! NSRegularExpression(pattern: "(\\d+),(\\d+)", options: [])
 
 /// Extends `CharacterSet` to implement `Terminal`
-extension CharacterSet : Terminal {
+extension CharacterSet : Terminal {    
     public var matchDescription: String {
         if self == CharacterSet.letters {
             return ".letter"

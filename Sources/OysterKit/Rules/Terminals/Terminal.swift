@@ -1,4 +1,4 @@
-//    Copyright (c) 2016, RED When Excited
+//    Copyright (c) 2018, RED When Excited
 //    All rights reserved.
 //
 //    Redistribution and use in source and binary forms, with or without
@@ -22,49 +22,20 @@
 //    OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 //    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import OysterKit
 
-public extension String {
+import Foundation
+
+public protocol Terminal : RuleProducer {
     /**
-     Creates a rule, producing the specified token, by compiling the string as STLR source
+     Tests the the `Terminal` is available at the current scanner head position,
+     throwing an `Error` if not
      
-     - Parameter token: The token to produce
-     - Returns: `nil` if compilation failed
+     - Parameter lexer: The lexer being used for scanning
+     - Parameter token: The token produced if any. 
     */
-    @available(*,deprecated,message: "Use .dynamicRule(Behaviour.Kind) instead")
-    public func  dynamicRule(token:Token)->Rule? {
-        let grammarDef = "grammar Dynamic\n_ = \(self)"
-        
-        let compiler = STLRParser(source: grammarDef)
-        
-        let ast = compiler.ast
-        
-        guard ast.rules.count > 0 else {
-            return nil
-        }
-        
-        
-        return ast.rules[0].rule(from: ast, creating: token)
-    }
+    func test(lexer: LexicalAnalyzer, producing token:Token?) throws
     
-    /**
-     Creates a rule of the specified kind (e.g. ```.structural(token)```)
-     
-     - Parameter kind: The kind of the rule
-     - Returns: `nil` if compilation failed
-     */
-    public func dynamicRule(_ kind:Behaviour.Kind) throws ->BehaviouralRule{
-        let compiled = try _STLR.build("grammar Dynamic\n_ = \(self)")
-
-        
-        
-        guard let rule =  compiled.grammar.dynamicRules.first?.rule(with: Behaviour(kind), annotations: nil) else {
-            throw TestError.interpretationError(message: "No rules created from \(self)", causes: [])
-        }
-        
-        print(rule.description)
-        
-        return rule
-    }
+    /// Provides a textual description of the match
+    var matchDescription : String {get}
 }
 
