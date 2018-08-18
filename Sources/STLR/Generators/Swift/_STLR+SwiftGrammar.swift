@@ -35,11 +35,11 @@ extension _STLR {
      - Returns: A `String` containing the Swift source or `nil` if an error occured.
      */
     func swift(in file:TextFile){
-        let grammarName = "FixMe"
+        let grammarName = grammar.scopeName.trimmingCharacters(in: Foundation.CharacterSet.whitespacesAndNewlines).split(separator: " ")[1]
         
+        file.print("fileprivate enum \(grammarName)Tokens : Int, Token {").indent()
         file.print("typealias T = \(grammarName)Tokens")
-        file.print("fileprivate enum \(grammarName)Tokens : Int, Token, Language {").indent()
-        
+
         // Include regular expression caching
         file.printBlock(regularExpressionBlock)
         
@@ -82,8 +82,8 @@ extension _STLR {
         
         let rootRules = grammar.rules.filter({grammar.isRoot(identifier: $0.identifier)})
         file.print("","/// Create a language that can be used for parsing etc")
-        file.print("public static var generatedLanguage : Parser {").indent()
-        file.print("return Parser(grammar: ["+rootRules.compactMap({$0.identifier}).map({"T.\($0).rule"}).joined(separator: ", ")+"])")
+        file.print("public static var grammar: [Rule] {").indent()
+        file.print("return ["+rootRules.compactMap({$0.identifier}).map({"T.\($0).rule"}).joined(separator: ", ")+"]")
         file.outdent().print("}")
                 
         file.outdent().print("}")
@@ -129,16 +129,18 @@ extension _STLR.Expression {
 extension _STLR.Element {
     @discardableResult
     func swift(in file:TextFile)->TextFile{
+        if let group = group {
+            file.printFile(group.expression.swift(in: TextFile()))
+            return file
+        }
+        
         file.print(terminator: "", separator: "",
                    isLookahead  ? ">>" : "",
                    isNegated    ? "!" : "",
                    isTransient  ? "~" : "",
                    isVoid       ? "-" : "" )
-        if let group = group {
-            file.print("[").indent()
-            file.printFile(group.expression.swift(in: TextFile()))
-            file.outdent().print(terminator: "", "].sequence")
-        } else if let terminal = terminal {
+
+        if let terminal = terminal {
             file.print(terminator: "", terminal.swift())
         } else if let identifier = identifier {
             file.print(terminator: "", "T.\(identifier).rule")
@@ -174,7 +176,7 @@ extension _STLR.Terminal {
         case .characterSet(let characterSet):
             switch characterSet.characterSetName {
             case .whitespaceOrNewline:
-                return "CharacterSet.whitespaceAndNewlines"
+                return "CharacterSet.whitespacesAndNewlines"
             case .backslash:
                 return "\\".asSwiftString
             default:
@@ -183,7 +185,7 @@ extension _STLR.Terminal {
         case .regex(let regex):
             return "T.regularExpression(\"\(regex)\"))"
         case .terminalString(let terminalString):
-            return "\"\(terminalString)\""
+            return terminalString.terminalBody.debugDescription
         case .characterRange(let characterRange):
             let firstString = "\(characterRange[0].terminalBody)".asSwiftString
             let lastString  = "\(characterRange[1].terminalBody)".asSwiftString

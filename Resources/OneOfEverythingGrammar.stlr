@@ -1,4 +1,4 @@
-grammar OneOfEverything
+grammar OneOfEverythingGrammar
 
 @void ws 	= 	.whitespaceOrNewline*
 boolean 	= 	("true" | "false") 	ws
