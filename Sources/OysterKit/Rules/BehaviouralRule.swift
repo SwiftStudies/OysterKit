@@ -203,17 +203,10 @@ public extension BehaviouralRule {
                     //If the match is negated success means we need to rewind afterwards
                     if behaviour.negate {
                         lexer.mark()
-                    }
-
-                    if lexer.endOfInput {
-                        throw TestError.scanningError(message: "End of input", position: lexer.index, causes: [])
-                    }
-
-                    try matcher(lexer, ir)
-
-                    //If it's negated and did match (in this case didn't throw) then we should rewind because we added an extra mark earlier
-                    if behaviour.negate {
+                        try matcher(lexer, ir)
                         lexer.rewind()
+                    } else {
+                        try matcher(lexer, ir)
                     }
                 } catch {
                     if behaviour.negate {
