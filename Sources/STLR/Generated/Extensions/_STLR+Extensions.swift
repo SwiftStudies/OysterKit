@@ -305,3 +305,70 @@ extension _STLR.CharacterSet {
     }
     
 }
+
+fileprivate extension _STLR.Label {
+    
+    /// `true` if the impact of the annotation is captured in a rules `Behaviour`
+    var isBehavioural : Bool {
+        switch  self {
+        case .definedLabel(let defined):
+            switch defined {
+                
+            case .token, .void, .transient:
+                return true
+            case .error:
+                return false
+            }
+        default:
+            return false
+        }
+    }
+}
+
+public extension Array where Element == _STLR.Annotation {
+    
+    private subscript(_ desiredAnnotation:RuleAnnotation)->RuleAnnotationValue?{
+        for annotation in self {
+            if annotation.ruleAnnotation == desiredAnnotation {
+                return annotation.ruleAnnotationValue
+            }
+        }
+        return nil
+    }
+    
+    /// The annotations on the element with any that would be captured in `Behaviour` removed (@token, @transient, @void)
+    public var ruleAnnotations : RuleAnnotations {
+        var ruleAnnotations = [RuleAnnotation : RuleAnnotationValue]()
+        for annotation in filter({!$0.label.isBehavioural}){
+            ruleAnnotations[annotation.ruleAnnotation]  = annotation.ruleAnnotationValue
+        }
+        return ruleAnnotations
+    }
+    
+    /// The token if any specified in the annotations
+    public var token : String? {
+        guard let tokenAnnotationValue = self[RuleAnnotation.token] else {
+            return nil
+        }
+        switch tokenAnnotationValue{
+        case .string(let value):
+            return value
+        case .int(let value):
+            return "\(value)"
+        default:
+            return nil
+        }
+    }
+    
+    /// `true` if the annotations include @void
+    public var void : Bool {
+        return self[RuleAnnotation.void] != nil
+    }
+    
+    /// `true` if the annotations include @transient
+    public var transient : Bool {
+        return self[RuleAnnotation.transient] != nil
+    }
+    
+    
+}
