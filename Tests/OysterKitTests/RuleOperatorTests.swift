@@ -179,7 +179,7 @@ class RuleOperatorTests: XCTestCase {
     }
     
     func testOneOf(){
-        let hello = ["h","e","l","o"].require(.oneOrMore)
+        let hello = ["h","e","l","o"].choice.require(.oneOrMore)
         
         XCTAssertTrue(matchSucceeds(for: hello, with: "hello"))
         XCTAssertFalse(matchSucceeds(for: hello, with: "dello"))

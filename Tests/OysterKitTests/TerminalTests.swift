@@ -102,7 +102,7 @@ class TerminalTests: XCTestCase {
     func testTerminalChoice() {
         let passSource = "Hello"
         let failSource = "Hullo"
-        let choices = ["H","e","l", "o"]
+        let choices = ["H","e","l", "o"].choice
         let choice = choices.parse(as:LabelledToken(withLabel: "hello")).require(.oneOrMore)
         
         if let tree = try? AbstractSyntaxTreeConstructor().build(passSource, using: Parser(grammar: [choice])){

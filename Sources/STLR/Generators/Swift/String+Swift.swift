@@ -1,4 +1,4 @@
-//    Copyright (c) 2018, RED When Excited
+//    Copyright (c) 2016, RED When Excited
 //    All rights reserved.
 //
 //    Redistribution and use in source and binary forms, with or without
@@ -21,23 +21,10 @@
 //    CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 //    OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 //    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
 import Foundation
 
-// Extends collections of terminals to support creation of Choice scanners
-extension Array: RuleProducer where Element : Terminal {
-    
-    /// The default behaviour is to scan a single match
-    public var defaultBehaviour: Behaviour {
-        return Behaviour(.scanning, cardinality: .one, negated: false, lookahead: false)
-    }
-    
-    /// The default annotations are no annotations
-    public var defaultAnnotations: RuleAnnotations {
-        return [:]
-    }
-    
-    public func rule(with behaviour: Behaviour?, annotations: RuleAnnotations?) -> BehaviouralRule {
-        return self.map({$0.rule(with: nil, annotations: nil)}).choice.rule(with: behaviour, annotations: annotations)
+extension String {
+    var asSwiftString : String {
+        return debugDescription
     }
 }

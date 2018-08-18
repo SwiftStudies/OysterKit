@@ -158,64 +158,6 @@ fileprivate extension Array where Element == _STLR.Element {
 }
 
 fileprivate extension _STLR.Element {
-    
-    var ruleAnnotations : RuleAnnotations {
-        return annotations?.ruleAnnotations ?? [:]
-    }
-    
-    var isVoid : Bool {
-        return void != nil || (annotations?.void ?? false)
-    }
-    
-    var isLookahead : Bool {
-        return lookahead != nil
-    }
-    
-    var isNegated : Bool {
-        return negated != nil
-    }
-    
-    var isTransient : Bool {
-        return transient != nil || (annotations?.transient ?? false)
-    }
-    
-    var kind : Behaviour.Kind {
-        if isVoid {
-            return .skipping
-        } else if isTransient {
-            return .scanning
-        }
-        if let token = annotations?.token {
-            return .structural(token: LabelledToken(withLabel: token))
-        } else {
-            if let identifier = identifier {
-                return .structural(token:LabelledToken(withLabel: identifier))
-            }
-            return .scanning
-        }
-    }
-    
-    var cardinality : Cardinality {
-        guard let quantifier = quantifier else {
-            return .one
-        }
-        
-        switch quantifier {
-        case .questionMark:
-            return .optionally
-        case .star:
-            return .noneOrMore
-        case .plus:
-            return .oneOrMore
-        default:
-            return .one
-        }
-    }
-    
-    var behaviour : Behaviour {
-        return Behaviour(kind, cardinality: cardinality, negated: isNegated, lookahead: isLookahead)
-    }
-
     func rule(symbolTable:SymbolTable<Symbol>)->BehaviouralRule {
         if let group = group {
             return group.expression.rule(with: behaviour, and: ruleAnnotations, using: symbolTable)
@@ -231,7 +173,6 @@ fileprivate extension _STLR.Element {
     func rule(with behaviour:Behaviour, and annotations:RuleAnnotations, using symbolTable:SymbolTable<Symbol>)->BehaviouralRule {
         return rule(symbolTable: symbolTable).rule(with: behaviour, annotations: ruleAnnotations.merge(with:annotations))
     }
-    
 }
 
 extension _STLR.CharacterSetName {

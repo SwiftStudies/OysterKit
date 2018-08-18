@@ -127,6 +127,85 @@ public extension _STLR.Expression {
 }
 
 public extension _STLR.Element {
+
+    /// The annotations defined as `RuleAnnotations`
+    public var ruleAnnotations : RuleAnnotations {
+        return annotations?.ruleAnnotations ?? [:]
+    }
+    
+    /// True if the rule is skipping
+    public var isVoid : Bool {
+        return void != nil || (annotations?.void ?? false)
+    }
+    
+    /// True if the rule is lookahead
+    public var isLookahead : Bool {
+        return lookahead != nil
+    }
+    
+    /// True if the rule is negated
+    public var isNegated : Bool {
+        return negated != nil
+    }
+    
+    /// True if it is a scanning rule
+    public var isTransient : Bool {
+        return transient != nil || (annotations?.transient ?? false)
+    }
+    
+    /// The `Kind` of the rule
+    public var kind : Behaviour.Kind {
+        if isVoid {
+            return .skipping
+        } else if isTransient {
+            return .scanning
+        }
+        if let token = annotations?.token {
+            return .structural(token: LabelledToken(withLabel: token))
+        } else {
+            if let identifier = identifier {
+                return .structural(token:LabelledToken(withLabel: identifier))
+            }
+            return .scanning
+        }
+    }
+    
+    /// The `Cardinality` of the match
+    public var cardinality : Cardinality {
+        guard let quantifier = quantifier else {
+            return .one
+        }
+        
+        switch quantifier {
+        case .questionMark:
+            return .optionally
+        case .star:
+            return .noneOrMore
+        case .plus:
+            return .oneOrMore
+        default:
+            return .one
+        }
+    }
+    
+    /// The `Behaviour` of the rule
+    public var behaviour : Behaviour {
+        return Behaviour(kind, cardinality: cardinality, negated: isNegated, lookahead: isLookahead)
+    }
+    
+    /**
+     Determines if the `Element` directly references the supplied identifier (references it at a point where it is
+     possible the scan head has not moved.
+     
+     - Parameter identifier: The identifier that may be referenced
+     - Parameter grammar: The grammar both the identifier and this element is in
+     - Returns: `true` if the identifier could be referenced before the scan head has moved
+    */
+    public func directlyReferences(_ identifier:String, grammar:_STLR.Grammar)->Bool{
+        var closedList = [String]()
+        return directlyReferences(identifier, grammar: grammar, closedList: &closedList)
+    }
+    
     func directlyReferences(_ identifier:String, grammar:_STLR.Grammar, closedList:inout [String])->Bool {
         if let group = group {
             return group.expression.directlyReferences(identifier, grammar: grammar, closedList: &closedList)
@@ -144,6 +223,18 @@ public extension _STLR.Element {
         return false
     }
 
+    /**
+     Determines if the `Element` references the supplied identifier (that is the identifier appears in the element or some part of
+     an expression that forms the element.
+     
+     - Parameter identifier: The identifier that may be referenced
+     - Parameter grammar: The grammar both the identifier and this element is in
+     - Returns: `true` if the identifier is referenced
+     */
+    func references(_ identifier:String, grammar:_STLR.Grammar)->Bool{
+        var closedList = [String]()
+        return references(identifier, grammar: grammar, closedList: &closedList)
+    }
 
     func references(_ identifier:String, grammar:_STLR.Grammar, closedList:inout [String])->Bool {
         if let group = group {

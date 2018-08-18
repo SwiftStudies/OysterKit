@@ -93,7 +93,16 @@ extension _STLR {
 extension _STLR.Rule {
     @discardableResult
     func swift(in file:TextFile)->TextFile{
-        file.print("\"\".skip()")
+        var prefix = ""
+        if let _ = transient {
+            prefix = "~"
+        } else if let _ = void {
+            prefix = "-"
+        }
+        file.print("\(prefix)[").indent()
+        file.printFile(expression.swift(in: TextFile())).print("")
+        file.outdent().print(terminator:"","\n]")
+        file.print(transient == nil && void == nil ? ".sequence.parse(as: self)" : ".sequence")
         return file
     }
 }
@@ -101,23 +110,85 @@ extension _STLR.Rule {
 extension _STLR.Expression {
     @discardableResult
     func swift(in file:TextFile)->TextFile{
-//        switch self {
-//        case .element(let element):
-//            <#code#>
-//        case .sequence(let sequence):
-//            file.print("[").indent()
-//
-//            sequence.map({""}).joined(",\n")
-//
-//            for element in sequence {
-//
-//            }
-//            file.outdent().print("]")
-//        case .choice(let choice):
-//            <#code#>
-//        }
-        file.print("\"\".skip()")
+        switch self {
+        case .element(let element):
+            file.printFile(element.swift(in: TextFile()))
+        case .sequence(let sequence):
+            file.print("[").indent()
+            file.print(sequence.map({$0.swift(in: TextFile()).content}).joined(separator: ",\n"))
+            file.outdent().print("].sequence")
+        case .choice(let choice):
+            file.print("[").indent()
+            file.print(choice.map({$0.swift(in: TextFile()).content}).joined(separator: ",\n"))
+            file.outdent().print("].choice")
+        }
         return file
+    }
+}
+
+extension _STLR.Element {
+    @discardableResult
+    func swift(in file:TextFile)->TextFile{
+        file.print(terminator: "", separator: "",
+                   isLookahead  ? ">>" : "",
+                   isNegated    ? "!" : "",
+                   isTransient  ? "~" : "",
+                   isVoid       ? "-" : "" )
+        if let group = group {
+            file.print("[").indent()
+            file.printFile(group.expression.swift(in: TextFile()))
+            file.outdent().print("]")
+        } else if let terminal = terminal {
+            file.print(terminator: "", terminal.swift())
+        } else if let identifier = identifier {
+            file.print("T.\(identifier).rule")
+        }
+
+        if case let .structural(token) = kind {
+            file.print(terminator: "",".parse(as: T.\(token))")
+        }
+        
+        switch cardinality {
+        case .one:
+            file.print(terminator: "",".rule(with: nil, annotations: nil)")
+        case .oneOrMore:
+            file.print(terminator: "",".require(.oneOrMore)")
+        case .noneOrMore:
+            file.print(terminator: "",".require(.noneOrMore)")
+        case .optionally:
+            file.print(terminator: "",".require(.optionally)")
+        default:
+            file.print(terminator: "","[\(cardinality.minimumMatches)...\(cardinality.maximumMatches == nil ? "" : "\(cardinality.maximumMatches!)")]")
+        }
+        
+        return file
+    }
+}
+
+extension _STLR.Terminal {
+    @discardableResult
+    func swift()->String{
+        switch self {
+            
+        case .characterSet(let characterSet):
+            switch characterSet.characterSetName {
+            case .whitespaceOrNewline:
+                return "CharacterSet.whitespaceAndNewlines"
+            case .backslash:
+                return "\\".asSwiftString
+            default:
+                return "CharacterSet\(self)s"
+            }
+        case .regex(let regex):
+            return "T.regularExpression(\"\(regex)\"))"
+        case .terminalString(let terminalString):
+            return "\"\(terminalString)\""
+        case .characterRange(let characterRange):
+            let firstString = "\(characterRange[0].terminalBody)".asSwiftString
+            let lastString  = "\(characterRange[1].terminalBody)".asSwiftString
+            
+            return "CharacterSet(charactersIn: \(firstString).unicodeScalars.first!...\(lastString).unicodeScalars.first!)"
+        }
     }
 }
 
@@ -127,15 +198,18 @@ fileprivate extension TextFile {
     }
     
     @discardableResult
-    func printFile(_ file:TextFile)->TextFile{
-        printBlock(file.content)
+    func printFile(terminator:String = "\n", _ file:TextFile)->TextFile{
+        printBlock(terminator: terminator, file.content)
         return file
     }
     
     @discardableResult
-    func printBlock(_ block:String)->TextFile{
-        for line in block.split(separator: "\n",omittingEmptySubsequences:false){
-            self.print(String(line))
+    func printBlock(terminator:String = "\n", _ block:String)->TextFile{
+        var lines = block.split(separator: "\n",omittingEmptySubsequences:false).map({String($0)})
+        
+        while let line = lines.first {
+            _ = lines.removeFirst()
+            self.print(terminator: lines.isEmpty ? "" : terminator, String(line))
         }
         
         return self
