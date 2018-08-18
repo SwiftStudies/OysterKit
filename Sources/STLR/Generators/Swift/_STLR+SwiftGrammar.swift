@@ -49,7 +49,7 @@ extension _STLR {
         //
         // Rules
         //
-        file.print("","var rule : BehaviouralRule {").indent()
+        file.print("","/// The rule for the token","var rule : BehaviouralRule {").indent()
         file.print(         "switch self {").indent()
         for rule in grammar.rules {
             file.print("/// \(rule.identifier)","case .\(rule.identifier):").indent()
@@ -115,11 +115,11 @@ extension _STLR.Expression {
             file.printFile(element.swift(in: TextFile()))
         case .sequence(let sequence):
             file.print("[").indent()
-            file.print(sequence.map({$0.swift(in: TextFile()).content}).joined(separator: ",\n"))
+            file.printBlock(sequence.map({$0.swift(in: TextFile()).content}).joined(separator: ",\n"))
             file.outdent().print("].sequence")
         case .choice(let choice):
             file.print("[").indent()
-            file.print(choice.map({$0.swift(in: TextFile()).content}).joined(separator: ",\n"))
+            file.printBlock(choice.map({$0.swift(in: TextFile()).content}).joined(separator: ",\n"))
             file.outdent().print("].choice")
         }
         return file
@@ -137,16 +137,17 @@ extension _STLR.Element {
         if let group = group {
             file.print("[").indent()
             file.printFile(group.expression.swift(in: TextFile()))
-            file.outdent().print("].sequence")
+            file.outdent().print(terminator: "", "].sequence")
         } else if let terminal = terminal {
             file.print(terminator: "", terminal.swift())
         } else if let identifier = identifier {
-            file.print("T.\(identifier).rule")
+            file.print(terminator: "", "T.\(identifier).rule")
         }
 
-        if case let .structural(token) = kind {
+        if case let .structural(token) = kind, identifier ?? "" != "\(token)" {
             file.print(terminator: "",".parse(as: T.\(token))")
         }
+        skipStructure:
         
         switch cardinality {
         case .one:

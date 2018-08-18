@@ -14,11 +14,8 @@ class FullSwiftGenerationTest: XCTestCase {
 
     func testGeneratedCode(){
         let file = TextFile("Test.swift")
-        let stlr = try! _STLR.build("""
-            grammar Test
-
-            hello = .letter
-            """)
+        let source = try! String(contentsOfFile: "/Users/nhughes/Documents/Code/SPM/OysterKit/Resources/OneOfEverythingGrammar.stlr")
+        let stlr = try! _STLR.build(source)
         stlr.swift(in: file)
         let context = OperationContext(with: URL(fileURLWithPath: "/Users/nhughes/Desktop/")){
             print($0)
@@ -36,7 +33,6 @@ class FullSwiftGenerationTest: XCTestCase {
             }
 
             let helloRule = rules[0]
-
             
             if case let .element(element) = helloRule.expression {
                 if case .characterSet(let characterSet) = element.terminal ?? STLR.Terminal.regex(regex: "") {

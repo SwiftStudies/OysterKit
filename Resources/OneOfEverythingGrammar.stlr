@@ -1,3 +1,5 @@
+grammar OneOfEverything
+
 @void ws 	= 	.whitespaceOrNewline*
 boolean 	= 	("true" | "false") 	ws
 integer		=	.decimalDigit+ 	ws
