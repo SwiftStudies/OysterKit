@@ -94,15 +94,15 @@ extension _STLR.Rule {
     @discardableResult
     func swift(in file:TextFile)->TextFile{
         var prefix = ""
-        if let _ = transient {
+        if isTransient {
             prefix = "~"
-        } else if let _ = void {
+        } else if isVoid {
             prefix = "-"
         }
         file.print("\(prefix)[").indent()
         file.printFile(expression.swift(in: TextFile())).print("")
         file.outdent().print(terminator:"","\n]")
-        file.print(transient == nil && void == nil ? ".sequence.parse(as: self)" : ".sequence")
+        file.print(!(isTransient || isVoid) ? ".sequence.parse(as: self)" : ".sequence")
         return file
     }
 }

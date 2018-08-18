@@ -63,6 +63,18 @@ public extension _STLR.Grammar {
     
 }
 
+public extension _STLR.Rule {
+    /// True if the rule is skipping
+    public var isVoid : Bool {
+        return void != nil || (annotations?.void ?? false)
+    }
+    
+    /// True if it is a scanning rule
+    public var isTransient : Bool {
+        return transient != nil || (annotations?.transient ?? false)
+    }
+}
+
 public extension _STLR.Quantifier {
     /// The minimum number of matches required to satisfy the quantifier
     public var minimumMatches : Int {
@@ -138,6 +150,11 @@ public extension _STLR.Element {
         return void != nil || (annotations?.void ?? false)
     }
     
+    /// True if it is a scanning rule
+    public var isTransient : Bool {
+        return transient != nil || (annotations?.transient ?? false)
+    }
+    
     /// True if the rule is lookahead
     public var isLookahead : Bool {
         return lookahead != nil
@@ -146,11 +163,6 @@ public extension _STLR.Element {
     /// True if the rule is negated
     public var isNegated : Bool {
         return negated != nil
-    }
-    
-    /// True if it is a scanning rule
-    public var isTransient : Bool {
-        return transient != nil || (annotations?.transient ?? false)
     }
     
     /// The `Kind` of the rule
