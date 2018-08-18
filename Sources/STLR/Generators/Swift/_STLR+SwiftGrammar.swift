@@ -137,7 +137,7 @@ extension _STLR.Element {
         if let group = group {
             file.print("[").indent()
             file.printFile(group.expression.swift(in: TextFile()))
-            file.outdent().print("]")
+            file.outdent().print("].sequence")
         } else if let terminal = terminal {
             file.print(terminator: "", terminal.swift())
         } else if let identifier = identifier {
@@ -150,7 +150,7 @@ extension _STLR.Element {
         
         switch cardinality {
         case .one:
-            file.print(terminator: "",".rule(with: nil, annotations: nil)")
+            file.print(terminator: "",".require(.one)")
         case .oneOrMore:
             file.print(terminator: "",".require(.oneOrMore)")
         case .noneOrMore:
