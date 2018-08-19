@@ -13,14 +13,18 @@ import OysterKit
 class FullSwiftGenerationTest: XCTestCase {
 
     func testGeneratedCode(){
-        let file = TextFile("Test.swift")
-        let source = try! String(contentsOfFile: "/Users/nhughes/Documents/Code/SPM/OysterKit/Resources/OneOfEverythingGrammar.stlr")
-        let stlr = try! _STLR.build(source)
-        stlr.swift(in: file)
-        let context = OperationContext(with: URL(fileURLWithPath: "/Users/nhughes/Desktop/")){
-            print($0)
+        do {
+            let file = TextFile("Test.swift")
+            let source = try String(contentsOfFile: "/Users/nhughes/Documents/Code/SPM/OysterKit/Resources/OneOfEverythingGrammar.stlr")
+            let stlr = try _STLR.build(source)
+            stlr.swift(in: file)
+            let context = OperationContext(with: URL(fileURLWithPath: "/Users/nhughes/Desktop/")){
+                print($0)
+            }
+            try file.perform(in: context)
+        } catch {
+            print("Error: \(error)")
         }
-        try! file.perform(in: context)
     }
     
     func testGeneratedIR() {
