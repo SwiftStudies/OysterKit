@@ -855,7 +855,7 @@ public class STLRScope : CustomStringConvertible {
             case (_, let cs,_) where cs != nil:
                 return "\(cs!)"
             case (_, _, let reg) where reg != nil:
-                return "/\(reg!.pattern[reg!.pattern.index(after: reg!.pattern.startIndex)...])/"
+                return "\(reg!.pattern[reg!.pattern.index(after: reg!.pattern.startIndex)...])"
             default:
                 return "❌ not implemented"
             }

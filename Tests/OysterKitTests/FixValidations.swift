@@ -85,7 +85,7 @@ class FixValidations: XCTestCase {
                 XCTFail("Result should have been success but was \(result)")
                 return
             }
-            XCTAssertEqual(context.matchedString, String(source.dropLast()))
+            XCTAssertEqual(source[context.range.upperBound..<source.unicodeScalars.endIndex], "\"")
         } catch {
             XCTFail("Match should not have thrown: \(error)")
         }

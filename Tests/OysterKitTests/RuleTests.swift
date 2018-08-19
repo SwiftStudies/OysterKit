@@ -122,7 +122,7 @@ class RuleTests: XCTestCase {
     
     func testOneFromCharacterSetToken(){
         let source = "Hello World"
-        let rule = LabelledToken(withLabel: "letter").from(~CharacterSet.letters)
+        let rule = LabelledToken(withLabel: "letter").from(CharacterSet.letters.require(.one))
         let lexer = Lexer(source: source)
         let testIR = TestIR()
         

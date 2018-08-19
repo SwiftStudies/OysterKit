@@ -69,11 +69,11 @@ class BehaviourRuleMatchRangeTest : XCTestCase {
         do {
             lexer.mark()
             _ = ir.willEvaluate(token: root, at: lexer.index)
-                _ = try voidRule.match(with: lexer, for: ir)
-                _ = try transientRule.match(with: lexer, for: ir)
-                _ = try tokenRule.match(with: lexer, for: ir)
-                _ = try transientRule.match(with: lexer, for: ir)
-                _ = try voidRule.match(with: lexer, for: ir)
+                var result = try voidRule.match(with: lexer, for: ir)
+                    result = try transientRule.match(with: lexer, for: ir)
+                    result = try tokenRule.match(with: lexer, for: ir)
+                    result = try transientRule.match(with: lexer, for: ir)
+                    result = try voidRule.match(with: lexer, for: ir)
             let context = lexer.proceed()
             ir.didEvaluate(token: root, annotations: [:], matchResult: MatchResult.success(context: context))
 

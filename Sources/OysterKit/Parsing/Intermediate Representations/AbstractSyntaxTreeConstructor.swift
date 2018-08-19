@@ -479,7 +479,12 @@ extension AbstractSyntaxTreeConstructor : IntermediateRepresentation {
             return IntermediateRepresentationNode(for: token, at: context.range,  annotations: annotations)
         default:
             // Creates a new parent node with the transients filtered out, but their range included
-            return IntermediateRepresentationNode(for: token, at: children.combinedRange, children: children.perpetual, annotations: annotations)
+            // For backwards compatibility we have to check if the children's combined range is smaller than the contexts range
+            if source[context.range].count > source[children.combinedRange].count {
+                return IntermediateRepresentationNode(for: token, at: context.range, children: children.perpetual, annotations: annotations)
+            } else {
+                return IntermediateRepresentationNode(for: token, at: children.combinedRange, children: children.perpetual, annotations: annotations)
+            }
         }
     }
     

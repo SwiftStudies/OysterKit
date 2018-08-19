@@ -57,6 +57,21 @@ public protocol BehaviouralRule : Rule, RuleProducer, CustomStringConvertible{
  */
 public typealias Test = (LexicalAnalyzer, IntermediateRepresentation) throws -> Void
 
+fileprivate struct NestedRule : Rule {
+    func instance(with token: Token?, andAnnotations annotations: RuleAnnotations?) -> Rule {
+        fatalError()
+    }
+    
+    func match(with lexer: LexicalAnalyzer, for ir: IntermediateRepresentation) throws -> MatchResult {
+        fatalError()
+    }
+    
+    var produces: Token
+    
+    var annotations: RuleAnnotations
+}
+
+
 /**
  These extensions both satisfy the core requirements of `Rule` meaning that implementers
  of the protocol do not need to provide them. When `Rule` is replaced with this new
@@ -96,6 +111,13 @@ public extension BehaviouralRule {
         return false
     }
     
+    /// `true` if the rule creates ndoes, false otherwise
+    public var skipping : Bool {
+        if case .skipping = behaviour.kind {
+            return true
+        }
+        return false
+    }
 
     
     /**
@@ -137,7 +159,7 @@ public extension BehaviouralRule {
     */
     public func match(with lexer: LexicalAnalyzer, for ir: IntermediateRepresentation) throws -> MatchResult {
         // Log entrance
-//        let log = false //behaviour.token != nil
+//        let log = true //behaviour.token != nil
 //        if log { print(String(repeating: "  ", count: lexer.depth)+shortDescription+" evaluating at \(lexer.position) '\(lexer.endOfInput ? "🏁" : lexer.current.debugDescription.dropFirst().dropLast())'") }
         do {
             let result = try evaluate(test,using: lexer, and: ir)
@@ -159,13 +181,55 @@ public extension BehaviouralRule {
      - Parameter ir: The intermediate representation to use
      - Returns: The match result
      */
-    public func evaluate(_ matcher:Test, using lexer:LexicalAnalyzer, and ir:IntermediateRepresentation) throws -> MatchResult {
+    public func evaluate(_ matcher:@escaping Test, using lexer:LexicalAnalyzer, and ir:IntermediateRepresentation) throws -> MatchResult {
+        func nestedEvaluate(_ rule:Rule, using lexer:LexicalAnalyzer, and ir:IntermediateRepresentation, with originalMatcher:Test) throws {
+            if let cachedResult = ir.willEvaluate(rule: rule, at: lexer.index){
+                ir.didEvaluate(rule: rule, matchResult: cachedResult)
+                switch cachedResult{
+                case .success(let lexicalContext):
+                    lexer.index = lexicalContext.range.upperBound
+                case .failure:
+                    throw GrammarError.matchFailed(token: self.produces)
+                default: break
+                }
+                return
+            }
+            
+            lexer.mark()
+            do {
+                try originalMatcher(lexer,ir)
+                ir.didEvaluate(rule: rule, matchResult: MatchResult.success(context: lexer.proceed()))
+            } catch {
+                ir.didEvaluate(rule: rule, matchResult: MatchResult.failure(atIndex: lexer.index))
+                #warning("AbstractSyntaxTreeConstructor was trying to manage errors on failure itself, and it no longer needs to do that so at this point flushing IR errors because the IR should no longer manage them. This should be removed and error handling pulled out of the IR once the whole stack is replaced")
+                if let astConstructor = ir as? AbstractSyntaxTreeConstructor {
+                    astConstructor._errors = []
+                }
+                lexer.rewind()
+                throw error
+            }
+        }
+        
+        let behaviour : Behaviour
+        let annotations : RuleAnnotations
+        let structureTest : (originalMatcher:Test, ruleFacade: NestedRule)?
+        
+        if structural && !self.behaviour.negate{
+            behaviour = Behaviour(.skipping, cardinality: self.behaviour.cardinality, negated: self.behaviour.negate, lookahead: self.behaviour.lookahead)
+            annotations = [ : ]
+            structureTest = (matcher,NestedRule(produces: produces, annotations: self.annotations))
+        } else {
+            annotations = self.annotations
+            behaviour = self.behaviour
+            structureTest = nil
+        }
+        
         //Prepare for any lookahead by putting a fake IR in place if is lookahead
         //as well as taking an additional mark to ensure position will always be
         //where it was
         let ir = behaviour.lookahead ? LookAheadIR() : ir
         if behaviour.lookahead {
-            lexer.mark()
+            lexer.mark(skipping:true)
         }
         defer {
             if behaviour.lookahead {
@@ -173,25 +237,7 @@ public extension BehaviouralRule {
             }
         }
         
-        lexer.mark()
-        let startPosition = lexer.index
-        
-        if structural {
-            if let knownResult = ir.willEvaluate(rule: self, at: lexer.index){
-                
-                ir.didEvaluate(rule: self, matchResult: knownResult)
-                
-                switch knownResult{
-                case .success(let lexicalContext):
-                    lexer.index = lexicalContext.range.upperBound
-                case .failure:
-                    throw GrammarError.matchFailed(token: self.produces)
-                default: break
-                }
-                
-                return knownResult
-            }            
-        }
+        lexer.mark(skipping:skipping)
         
         let skippable = behaviour.cardinality.minimumMatches == 0
         let unlimited = behaviour.cardinality.maximumMatches == nil
@@ -202,11 +248,15 @@ public extension BehaviouralRule {
                 do {
                     //If the match is negated success means we need to rewind afterwards
                     if behaviour.negate {
-                        lexer.mark()
+                        lexer.mark(skipping:skipping)
                         try matcher(lexer, ir)
                         lexer.rewind()
                     } else {
-                        try matcher(lexer, ir)
+                        if let structureTest = structureTest {
+                            try nestedEvaluate(structureTest.ruleFacade, using: lexer, and: ir, with: structureTest.originalMatcher)
+                        } else {
+                            try matcher(lexer, ir)
+                        }
                     }
                 } catch {
                     if behaviour.negate {
@@ -228,29 +278,12 @@ public extension BehaviouralRule {
         } catch {
             if matches == 0 && skippable {
                 lexer.rewind()
-                let result = MatchResult.ignoreFailure(atIndex: lexer.index)
-                if structural {
-                    ir.didEvaluate(token: produces, annotations: annotations, matchResult: result)
-                }
-                return result
+                return MatchResult.ignoreFailure(atIndex: lexer.index)
             }
             if matches < behaviour.cardinality.minimumMatches {
                 lexer.rewind()
-                defer {
-                    if structural {
-                        ir.didEvaluate(rule: self, matchResult: MatchResult.failure(atIndex: lexer.index))
-                        #warning("AbstractSyntaxTreeConstructor was trying to manage errors on failure itself, and it no longer needs to do that so at this point flushing IR errors because the IR should no longer manage them. This should be removed and error handling pulled out of the IR once the whole stack is replaced")
-                        if let astConstructor = ir as? AbstractSyntaxTreeConstructor {
-                            astConstructor._errors = []
-                        }
-                    }
-                }
                 if let specificError = self.error {
-                    if structural {
-                        throw LanguageError.parsingError(at: lexer.index..<lexer.index, message: specificError)
-                    } else {
-                        throw LanguageError.scanningError(at: lexer.index..<lexer.index, message: specificError)
-                    }
+                    throw LanguageError.scanningError(at: lexer.index..<lexer.index, message: specificError)
                 } else {
                     throw error
                 }
@@ -260,16 +293,23 @@ public extension BehaviouralRule {
         let result : MatchResult
 
         switch behaviour.kind {
-        case .structural(let produces):
-            result = MatchResult.success(context: lexer.proceed())
-            ir.didEvaluate(token: produces,annotations: annotations,  matchResult: result)
-            return result
+        case .structural(let token):
+            if behaviour.negate {
+                let context = lexer.proceed()
+                ir.willEvaluate(token: token, at: context.range.lowerBound)
+                result = MatchResult.success(context: lexer.proceed())
+                ir.didEvaluate(token: token, annotations: annotations, matchResult: result)
+            } else {
+                fatalError("Unless negated structural nodes should not need to return an independant result")
+            }
         case .scanning:
             result = MatchResult.success(context: lexer.proceed())
-            _ = ir.willEvaluate(token: TransientToken.anonymous, at: startPosition)
-            ir.didEvaluate(token: TransientToken.anonymous, annotations: [:], matchResult: result)
         case .skipping:
-            result = MatchResult.consume(context: lexer.proceed())
+            if structureTest != nil {
+                result = MatchResult.success(context: lexer.proceed())
+            } else {
+                result = MatchResult.consume(context: lexer.proceed())
+            }
         }
         
         return result
