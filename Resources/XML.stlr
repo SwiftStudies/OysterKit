@@ -1,0 +1,28 @@
+grammar XML
+
+// Scanner Rules
+@void ws 	    = .whitespaceOrNewline
+identifier   	= .letter (.letter | ("-" .letter))*
+singleQuote 	= "'"
+doubleQuote 	= "\""
+
+value       	= 	(-singleQuote !singleQuote* @error("Expected closing '")  -singleQuote) |
+              		(-doubleQuote !doubleQuote* @error("Expected closing \"") -doubleQuote)
+
+attribute	= ws+ identifier (ws* -"=" ws* value)?
+attributes	= attribute+
+
+data 		= !"<"+
+
+openTag 	= ws* -"<"  identifier (attributes | ws*) -">"
+@void
+closeTag 	= ws* -"</" identifier ws* -">"
+inlineTag 	= ws* -"<"  identifier (attribute+ | ws*) -"/>"
+nestingTag	= @transient openTag contents @error("Expected closing tag") closeTag
+
+// Grammar Rules
+tag 		= @transient nestingTag | @transient inlineTag
+contents	= @token("content") (data | tag)*
+
+// AST Root
+xml 		= tag

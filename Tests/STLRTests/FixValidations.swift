@@ -33,17 +33,21 @@ class FixValidations: XCTestCase {
     func testQuantifierLeak() {
         let grammarString = testGrammarName+"number  = .decimalDigit*\n keyword = \"import\" | \"wibble\""
         
-        let stlr = STLRParser(source: grammarString)
-        
-        let ast = stlr.ast
-        
-        guard ast.rules.count == 2 else {
-            XCTFail("Only \(ast.rules.count) rules created, expected 2")
-            return
+        do {
+            let stlr = try _STLR.build(grammarString)
+            
+            let grammar = stlr.grammar
+            
+            guard grammar.rules.count == 2 else {
+                XCTFail("Only \(grammar.rules.count) rules created, expected 2")
+                return
+            }
+            
+            XCTAssert("\(grammar.rules[0])" == "number = .decimalDigit*", "Malformed rule: \(grammar.rules[0])")
+            XCTAssert("\(grammar.rules[1])" == "keyword = \"import\" | \"wibble\"", "Malformed rule: '\(grammar.rules[1])'")
+        } catch {
+            XCTFail("Unexpected failure: \(error)")
         }
-        
-        XCTAssert("\(ast.rules[0])" == "number = .decimalDigits*", "Malformed rule: \(ast.rules[0])")
-        XCTAssert("\(ast.rules[1])" == "keyword = \"import\" | \"wibble\"", "Malformed rule: '\(ast.rules[1])'")
     }
 
     //
@@ -58,35 +62,14 @@ class FixValidations: XCTestCase {
         expr = inlined !inlined+ inlined
         """
         
-        STLRScope.register(optimizer: InlineIdentifierOptimization())
-        
-        let stlr = STLRParser(source: grammar)
-        
-        XCTAssertEqual(stlr.ast.rules[1].description, "expr = @void \"/\" (!inlined)+ @void \"/\"")
-    }
-    
-    //
-    // Effect: When the CharacterSet optimization is applied to a choice of a single character string
-    // and a character set, the single character set is lost.
-    //
-    func testCharacterSetOmmision() {
-        let grammarString = testGrammarName+"variableStart = .letter | \"_\""
-        
-        let stlr = STLRParser(source: grammarString)
-        
-        let ast = stlr.ast
-        
-        guard ast.rules.count == 1 else {
-            XCTFail("Only \(ast.rules.count) rules created, expected 1")
-            return
+        do {
+            STLRScope.register(optimizer: InlineIdentifierOptimization())
+            let stlr = try _STLR.build(grammar)
+            XCTAssertEqual(stlr.grammar .rules[1].description, "expr = inlined !inlined+ inlined")
+        } catch {
+            XCTFail("Unexpted failure: \(error)")
         }
         
-        XCTAssert("\(ast.rules[0])" == "variableStart = .letters | \"_\"", "Malformed rule: \(ast.rules[0])")
-        
-        STLRScope.register(optimizer: CharacterSetOnlyChoiceOptimizer())
-        ast.optimize()
-        
-        XCTAssert("\(ast.rules[0])" == "variableStart = (.letters|(\"_\"))", "Malformed rule: \(ast.rules[0])")
     }
 
     //
@@ -94,23 +77,27 @@ class FixValidations: XCTestCase {
     // and a character set, the single character set is lost.
     //
     func testBadFolding() {
-        let grammarString = testGrammarName+"operators = \":=\" | \";\""
-        
-        let stlr = STLRParser(source: grammarString)
-        
-        let ast = stlr.ast
-        
-        guard ast.rules.count == 1 else {
-            XCTFail("Only \(ast.rules.count) rules created, expected 1")
-            return
+        do {
+            let grammarString = testGrammarName+"operators = \":=\" | \";\""
+            
+            let stlr = try _STLR.build(grammarString)
+            
+            let ast = stlr.grammar
+            
+            guard ast.rules.count == 1 else {
+                XCTFail("Only \(ast.rules.count) rules created, expected 1")
+                return
+            }
+            
+            XCTAssert("\(ast.rules[0])" == "operators = \":=\" | \";\"", "Malformed rule: \(ast.rules[0])")
+            
+            STLRScope.register(optimizer: CharacterSetOnlyChoiceOptimizer())
+            ast.optimize()
+            
+            XCTAssert("\(ast.rules[0])" == "operators = \":=\" | \";\"", "Malformed rule: \(ast.rules[0])")
+        } catch {
+            XCTFail("Unexpted failure: \(error)")
         }
-        
-        XCTAssert("\(ast.rules[0])" == "operators = \":=\" | \";\"", "Malformed rule: \(ast.rules[0])")
-        
-        STLRScope.register(optimizer: CharacterSetOnlyChoiceOptimizer())
-        ast.optimize()
-        
-        XCTAssert("\(ast.rules[0])" == "operators = \":=\" | \";\"", "Malformed rule: \(ast.rules[0])")
     }
     
     //

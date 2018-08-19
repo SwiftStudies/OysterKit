@@ -296,7 +296,7 @@ public extension BehaviouralRule {
         case .structural(let token):
             if behaviour.negate {
                 let context = lexer.proceed()
-                ir.willEvaluate(token: token, at: context.range.lowerBound)
+                _ = ir.willEvaluate(token: token, at: context.range.lowerBound)
                 result = MatchResult.success(context: lexer.proceed())
                 ir.didEvaluate(token: token, annotations: annotations, matchResult: result)
             } else {
