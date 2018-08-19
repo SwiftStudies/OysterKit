@@ -17,7 +17,9 @@ class CompilerTest: XCTestCase {
         
         let terminal = terminalASN.build()
         
-        XCTAssertEqual(terminal.description, "/Cat/")
+        
+        
+        XCTAssertEqual(terminal.regex?.pattern ?? "FAIL", "^Cat")
     }
 
 }
