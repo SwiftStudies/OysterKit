@@ -72,7 +72,7 @@ extension _STLR.Element : CustomStringConvertible {
         } else if let identifier = identifier {
             core = "\(prefix)\(identifier)\(quantity)"
         } else if let terminal = terminal {
-            core = "\(prefix)\(terminal)\(quantity)"
+            core = "\(prefix)\(terminal.description)\(quantity)"
         } else {
             core = "!!UNKNOWN ELEMENT TYPE!!"
         }
@@ -105,7 +105,7 @@ extension _STLR.Terminal : CustomStringConvertible {
         case .characterSet(let characterSet):
             return ".\(characterSet.characterSetName)"
         case .regex(let regex):
-            return "/\(regex)/"
+            return "\(regex)"
         case .terminalString(let terminalString):
             return terminalString.terminalBody.debugDescription
         case .characterRange(let characterRange):

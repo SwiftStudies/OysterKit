@@ -79,40 +79,52 @@ class GrammarTest: XCTestCase {
         }
     }
     
-    func testRuleWithTerminal(){
-        source.add(line: "x = \"x\"")
-        
-        let stlr = STLRParser(source: testGrammarName+source)
-        
-        let ast = stlr.ast
-        
-        XCTAssert(ast.rules.count == 1, "Found \(ast.rules.count) rules when there should be 1")
-        
-        if ast.rules.count < 1 {
-            return
+    func net(_ block:() throws ->Void) {
+        do {
+            try block()
+        } catch {
+            XCTFail("Unexpected error: \(error)")
         }
-        
-        XCTAssert(ast.rules[0].identifier?.name ?? "fail" == "x")
+    }
+    
+    func testRuleWithTerminal(){
+        net(){
+            source.add(line: "x = \"x\"")
+            
+            let stlr = try _STLR.build(testGrammarName+source)
+            
+            let ast = stlr.grammar
+            
+            XCTAssert(ast.rules.count == 1, "Found \(ast.rules.count) rules when there should be 1")
+            
+            if ast.rules.count < 1 {
+                return
+            }
+            
+            XCTAssert(ast.rules[0].identifier == "x")
+        }
     }
     
     func testRuleWithRegularExpression(){
-        source.add(line: "animal = /Cat|Dog/")
-        
-        let stlr = STLRParser(source: testGrammarName+source)
-        
-        let ast = stlr.ast
-        
-        XCTAssert(ast.rules.count == 1, "Found \(ast.rules.count) rules when there should be 1")
-        
-        if ast.rules.count < 1 {
-            return
+        net(){
+            source.add(line: "animal = /Cat|Dog/")
+            
+            let stlr = try _STLR.build(testGrammarName+source)
+            
+            let ast = stlr.grammar
+            
+            XCTAssert(ast.rules.count == 1, "Found \(ast.rules.count) rules when there should be 1")
+            
+            if ast.rules.count < 1 {
+                return
+            }
+            
+            XCTAssert(ast.rules[0].identifier == "animal")
+            XCTAssertEqual(ast.rules[0].description, "animal = /Cat|Dog/")
         }
-        
-        XCTAssert(ast.rules[0].identifier?.name ?? "fail" == "animal")
-        XCTAssertEqual(ast.rules[0].description, "animal = /Cat|Dog/")
     }
 
-    func checkGeneratedLanguage(language:Language?, on source:String, expecting: [Int]) throws {
+    func checkGeneratedLanguage(language:Language?, on source:String, expecting: [String]) throws {
         let debugOutput = false
         guard let language = language else {
             throw CheckError.checkFailed(reason: "Language did not compile")
@@ -141,7 +153,7 @@ class GrammarTest: XCTestCase {
         while let node = iterator.next() {
             acquiredTokens.append(node.token)
             if expecting.count > count {
-                if node.token.rawValue != expecting[count] {
+                if "\(node.token)" != expecting[count] {
                     throw CheckError.checkFailed(reason: "Token at position \(count) was \(node.token)[\(node.token.rawValue)] but expected \(expecting[count])")
                 }
             } else {
@@ -167,138 +179,146 @@ class GrammarTest: XCTestCase {
     }
     
     func generateAndCheck(grammar:String, parsing testString:String, expecting: [String]) throws {
-        let language = STLRParser(source: testGrammarName+grammar)
-        let ast = language.ast
-        
-        guard let parser = ast.runtimeLanguage else {
-            throw CheckError.checkFailed(reason: "Could not generate runtime language")
-        }
-        
-        var count = 0
-        
-        for node in TokenStream(testString, using: parser){
-            if count >= expecting.count{
-                throw CheckError.checkFailed(reason: "Too many tokens")
-            }
+        net() {
+            let language = try _STLR.build(testGrammarName+grammar)
+            let ast = language.grammar
             
-            if expecting[count] != "\(node.token)" {
-                throw CheckError.checkFailed(reason: "At position \(count) expected \(expecting[count]) but got \(node.token)")
-            }
+            let parser = Parser(grammar: ast.dynamicRules)
+        
+            var count = 0
             
-            count += 1
+            for node in TokenStream(testString, using: parser){
+                if count >= expecting.count{
+                    throw CheckError.checkFailed(reason: "Too many tokens")
+                }
+                
+                if expecting[count] != "\(node.token)" {
+                    throw CheckError.checkFailed(reason: "At position \(count) expected \(expecting[count]) but got \(node.token)")
+                }
+                
+                count += 1
+            }
         }
     }
     
     func testInlineError(){
-        source.add(line: "xy = \"x\" @error(\"expected y\")@custom\"y\"")
-        
-        let parser = STLRParser(source: testGrammarName+source)
-        
-        guard parser.ast.rules.count == 1 else {
-            XCTFail("Expected just one rule but got \(parser.ast.rules.count): \(parser.ast.rules)")
-            return
-        }
-        
-        guard let language = parser.ast.runtimeLanguage else {
-            XCTFail("Could not generate runtime language")
-            return
-        }
-        
-        do {
-            let _ = try AbstractSyntaxTreeConstructor().build("xx", using: language)
-            return
-        } catch AbstractSyntaxTreeConstructor.ConstructionError.constructionFailed(let errors) {
-            XCTAssertEqual(errors.count, 2)
-            let errorText = "\(errors[0])"
-        
-            XCTAssert(errorText.hasPrefix("expected y"), "Unexpected error \(errorText)")
-        } catch {
-            XCTFail("Expected a single error")
-            return
+        net(){
+            source.add(line: "xy = \"x\" @error(\"expected y\")@custom\"y\"")
+            
+            let parser = try _STLR.build(testGrammarName+source)
+            
+            guard parser.grammar.rules.count == 1 else {
+                XCTFail("Expected just one rule but got \(parser.grammar.rules.count): \(parser.grammar.rules)")
+                return
+            }
+            
+            let language = Parser(grammar: parser.grammar.dynamicRules)
+            
+            do {
+                let _ = try AbstractSyntaxTreeConstructor().build("xx", using: language)
+                return
+            } catch AbstractSyntaxTreeConstructor.ConstructionError.constructionFailed(let errors) {
+                XCTAssertEqual(errors.count, 1)
+                let errorText = "\(errors[0])"
+                
+                XCTAssert(errorText.hasPrefix("expected y"), "Unexpected error \(errorText)")
+            } catch {
+                XCTFail("Expected a single error")
+                return
+            }
         }
     
     }
     
     func testRecursiveRule(){
-        source.add(line: "x = \"x\"")
-        source.add(line: "justX = x")
-        source.add(line: "xy = x \"y\"")
-        
-        let stlr = STLRParser(source: testGrammarName+source)
-        
-        let ast = stlr.ast
-        
-        XCTAssert(ast.rules.count == 3, "Found \(ast.rules.count) rules when there should be 1")
-        XCTAssert(ast.rules[0].identifier?.name ?? "fail" == "x")
-        XCTAssert(ast.rules[1].identifier?.name ?? "fail" == "justX")
-        XCTAssert(ast.rules[2].identifier?.name ?? "fail" == "xy")
-        
-        do {
-            try checkGeneratedLanguage(language: ast.runtimeLanguage, on: "xyx", expecting: [3,2])
-        } catch (let error) {
-            XCTFail("\(error)")
+        net(){
+            source.add(line: "x = \"x\"")
+            source.add(line: "justX = x")
+            source.add(line: "xy = x \"y\"")
+            
+            let stlr = try _STLR.build(testGrammarName+source)
+            
+            let ast = stlr.grammar
+            
+            XCTAssert(ast.rules.count == 3, "Found \(ast.rules.count) rules when there should be 1")
+            XCTAssert(ast.rules[0].identifier == "x")
+            XCTAssert(ast.rules[1].identifier == "justX")
+            XCTAssert(ast.rules[2].identifier == "xy")
+            
+            do {
+                try checkGeneratedLanguage(language: Parser(grammar: ast.dynamicRules), on: "xyx", expecting: ["justX","xy"])
+            } catch (let error) {
+                XCTFail("\(error)")
+            }
         }
     }
     
     func testSimpleLookahead(){
-        source.add(line: "x  = \"x\" >>!\"y\" ")
-        source.add(line: "xy = \"x\" \"y\" ")
-        
-        let stlr = STLRParser(source: testGrammarName+source)
-        
-        let ast = stlr.ast
-        guard ast.rules.count == 2 else {
-            XCTFail("Found \(ast.rules.count) rules when there should be 2")
-            return
-        }
-        
-        XCTAssert(ast.rules[0].identifier?.name ?? "fail" == "x")
-        XCTAssert(ast.rules[1].identifier?.name ?? "fail" == "xy")
-        
-        do {
-            try checkGeneratedLanguage(language: ast.runtimeLanguage, on: "xxyx", expecting: [1,2,1])
-        } catch (let error) {
-            XCTFail("\(error)")
+        net(){
+            source.add(line: "x  = \"x\" >>!\"y\" ")
+            source.add(line: "xy = \"x\" \"y\" ")
+            
+            let stlr = try _STLR.build(testGrammarName+source)
+            
+            let ast = stlr.grammar
+            guard ast.rules.count == 2 else {
+                XCTFail("Found \(ast.rules.count) rules when there should be 2")
+                return
+            }
+            
+            XCTAssert(ast.rules[0].identifier == "x")
+            XCTAssert(ast.rules[1].identifier == "xy")
+            
+            do {
+                try checkGeneratedLanguage(language: Parser(grammar: ast.dynamicRules), on: "xxyx", expecting: ["x","xy","x"])
+            } catch (let error) {
+                XCTFail("\(error)")
+            }
         }
     }
     
     let testGrammarName = "grammar GrammarTest\n"
     
     func testQuantifiersNotAddedToIdentifierNames(){
-        source.add(line: "ws = .whitespace")
-        source.add(line: "whitespace = ws+")
-        source.add(line: "word = .letter+")
-        
-        let stlr = STLRParser(source: testGrammarName+source)
-        
-        let ast = stlr.ast
-        
-        XCTAssert(ast.rules.count == 3, "Found \(ast.rules.count) rules when there should be 1")
-        XCTAssert(ast.rules[0].identifier?.name ?? "fail" == "ws")
-        XCTAssert(ast.rules[1].identifier?.name ?? "fail" == "whitespace")
-        XCTAssert(ast.rules[2].identifier?.name ?? "fail" == "word")
-        
-        do {
-            try checkGeneratedLanguage(language: ast.runtimeLanguage, on: "hello world", expecting: [3,2,3])
-        } catch (let error) {
-            XCTFail("\(error)")
+        net(){
+            source.add(line: "ws = .whitespace")
+            source.add(line: "whitespace = ws+")
+            source.add(line: "word = .letter+")
+            
+            let stlr = try _STLR.build(testGrammarName+source)
+            
+            let ast = stlr.grammar
+            
+            XCTAssert(ast.rules.count == 3, "Found \(ast.rules.count) rules when there should be 1")
+            XCTAssert(ast.rules[0].identifier == "ws")
+            XCTAssert(ast.rules[1].identifier  == "whitespace")
+            XCTAssert(ast.rules[2].identifier == "word")
+            
+            do {
+                try checkGeneratedLanguage(language: Parser(grammar: ast.dynamicRules), on: "hello world", expecting: ["word","whitespace","word"])
+            } catch (let error) {
+                XCTFail("\(error)")
+            }
+
         }
     }
     
     func testRuleWithIdentifier(){
-        source.add(line: "x = y")
-        
-        let stlr = STLRParser(source: testGrammarName+source)
-        
-        let ast = stlr.ast
-        
-        XCTAssert(ast.rules.count == 1, "Found \(ast.rules.count) rules when there should be 1")
-        
-        if ast.rules.count < 1 {
-            return
+        net(){
+            source.add(line: "x = y")
+            
+            let stlr = try _STLR.build(testGrammarName+source)
+            
+            let ast = stlr.grammar
+            
+            XCTAssert(ast.rules.count == 1, "Found \(ast.rules.count) rules when there should be 1")
+            
+            if ast.rules.count < 1 {
+                return
+            }
+            
+            XCTAssert(ast.rules[0].identifier == "x")
         }
-        
-        XCTAssert(ast.rules[0].identifier?.name ?? "fail" == "x")
     }
     
 
@@ -334,60 +354,56 @@ class GrammarTest: XCTestCase {
     
     
     func testTerminal() {
-        source.add(line: "x = \"x\"")
-        source.add(line: "y = \"y\"")
-        source.add(line: "z=\"z\"")
-
-        let stlr = STLRParser(source: testGrammarName+source)
-
-        let ast = stlr.ast
-
-        XCTAssert(ast.rules.count == 3, "Found \(ast.rules.count) rules when there should be 3")
-        
-        if ast.rules.count < 3 {
-            return
-        }
-
-        XCTAssert(ast.rules[0].identifier?.name ?? "fail" == "x")
-        XCTAssert(ast.rules[1].identifier?.name ?? "fail" == "y")
-        XCTAssert(ast.rules[2].identifier?.name ?? "fail" == "z")
-    }
-    
-    func testUnknownCharacterSet(){
-        source.add(line: "hello = \"hello\" .whiteSpacesAndNewlines")
-        
-        let parser = STLRParser(source: testGrammarName+source)
-        
-        guard let rootError = parser.ast.errors.first as? AbstractSyntaxTreeConstructor.ConstructionError  else {
-            XCTFail("Expected a root error")
-            return
-        }
-        
-        if case .constructionFailed(let errors) = rootError {
-            guard errors.count == 4 else {
-                XCTFail("Expected 4 errors but got \(errors.count)\n\(errors)")
+        net(){
+            source.add(line: "x = \"x\"")
+            source.add(line: "y = \"y\"")
+            source.add(line: "z=\"z\"")
+            
+            let stlr = try _STLR.build(testGrammarName+source)
+            
+            let ast = stlr.grammar
+            
+            XCTAssert(ast.rules.count == 3, "Found \(ast.rules.count) rules when there should be 3")
+            
+            if ast.rules.count < 3 {
                 return
             }
             
-            XCTAssert("\(errors[0])".hasPrefix("Unknown character set"),"Incorrect error \(parser.ast.errors[0])")
-            XCTAssert("\(errors[1])".hasPrefix("Expected expression"),"Incorrect error \(parser.ast.errors[0])")
-        } else {
+            XCTAssert(ast.rules[0].identifier == "x")
+            XCTAssert(ast.rules[1].identifier == "y")
+            XCTAssert(ast.rules[2].identifier == "z")
+        }
+    }
+    
+    func testUnknownCharacterSet(){
+        do{
+            source.add(line: "hello = \"hello\" .whiteSpacesAndNewlines")
+            
+            _ = try _STLR.build(testGrammarName+source)
+            
+            XCTFail("Expected an error")
+        } catch AbstractSyntaxTreeConstructor.ConstructionError.constructionFailed(let causes) {
+            
+            guard causes.count == 4 else {
+                XCTFail("Expected 4 errors but got \(causes.count)\n\(causes)")
+                return
+            }
+
+            XCTAssert("\(causes[0])".hasPrefix("Unknown character set"),"Incorrect error \(causes[0])")
+            XCTAssert("\(causes[1])".hasPrefix("Expected expression"),"Incorrect error \(causes[1])")
+        } catch {
             XCTFail("Incorrect error type")
         }
-        
     }
     
     func testUnterminatedString(){
-        source.add(line: "hello = \"hello")
-        
-        let parser = STLRParser(source: testGrammarName+source)
-        
-        guard let rootError = parser.ast.errors.first as? AbstractSyntaxTreeConstructor.ConstructionError  else {
-            XCTFail("Expected a root error")
-            return
-        }
-        
-        if case .constructionFailed(let errors) = rootError {
+        do {
+            source.add(line: "hello = \"hello")
+            
+            _ = try _STLR.build(testGrammarName+source)
+
+            XCTFail("Expected an error")
+        } catch AbstractSyntaxTreeConstructor.ConstructionError.constructionFailed(let errors){
             guard errors.count == 4 else {
                 XCTFail("Expected 4 errors but got \(errors.count)\n\(errors)")
                 return
@@ -395,58 +411,52 @@ class GrammarTest: XCTestCase {
             
             XCTAssert("\(errors[0])".hasPrefix("Missing terminating quote"),"Incorrect error \(errors[0])")
             XCTAssert("\(errors[1])".hasPrefix("Expected expression"),"Incorrect error \(errors[0])")
-        } else {
+        } catch {
             XCTFail("Incorrect error type")
         }
+        
     }
     
     
     func testAnnotationsOnIdentifiers(){
-        source.add(line: "x = \"x\"")
-        source.add(line: "xyz = @error(\"Expected X\")\nx \"y\" \"z\"")
-        
-        let parser = STLRParser(source: testGrammarName+source)
-        
-        guard let compiledLanguage = parser.ast.runtimeLanguage else {
-            XCTFail("Could not compile")
-            return
-        }
-        
+        let parser : _STLR
         do {
-            let _ = try AbstractSyntaxTreeConstructor().build("yz", using: compiledLanguage)
+            source.add(line: "x = \"x\"")
+            source.add(line: "xyz = @error(\"Expected X\")\nx \"y\" \"z\"")
+            
+            parser = try _STLR.build(testGrammarName+source)
+            
+            let compiledLanguage = Parser(grammar:parser.grammar.dynamicRules)
+            
+            _ = try AbstractSyntaxTreeConstructor().build("yz", using: compiledLanguage)
+
+            XCTFail("Expected an error \(parser.grammar.rules[1])")
         } catch AbstractSyntaxTreeConstructor.ConstructionError.constructionFailed(let errors) {
-            guard let error = errors.first else {
-                XCTFail("Expected an error \(parser.ast.rules[1])")
-                return
-            }
-            XCTAssert("\(error)".hasPrefix("Expected X"),"Incorrect error \(error)")
+            XCTAssert("\(errors[0])".hasPrefix("Expected X"),"Incorrect error \(errors)")
         } catch {
             XCTFail("Unexpected error \(error)")
         }
     }
     
     func testAnnotationsOnGroups(){
-        source.add(line: "x = \"x\"")
-        source.add(line: "xyz = @error(\"Expected xy\")(@error(\"Expected x\")x \"y\") \"z\"")
-        
-        let parser = STLRParser(source: testGrammarName+source)
-        
-        guard let compiledLanguage = parser.ast.runtimeLanguage else {
-            XCTFail("Could not compile")
-            return
-        }
-        
-        do {
-            let _ = try AbstractSyntaxTreeConstructor().build("yz", using: compiledLanguage)
-            XCTFail("Expected an error \(parser.ast.rules[rangeChecked: 1]?.description ?? "but the rule is missing")")
-        } catch AbstractSyntaxTreeConstructor.ConstructionError.constructionFailed(let errors) {
-            guard let error = errors.first else {
-                XCTFail("Expected an error \(parser.ast.rules[1])")
-                return
+        net(){
+            source.add(line: "x = \"x\"")
+            source.add(line: "xyz = @error(\"Expected xy\")(@error(\"Expected x\")x \"y\") \"z\"")
+            
+            let parser = try _STLR.build(testGrammarName+source)
+            
+            do {
+                let _ = try AbstractSyntaxTreeConstructor().build("yz", using: Parser(grammar: parser.grammar.dynamicRules))
+                XCTFail("Expected an error \(parser.grammar.rules[rangeChecked: 1]?.description ?? "but the rule is missing")")
+            } catch AbstractSyntaxTreeConstructor.ConstructionError.constructionFailed(let errors) {
+                guard let error = errors.first else {
+                    XCTFail("Expected an error \(parser.grammar.rules[1])")
+                    return
+                }
+                XCTAssert("\(error)".hasPrefix("Expected x"),"Incorrect error \(error)")
+            } catch {
+                XCTFail("Unexpected error \(error)")
             }
-            XCTAssert("\(error)".hasPrefix("Expected x"),"Incorrect error \(error)")
-        } catch {
-            XCTFail("Unexpected error \(error)")
         }
         
     }
