@@ -231,20 +231,20 @@ class GrammarTest: XCTestCase {
     func testRecursiveRule(){
         net(){
             source.add(line: "x = \"x\"")
-            source.add(line: "justX = x")
             source.add(line: "xy = x \"y\"")
+            source.add(line: "justX = x")
             
             let stlr = try _STLR.build(testGrammarName+source)
             
             let ast = stlr.grammar
             
-            XCTAssert(ast.rules.count == 3, "Found \(ast.rules.count) rules when there should be 1")
-            XCTAssert(ast.rules[0].identifier == "x")
-            XCTAssert(ast.rules[1].identifier == "justX")
-            XCTAssert(ast.rules[2].identifier == "xy")
+            XCTAssertEqual(3,ast.rules.count)
+            XCTAssertEqual(ast.rules[0].identifier,"x")
+            XCTAssertEqual(ast.rules[2].identifier,"justX")
+            XCTAssertEqual(ast.rules[1].identifier,"xy")
             
             do {
-                try checkGeneratedLanguage(language: Parser(grammar: ast.dynamicRules), on: "xyx", expecting: ["justX","xy"])
+                try checkGeneratedLanguage(language: Parser(grammar: ast.dynamicRules), on: "xyx", expecting: ["xy","justX"])
             } catch (let error) {
                 XCTFail("\(error)")
             }

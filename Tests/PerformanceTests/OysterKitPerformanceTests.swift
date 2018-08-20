@@ -847,7 +847,7 @@ class FullSwiftParser : Parser{
     }
     
     func testPerformanceOfScanString() {
-        let sourceLength = 200000
+        let sourceLength = 100000
         
         var source = ""
         
