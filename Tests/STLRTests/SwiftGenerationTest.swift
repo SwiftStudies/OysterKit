@@ -37,25 +37,25 @@ class SwiftGenerationTest: XCTestCase {
     }
     
     func swift(for source:String, desiredIdentifier identifierName:String)throws ->String {
-        let ast = STLRParser(source: "grammar SwiftGenerationTest\n"+source).ast
+        let ast = try _STLR.build("grammar SwiftGenerationTest\n"+source).grammar
         
-        guard let identifier = ast.identifiers[identifierName] else {
-            throw TestError.expected("Missing identifier \(identifierName)")
-        }
-
-        let swift = identifier.swift(from: ast, creating: Tokens.tokenA).trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).replacingOccurrences(of: "\n", with: "").replacingOccurrences(of: "\t", with: "")
+        let identifier = ast[identifierName]
+    
+        let file = TextFile("Test")
+        let swift = identifier.swift(in: file).content.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).replacingOccurrences(of: "\n", with: "").replacingOccurrences(of: "\t", with: "")
         
         return swift
     }
     
     func swift(for source:String, desiredRule rule: Int = 0)throws ->String {
-        let ast = STLRParser(source: "grammar SwiftGenerationTest\n"+source).ast
+        let ast = try _STLR.build("grammar SwiftGenerationTest\n"+source).grammar
         
         if ast.rules.count <= rule {
             throw TestError.expected("at least \(rule + 1) rule, but got \(ast.rules.count)")
         }
         
-        let swift = ast.rules[rule].swift(depth: 0, from: ast, creating: Tokens.tokenA , annotations: []).trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).replacingOccurrences(of: "\n", with: "").replacingOccurrences(of: "\t", with: "")
+        let file = TextFile("Test")
+        let swift = ast.rules[rule].swift(in: file).content.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).replacingOccurrences(of: "\n", with: "").replacingOccurrences(of: "\t", with: "")
         
         return swift
     }
@@ -298,51 +298,67 @@ class SwiftGenerationTest: XCTestCase {
     }
     
     func testIdentifierAndReference(){
-        let stlrSource = """
+        do {
+            let stlrSource = """
             grammar SwiftGenerationTest
             @void id    = @error("Expected id") "id"
             declaration = @error("Declaration requires id") id
 """
-        
-        let ast = STLRParser.init(source: stlrSource).ast
-        
-        let idSwift = ast.identifiers["id"]?.swift(from: ast, creating: TestTokens.testToken) ?? "nil"
-        let declarationSwift = ast.identifiers["declaration"]?.swift(from: ast, creating: TestTokens.testToken) ?? "nil"
-        
-        XCTAssertEqual(idSwift, "\t\t\t\t\t\t\t\t\t\"id\".terminal(token: T.testToken, annotations: annotations.isEmpty ? [RuleAnnotation.error : RuleAnnotationValue.string(\"Expected id\"),RuleAnnotation.void : RuleAnnotationValue.set] : annotations)\n\n\n")
-        XCTAssertEqual(declarationSwift, "\t\t\t\t\t[T.id._rule([RuleAnnotation.void : RuleAnnotationValue.set,RuleAnnotation.error : RuleAnnotationValue.string(\"Declaration requires id\")])].sequence(token: self)\n\n")
+            
+            let ast = try _STLR.build(stlrSource).grammar
+            
+            var file = TextFile("Test")
+            let idSwift = ast["id"].swift(in: file).content
+            
+            file = TextFile("Test")
+            let declarationSwift = ast["declaration"].swift(in: file).content
+            
+            XCTAssertEqual(idSwift, "\t\t\t\t\t\t\t\t\t\"id\".terminal(token: T.testToken, annotations: annotations.isEmpty ? [RuleAnnotation.error : RuleAnnotationValue.string(\"Expected id\"),RuleAnnotation.void : RuleAnnotationValue.set] : annotations)\n\n\n")
+            XCTAssertEqual(declarationSwift, "\t\t\t\t\t[T.id._rule([RuleAnnotation.void : RuleAnnotationValue.set,RuleAnnotation.error : RuleAnnotationValue.string(\"Declaration requires id\")])].sequence(token: self)\n\n")
+
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
     }
     
     func testIdentifierAndReferenceInSequence(){
-        let stlrSource = """
+        do {
+            let stlrSource = """
             grammar SwiftGenerationTest
             @void id    = @error("Expected id") "id"
             declaration = @error("Declaration requires id") id .letter
 """
-        
-        let ast = STLRParser.init(source: stlrSource).ast
-        
-        let idSwift = ast.identifiers["id"]?.swift(from: ast, creating: TestTokens.testToken) ?? "nil"
-        let declarationSwift = ast.identifiers["declaration"]?.swift(from: ast, creating: TestTokens.testToken) ?? "nil"
-        
-        XCTAssertEqual(idSwift, "\t\t\t\t\t\t\t\t\t\"id\".terminal(token: T.testToken, annotations: annotations.isEmpty ? [RuleAnnotation.error : RuleAnnotationValue.string(\"Expected id\"),RuleAnnotation.void : RuleAnnotationValue.set] : annotations)\n\n\n")
-        XCTAssertEqual(declarationSwift, "\t\t\t\t\t[\n\t\t\tT.id._rule([RuleAnnotation.void : RuleAnnotationValue.set,RuleAnnotation.error : RuleAnnotationValue.string(\"Declaration requires id\")]),\n\t\t\tCharacterSet.letters.terminal(token: T._transient),\n\t\t\t].sequence(token: T.testToken, annotations: annotations.isEmpty ? [ : ] : annotations)\n\n")
+            
+            let ast = try _STLR.build(stlrSource).grammar
+            
+            let idSwift = ast["id"].swift(in: TextFile("Test")).content
+            let declarationSwift = ast["declaration"].swift(in: TextFile("")).content
+            
+            XCTAssertEqual(idSwift, "\t\t\t\t\t\t\t\t\t\"id\".terminal(token: T.testToken, annotations: annotations.isEmpty ? [RuleAnnotation.error : RuleAnnotationValue.string(\"Expected id\"),RuleAnnotation.void : RuleAnnotationValue.set] : annotations)\n\n\n")
+            XCTAssertEqual(declarationSwift, "\t\t\t\t\t[\n\t\t\tT.id._rule([RuleAnnotation.void : RuleAnnotationValue.set,RuleAnnotation.error : RuleAnnotationValue.string(\"Declaration requires id\")]),\n\t\t\tCharacterSet.letters.terminal(token: T._transient),\n\t\t\t].sequence(token: T.testToken, annotations: annotations.isEmpty ? [ : ] : annotations)\n\n")
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
     }
     
     func testIdentifierAndReferenceInGroupedSequence(){
-        let stlrSource = """
+        do {
+            let stlrSource = """
             grammar SwiftGenerationTest
             @void id    = @error("Expected id") "id"
             declaration = (@error("Declaration requires id") id .letter) .letter+
 """
-        
-        let ast = STLRParser.init(source: stlrSource).ast
-        
-        let idSwift = ast.identifiers["id"]?.swift(from: ast, creating: TestTokens.testToken) ?? "nil"
-        let declarationSwift = ast.identifiers["declaration"]?.swift(from: ast, creating: TestTokens.testToken) ?? "nil"
-        
-        XCTAssertEqual(idSwift, "\t\t\t\t\t\t\t\t\t\"id\".terminal(token: T.testToken, annotations: annotations.isEmpty ? [RuleAnnotation.error : RuleAnnotationValue.string(\"Expected id\"),RuleAnnotation.void : RuleAnnotationValue.set] : annotations)\n\n\n")
-        XCTAssertEqual(declarationSwift, "\t\t\t\t\t[\n\t\t\t[\n\t\t\t\t\t\t\tT.id._rule([RuleAnnotation.void : RuleAnnotationValue.set,RuleAnnotation.error : RuleAnnotationValue.string(\"Declaration requires id\")]),\n\t\t\t\t\t\t\tCharacterSet.letters.terminal(token: T._transient),\n\t\t\t\t\t\t\t].sequence(token: T._transient),\n\t\t\tCharacterSet.letters.terminal(token: T._transient).repeated(min: 1, producing: T._transient),\n\t\t\t].sequence(token: T.testToken, annotations: annotations.isEmpty ? [ : ] : annotations)\n\n")
+            
+            let ast = try _STLR.build(stlrSource).grammar
+            
+            let idSwift = ast["id"].swift(in:TextFile("")).content
+            let declarationSwift = ast["declaration"].swift(in: TextFile("")).content
+            
+            XCTAssertEqual(idSwift, "\t\t\t\t\t\t\t\t\t\"id\".terminal(token: T.testToken, annotations: annotations.isEmpty ? [RuleAnnotation.error : RuleAnnotationValue.string(\"Expected id\"),RuleAnnotation.void : RuleAnnotationValue.set] : annotations)\n\n\n")
+            XCTAssertEqual(declarationSwift, "\t\t\t\t\t[\n\t\t\t[\n\t\t\t\t\t\t\tT.id._rule([RuleAnnotation.void : RuleAnnotationValue.set,RuleAnnotation.error : RuleAnnotationValue.string(\"Declaration requires id\")]),\n\t\t\t\t\t\t\tCharacterSet.letters.terminal(token: T._transient),\n\t\t\t\t\t\t\t].sequence(token: T._transient),\n\t\t\tCharacterSet.letters.terminal(token: T._transient).repeated(min: 1, producing: T._transient),\n\t\t\t].sequence(token: T.testToken, annotations: annotations.isEmpty ? [ : ] : annotations)\n\n")
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
     }
     
 }

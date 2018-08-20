@@ -337,6 +337,17 @@ fileprivate extension _STLR.Label {
     }
 }
 
+internal extension Array where Element == _STLR.Annotation {
+    /// The annotations on the element with any that would be captured in `Behaviour` removed (@token, @transient, @void)
+    internal var unfilteredRuleAnnotationsForTesting : RuleAnnotations {        
+        var ruleAnnotations = [RuleAnnotation : RuleAnnotationValue]()
+        for annotation in self {
+            ruleAnnotations[annotation.ruleAnnotation]  = annotation.ruleAnnotationValue
+        }
+        return ruleAnnotations
+    }
+}
+
 public extension Array where Element == _STLR.Annotation {
     
     private subscript(_ desiredAnnotation:RuleAnnotation)->RuleAnnotationValue?{

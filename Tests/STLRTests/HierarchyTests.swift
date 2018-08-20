@@ -28,46 +28,46 @@ import STLR
 
 class HierarchyTests: XCTestCase {
 
-    func testExample() {
-        //#warning("Test disabled pending implementation")
-        return
-        
-        guard let grammarSource = try? String(contentsOfFile: "/Volumes/Personal/SPM/XMLDecoder/XML.stlr") else {
-            fatalError("Could not load grammar")
-        }
-        
-        let xmlLanguage : Language
-        
-        do {
-            xmlLanguage = try Parser(grammar: _STLR.build(grammarSource).grammar.dynamicRules)
-
-        } catch {
-            fatalError("Could not create language")
-        }
-        
-        let xmlSource = """
-<message subject='Hello, OysterKit!' priority="High">
-    It's really <i>good</i> to meet you,
-    <p />
-    I hope you are settling in OK, let me know if you need anything.
-    <p />
-    Phatom Testers
-</message>
-"""
-        for _ in xmlLanguage.grammar {
-//            print("Rule:\n\t\(rule)")
-        }
-
-        do {
-            _ = try AbstractSyntaxTreeConstructor().build(xmlSource, using: XML.grammar.language)
-//            print(tree.description)
-        } catch {
-//            print(error)
-            XCTFail("Could not parse source"); return
-        }
-        
-//        print(STLRParser.init(source: grammarSource).ast.swift(grammar: "XML")!)
-    }
+    #warning("Test disabled pending implementation")
+//    func testExample() {
+//        return
+//        
+//        guard let grammarSource = try? String(contentsOfFile: "/Volumes/Personal/SPM/XMLDecoder/XML.stlr") else {
+//            fatalError("Could not load grammar")
+//        }
+//        
+//        let xmlLanguage : Language
+//        
+//        do {
+//            xmlLanguage = try Parser(grammar: _STLR.build(grammarSource).grammar.dynamicRules)
+//
+//        } catch {
+//            fatalError("Could not create language")
+//        }
+//        
+//        let xmlSource = """
+//<message subject='Hello, OysterKit!' priority="High">
+//    It's really <i>good</i> to meet you,
+//    <p />
+//    I hope you are settling in OK, let me know if you need anything.
+//    <p />
+//    Phatom Testers
+//</message>
+//"""
+//        for _ in xmlLanguage.grammar {
+////            print("Rule:\n\t\(rule)")
+//        }
+//
+//        do {
+//            _ = try AbstractSyntaxTreeConstructor().build(xmlSource, using: XML.grammar.language)
+////            print(tree.description)
+//        } catch {
+////            print(error)
+//            XCTFail("Could not parse source"); return
+//        }
+//        
+////        print(STLRParser.init(source: grammarSource).ast.swift(grammar: "XML")!)
+//    }
     
     let xmlStlr = """
 //
