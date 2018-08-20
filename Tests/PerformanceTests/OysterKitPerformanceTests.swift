@@ -877,7 +877,7 @@ class FullSwiftParser : Parser{
     
     
     func testPerformanceOfScanCharacterInSet() {
-        let sourceLength = 750000
+        let sourceLength = 500000
         let source = String(repeating: "a", count: sourceLength)
         
         let characterSet = CharacterSet(charactersIn: "a")

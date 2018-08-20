@@ -130,7 +130,11 @@ extension _STLR.Element {
     @discardableResult
     func swift(in file:TextFile)->TextFile{
         if let group = group {
-            file.printFile(group.expression.swift(in: TextFile()))
+            var expression = group.expression.swift(in: TextFile()).content
+            if let annotations = annotations?.swift {
+                expression = expression.dropLast() + ".annotatedWith(\(annotations))\n"
+            }
+            file.printBlock(expression)
             return file
         }
         
@@ -165,7 +169,11 @@ extension _STLR.Element {
         }
         
         if let annotations = annotations?.swift {
-            file.print(terminator: "", ".annotatedWith(\(annotations))")
+            if let identifier = identifier {
+                file.print(terminator: "", ".annotatedWith(T.\(identifier).rule.annotations.merge(with:'(\(annotations))))")
+            } else {
+                file.print(terminator: "", ".annotatedWith(\(annotations))")
+            }
         }
         
         file.print("")
@@ -230,7 +238,7 @@ extension _STLR.Terminal {
                 return "CharacterSet\(self)s"
             }
         case .regex(let regex):
-            return "T.regularExpression(\"\(regex)\"))"
+            return "T.regularExpression(\"^\(regex.dropFirst().dropLast())\"))"
         case .terminalString(let terminalString):
             return terminalString.terminalBody.debugDescription
         case .characterRange(let characterRange):
