@@ -106,15 +106,19 @@ class FixValidations: XCTestCase {
     // generated hierarchy has an additional layer
     //
     func testTokenOverride(){
-        let source = testGrammarName+"""
-letter          = .letter
-doubleLetter    = letter "+" letter
-phrase          = doubleLetter .whitespace @token("doubleLetter2") doubleLetter
-"""
-        let compiled = STLRParser(source: source)
+        do {
+            let source = testGrammarName+"""
+            letter          = .letter
+            doubleLetter    = letter "+" letter
+            phrase          = doubleLetter .whitespace @token("doubleLetter2") doubleLetter
+            """
+            let compiled = try _STLR.build(source)
         
-        print()
-        
-        XCTAssertEqual(compiled.ast.identifiers["doubleLetter"]!.grammarRule!.expression!.description, compiled.ast.identifiers["doubleLetter2"]!.grammarRule!.expression!.description)
+//            print()
+            
+            XCTAssertEqual(compiled.grammar["doubleLetter"].expression.description, compiled.grammar["doubleLetter2"].expression.description)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 }

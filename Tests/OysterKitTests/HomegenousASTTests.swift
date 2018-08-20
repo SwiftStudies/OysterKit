@@ -12,168 +12,197 @@ import OysterKit
 // XML Parser
 //
 enum XMLGenerated : Int, Token {
+    typealias T = XMLGenerated
     
-    // Convenience alias
-    private typealias T = XMLGenerated
+    // Cache for compiled regular expressions
+    private static var regularExpressionCache = [String : NSRegularExpression]()
     
-    case _transient = -1, `ws`, `identifer`, `singleQuote`, `doubleQuote`, `value`, `attribute`, `attributes`, `data`, `openTag`, `closeTag`, `inlineTag`, `nestingTag`, `tag`, `contents`, `xml`
+    /// Returns a pre-compiled pattern from the cache, or if not in the cache builds
+    /// the pattern, caches and returns the regular expression
+    ///
+    /// - Parameter pattern: The pattern the should be built
+    /// - Returns: A compiled version of the pattern
+    ///
+    private static func regularExpression(_ pattern:String)->NSRegularExpression{
+        if let cached = regularExpressionCache[pattern] {
+            return cached
+        }
+        do {
+            let new = try NSRegularExpression(pattern: pattern, options: [])
+            regularExpressionCache[pattern] = new
+            return new
+        } catch {
+            fatalError("Failed to compile pattern /\(pattern)/\n\(error)")
+        }
+    }
+    /// The tokens defined by the grammar
+    case `ws`, `identifier`, `singleQuote`, `doubleQuote`, `value`, `attribute`, `attributes`, `data`, `openTag`, `closeTag`, `inlineTag`, `nestingTag`, `tag`, `contents`, `xml`
     
-    func _rule(_ annotations: RuleAnnotations = [ : ])->Rule {
+    /// The rule for the token
+    var rule : BehaviouralRule {
         switch self {
-        case ._transient:
-            return CharacterSet(charactersIn: "").terminal(token: T._transient)
-        // ws
+        /// ws
         case .ws:
-            return CharacterSet.whitespacesAndNewlines.terminal(token: T.ws, annotations: annotations.isEmpty ? [RuleAnnotation.void : RuleAnnotationValue.set] : annotations)
-        // identifer
-        case .identifer:
+            return -[
+                CharacterSet.whitespacesAndNewlines.require(.one)
+                ].sequence
+            
+        /// identifier
+        case .identifier:
             return [
-                CharacterSet.letters.terminal(token: T._transient),
                 [
-                    CharacterSet.letters.terminal(token: T._transient),
+                    CharacterSet.letters.require(.one),
                     [
-                        "-".terminal(token: T._transient),
-                        CharacterSet.letters.terminal(token: T._transient),
-                        ].sequence(token: T._transient),
-                    ].oneOf(token: T._transient).repeated(min: 0, producing: T._transient),
-                ].sequence(token: T.identifer, annotations: annotations.isEmpty ? [ : ] : annotations)
-        // singleQuote
+                        CharacterSet.letters.require(.one),
+                        [
+                            "-".require(.one),
+                            CharacterSet.letters.require(.one)].sequence
+                        ].choice
+                    ].sequence
+                
+                ].sequence.parse(as: self)
+            
+        /// singleQuote
         case .singleQuote:
-            return "'".terminal(token: T.singleQuote, annotations: annotations)
-        // doubleQuote
+            return [
+                "\'".require(.one)
+                ].sequence.parse(as: self)
+            
+        /// doubleQuote
         case .doubleQuote:
-            return "\"".terminal(token: T.doubleQuote, annotations: annotations)
-        // value
+            return [
+                "\\\"".require(.one)
+                ].sequence.parse(as: self)
+            
+        /// value
         case .value:
             return [
                 [
-                    T.singleQuote._rule([RuleAnnotation.transient : RuleAnnotationValue.set]),
-                    T.singleQuote._rule().not(producing: T._transient).repeated(min: 0, producing: T._transient),
-                    T.singleQuote._rule([RuleAnnotation.error : RuleAnnotationValue.string("Expected closing '"),RuleAnnotation.transient : RuleAnnotationValue.set]),
-                    ].sequence(token: T._transient),
-                [
-                    T.doubleQuote._rule([RuleAnnotation.transient : RuleAnnotationValue.set]),
-                    T.doubleQuote._rule().not(producing: T._transient).repeated(min: 0, producing: T._transient),
-                    T.doubleQuote._rule([RuleAnnotation.error : RuleAnnotationValue.string("Expected closing \""),RuleAnnotation.transient : RuleAnnotationValue.set]),
-                    ].sequence(token: T._transient),
-                ].oneOf(token: T.value, annotations: annotations)
-        // attribute
+                    [
+                        -T.singleQuote.rule.require(.one),
+                        !T.singleQuote.rule.require(.noneOrMore),
+                        -T.singleQuote.rule.require(.one)].sequence
+                    ,
+                    [
+                        -T.doubleQuote.rule.require(.one),
+                        !T.doubleQuote.rule.require(.noneOrMore),
+                        -T.doubleQuote.rule.require(.one)].sequence
+                    ].choice
+                
+                ].sequence.parse(as: self)
+            
+        /// attribute
         case .attribute:
             return [
-                T.ws._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 1, producing: T._transient),
-                T.identifer._rule(),
                 [
-                    T.ws._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T._transient),
-                    "=".terminal(token: T._transient, annotations: [RuleAnnotation.transient : RuleAnnotationValue.set]),
-                    T.ws._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T._transient),
-                    T.value._rule(),
-                    ].sequence(token: T._transient).optional(producing: T._transient),
-                ].sequence(token: T.attribute, annotations: annotations.isEmpty ? [ : ] : annotations)
-        // attributes
+                    T.ws.rule.require(.oneOrMore),
+                    T.identifier.rule.require(.one),
+                    [
+                        T.ws.rule.require(.noneOrMore),
+                        -"=".require(.one),
+                        T.ws.rule.require(.noneOrMore),
+                        T.value.rule.require(.one)].sequence
+                    ].sequence
+                
+                ].sequence.parse(as: self)
+            
+        /// attributes
         case .attributes:
-            return T.attribute._rule().repeated(min: 1, producing: T.attributes, annotations: annotations)
-        // data
+            return [
+                T.attribute.rule.require(.oneOrMore)
+                ].sequence.parse(as: self)
+            
+        /// data
         case .data:
-            return "<".terminal(token: T._transient, annotations: annotations).not(producing: T._transient, annotations: annotations).repeated(min: 1, producing: T.data, annotations: annotations)
-        // openTag
+            return [
+                !"<".require(.oneOrMore)
+                ].sequence.parse(as: self)
+            
+        /// openTag
         case .openTag:
             return [
-                T.ws._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T._transient),
-                "<".terminal(token: T._transient, annotations: [RuleAnnotation.transient : RuleAnnotationValue.set]),
-                T.identifer._rule(),
                 [
-                    T.attributes._rule(),
-                    T.ws._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T._transient),
-                    ].oneOf(token: T._transient),
-                ">".terminal(token: T._transient, annotations: [RuleAnnotation.transient : RuleAnnotationValue.set]),
-                ].sequence(token: T.openTag, annotations: annotations.isEmpty ? [ : ] : annotations)
-        // closeTag
+                    T.ws.rule.require(.noneOrMore),
+                    -"<".require(.one),
+                    T.identifier.rule.require(.one),
+                    [
+                        T.attributes.rule.require(.one),
+                        T.ws.rule.require(.noneOrMore)].choice
+                    ,
+                    -">".require(.one)].sequence
+                
+                ].sequence.parse(as: self)
+            
+        /// closeTag
         case .closeTag:
-            return [
-                T.ws._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T._transient),
-                "</".terminal(token: T._transient, annotations: [RuleAnnotation.transient : RuleAnnotationValue.set]),
-                T.identifer._rule(),
-                T.ws._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T._transient),
-                ">".terminal(token: T._transient, annotations: [RuleAnnotation.transient : RuleAnnotationValue.set]),
-                ].sequence(token: T.closeTag, annotations: annotations.isEmpty ? [ : ] : annotations)
-        // inlineTag
+            return -[
+                [
+                    T.ws.rule.require(.noneOrMore),
+                    -"</".require(.one),
+                    T.identifier.rule.require(.one),
+                    T.ws.rule.require(.noneOrMore),
+                    -">".require(.one)].sequence
+                
+                ].sequence
+            
+        /// inlineTag
         case .inlineTag:
             return [
-                T.ws._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T._transient),
-                "<".terminal(token: T._transient, annotations: [RuleAnnotation.transient : RuleAnnotationValue.set]),
-                T.identifer._rule(),
                 [
-                    T.attribute._rule().repeated(min: 1, producing: T._transient),
-                    T.ws._rule([RuleAnnotation.void : RuleAnnotationValue.set]).repeated(min: 0, producing: T._transient),
-                    ].oneOf(token: T._transient),
-                "/>".terminal(token: T._transient, annotations: [RuleAnnotation.transient : RuleAnnotationValue.set]),
-                ].sequence(token: T.inlineTag, annotations: annotations.isEmpty ? [ RuleAnnotation.transient : RuleAnnotationValue.set ] : annotations)
-        // nestingTag
+                    T.ws.rule.require(.noneOrMore),
+                    -"<".require(.one),
+                    T.identifier.rule.require(.one),
+                    [
+                        T.attribute.rule.require(.oneOrMore),
+                        T.ws.rule.require(.noneOrMore)].choice
+                    ,
+                    -"/>".require(.one)].sequence
+                
+                ].sequence.parse(as: self)
+            
+        /// nestingTag
         case .nestingTag:
-            guard let cachedRule = XMLGenerated.leftHandRecursiveRules[self.rawValue] else {
-                // Create recursive shell
-                let recursiveRule = RecursiveRule(stubFor: self, with: annotations.isEmpty ? [ : ] : annotations)
-                XMLGenerated.leftHandRecursiveRules[self.rawValue] = recursiveRule
-                // Create the rule we would normally generate
-                let rule = [
-                    T.openTag._rule(),
-                    T.contents._rule().repeated(min: 0, producing: T._transient),
-                    T.closeTag._rule([RuleAnnotation.error : RuleAnnotationValue.string("Expected closing tag")]),
-                    ].sequence(token: T.nestingTag, annotations: [ : ])
-                recursiveRule.surrogateRule = rule
-                return recursiveRule
-            }
-            return cachedRule
-        // tag
+            return [
+                [
+                    ~T.openTag.rule.require(.one),
+                    T.contents.rule.require(.one),
+                    T.closeTag.rule.require(.one)].sequence
+                
+                ].sequence.parse(as: self)
+            
+        /// tag
         case .tag:
-            guard let cachedRule = XMLGenerated.leftHandRecursiveRules[self.rawValue] else {
-                // Create recursive shell
-                let recursiveRule = RecursiveRule(stubFor: self, with: annotations)
-                XMLGenerated.leftHandRecursiveRules[self.rawValue] = recursiveRule
-                // Create the rule we would normally generate
-                let rule = [
-                    T.nestingTag._rule(),
-                    T.inlineTag._rule(),
-                    ].oneOf(token: T._transient, annotations: [:])
-                recursiveRule.surrogateRule = rule
-                return recursiveRule
-            }
-            return cachedRule
-        // contents
+            return [
+                [
+                    ~T.nestingTag.rule.require(.one),
+                    ~T.inlineTag.rule.require(.one)].choice
+                
+                ].sequence.parse(as: self)
+            
+        /// contents
         case .contents:
-            guard let cachedRule = XMLGenerated.leftHandRecursiveRules[self.rawValue] else {
-                // Create recursive shell
-                let recursiveRule = RecursiveRule(stubFor: self, with: annotations)
-                XMLGenerated.leftHandRecursiveRules[self.rawValue] = recursiveRule
-                // Create the rule we would normally generate
-                let rule = [
-                    T.data._rule(),
-                    T.tag._rule(),
-                    ].oneOf(token: T._transient, annotations: [:])
-                recursiveRule.surrogateRule = rule
-                return recursiveRule
-            }
-            return cachedRule
-        // xml
+            return [
+                [
+                    T.data.rule.require(.one),
+                    T.tag.rule.require(.one)].choice
+                
+                ].sequence.parse(as: self)
+            
+        /// xml
         case .xml:
-            return [T.tag._rule()].sequence(token: self)
+            return [
+                T.tag.rule.require(.one)
+                ].sequence.parse(as: self)
+            
         }
     }
     
-    
-    // Cache for left-hand recursive rules
-    private static var leftHandRecursiveRules = [ Int : Rule ]()
-    
-    // Create a language that can be used for parsing etc
-    public static var generatedLanguage : Parser {
-        return Parser(grammar: [T.xml._rule()])
-    }
-    
-    // Convient way to apply your grammar to a string
-    public static func parse(source: String) -> HomogenousTree {
-        return try! AbstractSyntaxTreeConstructor().build(source, using: XMLGenerated.generatedLanguage)
+    /// Create a language that can be used for parsing etc
+    public static var grammar: [Rule] {
+        return [T.xml.rule]
     }
 }
+
 
 class HomegenousASTTests: XCTestCase {
 

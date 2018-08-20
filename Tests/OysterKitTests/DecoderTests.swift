@@ -221,25 +221,28 @@ class DecoderTests: XCTestCase {
         
     }
     
+    
+    
     func testNestedUnkeyed(){
+        let arrayEntry = [
+            OneOfEverythingGrammar.oneOfEverything.rule.parse(as: LabelledToken(withLabel: "entry")),
+            -",".require(.optionally)
+        ].sequence
         
         
-        
-        let rules : [Rule] = [
-            ParserRule.sequence(produces: LabelledToken(withLabel:"array"), [
-                ParserRule.terminal(produces: TransientToken.anonymous, "[", [RuleAnnotation.void : RuleAnnotationValue.set ]),
-                ParserRule.sequence(produces: TransientToken.anonymous, [
-                    OneOfEverythingGrammar.oneOfEverything.rule.instance(with: LabelledToken(withLabel: "entry")),
-                    ~",".require(.optionally)
-                    ], nil).repeated(min: 1, limit: nil, producing: TransientToken.anonymous, annotations: nil),
-                ParserRule.terminal(produces: TransientToken.anonymous, "]", [RuleAnnotation.void : RuleAnnotationValue.set]),
-                ], nil)
+        let rules : [BehaviouralRule] = [
+            [
+                -"[",
+                arrayEntry.require(.noneOrMore),
+                -"]",
+            ].sequence.parse(as:LabelledToken(withLabel: "array"))
         ]
+        
         let source = """
         [true 1 2 3 4 5 6 7 8 9 10 11.0 12.0 string ,true 1 2 3 4 5 6 7 8 9 10 11.0 12.0 string ,true 1 2 3 4 5 6 7 8 9 10 11.0 12.0 string ]
         """
         do {
-            let ast = try AbstractSyntaxTreeConstructor().build(source, using: rules.language)
+            let ast = try AbstractSyntaxTreeConstructor().build(source, using: Parser(grammar:rules))
             
 //            print(ast.description)
             
@@ -256,14 +259,14 @@ class DecoderTests: XCTestCase {
 
     func testNestedKeyed(){
         let rules : [Rule] = [
-            ParserRule.sequence(produces: LabelledToken(withLabel:"array"), [
-                ParserRule.terminal(produces: TransientToken.anonymous, "[", [RuleAnnotation.void : RuleAnnotationValue.set ]),
-                ParserRule.sequence(produces: TransientToken.anonymous, [
-                    OneOfEverythingGrammar.oneOfEverything.rule.instance(with: LabelledToken(withLabel: "entry")),
-                    ParserRule.terminal(produces: TransientToken.anonymous, ",", [RuleAnnotation.void : RuleAnnotationValue.set ]).optional()
-                    ], nil).repeated(min: 1, limit: nil, producing: TransientToken.anonymous, annotations: nil),
-                ParserRule.terminal(produces: TransientToken.anonymous, "]", [RuleAnnotation.void : RuleAnnotationValue.set]),
-                ], nil)
+            [
+                -"[",
+                [
+                    OneOfEverythingGrammar.oneOfEverything.rule.parse(as: LabelledToken(withLabel: "entry")),
+                    -",".require(.optionally)
+                ].sequence.require(.oneOrMore),
+                -"]",
+            ].sequence
         ]
         let source = """
         [true 1 2 3 4 5 6 7 8 9 10 11.0 12.0 string ,true 1 2 3 4 5 6 7 8 9 10 11.0 12.0 string ,true 1 2 3 4 5 6 7 8 9 10 11.0 12.0 string ]
@@ -290,14 +293,14 @@ class DecoderTests: XCTestCase {
 
     func testNestedKeyedDeep(){
         let rules : [Rule] = [
-            ParserRule.sequence(produces: LabelledToken(withLabel:"dictionary"), [
-                OneOfEverythingGrammar.oneOfEverything.rule.instance(with: LabelledToken(withLabel: "thing1")),
-                ParserRule.terminal(produces: TransientToken.anonymous, ",", [RuleAnnotation.void : RuleAnnotationValue.set ]).optional(),
-                OneOfEverythingGrammar.oneOfEverything.rule.instance(with: LabelledToken(withLabel: "thing2")),
-                ParserRule.terminal(produces: TransientToken.anonymous, ",", [RuleAnnotation.void : RuleAnnotationValue.set ]).optional(),
-                OneOfEverythingGrammar.oneOfEverything.rule.instance(with: LabelledToken(withLabel: "thing3")),
-                ParserRule.terminal(produces: TransientToken.anonymous, ",", [RuleAnnotation.void : RuleAnnotationValue.set ]).optional(),
-                ], nil),
+            [
+                OneOfEverythingGrammar.oneOfEverything.rule.parse(as: LabelledToken(withLabel: "thing1")),
+                -",".require(.optionally),
+                OneOfEverythingGrammar.oneOfEverything.rule.parse(as: LabelledToken(withLabel: "thing2")),
+                -",".require(.optionally),
+                OneOfEverythingGrammar.oneOfEverything.rule.parse(as: LabelledToken(withLabel: "thing3")),
+                -",".require(.optionally),
+            ].sequence.parse(as:LabelledToken(withLabel:"dictionary")),
         ]
         let source = """
         true 1 2 3 4 5 6 7 8 9 10 11.0 12.0 string ,true 1 2 3 4 5 6 7 8 9 10 11.0 12.0 string ,true 1 2 3 4 5 6 7 8 9 10 11.0 12.0 string
