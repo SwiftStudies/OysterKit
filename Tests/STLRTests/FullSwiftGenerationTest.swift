@@ -14,8 +14,6 @@ class FullSwiftGenerationTest: XCTestCase {
 
     func testGeneratedCode(){
         do {
-            Log.parsing.enable()
-            
             let file = TextFile("Test.swift")
             let source = try String(contentsOfFile: "/Users/nhughes/Documents/Code/SPM/OysterKit/Resources/XML.stlr")
             let stlr = try _STLR.build(source)
