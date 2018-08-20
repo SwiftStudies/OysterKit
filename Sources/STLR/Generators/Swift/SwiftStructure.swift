@@ -33,6 +33,14 @@ extension GrammarStructure {
     }
 }
 
+extension _GrammarStructure {
+    func swift(to output:TextFile, scope:_STLR, accessLevel:String){
+        for child in structure.children {
+            child.swift(to: output, scope: scope, accessLevel: accessLevel)
+        }
+    }
+}
+
 fileprivate extension CharacterSet {
     func contains(_ character:Character)->Bool{
         return contains(character.unicodeScalars.first!)
@@ -183,6 +191,108 @@ fileprivate extension GrammarStructure.Node {
         }
     }
 }
+
+fileprivate extension _GrammarStructure.Node {
+    func stringEnum(to output:TextFile, accessLevel:String){
+        output.print("","// \(dataType(accessLevel))","\(accessLevel) enum \(dataType(accessLevel)) : Swift.String, Codable {").indent()
+        let cases = children.map({
+            let caseMatchedString = $0.name.hasPrefix("\"") ? String($0.name.dropFirst().dropLast()) : $0.name
+            let caseMatchedName   = caseMatchedString.caseName.propertyName
+            if caseMatchedString == caseMatchedName {
+                return "\(caseMatchedName)"
+            } else {
+                return "\(caseMatchedName) = \"\(caseMatchedString)\""
+            }
+        }).joined(separator: ",")
+        output.print("case \(cases)").outdent().print("}")
+    }
+    
+    func swiftEnum(to output:TextFile, scope:_STLR, accessLevel:String){
+        let _ = ""
+        if children.reduce(true, {$0 && $1.dataType(accessLevel) == "Swift.String?"}){
+            stringEnum(to: output, accessLevel:accessLevel)
+            return
+        }
+        
+        output.print("","// \(dataType(accessLevel))","\(accessLevel) enum \(dataType(accessLevel)) : Codable {").indent()
+        for child in children {
+            output.print("case \(child.name.propertyName)(\(child.name.propertyName):\(child.dataType(accessLevel).dropLast()))")
+        }
+        
+        output.print("")
+        output.print("enum CodingKeys : Swift.String, CodingKey {").indent().print(
+            "case \(children.map({$0.name.propertyName}).joined(separator: ","))"
+            ).outdent().print(
+                "}",
+                ""
+        )
+        
+        output.print("\(accessLevel) init(from decoder: Decoder) throws {").indent().print(
+            "let container = try decoder.container(keyedBy: CodingKeys.self)",
+            ""
+        )
+        
+        children.map({
+            let propertyName = $0.name.propertyName
+            let dataType = $0.dataType(accessLevel).dropLast()
+            return "if let \(propertyName) = try? container.decode(\(dataType).self, forKey: .\(propertyName)){\n\tself = .\(propertyName)(\(propertyName): \(propertyName))\n\treturn\n}"
+        }).joined(separator: " else ").split(separator: "\n").forEach({output.print(String($0))})
+        
+        output.print(
+            "throw DecodingError.valueNotFound(Expression.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: \"Tried to decode one of \(children.map({$0.dataType(accessLevel).dropLast()}).joined(separator: ",")) but found none of those types\"))"
+            ).outdent().print("}")
+        
+        output.print("\(accessLevel) func encode(to encoder:Encoder) throws {").indent()
+        output.print(
+            "var container = encoder.container(keyedBy: CodingKeys.self)",
+            "switch self {"
+        )
+        for child in children {
+            output.print("case .\(child.name.propertyName)(let \(child.name.propertyName)):").indent()
+            output.print("try container.encode(\(child.name.propertyName), forKey: .\(child.name.propertyName))").outdent()
+        }
+        output.print("}")
+        output.outdent().print("}")
+        
+        output.outdent().print("}")
+    }
+    
+    
+    func swift(to output:TextFile, scope:_STLR, accessLevel:String){
+        if type != .unknown {
+            if children.isEmpty{
+                output.print("\(accessLevel) let \(name.propertyName): \(dataType(accessLevel))")
+            } else {
+                switch type {
+                case .structure:
+                    output.print(
+                        "",
+                        "/// \(dataType(accessLevel)) ",
+                        "\(accessLevel) \(scope.identifierIsLeftHandRecursive(name) ? "class" : "struct") \(dataType(accessLevel)) : Codable {"
+                    )
+                case.enumeration:
+                    swiftEnum(to: output, scope: scope, accessLevel: accessLevel)
+                default:
+                    output.print("",dataType(accessLevel))
+                }
+            }
+        } else {
+            output.print("\(name): \(dataType(accessLevel)) //\(kind)")
+        }
+        if type == .typealias ||  type == .enumeration {
+            return
+        }
+        output.indent()
+        for child in children {
+            child.swift(to: output, scope: scope, accessLevel: accessLevel)
+        }
+        output.outdent()
+        if type == .structure && !children.isEmpty {
+            output.print("}")
+        }
+    }
+}
+
 
 fileprivate extension String {
     var propertyName : String {

@@ -499,7 +499,7 @@ internal extension Array where Element == _STLR.Annotation {
 
 public extension Array where Element == _STLR.Annotation {
     
-    private subscript(_ desiredAnnotation:RuleAnnotation)->RuleAnnotationValue?{
+    subscript(_ desiredAnnotation:RuleAnnotation)->RuleAnnotationValue?{
         for annotation in self {
             if annotation.ruleAnnotation == desiredAnnotation {
                 return annotation.ruleAnnotationValue
