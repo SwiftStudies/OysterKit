@@ -164,7 +164,54 @@ extension _STLR.Element {
             file.print(terminator: "","[\(cardinality.minimumMatches)...\(cardinality.maximumMatches == nil ? "" : "\(cardinality.maximumMatches!)")]")
         }
         
+        if let annotations = annotations?.swift {
+            file.print(terminator: "", ".annotatedWith(\(annotations))")
+        }
+        
+        file.print("")
+        
         return file
+    }
+}
+
+extension Array where Element == _STLR.Annotation {
+    var swift : String {
+        return "["+map({$0.swift}).joined(separator:",")+"]"
+    }
+}
+
+extension _STLR.Label {
+    var swift : String {
+        var result = "."
+        switch self {
+        case .definedLabel(let definedLabel):
+            switch definedLabel {
+            case .token, .error, .void, .transient:
+                result += "\(definedLabel)"
+            }
+        case .customLabel(let customLabel):
+            result += ".custom(label:\"\(customLabel.asSwiftString)\")"
+        }
+        return result
+    }
+}
+
+extension _STLR.Literal {
+    var swift : String {
+        switch self {
+        case .string(let string):
+            return ".string(\(string.stringBody.asSwiftString))"
+        case .number(let number):
+            return ".int(\(number))"
+        case .boolean(let boolean):
+            return ".bool(\(boolean))"
+        }
+    }
+}
+
+extension _STLR.Annotation {
+    var swift : String {
+        return "\(label.swift):\(literal?.swift ?? ".set")"
     }
 }
 
