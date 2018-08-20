@@ -25,14 +25,119 @@
 import Foundation
 import OysterKit
 
+extension _STLR.Label {
+    init(_ ruleAnnotation:RuleAnnotation){
+        switch ruleAnnotation{
+            
+        case .token:
+            self = .definedLabel(definedLabel: _STLR.DefinedLabel.token)
+        case .error:
+            self = .definedLabel(definedLabel: _STLR.DefinedLabel.error)
+        case .void:
+            self = .definedLabel(definedLabel: _STLR.DefinedLabel.void)
+        case .transient:
+            self = .definedLabel(definedLabel: _STLR.DefinedLabel.transient)
+        case .pinned:
+            #warning("Should be defined as standard type in STLR.stlr")
+            self = .customLabel(customLabel: "pin")
+        case .type:
+            #warning("Should be defined as standard type in STLR.stlr")
+            self = .customLabel(customLabel: "type")
+        case .custom(let label):
+            self = .customLabel(customLabel: label)
+        }
+    }
+}
+
+extension _STLR.String{
+    init(_ string:Swift.String){
+        stringBody = string
+    }
+}
+
+extension _STLR.Literal {
+    init?(_ value:RuleAnnotationValue){
+        switch value{
+            
+        case .string(let string):
+            self = .string(string: _STLR.String(string))
+        case .bool(let boolean):
+            self = .boolean(boolean: boolean ? _STLR.Boolean.true : _STLR.Boolean.false)
+        case .int(let int):
+            self = .number(number: int)
+        case .set:
+            return nil
+        }
+    }
+}
+
+extension _STLR.Annotation {
+    init(_ annotation:RuleAnnotation, value:RuleAnnotationValue){
+        label = _STLR.Label(annotation)
+        literal = _STLR.Literal(value)
+    }
+}
+
+extension _STLR.Rule {
+    init(_ identifier:String, type:_STLR.TokenType? = nil, void:Bool, transient:Bool, annotations:RuleAnnotations, expression: _STLR.Expression){
+        assignmentOperators = _STLR.AssignmentOperators.equals
+        self.annotations = annotations.map({ (key,value) -> _STLR.Annotation in
+            return _STLR.Annotation(key, value: value)
+        })
+        self.identifier = identifier
+        if void {
+            self.void = "-"
+            self.transient = nil
+        } else {
+            self.void = nil
+            if transient {
+                self.transient = "~"
+            } else {
+                self.transient = nil
+            }
+        }
+
+        tokenType = type
+        self.expression = expression
+    }
+}
+
 public extension _STLR.Grammar {
+    
+    fileprivate func embeddedIdentifier(_ tokenName:String)->_STLR.Element?{
+        for rule in rules {
+            if let element = rule.expression.embeddedIdentifier(tokenName){
+                return element
+            }
+        }
+        
+        return nil
+    }
+    
     public subscript(_ identifier:String)->_STLR.Rule{
         for rule in rules {
             if rule.identifier == identifier {
                 return rule
             }
         }
-        fatalError("Undefined identifier: \(identifier)")
+        
+        guard let element = embeddedIdentifier(identifier) else {
+            fatalError("Undefined identifier: \(identifier)")
+        }
+        
+        let annotations = element.annotations
+        
+        do {
+            let expression = try element.expression(for: identifier, in: self)
+            
+            return _STLR.Rule(identifier,
+                              void: annotations?.void ?? false,
+                              transient: annotations?.transient ?? false,
+                              annotations: annotations?.ruleAnnotations ?? [:],
+                              expression: expression)
+        } catch {
+            fatalError("\(error)")
+        }
     }
     
     public func isLeftHandRecursive(identifier:String)->Bool{
@@ -113,6 +218,20 @@ public extension _STLR.Expression {
         }
     }
 
+    fileprivate func embeddedIdentifier(_ tokenName:String)->_STLR.Element?{
+        switch self {
+        case .element(let element):
+            return element.embeddedIdentifier(tokenName)
+        case .sequence(let elements), .choice(let elements):
+            for element in elements{
+                if let element = element.embeddedIdentifier(tokenName){
+                    return element
+                }
+            }
+            return nil
+        }
+    }
+    
     public func directlyReferences(_ identifier:String, grammar:_STLR.Grammar, closedList:inout [String])->Bool {
         for element in elements {
             if element.directlyReferences(identifier, grammar: grammar, closedList: &closedList){
@@ -205,6 +324,21 @@ public extension _STLR.Element {
         return Behaviour(kind, cardinality: cardinality, negated: isNegated, lookahead: isLookahead)
     }
     
+    fileprivate func embeddedIdentifier(_ tokenName:String)->_STLR.Element?{
+        if annotations?.token ?? "" == tokenName {
+            return self
+        }
+        
+        if let group = group {
+            return group.expression.embeddedIdentifier(tokenName)
+        } else if let _ = terminal {
+            return nil
+        } else if let _ = identifier{
+            return nil
+        }
+        return nil
+    }
+    
     /**
      Determines if the `Element` directly references the supplied identifier (references it at a point where it is
      possible the scan head has not moved.
@@ -264,6 +398,21 @@ public extension _STLR.Element {
             }
         }
         return false
+    }
+    
+    func expression(for tokenName:String, in grammar:_STLR.Grammar) throws ->_STLR.Expression {
+        if let group = group {
+            return group.expression
+        } else if terminal != nil {
+            return _STLR.Expression.sequence(sequence: [self])
+        } else if let identifier = identifier {
+            if identifier == tokenName {
+                throw TestError.interpretationError(message: "Recursive inline definition of \(tokenName)", causes: [])
+            }
+            return grammar[identifier].expression
+        }
+        
+        fatalError("Unknown expression type")
     }
 }
 
