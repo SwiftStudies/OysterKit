@@ -315,7 +315,7 @@ fileprivate extension String {
 }
 
 /// Generates a Swift structure that you can use a ParsingDecoder with to rapidly build an AST or IR
-public class SwiftStructure : Generator {
+public class SwiftStructure : Generator, _Generator {
     
     
     /// Generates a Swift `struct` for the supplied scope that could be used by a `ParsingDecoder`
@@ -377,6 +377,66 @@ public class SwiftStructure : Generator {
         return [output]
     }
     
+    /// Generates a Swift `struct` for the supplied scope that could be used by a `ParsingDecoder`
+    ///
+    ///  - Parameter scope: The scope to use to generate
+    ///  - Returns: A single `TextFile` containing the Swift source
+    public static func generate(for scope: _STLR, grammar name:String, accessLevel:String) throws -> [Operation] {
+        let output = TextFile("\(name).swift")
+        
+        let tokenFile = TextFile("")
+        scope.swift(in: tokenFile)
+        var tokens = tokenFile.content
+        tokens = String(tokens[tokens.range(of: "enum")!.lowerBound...])
+        
+        // Generate all of the structural elements required for rules
+        output.print(
+            "import Foundation",
+            "import OysterKit",
+            "",
+            "/// Intermediate Representation of the grammar"
+        )
+        
+        var lines = tokens.components(separatedBy: CharacterSet.newlines)
+        let line = lines.removeFirst()
+        
+        output.print("fileprivate \(line)")
+        for line in lines{
+            output.print(line)
+        }
+        
+        // Now the structure
+        let structure = _GrammarStructure(for: scope, accessLevel:accessLevel)
+        output.print("public struct \(name) : Codable {").indent()
+        
+        structure.swift(to: output, scope: scope, accessLevel: "public")
+        
+        for rule in scope.grammar.rules.filter({scope.grammar.isRoot(identifier: $0.identifier)}) {
+            output.print("\(accessLevel) let \(rule.identifier) : \(rule.identifier.typeName)")
+        }
+        
+        // Generate the code to build the source
+        output.print(
+            "/**",
+            " Parses the supplied string using the generated grammar into a new instance of",
+            " the generated data structure",
+            "",
+            " - Parameter source: The string to parse",
+            " - Returns: A new instance of the data-structure",
+            " */",
+            "\(accessLevel) static func build(_ source : Swift.String) throws ->\(name){").indent().print(
+                "let root = HomogenousTree(with: LabelledToken(withLabel: \"root\"), matching: source, children: [try AbstractSyntaxTreeConstructor().build(source, using: \(name)Rules.generatedLanguage)])",
+                "// print(root.description)",
+                "return try ParsingDecoder().decode(\(name).self, using: root)").outdent().print(
+                    "}",
+                    "",
+                    "\(accessLevel) static let generatedLanguage = \(name)Rules.generatedLanguage"
+        )
+        
+        output.outdent().print("}")
+        
+        return [output]
+    }
 
 }
 
