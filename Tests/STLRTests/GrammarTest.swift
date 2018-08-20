@@ -179,25 +179,23 @@ class GrammarTest: XCTestCase {
     }
     
     func generateAndCheck(grammar:String, parsing testString:String, expecting: [String]) throws {
-        net() {
-            let language = try _STLR.build(testGrammarName+grammar)
-            let ast = language.grammar
-            
-            let parser = Parser(grammar: ast.dynamicRules)
+        let language = try _STLR.build(testGrammarName+grammar)
+        let ast = language.grammar
         
-            var count = 0
-            
-            for node in TokenStream(testString, using: parser){
-                if count >= expecting.count{
-                    throw CheckError.checkFailed(reason: "Too many tokens")
-                }
-                
-                if expecting[count] != "\(node.token)" {
-                    throw CheckError.checkFailed(reason: "At position \(count) expected \(expecting[count]) but got \(node.token)")
-                }
-                
-                count += 1
+        let parser = Parser(grammar: ast.dynamicRules)
+    
+        var count = 0
+        
+        for node in TokenStream(testString, using: parser){
+            if count >= expecting.count{
+                throw CheckError.checkFailed(reason: "Too many tokens")
             }
+            
+            if expecting[count] != "\(node.token)" {
+                throw CheckError.checkFailed(reason: "At position \(count) expected \(expecting[count]) but got \(node.token)")
+            }
+            
+            count += 1
         }
     }
     
@@ -327,7 +325,7 @@ class GrammarTest: XCTestCase {
     
     func testShallowFolding(){
         let source = """
-            space = .whitespaces
+            space = .whitespace
             spaces = space+
             """
         
@@ -341,7 +339,7 @@ class GrammarTest: XCTestCase {
     }
     
     func testWords(){
-        let source = "capitalLetter = \"A\"...\"Z\"\nlowercaseLetter = \"a\"...\"z\"\nlowercaseWord = lowercaseLetter+\ncapitalizedWord = capitalLetter lowercaseLetter*\nword = capitalizedWord | lowercaseWord\nspace = .whitespaces \nspaces = space+\n"
+        let source = "capitalLetter = \"A\"...\"Z\"\nlowercaseLetter = \"a\"...\"z\"\nlowercaseWord = lowercaseLetter+\ncapitalizedWord = capitalLetter lowercaseLetter*\nword = capitalizedWord | lowercaseWord\nspace = .whitespace \nspaces = space+\n"
         
         let testString = "Hello  world"
         

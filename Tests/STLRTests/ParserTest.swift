@@ -91,7 +91,7 @@ class ParserTest: XCTestCase {
     
     @discardableResult
     private func check(_ source:String, produces output: [Token], using rules:[Rule], expectingEndOfInput:Bool? = nil)->[Error]{
-        let debugOutput = false
+        let debugOutput = true
         let parser = TestParser(source: source, grammar: rules)
         
         let tokenIterator       = parser.makeIterator()
@@ -222,7 +222,7 @@ class ParserTest: XCTestCase {
             count += 1
             XCTAssert(node.token == QuotedEscapedStringTestTokens.string)
             let capturedString = String(source[node.range])
-            XCTAssert(source == capturedString,"Got \(capturedString)" )
+            XCTAssertEqual(String(source.dropFirst().dropLast()),capturedString)
         }
         
         XCTAssert(count == 1, "Got \(count) tokens")
