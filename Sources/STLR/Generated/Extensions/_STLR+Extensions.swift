@@ -454,8 +454,9 @@ public extension _STLR.Element {
     func expression(for tokenName:String, in grammar:_STLR.Grammar) throws ->_STLR.Expression {
         if let group = group {
             return group.expression
-        } else if terminal != nil {
-            return _STLR.Expression.sequence(sequence: [self])
+        } else if let terminal = terminal {
+            let newElement = _STLR.Element(group: nil, terminal: terminal, identifier: nil, void: void, transient: transient, negated: negated, annotations: annotations?.filter({!$0.label.isToken}), lookahead: lookahead, quantifier: quantifier)
+            return _STLR.Expression.element(element: newElement)
         } else if let identifier = identifier {
             if identifier == tokenName {
                 throw TestError.interpretationError(message: "Recursive inline definition of \(tokenName)", causes: [])
@@ -519,6 +520,21 @@ extension _STLR.CharacterSet {
 }
 
 fileprivate extension _STLR.Label {
+    /// `true` if the annotation is a token annotation
+    var isToken : Bool {
+        switch self {
+        case .definedLabel(let defined):
+            switch defined {
+            case .token:
+                return true
+            case .void, .transient, .error:
+                return false
+            }
+        case .customLabel(_):
+            return false
+        }
+    }
+    
     
     /// `true` if the impact of the annotation is captured in a rules `Behaviour`
     var isBehavioural : Bool {

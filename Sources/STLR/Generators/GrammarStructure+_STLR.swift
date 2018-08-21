@@ -554,6 +554,7 @@ public class _GrammarStructure {
     func generate(rule:Scope.Rule)->Node {
         return Node(scope, name: rule.identifier, cardinality: .one, kind: Kind(rule: rule))
     }
+
     
 }
 
