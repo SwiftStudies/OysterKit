@@ -82,7 +82,7 @@ extension _STLR {
         
         let rootRules = grammar.rules.filter({grammar.isRoot(identifier: $0.identifier)})
         file.print("","/// Create a language that can be used for parsing etc")
-        file.print("public static var grammar: [Rule] {").indent()
+        file.print("public static var generatedRules: [Rule] {").indent()
         file.print("return ["+rootRules.compactMap({$0.identifier}).map({"T.\($0).rule"}).joined(separator: ", ")+"]")
         file.outdent().print("}")
                 
@@ -220,7 +220,7 @@ extension _STLR.Literal {
 
 extension _STLR.Annotation {
     var swift : String {
-        return "\(label.swift):\(literal?.swift ?? ".set")"
+        return "RuleAnnotation\(label.swift):RuleAnnotationValue\(literal?.swift ?? ".set")"
     }
 }
 
