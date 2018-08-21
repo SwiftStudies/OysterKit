@@ -114,6 +114,16 @@ public extension _STLR.Grammar {
         return nil
     }
     
+    public func defined(identifier:String)->Bool{
+        for rule in rules {
+            if rule.identifier == identifier {
+                return true
+            }
+        }
+        
+        return embeddedIdentifier(identifier) != nil
+    }
+    
     public subscript(_ identifier:String)->_STLR.Rule{
         for rule in rules {
             if rule.identifier == identifier {

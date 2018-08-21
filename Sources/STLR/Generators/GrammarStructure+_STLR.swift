@@ -34,7 +34,7 @@ public class _GrammarStructure {
         case optional, one, many(Bool)
         
         init(element:_STLR.Element){
-            assert(element.isTransient || element.isVoid || element.isLookahead, "Cardinality would be zero")
+            assert(!(element.isTransient || element.isVoid || element.isLookahead), "Cardinality would be zero")
 
             if element.isNegated || element.cardinality == .one{
                 self = .one
@@ -522,10 +522,10 @@ extension _STLR {
         return grammar.isLeftHandRecursive(identifier: name)
     }
     func type(of name:Swift.String)->Swift.String{
-        
+        if !grammar.defined(identifier: name){
+            return "Swift.String"
+        }
         let rule : _STLR.Rule = grammar[name]
-        
-        
         
         guard let type = rule.annotations?[RuleAnnotation.type]?.description else {
             return "Swift.String"

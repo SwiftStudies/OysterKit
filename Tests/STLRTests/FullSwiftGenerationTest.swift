@@ -14,14 +14,18 @@ class FullSwiftGenerationTest: XCTestCase {
 
     func testGeneratedCode(){
         do {
-            let file = TextFile("Test.swift")
-            let source = try String(contentsOfFile: "/Users/nhughes/Documents/Code/SPM/OysterKit/Resources/XML.stlr")
+            let source = try String(contentsOfFile: "/Users/nhughes/Documents/Code/SPM/OysterKit/Resources/Bork.stlr")
             let stlr = try _STLR.build(source)
-            stlr.swift(in: file)
+            
+            let operations = try SwiftStructure.generate(for: stlr, grammar: "Test", accessLevel: "public")
+            
             let context = OperationContext(with: URL(fileURLWithPath: "/Users/nhughes/Desktop/")){
                 print($0)
             }
-            try file.perform(in: context)
+            
+            for operation in operations {
+                try operation.perform(in: context)
+            }
         } catch {
             print("Error: \(error)")
         }
