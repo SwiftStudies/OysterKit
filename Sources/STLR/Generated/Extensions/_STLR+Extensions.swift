@@ -274,25 +274,34 @@ public extension _STLR.Element {
         return annotations?.ruleAnnotations ?? [:]
     }
     
-    /// True if the rule is skipping
+    /// True if the element is skipping
     public var isVoid : Bool {
         return void != nil || (annotations?.void ?? false)
     }
     
-    /// True if it is a scanning rule
+    /// True if it is a scanning element
     public var isTransient : Bool {
         return transient != nil || (annotations?.transient ?? false)
     }
     
-    /// True if the rule is lookahead
+    /// True if the element is lookahead
     public var isLookahead : Bool {
         return lookahead != nil
     }
     
-    /// True if the rule is negated
+    /// True if the element is negated
     public var isNegated : Bool {
         return negated != nil
     }
+    
+    /// Returns the token name (if any) of the element
+    public var token : Token? {
+        if case let Behaviour.Kind.structural(token) = kind {
+            return token
+        }
+        return nil
+    }
+    
     
     /// The `Kind` of the rule
     public var kind : Behaviour.Kind {
@@ -305,6 +314,7 @@ public extension _STLR.Element {
             return .structural(token: LabelledToken(withLabel: token))
         } else {
             if let identifier = identifier {
+                #warning("Possible bug? should it be returning the kid of the identifier?")
                 return .structural(token:LabelledToken(withLabel: identifier))
             }
             return .scanning

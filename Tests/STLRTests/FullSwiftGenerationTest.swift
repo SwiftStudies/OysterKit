@@ -14,10 +14,29 @@ class FullSwiftGenerationTest: XCTestCase {
 
     func testGeneratedCode(){
         do {
-            let source = try String(contentsOfFile: "/Users/nhughes/Documents/Code/SPM/OysterKit/Resources/Bork.stlr")
+            let source = try String(contentsOfFile: "/Users/nhughes/Documents/Code/SPM/OysterKit/Resources/STLR.stlr")
             let stlr = try _STLR.build(source)
             
             let operations = try SwiftStructure.generate(for: stlr, grammar: "Test", accessLevel: "public")
+            
+            let context = OperationContext(with: URL(fileURLWithPath: "/Users/nhughes/Desktop/")){
+                print($0)
+            }
+            
+            for operation in operations {
+                try operation.perform(in: context)
+            }
+        } catch {
+            print("Error: \(error)")
+        }
+    }
+    
+    func testOldGeneratedCode(){
+        do {
+            let source = try String(contentsOfFile: "/Users/nhughes/Documents/Code/SPM/OysterKit/Resources/STLR.stlr")
+            let stlr = STLRParser(source: source)
+            
+            let operations = try SwiftStructure.generate(for: stlr.ast, grammar: "Test", accessLevel: "public")
             
             let context = OperationContext(with: URL(fileURLWithPath: "/Users/nhughes/Desktop/")){
                 print($0)

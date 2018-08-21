@@ -31,12 +31,14 @@ public class _GrammarStructure {
     /// The cardinality of the node, with fundamentally four values
     /// optional (0 or 1), one, or many (optional or not)
     public enum Cardinality {
-        case optional, one, many(Bool)
+        case none,optional, one, many(Bool)
         
-        init(element:_STLR.Element){
-            assert(!(element.isTransient || element.isVoid || element.isLookahead), "Cardinality would be zero")
-
-            if element.isNegated || element.cardinality == .one{
+        init(element:_STLR.Element, referencing rule:Scope.Rule?){
+            let notStructural = element.token == nil && ((element.isVoid || element.isTransient) || (rule?.isVoid ?? false || rule?.isTransient ?? false))
+            
+            if notStructural || element.isLookahead{
+                self = .none
+            } else if element.isNegated || element.cardinality == .one{
                 self = .one
             } else if element.cardinality == .optionally {
                 self = .optional
@@ -49,6 +51,8 @@ public class _GrammarStructure {
         
         var optional : Bool {
             switch self {
+            case .none:
+                return true // I mean... it might not be there :-/
             case .optional:
                 return true
             case .one:
@@ -60,7 +64,7 @@ public class _GrammarStructure {
         
         var many : Bool {
             switch self {
-            case .optional, .one:
+            case .optional, .one, .none:
                 return false
             case .many(_):
                 return true
@@ -100,13 +104,19 @@ public class _GrammarStructure {
             }
         }
         
-        init(element:_STLR.Element,defaultValue:Kind){
+        init(element:_STLR.Element, referencing rule:Scope.Rule?, defaultValue:Kind){
             if element.isLookahead {
                 self = .lookahead
             } else if element.isVoid {
                 self = .void
             } else if case Behaviour.Kind.structural = element.kind { //Should this be token???
-                self = .structural
+                if rule?.isVoid ?? false {
+                    self = .void
+                } else if rule?.isTransient ?? false{
+                    self = .transient
+                } else {
+                    self = .structural
+                }
             } else if element.isTransient {
                 self = .transient
             } else {
@@ -178,7 +188,7 @@ public class _GrammarStructure {
                 coreType = name.prefix(1).uppercased() + name.dropFirst()
             }
             switch cardinality {
-            case .optional:
+            case .optional, .none:
                 coreType += "?"
             case .one:
                 break
@@ -390,11 +400,11 @@ public class _GrammarStructure {
     func generate(element:_STLR.Element)->[Node]{
         if let group = element.group {
             if case let Behaviour.Kind.structural(tokenName) = element.kind {
-                return [Node(scope, name: "\(tokenName)", cardinality: Cardinality(element: element), kind: Kind(element: element, defaultValue: .structural))]
+                return [Node(scope, name: "\(tokenName)", cardinality: Cardinality(element: element, referencing: nil), kind: Kind(element: element, referencing: nil, defaultValue: .structural))]
             }
 
             let children = generate(expression: group.expression)
-            let node = Node(scope, name: "$group$", cardinality: Cardinality(element: element), kind: Kind(element: element, defaultValue: .transient))
+            let node = Node(scope, name: "$group$", cardinality: Cardinality(element: element, referencing: nil), kind: Kind(element: element, referencing: nil, defaultValue: .transient))
             switch children.count {
             case 0:
                 return [node]
@@ -410,6 +420,8 @@ public class _GrammarStructure {
             }
         } else if let identifier = element.identifier {
             let evaluatedName : String
+            /// We are only interested in the rule IF it is not inlined
+            let rule = scope.grammar.rules.filter({$0.identifier == identifier}).first
             
             if case let Behaviour.Kind.structural(token) = element.kind {
                 evaluatedName = "\(token)"
@@ -423,7 +435,7 @@ public class _GrammarStructure {
             //AST where ambiguity is removed
 //            let modifier = modifier.isOne ? identifier.grammarRule?.expression?.promotableContentModifer?.promotableOptionality ?? .one : modifier
 //            let evaluatedAnnotations = identifier.annotations.merge(with: annotations)
-            return [Node(scope, name: evaluatedName, cardinality: Cardinality(element: element), kind: Kind(element: element, defaultValue: .structural))]
+            return [Node(scope, name: evaluatedName, cardinality: Cardinality(element: element, referencing: rule), kind: Kind(element: element, referencing: rule, defaultValue: .structural))]
         } else if let terminal = element.terminal {
 //            /// The optimizer may have optimized a choice of single character terminals into
 //            /// a character set initialized by the combination of that string. We will need
@@ -441,7 +453,7 @@ public class _GrammarStructure {
 //            }
             
             return [
-                Node(scope, name: terminal.description, cardinality: Cardinality(element: element), kind: Kind(element: element, defaultValue: .transient))
+                Node(scope, name: terminal.description, cardinality: Cardinality(element: element,referencing: nil), kind: Kind(element: element,referencing: nil, defaultValue: .transient))
             ]
         }
         
@@ -463,7 +475,7 @@ public class _GrammarStructure {
                 if let node = elementNodes.first, elementNodes.count == 1 {
                     node.partOfChoice = true
                     switch node.cardinality {
-                    case .one:
+                    case .one, .none:
                         node.cardinality = .optional
                     case .many(let optional):
                         if !optional {

@@ -328,6 +328,8 @@ public class GrammarStructure {
             structure.children.append(generate(rule: rule))
         }
         
+        
+        
         for child in structure.children {
             let identifier = scope.get(identifier: child.name)!
             child.children.append(contentsOf: generate(expression: identifier.grammarRule!.expression!))
