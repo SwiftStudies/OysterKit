@@ -317,6 +317,42 @@ public class _GrammarStructure {
         swift(to: temp, scope: scope, accessLevel: "public")
         print(temp.content)
     }
+
+    func inlinedRules(element:_STLR.Element)->[_STLR.Rule]{
+        if let group = element.group {
+            var additionalRules = [_STLR.Rule]()
+            
+            if let inlinedRule = element.annotations?.token {
+                additionalRules.append(scope.grammar[inlinedRule])
+            }
+            
+            additionalRules.append(contentsOf: inlinedRules(expression: group.expression))
+            
+            return additionalRules
+        } else if let _ = element.terminal, let inlinedRule = element.annotations?.token {
+            return [scope.grammar[inlinedRule]]
+        } else if let _ = element.identifier, let inlinedRule = element.annotations?.token {
+            return [scope.grammar[inlinedRule]]
+        }
+        
+        return []
+    }
+    
+    func inlinedRules(expression:_STLR.Expression)->[_STLR.Rule]{
+        switch expression {
+        case .element(let element):
+            if let inlined = element.annotations?.token {
+                return [scope.grammar[inlined]]
+            }
+        case .sequence(let elements), .choice(let elements):
+            var inlined = [_STLR.Rule]()
+            for element in elements {
+                inlined.append(contentsOf: inlinedRules(element:element))
+            }
+            return inlined
+        }
+        return []
+    }
     
     /**
      Parses the AST and infers the fundamental data structure from it. This
@@ -334,7 +370,12 @@ public class _GrammarStructure {
         //Create all nodes for rules that appear
         for rule in scope.grammar.rules {
             structure.children.append(generate(rule: rule))
+            for rule in inlinedRules(expression: rule.expression){
+                structure.children.append(generate(rule: rule))
+            }
         }
+        
+        //We also need to get all the inline defined rules
         
         for child in structure.children {
             let rule = scope.grammar[child.name]
@@ -400,7 +441,10 @@ public class _GrammarStructure {
     func generate(element:_STLR.Element)->[Node]{
         if let group = element.group {
             if case let Behaviour.Kind.structural(tokenName) = element.kind {
-                return [Node(scope, name: "\(tokenName)", cardinality: Cardinality(element: element, referencing: nil), kind: Kind(element: element, referencing: nil, defaultValue: .structural))]
+                let node = Node(scope, name: "\(tokenName)", cardinality: Cardinality(element: element, referencing: nil), kind: Kind(element: element, referencing: nil, defaultValue: .structural))
+                node.children = generate(expression: group.expression)
+                
+                return [node]
             }
 
             let children = generate(expression: group.expression)
@@ -435,7 +479,9 @@ public class _GrammarStructure {
             //AST where ambiguity is removed
 //            let modifier = modifier.isOne ? identifier.grammarRule?.expression?.promotableContentModifer?.promotableOptionality ?? .one : modifier
 //            let evaluatedAnnotations = identifier.annotations.merge(with: annotations)
-            return [Node(scope, name: evaluatedName, cardinality: Cardinality(element: element, referencing: rule), kind: Kind(element: element, referencing: rule, defaultValue: .structural))]
+            let nodes =  [Node(scope, name: evaluatedName, cardinality: Cardinality(element: element, referencing: rule), kind: Kind(element: element, referencing: rule, defaultValue: .structural))]
+
+            return nodes
         } else if let terminal = element.terminal {
 //            /// The optimizer may have optimized a choice of single character terminals into
 //            /// a character set initialized by the combination of that string. We will need

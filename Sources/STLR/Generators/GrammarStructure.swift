@@ -421,7 +421,8 @@ public class GrammarStructure {
             //If this identifier has not quantity modifier we need to see if the expression has one and promote it up
             //otherwise it will be lost
             let modifier = modifier.isOne ? identifier.grammarRule?.expression?.promotableContentModifer?.promotableOptionality ?? .one : modifier
-            return [Node(scope, name: evaluatedName, cardinality: Cardinality(modifier: modifier), kind: Kind(modifier: modifier, lookahead: lookahead, annotations: evaluatedAnnotations.asRuleAnnotations, defaultValue: .structural))]
+            let nodes = [Node(scope, name: evaluatedName, cardinality: Cardinality(modifier: modifier), kind: Kind(modifier: modifier, lookahead: lookahead, annotations: evaluatedAnnotations.asRuleAnnotations, defaultValue: .structural))]
+            return nodes
         case .group(let expression, let modifier, let lookahead, let annotations):
             if let tokenAnnotation = annotations.asRuleAnnotations[.token] {
                 if case let .string(tokenName) = tokenAnnotation{

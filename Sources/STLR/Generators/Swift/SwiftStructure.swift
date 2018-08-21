@@ -265,6 +265,7 @@ fileprivate extension _GrammarStructure.Node {
             } else {
                 switch type {
                 case .structure:
+                    #warning("Where the generated type is a class we need to change structure generation to make a default initializer as otherwise there is no way to create new initializers")
                     output.print(
                         "",
                         "/// \(dataType(accessLevel)) ",
@@ -278,6 +279,7 @@ fileprivate extension _GrammarStructure.Node {
             }
         } else {
             output.print("\(name): \(dataType(accessLevel)) //\(kind)")
+            return
         }
         if type == .typealias ||  type == .enumeration {
             return
