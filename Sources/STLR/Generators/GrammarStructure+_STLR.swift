@@ -441,8 +441,9 @@ public class _GrammarStructure {
     func generate(element:_STLR.Element)->[Node]{
         if let group = element.group {
             if case let Behaviour.Kind.structural(tokenName) = element.kind {
-                let node = Node(scope, name: "\(tokenName)", cardinality: Cardinality(element: element, referencing: nil), kind: Kind(element: element, referencing: nil, defaultValue: .structural))
-                node.children = generate(expression: group.expression)
+                let rule = scope.grammar["\(tokenName)"]
+                let node = Node(scope, name: "\(tokenName)", cardinality: Cardinality(element: element, referencing: rule), kind: Kind(element: element, referencing: rule, defaultValue: .structural))
+//                node.children = generate(expression: group.expression)
                 
                 return [node]
             }
@@ -497,10 +498,19 @@ public class _GrammarStructure {
 //                    return choices
 //                }
 //            }
+           
+            if case let Behaviour.Kind.structural(token) = element.kind {
+                let rule = scope.grammar["\(token)"]
+
+                return [
+                    Node(scope, name: "\(token)", cardinality: Cardinality(element: element,referencing: nil), kind: Kind(element: element,referencing: nil, defaultValue: .transient))
+                ]
+            } else {
+                return [
+                    Node(scope, name: terminal.description, cardinality: Cardinality(element: element,referencing: nil), kind: Kind(element: element,referencing: nil, defaultValue: .transient))
+                ]
+            }
             
-            return [
-                Node(scope, name: terminal.description, cardinality: Cardinality(element: element,referencing: nil), kind: Kind(element: element,referencing: nil, defaultValue: .transient))
-            ]
         }
         
         fatalError("Element is not of any known types")
@@ -592,5 +602,3 @@ extension _STLR {
         return Swift.String(type.dropLast().dropFirst())
     }
 }
-
-
