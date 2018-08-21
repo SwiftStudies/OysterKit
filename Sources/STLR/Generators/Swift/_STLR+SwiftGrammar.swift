@@ -138,11 +138,7 @@ extension _STLR.Element {
             return file
         }
         
-        file.print(terminator: "", separator: "",
-                   isLookahead  ? ">>" : "",
-                   isNegated    ? "!" : "",
-                   isTransient  ? "~" : "",
-                   isVoid       ? "-" : "" )
+        file.print(terminator: "", isTransient  ? "~" : (isVoid       ? "-" : ""))
 
         if let terminal = terminal {
             file.print(terminator: "", terminal.swift())
@@ -168,9 +164,16 @@ extension _STLR.Element {
             file.print(terminator: "","[\(cardinality.minimumMatches)...\(cardinality.maximumMatches == nil ? "" : "\(cardinality.maximumMatches!)")]")
         }
         
+        if isLookahead {
+            file.print(terminator: "", ".lookahead()")
+        }
+        if isNegated {
+            file.print(terminator: "", ".negate()")
+        }
+
         if let annotations = annotations?.swift {
             if let identifier = identifier {
-                file.print(terminator: "", ".annotatedWith(T.\(identifier).rule.annotations.merge(with:(\(annotations))))")
+                file.print(terminator: "", ".annotatedWith(T.\(identifier).rule.annotations.merge(with:\(annotations)))")
             } else {
                 file.print(terminator: "", ".annotatedWith(\(annotations))")
             }
