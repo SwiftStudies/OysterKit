@@ -95,7 +95,35 @@ public extension RuleProducer {
  - Returns: A new version of the rule
  */
 public prefix func >>(rule:RuleProducer)->BehaviouralRule{
-    return rule.rule(with: Behaviour(.scanning, cardinality: rule.defaultBehaviour.cardinality, negated: rule.defaultBehaviour.negate, lookahead: true), annotations: rule.defaultAnnotations)
+    return rule.lookahead()
+}
+
+public extension RuleProducer{
+    /**
+     Creates a new instance of the rule set to have lookahead behaviour
+     
+     // Creates a lookahead version of of the rule
+     let lookahead = -CharacterSet.letters.lookahead()
+     
+     - Returns: A new version of the rule
+     */
+    public func lookahead()->BehaviouralRule{
+        return rule(with: Behaviour(defaultBehaviour.kind, cardinality: defaultBehaviour.cardinality, negated: defaultBehaviour.negate, lookahead: true), annotations: defaultAnnotations)
+    }
+
+    /**
+     Creates a new instance of the rule which negates its match.
+     Note that negate does not "toggle", that is !!rule != rule
+     
+     // Creates a negated version of of the rule
+     let notLetter = CharacterSet.letters.negate()
+     
+     - Returns: A new version of the rule
+     */
+    public func negate()->BehaviouralRule{
+        return rule(with: Behaviour(defaultBehaviour.kind, cardinality: defaultBehaviour.cardinality, negated: true, lookahead: defaultBehaviour.lookahead), annotations: defaultAnnotations)
+    }
+    
 }
 
 /**
@@ -109,7 +137,7 @@ public prefix func >>(rule:RuleProducer)->BehaviouralRule{
  - Returns: A new version of the rule
  */
 public prefix func !(rule:RuleProducer)->BehaviouralRule{
-    return rule.rule(with: Behaviour(rule.defaultBehaviour.kind, cardinality: rule.defaultBehaviour.cardinality, negated: true, lookahead: rule.defaultBehaviour.lookahead), annotations: rule.defaultAnnotations)
+    return rule.negate()
 }
 
 /**
