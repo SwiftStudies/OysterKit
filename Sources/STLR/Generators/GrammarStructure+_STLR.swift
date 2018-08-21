@@ -539,7 +539,7 @@ extension _STLR {
         }
         let rule : _STLR.Rule = grammar[name]
         
-        guard let type = rule.annotations?[RuleAnnotation.type]?.description else {
+        guard let type = rule.declaredType else {
             return "Swift.String"
         }
         

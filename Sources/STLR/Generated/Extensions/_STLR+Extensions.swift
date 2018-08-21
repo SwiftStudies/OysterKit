@@ -78,6 +78,26 @@ extension _STLR.Annotation {
     }
 }
 
+extension _STLR.TokenType {
+    var name : String {
+        switch self {
+        case .standardType(let standardType):
+            switch standardType {
+            case .int:
+                return "Int"
+            case .double:
+                return "Double"
+            case .string:
+                return "String"
+            case .bool:
+                return "Bool"
+            }
+        case .customType(let customType):
+            return customType
+        }
+    }
+}
+
 extension _STLR.Rule {
     init(_ identifier:String, type:_STLR.TokenType? = nil, void:Bool, transient:Bool, annotations:RuleAnnotations, expression: _STLR.Expression){
         assignmentOperators = _STLR.AssignmentOperators.equals
@@ -99,6 +119,13 @@ extension _STLR.Rule {
 
         tokenType = type
         self.expression = expression
+    }
+    
+    var declaredType : String? {
+        if let type = tokenType {
+            return "\""+type.name+"\""
+        }
+        return annotations?.type
     }
 }
 
@@ -187,6 +214,10 @@ public extension _STLR.Rule {
     /// True if it is a scanning rule
     public var isTransient : Bool {
         return transient != nil || (annotations?.transient ?? false)
+    }
+    
+    public var type : String? {
+        return annotations?.type
     }
 }
 
@@ -561,6 +592,13 @@ public extension Array where Element == _STLR.Annotation {
     public var transient : Bool {
         return self[RuleAnnotation.transient] != nil
     }
-    
+    public var type : String? {
+        if let typeAnnotationValue = self[RuleAnnotation.type] {
+            if case let RuleAnnotationValue.string(value) =  typeAnnotationValue {
+                return value
+            }
+        }
+        return nil
+    }
     
 }
