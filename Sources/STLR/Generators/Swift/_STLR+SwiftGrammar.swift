@@ -236,7 +236,8 @@ extension _STLR.Terminal {
                 return "CharacterSet\(self)s"
             }
         case .regex(let regex):
-            return "T.regularExpression(\"^\(regex.dropFirst().dropLast())\"))"
+            let regex = ("^"+regex.dropLast().dropFirst()).debugDescription
+            return "T.regularExpression(\(regex))"
         case .terminalString(let terminalString):
             return terminalString.terminalBody.debugDescription
         case .characterRange(let characterRange):
