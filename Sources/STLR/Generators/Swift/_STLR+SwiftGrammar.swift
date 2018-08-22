@@ -195,6 +195,9 @@ extension _STLR.Element {
 
 extension Array where Element == _STLR.Annotation {
     var swift : String {
+        if isEmpty {
+            return "[:]"
+        }
         return "["+map({$0.swift}).joined(separator:",")+"]"
     }
 }
