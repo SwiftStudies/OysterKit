@@ -174,9 +174,9 @@ extension _STLR.Element {
         if let annotations = annotations?.swift {
             if let identifier = identifier {
                 let oldAnnotations = "T.\(identifier).rule.annotations.merge(with:\(annotations))"
-                file.print(terminator: "", ".annotatedWith(\(oldAnnotations))")
+                file.print(terminator: "", ".annotatedWith("+oldAnnotations+")")
             } else {
-                file.print(terminator: "", ".annotatedWith(\(annotations))")
+                file.print(terminator: "", ".annotatedWith("+annotations+")")
             }
         }
         
