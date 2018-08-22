@@ -150,6 +150,39 @@ public extension _STLR.Grammar {
         
         return embeddedIdentifier(identifier) != nil
     }
+
+    fileprivate func extractInlinedRules(expression:_STLR.Expression)->[_STLR.Rule]{
+        switch expression {
+        case .element(let element):
+            if let inlined = element.annotations?.token {
+                return [scope.grammar[inlined]]
+            }
+        case .sequence(let elements), .choice(let elements):
+            var inlined = [_STLR.Rule]()
+            for element in elements {
+                inlined.append(contentsOf: inlinedRules(element:element))
+            }
+            return inlined
+        }
+        return []
+    }
+    
+    internal var inlinedRules : _STLR.Rules {
+        var inlined = _STLR.Rules()
+        
+        for rule in rules {
+            inlined.append(contentsOf: extractInlinedRules(expression: rule.expression))
+        }
+        
+        return inlined
+    }
+    
+    public var allRules : _STLR.Rules {
+        var all = _STLR.Rules()
+        all.append(contentsOf: rules)
+        all.append(contentsOf: inlinedRules)
+        return all
+    }
     
     public subscript(_ identifier:String)->_STLR.Rule{
         for rule in rules {
