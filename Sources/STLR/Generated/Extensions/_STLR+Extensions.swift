@@ -177,6 +177,7 @@ public extension _STLR.Grammar {
         return inlined
     }
     
+    /// All rules, including those defined inline
     public var allRules : _STLR.Rules {
         var all = _STLR.Rules()
         all.append(contentsOf: rules)
@@ -552,7 +553,7 @@ extension _STLR.CharacterSet {
     
 }
 
-fileprivate extension _STLR.Label {
+internal extension _STLR.Label {
     /// `true` if the annotation is a token annotation
     var isToken : Bool {
         switch self {
@@ -570,7 +571,7 @@ fileprivate extension _STLR.Label {
     
     
     /// `true` if the impact of the annotation is captured in a rules `Behaviour`
-    var isBehavioural : Bool {
+    fileprivate var isBehavioural : Bool {
         switch  self {
         case .definedLabel(let defined):
             switch defined {

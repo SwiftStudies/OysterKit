@@ -51,7 +51,7 @@ extension _STLR {
         //
         file.print("","/// The rule for the token","var rule : BehaviouralRule {").indent()
         file.print(         "switch self {").indent()
-        for rule in grammar.rules {
+        for rule in grammar.allRules {
             file.print("/// \(rule.identifier)","case .\(rule.identifier):").indent()
 
             if grammar.isDirectLeftHandRecursive(identifier: rule.identifier) {
@@ -129,58 +129,67 @@ extension _STLR.Expression {
 extension _STLR.Element {
     @discardableResult
     func swift(in file:TextFile)->TextFile{
-        if let group = group {
+        func identifiersAndTerminals(for element:_STLR.Element, in file:TextFile)->TextFile{
+            file.print(terminator: "", isTransient  ? "~" : (isVoid       ? "-" : ""))
+            
+            if let terminal = terminal {
+                file.print(terminator: "", terminal.swift())
+            } else if let identifier = identifier {
+                file.print(terminator: "", "T.\(identifier).rule")
+            }
+            
+            if case let .structural(token) = kind, identifier ?? "" != "\(token)" {
+                file.print(terminator: "",".parse(as: T.\(token))")
+            }
+            skipStructure:
+                
+            switch cardinality {
+            case .one:
+                file.print(terminator: "",".require(.one)")
+            case .oneOrMore:
+                file.print(terminator: "",".require(.oneOrMore)")
+            case .noneOrMore:
+                file.print(terminator: "",".require(.noneOrMore)")
+            case .optionally:
+                file.print(terminator: "",".require(.optionally)")
+            default:
+                file.print(terminator: "","[\(cardinality.minimumMatches)...\(cardinality.maximumMatches == nil ? "" : "\(cardinality.maximumMatches!)")]")
+            }
+            
+            if isLookahead {
+                file.print(terminator: "", ".lookahead()")
+            }
+            if isNegated {
+                file.print(terminator: "", ".negate()")
+            }
+            
+            if let annotations = annotations?.swift {
+                if let identifier = identifier {
+                    let oldAnnotations = "T.\(identifier).rule.annotations.merge(with:\(annotations))"
+                    file.print(terminator: "", ".annotatedWith("+oldAnnotations+")")
+                } else {
+                    file.print(terminator: "", ".annotatedWith("+annotations+")")
+                }
+            }
+            
+            return file
+
+        }
+        
+        if let token = token {
+            let pseudoElement = _STLR.Element(group: nil, terminal: nil, identifier: "\(token)", void: void, transient: transient, negated: negated, annotations: annotations?.filter({!$0.label.isToken}), lookahead: lookahead, quantifier: quantifier)
+            return identifiersAndTerminals(for: pseudoElement, in: file)
+        } else if let group = group {
             var expression = group.expression.swift(in: TextFile()).content
             if let annotations = annotations?.swift {
                 expression = expression.dropLast() + ".annotatedWith(\(annotations))\n"
             }
             file.printBlock(expression)
             return file
+        } else {
+            return identifiersAndTerminals(for: self, in: file)
         }
         
-        file.print(terminator: "", isTransient  ? "~" : (isVoid       ? "-" : ""))
-
-        if let terminal = terminal {
-            file.print(terminator: "", terminal.swift())
-        } else if let identifier = identifier {
-            file.print(terminator: "", "T.\(identifier).rule")
-        }
-
-        if case let .structural(token) = kind, identifier ?? "" != "\(token)" {
-            file.print(terminator: "",".parse(as: T.\(token))")
-        }
-        skipStructure:
-        
-        switch cardinality {
-        case .one:
-            file.print(terminator: "",".require(.one)")
-        case .oneOrMore:
-            file.print(terminator: "",".require(.oneOrMore)")
-        case .noneOrMore:
-            file.print(terminator: "",".require(.noneOrMore)")
-        case .optionally:
-            file.print(terminator: "",".require(.optionally)")
-        default:
-            file.print(terminator: "","[\(cardinality.minimumMatches)...\(cardinality.maximumMatches == nil ? "" : "\(cardinality.maximumMatches!)")]")
-        }
-        
-        if isLookahead {
-            file.print(terminator: "", ".lookahead()")
-        }
-        if isNegated {
-            file.print(terminator: "", ".negate()")
-        }
-
-        if let annotations = annotations?.swift {
-            if let identifier = identifier {
-                let oldAnnotations = "T.\(identifier).rule.annotations.merge(with:\(annotations))"
-                file.print(terminator: "", ".annotatedWith("+oldAnnotations+")")
-            } else {
-                file.print(terminator: "", ".annotatedWith("+annotations+")")
-            }
-        }
-        
-        return file
     }
 }
 
