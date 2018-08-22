@@ -44,7 +44,7 @@ extension _STLR {
         file.printBlock(regularExpressionBlock)
         
         // The tokens
-        file.print("","/// The tokens defined by the grammar","case "+grammar.rules.compactMap({$0.identifier}).map({"`\($0)`"}).joined(separator: ", "))
+        file.print("","/// The tokens defined by the grammar","case "+grammar.allRules.compactMap({$0.identifier}).map({"`\($0)`"}).joined(separator: ", "))
         
         //
         // Rules

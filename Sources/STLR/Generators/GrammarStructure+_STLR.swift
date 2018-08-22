@@ -317,42 +317,6 @@ public class _GrammarStructure {
         swift(to: temp, scope: scope, accessLevel: "public")
         print(temp.content)
     }
-
-    func inlinedRules(element:_STLR.Element)->[_STLR.Rule]{
-        if let group = element.group {
-            var additionalRules = [_STLR.Rule]()
-            
-            if let inlinedRule = element.annotations?.token {
-                additionalRules.append(scope.grammar[inlinedRule])
-            }
-            
-            additionalRules.append(contentsOf: inlinedRules(expression: group.expression))
-            
-            return additionalRules
-        } else if let _ = element.terminal, let inlinedRule = element.annotations?.token {
-            return [scope.grammar[inlinedRule]]
-        } else if let _ = element.identifier, let inlinedRule = element.annotations?.token {
-            return [scope.grammar[inlinedRule]]
-        }
-        
-        return []
-    }
-    
-    func inlinedRules(expression:_STLR.Expression)->[_STLR.Rule]{
-        switch expression {
-        case .element(let element):
-            if let inlined = element.annotations?.token {
-                return [scope.grammar[inlined]]
-            }
-        case .sequence(let elements), .choice(let elements):
-            var inlined = [_STLR.Rule]()
-            for element in elements {
-                inlined.append(contentsOf: inlinedRules(element:element))
-            }
-            return inlined
-        }
-        return []
-    }
     
     /**
      Parses the AST and infers the fundamental data structure from it. This
@@ -368,11 +332,8 @@ public class _GrammarStructure {
         self.structure = Node(scope, name:"structure",cardinality:.one, kind: .structural)
         
         //Create all nodes for rules that appear
-        for rule in scope.grammar.rules {
+        for rule in scope.grammar.allRules {
             structure.children.append(generate(rule: rule))
-            for rule in inlinedRules(expression: rule.expression){
-                structure.children.append(generate(rule: rule))
-            }
         }
         
         //We also need to get all the inline defined rules

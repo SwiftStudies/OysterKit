@@ -151,16 +151,39 @@ public extension _STLR.Grammar {
         return embeddedIdentifier(identifier) != nil
     }
 
+    func extractInlinedRules(element:_STLR.Element)->[_STLR.Rule]{
+        if let group = element.group {
+            var additionalRules = [_STLR.Rule]()
+            
+            if let inlinedRule = element.annotations?.token {
+                additionalRules.append(self[inlinedRule])
+            }
+            
+            
+            
+            additionalRules.append(contentsOf: extractInlinedRules(expression: group.expression))
+            
+            return additionalRules
+        } else if let _ = element.terminal, let inlinedRule = element.annotations?.token {
+            return [self[inlinedRule]]
+        } else if let _ = element.identifier, let inlinedRule = element.annotations?.token {
+            return [self[inlinedRule]]
+        }
+        
+        return []
+    }
+
+    
     fileprivate func extractInlinedRules(expression:_STLR.Expression)->[_STLR.Rule]{
         switch expression {
         case .element(let element):
             if let inlined = element.annotations?.token {
-                return [scope.grammar[inlined]]
+                return [self[inlined]]
             }
         case .sequence(let elements), .choice(let elements):
             var inlined = [_STLR.Rule]()
             for element in elements {
-                inlined.append(contentsOf: inlinedRules(element:element))
+                inlined.append(contentsOf: extractInlinedRules(element:element))
             }
             return inlined
         }
