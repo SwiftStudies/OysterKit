@@ -384,6 +384,7 @@ public class SwiftStructure : Generator, _Generator {
     ///  - Parameter scope: The scope to use to generate
     ///  - Returns: A single `TextFile` containing the Swift source
     public static func generate(for scope: _STLR, grammar name:String, accessLevel:String) throws -> [Operation] {
+        let name   = scope.grammar.name
         let output = TextFile("\(name).swift")
         
         let tokenFile = TextFile("")
@@ -427,12 +428,12 @@ public class SwiftStructure : Generator, _Generator {
             " - Returns: A new instance of the data-structure",
             " */",
             "\(accessLevel) static func build(_ source : Swift.String) throws ->\(name){").indent().print(
-                "let root = HomogenousTree(with: LabelledToken(withLabel: \"root\"), matching: source, children: [try AbstractSyntaxTreeConstructor().build(source, using: \(name)Rules.generatedLanguage)])",
+                "let root = HomogenousTree(with: LabelledToken(withLabel: \"root\"), matching: source, children: [try AbstractSyntaxTreeConstructor().build(source, using: \(name).generatedLanguage)])",
                 "// print(root.description)",
                 "return try ParsingDecoder().decode(\(name).self, using: root)").outdent().print(
                     "}",
                     "",
-                    "\(accessLevel) static let generatedLanguage = \(name)Rules.generatedLanguage"
+                    "\(accessLevel) static var generatedLanguage : Language {return Parser(grammar:\(name)Tokens.generatedRules)}"
         )
         
         output.outdent().print("}")

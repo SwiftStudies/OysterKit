@@ -26,9 +26,9 @@ import Foundation
 
 extension _STLR : CustomStringConvertible {
     public var description: Swift.String {
-        let result = TextFile(grammar.scopeName+".STLR")
+        let result = TextFile(grammar.name+".STLR")
 
-        result.print("grammar \(grammar.scopeName)","")
+        result.print("grammar \(grammar.name)","")
         for module in grammar.modules ?? [] {
             result.print("import \(module.moduleName)")
         }

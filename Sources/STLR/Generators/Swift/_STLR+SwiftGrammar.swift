@@ -35,7 +35,7 @@ extension _STLR {
      - Returns: A `String` containing the Swift source or `nil` if an error occured.
      */
     func swift(in file:TextFile){
-        let grammarName = grammar.scopeName.trimmingCharacters(in: Foundation.CharacterSet.whitespacesAndNewlines).split(separator: " ")[1]
+        let grammarName = grammar.name
         
         file.print("fileprivate enum \(grammarName)Tokens : Int, Token {").indent()
         file.print("typealias T = \(grammarName)Tokens")
@@ -82,7 +82,7 @@ extension _STLR {
         
         let rootRules = grammar.rules.filter({grammar.isRoot(identifier: $0.identifier)})
         file.print("","/// Create a language that can be used for parsing etc")
-        file.print("public static var generatedRules: [Rule] {").indent()
+        file.print("public static var generatedRules: [BehaviouralRule] {").indent()
         file.print("return ["+rootRules.compactMap({$0.identifier}).map({"T.\($0).rule"}).joined(separator: ", ")+"]")
         file.outdent().print("}")
                 
@@ -126,56 +126,57 @@ extension _STLR.Expression {
     }
 }
 
+fileprivate func identifiersAndTerminals(for element:_STLR.Element, in file:TextFile)->TextFile{
+    file.print(terminator: "", element.isTransient  ? "~" : (element.isVoid       ? "-" : ""))
+    
+    if let terminal = element.terminal {
+        file.print(terminator: "", terminal.swift())
+    } else if let identifier = element.identifier {
+        file.print(terminator: "", "T.\(identifier).rule")
+    }
+    
+    if case let .structural(token) = element.kind, element.identifier ?? "" != "\(token)" {
+        file.print(terminator: "",".parse(as: T.\(token))")
+    }
+    skipStructure:
+        
+    switch element.cardinality {
+    case .one:
+        file.print(terminator: "",".require(.one)")
+    case .oneOrMore:
+        file.print(terminator: "",".require(.oneOrMore)")
+    case .noneOrMore:
+        file.print(terminator: "",".require(.noneOrMore)")
+    case .optionally:
+        file.print(terminator: "",".require(.optionally)")
+    default:
+        file.print(terminator: "","[\(element.cardinality.minimumMatches)...\(element.cardinality.maximumMatches == nil ? "" : "\(element.cardinality.maximumMatches!)")]")
+    }
+    
+    if element.isLookahead {
+        file.print(terminator: "", ".lookahead()")
+    }
+    if element.isNegated {
+        file.print(terminator: "", ".negate()")
+    }
+    
+    #warning("Here be a bug. If there are only annotations on the identifier declaration then they will not be copied if the element itself has none")
+    if let annotations = element.annotations?.swift, !annotations.isEmpty {
+        if let identifier = element.identifier {
+            let oldAnnotations = "T.\(identifier).rule.annotations.merge(with:\(annotations))"
+            file.print(terminator: "", ".annotatedWith("+oldAnnotations+")")
+        } else {
+            file.print(terminator: "", ".annotatedWith("+annotations+")")
+        }
+    }
+    
+    return file
+    
+}
+
 extension _STLR.Element {
     @discardableResult
     func swift(in file:TextFile)->TextFile{
-        func identifiersAndTerminals(for element:_STLR.Element, in file:TextFile)->TextFile{
-            file.print(terminator: "", isTransient  ? "~" : (isVoid       ? "-" : ""))
-            
-            if let terminal = terminal {
-                file.print(terminator: "", terminal.swift())
-            } else if let identifier = identifier {
-                file.print(terminator: "", "T.\(identifier).rule")
-            }
-            
-            if case let .structural(token) = kind, identifier ?? "" != "\(token)" {
-                file.print(terminator: "",".parse(as: T.\(token))")
-            }
-            skipStructure:
-                
-            switch cardinality {
-            case .one:
-                file.print(terminator: "",".require(.one)")
-            case .oneOrMore:
-                file.print(terminator: "",".require(.oneOrMore)")
-            case .noneOrMore:
-                file.print(terminator: "",".require(.noneOrMore)")
-            case .optionally:
-                file.print(terminator: "",".require(.optionally)")
-            default:
-                file.print(terminator: "","[\(cardinality.minimumMatches)...\(cardinality.maximumMatches == nil ? "" : "\(cardinality.maximumMatches!)")]")
-            }
-            
-            if isLookahead {
-                file.print(terminator: "", ".lookahead()")
-            }
-            if isNegated {
-                file.print(terminator: "", ".negate()")
-            }
-            
-            if let annotations = annotations?.swift {
-                if let identifier = identifier {
-                    let oldAnnotations = "T.\(identifier).rule.annotations.merge(with:\(annotations))"
-                    file.print(terminator: "", ".annotatedWith("+oldAnnotations+")")
-                } else {
-                    file.print(terminator: "", ".annotatedWith("+annotations+")")
-                }
-            }
-            
-            return file
-
-        }
-        
         if let token = token {
             let pseudoElement = _STLR.Element(group: nil, terminal: nil, identifier: "\(token)", void: void, transient: transient, negated: negated, annotations: annotations?.filter({!$0.label.isToken}), lookahead: lookahead, quantifier: quantifier)
             return identifiersAndTerminals(for: pseudoElement, in: file)
