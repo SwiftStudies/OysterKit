@@ -40,5 +40,6 @@ public protocol _Generator {
     /// Generate source code text files for the specified scope
     ///
     ///  - Parameter scope: The scope
+    #warning("Remove the name parameter, it's no longer required")
     static func generate(for scope:_STLR, grammar name:String, accessLevel:String) throws ->[Operation]
 }
