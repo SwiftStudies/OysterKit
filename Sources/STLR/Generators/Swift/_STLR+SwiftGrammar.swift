@@ -62,7 +62,7 @@ extension _STLR {
                 file.print(           "let recursiveRule = BehaviouralRecursiveRule(stubFor: \(behaviour), with: \(rule.annotations?.swift ?? "[:]"))")
                 file.print(           "T.leftHandRecursiveRules[self.rawValue] = recursiveRule")
                 file.print(           "// Create the rule we would normally generate")
-                file.printBlock(      "let rule = \(rule.swift(in: TextFile()).content)")
+                file.printBlock(      "let rule = \(rule.swift(in: TextFile()).content)").print("")
                 file.print(           "recursiveRule.surrogateRule = rule")
                 file.print(           "return recursiveRule").outdent()
                 file.print(       "}","")
@@ -96,16 +96,15 @@ extension _STLR {
 extension _STLR.Rule {
     @discardableResult
     func swift(in file:TextFile)->TextFile{
-        var prefix = ""
-        if isTransient {
-            prefix = "~"
-        } else if isVoid {
-            prefix = "-"
+        let suffix : String
+        if isVoid {
+            suffix = ".skip()"
+        } else if isTransient {
+            suffix = ".scan()"
+        } else {
+            suffix = ".parse(as:self)"
         }
-        file.print("\(prefix)[").indent()
-        file.printFile(expression.swift(in: TextFile())).print("")
-        file.outdent().print(terminator:"","\n]")
-        file.print(!(isTransient || isVoid) ? ".sequence.parse(as: self)" : ".sequence")
+        file.printFile(terminator:"",expression.swift(in: TextFile())).print(suffix)
         return file
     }
 }
@@ -277,7 +276,7 @@ internal extension TextFile {
     @discardableResult
     func printFile(terminator:String = "\n", _ file:TextFile)->TextFile{
         printBlock(terminator: terminator, file.content)
-        return file
+        return self
     }
     
     @discardableResult

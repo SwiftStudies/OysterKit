@@ -124,6 +124,29 @@ public extension RuleProducer{
         return rule(with: Behaviour(defaultBehaviour.kind, cardinality: defaultBehaviour.cardinality, negated: true, lookahead: defaultBehaviour.lookahead), annotations: defaultAnnotations)
     }
     
+    /**
+     Creates a new instance of the rule which skips.
+     
+     // Creates a skipping version of of the rule
+     let skipLetters = CharacterSet.letters.skip()
+     
+     - Returns: A new version of the rule
+     */
+    public func skip()->BehaviouralRule{
+        return rule(with: Behaviour(.skipping, cardinality: defaultBehaviour.cardinality, negated: defaultBehaviour.negate, lookahead: defaultBehaviour.lookahead), annotations: defaultAnnotations)
+    }
+    
+    /**
+     Creates a new instance of the rule which scans.
+     
+     // Creates a scanning version of of the rule
+     let scanLetters = CharacterSet.letters.scan()
+     
+     - Returns: A new version of the rule
+     */
+    public func scan()->BehaviouralRule{
+        return rule(with: Behaviour(.scanning, cardinality: defaultBehaviour.cardinality, negated: defaultBehaviour.negate, lookahead: defaultBehaviour.lookahead), annotations: defaultAnnotations)
+    }
 }
 
 /**
@@ -144,26 +167,26 @@ public prefix func !(rule:RuleProducer)->BehaviouralRule{
  Creates a new instance of the rule which skips.
  
  // Creates a skipping version of of the rule
- let skipLetters = -CharacterSet.letters.scan(.zeroOrMore)
+ let skippingRule = -scanningRule
  
  - Parameter rule:The rule to apply to
  - Returns: A new version of the rule
  */
 public prefix func -(rule: RuleProducer)->BehaviouralRule{
-    return rule.rule(with: Behaviour(.skipping, cardinality: rule.defaultBehaviour.cardinality, negated: rule.defaultBehaviour.negate, lookahead: rule.defaultBehaviour.lookahead), annotations: rule.defaultAnnotations)
+    return rule.skip()
 }
 
 /**
  Creates a new instance of the rule which scans.
  
  // Creates a scanning version of of the rule
- let scanLetters = -CharacterSet.letters.token(myToken, .zeroOrMore)
+ let scanningRule = ~parsingRule
  
  - Parameter rule:The rule to apply to
  - Returns: A new version of the rule
  */
 public prefix func ~(rule : RuleProducer)->BehaviouralRule{
-    return rule.rule(with: Behaviour(.scanning, cardinality: rule.defaultBehaviour.cardinality, negated: rule.defaultBehaviour.negate, lookahead: rule.defaultBehaviour.lookahead), annotations: rule.defaultAnnotations)
+    return rule.scan()
 }
 
 // Extends collections of terminals to support creation of Choice scanners
