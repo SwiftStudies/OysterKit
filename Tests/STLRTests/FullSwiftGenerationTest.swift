@@ -20,28 +20,7 @@ class FullSwiftGenerationTest: XCTestCase {
             
             let operations = try SwiftStructure.generate(for: stlr, grammar: "Test", accessLevel: "public")
             
-            let context = OperationContext(with: URL(fileURLWithPath: "/Users/nhughes/Desktop/")){
-                print($0)
-            }
-            
-            for operation in operations {
-                try operation.perform(in: context)
-            }
-        } catch {
-            print("Error: \(error)")
-        }
-    }
-    
-    func testOldGeneratedCode(){
-        #warning("This should go")
-
-        do {
-            let source = try String(contentsOfFile: "/Users/nhughes/Documents/Code/SPM/OysterKit/Resources/STLR.stlr")
-            let stlr = STLRParser(source: source)
-            
-            let operations = try SwiftStructure.generate(for: stlr.ast, grammar: "Test", accessLevel: "public")
-            
-            let context = OperationContext(with: URL(fileURLWithPath: "/Users/nhughes/Desktop/")){
+            let context = OperationContext(with: URL(fileURLWithPath: "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/ExampleLanguages")){
                 print($0)
             }
             
