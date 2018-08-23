@@ -421,7 +421,7 @@ public class SwiftStructure : Generator, _Generator {
         var lines = tokens.components(separatedBy: CharacterSet.newlines)
         let line = lines.removeFirst()
         
-        output.print("fileprivate \(line)")
+        output.print("internal \(line)")
         for line in lines{
             output.print(line)
         }
