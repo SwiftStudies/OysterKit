@@ -143,7 +143,7 @@ public extension _STLR.Grammar {
         let ast : HomogenousTree = try! AbstractSyntaxTreeConstructor(with: scopeName).build(scopeName, using: Parser(grammar: [fixName]))
         
         #warning("Remove this as a last step")
-        return "_"+ast.matchedString
+        return ast.matchedString
     }
     
     fileprivate func embeddedIdentifier(_ tokenName:String)->_STLR.Element?{
