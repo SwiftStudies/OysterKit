@@ -113,7 +113,7 @@ public extension RuleProducer{
 
     /**
      Creates a new instance of the rule which negates its match.
-     Note that negate does not "toggle", that is !!rule != rule
+     Note that negate does not "toggle", that is !!rule != rule.
      
      // Creates a negated version of of the rule
      let notLetter = CharacterSet.letters.negate()
@@ -121,7 +121,7 @@ public extension RuleProducer{
      - Returns: A new version of the rule
      */
     public func negate()->BehaviouralRule{
-        return rule(with: Behaviour(defaultBehaviour.kind, cardinality: defaultBehaviour.cardinality, negated: true, lookahead: defaultBehaviour.lookahead), annotations: defaultAnnotations)
+        return rule(with: Behaviour(.scanning, cardinality: defaultBehaviour.cardinality, negated: true, lookahead: defaultBehaviour.lookahead), annotations: defaultAnnotations)
     }
     
     /**

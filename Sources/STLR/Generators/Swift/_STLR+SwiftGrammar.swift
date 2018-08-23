@@ -135,6 +135,9 @@ fileprivate func identifiersAndTerminals(for element:_STLR.Element, in file:Text
         file.print(terminator: "", terminal.swift())
     } else if let identifier = element.identifier {
         file.print(terminator: "", "T.\(identifier).rule")
+    } else if let group = element.group {
+        let expression = String(group.expression.swift(in: TextFile()).content.dropLast())
+        file.print(terminator: "", expression)
     }
     
     if case let .structural(token) = element.kind, element.identifier ?? "" != "\(token)" {
@@ -173,7 +176,6 @@ fileprivate func identifiersAndTerminals(for element:_STLR.Element, in file:Text
     }
     
     return file
-    
 }
 
 extension _STLR.Element {
@@ -182,17 +184,9 @@ extension _STLR.Element {
         if let token = token {
             let pseudoElement = _STLR.Element(annotations: annotations?.filter({!$0.label.isToken}), group: nil, identifier: "\(token)", lookahead: lookahead, negated: negated, quantifier: quantifier, terminal: nil, transient: transient, void: void)
             return identifiersAndTerminals(for: pseudoElement, in: file)
-        } else if let group = group {
-            var expression = group.expression.swift(in: TextFile()).content
-            if let annotations = annotations?.swift {
-                expression = expression.dropLast() + ".annotatedWith(\(annotations))\n"
-            }
-            file.printBlock(expression)
-            return file
-        } else {
-            return identifiersAndTerminals(for: self, in: file)
         }
         
+        return identifiersAndTerminals(for: self, in: file)
     }
 }
 
