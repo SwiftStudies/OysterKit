@@ -32,7 +32,6 @@ class FullSwiftGenerationTest: XCTestCase {
     }
     
     func testGeneratedCode(){
-        return
         #warning("This should go")
         do {
             let source = try String(contentsOfFile: "/Users/nhughes/Documents/Code/SPM/OysterKit/Resources/STLR.stlr")

@@ -259,7 +259,7 @@ extension _STLR.Terminal {
             let regex = ("^"+regex.dropLast().dropFirst()).debugDescription
             return "T.regularExpression(\(regex))"
         case .terminalString(let terminalString):
-            return terminalString.terminalBody.debugDescription
+            return terminalString.terminalBody.unescaped.debugDescription
         case .characterRange(let characterRange):
             let firstString = "\(characterRange[0].terminalBody)".asSwiftString
             let lastString  = "\(characterRange[1].terminalBody)".asSwiftString
