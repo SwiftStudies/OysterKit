@@ -108,7 +108,7 @@ public extension RuleProducer{
      - Returns: A new version of the rule
      */
     public func lookahead()->BehaviouralRule{
-        return rule(with: Behaviour(defaultBehaviour.kind, cardinality: defaultBehaviour.cardinality, negated: defaultBehaviour.negate, lookahead: true), annotations: defaultAnnotations)
+        return rule(with: Behaviour(.scanning, cardinality: defaultBehaviour.cardinality, negated: defaultBehaviour.negate, lookahead: true), annotations: defaultAnnotations)
     }
 
     /**
