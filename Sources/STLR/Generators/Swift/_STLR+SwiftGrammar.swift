@@ -37,7 +37,7 @@ extension _STLR {
     func swift(in file:TextFile){
         let grammarName = grammar.name
         
-        file.print("fileprivate enum \(grammarName)Tokens : Int, Token {").indent()
+        file.print("fileprivate enum \(grammarName)Tokens : Int, Token, CaseIterable, Equatable {").indent()
         file.print("typealias T = \(grammarName)Tokens")
 
         // Include regular expression caching
