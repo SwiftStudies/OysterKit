@@ -54,17 +54,20 @@ extension _STLR {
         for rule in grammar.allRules {
             file.print("/// \(rule.identifier)","case .\(rule.identifier):").indent()
 
-            if grammar.isDirectLeftHandRecursive(identifier: rule.identifier) {
+            if grammar.isLeftHandRecursive(identifier: rule.identifier) {
+                let behaviour = "Behaviour(.structural(token: self), cardinality: Cardinality.one)"
+                
                 file.print(       "guard let cachedRule = T.leftHandRecursiveRules[self.rawValue] else {").indent()
                 file.print(           "// Create recursive shell")
-                file.print(           "let recursiveRule = RecursiveRule(stubFor: self, with: annotations.isEmpty ? [ : ] : annotations)")
+                file.print(           "let recursiveRule = BehaviouralRecursiveRule(stubFor: \(behaviour), with: \(rule.annotations?.swift ?? "[:]"))")
                 file.print(           "T.leftHandRecursiveRules[self.rawValue] = recursiveRule")
                 file.print(           "// Create the rule we would normally generate")
                 file.printBlock(      "let rule = \(rule.swift(in: TextFile()).content)")
                 file.print(           "recursiveRule.surrogateRule = rule")
                 file.print(           "return recursiveRule").outdent()
-                file.print(       "}")
+                file.print(       "}","")
                 file.print(       "return cachedRule")
+                
             } else {
                 file.printBlock("return \(rule.swift(in: TextFile()).content)")
             }
@@ -76,7 +79,7 @@ extension _STLR {
         //
         // Cache for Recursion
         //
-        if grammar.rules.filter({self.grammar.isDirectLeftHandRecursive(identifier: $0.identifier)}).count > 0 {
+        if grammar.rules.filter({self.grammar.isLeftHandRecursive(identifier: $0.identifier)}).count > 0 {
             file.print("","/// Cache for left-hand recursive rules","private static var leftHandRecursiveRules = [ Int : BehaviouralRule ]()")
         }
         
