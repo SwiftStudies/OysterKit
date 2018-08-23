@@ -178,7 +178,7 @@ extension _STLR.Element {
     @discardableResult
     func swift(in file:TextFile)->TextFile{
         if let token = token {
-            let pseudoElement = _STLR.Element(group: nil, terminal: nil, identifier: "\(token)", void: void, transient: transient, negated: negated, annotations: annotations?.filter({!$0.label.isToken}), lookahead: lookahead, quantifier: quantifier)
+            let pseudoElement = _STLR.Element(annotations: annotations?.filter({!$0.label.isToken}), group: nil, identifier: "\(token)", lookahead: lookahead, negated: negated, quantifier: quantifier, terminal: nil, transient: transient, void: void)
             return identifiersAndTerminals(for: pseudoElement, in: file)
         } else if let group = group {
             var expression = group.expression.swift(in: TextFile()).content
@@ -266,7 +266,7 @@ extension _STLR.Terminal {
     }
 }
 
-fileprivate extension TextFile {
+internal extension TextFile {
     convenience init(){
         self.init("Temp")
     }

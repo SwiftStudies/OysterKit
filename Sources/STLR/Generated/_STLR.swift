@@ -596,16 +596,18 @@ public struct _STLR : Codable {
         public let transient: Swift.String?
         public let terminal: Terminal?
         
-        public init(group:Group?, terminal:Terminal?, identifier:Swift.String?, void:Swift.String?, transient:Swift.String?, negated:Swift.String?, annotations:Annotations?, lookahead:Swift.String?, quantifier:Quantifier?){
-            self.group = group
-            self.terminal = terminal
-            self.identifier = identifier
-            self.void = void
-            self.transient = transient
-            self.negated = negated
+        /// Default initializer
+        public init(annotations:Annotations?, group:Group?, identifier:Swift.String?, lookahead:Swift.String?, negated:Swift.String?, quantifier:Quantifier?, terminal:Terminal?, transient:Swift.String?, void:Swift.String?){
             self.annotations = annotations
+            self.group = group
+            self.identifier = identifier
             self.lookahead = lookahead
+            self.negated = negated
             self.quantifier = quantifier
+            self.terminal = terminal
+            self.transient = transient
+            self.void = void
+            
         }
     }
     

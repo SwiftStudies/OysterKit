@@ -527,7 +527,7 @@ public extension _STLR.Element {
         if let group = group {
             return group.expression
         } else if let terminal = terminal {
-            let newElement = _STLR.Element(group: nil, terminal: terminal, identifier: nil, void: void, transient: transient, negated: negated, annotations: annotations?.filter({!$0.label.isToken}), lookahead: lookahead, quantifier: quantifier)
+            let newElement = _STLR.Element(annotations: annotations?.filter({!$0.label.isToken}), group: nil, identifier: nil, lookahead: lookahead, negated: negated, quantifier: quantifier, terminal: terminal, transient: transient, void: void)
             return _STLR.Expression.element(element: newElement)
         } else if let identifier = identifier {
             if identifier == tokenName {

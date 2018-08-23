@@ -259,17 +259,18 @@ fileprivate extension _GrammarStructure.Node {
     
     
     func swift(to output:TextFile, scope:_STLR, accessLevel:String){
+        var isClass = false
         if type != .unknown {
             if children.isEmpty{
                 output.print("\(accessLevel) let \(name.propertyName): \(dataType(accessLevel))")
             } else {
                 switch type {
                 case .structure:
-                    #warning("Where the generated type is a class we need to change structure generation to make a default initializer as otherwise there is no way to create new initializers")
+                    isClass = scope.identifierIsLeftHandRecursive(name)
                     output.print(
                         "",
                         "/// \(dataType(accessLevel)) ",
-                        "\(accessLevel) \(scope.identifierIsLeftHandRecursive(name) ? "class" : "struct") \(dataType(accessLevel)) : Codable {"
+                        "\(accessLevel) \(isClass ? "class" : "struct") \(dataType(accessLevel)) : Codable {"
                     )
                 case.enumeration:
                     swiftEnum(to: output, scope: scope, accessLevel: accessLevel)
@@ -289,6 +290,23 @@ fileprivate extension _GrammarStructure.Node {
             child.swift(to: output, scope: scope, accessLevel: accessLevel)
         }
         output.outdent()
+        
+        if isClass {
+            output.indent().print("","/// Default initializer")
+            var parameters = [String]()
+            let assignments = TextFile()
+            for child in children.sorted(by: {$0.name < $1.name}) {
+                let variableName = child.name.propertyName
+                let variableType = child.dataType(accessLevel)
+                parameters.append("\(variableName):\(variableType)")
+                assignments.print("self.\(variableName) = \(variableName)")
+            }
+            output.print("\(accessLevel) init(\(parameters.joined(separator: ", "))){").indent()
+            output.printFile(assignments)
+            output.print("")
+            output.outdent().print("}").outdent().print("")
+        }
+        
         if type == .structure && !children.isEmpty {
             output.print("}")
         }
