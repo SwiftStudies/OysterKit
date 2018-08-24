@@ -1,7 +1,7 @@
 import Foundation
 import STLR
 import OysterKit
-
+ 
 let context = OperationContext(with: URL(fileURLWithPath: "/Users/nhughes/Desktop/")) { (message) in
     print(message)
 }

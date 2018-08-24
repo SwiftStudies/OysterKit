@@ -62,14 +62,14 @@ public extension _STLR {
                 file.print(           "let recursiveRule = BehaviouralRecursiveRule(stubFor: \(behaviour), with: \(rule.annotations?.swift ?? "[:]"))")
                 file.print(           "T.leftHandRecursiveRules[self.rawValue] = recursiveRule")
                 file.print(           "// Create the rule we would normally generate")
-                file.printBlock(      "let rule = \(rule.swift(in: TextFile()).content)").print("")
+                file.printBlock(      "let rule = \(rule.swift(in: TextFile(), grammar: grammar).content)").print("")
                 file.print(           "recursiveRule.surrogateRule = rule")
                 file.print(           "return recursiveRule").outdent()
                 file.print(       "}","")
                 file.print(       "return cachedRule")
                 
             } else {
-                file.printBlock("return \(rule.swift(in: TextFile()).content)")
+                file.printBlock("return \(rule.swift(in: TextFile(), grammar: grammar).content)")
             }
             file.outdent().print("")
             
@@ -95,40 +95,45 @@ public extension _STLR {
 
 extension _STLR.Rule {
     @discardableResult
-    func swift(in file:TextFile)->TextFile{
-        let suffix : String
+    func swift(in file:TextFile, grammar:_STLR.Grammar)->TextFile{
+        var suffix : String = ".reference("
         if isVoid {
-            suffix = ".skip()"
+            suffix += ".skipping"
         } else if isTransient {
-            suffix = ".scan()"
+            suffix += ".scanning"
         } else {
-            suffix = ".parse(as:self)"
+            suffix += ".structural(token: self)"
         }
-        file.printFile(terminator:"",expression.swift(in: TextFile())).print(suffix)
+        if let annotations = annotations {
+            suffix += ", annotations: \(annotations.swift))"
+        } else {
+            suffix += ")"
+        }
+        file.printFile(terminator:"",expression.swift(in: TextFile(), grammar: grammar)).print(suffix)
         return file
     }
 }
 
 extension _STLR.Expression {
     @discardableResult
-    func swift(in file:TextFile)->TextFile{
+    func swift(in file:TextFile, grammar:_STLR.Grammar)->TextFile{
         switch self {
         case .element(let element):
-            file.printFile(element.swift(in: TextFile()))
+            file.printFile(element.swift(in: TextFile(), grammar: grammar))
         case .sequence(let sequence):
             file.print("[").indent()
-            file.printBlock(sequence.map({$0.swift(in: TextFile()).content}).joined(separator: ",\n"))
+            file.printBlock(sequence.map({$0.swift(in: TextFile(), grammar: grammar).content}).joined(separator: ",\n"))
             file.outdent().print("].sequence")
         case .choice(let choice):
             file.print("[").indent()
-            file.printBlock(choice.map({$0.swift(in: TextFile()).content}).joined(separator: ",\n"))
+            file.printBlock(choice.map({$0.swift(in: TextFile(), grammar: grammar).content}).joined(separator: ",\n"))
             file.outdent().print("].choice")
         }
         return file
     }
 }
 
-fileprivate func identifiersAndTerminals(for element:_STLR.Element, in file:TextFile)->TextFile{
+fileprivate func identifiersAndTerminals(for element:_STLR.Element, in file:TextFile, grammar:_STLR.Grammar)->TextFile{
     file.print(terminator: "", element.isTransient  ? "~" : (element.isVoid       ? "-" : ""))
     
     if let terminal = element.terminal {
@@ -136,7 +141,7 @@ fileprivate func identifiersAndTerminals(for element:_STLR.Element, in file:Text
     } else if let identifier = element.identifier {
         file.print(terminator: "", "T.\(identifier).rule")
     } else if let group = element.group {
-        let expression = String(group.expression.swift(in: TextFile()).content.dropLast())
+        let expression = String(group.expression.swift(in: TextFile(), grammar: grammar).content.dropLast())
         file.print(terminator: "", expression)
     }
     
@@ -165,14 +170,8 @@ fileprivate func identifiersAndTerminals(for element:_STLR.Element, in file:Text
         file.print(terminator: "", ".negate()")
     }
     
-    #warning("Here be a bug. If there are only annotations on the identifier declaration then they will not be copied if the element itself has none")
     if let annotations = element.annotations?.swift, !annotations.isEmpty {
-//        if let identifier = element.identifier {
-//            let oldAnnotations = "T.\(identifier).rule.annotations.merge(with:\(annotations))"
-//            file.print(terminator: "", ".annotatedWith("+oldAnnotations+")")
-//        } else {
-            file.print(terminator: "", ".annotatedWith("+annotations+")")
-//        }
+        file.print(terminator: "", ".annotatedWith("+annotations+")")
     }
     
     return file
@@ -180,13 +179,13 @@ fileprivate func identifiersAndTerminals(for element:_STLR.Element, in file:Text
 
 extension _STLR.Element {
     @discardableResult
-    func swift(in file:TextFile)->TextFile{
+    func swift(in file:TextFile, grammar:_STLR.Grammar)->TextFile{
         if let token = token {
             let pseudoElement = _STLR.Element(annotations: annotations?.filter({!$0.label.isToken}), group: nil, identifier: "\(token)", lookahead: lookahead, negated: negated, quantifier: quantifier, terminal: nil, transient: transient, void: void)
-            return identifiersAndTerminals(for: pseudoElement, in: file)
+            return identifiersAndTerminals(for: pseudoElement, in: file, grammar: grammar)
         }
         
-        return identifiersAndTerminals(for: self, in: file)
+        return identifiersAndTerminals(for: self, in: file, grammar: grammar)
     }
 }
 
@@ -209,7 +208,7 @@ extension _STLR.Label {
                 result += "\(definedLabel)"
             }
         case .customLabel(let customLabel):
-            result += ".custom(label:\"\(customLabel.asSwiftString)\")"
+            result += "custom(label:\"\(customLabel.asSwiftString.dropFirst().dropLast())\")"
         }
         return result
     }

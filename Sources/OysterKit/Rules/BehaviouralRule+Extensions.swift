@@ -125,8 +125,8 @@ public extension BehaviouralRule{
         return rule(with: Behaviour(.scanning, cardinality: behaviour.cardinality, negated: behaviour.negate, lookahead: behaviour.lookahead), annotations: annotations)
     }
     
-    public func reference(kind:Behaviour.Kind, annotations: RuleAnnotations)->BehaviouralRule{
-        return ReferenceRule(Behaviour(kind, cardinality: .one, negated: false, lookahead: false), and: annotations, for: self)
+    public func reference(_ kind:Behaviour.Kind, annotations: RuleAnnotations? = nil)->BehaviouralRule{
+        return ReferenceRule(Behaviour(kind, cardinality: .one, negated: false, lookahead: false), and: annotations ?? [:], for: self)
     }
 }
 
