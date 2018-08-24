@@ -113,7 +113,7 @@ label                           = definedLabel | customLabel
 -startRegex = regexDelimeter >>!"*"
 -endRegex = regexDelimeter
 ~regexBody = !(regexDelimeter whitespace)+
-regex = startRegex regexBody endRegex
+regex = startRegex -regexBody+ endRegex -whitespace
 
 //
 // Element

@@ -25,29 +25,6 @@
 import Foundation
 
 /**
- Types that implement the `RuleProducer` protocol should provide convience functions for
- generating rules.
- */
-public protocol RuleProducer {
-    /**
-     Creates a rule with the specified behaviour and annotations.
-     
-     - Parameter behaviour: The behaviour for the new instance, if nil the rule should
-     use the default behaviour for the producer.
-     - Parameter annotations: The annotations for the new rule, if nil the rule
-     should use the default behaviour for the producer.
-     - Returns: A new instance with the specified behaviour and annotations.
-     */
-    func rule(with behaviour:Behaviour?, annotations:RuleAnnotations?)->BehaviouralRule
-    
-    /// The default behaviour of the producer
-    var behaviour : Behaviour { get }
-    
-    /// The default annotations of the producer
-    var annotations : RuleAnnotations { get } 
-}
-
-/**
  Operators for all rule producers
  */
 
@@ -63,7 +40,7 @@ prefix  operator -
 /// Scan
 prefix  operator ~
 
-public extension RuleProducer {
+public extension BehaviouralRule {
     /**
      Creates a new instance of the rule annotated with the specified annotations
      - Parameter annotations: The desired annotations
@@ -94,11 +71,11 @@ public extension RuleProducer {
  - Parameter rule:The rule to apply to
  - Returns: A new version of the rule
  */
-public prefix func >>(rule:RuleProducer)->BehaviouralRule{
+public prefix func >>(rule:BehaviouralRule)->BehaviouralRule{
     return rule.lookahead()
 }
 
-public extension RuleProducer{
+public extension BehaviouralRule{
     /**
      Creates a new instance of the rule set to have lookahead behaviour
      
@@ -147,6 +124,10 @@ public extension RuleProducer{
     public func scan()->BehaviouralRule{
         return rule(with: Behaviour(.scanning, cardinality: behaviour.cardinality, negated: behaviour.negate, lookahead: behaviour.lookahead), annotations: annotations)
     }
+    
+    public func reference(kind:Behaviour.Kind, annotations: RuleAnnotations)->BehaviouralRule{
+        return ReferenceRule(Behaviour(kind, cardinality: .one, negated: false, lookahead: false), and: annotations, for: self)
+    }
 }
 
 /**
@@ -159,7 +140,7 @@ public extension RuleProducer{
  - Parameter rule:The rule to apply to
  - Returns: A new version of the rule
  */
-public prefix func !(rule:RuleProducer)->BehaviouralRule{
+public prefix func !(rule:BehaviouralRule)->BehaviouralRule{
     return rule.negate()
 }
 
@@ -172,7 +153,7 @@ public prefix func !(rule:RuleProducer)->BehaviouralRule{
  - Parameter rule:The rule to apply to
  - Returns: A new version of the rule
  */
-public prefix func -(rule: RuleProducer)->BehaviouralRule{
+public prefix func -(rule: BehaviouralRule)->BehaviouralRule{
     return rule.skip()
 }
 
@@ -185,12 +166,12 @@ public prefix func -(rule: RuleProducer)->BehaviouralRule{
  - Parameter rule:The rule to apply to
  - Returns: A new version of the rule
  */
-public prefix func ~(rule : RuleProducer)->BehaviouralRule{
+public prefix func ~(rule : BehaviouralRule)->BehaviouralRule{
     return rule.scan()
 }
 
 // Extends collections of terminals to support creation of Choice scanners
-extension Array where Element == RuleProducer {
+extension Array where Element == BehaviouralRule {
     /**
      Creates a rule that is satisfied if one of the rules in the araray
      (which are evaluated in order) is matched
@@ -208,7 +189,7 @@ extension Array where Element == RuleProducer {
     }
 }
 
-extension RuleProducer{
+extension BehaviouralRule{
     /**
      Creates a new instance of the rule with the specified behavioural attributes
      all other attributes maintained. If any of the supplied parameters are nil

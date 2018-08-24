@@ -31,7 +31,7 @@ public extension Token {
      - Parameter rule: The rule (or thing that can become a rule)
      - Returns: A rule
     */
-    public func from(_ rule:RuleProducer)->BehaviouralRule{
+    public func from(_ rule:BehaviouralRule)->BehaviouralRule{
         let intermediate = rule.rule(with: Behaviour(.structural(token: self), cardinality: rule.behaviour.cardinality, negated: rule.behaviour.negate, lookahead: rule.behaviour.lookahead), annotations: rule.annotations)
         
         if intermediate.behaviour.negate {
@@ -43,7 +43,7 @@ public extension Token {
     }
 }
 
-public extension RuleProducer {
+public extension BehaviouralRule {
     /**
      Changes the behaviour (or creates a rule with the behaviour) to create a token.
      

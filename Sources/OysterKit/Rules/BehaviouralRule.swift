@@ -29,7 +29,7 @@
  easier to extend (previously implementations would have to add any of this logic
  themselves, and it's easy to get wrong.
  */
-public protocol BehaviouralRule : Rule, RuleProducer, CustomStringConvertible{
+public protocol BehaviouralRule : Rule, CustomStringConvertible{
     /// The behaviour for the rule controlling things like cardinality and lookahead
     var  behaviour   : Behaviour {get}
     /// The annotations on the rule
@@ -45,6 +45,17 @@ public protocol BehaviouralRule : Rule, RuleProducer, CustomStringConvertible{
      - Parameter ir: The intermediate representation
     */
     func test(with lexer : LexicalAnalyzer, `for` ir:IntermediateRepresentation) throws
+    
+    /**
+     Creates a rule with the specified behaviour and annotations.
+     
+     - Parameter behaviour: The behaviour for the new instance, if nil the rule should
+     use the default behaviour for the producer.
+     - Parameter annotations: The annotations for the new rule, if nil the rule
+     should use the default behaviour for the producer.
+     - Returns: A new instance with the specified behaviour and annotations.
+     */
+    func rule(with behaviour:Behaviour?, annotations:RuleAnnotations?)->BehaviouralRule
     
     /// An abrieviated description of the rule that should reflect behaviour, but not annotations
     /// and should not expand references
@@ -79,17 +90,6 @@ fileprivate struct NestedRule : Rule {
  modify their code.
  */
 public extension BehaviouralRule {
-
-    /// The default behaviour for an existing rule is its current values
-    var defaultBehaviour : Behaviour {
-        return behaviour
-    }
-    
-    /// The default annotations for an existing rule are its current annotations
-    var defaultAnnotations : RuleAnnotations {
-        return annotations
-    }
-    
     /// The token that the rule produces if structural. For backwards compatibility
     /// `Transient` tokens are created for skipping and scanning
     public var produces: Token {

@@ -303,7 +303,7 @@ class FullSwiftGenerationTest: XCTestCase {
         ]
         let failing = ["//"]
         
-        XCTAssertNoThrow(try checkSimplePassFail(for: .regex, passing: passing.map({"/{\($0)}/"}), failing: failing, expectNode: true, matches: passing))
+        XCTAssertNoThrow(try checkSimplePassFail(for: .regex, passing: passing.map({"/{\($0)}/ "}), failing: failing, expectNode: true, matches: passing))
     }
     
     func testTerminal(){
