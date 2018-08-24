@@ -25,7 +25,7 @@
 import Foundation
 
 /// Generates Swift Source for the rules in a grammar
-extension _STLR {
+public extension _STLR {
     /**
      Generates Swift code that uses OysterKit to implement the parsed grammar
      
@@ -34,7 +34,7 @@ extension _STLR {
      - Parameter colors: A dictionary of colors that can be used by syntax coloring engines
      - Returns: A `String` containing the Swift source or `nil` if an error occured.
      */
-    func swift(in file:TextFile){
+    public func swift(in file:TextFile){
         let grammarName = grammar.name
         
         file.print("fileprivate enum \(grammarName)Tokens : Int, Token, CaseIterable, Equatable {").indent()
@@ -167,12 +167,12 @@ fileprivate func identifiersAndTerminals(for element:_STLR.Element, in file:Text
     
     #warning("Here be a bug. If there are only annotations on the identifier declaration then they will not be copied if the element itself has none")
     if let annotations = element.annotations?.swift, !annotations.isEmpty {
-        if let identifier = element.identifier {
-            let oldAnnotations = "T.\(identifier).rule.annotations.merge(with:\(annotations))"
-            file.print(terminator: "", ".annotatedWith("+oldAnnotations+")")
-        } else {
+//        if let identifier = element.identifier {
+//            let oldAnnotations = "T.\(identifier).rule.annotations.merge(with:\(annotations))"
+//            file.print(terminator: "", ".annotatedWith("+oldAnnotations+")")
+//        } else {
             file.print(terminator: "", ".annotatedWith("+annotations+")")
-        }
+//        }
     }
     
     return file
