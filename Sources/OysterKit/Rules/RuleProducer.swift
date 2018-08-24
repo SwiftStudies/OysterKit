@@ -41,10 +41,10 @@ public protocol RuleProducer {
     func rule(with behaviour:Behaviour?, annotations:RuleAnnotations?)->BehaviouralRule
     
     /// The default behaviour of the producer
-    var defaultBehaviour : Behaviour { get }
+    var behaviour : Behaviour { get }
     
     /// The default annotations of the producer
-    var defaultAnnotations : RuleAnnotations { get } 
+    var annotations : RuleAnnotations { get } 
 }
 
 /**
@@ -108,7 +108,7 @@ public extension RuleProducer{
      - Returns: A new version of the rule
      */
     public func lookahead()->BehaviouralRule{
-        return rule(with: Behaviour(.scanning, cardinality: defaultBehaviour.cardinality, negated: defaultBehaviour.negate, lookahead: true), annotations: defaultAnnotations)
+        return rule(with: Behaviour(.scanning, cardinality: behaviour.cardinality, negated: behaviour.negate, lookahead: true), annotations: annotations)
     }
 
     /**
@@ -121,7 +121,7 @@ public extension RuleProducer{
      - Returns: A new version of the rule
      */
     public func negate()->BehaviouralRule{
-        return rule(with: Behaviour(.scanning, cardinality: defaultBehaviour.cardinality, negated: true, lookahead: defaultBehaviour.lookahead), annotations: defaultAnnotations)
+        return rule(with: Behaviour(.scanning, cardinality: behaviour.cardinality, negated: true, lookahead: behaviour.lookahead), annotations: annotations)
     }
     
     /**
@@ -133,7 +133,7 @@ public extension RuleProducer{
      - Returns: A new version of the rule
      */
     public func skip()->BehaviouralRule{
-        return rule(with: Behaviour(.skipping, cardinality: defaultBehaviour.cardinality, negated: defaultBehaviour.negate, lookahead: defaultBehaviour.lookahead), annotations: defaultAnnotations)
+        return rule(with: Behaviour(.skipping, cardinality: behaviour.cardinality, negated: behaviour.negate, lookahead: behaviour.lookahead), annotations: annotations)
     }
     
     /**
@@ -145,7 +145,7 @@ public extension RuleProducer{
      - Returns: A new version of the rule
      */
     public func scan()->BehaviouralRule{
-        return rule(with: Behaviour(.scanning, cardinality: defaultBehaviour.cardinality, negated: defaultBehaviour.negate, lookahead: defaultBehaviour.lookahead), annotations: defaultAnnotations)
+        return rule(with: Behaviour(.scanning, cardinality: behaviour.cardinality, negated: behaviour.negate, lookahead: behaviour.lookahead), annotations: annotations)
     }
 }
 
@@ -219,7 +219,7 @@ extension RuleProducer{
      - Parameter lookahead: Is lookahead behaviour required
      */
     internal func newBehaviour(_ kind:Behaviour.Kind?=nil, negated:Bool? = nil, lookahead:Bool? = nil)->BehaviouralRule{
-        return rule(with: Behaviour(kind ?? defaultBehaviour.kind, cardinality: defaultBehaviour.cardinality, negated: negated ?? defaultBehaviour.negate, lookahead: lookahead ?? defaultBehaviour.lookahead), annotations: defaultAnnotations)
+        return rule(with: Behaviour(kind ?? behaviour.kind, cardinality: behaviour.cardinality, negated: negated ?? behaviour.negate, lookahead: lookahead ?? behaviour.lookahead), annotations: annotations)
     }
     
     /**
@@ -233,7 +233,7 @@ extension RuleProducer{
      - Parameter lookahead: Is lookahead behaviour required
      */
     internal func newBehaviour(_ kind:Behaviour.Kind?=nil, cardinality: ClosedRange<Int>, negated:Bool? = nil, lookahead:Bool? = nil)->BehaviouralRule{
-        return rule(with: defaultBehaviour.instanceWith(kind, cardinality: cardinality, negated: negated, lookahead: lookahead), annotations: defaultAnnotations)
+        return rule(with: behaviour.instanceWith(kind, cardinality: cardinality, negated: negated, lookahead: lookahead), annotations: annotations)
     }
     
     /**
@@ -247,7 +247,7 @@ extension RuleProducer{
      - Parameter lookahead: Is lookahead behaviour required
      */
     internal func newBehaviour(_ kind:Behaviour.Kind?=nil, cardinality: PartialRangeFrom<Int>, negated:Bool? = nil, lookahead:Bool? = nil)->BehaviouralRule{
-        return rule(with: defaultBehaviour.instanceWith(kind, cardinality: cardinality, negated: negated, lookahead: lookahead), annotations: defaultAnnotations)
+        return rule(with: behaviour.instanceWith(kind, cardinality: cardinality, negated: negated, lookahead: lookahead), annotations: annotations)
     }
     
     /**
@@ -262,7 +262,7 @@ extension RuleProducer{
      */
     internal func newBehaviour(_ kind:Behaviour.Kind?=nil, cardinality: Cardinality, negated:Bool? = nil, lookahead:Bool? = nil)->BehaviouralRule{
         
-        return rule(with: Behaviour(kind ?? defaultBehaviour.kind, cardinality: cardinality, negated: negated ?? defaultBehaviour.negate, lookahead: lookahead ?? defaultBehaviour.lookahead), annotations: defaultAnnotations)
+        return rule(with: Behaviour(kind ?? behaviour.kind, cardinality: cardinality, negated: negated ?? behaviour.negate, lookahead: lookahead ?? behaviour.lookahead), annotations: annotations)
     }
     
     /**

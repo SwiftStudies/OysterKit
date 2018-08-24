@@ -25,7 +25,7 @@
 
 import Foundation
 
-public protocol Terminal : RuleProducer {
+public protocol Terminal : BehaviouralRule {
     /**
      Tests the the `Terminal` is available at the current scanner head position,
      throwing an `Error` if not
@@ -39,3 +39,22 @@ public protocol Terminal : RuleProducer {
     var matchDescription : String {get}
 }
 
+public extension Terminal {
+    
+    public func test(with lexer: LexicalAnalyzer, for ir: IntermediateRepresentation) throws {
+        try test(lexer: lexer, producing: behaviour.token)
+    }
+    
+    public var shortDescription: String {
+        return behaviour.describe(match: matchDescription, requiresScanningPrefix: false)
+    }
+    
+    
+    public var behaviour: Behaviour {
+        return Behaviour(.scanning, cardinality: .one, negated: false, lookahead: false)
+    }
+    
+    public var annotations: RuleAnnotations {
+        return [:]
+    }
+}

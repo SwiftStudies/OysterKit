@@ -24,16 +24,39 @@
 
 import Foundation
 
-/// Extends any terminal to be a `RuleProducer`
-public extension Terminal {
-    public func rule(with behaviour: Behaviour?, annotations: RuleAnnotations?) -> BehaviouralRule {
-        return TerminalRule(
-            behaviour ?? Behaviour(.scanning, cardinality: .one, negated: false, lookahead: false),
-            and: annotations ?? [:],
-            for: self)
+public final class ReferenceRule : BehaviouralRule {
+    public var behaviour: Behaviour
+    public var annotations: RuleAnnotations
+    public var references : BehaviouralRule
+    
+    public init(_ behaviour:Behaviour, and annotations:RuleAnnotations, for rule:BehaviouralRule){
+        self.behaviour = behaviour
+        self.annotations = annotations
+        self.references = rule
     }
     
-
+    public func test(with lexer: LexicalAnalyzer, for ir: IntermediateRepresentation) throws {
+        _ = try references.match(with: lexer, for: ir)
+    }
+    
+    public func rule(with behaviour: Behaviour?, annotations: RuleAnnotations?) -> BehaviouralRule {
+        return ReferenceRule(behaviour ?? self.behaviour, and: annotations ?? self.annotations, for: references)
+    }
+    
+    /// A textual description of the rule
+    public var description: String {
+        let    annotates = "\(annotations.isEmpty ? "" : "\(annotations.description) ")"
+        return annotates + behaviour.describe(match:"(\(references.description))")
+    }
+    
+    /// An abreviated description of the rule
+    public var shortDescription: String{
+        if let produces = behaviour.token {
+            return behaviour.describe(match: "\(produces)", requiresStructuralPrefix: false)
+        }
+        if let referenceProduces = references.behaviour.token{
+            return behaviour.describe(match: "\(referenceProduces)", requiresStructuralPrefix: false)
+        }
+        return behaviour.describe(match: "(\(references.shortDescription))")
+    }
 }
-
-

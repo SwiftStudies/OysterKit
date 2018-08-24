@@ -32,7 +32,7 @@ public extension Token {
      - Returns: A rule
     */
     public func from(_ rule:RuleProducer)->BehaviouralRule{
-        let intermediate = rule.rule(with: Behaviour(.structural(token: self), cardinality: rule.defaultBehaviour.cardinality, negated: rule.defaultBehaviour.negate, lookahead: rule.defaultBehaviour.lookahead), annotations: rule.defaultAnnotations)
+        let intermediate = rule.rule(with: Behaviour(.structural(token: self), cardinality: rule.behaviour.cardinality, negated: rule.behaviour.negate, lookahead: rule.behaviour.lookahead), annotations: rule.annotations)
         
         if intermediate.behaviour.negate {
             print("Warning: Cannot create a token from a negated rule")

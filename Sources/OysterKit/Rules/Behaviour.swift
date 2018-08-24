@@ -158,7 +158,7 @@ public struct Behaviour {
         switch kind {
         case .skipping: prefix = "-"
         case .scanning: prefix = requiresScanning ? "~" : ""
-        case .structural(let token): prefix = requiresStructural ? "\(token) = " : ""
+        case .structural: prefix = requiresStructural ? "{" : ""
         }
         var suffix : String
         
@@ -174,13 +174,19 @@ public struct Behaviour {
             suffix = "[\(cardinality.minimumMatches)...\(cardinality.maximumMatches == nil ? "" : "\(cardinality.maximumMatches!)")]"
         }
         
+        if case let Kind.structural(token) = kind, requiresStructural{
+            suffix += "}►\(token)"
+        } else {
+            suffix += ""
+        }
+        
         if negate {
             prefix = "\(prefix)!"
         }
         if lookahead {
             prefix = "\(prefix)>>"
         }
-        
+    
         return "\(prefix)\(match)\(suffix)"
     }
 }
