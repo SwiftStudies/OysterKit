@@ -60,7 +60,78 @@ public protocol BehaviouralRule : Rule, CustomStringConvertible{
     /// An abrieviated description of the rule that should reflect behaviour, but not annotations
     /// and should not expand references
     var shortDescription : String {get}
+    
+    /**
+     Should perform the actual check and manage the communicaion with the supplied `IntermedidateRepresentation`. If the match fails, and that failure cannot
+     be ignored an `Error` should be thrown. It is the responsiblity of the implementer to ensure the following basic pattern is followed
+     
+     1. `ir.willEvaluate()` is called to inform the `ir` that evaluation is beginning. If the `ir` returns an existing match result that should be used (proceed to step XXX)
+     2. `lexer.mark()` should be called so that an accurate `LexicalContext` can be generated.
+     3. Perform apply your rule using `lexer`.
+     4. Depending on the outcome, and the to-be-generated token:
+     - If the rule was satisfied, return a `MatchResult.success` together with a generated `lexer.proceed()` generated context
+     - If the rule was satisfied, but the result should be consumed (no node/token created, but scanning should proceed after the match) return `MatchResult.consume` with a generated `lexer.proceed()` context
+     - If the rule was _not_ satisfied but the failure can be ignored return `MatchResult.ignoreFailure`. Depending on your grammar you *may* want to leave the scanner in the same position in which case issue a `lexer.proceed()` but discard the result. Otherwise issue a `lexer.rewind()`.
+     - If the rule was _not_ satisfied but the failure should not be ignored. Call `lexer.rewind()` and return a `MatchResult.failure`
+     - If the rule was _not_ satisifed and parsing of this branch of the grammar should stop immediately throw an `Error`
+     
+     For standard implementations of rules that should satisfy almost every grammar see `ParserRule` and `ScannerRule`. `ParserRule` has a custom case which
+     provides all of the logic above with the exception of actual matching which is a lot simpler, and it is recommended that you use that if you wish to provide your own rules.
+     
+     - Parameter with: The `LexicalAnalyzer` providing the scanning functions
+     - Parameter for: The `IntermediateRepresentation` that wil be building any data structures required for subsequent interpretation of the parsing results
+     - Returns: The match result.
+     */
+    #warning("This needs to go as we start refactoring more aggressively")
+    func match(with lexer : LexicalAnalyzer, `for` ir:IntermediateRepresentation) throws -> MatchResult
+    
+    
+    
+    
 }
+
+/// A set of standard properties and functions for all `Rule`s
+public extension BehaviouralRule{
+    /// The user specified (in an annotation) error associated with the rule
+    public var error : String? {
+        guard let value = self[RuleAnnotation.error] else {
+            return nil
+        }
+        
+        if case let .string(stringValue) = value {
+            return stringValue
+        } else {
+            return "Unexpected annotation value: \(value)"
+        }
+    }
+    
+    /// Is this rule marked as void?
+    public var void : Bool {
+        switch behaviour.kind {
+        case .skipping:
+            return true
+        case .scanning, .structural:
+            return false
+        }
+    }
+    
+    /// Is this rule marked as transient
+    public var transient : Bool{
+        switch behaviour.kind {
+        case .structural:
+            return false
+        case .scanning, .skipping:
+            return true
+        }
+    }
+    
+    /// Returns the value of the specific `RuleAnnotationValue` identified by `annotation` if present
+    public subscript(annotation:RuleAnnotation)->RuleAnnotationValue?{
+        return annotations[annotation]
+    }
+    
+}
+
 
 /**
  A matching closure should perform the test using the lexer, create any nodes it wishes
@@ -68,16 +139,10 @@ public protocol BehaviouralRule : Rule, CustomStringConvertible{
  */
 public typealias Test = (LexicalAnalyzer, IntermediateRepresentation) throws -> Void
 
-fileprivate struct NestedRule : Rule {
-    func instance(with token: Token?, andAnnotations annotations: RuleAnnotations?) -> Rule {
-        fatalError()
-    }
-    
+fileprivate struct NestedRule : BehaviouralRule {
     func match(with lexer: LexicalAnalyzer, for ir: IntermediateRepresentation) throws -> MatchResult {
         fatalError()
     }
-    
-    var produces: Token
     
     var annotations: RuleAnnotations
 }
@@ -90,18 +155,6 @@ fileprivate struct NestedRule : Rule {
  modify their code.
  */
 public extension BehaviouralRule {
-    /// The token that the rule produces if structural. For backwards compatibility
-    /// `Transient` tokens are created for skipping and scanning
-    public var produces: Token {
-        switch behaviour.kind {
-        case .skipping:
-            return TransientToken.labelled("skipping")
-        case .scanning:
-            return TransientToken.anonymous
-        case .structural(let token):
-            return token
-        }
-    }
     
     /// `true` if the rule creates ndoes, false otherwise
     public var structural : Bool {

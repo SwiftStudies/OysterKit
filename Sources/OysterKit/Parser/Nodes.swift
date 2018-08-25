@@ -50,22 +50,3 @@ public extension Collection where Iterator.Element : Node {
     
 
 }
-
-extension Collection where Element == AbstractSyntaxTreeConstructor.IntermediateRepresentationNode {
-    /**
-     Returns a new ``Collection`` with any transient nodes filtered out
-     */
-    public var perpetual : [Element] {
-        var deepPerpetualChildren = Array<Element>()
-        
-        for child in self {
-            if child.token.transient || child.annotations[RuleAnnotation.transient] != nil{
-                deepPerpetualChildren.append(contentsOf: child.children.perpetual)
-            } else {
-                deepPerpetualChildren.append(child)
-            }
-        }
-        
-        return deepPerpetualChildren
-    }
-}
