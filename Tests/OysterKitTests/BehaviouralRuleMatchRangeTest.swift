@@ -52,7 +52,6 @@ class BehaviourRuleMatchRangeTest : XCTestCase {
         } catch {
             XCTFail("Unexpected failure: \(error)")
         }
-        
     }
     
     func testVoidTransientTokenTransientVoid() {

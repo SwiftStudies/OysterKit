@@ -51,7 +51,7 @@ class TestAbstractSyntaxTree: XCTestCase {
         }
     }
 
-    func testConstruction() {
+    func testInitialiseWithNodes() {
         let exampleString = "Hello World"
         let worldNode = AbstractSyntaxTreeConstructor.IntermediateRepresentationNode(for: LabelledToken(withLabel: "world"), at: exampleString.range(of: "World")!, annotations: [
             RuleAnnotation.void : RuleAnnotationValue.set,
@@ -76,6 +76,46 @@ class TestAbstractSyntaxTree: XCTestCase {
         } catch {
             XCTFail("AST contruction resulted in: \(error)")
         }        
+    }
+
+    func testBuildFromRepeatedCharacters(){
+        let token = LabelledToken(withLabel: "match")
+        let rule = CharacterSet.letters.require(.oneOrMore).parse(as: token)
+        let shouldMatch = "Hello"
+        let source = shouldMatch
+        
+        do {
+            let ast = try AbstractSyntaxTreeConstructor(with: source).build(using: Parser(grammar: [rule]))
+            XCTAssertEqual(ast.matchedString, shouldMatch)
+            XCTAssertEqual("\(ast.token)", "\(token)")
+            XCTAssertEqual(ast.children.count, 0)
+            print(ast)
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+    }
+    
+    func testBuildFromSkipScanTokenScanSkipMatch(){
+        let token = LabelledToken(withLabel: "match")
+        let rule = [
+            "\"".skip(),
+            " ".require(.oneOrMore),
+            CharacterSet.letters.require(.noneOrMore),
+            " ".require(.oneOrMore),
+            "\"".skip()
+        ].sequence.parse(as: token)
+        let shouldMatch = "      String      "
+        let source = "\"\(shouldMatch)\""
+        
+        do {
+            let ast = try AbstractSyntaxTreeConstructor(with: source).build(using: Parser(grammar: [rule]))
+            XCTAssertEqual(ast.matchedString, shouldMatch)
+            XCTAssertEqual(ast.token.rawValue, token.rawValue)
+            XCTAssertEqual(ast.children.count, 0)
+            print(ast)
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
     }
 
 }
