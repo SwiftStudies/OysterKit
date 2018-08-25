@@ -913,7 +913,7 @@ class DynamicGeneratorTest: XCTestCase {
         do {
             let result = try generatedStringSerialization(for: "letter = @error(\"error\") /hello/ ")
             
-            XCTAssertEqual(result,"{(@error(\"error\") ^/hello/)}►letter")
+            XCTAssertEqual(result,"{(@error(\"error\") /hello/)}►letter")
         } catch (let error){
             XCTFail("\(error)")
         }

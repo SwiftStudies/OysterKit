@@ -27,7 +27,7 @@ import Foundation
 /// Extends `NSRegularExpresion` to implement `Terminal`
 extension NSRegularExpression : Terminal {
     public var matchDescription: String {
-        return "\(pattern)"
+        return "/\(pattern.dropFirst())/"
     }
     
     public func test(lexer: LexicalAnalyzer, producing token:Token?) throws {
