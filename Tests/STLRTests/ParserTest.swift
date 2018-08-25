@@ -91,7 +91,7 @@ class ParserTest: XCTestCase {
     
     @discardableResult
     private func check(_ source:String, produces output: [Token], using rules:[Rule], expectingEndOfInput:Bool? = nil)->[Error]{
-        let debugOutput = false
+        let debugOutput = true
         let parser = TestParser(source: source, grammar: rules)
         
         let tokenIterator       = parser.makeIterator()
@@ -164,10 +164,10 @@ class ParserTest: XCTestCase {
         
         
         check("Where are you???", produces: [Tokens.word,Tokens.word], using: [
-            "are".consume(),
+            -"are",
             Tokens.word.rule,
-            CharacterSet.whitespaces.consume(greedily: false),
-            CharacterSet(charactersIn: "?").consume(greedily: true),
+            -CharacterSet.whitespaces,
+            -CharacterSet(charactersIn: "?").require(.oneOrMore),
             ])
     }
     
@@ -195,22 +195,21 @@ class ParserTest: XCTestCase {
     }
     
     func testQuotedEscapedStringParsing(){
-        let escapedCharacter = ["\\".terminal(token: QuotedEscapedStringTestTokens.character), [
-                "'".terminal(token: QuotedEscapedStringTestTokens.character),
-                "\\".terminal(token: QuotedEscapedStringTestTokens.character),
-            ].oneOf(token: QuotedEscapedStringTestTokens.character)
-            ].sequence(token: QuotedEscapedStringTestTokens.character)
-        
-        let stringCharacters = [
-            escapedCharacter,
-            "'".terminal(token: QuotedEscapedStringTestTokens.quote).not(),
-            ].oneOf(token: QuotedEscapedStringTestTokens.character).repeated(min: 1, limit: nil, producing: QuotedEscapedStringTestTokens.string)
+        let escapedCharacter = ["\\".parse(as: QuotedEscapedStringTestTokens.character), [
+                "'".parse(as: QuotedEscapedStringTestTokens.character),
+                "\\".parse(as: QuotedEscapedStringTestTokens.character),
+            ].choice.parse(as: QuotedEscapedStringTestTokens.character)
+            ].sequence.parse(as: QuotedEscapedStringTestTokens.character)
+        let stringCharacters = [[
+                escapedCharacter,
+                !"'".parse(as: QuotedEscapedStringTestTokens.quote),
+            ].choice.parse(as: QuotedEscapedStringTestTokens.character)].sequence.require(.oneOrMore).parse(as: QuotedEscapedStringTestTokens.string)
         
         let string = [
-            "'".terminal(token: QuotedEscapedStringTestTokens.quote).consume(),
+            -"'".parse(as: QuotedEscapedStringTestTokens.quote),
             stringCharacters,
-            "'".terminal(token: QuotedEscapedStringTestTokens.quote).consume(),
-            ].sequence(token: QuotedEscapedStringTestTokens.string)
+            -"'".parse(as: QuotedEscapedStringTestTokens.quote),
+            ].sequence.parse(as: QuotedEscapedStringTestTokens.string)
         
         let source = "'\\\\'"
         
@@ -223,7 +222,7 @@ class ParserTest: XCTestCase {
             count += 1
             XCTAssert(node.token == QuotedEscapedStringTestTokens.string)
             let capturedString = String(source[node.range])
-            XCTAssert(source == capturedString,"Got \(capturedString)" )
+            XCTAssertEqual(String(source.dropFirst().dropLast()),capturedString)
         }
         
         XCTAssert(count == 1, "Got \(count) tokens")

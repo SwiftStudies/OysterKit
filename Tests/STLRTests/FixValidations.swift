@@ -12,10 +12,12 @@ import XCTest
 
 class FixValidations: XCTestCase {
 
+    let testGrammarName = "grammar FixValidations\n"
+    
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        STLRScope.removeAllOptimizations()
+        _STLR.removeAllOptimizations()
     }
     
     override func tearDown() {
@@ -29,19 +31,23 @@ class FixValidations: XCTestCase {
     // .decimalDigits
     //
     func testQuantifierLeak() {
-        let grammarString = "number  = .decimalDigit*\n keyword = \"import\" | \"wibble\""
+        let grammarString = testGrammarName+"number  = .decimalDigit*\n keyword = \"import\" | \"wibble\""
         
-        let stlr = STLRParser(source: grammarString)
-        
-        let ast = stlr.ast
-        
-        guard ast.rules.count == 2 else {
-            XCTFail("Only \(ast.rules.count) rules created, expected 2")
-            return
+        do {
+            let stlr = try _STLR.build(grammarString)
+            
+            let grammar = stlr.grammar
+            
+            guard grammar.rules.count == 2 else {
+                XCTFail("Only \(grammar.rules.count) rules created, expected 2")
+                return
+            }
+            
+            XCTAssert("\(grammar.rules[0])" == "number = .decimalDigit*", "Malformed rule: \(grammar.rules[0])")
+            XCTAssert("\(grammar.rules[1])" == "keyword = \"import\" | \"wibble\"", "Malformed rule: '\(grammar.rules[1])'")
+        } catch {
+            XCTFail("Unexpected failure: \(error)")
         }
-        
-        XCTAssert("\(ast.rules[0])" == "number = .decimalDigits*", "Malformed rule: \(ast.rules[0])")
-        XCTAssert("\(ast.rules[1])" == "keyword = \"import\" | \"wibble\"", "Malformed rule: '\(ast.rules[1])'")
     }
 
     //
@@ -51,40 +57,19 @@ class FixValidations: XCTestCase {
     // the void annotation
     //
     func testFixForIssue68() {
-        let grammar = """
+        let grammar = testGrammarName+"""
         @void inlined = "/"
         expr = inlined !inlined+ inlined
         """
         
-        STLRScope.register(optimizer: InlineIdentifierOptimization())
-        
-        let stlr = STLRParser(source: grammar)
-        
-        XCTAssertEqual(stlr.ast.rules[1].description, "expr = @void \"/\" (!inlined)+ @void \"/\"")
-    }
-    
-    //
-    // Effect: When the CharacterSet optimization is applied to a choice of a single character string
-    // and a character set, the single character set is lost.
-    //
-    func testCharacterSetOmmision() {
-        let grammarString = "variableStart = .letter | \"_\""
-        
-        let stlr = STLRParser(source: grammarString)
-        
-        let ast = stlr.ast
-        
-        guard ast.rules.count == 1 else {
-            XCTFail("Only \(ast.rules.count) rules created, expected 1")
-            return
+        do {
+            _STLR.register(optimizer: InlineIdentifierOptimization())
+            let stlr = try _STLR.build(grammar)
+            XCTAssertEqual(stlr.grammar .rules[1].description, "expr = inlined !inlined+ inlined")
+        } catch {
+            XCTFail("Unexpted failure: \(error)")
         }
         
-        XCTAssert("\(ast.rules[0])" == "variableStart = .letters | \"_\"", "Malformed rule: \(ast.rules[0])")
-        
-        STLRScope.register(optimizer: CharacterSetOnlyChoiceOptimizer())
-        ast.optimize()
-        
-        XCTAssert("\(ast.rules[0])" == "variableStart = (.letters|(\"_\"))", "Malformed rule: \(ast.rules[0])")
     }
 
     //
@@ -92,23 +77,27 @@ class FixValidations: XCTestCase {
     // and a character set, the single character set is lost.
     //
     func testBadFolding() {
-        let grammarString = "operators = \":=\" | \";\""
-        
-        let stlr = STLRParser(source: grammarString)
-        
-        let ast = stlr.ast
-        
-        guard ast.rules.count == 1 else {
-            XCTFail("Only \(ast.rules.count) rules created, expected 1")
-            return
+        do {
+            let grammarString = testGrammarName+"operators = \":=\" | \";\""
+            
+            let stlr = try _STLR.build(grammarString)
+            
+            let ast = stlr.grammar
+            
+            guard ast.rules.count == 1 else {
+                XCTFail("Only \(ast.rules.count) rules created, expected 1")
+                return
+            }
+            
+            XCTAssert("\(ast.rules[0])" == "operators = \":=\" | \";\"", "Malformed rule: \(ast.rules[0])")
+            
+            _STLR.register(optimizer: CharacterSetOnlyChoiceOptimizer())
+            ast.optimize()
+            
+            XCTAssert("\(ast.rules[0])" == "operators = \":=\" | \";\"", "Malformed rule: \(ast.rules[0])")
+        } catch {
+            XCTFail("Unexpted failure: \(error)")
         }
-        
-        XCTAssert("\(ast.rules[0])" == "operators = \":=\" | \";\"", "Malformed rule: \(ast.rules[0])")
-        
-        STLRScope.register(optimizer: CharacterSetOnlyChoiceOptimizer())
-        ast.optimize()
-        
-        XCTAssert("\(ast.rules[0])" == "operators = \":=\" | \";\"", "Malformed rule: \(ast.rules[0])")
     }
     
     //
@@ -117,15 +106,19 @@ class FixValidations: XCTestCase {
     // generated hierarchy has an additional layer
     //
     func testTokenOverride(){
-        let source = """
-letter          = .letter
-doubleLetter    = letter "+" letter
-phrase          = doubleLetter .whitespace @token("doubleLetter2") doubleLetter
-"""
-        let compiled = STLRParser(source: source)
+        do {
+            let source = testGrammarName+"""
+            letter          = .letter
+            doubleLetter    = letter "+" letter
+            phrase          = doubleLetter .whitespace @token("doubleLetter2") doubleLetter
+            """
+            let compiled = try _STLR.build(source)
         
-        print()
-        
-        XCTAssertEqual(compiled.ast.identifiers["doubleLetter"]!.grammarRule!.expression!.description, compiled.ast.identifiers["doubleLetter2"]!.grammarRule!.expression!.description)
+//            print()
+            
+            XCTAssertEqual(compiled.grammar["doubleLetter"].expression.description, compiled.grammar["doubleLetter2"].expression.description)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 }

@@ -44,9 +44,6 @@ class GenerateCommand : Command, IndexableOptioned, GrammarConsumer, OutputLocat
     }
     
     override func run() -> RunnableReturnValue {
-        guard let grammarName = grammarName else {
-            return RunnableReturnValue.failure(error: GenerationError.missingGrammarFile, code: 0)
-        }
         
         guard let outputLocation = outputLocation else {
             return RunnableReturnValue.failure(error: GenerationError.outputLocationNotSpecified, code: 0)
@@ -55,13 +52,15 @@ class GenerateCommand : Command, IndexableOptioned, GrammarConsumer, OutputLocat
         guard let grammar = grammar else {
             return RunnableReturnValue.failure(error: GenerationError.couldNotParseGrammar, code: 0)
         }
+
+        let grammarName : String = grammar.grammar.scopeName
         
         let optimize = self[optionCalled: Options.optimize.rawValue]?.isSet ?? false
         
-        print("Generating \(grammarName.style(.italic)) as \(language) (\(optimize ? "Optimized" : "Unoptimized"))")
+        print("Generating grammar \(grammarName.style(.italic)) as \(language) (\(optimize ? "Optimized" : "Unoptimized"))")
         
         do {
-            try language.generate(grammarName: grammarName, from: grammar, optimize: optimize, outputTo: outputLocation.url(defaultName: "\(grammarName).\(language.fileExtension)").path.canonicalPath)
+            try language.generate(grammarName: grammarName, from: grammar, optimize: optimize, outputTo: outputLocation.url(defaultName: "\(grammarName).\(language.fileExtension ?? "")").path.canonicalPath)
             
         } catch {
             return RunnableReturnValue.failure(error: error, code: -1)

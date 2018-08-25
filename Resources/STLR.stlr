@@ -21,8 +21,12 @@ v0.1.3  28 Feb 2018     Changed plurality of character sets
 v0.1.4  9  Jul 2018     Added regular expression terminals
 v0.1.5  11 Jul 2018     Removed support for nested inlines, replaced whitespace rules with regular expression increasing parsing performance by over 2x
 v0.1.6  14 Jul 2018     Added syntactic sugar for @transient (~) and @void (-) as prefixes to identifier declarations and expression elements
+v0.2.0  20 Jul 2018     Annotating with new structure, expect incremental (non-breaking) changes to come
+v0.2.1  22 Jul 2018     Added requirement for grammar name to be declared, added ability to define expected type for code generation to rule declaration
 
 *************************************************************/
+
+grammar STLR
 
 //
 // Whitespace
@@ -39,14 +43,16 @@ v0.1.6  14 Jul 2018     Added syntactic sugar for @transient (~) and @void (-) a
 // Quantifiers
 //
 quantifier                              = "*" | "+" | "?" | "-"
+// quantifier = zeroOrMore : "*" | oneOrMore : "+" | zeroOrOne : "?" | whatDoesThisMean : "-"
 negated                                 = "!"
-transient                               = "~"
-void                                    = "-"
 
 //
 // Parsing Control
 //
 lookahead                               = ">>"
+transient                               = "~"
+void                                    = "-"
+// structure = transient : "~" | void : "-"
 
 //
 // String
@@ -71,17 +77,17 @@ characterSetName                = "letter" |
 "newline" |
 "backslash"
 
-characterSet                    = ("." @error("Unknown character set") characterSetName)
+characterSet                    = -"." @error("Unknown character set") characterSetName
 
 -rangeOperator                  = ".." @error("Expected ... in character range") "."
 characterRange                  = terminalString rangeOperator @error("Range must be terminated") terminalString
 
 //
-// Types
+// Literals
 //
-number                                  = ("-" | "+")? .decimalDigit+
-boolean                                 = "true" | "false"
-literal                                 = string | number | boolean
+number : Int = ("-" | "+")? .decimalDigit+
+boolean : Bool = "true" | "false"
+literal  = string | number | boolean
 
 //
 // Annotations
@@ -104,10 +110,10 @@ label                           = definedLabel | customLabel
 // Regular Expressions
 //
 -regexDelimeter = "/"
--startRegex = regexDelimeter >>!"*" >>!"/"
+-startRegex = regexDelimeter >>!"*"
 -endRegex = regexDelimeter
 ~regexBody = !(regexDelimeter whitespace)+
-regex = startRegex regexBody endRegex
+regex = startRegex regexBody endRegex 
 
 //
 // Element
@@ -125,30 +131,58 @@ element                                 = annotations? (lookahead | transient | 
 // Expressions
 //
 assignmentOperators             = "=" | "+=" | "|="
+// assignementOperators = equals : "=" | thenEquals = "+=" | orEquals = "|="
 -or                                              =  whitespace* "|" whitespace*
 -then                                    = (whitespace* "+" whitespace*) | whitespace+
 
 choice                                  = element (or @error("Expected terminal, identifier, or group") element)+
-notNewRule                              = !(annotations? identifier whitespace* assignmentOperators)
+-notNewRule                             = !(annotations? identifier whitespace* (":" whitespace* .letter+ whitespace*)? assignmentOperators)
 sequence                                = element (then >>notNewRule @error("Expected terminal, identifier, or group")element)+
 
 expression                              = choice | sequence | element
 
 //
+// Types
+//
+
+tokenType       = standardType | customType
+standardType    = "Int" | "Double" | "String" | "Bool"
+customType      = ("_"|.uppercaseLetter) ("_"|.letter|.decimalDigit)*
+
+//
 // Rule
 //
-~lhs                                             = whitespace* annotations? transient? void? identifier whitespace* assignmentOperators
-rule                                    = lhs whitespace* @error("Expected expression")expression whitespace*
+~lhs            =   whitespace*
+                    annotations?
+                    transient?
+                    void?
+                    identifier
+                    whitespace*
+                    (
+                        -":"
+                        -whitespace*
+                        tokenType
+                        -whitespace*
+                    )?
+                    assignmentOperators
+rule            = lhs whitespace* @error("Expected expression")expression whitespace*
 
 //
 // Importing
 //
 moduleName                              = (.letter | "_") (.letter | "_" | .decimalDigit)*
-moduleImport                    = whitespace* @token("import") "import" .whitespace+  moduleName whitespace+
+moduleImport    = ows -"import" @error("Expected white space followed by module name") -.whitespace+  @error("Expected module name") moduleName @error("Expected newline") -whitespace+
+
+///
+/// Scope
+///
+
+scopeName       =   -"grammar" -whitespace ows ~(.letter (.letter | .decimalDigit)*) @error("Unexpected input") -whitespace -ows
 
 //
 // Grammar
 //
 
-grammar         =   @token("modules") (moduleImport*)
+grammar         =   -whitespace* @error("You must declare the name of the grammar before any other declarations (e.g. grammar <your-grammar-name>)") scopeName
+                    @token("modules") (moduleImport+)?
                     @token("rules") (@error("Expected at least one rule") rule+)

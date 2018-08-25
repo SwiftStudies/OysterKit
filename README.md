@@ -14,6 +14,7 @@ OysterKit enables native Swift scanning, lexical analysis, and parsing capabilit
  	- [Tutorials](https://github.com/SwiftStudies/OysterKit/tree/master/Documentation/Tutorials) Tutorials for using OysterKit and STLR for defining and exploiting grammars. 
  - [stlrc Command Line Tool reference](https://github.com/SwiftStudies/OysterKit/blob/master/Documentation/stlr-toolc.md) Instructions for using the ````stlrc```` command line tool. Note that some of the tutorials referenced above also provide some concrete usage examples.
 
+__Please note__ all development is now for Swift 4.2 and beyond only. If you wish to use the last Swift 4.1 compatible release please use the ```swift/4.2``` branch 
 
 ## Key Features
 
@@ -27,8 +28,8 @@ OysterKit enables native Swift scanning, lexical analysis, and parsing capabilit
   	- Complied STLR can be used immediately at run time, or through the generation of a Swift source file
 
 ## Status
- -  Swift 4.2 development is proceeding on the 4.2 branch, in addition new features are also being added there. Check the status of the 4.2 pull request to confirm that all tests are passing, but you are safe to use this branch for development if you wish. I have been merging changes into the master branch providing they do not break 4.1.x compatibility.  
-  - All tests are passing
+ -  You will notice there are a large (>40) number of warnings in this build. You should not be concerned by these as they are largely forward references to further clean up that can be done now that STLR is generating the Swift code for both Rules/Tokens as well as the data-structures for itself. Deprication messages have been added to help you migrate your code to the new API, and this is the last release that will support the old API. 
+ - All tests are passing
 
 For those that used v1.0 there are significant performance and capability benefits of moving to v2. I have not yet built an OKScript translator, but that could quite easily be done if there is demand. 
 

@@ -92,6 +92,12 @@ public class TokenStreamIterator : IteratorProtocol {
      - Return: The generated token or nil
     */
     public func next() -> StreamedToken? {
+        if parsingContext.lexer.endOfInput {
+            return nil
+        }
+        
+        let startingPosition = parsingContext.lexer.position
+        
         nextToken = nil
         resetState()
         willBuildFrom(source: parsingContext.lexer.source, with: parsingContext.language)
@@ -111,6 +117,9 @@ public class TokenStreamIterator : IteratorProtocol {
             }
             return nextToken
         } else {
+            if startingPosition != parsingContext.lexer.position {
+                return next()
+            }
             return nil
         }
     }

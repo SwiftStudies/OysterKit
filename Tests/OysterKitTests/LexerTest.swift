@@ -28,6 +28,184 @@ class LexerTest: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
+    
+    func testSkipAtStart(){
+        let source = "1234"
+        let lexer = Lexer(source: source)
+        
+        do{
+            lexer.mark(skipping: false)
+            lexer.mark(skipping: true)
+            try lexer.scanNext()
+            try lexer.scanNext()
+            let skippedContext = lexer.proceed()
+            XCTAssertEqual("", skippedContext.matchedString)
+            try lexer.scanNext()
+            try lexer.scanNext()
+            let scannedContext = lexer.proceed()
+            XCTAssertEqual("34", scannedContext.matchedString)
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+    }
+    
+    func testSkipAtEnd(){
+        let source = "1234"
+        let lexer = Lexer(source: source)
+        
+        do{
+            lexer.mark(skipping: false)
+            try lexer.scanNext()
+            try lexer.scanNext()
+            lexer.mark(skipping: true)
+            try lexer.scanNext()
+            try lexer.scanNext()
+            let skippedContext = lexer.proceed()
+            XCTAssertEqual("", skippedContext.matchedString)
+            let scannedContext = lexer.proceed()
+            XCTAssertEqual("12", scannedContext.matchedString)
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+    }
+
+    func testSkipAtStartAndEnd(){
+        let source = "12345"
+        let lexer = Lexer(source: source)
+        
+        do{
+            lexer.mark(skipping: false)
+            lexer.mark(skipping: true)
+            try lexer.scanNext() //Skipping
+            try lexer.scanNext() //Skipping
+            var skippedContext = lexer.proceed()
+            XCTAssertEqual(skippedContext.matchedString, "")
+            try lexer.scanNext() //Scanning
+            lexer.mark(skipping: true)
+            try lexer.scanNext() //Skipping
+            try lexer.scanNext() //Skipping
+            skippedContext = lexer.proceed()
+            XCTAssertEqual(skippedContext.matchedString, "")
+            let scannedContext = lexer.proceed()
+            XCTAssertEqual(scannedContext.matchedString,"3")
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+    }
+
+    func testScanScanSkipScanSkipAtStartAndEnd(){
+        let source = "12345"
+        let lexer = Lexer(source: source)
+        
+        do {
+            lexer.mark(skipping: false)
+            lexer.mark(skipping: false)
+
+            lexer.mark(skipping: true)
+            lexer.mark(skipping: false)
+            try lexer.scanNext()
+            _ = lexer.proceed()
+            _ = lexer.proceed()
+            lexer.mark(skipping: false)
+            try lexer.scanNext()
+            try lexer.scanNext()
+            try lexer.scanNext()
+            _ = lexer.proceed()
+            lexer.mark(skipping: true)
+            lexer.mark(skipping: false)
+            try lexer.scanNext()
+            _ = lexer.proceed()
+            _ = lexer.proceed()
+
+            _ = lexer.proceed()
+            let all = lexer.proceed()
+            
+            XCTAssertEqual(all.matchedString, "234")
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+    }
+
+    
+    func testScanScanSkipScanAtStartAndEnd(){
+        let source = "12345"
+        let lexer = Lexer(source: source)
+        
+        do {
+            lexer.mark(skipping: false)
+            lexer.mark(skipping: false)
+            lexer.mark(skipping: true)
+            lexer.mark(skipping: false)
+            try lexer.scanNext()
+            _ = lexer.proceed()
+            _ = lexer.proceed()
+            try lexer.scanNext()
+            try lexer.scanNext()
+            try lexer.scanNext()
+            lexer.mark(skipping: true)
+            lexer.mark(skipping: false)
+            try lexer.scanNext()
+            _ = lexer.proceed()
+            _ = lexer.proceed()
+            _ = lexer.proceed()
+            _ = lexer.proceed()
+            let all = lexer.proceed()
+            
+            XCTAssertEqual(all.matchedString, "234")
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+    }
+
+    func testSkipInMiddle(){
+        let source = "12345"
+        let lexer = Lexer(source: source)
+        
+        do{
+            lexer.mark(skipping: false)
+            try lexer.scanNext() //Scanning
+            try lexer.scanNext() //Scanning
+            lexer.mark(skipping: true)
+            try lexer.scanNext() //Skipping
+            let skippedContext = lexer.proceed()
+            XCTAssertEqual(skippedContext.matchedString, "")
+            try lexer.scanNext() //Scanning
+            try lexer.scanNext() //Scanning
+            let scannedContext = lexer.proceed()
+            //If you skip in the middle... tough
+            XCTAssertEqual(scannedContext.matchedString,"12345")
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+    }
+    
+    func testNestedSkip(){
+        let source = "12345"
+        let lexer = Lexer(source: source)
+        
+        do{
+            lexer.mark(skipping: false)
+            lexer.mark(skipping: true)
+            try lexer.scanNext() //Skipping
+            lexer.mark(skipping:false)
+            try lexer.scanNext() //Nested skipping
+            _ = lexer.proceed()  //Behaviour can be undefined at this point (will depend on lexer implementation)
+            var skippedContext = lexer.proceed()
+            XCTAssertEqual(skippedContext.matchedString, "")
+            try lexer.scanNext() //Scanning
+            lexer.mark(skipping: true)
+            lexer.mark(skipping: false)
+            try lexer.scanNext() //Nested skipping
+            _ = lexer.proceed()
+            try lexer.scanNext() //Skipping
+            skippedContext = lexer.proceed()
+            XCTAssertEqual(skippedContext.matchedString, "")
+            let scannedContext = lexer.proceed()
+            XCTAssertEqual(scannedContext.matchedString, "3")
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+    }
 
     func testInitialMark(){
         let source = "Hello"
@@ -83,11 +261,14 @@ class LexerTest: XCTestCase {
 
     func markAndScan(with lexer:TestLexer, _ characterSet : CharacterSet) {
         let _ = lexer.mark()
-        do{
-            while (true){
+        var passed = true
+        while passed {
+            do{
                 try lexer.scan(oneOf:characterSet)
+                passed = true
+            } catch {
+                return
             }
-        } catch {
             
         }
     }

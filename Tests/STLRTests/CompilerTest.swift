@@ -13,11 +13,17 @@ class CompilerTest: XCTestCase {
 
 
     func testRegularExpressionBuild() {
-        let terminalASN = STLRAbstractSyntaxTree.Terminal(regex: "Cat", terminalString: nil, characterSet: nil, characterRange: nil)
+        let terminalASN = _STLR.Terminal.regex(regex: "Cat")
         
-        let terminal = terminalASN.build()
-        
-        XCTAssertEqual(terminal.description, "/Cat/")
+        if let terminal = terminalASN.rule(with: Behaviour(.skipping), and: [:]) as? TerminalRule{
+            if let regularExpression = terminal.terminal as? NSRegularExpression {
+                XCTAssertEqual(regularExpression.pattern, "^Cat")
+            } else {
+                XCTFail("Should have generated an NSRegularExpression terminal")
+            }
+        } else {
+            XCTFail("Should have generated a TerminalRule")
+        }        
     }
 
 }

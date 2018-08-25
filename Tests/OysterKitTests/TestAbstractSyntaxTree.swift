@@ -29,20 +29,26 @@ import STLR
 class TestAbstractSyntaxTree: XCTestCase {
 
     func testParseFailing(){
-        let source = "wibble = .letters"
-        
-        let stlr = STLRParser(source: source)
-        
-        XCTAssertEqual(1, stlr.ast.errors.count)
+        do {
+            let source = "grammar Test\nwibble = .letters"
+            
+            _ = try _STLR.build(source)
+            XCTFail("Expected error")
+
+        } catch {
+            // Pass
+        }
     }
 
     func testNoRealRule(){
-        let source = ""
-        
-        let stlr = STLRParser(source: source)
-        
-        XCTAssertEqual(1, stlr.ast.errors.count)
-        XCTAssertEqual(0, stlr.ast.rules.count)
+        do {
+            let source = ""
+            
+            _ = try _STLR.build(source)
+            XCTFail("Expected error")
+        } catch {
+            //Pass
+        }
     }
 
     func testConstruction() {

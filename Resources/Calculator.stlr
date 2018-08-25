@@ -1,0 +1,30 @@
+/**
+ A simple calculator example
+ */
+
+total           = expression
+expression      = arithmeticExp
+arithmeticExp   = geometricExp @token("arithmeticRemainder") (summing*)
+geometricExp    = term @token("geometricRemainder") (multiplying*)
+term            = number | ("(" expression ")")
+multiplying     = (times | divide) term
+summing         = (plus  | minus ) term
+
+// expression = term (
+//                  add : ("+" term) |
+//                  subtract : ("-" term)
+//              )*
+//expression = term (@token("add") ("+" term) | @token("subtract") ("-" term))*
+// term       = element (
+//                multiply : ("*" element) |
+//                divide : ("/" element)
+//              )*
+
+// number : Double = ("+"|"-")? .decimalDigit+ ("." .decimalDigit+)?
+
+@type("Double") number = ("+"|"-")? .decimalDigit+ ("." .decimalDigit+)?
+
+plus    = "+"
+minus   = "-"
+times   = "*"
+divide  = "/"

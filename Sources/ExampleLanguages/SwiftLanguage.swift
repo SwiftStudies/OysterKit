@@ -18,65 +18,65 @@ public class SwiftParser : Parser{
     enum Tokens : Int, Token {
         case _transient, whitespace, symbol, comment, number, stringQuote, escapedCharacter, stringCharacter, string, keyword, variable
         
-        func _rule(_ annotations: RuleAnnotations = [ : ])->Rule {
+        func _rule(_ annotations: RuleAnnotations = [ : ])->BehaviouralRule {
             switch self {
             case ._transient:
-                return CharacterSet(charactersIn: "").terminal(token: GrammarToken._transient)
+                return ~CharacterSet(charactersIn: "")
             // whitespace
             case .whitespace:
-                return CharacterSet.whitespacesAndNewlines.terminal(token: GrammarToken._transient).repeated(min: 0, producing: GrammarToken.whitespace)
+                return ~CharacterSet.whitespacesAndNewlines.require(.oneOrMore).parse(as: self)
             // symbol
             case .symbol:
-                return CharacterSet(charactersIn: ".{}[]:=,()-><?#!").terminal(token: GrammarToken.symbol)
+                return CharacterSet(charactersIn: ".{}[]:=,()-><?#!").parse(as: self)
             // comment
             case .comment:
                 return [
-                    "//".terminal(token: GrammarToken._transient),
-                    CharacterSet.newlines.terminal(token: GrammarToken._transient).not(producing: GrammarToken._transient).repeated(min: 0, producing: GrammarToken._transient),
-                    ].sequence(token: GrammarToken.comment)
+                    ~"//",
+                    !CharacterSet.newlines.require(.oneOrMore),
+                    ].sequence.parse(as: self)
             // number
             case .number:
                 return [
-                    CharacterSet.decimalDigits.terminal(token: GrammarToken._transient).repeated(min: 1, producing: GrammarToken._transient),
+                    CharacterSet.decimalDigits.require(.oneOrMore),
                     [
-                        ".".terminal(token: GrammarToken._transient),
-                        CharacterSet.decimalDigits.terminal(token: GrammarToken._transient),
-                        ].sequence(token: GrammarToken._transient).optional(producing: GrammarToken._transient),
-                    ].sequence(token: GrammarToken.number)
+                        ~".",
+                        CharacterSet.decimalDigits.require(.oneOrMore),
+                        ].sequence.require(.optionally),
+                    ].sequence.parse(as: self)
             // stringQuote
             case .stringQuote:
-                return "\"".terminal(token: GrammarToken.stringQuote)
+                return "\"".parse(as: self)
             // escapedCharacter
             case .escapedCharacter:
                 return [
-                    "\\".terminal(token: GrammarToken._transient),
-                    CharacterSet(charactersIn: "\"rnt\\").terminal(token: GrammarToken._transient),
-                    ].sequence(token: GrammarToken.escapedCharacter)
+                    ~"\\",
+                    ~CharacterSet(charactersIn: "\"rnt\\"),
+                    ].sequence.parse(as: self)
             // stringCharacter
             case .stringCharacter:
                 return [
-                    GrammarToken.escapedCharacter._rule(),
-                    [
-                        GrammarToken.stringQuote._rule(),
-                        CharacterSet.newlines.terminal(token: GrammarToken._transient),
-                        ].oneOf(token: GrammarToken._transient).not(producing: GrammarToken._transient),
-                    ].oneOf(token: GrammarToken.stringCharacter)
+                            GrammarToken.escapedCharacter._rule(),
+                            ![
+                                GrammarToken.stringQuote._rule(),
+                                CharacterSet.newlines.require(.one),
+                            ].sequence,
+                       ].sequence.parse(as:self)
             // string
             case .string:
                 return [
-                    "\"".terminal(token: GrammarToken._transient),
-                    GrammarToken.stringCharacter._rule().repeated(min: 0, producing: GrammarToken._transient),
-                    "\"".terminal(token: GrammarToken._transient),
-                    ].sequence(token: GrammarToken.string)
+                    ~"\"",
+                    GrammarToken.stringCharacter._rule().require(.noneOrMore),
+                    ~"\"",
+                    ].sequence.parse(as: self)
             // keyword
             case .keyword:
                 return [
-                    ScannerRule.oneOf(token: GrammarToken._transient, ["private", "class", "func", "var", "guard", "let", "static", "init", "case", "typealias", "enum"],[:]),
-                    CharacterSet.whitespacesAndNewlines.terminal(token: GrammarToken._transient).repeated(min: 0, producing: GrammarToken._transient),
-                    ].sequence(token: GrammarToken.keyword)
+                    ["private", "class", "func", "var", "guard", "let", "static", "init", "case", "typealias", "enum"].choice,
+                    CharacterSet.whitespacesAndNewlines.require(.noneOrMore),
+                    ].sequence.parse(as:self)
             // variable
             case .variable:
-                return CharacterSet.letters.union(CharacterSet(charactersIn: "_")).terminal(token: GrammarToken._transient).repeated(min: 1, producing: GrammarToken.variable)
+                return CharacterSet.letters.union(CharacterSet(charactersIn: "_")).require(.oneOrMore).parse(as: self)
             }
         }
                 

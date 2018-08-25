@@ -36,41 +36,72 @@ class LanguageOption : Option, IndexableParameterized {
         enum Supported : String{
             case swift
             case swiftIR
+            case swiftPM
 
-            var fileExtension : String {
+            var fileExtension : String? {
                 switch self {
                 case .swift:
                     return rawValue
-                case .swiftIR:
-                    return "swift"
+                default:
+                    return nil
                 }
             }
             
-            func generate(grammarName: String, from stlrParser:STLRParser, optimize:Bool, outputTo:String) throws {
-                let generatedLanguage : String?
-                
-                if optimize {
-                    STLRScope.register(optimizer: InlineIdentifierOptimization())
-                    STLRScope.register(optimizer: CharacterSetOnlyChoiceOptimizer())
-                } else {
-                    STLRScope.removeAllOptimizations()
-                }
-                
-                stlrParser.ast.optimize()
-
+            func operations(in scope:_STLR, for grammarName:String) throws ->[STLR.Operation]? {
                 switch self {
                 case .swift:
-                    generatedLanguage = stlrParser.ast.swift(grammar: grammarName)
+                    return nil
                 case .swiftIR:
-                    generatedLanguage = (try? SwiftStructure.generate(for: stlrParser.ast))?.first?.content
-                }
-                
-                if let generatedLanguage = generatedLanguage {
-                    try generatedLanguage.write(toFile: outputTo, atomically: true, encoding: String.Encoding.utf8)
-                } else {
-                    print("Couldn't generate language".color(.red))
+                    return try SwiftStructure.generate(for: scope, grammar: grammarName, accessLevel: "public")
+                case .swiftPM:
+                    return try SwiftPackageManager.generate(for: scope, grammar: grammarName, accessLevel: "public")
                 }
             }
+            
+            
+            func generate(grammarName: String, from stlr:_STLR, optimize:Bool, outputTo:String) throws {
+                if optimize {
+                    _STLR.register(optimizer: InlineIdentifierOptimization())
+                    _STLR.register(optimizer: CharacterSetOnlyChoiceOptimizer())
+                } else {
+                    _STLR.removeAllOptimizations()
+                }
+                
+                stlr.grammar.optimize()
+                
+                /// Use operation based generators
+                if let operations = try operations(in: stlr, for: grammarName) {
+                    let workingDirectory = URL(fileURLWithPath: outputTo).deletingLastPathComponent().path
+                    let context = OperationContext(with: URL(fileURLWithPath: workingDirectory)){
+                        print($0)
+                    }
+                    do {
+                        try operations.perform(in: context)
+                    } catch OperationError.error(let message){
+                        print(message.color(.red))
+                        exit(EXIT_FAILURE)
+                    } catch {
+                        print(error.localizedDescription.color(.red))
+                        exit(EXIT_FAILURE)
+                    }
+                } else {
+                    switch self {
+                    case .swift:
+                        let file = TextFile(grammarName+".swift")
+                        stlr.swift(in: file)
+                        let workingDirectory = URL(fileURLWithPath: outputTo).deletingLastPathComponent().path
+                        let context = OperationContext(with: URL(fileURLWithPath: workingDirectory)) { (message) in
+                            print(message)
+                        }
+                        
+                        try file.perform(in: context)
+                    default:
+                        throw OperationError.error(message: "Language did not produce operations")
+                    }
+                }
+                
+                
+             }
             
         }
         

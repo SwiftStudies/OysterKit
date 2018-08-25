@@ -55,6 +55,11 @@ public protocol LexicalAnalyzer : class {
     ///: Marks the current position. This must be followed by a matching rewind() or proceed()
     func mark()
     
+    /**
+     Marks the current location and signifies that the scanning is actually skipping
+    */
+    func mark(skipping:Bool)
+    
     ///: Discards the current mark, rewinding the scanner to that position
     func rewind()
     

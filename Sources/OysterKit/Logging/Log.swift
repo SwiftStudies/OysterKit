@@ -71,7 +71,7 @@ public enum Log {
         let resultDescription : String
         switch result {
         case .success( _):
-            resultDescription = "✅"
+            resultDescription = "✅" + (result.matchedString != nil ? "='" + result.matchedString! + "'" : "")
         case .consume( _):
             resultDescription = "👄"
         case .ignoreFailure( _):
@@ -79,6 +79,8 @@ public enum Log {
         case .failure( _):
             resultDescription = "☠️"
         }
+        
+        
         
         os_signpost(.end, log: parsingLog, name: "matches", signpostID: oldId, "%{public}@ %{public}@", "\(describe(rule: rule))" as NSString, resultDescription as NSString)
     }

@@ -32,7 +32,7 @@ internal struct LexerContext : LexicalContext {
     
     
     var range: Range<String.UnicodeScalarView.Index>{
-        return mark.preSkipLocation..<endLocation
+        return mark.postSkipLocation..<endLocation
     }
     
     var matchedString : String {
@@ -42,10 +42,13 @@ internal struct LexerContext : LexicalContext {
 }
 
 internal class Mark : CustomStringConvertible {
+    let skipping            : Bool
     let preSkipLocation     : String.UnicodeScalarView.Index
-    let postSkipLocation    : String.UnicodeScalarView.Index
+    var postSkipLocation    : String.UnicodeScalarView.Index
+    var scanEnd             : String.UnicodeScalarIndex?
     
-    init(`for` lexer:Lexer){
+    init(`for` lexer:Lexer, skipping:Bool = false){
+        self.skipping = skipping
         preSkipLocation = lexer.scanner.scanLocation
         guard let skip = lexer.skip else {
             postSkipLocation = preSkipLocation
@@ -55,13 +58,17 @@ internal class Mark : CustomStringConvertible {
         postSkipLocation = lexer.scanner.scanLocation
     }
     
-    init(uniPosition:String.UnicodeScalarView.Index){
+    init(uniPosition:String.UnicodeScalarView.Index, skipping:Bool = false){
+        self.skipping = skipping
         preSkipLocation = uniPosition
         postSkipLocation = uniPosition
     }
     
     var description : String {
-        return "\(postSkipLocation)"
+        if let scanEnd = scanEnd {
+            return "\(postSkipLocation)...\(scanEnd)"
+        }
+        return "\(postSkipLocation)..."
     }
 }
 
@@ -134,8 +141,14 @@ open class Lexer : LexicalAnalyzer, CustomStringConvertible{
     
     /// Mark the position of the scanner. It should be noted that at this point any characters matching `skip` will be skipped. There
     /// should always be a matching call to either `rewind()` or `proceed()->LexicalContext`
-    public func mark() {
-        marks.append(Mark(for:self))
+    public final func mark() {
+        mark(skipping: false)
+    }
+    
+    /// Mark the position of the scanner. It should be noted that at this point any characters matching `skip` will be skipped. There
+    /// should always be a matching call to either `rewind()` or `proceed()->LexicalContext`
+    public func mark(skipping:Bool) {
+        marks.append(Mark(for:self, skipping: skipping || marks.last?.skipping ?? false))
     }
     
     /**
@@ -158,8 +171,28 @@ open class Lexer : LexicalAnalyzer, CustomStringConvertible{
     */
     open func proceed() -> LexicalContext {
         let mark = marks.removeLast()
-
-        return LexerContext(mark: mark, endLocation: scanner.scanLocation, source: source)
+        
+        if !mark.skipping {
+            marks.last?.scanEnd = mark.scanEnd
+            if marks.last?.preSkipLocation == mark.preSkipLocation {
+                marks.last?.postSkipLocation = mark.postSkipLocation
+            }
+        } else {
+            mark.postSkipLocation = scanner.scanLocation
+            if marks.last?.scanEnd == nil {
+                marks.last?.postSkipLocation = scanner.scanLocation
+            }
+        }
+        return LexerContext(mark: mark, endLocation: mark.scanEnd ?? scanner.scanLocation, source: source)
+    }
+    
+    internal func describeUnwoundStack(){
+        var stackCopy = marks
+        let originalDepth = marks.count
+        while let top = stackCopy.first{
+            stackCopy.removeFirst()
+            print(String(repeating: "ᐧ", count: originalDepth-depth), scanner.string[top.preSkipLocation..<top.postSkipLocation],"⇥",scanner.string[top.postSkipLocation..<scanner.scanLocation], separator: "")
+        }
     }
     
     /// Removes the top most `Mark` from the stack without creating a new `LexicalContext` effectively advancing the scanning position
@@ -167,10 +200,25 @@ open class Lexer : LexicalAnalyzer, CustomStringConvertible{
     open func consume(){
         let _ = marks.removeLast()
     }
+
+    /// Removes the top most `Mark` from the stack without creating a new `LexicalContext` effectively advancing the scanning position
+    /// of the new topmost mark to this position.
+    open func fastForward()->LexicalContext{
+        _ = marks.removeLast()
+        let mark = Mark(uniPosition: scanner.scanLocation)
+        return LexerContext(mark: mark, endLocation: scanner.scanLocation, source: source)
+    }
+
     
     /// `true` if the end of the `String` being scanned has been reached
     public var endOfInput: Bool{
         return scanner.isAtEnd
+    }
+    
+    private func advanceScanEnd(){
+        if let last = marks.last, !last.skipping {
+            last.scanEnd = scanner.scanLocation
+        }
     }
     
     /**
@@ -184,8 +232,8 @@ open class Lexer : LexicalAnalyzer, CustomStringConvertible{
     open func scan(terminal: String) throws {
         if !scanner.scan(string: terminal){
             throw GrammarError.matchFailed(token: nil)
-            
         }
+        advanceScanEnd()
     }
     
     /**
@@ -199,6 +247,7 @@ open class Lexer : LexicalAnalyzer, CustomStringConvertible{
         if !scanner.scan(characterFrom: oneOf) {
             throw GrammarError.matchFailed(token: nil)
         }
+        advanceScanEnd()
     }
     
     /**
@@ -212,6 +261,7 @@ open class Lexer : LexicalAnalyzer, CustomStringConvertible{
         if !scanner.scanUpTo(string: terminal){
             throw GrammarError.matchFailed(token: nil)
         }
+        advanceScanEnd()
     }
     
     /**
@@ -225,6 +275,7 @@ open class Lexer : LexicalAnalyzer, CustomStringConvertible{
         if !scanner.scanUpTo(characterFrom: terminal){
             throw GrammarError.matchFailed(token: nil)
         }
+        advanceScanEnd()
     }
     
     /**
@@ -237,6 +288,7 @@ open class Lexer : LexicalAnalyzer, CustomStringConvertible{
         if !scanner.scan(regularExpression: regex){
             throw GrammarError.matchFailed(token: nil)
         }
+        advanceScanEnd()
     }
     
     /**
@@ -246,6 +298,7 @@ open class Lexer : LexicalAnalyzer, CustomStringConvertible{
         if scanner.scanNext() == nil {
             throw GrammarError.matchFailed(token: nil)
         }
+        advanceScanEnd()
     }
  
     /**

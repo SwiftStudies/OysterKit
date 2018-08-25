@@ -122,7 +122,7 @@ class RuleTests: XCTestCase {
     
     func testOneFromCharacterSetToken(){
         let source = "Hello World"
-        let rule = LabelledToken(withLabel: "letter").from(oneOf: CharacterSet.letters)
+        let rule = LabelledToken(withLabel: "letter").from(CharacterSet.letters.require(.one))
         let lexer = Lexer(source: source)
         let testIR = TestIR()
         
@@ -141,7 +141,7 @@ class RuleTests: XCTestCase {
     
     func testOneOrMoreFromCharacterSetToken(){
         let source = "Hello World"
-        let rule = LabelledToken(withLabel: "letter").oneOrMore(of: CharacterSet.letters)
+        let rule = LabelledToken(withLabel: "letter").from(~CharacterSet.letters.require(.oneOrMore))
         let lexer = Lexer(source: source)
         let testIR = TestIR()
         
@@ -160,15 +160,16 @@ class RuleTests: XCTestCase {
     
     func testLazyConsumeCharacterSetToken(){
         let source = "Hello World"
-        let rule = LabelledToken(withLabel: "letter").consume(CharacterSet.letters)
+        let rule : BehaviouralRule = [-CharacterSet.letters].sequence.parse(as: LabelledToken(withLabel: "letter"))
         let lexer = Lexer(source: source)
         let testIR = TestIR()
         
         do {
-            switch try rule.match(with: lexer, for: testIR){
-            case .consume(let context):
+            let matchResult = try rule.match(with: lexer, for: testIR)
+            switch matchResult{
+            case .success(let context):
                 //Test stuff
-                XCTAssertEqual("H", context.matchedString)
+                XCTAssertEqual("", context.matchedString)
             default:
                 XCTFail("Should have succeeded")
             }
@@ -179,15 +180,29 @@ class RuleTests: XCTestCase {
 
     func testGreedilyConsumeCharacterSetToken(){
         let source = "Hello World"
-        let rule = LabelledToken(withLabel: "letter").consumeGreedily(CharacterSet.letters)
+        let rule : BehaviouralRule = [-CharacterSet.letters.require(.oneOrMore)].sequence.parse(as: LabelledToken(withLabel: "letter"))
         let lexer = Lexer(source: source)
         let testIR = TestIR()
         
+        lexer.mark()
+        
         do {
             switch try rule.match(with: lexer, for: testIR){
-            case .consume(let context):
+            case .success(let context):
                 //Test stuff
-                XCTAssertEqual("Hello", context.matchedString)
+                XCTAssertEqual("", context.matchedString)
+                switch try " ".match(with: lexer, for: testIR){
+                case .success(let context):
+                    XCTAssertEqual(" ", context.matchedString)
+                    switch try rule.match(with: lexer, for: testIR){
+                    case .success(let context):
+                        XCTAssertEqual("", context.matchedString)
+                    default:
+                        XCTFail("Should have succeeded")
+                    }
+                default:
+                    XCTFail("Should have succeeded")
+                }
             default:
                 XCTFail("Should have succeeded")
             }
@@ -243,7 +258,7 @@ class RuleTests: XCTestCase {
     }
     
     func testInstanceTokenModification(){
-        let rule = LabelledToken(withLabel: "letter").oneOrMore(of: CharacterSet.letters)
+        let rule = CharacterSet.letters.parse(as: LabelledToken(withLabel: "letter")).require(.oneOrMore)
         let newRule = rule.instance(with: transientTokenValue.token)
         
         XCTAssertEqual(newRule.produces.rawValue, transientTokenValue)
@@ -283,10 +298,35 @@ class RuleTests: XCTestCase {
         XCTAssertNotEqual(catRule.produces.rawValue, felineRule.produces.rawValue)
     }
     
+    func testOptionalRepeatedNot(){
+        let source = """
+            //
+            // Something
+            //
+
+            """
+        let singleLineComment = [
+            ~"//",
+            (!CharacterSet.newlines).require(.noneOrMore),
+            ~CharacterSet.newlines
+            ].sequence.parse(as:LabelledToken(withLabel: "singleLineComment"))
+        
+        let lexer = Lexer(source: source)
+        let ir = AbstractSyntaxTreeConstructor(with: source)
+        
+        do {
+            while !lexer.endOfInput {
+                _ = try singleLineComment.match(with: lexer, for: ir)
+            }
+        } catch {
+            XCTFail("Unexpected failure \(error)")
+        }
+    }
+    
     
     func testKnownAnnotations(){
         let error = "Valid error"
-        let rule = LabelledToken(withLabel: "test").oneOrMore(of: CharacterSet.letters)
+        let rule = CharacterSet.letters.parse(as:LabelledToken(withLabel: "test")).require(.oneOrMore)
         let validError = rule.instance(with: [
             RuleAnnotation.error : RuleAnnotationValue.string(error),
             RuleAnnotation.void  : RuleAnnotationValue.set,

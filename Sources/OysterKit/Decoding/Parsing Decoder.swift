@@ -533,7 +533,6 @@ fileprivate struct _ParsingKeyedDecodingContainer<K : CodingKey> : KeyedDecoding
     
     public func decode(_ type: String.Type, forKey key: Key) throws -> String {
         guard let entry = self.container[key: key] else {
-            print(self.container.contents)
             throw DecodingError.keyNotFound(key, DecodingError.Context(codingPath: self.decoder.codingPath, debugDescription: "No value associated with key \(key) (\"\(key.stringValue)\")."))
         }
         let stringValue = entry.stringValue

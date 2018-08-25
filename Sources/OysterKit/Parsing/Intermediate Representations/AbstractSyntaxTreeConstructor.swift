@@ -33,7 +33,52 @@ import Foundation
 public class AbstractSyntaxTreeConstructor  {
     
     /// Errors that can occur during AST creation
-    public enum ConstructionError : Error {
+    public enum ConstructionError : Error, TestErrorType {
+        public var causedBy: [Error]?{
+            switch self {
+            case .parsingFailed(let causes):
+                return causes
+            case .constructionFailed(let causes):
+                return causes
+            case .unknownError(_):
+                return nil
+            }
+        }
+        
+        public var range: ClosedRange<String.Index>?{
+            guard let causes = causedBy else {
+                return nil
+            }
+            var totalRange : ClosedRange<String.Index>?
+            for cause in causes {
+                if let cause = cause as? TestErrorType, let range = cause.range {
+                    if totalRange == nil {
+                        totalRange = range
+                    } else {
+                        totalRange = min(totalRange!.lowerBound, range.lowerBound)...(max(totalRange!.upperBound,range.upperBound))
+                    }
+                }
+            }
+            return totalRange
+        }
+        
+        public var message: String {
+            var messages = [String]()
+            switch self {
+            case .parsingFailed(let causes), .constructionFailed(let causes):
+                messages.append(contentsOf: causes.map({ (error) -> String in
+                    if let error = error as? TestErrorType {
+                        return error.message
+                    } else {
+                        return "\(error)"
+                    }
+                }))
+            case .unknownError(let message):
+                messages.append(message)
+            }
+            return messages.joined(separator: ", ")
+        }
+        
         /// Parsing failed before the AST could be constructed
         case parsingFailed(causes: [Error])
         
@@ -225,8 +270,10 @@ public class AbstractSyntaxTreeConstructor  {
 }
 
 //Adds the ability to quickly access standard annotations
-extension Dictionary where Key == RuleAnnotation, Value == RuleAnnotationValue {
-    var error : String? {
+public extension Dictionary where Key == RuleAnnotation, Value == RuleAnnotationValue {
+    
+    /// Any annotated error message, or nil if not set
+    public var error : String? {
         if let error = self[.error] {
             if case let .string(message) = error {
                 return message
@@ -234,8 +281,19 @@ extension Dictionary where Key == RuleAnnotation, Value == RuleAnnotationValue {
         }
         return nil
     }
+    
+    /// Any annotated error message, or nil if not set
+    public var token : String? {
+        if let token = self[.token] {
+            if case let .string(label) = token {
+                return label
+            }
+        }
+        return nil
+    }
 
-    var pinned : Bool {
+    /// True if the annotations included the pinned annotation
+    public var pinned : Bool {
         if let value = self[.pinned] {
             if case .set = value {
                 return true
@@ -244,8 +302,8 @@ extension Dictionary where Key == RuleAnnotation, Value == RuleAnnotationValue {
         return false
     }
 
-    
-    var void : Bool {
+    /// True if the annotations include the void annotation
+    public var void : Bool {
         if let value = self[.void] {
             if case .set = value {
                 return true
@@ -254,7 +312,8 @@ extension Dictionary where Key == RuleAnnotation, Value == RuleAnnotationValue {
         return false
     }
     
-    var transient : Bool {
+    /// True if the annotations include the transient annotation
+    public var transient : Bool {
         if let value = self[.transient] {
             if case .set = value {
                 return true
@@ -420,7 +479,12 @@ extension AbstractSyntaxTreeConstructor : IntermediateRepresentation {
             return IntermediateRepresentationNode(for: token, at: context.range,  annotations: annotations)
         default:
             // Creates a new parent node with the transients filtered out, but their range included
-            return IntermediateRepresentationNode(for: token, at: children.combinedRange, children: children.perpetual, annotations: annotations)
+            // For backwards compatibility we have to check if the children's combined range is smaller than the contexts range
+            if source[context.range].count > source[children.combinedRange].count {
+                return IntermediateRepresentationNode(for: token, at: context.range, children: children.perpetual, annotations: annotations)
+            } else {
+                return IntermediateRepresentationNode(for: token, at: children.combinedRange, children: children.perpetual, annotations: annotations)
+            }
         }
     }
     

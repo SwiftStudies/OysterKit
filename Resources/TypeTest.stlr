@@ -1,0 +1,4 @@
+grammar TypeTest
+
+integer : Int = .decimalDigit+
+

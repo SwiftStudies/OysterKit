@@ -78,23 +78,32 @@ class ParseCommand : Command, IndexableOptioned, IndexableParameterized, Grammar
             return RunnableReturnValue.failure(error: GrammarOption.Errors.couldNotParseGrammar, code: -1)
         }
         
-        guard let language = grammar.ast.runtimeLanguage else {
-            return RunnableReturnValue.failure(error: Errors.couldNotCreateRuntimeLanguage, code: -1)
-        }
+        let language = Parser(grammar: grammar.grammar.dynamicRules) 
 
         if interactiveMode {
-            print("stlr interactive mode. Send a blank line to terminate. Parsing \(grammarName ?? grammarUrl?.path ?? "Grammar")")
-            while let line = readLine(strippingNewline: true) {
-                if line == "" {
+            print("stlr interactive mode. Send a blank line to parse, two to terminate. Parsing grammar \(grammar.grammar.scopeName)")
+            
+            var previous = ""
+            var total = ""
+            while let line = readLine(strippingNewline: false) {
+                if line + total == "\n\n" {
                     print("Done")
                     return RunnableReturnValue.success
                 }
-                do {
-                    try parseInput(language: language, input: line)
-                } catch {
-                    print([error].report(in: line, from: "input".style(.italic)))
-                    return RunnableReturnValue.failure(error: error, code: -1)
+
+                if line == "\n" && previous.hasSuffix("\n"){
+                    do {
+                        try parseInput(language: language, input: String(total.dropLast(1)))
+                    } catch {
+                        print([error].report(in: line, from: "input".style(.italic)))
+                    }
+                    total = ""
+                    previous = ""
+                } else {
+                    previous = line
+                    total += line
                 }
+
             }
         } else {
             do {

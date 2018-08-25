@@ -65,12 +65,11 @@ fileprivate struct OneOfEverything : Decodable, Equatable{
 
 class DecoderTests: XCTestCase {
 
-    func testTypeArray<T : Decodable>(testData : String, typeRule:Rule) throws ->T{
+    func testTypeArray<T : Decodable>(testData : String, typeRule:BehaviouralRule) throws ->T{
         let grammar : [Rule] = [
-            ParserRule.sequence(produces: OneOfEverythingGrammar.oneOfEverything, [
-                ParserRule.repeated(produces: OneOfEverythingGrammar._transient, typeRule, min: 1, limit: nil, [:])
-                ], [:])
-            
+            [
+                typeRule.require(.oneOrMore),
+            ].sequence.parse(as:OneOfEverythingGrammar.oneOfEverything)
         ]
         
         return try T.decode(testData, using: grammar.language)
@@ -81,7 +80,7 @@ class DecoderTests: XCTestCase {
         do{
             let result : [Bool] = try testTypeArray(
                 testData: "true false true",
-                typeRule: OneOfEverythingGrammar.boolean._rule())
+                typeRule: OneOfEverythingGrammar.boolean.rule)
             XCTAssertEqual(result, [true, false, true])
         } catch {
             XCTFail("\(error)")
@@ -92,7 +91,7 @@ class DecoderTests: XCTestCase {
         do{
             let result : [String] = try testTypeArray(
                 testData: "true false true",
-                typeRule: OneOfEverythingGrammar.boolean._rule())
+                typeRule: OneOfEverythingGrammar.boolean.rule)
             XCTAssertEqual(result, ["true", "false", "true"])
         } catch {
             XCTFail("\(error)")
@@ -103,7 +102,7 @@ class DecoderTests: XCTestCase {
         do{
             let result : [Int] = try testTypeArray(
                 testData: "1 0 1",
-                typeRule: OneOfEverythingGrammar.integer._rule())
+                typeRule: OneOfEverythingGrammar.integer.rule)
             XCTAssertEqual(result, [1, 0, 1])
         } catch {
             XCTFail("\(error)")
@@ -111,7 +110,7 @@ class DecoderTests: XCTestCase {
         do{
             let result : [UInt] = try testTypeArray(
                 testData: "1 0 1",
-                typeRule: OneOfEverythingGrammar.integer._rule())
+                typeRule: OneOfEverythingGrammar.integer.rule)
             XCTAssertEqual(result, [1, 0, 1])
         } catch {
             XCTFail("\(error)")
@@ -122,7 +121,7 @@ class DecoderTests: XCTestCase {
         do{
             let result : [Int16] = try testTypeArray(
                 testData: "1 0 1",
-                typeRule: OneOfEverythingGrammar.integer._rule())
+                typeRule: OneOfEverythingGrammar.integer.rule)
             XCTAssertEqual(result, [1, 0, 1])
         } catch {
             XCTFail("\(error)")
@@ -130,7 +129,7 @@ class DecoderTests: XCTestCase {
         do{
             let result : [UInt16] = try testTypeArray(
                 testData: "1 0 1",
-                typeRule: OneOfEverythingGrammar.integer._rule())
+                typeRule: OneOfEverythingGrammar.integer.rule)
             XCTAssertEqual(result, [1, 0, 1])
         } catch {
             XCTFail("\(error)")
@@ -141,7 +140,7 @@ class DecoderTests: XCTestCase {
         do{
             let result : [Int32] = try testTypeArray(
                 testData: "1 0 1",
-                typeRule: OneOfEverythingGrammar.integer._rule())
+                typeRule: OneOfEverythingGrammar.integer.rule)
             XCTAssertEqual(result, [1, 0, 1])
         } catch {
             XCTFail("\(error)")
@@ -149,7 +148,7 @@ class DecoderTests: XCTestCase {
         do{
             let result : [UInt32] = try testTypeArray(
                 testData: "1 0 1",
-                typeRule: OneOfEverythingGrammar.integer._rule())
+                typeRule: OneOfEverythingGrammar.integer.rule)
             XCTAssertEqual(result, [1, 0, 1])
         } catch {
             XCTFail("\(error)")
@@ -160,7 +159,7 @@ class DecoderTests: XCTestCase {
         do{
             let result : [Int64] = try testTypeArray(
                 testData: "1 0 1",
-                typeRule: OneOfEverythingGrammar.integer._rule())
+                typeRule: OneOfEverythingGrammar.integer.rule)
             XCTAssertEqual(result, [1, 0, 1])
         } catch {
             XCTFail("\(error)")
@@ -168,7 +167,7 @@ class DecoderTests: XCTestCase {
         do{
             let result : [UInt64] = try testTypeArray(
                 testData: "1 0 1",
-                typeRule: OneOfEverythingGrammar.integer._rule())
+                typeRule: OneOfEverythingGrammar.integer.rule)
             XCTAssertEqual(result, [1, 0, 1])
         } catch {
             XCTFail("\(error)")
@@ -182,16 +181,16 @@ class DecoderTests: XCTestCase {
         """
 
         do {
-            var decoded = try OneOfEverything.decode(oneOfEverythingExample, using: OneOfEverythingGrammar.generatedLanguage)
+            var decoded = try OneOfEverything.decode(oneOfEverythingExample, using: OneOfEverythingGrammar.grammar.language)
             XCTAssertEqual(decoded, oneOfEverythingReference)
             
-            decoded = try OneOfEverything.decode(oneOfEverythingExample, with: HomogenousTree.self, using: OneOfEverythingGrammar.generatedLanguage)
+            decoded = try OneOfEverything.decode(oneOfEverythingExample, with: HomogenousTree.self, using: OneOfEverythingGrammar.grammar.language)
             XCTAssertEqual(decoded, oneOfEverythingReference)
             
-            decoded = try ParsingDecoder().decode(OneOfEverything.self, from: oneOfEverythingExample, using: OneOfEverythingGrammar.generatedLanguage)
+            decoded = try ParsingDecoder().decode(OneOfEverything.self, from: oneOfEverythingExample, using: OneOfEverythingGrammar.grammar.language)
             XCTAssertEqual(decoded, oneOfEverythingReference)
 
-            decoded = try ParsingDecoder().decode(OneOfEverything.self, using: AbstractSyntaxTreeConstructor().build(oneOfEverythingExample, using: OneOfEverythingGrammar.generatedLanguage))
+            decoded = try ParsingDecoder().decode(OneOfEverything.self, using: AbstractSyntaxTreeConstructor().build(oneOfEverythingExample, using: OneOfEverythingGrammar.grammar.language))
             XCTAssertEqual(decoded, oneOfEverythingReference)
 
             
@@ -212,7 +211,7 @@ class DecoderTests: XCTestCase {
             let astConstructor = AbstractSyntaxTreeConstructor()
             astConstructor.initializeCache(depth: 3, breadth: 3)
             
-            let decoded = try ParsingDecoder().decode(OneOfEverything.self, using: astConstructor.build(oneOfEverythingExample, using: OneOfEverythingGrammar.generatedLanguage))
+            let decoded = try ParsingDecoder().decode(OneOfEverything.self, using: astConstructor.build(oneOfEverythingExample, using: OneOfEverythingGrammar.grammar.language))
             XCTAssertEqual(decoded, oneOfEverythingReference)
             
             
@@ -222,22 +221,28 @@ class DecoderTests: XCTestCase {
         
     }
     
+    
+    
     func testNestedUnkeyed(){
-        let rules : [Rule] = [
-            ParserRule.sequence(produces: LabelledToken(withLabel:"array"), [
-                ParserRule.terminal(produces: TransientToken.anonymous, "[", [RuleAnnotation.void : RuleAnnotationValue.set ]),
-                ParserRule.sequence(produces: TransientToken.anonymous, [
-                    OneOfEverythingGrammar.oneOfEverything._rule().instance(with: LabelledToken(withLabel: "entry")),
-                    ParserRule.terminal(produces: TransientToken.anonymous, ",", [RuleAnnotation.void : RuleAnnotationValue.set ]).optional()
-                    ], nil).repeated(min: 1, limit: nil, producing: TransientToken.anonymous, annotations: nil),
-                ParserRule.terminal(produces: TransientToken.anonymous, "]", [RuleAnnotation.void : RuleAnnotationValue.set]),
-                ], nil)
+        let arrayEntry = [
+            OneOfEverythingGrammar.oneOfEverything.rule.parse(as: LabelledToken(withLabel: "entry")),
+            -",".require(.optionally)
+        ].sequence
+        
+        
+        let rules : [BehaviouralRule] = [
+            [
+                -"[",
+                arrayEntry.require(.noneOrMore),
+                -"]",
+            ].sequence.parse(as:LabelledToken(withLabel: "array"))
         ]
+        
         let source = """
         [true 1 2 3 4 5 6 7 8 9 10 11.0 12.0 string ,true 1 2 3 4 5 6 7 8 9 10 11.0 12.0 string ,true 1 2 3 4 5 6 7 8 9 10 11.0 12.0 string ]
         """
         do {
-            let ast = try AbstractSyntaxTreeConstructor().build(source, using: rules.language)
+            let ast = try AbstractSyntaxTreeConstructor().build(source, using: Parser(grammar:rules))
             
 //            print(ast.description)
             
@@ -254,14 +259,14 @@ class DecoderTests: XCTestCase {
 
     func testNestedKeyed(){
         let rules : [Rule] = [
-            ParserRule.sequence(produces: LabelledToken(withLabel:"array"), [
-                ParserRule.terminal(produces: TransientToken.anonymous, "[", [RuleAnnotation.void : RuleAnnotationValue.set ]),
-                ParserRule.sequence(produces: TransientToken.anonymous, [
-                    OneOfEverythingGrammar.oneOfEverything._rule().instance(with: LabelledToken(withLabel: "entry")),
-                    ParserRule.terminal(produces: TransientToken.anonymous, ",", [RuleAnnotation.void : RuleAnnotationValue.set ]).optional()
-                    ], nil).repeated(min: 1, limit: nil, producing: TransientToken.anonymous, annotations: nil),
-                ParserRule.terminal(produces: TransientToken.anonymous, "]", [RuleAnnotation.void : RuleAnnotationValue.set]),
-                ], nil)
+            [
+                -"[",
+                [
+                    OneOfEverythingGrammar.oneOfEverything.rule.parse(as: LabelledToken(withLabel: "entry")),
+                    -",".require(.optionally)
+                ].sequence.require(.oneOrMore),
+                -"]",
+            ].sequence
         ]
         let source = """
         [true 1 2 3 4 5 6 7 8 9 10 11.0 12.0 string ,true 1 2 3 4 5 6 7 8 9 10 11.0 12.0 string ,true 1 2 3 4 5 6 7 8 9 10 11.0 12.0 string ]
@@ -288,14 +293,14 @@ class DecoderTests: XCTestCase {
 
     func testNestedKeyedDeep(){
         let rules : [Rule] = [
-            ParserRule.sequence(produces: LabelledToken(withLabel:"dictionary"), [
-                OneOfEverythingGrammar.oneOfEverything._rule().instance(with: LabelledToken(withLabel: "thing1")),
-                ParserRule.terminal(produces: TransientToken.anonymous, ",", [RuleAnnotation.void : RuleAnnotationValue.set ]).optional(),
-                OneOfEverythingGrammar.oneOfEverything._rule().instance(with: LabelledToken(withLabel: "thing2")),
-                ParserRule.terminal(produces: TransientToken.anonymous, ",", [RuleAnnotation.void : RuleAnnotationValue.set ]).optional(),
-                OneOfEverythingGrammar.oneOfEverything._rule().instance(with: LabelledToken(withLabel: "thing3")),
-                ParserRule.terminal(produces: TransientToken.anonymous, ",", [RuleAnnotation.void : RuleAnnotationValue.set ]).optional(),
-                ], nil),
+            [
+                OneOfEverythingGrammar.oneOfEverything.rule.parse(as: LabelledToken(withLabel: "thing1")),
+                -",".require(.optionally),
+                OneOfEverythingGrammar.oneOfEverything.rule.parse(as: LabelledToken(withLabel: "thing2")),
+                -",".require(.optionally),
+                OneOfEverythingGrammar.oneOfEverything.rule.parse(as: LabelledToken(withLabel: "thing3")),
+                -",".require(.optionally),
+            ].sequence.parse(as:LabelledToken(withLabel:"dictionary")),
         ]
         let source = """
         true 1 2 3 4 5 6 7 8 9 10 11.0 12.0 string ,true 1 2 3 4 5 6 7 8 9 10 11.0 12.0 string ,true 1 2 3 4 5 6 7 8 9 10 11.0 12.0 string

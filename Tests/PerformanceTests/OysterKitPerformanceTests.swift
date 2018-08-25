@@ -663,6 +663,12 @@ class FullSwiftParser : Parser{
 }
 """
 
+    /// If I'm going to reparse this STLR with rules it has dynamically generated... I'm going to need to remove the grammar declaration
+    /// STLR 0.0.7 didn't support it
+    var stlrSource007 : String {
+        return stlrSource.replacingOccurrences(of: "grammar STLR", with: "")
+    }
+    
     let stlrSource = """
         /************************************************************
 
@@ -689,6 +695,8 @@ class FullSwiftParser : Parser{
             v0.0.7  10 Sep 2017        Added module importing
 
         *************************************************************/
+
+        grammar STLR
 
         //
         // Whitespace
@@ -839,7 +847,7 @@ class FullSwiftParser : Parser{
     }
     
     func testPerformanceOfScanString() {
-        let sourceLength = 200000
+        let sourceLength = 100000
         
         var source = ""
         
@@ -869,7 +877,7 @@ class FullSwiftParser : Parser{
     
     
     func testPerformanceOfScanCharacterInSet() {
-        let sourceLength = 1500000
+        let sourceLength = 500000
         let source = String(repeating: "a", count: sourceLength)
         
         let characterSet = CharacterSet(charactersIn: "a")
@@ -894,78 +902,63 @@ class FullSwiftParser : Parser{
     }
 
     func testPerformanceSTLR() {
-        
-        let abstractStlr = STLRParser(source: stlrSource)
-        guard let _ = abstractStlr.ast.runtimeLanguage else {
-            XCTFail("Could not generate a language from stlr source")
+        do {
+            _ = Parser(grammar: try _STLR.build(stlrSource).grammar.dynamicRules)
+        } catch {
+            XCTFail("Could not compile \(error)")
             return
         }
         
         // This is an example of a performance test case.
         self.measure {
-            let stlr = STLRParser(source: self.stlrSource)
+            let stlr = try! _STLR.build(self.stlrSource)
             
-            let ruleCount = stlr.ast.rules.count
-            guard ruleCount == 47 else {
-                for error in stlr.ast.errors {
-                    if let error = error as? AbstractSyntaxTreeConstructor.ConstructionError {
-                        switch error {
-                        case .constructionFailed(let causes),.parsingFailed(let causes):
-                            causes.map({$0 as? HumanConsumableError}).forEach({print("\($0?.formattedErrorMessage(in: stlrSource) ?? "Not human consumable")")})
-                        case .unknownError(let message):
-                            print(message)
-                        }
-                    } else {
-                        print("\(error)")
-                    }
+            XCTAssertEqual(45, stlr.grammar.rules.count)
+            
+            for rule in stlr.grammar.rules {
+                do {
+                    try stlr.grammar.validate(rule: rule)
+                } catch {
+                    XCTFail("Could not validate \(rule.identifier): \(error)")
                 }
-                XCTFail("Expected 47 rules but got \(ruleCount) rules")
-                return
-            }
-            
-            do {
-                try stlr.ast.validate()
-            } catch (let error){
-                XCTFail("Did not validate \(error)")
             }
         }
     }
     
-    func testSwiftParserPerformance(){
-        final class NullIR : IntermediateRepresentation{
-            func willEvaluate(token: Token, at position: String.UnicodeScalarView.Index) -> MatchResult? {
-                return nil
-            }
-            
-            func didEvaluate(token: Token, annotations: RuleAnnotations, matchResult: MatchResult) {
-                
-            }
-            
-            fileprivate func willBuildFrom(source: String, with: Language) {
-                
-            }
-            
-            fileprivate func didBuild() {
-                
-            }
-            
-            fileprivate func didEvaluate(rule: Rule, matchResult: MatchResult) {
-                
-            }
-            
-            fileprivate func willEvaluate(rule: Rule, at position: String.UnicodeScalarView.Index) -> MatchResult? {
-                return nil
-            }
-            
-            func resetState() {
-                
-            }
+    fileprivate final class NullIR : IntermediateRepresentation{
+        func willEvaluate(token: Token, at position: String.UnicodeScalarView.Index) -> MatchResult? {
+            return nil
         }
         
+        func didEvaluate(token: Token, annotations: RuleAnnotations, matchResult: MatchResult) {
+            
+        }
+        
+        fileprivate func willBuildFrom(source: String, with: Language) {
+            
+        }
+        
+        fileprivate func didBuild() {
+            
+        }
+        
+        fileprivate func didEvaluate(rule: Rule, matchResult: MatchResult) {
+            
+        }
+        
+        fileprivate func willEvaluate(rule: Rule, at position: String.UnicodeScalarView.Index) -> MatchResult? {
+            return nil
+        }
+        
+        func resetState() {
+            
+        }
+    }
+    
+    func testSwiftParserPerformance(){
         let parser = SwiftParser()
         let _ = try? AbstractSyntaxTreeConstructor().build(swiftSource, using: parser)
         
-        // This is an example of a performance test case.
         self.measure {
             let _ = try? AbstractSyntaxTreeConstructor().build(swiftSource, using: parser)
         }
@@ -973,42 +966,18 @@ class FullSwiftParser : Parser{
     }
     
     func testPerformanceSTLRParseOnly() {
-        final class NullIR : IntermediateRepresentation{
-            func willEvaluate(token: Token, at position: String.UnicodeScalarView.Index) -> MatchResult? {
-                return nil
-            }
-            
-            func didEvaluate(token: Token, annotations: RuleAnnotations, matchResult: MatchResult) {
-                
-            }
-            
-            fileprivate func willBuildFrom(source: String, with: Language) {
-                
-            }
-            
-            fileprivate func didBuild() {
-                
-            }
-            
-            fileprivate func didEvaluate(rule: Rule, matchResult: MatchResult) {
-                
-            }
-            
-            fileprivate func willEvaluate(rule: Rule, at position: String.UnicodeScalarView.Index) -> MatchResult? {
-                return nil
-            }
-            
-            func resetState() {
-                
-            }
+        let parser : Parser
+        do {
+            parser = Parser(grammar: try _STLR.build(stlrSource).grammar.dynamicRules)
+        } catch {
+            XCTFail("Failed to compile: \(error)")
+            return
         }
-        
-        let parser = STLRParser(source: stlrSource)
         
         // This is an example of a performance test case.
         self.measure {
             do {
-                let result = try parser.grammar[0].match(with: Lexer(source:self.stlrSource), for: NullIR())
+                let result = try parser.grammar[0].match(with: Lexer(source:self.stlrSource007), for: NullIR())
                 if case .success = result {
                     
                 } else {
