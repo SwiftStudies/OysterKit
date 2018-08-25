@@ -145,7 +145,7 @@ extension _STLR.Terminal {
     func rule(with behaviour:Behaviour, and annotations:RuleAnnotations)->BehaviouralRule {
         switch self {
         case .regex(let regex):
-            let regularExpression = try! NSRegularExpression(pattern: regex, options: [])
+            let regularExpression = try! NSRegularExpression(pattern: "^\(regex)", options: [])
             return TerminalRule(behaviour, and: annotations, for: regularExpression)
         case .characterRange(let characterRange):
             let characterSet = CharacterSet(charactersIn: characterRange[0].terminalBody.first!.unicodeScalars.first!...characterRange[1].terminalBody.first!.unicodeScalars.first!)
