@@ -30,21 +30,26 @@ class GrammarStructureTeset: XCTestCase {
     
     
     func testEnumIdentification() {
-        let source =    """
+        do {
+            let source =    """
                         grammar Test
                         quantifier = "*" | "+" | "?" | "-"
                         """
-        
-        let scope     = STLRParser(source: source)
-        XCTAssertEqual(1, scope.grammar.count,"Expected compliation into 1 rule")
-        let grammar   = _GrammarStructure(for: scope.ast, accessLevel: "internal")
-        
-        guard let quantifierNode = grammar.structure.children.first, grammar.structure.children.count == 1 else {
-            XCTFail("Expected one child")
-            return
+            
+            let scope     = try _STLR.build(source)
+            XCTAssertEqual(1, scope.grammar.rules.count,"Expected compliation into 1 rule")
+            let grammar   = _GrammarStructure(for: scope, accessLevel: "internal")
+            
+            guard let quantifierNode = grammar.structure.children.first, grammar.structure.children.count == 1 else {
+                XCTFail("Expected one child")
+                return
+            }
+            XCTAssertEqual("quantifier", quantifierNode.name)
+            XCTAssertEqual(_GrammarStructure.DataType.enumeration, quantifierNode.type)
+
+        } catch {
+            XCTFail("Unexpected error: \(error)")
         }
-        XCTAssertEqual("quantifier", quantifierNode.name)
-        XCTAssertEqual(_GrammarStructure.DataType.enumeration, quantifierNode.type)
     }
 
     func testReferencedEnumIdentification() {
