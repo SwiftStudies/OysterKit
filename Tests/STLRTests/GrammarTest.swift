@@ -31,54 +31,6 @@ class GrammarTest: XCTestCase {
         super.tearDown()
     }
     
-    func testString(){
-        let testData = [
-            (" ",true,1),
-            ("\\\"",true,2),
-            ("\"something longer",false,17),
-            ]
-        
-        
-        
-        for test in testData{
-            let parser = TestParser(source: "\"\(test.0)\"", grammar: [STLR.terminalString._rule()])
-            
-            guard let result = parser.makeIterator().next() else {
-                XCTAssert(!test.1, "Tokenization failed when it should have succeeded for \(test.0)")
-                continue
-            }
-            
-            XCTAssert(test.1, "Tokenization succeeded when it should have failed for: "+test.0)
-            XCTAssert(result.token == STLR.terminalString, "Incorrect token type \(result.token)")
-        }
-    }
-
-    func testIdentifier(){
-        let testIds = [
-            ("x",true),
-            ("xX",true),
-            ("x2",true),
-            ("2",false),
-            ("x_2",true),
-            ("_2",true),
-        ]
-        
-        for test in testIds{
-            let parser = TestParser(source: test.0, grammar: [STLR.identifier._rule()])
-            
-            guard let result = parser.makeIterator().next() else {
-                XCTAssert(!test.1, "Tokenization failed when it should have succeeded for \(test.0)")
-                continue
-            }
-            
-            XCTAssert(test.1, "Tokenization succeeded when it should have failed")
-            XCTAssert(result.token == STLR.identifier, "Incorrect token type \(result.token)")
-            
-//            XCTAssert(result[test.0] == test.0, "Incorrect token value \(result[source])")
-            
-        }
-    }
-    
     func net(_ block:() throws ->Void) {
         do {
             try block()

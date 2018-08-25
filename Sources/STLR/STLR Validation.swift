@@ -26,50 +26,9 @@ import Foundation
 import OysterKit
 
 /// Extensions to provide validation functions
-public extension STLRScope{
+public extension _STLR{
     
     /// Validates the AST throwing an exception if validation fails
     public func validate() throws{
-        enum ValidationError : Error {
-            case didNotValidate
-        }
-        for rule in rules{
-            do {
-                try rule.validate()
-            } catch (let error) {
-                errors.append(error)
-            }
-        }
-        for (_,identifier) in identifiers{
-            if identifier.grammarRule == nil {
-                errors.append(STLRCompilerError.unknownIdentifier(named: identifier.name))
-//                errors.append(LanguageError.semanticError(at: identifier.references[0], referencing: nil, message: "\(identifier.name) is never defined"))
-            }
-        }
-        
-        if !errors.isEmpty{
-            throw ValidationError.didNotValidate
-        }
     }
-    
-    
-    /**
-     Validates the grammar adding to any existing errors
-     
-     - Parameter parsingErrors: Existing errors found during parsing
-     - Returns: A new `Array` of errors
-    */
-    public func validate(parsingErrors: [Error]) -> [Error] {
-        
-        errors.append(contentsOf: parsingErrors)
-        
-        do{
-            try validate()
-        } catch {
-            
-        }
-        
-        return errors
-    }
-
 }

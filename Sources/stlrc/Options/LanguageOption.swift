@@ -47,7 +47,7 @@ class LanguageOption : Option, IndexableParameterized {
                 }
             }
             
-            func operations(in scope:STLRScope, for grammarName:String) throws ->[STLR.Operation]? {
+            func operations(in scope:_STLR, for grammarName:String) throws ->[STLR.Operation]? {
                 switch self {
                 case .swift:
                     return nil
@@ -59,18 +59,18 @@ class LanguageOption : Option, IndexableParameterized {
             }
             
             
-            func generate(grammarName: String, from stlrParser:STLRParser, optimize:Bool, outputTo:String) throws {
+            func generate(grammarName: String, from stlr:_STLR, optimize:Bool, outputTo:String) throws {
                 if optimize {
-                    STLRScope.register(optimizer: InlineIdentifierOptimization())
-                    STLRScope.register(optimizer: CharacterSetOnlyChoiceOptimizer())
+                    _STLR.register(optimizer: InlineIdentifierOptimization())
+                    _STLR.register(optimizer: CharacterSetOnlyChoiceOptimizer())
                 } else {
-                    STLRScope.removeAllOptimizations()
+                    _STLR.removeAllOptimizations()
                 }
                 
-                stlrParser.ast.optimize()
+                stlr.grammar.optimize()
                 
                 /// Use operation based generators
-                if let operations = try operations(in: stlrParser.ast, for: grammarName) {
+                if let operations = try operations(in: stlr, for: grammarName) {
                     let workingDirectory = URL(fileURLWithPath: outputTo).deletingLastPathComponent().path
                     let context = OperationContext(with: URL(fileURLWithPath: workingDirectory)){
                         print($0)
@@ -87,12 +87,14 @@ class LanguageOption : Option, IndexableParameterized {
                 } else {
                     switch self {
                     case .swift:
-                        let generatedLanguage = stlrParser.ast.swift(grammar: grammarName)
-                        if let generatedLanguage = generatedLanguage {
-                            try generatedLanguage.write(toFile: outputTo, atomically: true, encoding: String.Encoding.utf8)
-                        } else {
-                            print("Couldn't generate language".color(.red))
+                        let file = TextFile(grammarName+".swift")
+                        stlr.swift(in: file)
+                        let workingDirectory = URL(fileURLWithPath: outputTo).deletingLastPathComponent().path
+                        let context = OperationContext(with: URL(fileURLWithPath: workingDirectory)) { (message) in
+                            print(message)
                         }
+                        
+                        try file.perform(in: context)
                     default:
                         throw OperationError.error(message: "Language did not produce operations")
                     }

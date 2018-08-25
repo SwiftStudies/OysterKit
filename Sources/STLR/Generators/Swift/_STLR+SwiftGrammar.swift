@@ -35,7 +35,7 @@ public extension _STLR {
      - Returns: A `String` containing the Swift source or `nil` if an error occured.
      */
     public func swift(in file:TextFile){
-        let grammarName = grammar.name
+        let grammarName = grammar.scopeName
         
         file.print("fileprivate enum \(grammarName)Tokens : Int, Token, CaseIterable, Equatable {").indent()
         file.print("typealias T = \(grammarName)Tokens")
@@ -249,7 +249,7 @@ extension _STLR.Terminal {
                 return "CharacterSet\(self)s"
             }
         case .regex(let regex):
-            let regex = ("^"+regex.dropLast().dropFirst()).debugDescription
+            let regex = ("^"+regex).debugDescription
             return "T.regularExpression(\(regex))"
         case .terminalString(let terminalString):
             return terminalString.terminalBody.unescaped.debugDescription

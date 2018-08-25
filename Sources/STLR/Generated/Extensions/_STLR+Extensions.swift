@@ -131,21 +131,6 @@ extension _STLR.Rule {
 
 public extension _STLR.Grammar {
     
-    var name : String {
-        #warning("Fixing the broken grammar name parsing")
-        let fixName = [
-            -"grammar",
-            -CharacterSet.whitespaces.require(.oneOrMore),
-            ~CharacterSet.letters.union(CharacterSet(charactersIn: "_")).require(.oneOrMore),
-            -CharacterSet(charactersIn: "").require(.noneOrMore).negate()
-            ].sequence.parse(as:LabelledToken(withLabel: "correctedName"))
-        
-        let ast : HomogenousTree = try! AbstractSyntaxTreeConstructor(with: scopeName).build(scopeName, using: Parser(grammar: [fixName]))
-        
-        #warning("Remove this as a last step")
-        return ast.matchedString
-    }
-    
     fileprivate func embeddedIdentifier(_ tokenName:String)->_STLR.Element?{
         for rule in rules {
             if let element = rule.expression.embeddedIdentifier(tokenName){

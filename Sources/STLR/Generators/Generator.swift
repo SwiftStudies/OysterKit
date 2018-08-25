@@ -31,15 +31,6 @@ public protocol Generator {
     /// Generate source code text files for the specified scope
     ///
     ///  - Parameter scope: The scope
-    static func generate(for scope:STLRScope, grammar name:String, accessLevel:String) throws ->[Operation]
-}
-
-/// A protocol for things which generate source code from a `STLRScope`
-public protocol _Generator {
-    
-    /// Generate source code text files for the specified scope
-    ///
-    ///  - Parameter scope: The scope
-    #warning("Remove the name parameter, it's no longer required")
+    #warning("Make name optional and overriding")
     static func generate(for scope:_STLR, grammar name:String, accessLevel:String) throws ->[Operation]
 }

@@ -26,7 +26,7 @@ extension GrammarConsumer where Self : Optioned{
         return grammarUrl?.lastPathComponent
     }
 
-    var grammar : STLRParser? {
+    var grammar : _STLR? {
         return grammarOption?.grammar
     }
 
@@ -58,7 +58,7 @@ class GrammarOption : Option, IndexableParameterized{
         super.init(shortForm: "g", longForm: "grammar", description: "The grammar to use", parameterDefinition: Parameters.all, required: true)
     }
     
-    lazy var grammar : STLRParser? = {
+    lazy var grammar : _STLR? = {
         guard let grammarUrl : URL = self[parameter: GrammarOption.Parameters.inputGrammarFile] else {
             return nil
         }
@@ -71,14 +71,13 @@ class GrammarOption : Option, IndexableParameterized{
             return nil
         }
         
-        let stlrParser = STLRParser(source: stlrGrammar)
-        
-        if stlrParser.ast.errors.count > 0 {
-            stlrParser.ast.errors.report(in: stlrGrammar, from: grammarUrl.lastPathComponent)
+        do {
+            let stlr = try _STLR.build(stlrGrammar)
+            return stlr
+        } catch {
+            [error].report(in: stlrGrammar, from: grammarUrl.lastPathComponent)
             return nil
         }
-        
-        return stlrParser
     }()
     
 }

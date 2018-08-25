@@ -39,12 +39,11 @@ public extension String {
         
         let ast = compiler.ast
         
-        guard ast.rules.count > 0 else {
+        guard ast.grammar.rules.count > 0 else {
             return nil
         }
         
-        
-        return ast.rules[0].rule(from: ast, creating: token)
+        return ast.grammar.dynamicRules[0].parse(as:token)
     }
     
     /**

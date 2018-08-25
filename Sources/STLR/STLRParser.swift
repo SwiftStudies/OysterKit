@@ -28,7 +28,7 @@ import OysterKit
 
 /// A parser for [STLR](https://github.com/SwiftStudies/OysterKit/blob/master/STLR.md) source files
 public class STLRParser : Parser{
-    public var ast    : STLRScope
+    public var ast    : _STLR
     
     /**
      Creates a new instance of the parser and parses the source
@@ -36,21 +36,26 @@ public class STLRParser : Parser{
      - Parameter source: The STLR source
     */
     @available(*, deprecated, message: "Replace with _STLR.build(_ source:String)")
-    public init(source:String){
-        ast = STLRScope(building: source)
+    public init(source:String) {
+        do {
+            ast = try _STLR.build(source)
+            
+            super.init(grammar: ast.grammar.dynamicRules)
+            
+            ast.grammar.optimize()
 
-        super.init(grammar: STLR.generatedLanguage.grammar)
-        
-        ast.optimize()
+        } catch {
+            ast = try! _STLR.build("grammar Failed\n\ntry = \"again\"\n")
+            super.init(grammar: ast.grammar.dynamicRules)
+            errors.append(error)
+        }
     }
     
     /// The errors encountered during parsing
-    var errors : [Error] {
-        return ast.errors
-    }
+    public private(set) var errors = [Error]()
     
     /// `true` if the STLR was succesfully compiled
     public var compiled : Bool {
-        return ast.rules.count > 0
+        return ast.grammar.rules.count > 0
     }
 }

@@ -53,7 +53,7 @@ class GenerateCommand : Command, IndexableOptioned, GrammarConsumer, OutputLocat
             return RunnableReturnValue.failure(error: GenerationError.couldNotParseGrammar, code: 0)
         }
 
-        let grammarName : String = grammar.ast.name
+        let grammarName : String = grammar.grammar.scopeName
         
         let optimize = self[optionCalled: Options.optimize.rawValue]?.isSet ?? false
         

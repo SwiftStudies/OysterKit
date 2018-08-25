@@ -26,9 +26,9 @@ import Foundation
 
 extension _STLR : CustomStringConvertible {
     public var description: Swift.String {
-        let result = TextFile(grammar.name+".STLR")
+        let result = TextFile(grammar.scopeName+".STLR")
 
-        result.print("grammar \(grammar.name)","")
+        result.print("grammar \(grammar.scopeName)","")
         for module in grammar.modules ?? [] {
             result.print("import \(module.moduleName)")
         }
@@ -105,7 +105,7 @@ extension _STLR.Terminal : CustomStringConvertible {
         case .characterSet(let characterSet):
             return ".\(characterSet.characterSetName)"
         case .regex(let regex):
-            return "\(regex)"
+            return "/\(regex)/"
         case .terminalString(let terminalString):
             return terminalString.terminalBody.debugDescription
         case .characterRange(let characterRange):

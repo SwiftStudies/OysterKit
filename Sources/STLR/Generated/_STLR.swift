@@ -622,7 +622,7 @@ public struct _STLR : Codable {
      - Returns: A new instance of the data-structure
      */
     public static func build(_ source : Swift.String) throws ->_STLR{
-        let root = HomogenousTree(with: LabelledToken(withLabel: "root"), matching: source, children: [try AbstractSyntaxTreeConstructor().build(source, using: STLR.generatedLanguage)])
+        let root = HomogenousTree(with: LabelledToken(withLabel: "root"), matching: source, children: [try AbstractSyntaxTreeConstructor().build(source, using: _STLR.generatedLanguage)])
         // print(root.description)
         return try ParsingDecoder().decode(_STLR.self, using: root)
     }
