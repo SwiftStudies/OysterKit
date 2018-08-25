@@ -174,6 +174,9 @@ open class Lexer : LexicalAnalyzer, CustomStringConvertible{
         
         if !mark.skipping {
             marks.last?.scanEnd = mark.scanEnd
+            if marks.last?.preSkipLocation == mark.preSkipLocation {
+                marks.last?.postSkipLocation = mark.postSkipLocation
+            }
         } else {
             mark.postSkipLocation = scanner.scanLocation
             if marks.last?.scanEnd == nil {
@@ -181,6 +184,15 @@ open class Lexer : LexicalAnalyzer, CustomStringConvertible{
             }
         }
         return LexerContext(mark: mark, endLocation: mark.scanEnd ?? scanner.scanLocation, source: source)
+    }
+    
+    internal func describeUnwoundStack(){
+        var stackCopy = marks
+        let originalDepth = marks.count
+        while let top = stackCopy.first{
+            stackCopy.removeFirst()
+            print(String(repeating: "ᐧ", count: originalDepth-depth), scanner.string[top.preSkipLocation..<top.postSkipLocation],"⇥",scanner.string[top.postSkipLocation..<scanner.scanLocation], separator: "")
+        }
     }
     
     /// Removes the top most `Mark` from the stack without creating a new `LexicalContext` effectively advancing the scanning position

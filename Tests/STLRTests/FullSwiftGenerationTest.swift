@@ -6,7 +6,7 @@
 //
 
 import XCTest
-import OysterKit
+@testable import OysterKit
 @testable import STLR
 @testable import ExampleLanguages
 
@@ -225,7 +225,8 @@ class FullSwiftGenerationTest: XCTestCase {
 
     func testLiteral(){
         let passing = ["true","1","\"string\""]
-        XCTAssertNoThrow(try checkSimplePassFail(for: .literal, passing: passing, failing: ["trut"], expectNode: true, matches: passing))
+        let matches = [passing[0],passing[1],"string"]
+        XCTAssertNoThrow(try checkSimplePassFail(for: .literal, passing: passing, failing: ["trut"], expectNode: true, matches: matches))
         #warning("Should check for the correct error here")
     }
 
@@ -303,10 +304,12 @@ class FullSwiftGenerationTest: XCTestCase {
         ]
         let failing = ["//"]
         
-        XCTAssertNoThrow(try checkSimplePassFail(for: .regex, passing: passing.map({"/{\($0)}/ "}), failing: failing, expectNode: true, matches: passing))
+        XCTAssertNoThrow(try checkSimplePassFail(for: .regex, passing: passing.map({"/\($0)/ "}), failing: failing, expectNode: true, matches: passing))
     }
     
     func testTerminal(){
+        XCTFail("This test in hanging")
+        return
         let passing = [
             "\"something\"",
             ".letter",
@@ -343,7 +346,7 @@ class FullSwiftGenerationTest: XCTestCase {
         let passing = [
             "(a)",
             "(a b c)",
-            "(a | b | c))",
+            "(a | b | c)",
             ]
         let failing = [""]
         
@@ -390,15 +393,15 @@ class FullSwiftGenerationTest: XCTestCase {
     }
 
     func testOr(){
-        XCTAssertNoThrow(try checkSimplePassFail(for: .or, passing: ["|"," |","| "," | ","  |    "], failing: [""], expectNode: true))
+        XCTAssertNoThrow(try checkSimplePassFail(for: .or, passing: ["|"," |","| "," | ","  |    "], failing: [""], expectNode: false))
     }
 
     func testThen(){
-        XCTAssertNoThrow(try checkSimplePassFail(for: .then, passing: ["+"," +","+ "," + ","  +    "], failing: [""], expectNode: true))
+        XCTAssertNoThrow(try checkSimplePassFail(for: .then, passing: ["+"," +","+ "," + ","  +    "], failing: [""], expectNode: false))
     }
 
     func testChoice(){
-        XCTAssertNoThrow(try checkSimplePassFail(for: .choice, passing: ["a | b","a|b | c","a | b\n|c //Comment"], failing: [""], expectNode: true))
+        XCTAssertNoThrow(try checkSimplePassFail(for: .choice, passing: ["a | b","a|b | c","a | b  //Comment\n|c"], failing: [""], expectNode: true))
         #warning("Test structure")
     }
 
@@ -421,11 +424,11 @@ class FullSwiftGenerationTest: XCTestCase {
     }
 
     func testCustomType(){
-        XCTAssertNoThrow(try checkSimplePassFail(for: .customType, passing: ["mine","_mine","min_","min3"], failing: ["3"], expectNode: true))
+        XCTAssertNoThrow(try checkSimplePassFail(for: .customType, passing: ["Mine","_mine","Min_","Min3"], failing: ["3","min"], expectNode: true))
     }
 
     func testTokenType(){
-        XCTAssertNoThrow(try checkSimplePassFail(for: .tokenType, passing: ["Bool","mine"], failing: [""], expectNode: true))
+        XCTAssertNoThrow(try checkSimplePassFail(for: .tokenType, passing: ["Bool","Mine"], failing: ["bool","mine"], expectNode: true))
         #warning("Test structure")
     }
 
@@ -452,15 +455,6 @@ class FullSwiftGenerationTest: XCTestCase {
         XCTAssertNoThrow(try checkSimplePassFail(for: .rule, passing: passing, failing: failing, expectNode: true))
         #warning("Check strucure and errors")
     }
-
-    func testImport(){
-        let passing = [
-            "import",
-            ]
-        let failing = [""]
-        
-        XCTAssertNoThrow(try checkSimplePassFail(for: .import, passing: passing, failing: failing, expectNode: false))
-    }
     
     func testModuleName(){
         let passing = [
@@ -480,7 +474,7 @@ class FullSwiftGenerationTest: XCTestCase {
             ]
         let failing = [""]
         
-        XCTAssertNoThrow(try checkSimplePassFail(for: .moduleImport, passing: passing.map({"import \($0)"}), failing: failing, expectNode: true, matches:passing))
+        XCTAssertNoThrow(try checkSimplePassFail(for: .moduleImport, passing: passing.map({"import \($0)\n"}), failing: failing, expectNode: true, matches:passing))
         #warning("Check strucure and errors")
     }
     
@@ -488,11 +482,13 @@ class FullSwiftGenerationTest: XCTestCase {
         let passing = [
             """
             import module
+
             """,
             """
             import module1
             import module2
             import module3
+
             """,
             ]
         let failing = [""]
@@ -542,17 +538,13 @@ class FullSwiftGenerationTest: XCTestCase {
     }
     
     func testGrammarDeclarationRule(){
-        do {
-            try parse(source: "grammar wibble", with: ExampleLanguages.STLRTokens.scopeName)
-        } catch {
-            XCTFail("Unexpected error: \(error)")
-        }
+        XCTAssertNoThrow(try checkSimplePassFail(for: .scopeName, passing: ["grammar wibble\n"], failing: [""], expectNode: true, matches:["wibble"]))
     }
 
     
     func testGeneratedIR() {
         do {
-            let rules = try STLR.build("hello = .letter").grammar.rules
+            let rules = try STLR.build("grammar Test\nhello = .letter").grammar.rules
             
             guard rules.count == 1 else {
                 XCTFail("Expected 1 rule")
@@ -562,6 +554,7 @@ class FullSwiftGenerationTest: XCTestCase {
             let helloRule = rules[0]
             
             if case let .element(element) = helloRule.expression {
+                
                 if case .characterSet(let characterSet) = element.terminal ?? STLR.Terminal.regex(regex: "") {
                     XCTAssertEqual(STLR.CharacterSetName.letter, characterSet.characterSetName)
                 } else {

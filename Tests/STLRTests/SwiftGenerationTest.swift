@@ -42,7 +42,7 @@ class SwiftGenerationTest: XCTestCase {
         let identifier = ast[identifierName]
     
         let file = TextFile("Test")
-        let swift = identifier.swift(in: file).content.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).replacingOccurrences(of: "\n", with: "").replacingOccurrences(of: "\t", with: "")
+        let swift = identifier.swift(in: file, grammar: ast).content.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).replacingOccurrences(of: "\n", with: "").replacingOccurrences(of: "\t", with: "")
         
         return swift
     }
@@ -55,7 +55,7 @@ class SwiftGenerationTest: XCTestCase {
         }
         
         let file = TextFile("Test")
-        let swift = ast.rules[rule].swift(in: file).content.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).replacingOccurrences(of: "\n", with: "").replacingOccurrences(of: "\t", with: "")
+        let swift = ast.rules[rule].swift(in: file, grammar: ast).content.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).replacingOccurrences(of: "\n", with: "").replacingOccurrences(of: "\t", with: "")
         
         return swift
     }
@@ -309,10 +309,10 @@ class SwiftGenerationTest: XCTestCase {
             let ast = try _STLR.build(stlrSource).grammar
             
             var file = TextFile("Test")
-            let idSwift = ast["id"].swift(in: file).content
+            let idSwift = ast["id"].swift(in: file, grammar: ast).content
             
             file = TextFile("Test")
-            let declarationSwift = ast["declaration"].swift(in: file).content
+            let declarationSwift = ast["declaration"].swift(in: file, grammar: ast).content
             
             XCTAssertEqual(idSwift, "-[\n    \"id\".require(.one).annotatedWith([.error:.string(\"Expected id\")])\n    \n].sequence\n")
             XCTAssertEqual(declarationSwift, "[\n    T.id.rule.require(.one).annotatedWith(T.id.rule.annotations.merge(with:\'([.error:.string(\"Declaration requires id\")])))\n    \n].sequence.parse(as: self)\n")
@@ -332,8 +332,8 @@ class SwiftGenerationTest: XCTestCase {
             
             let ast = try _STLR.build(stlrSource).grammar
             
-            let idSwift = ast["id"].swift(in: TextFile("Test")).content
-            let declarationSwift = ast["declaration"].swift(in: TextFile("")).content
+            let idSwift = ast["id"].swift(in: TextFile("Test"), grammar: ast).content
+            let declarationSwift = ast["declaration"].swift(in: TextFile(""), grammar: ast).content
             
             XCTAssertEqual(idSwift, "-[\n    \"id\".require(.one).annotatedWith([.error:.string(\"Expected id\")])\n    \n].sequence\n")
             XCTAssertEqual(declarationSwift, "[\n    [\n        T.id.rule.require(.one).annotatedWith(T.id.rule.annotations.merge(with:\'([.error:.string(\"Declaration requires id\")])))\n        ,\n        CharacterSet.letters.require(.one)\n        ].sequence\n    \n].sequence.parse(as: self)\n")
@@ -352,8 +352,8 @@ class SwiftGenerationTest: XCTestCase {
             
             let ast = try _STLR.build(stlrSource).grammar
             
-            let idSwift = ast["id"].swift(in:TextFile("")).content
-            let declarationSwift = ast["declaration"].swift(in: TextFile("")).content
+            let idSwift = ast["id"].swift(in:TextFile(""), grammar: ast).content
+            let declarationSwift = ast["declaration"].swift(in: TextFile(""), grammar: ast).content
             
             XCTAssertEqual(idSwift, "-[\n    \"id\".require(.one).annotatedWith([.error:.string(\"Expected id\")])\n    \n].sequence\n")
             XCTAssertEqual(declarationSwift, "[\n    [\n        [\n            T.id.rule.require(.one).annotatedWith(T.id.rule.annotations.merge(with:\'([.error:.string(\"Declaration requires id\")])))\n            ,\n            CharacterSet.letters.require(.one)\n            ].sequence\n        ,\n        CharacterSet.letters.require(.oneOrMore)\n        ].sequence\n    \n].sequence.parse(as: self)\n")

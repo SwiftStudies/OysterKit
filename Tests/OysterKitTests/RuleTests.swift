@@ -169,7 +169,7 @@ class RuleTests: XCTestCase {
             switch matchResult{
             case .success(let context):
                 //Test stuff
-                XCTAssertEqual("H", context.matchedString)
+                XCTAssertEqual("", context.matchedString)
             default:
                 XCTFail("Should have succeeded")
             }
@@ -184,17 +184,33 @@ class RuleTests: XCTestCase {
         let lexer = Lexer(source: source)
         let testIR = TestIR()
         
+        lexer.mark()
+        
         do {
             switch try rule.match(with: lexer, for: testIR){
             case .success(let context):
                 //Test stuff
-                XCTAssertEqual("Hello", context.matchedString)
+                XCTAssertEqual("", context.matchedString)
+                switch try " ".match(with: lexer, for: testIR){
+                case .success(let context):
+                    XCTAssertEqual(" ", context.matchedString)
+                    switch try rule.match(with: lexer, for: testIR){
+                    case .success(let context):
+                        XCTAssertEqual("", context.matchedString)
+                    default:
+                        XCTFail("Should have succeeded")
+                    }
+                default:
+                    XCTFail("Should have succeeded")
+                }
             default:
                 XCTFail("Should have succeeded")
             }
         } catch {
             XCTFail("Unexpected error from match")
         }
+        
+        XCTAssertEqual(" ", lexer.proceed().matchedString)
     }
     
     func testAnnotationComparison(){

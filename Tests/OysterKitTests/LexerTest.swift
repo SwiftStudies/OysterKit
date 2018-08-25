@@ -93,6 +93,70 @@ class LexerTest: XCTestCase {
         }
     }
 
+    func testScanScanSkipScanSkipAtStartAndEnd(){
+        let source = "12345"
+        let lexer = Lexer(source: source)
+        
+        do {
+            lexer.mark(skipping: false)
+            lexer.mark(skipping: false)
+
+            lexer.mark(skipping: true)
+            lexer.mark(skipping: false)
+            try lexer.scanNext()
+            _ = lexer.proceed()
+            _ = lexer.proceed()
+            lexer.mark(skipping: false)
+            try lexer.scanNext()
+            try lexer.scanNext()
+            try lexer.scanNext()
+            _ = lexer.proceed()
+            lexer.mark(skipping: true)
+            lexer.mark(skipping: false)
+            try lexer.scanNext()
+            _ = lexer.proceed()
+            _ = lexer.proceed()
+
+            _ = lexer.proceed()
+            let all = lexer.proceed()
+            
+            XCTAssertEqual(all.matchedString, "234")
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+    }
+
+    
+    func testScanScanSkipScanAtStartAndEnd(){
+        let source = "12345"
+        let lexer = Lexer(source: source)
+        
+        do {
+            lexer.mark(skipping: false)
+            lexer.mark(skipping: false)
+            lexer.mark(skipping: true)
+            lexer.mark(skipping: false)
+            try lexer.scanNext()
+            _ = lexer.proceed()
+            _ = lexer.proceed()
+            try lexer.scanNext()
+            try lexer.scanNext()
+            try lexer.scanNext()
+            lexer.mark(skipping: true)
+            lexer.mark(skipping: false)
+            try lexer.scanNext()
+            _ = lexer.proceed()
+            _ = lexer.proceed()
+            _ = lexer.proceed()
+            _ = lexer.proceed()
+            let all = lexer.proceed()
+            
+            XCTAssertEqual(all.matchedString, "234")
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+    }
+
     func testSkipInMiddle(){
         let source = "12345"
         let lexer = Lexer(source: source)
