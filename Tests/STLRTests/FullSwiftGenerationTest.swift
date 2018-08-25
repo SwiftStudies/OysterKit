@@ -311,7 +311,7 @@ class FullSwiftGenerationTest: XCTestCase {
         let passing = [
             "\"something\"",
             ".letter",
-            "/regex/",
+            "/regex/ ",
             "\"a\"...\"b\"",
         ]
         let failing = [""]
