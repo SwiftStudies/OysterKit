@@ -209,8 +209,6 @@ class RuleTests: XCTestCase {
         } catch {
             XCTFail("Unexpected error from match")
         }
-        
-        XCTAssertEqual(" ", lexer.proceed().matchedString)
     }
     
     func testAnnotationComparison(){

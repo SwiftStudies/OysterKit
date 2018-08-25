@@ -33,7 +33,7 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
         switch self {
             /// whitespace
             case .whitespace:
-                return T.regularExpression("^[:space:]+|/\\*(?:.|\\r?\\n)*?\\*/|//.*(?:\\r?\\n|$)").require(.one).reference(.skipping)
+                return T.regularExpression("^[:space:]+|/\\*(?:.|\\r?\\n)*?\\*/|//.*(?:\\r?\\n|$)").reference(.skipping)
                             
             /// ows
             case .ows:
@@ -41,115 +41,115 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
                             
             /// quantifier
             case .quantifier:
-                return [    "*".require(.one),    "+".require(.one),    "?".require(.one),    "-".require(.one)].choice.reference(.structural(token: self))
+                return [    "*",    "+",    "?",    "-"].choice.reference(.structural(token: self))
                             
             /// negated
             case .negated:
-                return "!".require(.one).reference(.structural(token: self))
+                return "!".reference(.structural(token: self))
                             
             /// lookahead
             case .lookahead:
-                return ">>".require(.one).reference(.structural(token: self))
+                return ">>".reference(.structural(token: self))
                             
             /// transient
             case .transient:
-                return "~".require(.one).reference(.structural(token: self))
+                return "~".reference(.structural(token: self))
                             
             /// void
             case .void:
-                return "-".require(.one).reference(.structural(token: self))
+                return "-".reference(.structural(token: self))
                             
             /// stringQuote
             case .stringQuote:
-                return "\"".require(.one).reference(.structural(token: self))
+                return "\"".reference(.structural(token: self))
                             
             /// terminalBody
             case .terminalBody:
-                return T.regularExpression("^(\\\\.|[^\"\\\\\\n])+").require(.one).reference(.structural(token: self))
+                return T.regularExpression("^(\\\\.|[^\"\\\\\\n])+").reference(.structural(token: self))
                             
             /// stringBody
             case .stringBody:
-                return T.regularExpression("^(\\\\.|[^\"\\\\\\n])*").require(.one).reference(.structural(token: self))
+                return T.regularExpression("^(\\\\.|[^\"\\\\\\n])*").reference(.structural(token: self))
                             
             /// string
             case .string:
-                return [    -T.stringQuote.rule.require(.one),    T.stringBody.rule.require(.one),    -T.stringQuote.rule.require(.one).annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Missing terminating quote")])].sequence.reference(.structural(token: self))
+                return [    -T.stringQuote.rule,    T.stringBody.rule,    -T.stringQuote.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Missing terminating quote")])].sequence.reference(.structural(token: self))
                             
             /// terminalString
             case .terminalString:
-                return [    -T.stringQuote.rule.require(.one),    T.terminalBody.rule.require(.one).annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Terminals must have at least one character")]),    -T.stringQuote.rule.require(.one).annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Missing terminating quote")])].sequence.reference(.structural(token: self))
+                return [    -T.stringQuote.rule,    T.terminalBody.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Terminals must have at least one character")]),    -T.stringQuote.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Missing terminating quote")])].sequence.reference(.structural(token: self))
                             
             /// characterSetName
             case .characterSetName:
-                return [    "letter".require(.one),    "uppercaseLetter".require(.one),    "lowercaseLetter".require(.one),    "alphaNumeric".require(.one),    "decimalDigit".require(.one),    "whitespaceOrNewline".require(.one),    "whitespace".require(.one),    "newline".require(.one),    "backslash".require(.one)].choice.reference(.structural(token: self))
+                return [    "letter",    "uppercaseLetter",    "lowercaseLetter",    "alphaNumeric",    "decimalDigit",    "whitespaceOrNewline",    "whitespace",    "newline",    "backslash"].choice.reference(.structural(token: self))
                             
             /// characterSet
             case .characterSet:
-                return [    -".".require(.one),    T.characterSetName.rule.require(.one).annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Unknown character set")])].sequence.reference(.structural(token: self))
+                return [    -".",    T.characterSetName.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Unknown character set")])].sequence.reference(.structural(token: self))
                             
             /// rangeOperator
             case .rangeOperator:
-                return [    "..".require(.one),    ".".require(.one).annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected ... in character range")])].sequence.reference(.skipping)
+                return [    "..",    ".".annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected ... in character range")])].sequence.reference(.skipping)
                             
             /// characterRange
             case .characterRange:
-                return [    T.terminalString.rule.require(.one),    T.rangeOperator.rule.require(.one),    T.terminalString.rule.require(.one).annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Range must be terminated")])].sequence.reference(.structural(token: self))
+                return [    T.terminalString.rule,    T.rangeOperator.rule,    T.terminalString.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Range must be terminated")])].sequence.reference(.structural(token: self))
                             
             /// number
             case .number:
-                return [    [        "-".require(.one),        "+".require(.one)].choice.require(.optionally),    CharacterSet.decimalDigits.require(.oneOrMore)].sequence.reference(.structural(token: self))
+                return [    [        "-",        "+"].choice.require(.optionally),    CharacterSet.decimalDigits.require(.oneOrMore)].sequence.reference(.structural(token: self))
                             
             /// boolean
             case .boolean:
-                return [    "true".require(.one),    "false".require(.one)].choice.reference(.structural(token: self))
+                return [    "true",    "false"].choice.reference(.structural(token: self))
                             
             /// literal
             case .literal:
-                return [    T.string.rule.require(.one),    T.number.rule.require(.one),    T.boolean.rule.require(.one)].choice.reference(.structural(token: self))
+                return [    T.string.rule,    T.number.rule,    T.boolean.rule].choice.reference(.structural(token: self))
                             
             /// annotation
             case .annotation:
-                return [    "@".require(.one),    T.label.rule.require(.one).annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected an annotation label")]),    [        "(".require(.one),        T.literal.rule.require(.one).annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("A value must be specified or the () omitted")]),        ")".require(.one).annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Missing \')\'")])].sequence.require(.optionally)].sequence.reference(.structural(token: self))
+                return [    "@",    T.label.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected an annotation label")]),    [        "(",        T.literal.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("A value must be specified or the () omitted")]),        ")".annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Missing \')\'")])].sequence.require(.optionally)].sequence.reference(.structural(token: self))
                             
             /// annotations
             case .annotations:
-                return [    T.annotation.rule.require(.one),    T.ows.rule.require(.one)].sequence.require(.oneOrMore).reference(.structural(token: self))
+                return [    T.annotation.rule,    T.ows.rule].sequence.require(.oneOrMore).reference(.structural(token: self))
                             
             /// customLabel
             case .customLabel:
-                return [    [        CharacterSet.letters.require(.one),        "_".require(.one)].choice.require(.one).annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Labels must start with a letter or _")]),    [        CharacterSet.letters.require(.one),        CharacterSet.decimalDigits.require(.one),        "_".require(.one)].choice.require(.noneOrMore)].sequence.reference(.structural(token: self))
+                return [    [        CharacterSet.letters,        "_"].choice.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Labels must start with a letter or _")]),    [        CharacterSet.letters,        CharacterSet.decimalDigits,        "_"].choice.require(.noneOrMore)].sequence.reference(.structural(token: self))
                             
             /// definedLabel
             case .definedLabel:
-                return [    "token".require(.one),    "error".require(.one),    "void".require(.one),    "transient".require(.one)].choice.reference(.structural(token: self))
+                return [    "token",    "error",    "void",    "transient"].choice.reference(.structural(token: self))
                             
             /// label
             case .label:
-                return [    T.definedLabel.rule.require(.one),    T.customLabel.rule.require(.one)].choice.reference(.structural(token: self))
+                return [    T.definedLabel.rule,    T.customLabel.rule].choice.reference(.structural(token: self))
                             
             /// regexDelimeter
             case .regexDelimeter:
-                return "/".require(.one).reference(.skipping)
+                return "/".reference(.skipping)
                             
             /// startRegex
             case .startRegex:
-                return [    T.regexDelimeter.rule.require(.one),    "*".require(.one).lookahead().negate()].sequence.reference(.skipping)
+                return [    T.regexDelimeter.rule,    "*".lookahead().negate()].sequence.reference(.skipping)
                             
             /// endRegex
             case .endRegex:
-                return T.regexDelimeter.rule.require(.one).reference(.skipping)
+                return T.regexDelimeter.rule.reference(.skipping)
                             
             /// regexBody
             case .regexBody:
-                return [    T.regexDelimeter.rule.require(.one),    T.whitespace.rule.require(.one)].sequence.require(.oneOrMore).negate().reference(.scanning)
+                return [    T.regexDelimeter.rule,    T.whitespace.rule].sequence.require(.oneOrMore).negate().reference(.scanning)
                             
             /// regex
             case .regex:
-                return [    T.startRegex.rule.require(.one),    T.regexBody.rule.require(.one),    T.endRegex.rule.require(.one),    -T.whitespace.rule.require(.one)].sequence.reference(.structural(token: self))
+                return [    T.startRegex.rule,    T.regexBody.rule,    T.endRegex.rule,    -T.whitespace.rule].sequence.reference(.structural(token: self))
                             
             /// terminal
             case .terminal:
-                return [    T.characterSet.rule.require(.one),    T.characterRange.rule.require(.one),    T.terminalString.rule.require(.one),    T.regex.rule.require(.one)].choice.reference(.structural(token: self))
+                return [    T.characterSet.rule,    T.characterRange.rule,    T.terminalString.rule,    T.regex.rule].choice.reference(.structural(token: self))
                             
             /// group
             case .group:
@@ -158,7 +158,7 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
                     let recursiveRule = BehaviouralRecursiveRule(stubFor: Behaviour(.structural(token: self), cardinality: Cardinality.one), with: [:])
                     T.leftHandRecursiveRules[self.rawValue] = recursiveRule
                     // Create the rule we would normally generate
-                    let rule = [    "(".require(.one),    T.whitespace.rule.require(.noneOrMore),    T.expression.rule.require(.one),    T.whitespace.rule.require(.noneOrMore),    ")".require(.one).annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected \')\'")])].sequence.reference(.structural(token: self))
+                    let rule = [    "(",    T.whitespace.rule.require(.noneOrMore),    T.expression.rule,    T.whitespace.rule.require(.noneOrMore),    ")".annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected \')\'")])].sequence.reference(.structural(token: self))
                                         
                     recursiveRule.surrogateRule = rule
                     return recursiveRule
@@ -168,7 +168,7 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
             
             /// identifier
             case .identifier:
-                return T.regularExpression("^[:alpha:]\\w*|_\\w*").require(.one).reference(.structural(token: self))
+                return T.regularExpression("^[:alpha:]\\w*|_\\w*").reference(.structural(token: self))
                             
             /// element
             case .element:
@@ -177,7 +177,7 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
                     let recursiveRule = BehaviouralRecursiveRule(stubFor: Behaviour(.structural(token: self), cardinality: Cardinality.one), with: [:])
                     T.leftHandRecursiveRules[self.rawValue] = recursiveRule
                     // Create the rule we would normally generate
-                    let rule = [    T.annotations.rule.require(.optionally),    [        T.lookahead.rule.require(.one),        T.transient.rule.require(.one),        T.void.rule.require(.one)].choice.require(.optionally),    T.negated.rule.require(.optionally),    [        T.group.rule.require(.one),        T.terminal.rule.require(.one),        [            T.identifier.rule.require(.one),            [                T.ows.rule.require(.one),                "=".require(.one)].sequence.require(.one).lookahead().negate()].sequence.require(.one)].choice.require(.one),    T.quantifier.rule.require(.optionally)].sequence.reference(.structural(token: self))
+                    let rule = [    T.annotations.rule.require(.optionally),    [        T.lookahead.rule,        T.transient.rule,        T.void.rule].choice.require(.optionally),    T.negated.rule.require(.optionally),    [        T.group.rule,        T.terminal.rule,        [            T.identifier.rule,            [                T.ows.rule,                "="].sequence.lookahead().negate()].sequence].choice,    T.quantifier.rule.require(.optionally)].sequence.reference(.structural(token: self))
                                         
                     recursiveRule.surrogateRule = rule
                     return recursiveRule
@@ -187,15 +187,15 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
             
             /// assignmentOperators
             case .assignmentOperators:
-                return [    "=".require(.one),    "+=".require(.one),    "|=".require(.one)].choice.reference(.structural(token: self))
+                return [    "=",    "+=",    "|="].choice.reference(.structural(token: self))
                             
             /// or
             case .or:
-                return [    T.whitespace.rule.require(.noneOrMore),    "|".require(.one),    T.whitespace.rule.require(.noneOrMore)].sequence.reference(.skipping)
+                return [    T.whitespace.rule.require(.noneOrMore),    "|",    T.whitespace.rule.require(.noneOrMore)].sequence.reference(.skipping)
                             
             /// then
             case .then:
-                return [    [        T.whitespace.rule.require(.noneOrMore),        "+".require(.one),        T.whitespace.rule.require(.noneOrMore)].sequence.require(.one),    T.whitespace.rule.require(.oneOrMore)].choice.reference(.skipping)
+                return [    [        T.whitespace.rule.require(.noneOrMore),        "+",        T.whitespace.rule.require(.noneOrMore)].sequence,    T.whitespace.rule.require(.oneOrMore)].choice.reference(.skipping)
                             
             /// choice
             case .choice:
@@ -204,7 +204,7 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
                     let recursiveRule = BehaviouralRecursiveRule(stubFor: Behaviour(.structural(token: self), cardinality: Cardinality.one), with: [:])
                     T.leftHandRecursiveRules[self.rawValue] = recursiveRule
                     // Create the rule we would normally generate
-                    let rule = [    T.element.rule.require(.one),    [        T.or.rule.require(.one),        T.element.rule.require(.one).annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected terminal, identifier, or group")])].sequence.require(.oneOrMore)].sequence.reference(.structural(token: self))
+                    let rule = [    T.element.rule,    [        T.or.rule,        T.element.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected terminal, identifier, or group")])].sequence.require(.oneOrMore)].sequence.reference(.structural(token: self))
                                         
                     recursiveRule.surrogateRule = rule
                     return recursiveRule
@@ -214,7 +214,7 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
             
             /// notNewRule
             case .notNewRule:
-                return [    T.annotations.rule.require(.optionally),    T.identifier.rule.require(.one),    T.whitespace.rule.require(.noneOrMore),    [        ":".require(.one),        T.whitespace.rule.require(.noneOrMore),        CharacterSet.letters.require(.oneOrMore),        T.whitespace.rule.require(.noneOrMore)].sequence.require(.optionally),    T.assignmentOperators.rule.require(.one)].sequence.require(.one).negate().reference(.structural(token: self))
+                return [    T.annotations.rule.require(.optionally),    T.identifier.rule,    T.whitespace.rule.require(.noneOrMore),    [        ":",        T.whitespace.rule.require(.noneOrMore),        CharacterSet.letters.require(.oneOrMore),        T.whitespace.rule.require(.noneOrMore)].sequence.require(.optionally),    T.assignmentOperators.rule].sequence.negate().reference(.skipping)
                             
             /// sequence
             case .sequence:
@@ -223,7 +223,7 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
                     let recursiveRule = BehaviouralRecursiveRule(stubFor: Behaviour(.structural(token: self), cardinality: Cardinality.one), with: [:])
                     T.leftHandRecursiveRules[self.rawValue] = recursiveRule
                     // Create the rule we would normally generate
-                    let rule = [    T.element.rule.require(.one),    [        T.then.rule.require(.one),        T.notNewRule.rule.require(.one).lookahead(),        T.element.rule.require(.one).annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected terminal, identifier, or group")])].sequence.require(.oneOrMore)].sequence.reference(.structural(token: self))
+                    let rule = [    T.element.rule,    [        T.then.rule,        T.notNewRule.rule.lookahead(),        T.element.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected terminal, identifier, or group")])].sequence.require(.oneOrMore)].sequence.reference(.structural(token: self))
                                         
                     recursiveRule.surrogateRule = rule
                     return recursiveRule
@@ -238,7 +238,7 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
                     let recursiveRule = BehaviouralRecursiveRule(stubFor: Behaviour(.structural(token: self), cardinality: Cardinality.one), with: [:])
                     T.leftHandRecursiveRules[self.rawValue] = recursiveRule
                     // Create the rule we would normally generate
-                    let rule = [    T.choice.rule.require(.one),    T.sequence.rule.require(.one),    T.element.rule.require(.one)].choice.reference(.structural(token: self))
+                    let rule = [    T.choice.rule,    T.sequence.rule,    T.element.rule].choice.reference(.structural(token: self))
                                         
                     recursiveRule.surrogateRule = rule
                     return recursiveRule
@@ -248,39 +248,39 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
             
             /// tokenType
             case .tokenType:
-                return [    T.standardType.rule.require(.one),    T.customType.rule.require(.one)].choice.reference(.structural(token: self))
+                return [    T.standardType.rule,    T.customType.rule].choice.reference(.structural(token: self))
                             
             /// standardType
             case .standardType:
-                return [    "Int".require(.one),    "Double".require(.one),    "String".require(.one),    "Bool".require(.one)].choice.reference(.structural(token: self))
+                return [    "Int",    "Double",    "String",    "Bool"].choice.reference(.structural(token: self))
                             
             /// customType
             case .customType:
-                return [    [        "_".require(.one),        CharacterSet.uppercaseLetters.require(.one)].choice.require(.one),    [        "_".require(.one),        CharacterSet.letters.require(.one),        CharacterSet.decimalDigits.require(.one)].choice.require(.noneOrMore)].sequence.reference(.structural(token: self))
+                return [    [        "_",        CharacterSet.uppercaseLetters].choice,    [        "_",        CharacterSet.letters,        CharacterSet.decimalDigits].choice.require(.noneOrMore)].sequence.reference(.structural(token: self))
                             
             /// lhs
             case .lhs:
-                return [    T.whitespace.rule.require(.noneOrMore),    T.annotations.rule.require(.optionally),    T.transient.rule.require(.optionally),    T.void.rule.require(.optionally),    T.identifier.rule.require(.one),    T.whitespace.rule.require(.noneOrMore),    [        -":".require(.one),        -T.whitespace.rule.require(.noneOrMore),        T.tokenType.rule.require(.one),        -T.whitespace.rule.require(.noneOrMore)].sequence.require(.optionally),    T.assignmentOperators.rule.require(.one)].sequence.reference(.scanning)
+                return [    T.whitespace.rule.require(.noneOrMore),    T.annotations.rule.require(.optionally),    T.transient.rule.require(.optionally),    T.void.rule.require(.optionally),    T.identifier.rule,    T.whitespace.rule.require(.noneOrMore),    [        -":",        -T.whitespace.rule.require(.noneOrMore),        T.tokenType.rule,        -T.whitespace.rule.require(.noneOrMore)].sequence.require(.optionally),    T.assignmentOperators.rule].sequence.reference(.scanning)
                             
             /// rule
             case .rule:
-                return [    T.lhs.rule.require(.one),    T.whitespace.rule.require(.noneOrMore),    T.expression.rule.require(.one).annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected expression")]),    T.whitespace.rule.require(.noneOrMore)].sequence.reference(.structural(token: self))
+                return [    T.lhs.rule,    T.whitespace.rule.require(.noneOrMore),    T.expression.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected expression")]),    T.whitespace.rule.require(.noneOrMore)].sequence.reference(.structural(token: self))
                             
             /// moduleName
             case .moduleName:
-                return [    [        CharacterSet.letters.require(.one),        "_".require(.one)].choice.require(.one),    [        CharacterSet.letters.require(.one),        "_".require(.one),        CharacterSet.decimalDigits.require(.one)].choice.require(.noneOrMore)].sequence.reference(.structural(token: self))
+                return [    [        CharacterSet.letters,        "_"].choice,    [        CharacterSet.letters,        "_",        CharacterSet.decimalDigits].choice.require(.noneOrMore)].sequence.reference(.structural(token: self))
                             
             /// moduleImport
             case .moduleImport:
-                return [    T.ows.rule.require(.one),    -"import".require(.one),    -CharacterSet.whitespaces.require(.oneOrMore).annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected white space followed by module name")]),    T.moduleName.rule.require(.one).annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected module name")]),    -T.whitespace.rule.require(.oneOrMore).annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected newline")])].sequence.reference(.structural(token: self))
+                return [    T.ows.rule,    -"import",    -CharacterSet.whitespaces.require(.oneOrMore).annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected white space followed by module name")]),    T.moduleName.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected module name")]),    -T.whitespace.rule.require(.oneOrMore).annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected newline")])].sequence.reference(.structural(token: self))
                             
             /// scopeName
             case .scopeName:
-                return [    -"grammar".require(.one),    -T.whitespace.rule.require(.one),    T.ows.rule.require(.one),    ~[        CharacterSet.letters.require(.one),        [            CharacterSet.letters.require(.one),            CharacterSet.decimalDigits.require(.one)].choice.require(.noneOrMore)].sequence.require(.one),    -T.whitespace.rule.require(.one).annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Unexpected input")]),    -T.ows.rule.require(.one)].sequence.reference(.structural(token: self))
+                return [    -"grammar",    -T.whitespace.rule,    T.ows.rule,    ~[        CharacterSet.letters,        [            CharacterSet.letters,            CharacterSet.decimalDigits].choice.require(.noneOrMore)].sequence,    -T.whitespace.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Unexpected input")]),    -T.ows.rule].sequence.reference(.structural(token: self))
                             
             /// grammar
             case .grammar:
-                return [    -T.whitespace.rule.require(.noneOrMore),    T.scopeName.rule.require(.one).annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("You must declare the name of the grammar before any other declarations (e.g. grammar <your-grammar-name>)")]),    T.modules.rule.require(.optionally).annotatedWith([:]),    T.rules.rule.require(.one).annotatedWith([:])].sequence.reference(.structural(token: self))
+                return [    -T.whitespace.rule.require(.noneOrMore),    T.scopeName.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("You must declare the name of the grammar before any other declarations (e.g. grammar <your-grammar-name>)")]),    T.modules.rule.require(.optionally).annotatedWith([:]),    T.rules.rule.annotatedWith([:])].sequence.reference(.structural(token: self))
                             
             /// modules
             case .modules:
@@ -421,19 +421,22 @@ public struct STLR : Codable {
     
     // Terminal
     public enum Terminal : Codable {
+        case characterRange(characterRange:CharacterRange)
         case characterSet(characterSet:CharacterSet)
         case terminalString(terminalString:TerminalString)
         case regex(regex:Swift.String)
-        case characterRange(characterRange:CharacterRange)
         
         enum CodingKeys : Swift.String, CodingKey {
-            case characterSet,terminalString,regex,characterRange
+            case characterRange,characterSet,terminalString,regex
         }
         
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             
-            if let characterSet = try? container.decode(CharacterSet.self, forKey: .characterSet){
+            if let characterRange = try? container.decode(CharacterRange.self, forKey: .characterRange){
+            	self = .characterRange(characterRange: characterRange)
+            	return
+            } else if let characterSet = try? container.decode(CharacterSet.self, forKey: .characterSet){
             	self = .characterSet(characterSet: characterSet)
             	return
             } else if let terminalString = try? container.decode(TerminalString.self, forKey: .terminalString){
@@ -442,23 +445,20 @@ public struct STLR : Codable {
             } else if let regex = try? container.decode(Swift.String.self, forKey: .regex){
             	self = .regex(regex: regex)
             	return
-            } else if let characterRange = try? container.decode(CharacterRange.self, forKey: .characterRange){
-            	self = .characterRange(characterRange: characterRange)
-            	return
             }
-            throw DecodingError.valueNotFound(Expression.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Tried to decode one of CharacterSet,TerminalString,Swift.String,CharacterRange but found none of those types"))
+            throw DecodingError.valueNotFound(Expression.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Tried to decode one of CharacterRange,CharacterSet,TerminalString,Swift.String but found none of those types"))
         }
         public func encode(to encoder:Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             switch self {
+            case .characterRange(let characterRange):
+                try container.encode(characterRange, forKey: .characterRange)
             case .characterSet(let characterSet):
                 try container.encode(characterSet, forKey: .characterSet)
             case .terminalString(let terminalString):
                 try container.encode(terminalString, forKey: .terminalString)
             case .regex(let regex):
                 try container.encode(regex, forKey: .regex)
-            case .characterRange(let characterRange):
-                try container.encode(characterRange, forKey: .characterRange)
             }
         }
     }
@@ -477,15 +477,15 @@ public struct STLR : Codable {
     
     /// Element 
     public class Element : Codable {
-        public let negated: Swift.String?
-        public let group: Group?
         public let annotations: Annotations?
+        public let lookahead: Swift.String?
+        public let negated: Swift.String?
+        public let transient: Swift.String?
+        public let terminal: Terminal?
         public let void: Swift.String?
         public let identifier: Swift.String?
-        public let lookahead: Swift.String?
-        public let transient: Swift.String?
         public let quantifier: Quantifier?
-        public let terminal: Terminal?
+        public let group: Group?
         
         /// Default initializer
         public init(annotations:Annotations?, group:Group?, identifier:Swift.String?, lookahead:Swift.String?, negated:Swift.String?, quantifier:Quantifier?, terminal:Terminal?, transient:Swift.String?, void:Swift.String?){
@@ -514,70 +514,70 @@ public struct STLR : Codable {
     
     // Expression
     public enum Expression : Codable {
-        case choice(choice:Choice)
         case element(element:Element)
         case sequence(sequence:Sequence)
+        case choice(choice:Choice)
         
         enum CodingKeys : Swift.String, CodingKey {
-            case choice,element,sequence
+            case element,sequence,choice
         }
         
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             
-            if let choice = try? container.decode(Choice.self, forKey: .choice){
-            	self = .choice(choice: choice)
-            	return
-            } else if let element = try? container.decode(Element.self, forKey: .element){
+            if let element = try? container.decode(Element.self, forKey: .element){
             	self = .element(element: element)
             	return
             } else if let sequence = try? container.decode(Sequence.self, forKey: .sequence){
             	self = .sequence(sequence: sequence)
             	return
+            } else if let choice = try? container.decode(Choice.self, forKey: .choice){
+            	self = .choice(choice: choice)
+            	return
             }
-            throw DecodingError.valueNotFound(Expression.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Tried to decode one of Choice,Element,Sequence but found none of those types"))
+            throw DecodingError.valueNotFound(Expression.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Tried to decode one of Element,Sequence,Choice but found none of those types"))
         }
         public func encode(to encoder:Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             switch self {
-            case .choice(let choice):
-                try container.encode(choice, forKey: .choice)
             case .element(let element):
                 try container.encode(element, forKey: .element)
             case .sequence(let sequence):
                 try container.encode(sequence, forKey: .sequence)
+            case .choice(let choice):
+                try container.encode(choice, forKey: .choice)
             }
         }
     }
     
     // TokenType
     public enum TokenType : Codable {
-        case standardType(standardType:StandardType)
         case customType(customType:Swift.String)
+        case standardType(standardType:StandardType)
         
         enum CodingKeys : Swift.String, CodingKey {
-            case standardType,customType
+            case customType,standardType
         }
         
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             
-            if let standardType = try? container.decode(StandardType.self, forKey: .standardType){
-            	self = .standardType(standardType: standardType)
-            	return
-            } else if let customType = try? container.decode(Swift.String.self, forKey: .customType){
+            if let customType = try? container.decode(Swift.String.self, forKey: .customType){
             	self = .customType(customType: customType)
             	return
+            } else if let standardType = try? container.decode(StandardType.self, forKey: .standardType){
+            	self = .standardType(standardType: standardType)
+            	return
             }
-            throw DecodingError.valueNotFound(Expression.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Tried to decode one of StandardType,Swift.String but found none of those types"))
+            throw DecodingError.valueNotFound(Expression.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Tried to decode one of Swift.String,StandardType but found none of those types"))
         }
         public func encode(to encoder:Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             switch self {
-            case .standardType(let standardType):
-                try container.encode(standardType, forKey: .standardType)
             case .customType(let customType):
                 try container.encode(customType, forKey: .customType)
+            case .standardType(let standardType):
+                try container.encode(standardType, forKey: .standardType)
             }
         }
     }
@@ -589,13 +589,13 @@ public struct STLR : Codable {
     
     /// Rule 
     public struct Rule : Codable {
-        public let tokenType: TokenType?
         public let annotations: Annotations?
+        public let assignmentOperators: AssignmentOperators
+        public let transient: Swift.String?
+        public let expression: Expression
         public let void: Swift.String?
         public let identifier: Swift.String
-        public let assignmentOperators: AssignmentOperators
-        public let expression: Expression
-        public let transient: Swift.String?
+        public let tokenType: TokenType?
     }
     
     /// ModuleImport 
@@ -605,9 +605,9 @@ public struct STLR : Codable {
     
     /// Grammar 
     public struct Grammar : Codable {
-        public let modules: Modules?
-        public let scopeName: Swift.String
         public let rules: Rules
+        public let scopeName: Swift.String
+        public let modules: Modules?
     }
     
     public typealias Modules = [ModuleImport] 

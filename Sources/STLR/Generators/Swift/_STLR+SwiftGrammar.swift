@@ -152,7 +152,8 @@ fileprivate func identifiersAndTerminals(for element:_STLR.Element, in file:Text
         
     switch element.cardinality {
     case .one:
-        file.print(terminator: "",".require(.one)")
+        break
+//        file.print(terminator: "",".require(.one)")
     case .oneOrMore:
         file.print(terminator: "",".require(.oneOrMore)")
     case .noneOrMore:

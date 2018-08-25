@@ -95,7 +95,7 @@ class RuleOperatorTests: XCTestCase {
         let multipleCardinalityRule = "hello".parse(as: hello).require(.oneOrMore)
         
         let singleNegated = !singleCardinalityRule
-        XCTAssertNotNil(singleNegated.behaviour.token, "Single cardinality should mean the rule is not wrapped")
+        XCTAssertNil(singleNegated.behaviour.token, "Negating a rule means it cannot generate a token directly and should be scanning/skipping")
         XCTAssertEqual(singleNegated.behaviour.negate, true)
         XCTAssertTrue(matchSucceeds(for: singleNegated, with: "hullo"))
         do {
@@ -106,7 +106,7 @@ class RuleOperatorTests: XCTestCase {
         }
         
         let multipleNegated = !multipleCardinalityRule
-        XCTAssertNotNil(multipleNegated.behaviour.token, "Token should be created by wrapping rule")
+        XCTAssertNil(multipleNegated.behaviour.token, "Negating a rule means it cannot generate a token directly and should be scanning/skipping")
         XCTAssertEqual(multipleNegated.behaviour.negate, true, "Rule correctly appears to be negated")
         XCTAssertEqual(multipleNegated.behaviour.cardinality, .oneOrMore, "Cardinality should be preserved on the outer rule")
         XCTAssertFalse(matchSucceeds(for: multipleNegated, with: "hello"))
