@@ -59,10 +59,10 @@ class FullSwiftGenerationTest: XCTestCase {
         print(ast.description)
     }
     
-    func parse(source:String, with token:STLRTokens, ignoreNoNodes:Bool = true, appendMopUpRule mopup:BehaviouralRule? = nil) throws {
+    func parse(source:String, with token:STLRTokens, ignoreNoNodes:Bool = true, appendMopUpRule mopup:Rule? = nil) throws {
         FullSwiftGenerationTest.testedTokens.insert(token)
         
-        let rule : BehaviouralRule
+        let rule : Rule
         if let mopup = mopup {
             rule = [token.rule,mopup].sequence
         } else {
@@ -81,7 +81,7 @@ class FullSwiftGenerationTest: XCTestCase {
         }
     }
     
-    func checkSimplePassFail(for token:STLRTokens, passing:[String], failing:[String], expectNode:Bool, matches:[String] = [], appendMopUpRule mopup:BehaviouralRule? = nil) throws {
+    func checkSimplePassFail(for token:STLRTokens, passing:[String], failing:[String], expectNode:Bool, matches:[String] = [], appendMopUpRule mopup:Rule? = nil) throws {
         var count = 0
         for source in passing {
             try parse(source: source, with: token, ignoreNoNodes: !expectNode, appendMopUpRule: mopup)

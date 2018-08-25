@@ -18,7 +18,7 @@ public class SwiftParser : Parser{
     enum Tokens : Int, Token {
         case _transient, whitespace, symbol, comment, number, stringQuote, escapedCharacter, stringCharacter, string, keyword, variable
         
-        func _rule(_ annotations: RuleAnnotations = [ : ])->BehaviouralRule {
+        func _rule(_ annotations: RuleAnnotations = [ : ])->Rule {
             switch self {
             case ._transient:
                 return ~CharacterSet(charactersIn: "")

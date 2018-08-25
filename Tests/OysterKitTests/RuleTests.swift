@@ -26,26 +26,27 @@ import XCTest
 @testable import OysterKit
 
 class TestIR : IntermediateRepresentation {
-    func willEvaluate(token: Token, at position: String.UnicodeScalarView.Index) -> MatchResult? {
-        return nil
+    enum MatchResult {
+        case success(Token,RuleAnnotations,Range<String.Index>), failed
+    }
+    func evaluating(_ token: Token) {
+        
     }
     
-    func didEvaluate(token: Token, annotations: RuleAnnotations, matchResult: MatchResult) {
-        results.append(matchResult)
+    func succeeded(token: Token, annotations: RuleAnnotations, range: Range<String.Index>) {
+        results.append(.success(token, annotations, range))
     }
     
+    func failed() {
+        results.append(.failed)
+    }
     
     var results = [MatchResult]()
     
     required init(){
         
     }
-    func willEvaluate(rule: Rule, at position: String.UnicodeScalarView.Index) -> MatchResult? {
-        return nil
-    }
-    func didEvaluate(rule: Rule, matchResult: MatchResult) {
-        didEvaluate(token: rule.produces, annotations: rule.annotations, matchResult: matchResult)
-    }
+
     func willBuildFrom(source: String, with: Language) {
     }
     func didBuild() {
@@ -100,18 +101,6 @@ class RuleTests: XCTestCase {
         XCTAssertEqual("Hello World", matchResults.success.matchedString)
     }
     
-    func testTransientTokenValue(){
-        XCTAssertEqual(-1, LabelledToken.transientToken.rawValue)
-    }
-    
-    func testTransientTokenDescriptions(){
-        let unlabelledTransientToken = TransientToken.anonymous
-        let labelledTransientToken = TransientToken.labelled("label")
-        
-        XCTAssertEqual("transient", unlabelledTransientToken.description)
-        XCTAssertEqual("label", labelledTransientToken.description)
-    }
-    
     func testStringTokenExtension(){
         XCTAssertEqual("hello".rawValue, "hello".hash)
     }
@@ -127,13 +116,15 @@ class RuleTests: XCTestCase {
         let testIR = TestIR()
         
         do {
-            switch try rule.match(with: lexer, for: testIR){
-            case .success(let context):
-                //Test stuff
-                XCTAssertEqual("H", context.matchedString)
-            default:
-                XCTFail("Should have succeeded")
-            }
+            try rule.match(with: lexer, for: testIR)
+            
+            XCTFail("Shoudl check the specific results see below")
+//            case .success(let context):
+//                //Test stuff
+//                XCTAssertEqual("H", context.matchedString)
+//            default:
+//                XCTFail("Should have succeeded")
+//            }
         } catch {
             XCTFail("Unexpected error from match")
         }
@@ -146,13 +137,15 @@ class RuleTests: XCTestCase {
         let testIR = TestIR()
         
         do {
-            switch try rule.match(with: lexer, for: testIR){
-            case .success(let context):
-                //Test stuff
-                XCTAssertEqual("Hello", context.matchedString)
-            default:
-                XCTFail("Should have succeeded")
-            }
+            try rule.match(with: lexer, for: testIR)
+            
+            XCTFail("Shoudl check the specific results see below")
+//            case .success(let context):
+//                //Test stuff
+//                XCTAssertEqual("Hello", context.matchedString)
+//            default:
+//                XCTFail("Should have succeeded")
+//            }
         } catch {
             XCTFail("Unexpected error from match")
         }
@@ -160,19 +153,20 @@ class RuleTests: XCTestCase {
     
     func testLazyConsumeCharacterSetToken(){
         let source = "Hello World"
-        let rule : BehaviouralRule = [-CharacterSet.letters].sequence.parse(as: LabelledToken(withLabel: "letter"))
+        let rule : Rule = [-CharacterSet.letters].sequence.parse(as: LabelledToken(withLabel: "letter"))
         let lexer = Lexer(source: source)
         let testIR = TestIR()
         
         do {
-            let matchResult = try rule.match(with: lexer, for: testIR)
-            switch matchResult{
-            case .success(let context):
-                //Test stuff
-                XCTAssertEqual("", context.matchedString)
-            default:
-                XCTFail("Should have succeeded")
-            }
+            try rule.match(with: lexer, for: testIR)
+            XCTFail("Shoudl check the specific results see below")
+//            switch matchResult{
+//            case .success(let context):
+//                //Test stuff
+//                XCTAssertEqual("", context.matchedString)
+//            default:
+//                XCTFail("Should have succeeded")
+//            }
         } catch {
             XCTFail("Unexpected error from match")
         }
@@ -180,32 +174,33 @@ class RuleTests: XCTestCase {
 
     func testGreedilyConsumeCharacterSetToken(){
         let source = "Hello World"
-        let rule : BehaviouralRule = [-CharacterSet.letters.require(.oneOrMore)].sequence.parse(as: LabelledToken(withLabel: "letter"))
+        let rule : Rule = [-CharacterSet.letters.require(.oneOrMore)].sequence.parse(as: LabelledToken(withLabel: "letter"))
         let lexer = Lexer(source: source)
         let testIR = TestIR()
         
         lexer.mark()
         
         do {
-            switch try rule.match(with: lexer, for: testIR){
-            case .success(let context):
-                //Test stuff
-                XCTAssertEqual("", context.matchedString)
-                switch try " ".match(with: lexer, for: testIR){
-                case .success(let context):
-                    XCTAssertEqual(" ", context.matchedString)
-                    switch try rule.match(with: lexer, for: testIR){
-                    case .success(let context):
-                        XCTAssertEqual("", context.matchedString)
-                    default:
-                        XCTFail("Should have succeeded")
-                    }
-                default:
-                    XCTFail("Should have succeeded")
-                }
-            default:
-                XCTFail("Should have succeeded")
-            }
+            try rule.match(with: lexer, for: testIR)
+            XCTFail("Shoudl check the specific results see below")
+//            case .success(let context):
+//                //Test stuff
+//                XCTAssertEqual("", context.matchedString)
+//                switch try " ".match(with: lexer, for: testIR){
+//                case .success(let context):
+//                    XCTAssertEqual(" ", context.matchedString)
+//                    switch try rule.match(with: lexer, for: testIR){
+//                    case .success(let context):
+//                        XCTAssertEqual("", context.matchedString)
+//                    default:
+//                        XCTFail("Should have succeeded")
+//                    }
+//                default:
+//                    XCTFail("Should have succeeded")
+//                }
+//            default:
+//                XCTFail("Should have succeeded")
+//            }
         } catch {
             XCTFail("Unexpected error from match")
         }
@@ -257,22 +252,13 @@ class RuleTests: XCTestCase {
 
     }
     
-    func testInstanceTokenModification(){
-        let rule = CharacterSet.letters.parse(as: LabelledToken(withLabel: "letter")).require(.oneOrMore)
-        let newRule = rule.instance(with: transientTokenValue.token)
-        
-        XCTAssertEqual(newRule.produces.rawValue, transientTokenValue)
-    }
-    
     func testScannerRuleForRegularExpression(){
-        let catRegex = try! NSRegularExpression(pattern: "Cat", options: [])
+        let catRule = try! NSRegularExpression(pattern: "Cat", options: [])
         
-        let catRule = ScannerRule.regularExpression(token: LabelledToken(withLabel: "Cat"), regularExpression: catRegex, annotations: [:])
         XCTAssertEqual(catRule.description, "Cat = /Cat/")
-        let commaRule = ScannerRule.oneOf(token: transientTokenValue.token, [","], [:])
-        
+        let commaRule = ","
+
         let source = "Cat,Dog"
-        
         let lexer = Lexer(source: source)
         let ir = TokenStreamIterator(with: lexer, and: [catRule, commaRule].language)
         
@@ -292,10 +278,10 @@ class RuleTests: XCTestCase {
             
         }
         
-        let felineRule = catRule.instance(with: LabelledToken(withLabel: "Feline"), andAnnotations: [RuleAnnotation.pinned : RuleAnnotationValue.set])
+        let felineRule = catRule.parse(as: LabelledToken(withLabel: "Feline"))
         
-        XCTAssertEqual("\(felineRule)", "Feline = @pin /Cat/")
-        XCTAssertNotEqual(catRule.produces.rawValue, felineRule.produces.rawValue)
+        XCTAssertEqual("\(felineRule)", "Feline = /Cat/")
+        XCTAssertNotEqual(catRule.behaviour.token!.rawValue, felineRule.behaviour.token!.rawValue)
     }
     
     func testOptionalRepeatedNot(){
@@ -327,44 +313,42 @@ class RuleTests: XCTestCase {
     func testKnownAnnotations(){
         let error = "Valid error"
         let rule = CharacterSet.letters.parse(as:LabelledToken(withLabel: "test")).require(.oneOrMore)
-        let validError = rule.instance(with: [
+        let validError = rule.annotatedWith([
             RuleAnnotation.error : RuleAnnotationValue.string(error),
             RuleAnnotation.void  : RuleAnnotationValue.set,
             ])
-        let invalidError = rule.instance(with: [
+        let invalidError = rule.annotatedWith([
             RuleAnnotation.error : RuleAnnotationValue.int(19),
             RuleAnnotation.void  : RuleAnnotationValue.bool(true)
             ])
-        let invalidVoidWithInt = rule.instance(with: [
+        let invalidVoidWithInt = rule.annotatedWith([
             RuleAnnotation.void  : RuleAnnotationValue.int(10)
             ])
-        let invalid3 = rule.instance(with: [
+        let invalid3 = rule.annotatedWith([
             RuleAnnotation.void  : RuleAnnotationValue.string("true")
             ])
-        let invalid4 = rule.instance(with: [
+        let invalid4 = rule.annotatedWith([
             RuleAnnotation.transient  : RuleAnnotationValue.set
             ])
-        let invalid5 = rule.instance(with: [
+        let invalid5 = rule.annotatedWith([
             RuleAnnotation.transient  : RuleAnnotationValue.bool(true)
             ])
-        let invalid6 = rule.instance(with: [
+        let invalid6 = rule.annotatedWith([
             RuleAnnotation.transient  : RuleAnnotationValue.int(10)
             ])
 
         XCTAssertEqual(error,validError.error ?? "Nil")
         XCTAssertEqual("Unexpected annotation value: 19",invalidError.error ?? "Nil")
-        XCTAssertTrue(validError.void)
-        XCTAssertTrue(invalidError.void)
-        XCTAssertFalse(invalidVoidWithInt.void)
-        XCTAssertFalse(invalid3.void)
-        XCTAssertFalse(invalid4.void)
+        XCTAssertTrue(validError.skipping)
+        XCTAssertTrue(invalidError.skipping)
+        XCTAssertFalse(invalidVoidWithInt.skipping)
+        XCTAssertFalse(invalid3.skipping)
+        XCTAssertFalse(invalid4.skipping)
         
-        let transientRule = LabelledToken.transientToken
-        XCTAssertTrue(transientRule.transient)
-        XCTAssertFalse(rule.transient)
-        XCTAssertTrue(invalid4.transient)
-        XCTAssertTrue(invalid5.transient)
-        XCTAssertFalse(invalid6.transient)
+        XCTAssertFalse(rule.scanning)
+        XCTAssertTrue(invalid4.scanning)
+        XCTAssertTrue(invalid5.scanning)
+        XCTAssertFalse(invalid6.scanning)
 
     }
     

@@ -27,7 +27,7 @@ import OysterKit
 
 class RuleOperatorTests: XCTestCase {
 
-    func applyMatch(for rule:BehaviouralRule, with source:String) throws -> Int {
+    func applyMatch(for rule:Rule, with source:String) throws -> Int {
         let lexer = Lexer(source: source)
         let ir = AbstractSyntaxTreeConstructor(with: source)
         
@@ -36,7 +36,7 @@ class RuleOperatorTests: XCTestCase {
         return lexer.position
     }
     
-    func matchSucceeds(for rule:BehaviouralRule, with source:String) -> Bool {
+    func matchSucceeds(for rule:Rule, with source:String) -> Bool {
         do {
             _ = try applyMatch(for: rule, with: source)
             return true
@@ -45,14 +45,14 @@ class RuleOperatorTests: XCTestCase {
         }
     }
     
-    func isSkipping(_ rule:BehaviouralRule)->Bool{
+    func isSkipping(_ rule:Rule)->Bool{
         if case .skipping = rule.behaviour.kind {
             return true
         }
         return false
     }
 
-    func isScanning(_ rule:BehaviouralRule)->Bool{
+    func isScanning(_ rule:Rule)->Bool{
         if case .scanning = rule.behaviour.kind {
             return true
         }

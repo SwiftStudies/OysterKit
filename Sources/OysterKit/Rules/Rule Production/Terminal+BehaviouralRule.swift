@@ -24,9 +24,9 @@
 
 import Foundation
 
-/// Extends any terminal to be a `BehaviouralRule`
+/// Extends any terminal to be a `Rule`
 public extension Terminal {
-    public func rule(with behaviour: Behaviour?, annotations: RuleAnnotations?) -> BehaviouralRule {
+    public func rule(with behaviour: Behaviour?, annotations: RuleAnnotations?) -> Rule {
         return TerminalRule(
             behaviour ?? Behaviour(.scanning, cardinality: .one, negated: false, lookahead: false),
             and: annotations ?? [:],

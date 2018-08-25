@@ -39,7 +39,7 @@ enum XMLGenerated : Int, Token {
     case `ws`, `identifier`, `singleQuote`, `doubleQuote`, `value`, `attribute`, `attributes`, `data`, `openTag`, `closeTag`, `inlineTag`, `nestingTag`, `tag`, `contents`, `xml`
     
     /// The rule for the token
-    var rule : BehaviouralRule {
+    var rule : Rule {
         switch self {
         /// ws
         case .ws:

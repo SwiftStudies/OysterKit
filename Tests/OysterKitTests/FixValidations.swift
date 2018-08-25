@@ -17,7 +17,7 @@ fileprivate enum STLRStringTest : Int, Token {
     
     case _transient = -1, `stringQuote`, `escapedCharacters`, `escapedCharacter`, `stringCharacter`, `terminalBody`, `terminalString`
     
-    func _rule(_ annotations: RuleAnnotations = [ : ])->BehaviouralRule {
+    func _rule(_ annotations: RuleAnnotations = [ : ])->Rule {
         switch self {
         case ._transient:
             return ~CharacterSet(charactersIn: "")
@@ -80,12 +80,9 @@ class FixValidations: XCTestCase {
     func testTerminalBody(){
         let source = "This is the body of a string \\\" that ends here\""
         do {
-            let result = try test(STLRStringTest.terminalBody._rule(), with: source)
-            guard case let .consume(context) = result else {
-                XCTFail("Result should have been success but was \(result)")
-                return
-            }
-            XCTAssertEqual(source[context.range.upperBound..<source.unicodeScalars.endIndex], "\"")
+            try test(STLRStringTest.terminalBody._rule(), with: source)
+            XCTFail("See below, should be checking the range of the result")
+//            XCTAssertEqual(source[context.range.upperBound..<source.unicodeScalars.endIndex], "\"")
         } catch {
             XCTFail("Match should not have thrown: \(error)")
         }
@@ -108,11 +105,7 @@ class FixValidations: XCTestCase {
         
         for character in characters {
             do {
-                let result = try test(STLRStringTest.stringCharacter._rule(), with: "\\\(character)")
-                guard case .consume(_) = result else {
-                    XCTFail("Result should have been success but was \(result) for \(character)")
-                    continue
-                }
+                try test(STLRStringTest.stringCharacter._rule(), with: "\\\(character)")
             } catch {
                 XCTFail("Match should not have thrown for \(character): \(error)")
             }
@@ -121,12 +114,9 @@ class FixValidations: XCTestCase {
     
     func testStringQuote(){
         do {
-            let result = try test(STLRStringTest.stringQuote._rule(), with: "\"")
-            guard case let .success(context) = result else {
-                XCTFail("Result should have been success but was \(result)")
-                return
-            }
-            XCTAssertEqual(context.matchedString, "\"")
+            try test(STLRStringTest.stringQuote._rule(), with: "\"")
+            XCTFail("See below, should be checking the range of the result")
+//            XCTAssertEqual(context.matchedString, "\"")
         } catch {
             XCTFail("Match should not have thrown: \(error)")
         }
@@ -137,12 +127,9 @@ class FixValidations: XCTestCase {
         
         for character in characters {
             do {
-                let result = try test(STLRStringTest.escapedCharacter._rule(), with: "\\\(character)")
-                guard case let .success(context) = result else {
-                    XCTFail("Result should have been success but was \(result) for \(character)")
-                    return
-                }
-                XCTAssertEqual(context.matchedString, "\\\(character)")
+                try test(STLRStringTest.escapedCharacter._rule(), with: "\\\(character)")
+                XCTFail("See below, should be checking the range of the result")
+//                XCTAssertEqual(context.matchedString, "\\\(character)")
             } catch {
                 XCTFail("Match should not have thrown for \(character): \(error)")
             }

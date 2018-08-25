@@ -25,10 +25,10 @@
 import Foundation
 
 /**
- An implementation of a `BehaviouralRule` that allows the specification of a `Test`
+ An implementation of a `Rule` that allows the specification of a `Test`
  closure to provide the required check.
  */
-public final class ClosureRule : BehaviouralRule {
+public final class ClosureRule : Rule {
     /// Annotations for the rule
     public let annotations: RuleAnnotations
 
@@ -67,7 +67,7 @@ public final class ClosureRule : BehaviouralRule {
      should use the same behaviour as this instance.
      - Returns: A new instance with the specified behaviour and annotations.
      */
-    public func rule(with behaviour: Behaviour? = nil, annotations: RuleAnnotations? = nil) -> BehaviouralRule {
+    public func rule(with behaviour: Behaviour? = nil, annotations: RuleAnnotations? = nil) -> Rule {
         let newBehaviour = behaviour ?? self.behaviour
         let newAnnotations = annotations ?? self.annotations
         

@@ -29,7 +29,7 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
     case `whitespace`, `ows`, `quantifier`, `negated`, `lookahead`, `transient`, `void`, `stringQuote`, `terminalBody`, `stringBody`, `string`, `terminalString`, `characterSetName`, `characterSet`, `rangeOperator`, `characterRange`, `number`, `boolean`, `literal`, `annotation`, `annotations`, `customLabel`, `definedLabel`, `label`, `regexDelimeter`, `startRegex`, `endRegex`, `regexBody`, `regex`, `terminal`, `group`, `identifier`, `element`, `assignmentOperators`, `or`, `then`, `choice`, `notNewRule`, `sequence`, `expression`, `tokenType`, `standardType`, `customType`, `lhs`, `rule`, `moduleName`, `moduleImport`, `scopeName`, `grammar`, `modules`, `rules`
     
     /// The rule for the token
-    var rule : BehaviouralRule {
+    var rule : Rule {
         switch self {
             /// whitespace
             case .whitespace:
@@ -294,10 +294,10 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
     }
     
     /// Cache for left-hand recursive rules
-    private static var leftHandRecursiveRules = [ Int : BehaviouralRule ]()
+    private static var leftHandRecursiveRules = [ Int : Rule ]()
     
     /// Create a language that can be used for parsing etc
-    public static var generatedRules: [BehaviouralRule] {
+    public static var generatedRules: [Rule] {
         return [T.grammar.rule]
     }
 }

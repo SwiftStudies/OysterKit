@@ -16,10 +16,7 @@ fileprivate func isLetter(lexer:LexicalAnalyzer, ir:IntermediateRepresentation) 
 fileprivate let aToken = LabelledToken(withLabel: "a")
 
 class BlockRuleTest: XCTestCase {
-    typealias LowLevelResult = (lexer:Lexer,ir:AbstractSyntaxTreeConstructor, matchResult:MatchResult, root:Token?)
-    enum TestMatchingResult {
-        case success, failure, consume, ignoreFailure
-    }
+    typealias LowLevelResult = (lexer:Lexer,ir:AbstractSyntaxTreeConstructor, root:Token?)
 
     let singleLetterRule = ClosureRule(with: Behaviour(.scanning), using: isLetter)
 
@@ -27,7 +24,7 @@ class BlockRuleTest: XCTestCase {
         return try AbstractSyntaxTreeConstructor().build("a", using: Parser(grammar: rules))
     }
     
-    func validate(lowLevelResult:LowLevelResult, index: String.Index? = nil, errors:[String]? = nil, expectedResult:TestMatchingResult?, token:Token? = nil)->[String] {
+    func validate(lowLevelResult:LowLevelResult, index: String.Index? = nil, errors:[String]? = nil, token:Token? = nil)->[String] {
         var failures = [String]()
 
         if let token = token {
@@ -41,28 +38,6 @@ class BlockRuleTest: XCTestCase {
         } else {
             if let rootToken = lowLevelResult.root {
                 failures.append("Expected no structure but got \(rootToken)")
-            }
-        }
-        
-        remainder:
-        if let expectedResult = expectedResult {
-            switch expectedResult {
-            case .success:
-                if case .success = lowLevelResult.matchResult {} else {
-                    failures.append("Expected success but got \(lowLevelResult.matchResult)")
-                }
-            case .failure:
-                if case .failure = lowLevelResult.matchResult {} else {
-                    failures.append("Expected failure but got \(lowLevelResult.matchResult)")
-                }
-            case .consume:
-                if case .consume = lowLevelResult.matchResult {} else {
-                    failures.append("Expected consume but got \(lowLevelResult.matchResult)")
-                }
-            case .ignoreFailure:
-                if case .ignoreFailure = lowLevelResult.matchResult {} else {
-                    failures.append("Expected ignoreFailure but got \(lowLevelResult.matchResult)")
-                }
             }
         }
         
@@ -93,20 +68,20 @@ class BlockRuleTest: XCTestCase {
         let lexer = Lexer(source: source)
         
         do {
-            let result = try rule.match(with: lexer, for: ir)
+            try rule.match(with: lexer, for: ir)
             if includeAST {
                 do {
                     let tree = try ir.generate(HomogenousTree.self)
-                    return (lexer,ir,result, tree.token)
+                    return (lexer,ir, tree.token)
                 } catch {
-                    return (lexer,ir, result, nil)
+                    return (lexer,ir, nil)
                 }
             } else {
-                return (lexer, ir, result, nil)
+                return (lexer, ir, nil)
             }
         } catch {
             ir._errors.append(error)
-            return (lexer,ir,MatchResult.failure(atIndex: lexer.index),nil)
+            return (lexer,ir,nil)
         }
         
     }
@@ -120,7 +95,7 @@ class BlockRuleTest: XCTestCase {
             try lexer.scanNext()
         }
         
-        for failure in validate(lowLevelResult: check(rule:rule, on:source, includeAST: false), index: source.startIndex, errors: ["Match failed"], expectedResult: .failure, token: nil){
+        for failure in validate(lowLevelResult: check(rule:rule, on:source, includeAST: false), index: source.startIndex, errors: ["Match failed"], token: nil){
             XCTFail(failure)
         }
     }
@@ -128,7 +103,7 @@ class BlockRuleTest: XCTestCase {
     func testStructure(){
         let source = "a"
         
-        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(.structural(token: aToken)), on:source, includeAST: true), index: source.endIndex, errors: [], expectedResult: .success, token: aToken){
+        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(.structural(token: aToken)), on:source, includeAST: true), index: source.endIndex, errors: [], token: aToken){
             XCTFail(failure)
         }
     }
@@ -136,7 +111,7 @@ class BlockRuleTest: XCTestCase {
     func testStructureFail(){
         let source = "1"
         
-        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(.structural(token: aToken)), on:source, includeAST: true), index: source.startIndex, errors: ["Match failed"], expectedResult: .failure, token: nil){
+        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(.structural(token: aToken)), on:source, includeAST: true), index: source.startIndex, errors: ["Match failed"], token: nil){
             XCTFail(failure)
         }
     }
@@ -144,7 +119,7 @@ class BlockRuleTest: XCTestCase {
     func testNegatedStructure(){
         let source = "1"
         
-        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(.structural(token: aToken), negated:true), on:source, includeAST: true), index: source.endIndex, errors: [], expectedResult: .success, token: aToken){
+        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(.structural(token: aToken), negated:true), on:source, includeAST: true), index: source.endIndex, errors: [], token: aToken){
             XCTFail(failure)
         }
     }
@@ -153,7 +128,7 @@ class BlockRuleTest: XCTestCase {
     func testNegatedStructureFail(){
         let source = "a"
         
-        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(.structural(token: aToken), negated:true), on:source, includeAST: true), index: source.startIndex, errors: ["Undefined error at 0"], expectedResult: .failure, token: nil){
+        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(.structural(token: aToken), negated:true), on:source, includeAST: true), index: source.startIndex, errors: ["Undefined error at 0"], token: nil){
             XCTFail(failure)
         }
     }
@@ -161,7 +136,7 @@ class BlockRuleTest: XCTestCase {
     func testOptionalStructure(){
         let source = "a"
         
-        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(.structural(token: aToken), cardinality: 0...1), on:source, includeAST: true), index: source.endIndex, errors: [], expectedResult: .success, token: aToken){
+        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(.structural(token: aToken), cardinality: 0...1), on:source, includeAST: true), index: source.endIndex, errors: [], token: aToken){
             XCTFail(failure)
         }
     }
@@ -170,7 +145,7 @@ class BlockRuleTest: XCTestCase {
     func testOptionalStructureFail(){
         let source = "1"
         
-        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(.structural(token: aToken), cardinality: 0...1), on:source, includeAST: true), index: source.startIndex, errors: [], expectedResult: .ignoreFailure, token: nil){
+        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(.structural(token: aToken), cardinality: 0...1), on:source, includeAST: true), index: source.startIndex, errors: [], token: nil){
             XCTFail(failure)
         }
     }
@@ -179,9 +154,9 @@ class BlockRuleTest: XCTestCase {
         let source = "1"
         let specificError = "TestPassed"
         
-        let structuralRule = singleLetterRule.newBehaviour(.structural(token: aToken)).instance(with: nil, andAnnotations: [.error: .string(specificError)])
+        let structuralRule = singleLetterRule.newBehaviour(.structural(token: aToken)).annotatedWith([.error: .string(specificError)])
         
-        for failure in validate(lowLevelResult: check(rule:structuralRule, on:source, includeAST: true), index: source.startIndex, errors: ["\(specificError) from 0 to 0"], expectedResult: .failure, token: nil){
+        for failure in validate(lowLevelResult: check(rule:structuralRule, on:source, includeAST: true), index: source.startIndex, errors: ["\(specificError) from 0 to 0"], token: nil){
             XCTFail(failure)
         }
     }
@@ -192,7 +167,7 @@ class BlockRuleTest: XCTestCase {
         
         
         
-        for failure in validate(lowLevelResult: check(rule:singleLetterRule.instanceWith(annotations: [.error : .string(specificError)]), on:source), index: source.startIndex, errors: ["\(specificError) from 0 to 0"], expectedResult: .failure){
+        for failure in validate(lowLevelResult: check(rule:singleLetterRule.instanceWith(annotations: [.error : .string(specificError)]), on:source), index: source.startIndex, errors: ["\(specificError) from 0 to 0"]){
             XCTFail(failure)
         }
     }
@@ -200,28 +175,28 @@ class BlockRuleTest: XCTestCase {
     
     func testScan(){
         let source = "a"
-        for failure in validate(lowLevelResult: check(rule:singleLetterRule, on:source), index: source.endIndex, errors: [], expectedResult: .success){
+        for failure in validate(lowLevelResult: check(rule:singleLetterRule, on:source), index: source.endIndex, errors: []){
             XCTFail(failure)
         }
     }
     
     func testNotScanFailure(){
         let source = "a"
-        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(negated:true), on:source), index: source.startIndex, errors: ["Undefined error at 0"], expectedResult: .failure){
+        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(negated:true), on:source), index: source.startIndex, errors: ["Undefined error at 0"]){
             XCTFail(failure)
         }
     }
     
     func testScanFailure(){
         let source = "1"
-        for failure in validate(lowLevelResult: check(rule:singleLetterRule, on:source), index: source.startIndex, errors: ["Match failed"], expectedResult: .failure){
+        for failure in validate(lowLevelResult: check(rule:singleLetterRule, on:source), index: source.startIndex, errors: ["Match failed"]){
             XCTFail(failure)
         }
     }
     
     func testNotScan(){
         let source = "1"
-        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(negated:true), on:source), index: source.endIndex, errors: [], expectedResult: .success){
+        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(negated:true), on:source), index: source.endIndex, errors: []){
             XCTFail(failure)
         }
     }
@@ -229,7 +204,7 @@ class BlockRuleTest: XCTestCase {
     func testLookahead(){
         //Look-ahead, positive, failure
         let source = "a"
-        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(lookahead:true), on:source), index: source.startIndex, errors: [], expectedResult: .success){
+        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(lookahead:true), on:source), index: source.startIndex, errors: []){
             XCTFail(failure)
         }
     }
@@ -237,7 +212,7 @@ class BlockRuleTest: XCTestCase {
     func testLookaheadFailure(){
         //Look-ahead, positive, failure
         let source = "1"
-        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(lookahead:true), on:source), index: source.startIndex, errors: ["Match failed"], expectedResult: .failure){
+        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(lookahead:true), on:source), index: source.startIndex, errors: ["Match failed"]){
             XCTFail(failure)
         }
     }
@@ -245,7 +220,7 @@ class BlockRuleTest: XCTestCase {
     func testNotLookahead(){
         //Look-ahead, positive, failure
         let source = "1"
-        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(negated:true,lookahead:true), on:source), index: source.startIndex, errors: [], expectedResult: .success){
+        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(negated:true,lookahead:true), on:source), index: source.startIndex, errors: []){
             XCTFail(failure)
         }
     }
@@ -253,7 +228,7 @@ class BlockRuleTest: XCTestCase {
     func testNotLookaheadFailure(){
         //Look-ahead, positive, failure
         let source = "a"
-        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(negated:true,lookahead:true), on:source), index: source.startIndex, errors: ["Undefined error at 0"], expectedResult: .failure){
+        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(negated:true,lookahead:true), on:source), index: source.startIndex, errors: ["Undefined error at 0"]){
             XCTFail(failure)
         }
     }
@@ -261,7 +236,7 @@ class BlockRuleTest: XCTestCase {
     func testOptional(){
         //Look-ahead, positive, failure
         let source = "a"
-        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(cardinality: 0...1), on:source), index: source.endIndex, errors: [], expectedResult: .success){
+        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(cardinality: 0...1), on:source), index: source.endIndex, errors: []){
             XCTFail(failure)
         }
     }
@@ -269,7 +244,7 @@ class BlockRuleTest: XCTestCase {
     func testOptionalFailure(){
         //Look-ahead, positive, failure
         let source = "1"
-        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(cardinality: 0...1), on:source), index: source.startIndex, errors: [], expectedResult: .ignoreFailure){
+        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(cardinality: 0...1), on:source), index: source.startIndex, errors: []){
             XCTFail(failure)
         }
     }
@@ -277,7 +252,7 @@ class BlockRuleTest: XCTestCase {
     func testLookaheadOptionalFailure(){
         //Look-ahead, positive, failure
         let source = "1"
-        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(cardinality: 0...1, lookahead:true), on:source), index: source.startIndex, errors: [], expectedResult: .ignoreFailure){
+        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(cardinality: 0...1, lookahead:true), on:source), index: source.startIndex, errors: []){
             XCTFail(failure)
         }
     }
@@ -285,7 +260,7 @@ class BlockRuleTest: XCTestCase {
     func testLookaheadOptional(){
         //Look-ahead, positive, failure
         let source = "a"
-        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(cardinality: 0...1, lookahead:true), on:source), index: source.startIndex, errors: [], expectedResult: .success){
+        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(cardinality: 0...1, lookahead:true), on:source), index: source.startIndex, errors: []){
             XCTFail(failure)
         }
     }

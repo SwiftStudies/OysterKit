@@ -51,11 +51,11 @@ public func dumpDecoder(decoder:Decoder) throws {
     }
 }
 
-func test(_ rule:BehaviouralRule, with source:String) throws ->MatchResult{
+func test(_ rule:Rule, with source:String) throws {
     let lexer = Lexer(source: source)
     let ir = AbstractSyntaxTreeConstructor(with: source)
     
-    return try rule.match(with: lexer, for: ir)
+    try rule.match(with: lexer, for: ir)
 }
 
 

@@ -27,13 +27,13 @@ import Foundation
 /**
  A `ChoiceRule` will match if one of the child rules is matched. It can be thought of as a logical OR.
  */
-public final class ChoiceRule : BehaviouralRule {
+public final class ChoiceRule : Rule {
     /// The behaviour of the rule
     public var behaviour: Behaviour
     /// Annotations on the rule
     public var annotations: RuleAnnotations
     /// The acceptable matches that would satisfy this rule
-    public var choices : [BehaviouralRule]
+    public var choices : [Rule]
     
     /**
      Creates a new instance of the rule with the specified parameteres.
@@ -42,7 +42,7 @@ public final class ChoiceRule : BehaviouralRule {
      - Parameter annotations: The `RuleAnnotations` on the rule
      - Parameter choices: The child rules, any one of which can satisfy this rule
      */
-    public init(_ behaviour:Behaviour, and annotations:RuleAnnotations, for choices:[BehaviouralRule]){
+    public init(_ behaviour:Behaviour, and annotations:RuleAnnotations, for choices:[Rule]){
         self.behaviour = behaviour
         self.annotations = annotations
         self.choices = choices
@@ -75,7 +75,7 @@ public final class ChoiceRule : BehaviouralRule {
      - Parameter behaviour: If specified will replace this instance's behaviour in the new instance
      - Parameter annotations: If specified will replace this instance's annotations in the new instance
     */
-    public func rule(with behaviour: Behaviour?, annotations: RuleAnnotations?) -> BehaviouralRule {
+    public func rule(with behaviour: Behaviour?, annotations: RuleAnnotations?) -> Rule {
         return ChoiceRule(behaviour ?? self.behaviour, and: annotations ?? self.annotations, for: choices)
     }
     

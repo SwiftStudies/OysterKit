@@ -24,12 +24,12 @@
 
 import Foundation
 
-public final class SequenceRule : BehaviouralRule {
+public final class SequenceRule : Rule {
     public var behaviour: Behaviour
     public var annotations: RuleAnnotations
-    public var sequence : [BehaviouralRule]
+    public var sequence : [Rule]
     
-    public init(_ behaviour:Behaviour, and annotations:RuleAnnotations, for sequence:[BehaviouralRule]){
+    public init(_ behaviour:Behaviour, and annotations:RuleAnnotations, for sequence:[Rule]){
         self.behaviour = behaviour
         self.annotations = annotations
         self.sequence = sequence
@@ -44,7 +44,7 @@ public final class SequenceRule : BehaviouralRule {
         }
     }
     
-    public func rule(with behaviour: Behaviour?, annotations: RuleAnnotations?) -> BehaviouralRule {
+    public func rule(with behaviour: Behaviour?, annotations: RuleAnnotations?) -> Rule {
         return SequenceRule(behaviour ?? self.behaviour, and: annotations ?? self.annotations, for: sequence)
     }
     

@@ -27,7 +27,7 @@ import Foundation
 /**
  A rule that matches the specified Terminal
  */
-public final class TerminalRule : BehaviouralRule {
+public final class TerminalRule : Rule {
     /// The behaviour of the rule
     public var behaviour: Behaviour
     /// Annotations on the rule
@@ -65,7 +65,7 @@ public final class TerminalRule : BehaviouralRule {
      - Parameter behaviour: If specified will replace this instance's behaviour in the new instance
      - Parameter annotations: If specified will replace this instance's annotations in the new instance
      */
-    public func rule(with behaviour: Behaviour? = nil, annotations: RuleAnnotations? = nil) -> BehaviouralRule {
+    public func rule(with behaviour: Behaviour? = nil, annotations: RuleAnnotations? = nil) -> Rule {
         return TerminalRule(behaviour ?? self.behaviour, and: annotations ?? self.annotations, for: terminal)
     }
     

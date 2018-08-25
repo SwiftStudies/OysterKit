@@ -33,7 +33,7 @@ enum OneOfEverythingGrammar : Int, Token {
     case `ws`, `boolean`, `integer`, `byte`, `word`, `longWord`, `longLongWord`, `unsignedInteger`, `unsignedByte`, `unsignedWord`, `unsignedLongWord`, `unsignedLongLongWord`, `float`, `double`, `string`, `oneOfEverything`
     
     /// The rule for the token
-    var rule : BehaviouralRule {
+    var rule : Rule {
         switch self {
         /// ws
         case .ws:

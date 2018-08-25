@@ -26,13 +26,13 @@ import Foundation
 import OysterKit
 
 fileprivate final class Symbol : SymbolType {
-    var behaviouralRule : BehaviouralRule
+    var behaviouralRule : Rule
 
     static func buildRule(for identifier: String, from grammar: _STLR.Grammar, in symbolTable: SymbolTable<Symbol>) -> Symbol {
         return Symbol(behaviouralRule: grammar[identifier].rule(using: symbolTable))
     }
     
-    fileprivate init(behaviouralRule:BehaviouralRule){
+    fileprivate init(behaviouralRule:Rule){
         self.behaviouralRule = behaviouralRule
     }
 }
@@ -90,16 +90,16 @@ extension _STLR.Annotation {
 
 
 fileprivate extension Array where Element == _STLR.Element {
-    func choice(with behaviour: Behaviour, and annotations:RuleAnnotations, using symbolTable:SymbolTable<Symbol>) -> BehaviouralRule {
+    func choice(with behaviour: Behaviour, and annotations:RuleAnnotations, using symbolTable:SymbolTable<Symbol>) -> Rule {
         return ChoiceRule(behaviour, and: annotations, for: map({$0.rule(symbolTable: symbolTable)}))
     }
-    func sequence(with behaviour: Behaviour, and annotations:RuleAnnotations, using symbolTable:SymbolTable<Symbol>) -> BehaviouralRule {
+    func sequence(with behaviour: Behaviour, and annotations:RuleAnnotations, using symbolTable:SymbolTable<Symbol>) -> Rule {
         return SequenceRule(behaviour, and: annotations, for: map({$0.rule(symbolTable: symbolTable)}))
     }
 }
 
 fileprivate extension _STLR.Element {
-    func rule(symbolTable:SymbolTable<Symbol>)->BehaviouralRule {
+    func rule(symbolTable:SymbolTable<Symbol>)->Rule {
         if let group = group {
             return group.expression.rule(with: behaviour, and: ruleAnnotations, using: symbolTable)
         } else if let terminal = terminal {
@@ -111,7 +111,7 @@ fileprivate extension _STLR.Element {
         fatalError("Could not generate rule for, \(self) it appears to not be a group, terminal or identifier")
     }
     
-    func rule(with behaviour:Behaviour, and annotations:RuleAnnotations, using symbolTable:SymbolTable<Symbol>)->BehaviouralRule {
+    func rule(with behaviour:Behaviour, and annotations:RuleAnnotations, using symbolTable:SymbolTable<Symbol>)->Rule {
         return rule(symbolTable: symbolTable).rule(with: behaviour, annotations: ruleAnnotations.merge(with:annotations))
     }
 }
@@ -142,7 +142,7 @@ extension _STLR.CharacterSetName {
 }
 
 extension _STLR.Terminal {
-    func rule(with behaviour:Behaviour, and annotations:RuleAnnotations)->BehaviouralRule {
+    func rule(with behaviour:Behaviour, and annotations:RuleAnnotations)->Rule {
         switch self {
         case .regex(let regex):
             let regularExpression = try! NSRegularExpression(pattern: "^\(regex)", options: [])
@@ -159,7 +159,7 @@ extension _STLR.Terminal {
 }
 
 fileprivate extension _STLR.Expression {
-    func rule(with behaviour:Behaviour, and annotations:RuleAnnotations, using symbolTable:SymbolTable<Symbol>)->BehaviouralRule {
+    func rule(with behaviour:Behaviour, and annotations:RuleAnnotations, using symbolTable:SymbolTable<Symbol>)->Rule {
         switch self {
         case .sequence(let elements):
             return elements.sequence(with: behaviour, and: annotations, using: symbolTable)
@@ -198,7 +198,7 @@ fileprivate extension _STLR.Rule {
         return assumed.merge(with: annotations?.ruleAnnotations ?? [:])
     }
 
-    func rule(using symbolTable:SymbolTable<Symbol>)->BehaviouralRule {
+    func rule(using symbolTable:SymbolTable<Symbol>)->Rule {
         if symbolTable[hasRule: identifier] {
             return symbolTable[identifier].behaviouralRule
         }
@@ -218,7 +218,7 @@ fileprivate extension _STLR.Rule {
 
 extension _STLR.Grammar {
     /// Builds a set of `Rule`s that can be used directly at run-time in your application
-    public var dynamicRules : [BehaviouralRule] {
+    public var dynamicRules : [Rule] {
         let symbolTable = SymbolTable<Symbol>(self)
         
         let rootRules = rules.filter({

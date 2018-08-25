@@ -25,7 +25,7 @@
 
 import Foundation
 
-public protocol Terminal : BehaviouralRule {
+public protocol Terminal : Rule {
     /**
      Tests the the `Terminal` is available at the current scanner head position,
      throwing an `Error` if not

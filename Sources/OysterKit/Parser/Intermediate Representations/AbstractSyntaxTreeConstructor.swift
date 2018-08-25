@@ -260,13 +260,23 @@ public class AbstractSyntaxTreeConstructor  {
      Constructs a homogenous AST from the supplied source and language.
      
      - Parameter from: The text to parse and build the tree from
-     - Parameter using: The language to use to parse the source
+     - Parameter language: The language to use to parse the source
      - Returns: A ``HomogenousAbstractSyntaxTree``
      */
     public func build(_ source:String, using language:Language) throws -> HomogenousTree{
         return try build(HomogenousTree.self, from: source, using: language)
     }
 
+    /**
+     Constructs a homogenous AST from the supplied language.
+     
+     - Parameter language: The language to use to parse the source
+     - Returns: A ``HomogenousAbstractSyntaxTree``
+     */
+    public func build(using language:Language) throws -> HomogenousTree{
+        return try build(HomogenousTree.self, from: source, using: language)
+    }
+    
 }
 
 //Adds the ability to quickly access standard annotations
@@ -328,125 +338,29 @@ public extension Dictionary where Key == RuleAnnotation, Value == RuleAnnotation
  aggressive refactoring without code breaking changes
  */
 extension AbstractSyntaxTreeConstructor : IntermediateRepresentation {
-
-    
     /// Does nothing
     public func willBuildFrom(source: String, with: Language) {
     }
     
-    /// Does nothing
-    public func willEvaluate(rule: Rule, at position: String.UnicodeScalarView.Index) -> MatchResult? {
-        return willEvaluate(token: rule.produces, at: position)
-    }
-    
-    /// Prepare for evaluation
-    public func willEvaluate(token: Token, at position: String.UnicodeScalarView.Index) -> MatchResult? {
+    public func evaluating(_ token: Token) {
         nodeStack.push()
-        
-        return cache?.recall(at: position, key: token.rawValue)
     }
     
-    /// Process the results of evalution
-    public func didEvaluate(token: Token, annotations: RuleAnnotations, matchResult: MatchResult) {
-        let children = nodeStack.pop()
+    public func succeeded(token: Token, annotations: RuleAnnotations, range: Range<String.Index>) {
+        let children = nodeStack.pop().nodes
         
-        cache?.remember(at: matchResult.range, key: token.rawValue, value: matchResult)
-        
-        switch matchResult {
-        case .success(let context):
-            // If it's transient, or the constructor produces no nodes then the current top should adopt the children
-            /// TODO: Is this a defect (see github issue 24 https://github.com/SwiftStudies/OysterKit/issues/24)
-            guard let node = match(token: token, annotations: annotations, context: context, children: children.nodes) else {
-                nodeStack.top?.adopt(children.nodes)
-                return
-            }
-            
-            nodeStack.top?.append(node)
-        case .ignoreFailure(let index):
-            if let node = ignoreableFailure(token: token, annotations: annotations, index: index){
-                nodeStack.top?.append(node)
-            } else {
-                nodeStack.top?.adopt(children.nodes)
-            }
-        case .failure(let index):
-            //If we have an error on the rule
-            if let error = annotations.error {
-                let errorEnd = index < scalars.endIndex ? scalars.index(after:index) : index
-                let parsingError = LanguageError.parsingError(at: index..<errorEnd, message: error)
-                
-                let existing = _errors.compactMap({ (error)->Error? in
-                    if let error = error as? LanguageError {
-                        if error == parsingError {
-                            return error
-                        }
-                    }
-                    return nil
-                })
-                
-                if existing.count == 0{
-                    _errors.append(parsingError)
-                }
-                
-            }
-            failed(token: token)
-        case .consume:
-            break
+        let node : IntermediateRepresentationNode
+        if children.count == 0 {
+            node = IntermediateRepresentationNode(for: token, at: range,  annotations: annotations)
+        } else {
+            node = IntermediateRepresentationNode(for: token, at: children.combinedRange, children: children, annotations: annotations)
         }
+        
+        nodeStack.top?.append(node)
     }
     
-    /// Processes the results of evaluation
-    public func didEvaluate(rule: Rule, matchResult: MatchResult) {
-        let children = nodeStack.pop()
-
-        if !rule.produces.transient {
-            cache?.remember(at: matchResult.range, key: rule.produces.rawValue, value: matchResult)
-        }
-        
-        switch matchResult {
-        case .success(let context):
-            //If the rule is void return nothing, don't add to range
-            if rule.void {
-                return
-            }
-            
-            // If it's transient, or the constructor produces no nodes then the current top should adopt the children
-            /// TODO: Is this a defect (see github issue 24 https://github.com/SwiftStudies/OysterKit/issues/24)
-            guard let node = match(token: rule.produces, annotations: rule.annotations, context: context, children: children.nodes) else {
-                nodeStack.top?.adopt(children.nodes)
-                return
-            }
-            
-            nodeStack.top?.append(node)
-        case .ignoreFailure(let index):
-            if let node = ignoreableFailure(token: rule.produces, annotations: rule.annotations, index: index){
-                nodeStack.top?.append(node)
-            } else {
-                nodeStack.top?.adopt(children.nodes)
-            }
-        case .failure(let index):
-            //If we have an error on the rule
-            if let error = rule.error {
-                let errorEnd = index < scalars.endIndex ? scalars.index(after:index) : index
-                let parsingError = LanguageError.parsingError(at: index..<errorEnd, message: error)
-                
-                let existing = _errors.compactMap({ (error)->Error? in
-                    if let error = error as? LanguageError {
-                        if error == parsingError {
-                            return error
-                        }
-                    }
-                    return nil
-                })
-                
-                if existing.count == 0{
-                    _errors.append(parsingError)
-                }
-                
-            }
-            failed(token: rule.produces)
-        case .consume:
-            break
-        }
+    public func failed() {
+        _ = nodeStack.pop()
     }
     
     /// Does nothing
@@ -456,55 +370,6 @@ extension AbstractSyntaxTreeConstructor : IntermediateRepresentation {
     
     /// Does nothing
     public func resetState() {
-        
-    }
-    
-    /**
-     If the token is transient `nil` is returned. Otherwise the behaviour is determined by the number of children
-     
-     - 0: A new instance of `HeterogeneousNode` is created and returned
-     - 1: Providing the token is not @pin'd a new `HeterogeousNode` is created for the child's range and value and returned If it is @pin'd behaviour falls through to
-     - _n_: Return a new `HeterogeneousNode` with the combined range of all children and the children are set as the node's value
-     
-     - Parameter token: The token that has been successfully identified in the source
-     - Parameter annotations: The annotations that had been marked on this instance of the token
-     - Parameter context: The `LexicalContext` from the `LexicalAnalyzer` from which an implementation can extract the matched range.
-     - Parameter children: Any `Node`s that were created while this token was being evaluated.
-     - Returns: Any `Node` that was created, or `nil` if not
-     */
-    final public func match(token: Token, annotations:RuleAnnotations, context: LexicalContext, children: [IntermediateRepresentationNode]) -> IntermediateRepresentationNode? {
-        
-        switch children.count{
-        case 0:
-            return IntermediateRepresentationNode(for: token, at: context.range,  annotations: annotations)
-        default:
-            // Creates a new parent node with the transients filtered out, but their range included
-            // For backwards compatibility we have to check if the children's combined range is smaller than the contexts range
-            if source[context.range].count > source[children.combinedRange].count {
-                return IntermediateRepresentationNode(for: token, at: context.range, children: children.perpetual, annotations: annotations)
-            } else {
-                return IntermediateRepresentationNode(for: token, at: children.combinedRange, children: children.perpetual, annotations: annotations)
-            }
-        }
-    }
-    
-    /**
-     If the token is not transient but is pinned a node is created with a range at the current scan-head but no value. Otherwise `nil` is returned.
-     
-     - Parameter token: The token that failed to be matched identified in the source
-     - Parameter annotations: The annotations that had been marked on this instance of the token
-     - Returns: Any `Node` that was created, or `nil` if not
-     */
-    public func ignoreableFailure(token: Token, annotations: [RuleAnnotation : RuleAnnotationValue], index: String.UnicodeScalarView.Index)->IntermediateRepresentationNode? {
-        if !token.transient && annotations[RuleAnnotation.pinned] != nil{
-            let range = index..<index
-            return IntermediateRepresentationNode(for: token, at: range, annotations: annotations)
-        }
-        return nil
-    }
-    
-    /// No behaviour
-    public func failed(token: Token) {
         
     }
 }

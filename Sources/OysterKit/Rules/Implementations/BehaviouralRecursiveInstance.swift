@@ -24,7 +24,7 @@
 
 import Foundation
 
-struct BehaviouralRecursiveInstance : BehaviouralRule {
+struct BehaviouralRecursiveInstance : Rule {
     let original : BehaviouralRecursiveRule
     let behaviour: Behaviour
     let annotations: RuleAnnotations
@@ -44,10 +44,13 @@ struct BehaviouralRecursiveInstance : BehaviouralRule {
         } else {
             indicator = "❌"
         }
-        return behaviour.describe(match: "\(indicator)\(produces)", requiresStructuralPrefix: false)
+        if let token = behaviour.token {
+            return behaviour.describe(match: "\(indicator)\(token)", requiresStructuralPrefix: false)
+        }
+        return behaviour.describe(match: "\(indicator)❌", requiresStructuralPrefix: false)
     }
     
-    func rule(with behaviour: Behaviour?, annotations: RuleAnnotations?) -> BehaviouralRule {
+    func rule(with behaviour: Behaviour?, annotations: RuleAnnotations?) -> Rule {
         return BehaviouralRecursiveInstance(original: original, behaviour: behaviour ?? self.behaviour, annotations: annotations ?? self.annotations)
     }
 }

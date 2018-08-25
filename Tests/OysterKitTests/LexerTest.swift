@@ -9,14 +9,6 @@
 import XCTest
 @testable import OysterKit
 
-fileprivate enum TestToken : Int, Token{
-    case dummy
-    
-    private var productionRule: Rule{
-        return ParserRule.terminal(produces: self, "dummy", nil)
-    }
-}
-
 class LexerTest: XCTestCase {
 
     override func setUp() {

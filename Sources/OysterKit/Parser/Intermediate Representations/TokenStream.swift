@@ -112,9 +112,6 @@ public class TokenStreamIterator : IteratorProtocol {
         }
         
         if let nextToken = nextToken {
-            if nextToken.token.transient || nextToken.annotations[RuleAnnotation.void] != nil {
-                return next()
-            }
             return nextToken
         } else {
             if startingPosition != parsingContext.lexer.position {
@@ -142,41 +139,23 @@ public class TokenStreamIterator : IteratorProtocol {
 
 /// This iterator is a very light weight intermediate representation that only constructs top level nodes
 extension TokenStreamIterator : IntermediateRepresentation {
-    
-    /// Increments the depth
-    public func willEvaluate(rule: Rule, at position: String.UnicodeScalarView.Index) -> MatchResult? {
-        return willEvaluate(token: rule.produces, at: position)
-    }
-    
-    /// Increments the depth
-    public func willEvaluate(token: Token, at position: String.UnicodeScalarView.Index) -> MatchResult? {
+
+    public func evaluating(_ token: Token) {
         depth += 1
-        return nil
     }
     
-    public func didEvaluate(token: Token, annotations:RuleAnnotations, matchResult: MatchResult) {
+    public func succeeded(token: Token, annotations: RuleAnnotations, range: Range<String.Index>) {
         depth -= 1
-        
         if depth == 1  {
-            switch matchResult {
-            case .ignoreFailure(let index):
-                if annotations[RuleAnnotation.pinned] != nil {
-                    nextToken = StreamedToken(for: token, at: index..<index, annotations: annotations)
-                }
-            case .success(let context):
-                nextToken = StreamedToken(for: token, at: context.range, annotations: annotations)
-            case .consume(let context):
-                nextToken = StreamedToken(for: TransientToken.labelled("\(token)"), at:context.range, annotations: [RuleAnnotation.void : RuleAnnotationValue.set])
-            default:
-                nextToken = nil
-            }
+            nextToken = StreamedToken(for: token, at: range, annotations: annotations)
         }
     }
     
-    /// Decrements the depth and generates the next token if the depth is one and the match was successful or an ignorableFailure that was pinned
-    /// It ignores both transient and void annotations on the top level rules
-    public func didEvaluate(rule: Rule, matchResult: MatchResult) {
-        didEvaluate(token: rule.produces, annotations: rule.annotations, matchResult: matchResult)
+    public func failed() {
+        depth -= 1
+        if depth == 1 {
+            nextToken = nil
+        }
     }
     
     /// Sets the initial depth to 1

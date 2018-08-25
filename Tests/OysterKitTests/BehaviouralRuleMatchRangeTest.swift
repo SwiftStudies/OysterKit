@@ -68,14 +68,14 @@ class BehaviourRuleMatchRangeTest : XCTestCase {
         
         do {
             lexer.mark()
-            _ = ir.willEvaluate(token: root, at: lexer.index)
+            ir.evaluating(root)
             _ = try voidRule.match(with: lexer, for: ir)
             _ = try transientRule.match(with: lexer, for: ir)
             _ = try tokenRule.match(with: lexer, for: ir)
             _ = try transientRule.match(with: lexer, for: ir)
             _ = try voidRule.match(with: lexer, for: ir)
             let context = lexer.proceed()
-            ir.didEvaluate(token: root, annotations: [:], matchResult: MatchResult.success(context: context))
+            ir.succeeded(token: root, annotations: [:], range: context.range)
 
             let tree = try ir.generate(HomogenousTree.self)
             XCTAssertEqual("   stringBody   ", tree.matchedString)

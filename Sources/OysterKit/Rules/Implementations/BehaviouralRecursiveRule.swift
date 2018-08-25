@@ -27,7 +27,7 @@ import Foundation
 /**
  When a rule definition calls itself whilst evaluating itself (left hand recursion) you cannot create the rule directly as it will become caught in an infinite look (creating instances of itself, which create instances of itself etc until the stack is empty).  To avoid this a rule can use this wrapper to manage lazy initialization of itself. The recursive rule enables a reference to be added on the RHS, but the actual rule will not be initiialized until later, and this wrapper will then call that lazily initalized rule.
  */
-public final class BehaviouralRecursiveRule : BehaviouralRule, CustomStringConvertible{
+public final class BehaviouralRecursiveRule : Rule, CustomStringConvertible{
 
     
 
@@ -39,7 +39,7 @@ public final class BehaviouralRecursiveRule : BehaviouralRule, CustomStringConve
     }
     
     /// The surrogate matcher
-    private var rule     : BehaviouralRule?
+    private var rule     : Rule?
     
     /// The surrogate annotations. When the surrogate is assigned its annotations will be replaced with these on the new instance
     private var _annotations : RuleAnnotations
@@ -49,7 +49,7 @@ public final class BehaviouralRecursiveRule : BehaviouralRule, CustomStringConve
     
     /// The rule, which can be assigned at any point before actual parsing, to be used. When a new value is assigned to the rule a
     /// new instance is created (calling ``instance(token, annotations)) with the token and annotations assigned at construction
-    public var surrogateRule : BehaviouralRule? {
+    public var surrogateRule : Rule? {
         get{
             return rule
         }
@@ -60,12 +60,12 @@ public final class BehaviouralRecursiveRule : BehaviouralRule, CustomStringConve
     
     public var description: String{
         // Can't actuall print rule because if there is a looping recursion it could go on forwever
-        return "\(rule == nil ? "❌\(_behaviour.kind)" : "🔃\(rule!.produces)")"
+        return "\(rule == nil ? "\(_behaviour.kind)" : "🔃\(rule!.shortDescription)")"
     }
     
     /// An abreviated description of the rule
     public var shortDescription: String{
-        return behaviour.describe(match: "\(produces)", requiresStructuralPrefix: false)
+        return rule?.shortDescription ?? _behaviour.describe(match: "❌")
     }
 
     
@@ -90,7 +90,7 @@ public final class BehaviouralRecursiveRule : BehaviouralRule, CustomStringConve
     }
     
     /// Creates a new instance of itself
-    public func rule(with behaviour: Behaviour?, annotations: RuleAnnotations?) -> BehaviouralRule {
+    public func rule(with behaviour: Behaviour?, annotations: RuleAnnotations?) -> Rule {
         return BehaviouralRecursiveInstance(original: self,behaviour: behaviour ?? self.behaviour, annotations: annotations ?? self.annotations)
     }
         

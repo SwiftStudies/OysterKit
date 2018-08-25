@@ -42,22 +42,16 @@ private struct EmptyLexicalContext : LexicalContext {
  A dummy `IntermediateRepresentation` used for lookahead evaluation instead of the standard IR so that the lookahead as no impact on the IR
  */
 final class LookAheadIR : IntermediateRepresentation{
-    func willEvaluate(token: Token, at position: String.UnicodeScalarView.Index) -> MatchResult? {
-        return nil
-    }
-    
-    func didEvaluate(token: Token, annotations: RuleAnnotations, matchResult: MatchResult) {
-    }
-    
-    
     /// Does nothing
-    /// Returns: `nil`
-    final internal func willEvaluate(rule: Rule, at position: String.UnicodeScalarView.Index) -> MatchResult? {
-        return nil
+    final func evaluating(_ token: Token) {
     }
     
     /// Does nothing
-    final internal func didEvaluate(rule: Rule, matchResult: MatchResult) {
+    final func succeeded(token: Token, annotations: RuleAnnotations, range: Range<String.Index>) {
+    }
+    
+    /// Does nothing
+    final func failed() {
     }
     
     /// Does nothing
@@ -69,6 +63,6 @@ final class LookAheadIR : IntermediateRepresentation{
     }
     
     /// Does nothing
-    func resetState() {
+    final func resetState() {
     }
 }

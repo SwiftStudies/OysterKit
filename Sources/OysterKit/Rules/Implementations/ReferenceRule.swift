@@ -24,12 +24,12 @@
 
 import Foundation
 
-public final class ReferenceRule : BehaviouralRule {
+public final class ReferenceRule : Rule {
     public var behaviour: Behaviour
     public var annotations: RuleAnnotations
-    public var references : BehaviouralRule
+    public var references : Rule
     
-    public init(_ behaviour:Behaviour, and annotations:RuleAnnotations, for rule:BehaviouralRule){
+    public init(_ behaviour:Behaviour, and annotations:RuleAnnotations, for rule:Rule){
         self.behaviour = behaviour
         self.annotations = annotations
         self.references = rule
@@ -39,7 +39,7 @@ public final class ReferenceRule : BehaviouralRule {
         _ = try references.match(with: lexer, for: ir)
     }
     
-    public func rule(with behaviour: Behaviour?, annotations: RuleAnnotations?) -> BehaviouralRule {
+    public func rule(with behaviour: Behaviour?, annotations: RuleAnnotations?) -> Rule {
         return ReferenceRule(behaviour ?? self.behaviour, and: annotations ?? self.annotations, for: references)
     }
     

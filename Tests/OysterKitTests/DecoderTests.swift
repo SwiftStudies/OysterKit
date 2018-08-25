@@ -65,7 +65,7 @@ fileprivate struct OneOfEverything : Decodable, Equatable{
 
 class DecoderTests: XCTestCase {
 
-    func testTypeArray<T : Decodable>(testData : String, typeRule:BehaviouralRule) throws ->T{
+    func testTypeArray<T : Decodable>(testData : String, typeRule:Rule) throws ->T{
         let grammar : [Rule] = [
             [
                 typeRule.require(.oneOrMore),
@@ -230,7 +230,7 @@ class DecoderTests: XCTestCase {
         ].sequence
         
         
-        let rules : [BehaviouralRule] = [
+        let rules : [Rule] = [
             [
                 -"[",
                 arrayEntry.require(.noneOrMore),

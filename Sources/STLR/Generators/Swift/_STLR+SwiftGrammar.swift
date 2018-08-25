@@ -49,7 +49,7 @@ public extension _STLR {
         //
         // Rules
         //
-        file.print("","/// The rule for the token","var rule : BehaviouralRule {").indent()
+        file.print("","/// The rule for the token","var rule : Rule {").indent()
         file.print(         "switch self {").indent()
         for rule in grammar.allRules {
             file.print("/// \(rule.identifier)","case .\(rule.identifier):").indent()
@@ -80,12 +80,12 @@ public extension _STLR {
         // Cache for Recursion
         //
         if grammar.rules.filter({self.grammar.isLeftHandRecursive(identifier: $0.identifier)}).count > 0 {
-            file.print("","/// Cache for left-hand recursive rules","private static var leftHandRecursiveRules = [ Int : BehaviouralRule ]()")
+            file.print("","/// Cache for left-hand recursive rules","private static var leftHandRecursiveRules = [ Int : Rule ]()")
         }
         
         let rootRules = grammar.rules.filter({grammar.isRoot(identifier: $0.identifier)})
         file.print("","/// Create a language that can be used for parsing etc")
-        file.print("public static var generatedRules: [BehaviouralRule] {").indent()
+        file.print("public static var generatedRules: [Rule] {").indent()
         file.print("return ["+rootRules.compactMap({$0.identifier}).map({"T.\($0).rule"}).joined(separator: ", ")+"]")
         file.outdent().print("}")
                 

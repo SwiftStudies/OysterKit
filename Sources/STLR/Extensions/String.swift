@@ -52,7 +52,7 @@ public extension String {
      - Parameter kind: The kind of the rule
      - Returns: `nil` if compilation failed
      */
-    public func dynamicRule(_ kind:Behaviour.Kind) throws ->BehaviouralRule{
+    public func dynamicRule(_ kind:Behaviour.Kind) throws ->Rule{
         let compiled = try _STLR.build("grammar Dynamic\n_ = \(self)")
 
         

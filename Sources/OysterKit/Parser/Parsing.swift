@@ -72,16 +72,9 @@ enum ParsingStrategy {
             let positionBeforeParsing = context.lexer.index
             for rule in context.language.grammar {
                 do {
-                    switch try rule.match(with: context.lexer, for: context.ir) {
-                    case .success, .consume:
-                        productionErrors.removeAll()
-                        success = true
-                    default:
-                        break
-                    }
-                    if success {
-                        break
-                    }
+                    try rule.match(with: context.lexer, for: context.ir)
+                    success = true
+                    break
                 } catch {
                     productionErrors.append(error)
                 }

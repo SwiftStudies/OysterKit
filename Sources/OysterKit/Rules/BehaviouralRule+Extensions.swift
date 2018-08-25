@@ -40,13 +40,13 @@ prefix  operator -
 /// Scan
 prefix  operator ~
 
-public extension BehaviouralRule {
+public extension Rule {
     /**
      Creates a new instance of the rule annotated with the specified annotations
      - Parameter annotations: The desired annotations
      - Returns: A new instance of the rule with the specified annotations
      */
-    public func annotatedWith(_ annotations:RuleAnnotations)->BehaviouralRule{
+    public func annotatedWith(_ annotations:RuleAnnotations)->Rule{
         return rule(with: nil, annotations: annotations)
     }
     
@@ -57,7 +57,7 @@ public extension BehaviouralRule {
      - Parameter cardinality: The desired cardinalitiy
      - Returns: The new rule instance
      */
-    public func require(_ cardinality:Cardinality)->BehaviouralRule{
+    public func require(_ cardinality:Cardinality)->Rule{
         return newBehaviour(cardinality: cardinality)
     }
 }
@@ -71,11 +71,11 @@ public extension BehaviouralRule {
  - Parameter rule:The rule to apply to
  - Returns: A new version of the rule
  */
-public prefix func >>(rule:BehaviouralRule)->BehaviouralRule{
+public prefix func >>(rule:Rule)->Rule{
     return rule.lookahead()
 }
 
-public extension BehaviouralRule{
+public extension Rule{
     /**
      Creates a new instance of the rule set to have lookahead behaviour
      
@@ -84,7 +84,7 @@ public extension BehaviouralRule{
      
      - Returns: A new version of the rule
      */
-    public func lookahead()->BehaviouralRule{
+    public func lookahead()->Rule{
         return rule(with: Behaviour(.scanning, cardinality: behaviour.cardinality, negated: behaviour.negate, lookahead: true), annotations: annotations)
     }
 
@@ -97,7 +97,7 @@ public extension BehaviouralRule{
      
      - Returns: A new version of the rule
      */
-    public func negate()->BehaviouralRule{
+    public func negate()->Rule{
         return rule(with: Behaviour(.scanning, cardinality: behaviour.cardinality, negated: true, lookahead: behaviour.lookahead), annotations: annotations)
     }
     
@@ -109,7 +109,7 @@ public extension BehaviouralRule{
      
      - Returns: A new version of the rule
      */
-    public func skip()->BehaviouralRule{
+    public func skip()->Rule{
         return rule(with: Behaviour(.skipping, cardinality: behaviour.cardinality, negated: behaviour.negate, lookahead: behaviour.lookahead), annotations: annotations)
     }
     
@@ -121,11 +121,11 @@ public extension BehaviouralRule{
      
      - Returns: A new version of the rule
      */
-    public func scan()->BehaviouralRule{
+    public func scan()->Rule{
         return rule(with: Behaviour(.scanning, cardinality: behaviour.cardinality, negated: behaviour.negate, lookahead: behaviour.lookahead), annotations: annotations)
     }
     
-    public func reference(_ kind:Behaviour.Kind, annotations: RuleAnnotations? = nil)->BehaviouralRule{
+    public func reference(_ kind:Behaviour.Kind, annotations: RuleAnnotations? = nil)->Rule{
         return ReferenceRule(Behaviour(kind, cardinality: .one, negated: false, lookahead: false), and: annotations ?? [:], for: self)
     }
 }
@@ -140,7 +140,7 @@ public extension BehaviouralRule{
  - Parameter rule:The rule to apply to
  - Returns: A new version of the rule
  */
-public prefix func !(rule:BehaviouralRule)->BehaviouralRule{
+public prefix func !(rule:Rule)->Rule{
     return rule.negate()
 }
 
@@ -153,7 +153,7 @@ public prefix func !(rule:BehaviouralRule)->BehaviouralRule{
  - Parameter rule:The rule to apply to
  - Returns: A new version of the rule
  */
-public prefix func -(rule: BehaviouralRule)->BehaviouralRule{
+public prefix func -(rule: Rule)->Rule{
     return rule.skip()
 }
 
@@ -166,17 +166,17 @@ public prefix func -(rule: BehaviouralRule)->BehaviouralRule{
  - Parameter rule:The rule to apply to
  - Returns: A new version of the rule
  */
-public prefix func ~(rule : BehaviouralRule)->BehaviouralRule{
+public prefix func ~(rule : Rule)->Rule{
     return rule.scan()
 }
 
 // Extends collections of terminals to support creation of Choice scanners
-extension Array where Element == BehaviouralRule {
+extension Array where Element == Rule {
     /**
      Creates a rule that is satisfied if one of the rules in the araray
      (which are evaluated in order) is matched
      */
-    public var choice : BehaviouralRule{
+    public var choice : Rule{
         return ChoiceRule(Behaviour(.scanning), and: [:], for: map({$0.rule(with: nil, annotations: nil)}))
     }
     
@@ -184,12 +184,12 @@ extension Array where Element == BehaviouralRule {
      Creates a rule that is satisified if all rules in the array are
      met, in order.
      */
-    public var sequence : BehaviouralRule{
+    public var sequence : Rule{
         return SequenceRule(Behaviour(.scanning), and: [:], for: map({$0.rule(with: nil, annotations: nil)}))
     }
 }
 
-extension BehaviouralRule{
+extension Rule{
     /**
      Creates a new instance of the rule with the specified behavioural attributes
      all other attributes maintained. If any of the supplied parameters are nil
@@ -199,7 +199,7 @@ extension BehaviouralRule{
      - Parameter negated: `true` if the results of `test()` should be negated
      - Parameter lookahead: Is lookahead behaviour required
      */
-    internal func newBehaviour(_ kind:Behaviour.Kind?=nil, negated:Bool? = nil, lookahead:Bool? = nil)->BehaviouralRule{
+    internal func newBehaviour(_ kind:Behaviour.Kind?=nil, negated:Bool? = nil, lookahead:Bool? = nil)->Rule{
         return rule(with: Behaviour(kind ?? behaviour.kind, cardinality: behaviour.cardinality, negated: negated ?? behaviour.negate, lookahead: lookahead ?? behaviour.lookahead), annotations: annotations)
     }
     
@@ -213,7 +213,7 @@ extension BehaviouralRule{
      - Parameter negated: `true` if the results of `test()` should be negated
      - Parameter lookahead: Is lookahead behaviour required
      */
-    internal func newBehaviour(_ kind:Behaviour.Kind?=nil, cardinality: ClosedRange<Int>, negated:Bool? = nil, lookahead:Bool? = nil)->BehaviouralRule{
+    internal func newBehaviour(_ kind:Behaviour.Kind?=nil, cardinality: ClosedRange<Int>, negated:Bool? = nil, lookahead:Bool? = nil)->Rule{
         return rule(with: behaviour.instanceWith(kind, cardinality: cardinality, negated: negated, lookahead: lookahead), annotations: annotations)
     }
     
@@ -227,7 +227,7 @@ extension BehaviouralRule{
      - Parameter negated: `true` if the results of `test()` should be negated
      - Parameter lookahead: Is lookahead behaviour required
      */
-    internal func newBehaviour(_ kind:Behaviour.Kind?=nil, cardinality: PartialRangeFrom<Int>, negated:Bool? = nil, lookahead:Bool? = nil)->BehaviouralRule{
+    internal func newBehaviour(_ kind:Behaviour.Kind?=nil, cardinality: PartialRangeFrom<Int>, negated:Bool? = nil, lookahead:Bool? = nil)->Rule{
         return rule(with: behaviour.instanceWith(kind, cardinality: cardinality, negated: negated, lookahead: lookahead), annotations: annotations)
     }
     
@@ -241,7 +241,7 @@ extension BehaviouralRule{
      - Parameter negated: `true` if the results of `test()` should be negated
      - Parameter lookahead: Is lookahead behaviour required
      */
-    internal func newBehaviour(_ kind:Behaviour.Kind?=nil, cardinality: Cardinality, negated:Bool? = nil, lookahead:Bool? = nil)->BehaviouralRule{
+    internal func newBehaviour(_ kind:Behaviour.Kind?=nil, cardinality: Cardinality, negated:Bool? = nil, lookahead:Bool? = nil)->Rule{
         
         return rule(with: Behaviour(kind ?? behaviour.kind, cardinality: cardinality, negated: negated ?? behaviour.negate, lookahead: lookahead ?? behaviour.lookahead), annotations: annotations)
     }
@@ -252,7 +252,7 @@ extension BehaviouralRule{
      
      - Parameter behaviour: The new behaviour
      */
-    internal func instanceWith(with behaviour:Behaviour)->BehaviouralRule{
+    internal func instanceWith(with behaviour:Behaviour)->Rule{
         return rule(with: behaviour, annotations: nil)
     }
     
@@ -262,7 +262,7 @@ extension BehaviouralRule{
      
      - Parameter annotations: The new annotations
      */
-    internal func instanceWith(annotations:RuleAnnotations)->BehaviouralRule{
+    internal func instanceWith(annotations:RuleAnnotations)->Rule{
         return rule(with: nil, annotations: annotations)
     }
 }
