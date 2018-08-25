@@ -308,8 +308,6 @@ class FullSwiftGenerationTest: XCTestCase {
     }
     
     func testTerminal(){
-        XCTFail("This test in hanging")
-        return
         let passing = [
             "\"something\"",
             ".letter",
@@ -411,7 +409,7 @@ class FullSwiftGenerationTest: XCTestCase {
     }
     
     func testNotNewRule(){
-        XCTAssertNoThrow(try checkSimplePassFail(for: .notNewRule, passing: ["a : something"], failing: ["a = b"], expectNode: true))
+        XCTAssertNoThrow(try checkSimplePassFail(for: .notNewRule, passing: ["a : something"], failing: ["a = b"], expectNode: false))
     }
     
     func testExpression(){
@@ -441,7 +439,7 @@ class FullSwiftGenerationTest: XCTestCase {
             ]
         let failing = [""]
         
-        XCTAssertNoThrow(try checkSimplePassFail(for: .lhs, passing: passing, failing: failing, expectNode: true))
+        XCTAssertNoThrow(try checkSimplePassFail(for: .lhs, passing: passing, failing: failing, expectNode: false))
         #warning("Check strucure and errors")
     }
 

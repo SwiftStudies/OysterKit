@@ -136,7 +136,7 @@ assignmentOperators             = "=" | "+=" | "|="
 -then                                    = (whitespace* "+" whitespace*) | whitespace+
 
 choice                                  = element (or @error("Expected terminal, identifier, or group") element)+
-notNewRule                              = !(annotations? identifier whitespace* (":" whitespace* .letter+ whitespace*)? assignmentOperators)
+-notNewRule                             = !(annotations? identifier whitespace* (":" whitespace* .letter+ whitespace*)? assignmentOperators)
 sequence                                = element (then >>notNewRule @error("Expected terminal, identifier, or group")element)+
 
 expression                              = choice | sequence | element
