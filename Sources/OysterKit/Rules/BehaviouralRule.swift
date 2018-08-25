@@ -141,10 +141,7 @@ public extension Rule {
     
     /// `true` if the rule creates ndoes, false otherwise
     public var scanning : Bool {
-        if case .scanning = behaviour.kind {
-            return true
-        }
-        return false
+        return behaviour.token != nil
     }
 
     /**
