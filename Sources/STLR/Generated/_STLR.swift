@@ -145,7 +145,7 @@ fileprivate enum STLRTokens : Int, Token, CaseIterable, Equatable {
             
         /// regex
         case .regex:
-            return [    T.startRegex.rule,    T.regexBody.rule,    T.endRegex.rule,    -T.whitespace.rule].sequence.reference(.structural(token: self))
+            return [    T.startRegex.rule,    T.regexBody.rule,    T.endRegex.rule].sequence.reference(.structural(token: self))
             
         /// terminal
         case .terminal:

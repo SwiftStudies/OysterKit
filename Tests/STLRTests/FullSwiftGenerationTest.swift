@@ -59,10 +59,18 @@ class FullSwiftGenerationTest: XCTestCase {
         print(ast.description)
     }
     
-    func parse(source:String, with token:STLRTokens, ignoreNoNodes:Bool = true) throws {
+    func parse(source:String, with token:STLRTokens, ignoreNoNodes:Bool = true, appendMopUpRule mopup:BehaviouralRule? = nil) throws {
         FullSwiftGenerationTest.testedTokens.insert(token)
+        
+        let rule : BehaviouralRule
+        if let mopup = mopup {
+            rule = [token.rule,mopup].sequence
+        } else {
+            rule = token.rule
+        }
+        
         do {
-            try parse(source: source, with: token.rule)
+            try parse(source: source, with: rule)
         } catch AbstractSyntaxTreeConstructor.ConstructionError.constructionFailed(let causes){
             if let primaryCause = causes.first {
                 if "\(primaryCause)".hasPrefix("No nodes created") && ignoreNoNodes {
@@ -73,10 +81,10 @@ class FullSwiftGenerationTest: XCTestCase {
         }
     }
     
-    func checkSimplePassFail(for token:STLRTokens, passing:[String], failing:[String], expectNode:Bool, matches:[String] = []) throws {
+    func checkSimplePassFail(for token:STLRTokens, passing:[String], failing:[String], expectNode:Bool, matches:[String] = [], appendMopUpRule mopup:BehaviouralRule? = nil) throws {
         var count = 0
         for source in passing {
-            try parse(source: source, with: token, ignoreNoNodes: !expectNode)
+            try parse(source: source, with: token, ignoreNoNodes: !expectNode, appendMopUpRule: mopup)
             if expectNode {
                 if "\(token)" != "\(ast.token)" {
                     throw TestError.interpretationError(message: "\(ast.token) != \(token)", causes: [])
@@ -108,6 +116,11 @@ class FullSwiftGenerationTest: XCTestCase {
     }
     
     func testOptionalWhiteSpace(){
+        if case Behaviour.Kind.skipping = STLRTokens.ows.rule.behaviour.kind {
+        } else {
+            XCTFail("ows should be skipping")
+        }
+        
         do {
             try parse(source: "ddd", with: ExampleLanguages.STLRTokens.ows, ignoreNoNodes: true)
             XCTAssertNil(ast)
@@ -305,20 +318,22 @@ class FullSwiftGenerationTest: XCTestCase {
         ]
         let failing = ["//"]
         
-        XCTAssertNoThrow(try checkSimplePassFail(for: .regex, passing: passing.map({"/\($0)/ "}), failing: failing, expectNode: true, matches: passing))
+        #warning("Not really failing, it needs whitespace afterwards to match, but that won't match end of file, and if there is a space it tries to reapply the regex rule which fails")
+        XCTAssertNoThrow(try checkSimplePassFail(for: .regex, passing: passing.map({"/\($0)/ "}), failing: failing, expectNode: true, matches: passing,appendMopUpRule: " "))
     }
     
     func testTerminal(){
         let passing = [
             "\"something\"",
             ".letter",
-            "/regex/ ",
             "\"a\"...\"b\"",
         ]
         let failing = [""]
         
         XCTAssertNoThrow(try checkSimplePassFail(for: .terminal, passing: passing, failing: failing, expectNode: true))
         #warning("Check strucure and errors")
+        XCTAssertNoThrow(try checkSimplePassFail(for: .terminal, passing: ["/regex/ "], failing: failing, expectNode: true, appendMopUpRule:" "))
+
     }
     
     func testAnnotation(){

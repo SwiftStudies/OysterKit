@@ -113,7 +113,7 @@ label                           = definedLabel | customLabel
 -startRegex = regexDelimeter >>!"*"
 -endRegex = regexDelimeter
 ~regexBody = !(regexDelimeter whitespace)+
-regex = startRegex regexBody endRegex -whitespace
+regex = startRegex regexBody endRegex 
 
 //
 // Element
@@ -171,7 +171,7 @@ rule            = lhs whitespace* @error("Expected expression")expression whites
 // Importing
 //
 moduleName                              = (.letter | "_") (.letter | "_" | .decimalDigit)*
-moduleImport                    = ows -"import" @error("Expected white space followed by module name") -.whitespace+  @error("Expected module name") moduleName @error("Expected newline") -whitespace+
+moduleImport    = ows -"import" @error("Expected white space followed by module name") -.whitespace+  @error("Expected module name") moduleName @error("Expected newline") -whitespace+
 
 ///
 /// Scope

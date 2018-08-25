@@ -177,6 +177,27 @@ class SwiftGenerationTest: XCTestCase {
         }
     }
     
+    func testSkippedRuleForTerminal(){
+        do {
+            let result = try swift(for: "-a = \"a\"", desiredRule: 0)
+            
+            XCTAssertEqual(result,"\"a\".reference(.skipping)")
+        } catch (let error){
+            XCTFail("\(error)")
+        }
+    }
+    
+    func testSkippedRuleForReference(){
+        do {
+            let result = try swift(for: "-ref=\"x\"\n-a = ref*", desiredRule: 1)
+            
+            XCTAssertEqual(result,"T.ref.rule.require(.noneOrMore).reference(.skipping)")
+        } catch (let error){
+            XCTFail("\(error)")
+        }
+    }
+
+    
     func testAnnotatedNestedIdentifiers(){
         do {
             let result = try swift(for: "a = @error(\"a internal\")\"a\"\naa = @error(\"error a1\") a @error(\"error a2\") a", desiredRule: 1)

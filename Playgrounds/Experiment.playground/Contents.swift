@@ -1,40 +1,41 @@
 import Foundation
 import STLR
-import OysterKit
- 
-let context = OperationContext(with: URL(fileURLWithPath: "/Users/nhughes/Desktop/")) { (message) in
-    print(message)
+
+func updateExampleLanguagesSTLR() throws {
+    ///
+    ///
+    let source = try String(contentsOfFile: "/Users/nhughes/Documents/Code/SPM/OysterKit/Resources/STLR.stlr")
+    let operations = try SwiftStructure.generate(for: try _STLR.build(source), grammar: "Test", accessLevel: "public")
+    
+    let context = OperationContext(with: URL(fileURLWithPath: "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/ExampleLanguages")){
+        print($0)
+    }
+    
+    for operation in operations {
+        try operation.perform(in: context)
+    }
 }
-
-let source = """
-    grammar Test
-
-    -whitespace  = .whitespaceOrNewline
-
-    @characterSet("roman")
-    ~letter     = .letter
-
-     word       = letter+   // Should result in a reference, e.g. letter().refence().require(.oneOrMore).parse(as:word)
-
-     end        = "." | "!" | "?"
-
-     break      = "," | ";"
-
-    // The interesting one is whitespace. It should come out as a skipping one or more reference (as the skipping should
-    // be pulled from the declaration overriding default scan and then the cardinality
-     sentance   = >>.uppercaseLetter word (break? whitespace+ word)* end
-"""
 
 do {
-    let stlrAST = try _STLR.build(source)
-    let swiftSource = TextFile("\(stlrAST.grammar.name).swift")
-    stlrAST.swift(in:swiftSource)
-    try swiftSource.perform(in: context)
+    try updateExampleLanguagesSTLR()
     
-    let rules = stlrAST.grammar.dynamicRules
+    let source = """
+        grammar Test
+        
+        -another = /test/
+        -ows = another
+    """
     
-    print(rules[0].description)
+    let stlr = try _STLR.build(source)
+    
+    stlr.grammar["ows"].isVoid
+    stlr.grammar["ows"].void
+    
+    let file = TextFile("test")
+    stlr.swift(in: file)
+    file.content
+    
+ 
 } catch {
-    print("\(error)")
+    print("Error: \(error)")
 }
-
