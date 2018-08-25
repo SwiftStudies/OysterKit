@@ -25,6 +25,7 @@
 import Foundation
 
 
+@available(*, deprecated, message: "Depricated, use Behaviour.Kind.skipped for your rule instead")
 enum ConsumedToken : Int, Token{
     case skip
 }
@@ -49,12 +50,14 @@ private struct EmptyLexicalContext : LexicalContext {
  - Parameter lexer: The `LexcicalAnalyzer` to user for scanning
  - Returns: Wether or not a token should be created, so`true` if the rule was satisfied and a token should be created, `false` if it was satisfied but a token should not be created
  */
+@available(*, deprecated, message: "Depricated, Use ClosureRule instead")
 public typealias CustomRuleClosure = (_ lexer:LexicalAnalyzer) throws -> Bool
 
 /**
  A standard set of `Rule`s for parsing, including a `.custom` case where a `CustomRuleClosure` can be supplied and you only need to provide
  the logic for the actual matching (and any error messages).
  */
+@available(*, deprecated, message: "Depricated, use a Terminal directly (String, CharacterSet, NSRegularExpression) or Array.sequence, Array.choice in order to create rules in Swift code")
 public indirect enum ParserRule : Rule, CustomStringConvertible{
     
     /// `true` if a failure to match this rule can be ignored

@@ -82,6 +82,7 @@ public struct LabelledToken : Token, CustomStringConvertible {
 }
 
 /// Allows easy creation of transient tokens
+@available(*, deprecated, message: "Depricated, specify Behaviour.Kind.scanning for a BehaviouralRule instead")
 public enum TransientToken : Token, CustomStringConvertible {
     /// Just an anonymous but transient token
     case anonymous
@@ -389,6 +390,7 @@ public extension Collection where Iterator.Element == (key:RuleAnnotation,value:
 /**
  The protocol that parsing and scanning rules must adhere to. There is no need to fully implement this protocol unless you are looking for bespoke `LexicalAnalyzer` or `IntermediateRepresentation` control. It is recommended to use `ParserRule.custom` in almost all cases.
  */
+@available(*, deprecated, message: "Depricated, use BehaviouralRule instead")
 public protocol Rule {
     /**
      Should perform the actual check and manage the communicaion with the supplied `IntermedidateRepresentation`. If the match fails, and that failure cannot
@@ -521,6 +523,7 @@ public func ==(lhs:Token, rhs:Token)->Bool{
 /// Utility extension for determining if a token is trasnient
 public extension Token{
     /// True if the token is transient
+    @available(*, deprecated, message: "Depricated, specify Behaviour.Kind.scanning on a BehaviouralRule instead")
     public var transient : Bool {
         return rawValue == transientTokenValue
     }

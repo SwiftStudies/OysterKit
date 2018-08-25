@@ -25,6 +25,7 @@
 import Foundation
 
 /// An `Error` for the different types of error states for the scanner (such as end of file)
+@available(*, deprecated, message: "Depricated, will be removed at the next release")
 private enum ScannerError : Error {
     /// The scan-head was moved beyond the end of the file
     case unexpectedEndOfFile
@@ -33,6 +34,7 @@ private enum ScannerError : Error {
 }
 
 /// A set of low level rules that operate only on terminals. These are much faster than `ParserRules`
+@available(*, deprecated, message: "Depricated, use a Terminal instead (String,CharacterSet,NSRegularExpression)")
 public enum ScannerRule : Rule, CustomStringConvertible{
     
     /// Produces the specified token when one of the `String`s in the array is found
