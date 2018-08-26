@@ -23,8 +23,7 @@
 //    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import Foundation
-import OysterKit
-import STLR
+@testable import OysterKit
 
 public struct StringCodingKey : CodingKey {
     public var stringValue: String
@@ -51,11 +50,13 @@ public func dumpDecoder(decoder:Decoder) throws {
     }
 }
 
-func test(_ rule:Rule, with source:String) throws {
+func test(_ rule:Rule, with source:String) throws -> HomogenousTree {
     let lexer = Lexer(source: source)
     let ir = AbstractSyntaxTreeConstructor(with: source)
     
     try rule.match(with: lexer, for: ir)
+    
+    return try ir.generate(HomogenousTree.self)
 }
 
 
