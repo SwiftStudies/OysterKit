@@ -30,9 +30,14 @@ public final class ReferenceRule : Rule {
     public var references : Rule
     
     public init(_ behaviour:Behaviour, and annotations:RuleAnnotations, for rule:Rule){
-        self.behaviour = behaviour
         self.annotations = annotations
-        self.references = rule
+        if let token = behaviour.token {
+            self.references = rule.parse(as: token)
+            self.behaviour = Behaviour(.scanning, cardinality: behaviour.cardinality, negated: behaviour.negate, lookahead: behaviour.lookahead)
+        } else {
+            self.references = rule
+            self.behaviour = behaviour
+        }
     }
     
     public func test(with lexer: LexicalAnalyzer, for ir: IntermediateRepresentation) throws {
