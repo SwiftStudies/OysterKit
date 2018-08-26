@@ -175,36 +175,6 @@ public extension Rule {
      - Returns: The match result
      */
     public func evaluate(_ matcher:@escaping Test, using lexer:LexicalAnalyzer, and ir:IntermediateRepresentation) throws {
-        func nestedEvaluate(_ token:Token, annotations:RuleAnnotations,using lexer:LexicalAnalyzer, and ir:IntermediateRepresentation, with originalMatcher:Test) throws {
-
-            ir.evaluating(token)
-            
-            lexer.mark()
-            do {
-                try originalMatcher(lexer,ir)
-                let context = lexer.proceed()
-                ir.succeeded(token: token, annotations: annotations, range: context.range)
-            } catch {
-                ir.failed()
-                lexer.rewind()
-                throw error
-            }
-        }
-        
-        let behaviour : Behaviour
-        let annotations : RuleAnnotations
-        let structureTest : (token:Token, annotations:RuleAnnotations , originalMatcher:Test)?
-        
-        if case let Behaviour.Kind.structural(token) = self.behaviour.kind, !self.behaviour.negate{
-            behaviour = Behaviour(.skipping, cardinality: self.behaviour.cardinality, negated: self.behaviour.negate, lookahead: self.behaviour.lookahead)
-            annotations = [ : ]
-            structureTest = (token, self.annotations, matcher)
-        } else {
-            annotations = self.annotations
-            behaviour = self.behaviour
-            structureTest = nil
-        }
-        
         //Prepare for any lookahead by putting a fake IR in place if is lookahead
         //as well as taking an additional mark to ensure position will always be
         //where it was
@@ -218,7 +188,12 @@ public extension Rule {
             }
         }
         
-        lexer.mark(skipping:skipping)
+        if let token = behaviour.token {
+            ir.evaluating(token)
+            lexer.mark(skipping: false)
+        } else {
+            lexer.mark(skipping:skipping)
+        }
         
         let skippable = behaviour.cardinality.minimumMatches == 0
         let unlimited = behaviour.cardinality.maximumMatches == nil
@@ -233,11 +208,7 @@ public extension Rule {
                         try matcher(lexer, ir)
                         lexer.rewind()
                     } else {
-                        if let structureTest = structureTest {
-                            try nestedEvaluate(structureTest.token, annotations: structureTest.annotations, using: lexer, and: ir, with: structureTest.originalMatcher)
-                        } else {
-                            try matcher(lexer, ir)
-                        }
+                        try matcher(lexer, ir)
                     }
                 } catch {
                     if behaviour.negate {
@@ -272,14 +243,18 @@ public extension Rule {
             }
         }
 
-        if case let Behaviour.Kind.structural(token) = behaviour.kind {
+        switch behaviour.kind {
+        case .structural(let token):
             if behaviour.negate {
                 _ = lexer.proceed()
                 ir.evaluating(token)
                 ir.succeeded(token: token, annotations: annotations, range: lexer.proceed().range)
             } else {
-                fatalError("Unless negated structural nodes should not need to return an independant result")
+                ir.succeeded(token: token, annotations: annotations, range: lexer.proceed().range)
             }
+        case .scanning, .skipping:
+            _ = lexer.proceed()
         }
+        
     }
 }
