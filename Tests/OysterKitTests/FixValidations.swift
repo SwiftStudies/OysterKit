@@ -80,7 +80,9 @@ class FixValidations: XCTestCase {
     func testTerminalBody(){
         let source = "This is the body of a string \\\" that ends here\""
         do {
-            let ast = try test(STLRStringTest.terminalBody._rule(), with: source)
+            // Adding a token because by default it's skipping
+            let ast = try test(STLRStringTest.terminalBody._rule().scan(), with: source)
+            print(ast.description)
             XCTAssertEqual("\"", ast.matchedString)
         } catch {
             XCTFail("Match should not have thrown: \(error)")
@@ -114,8 +116,8 @@ class FixValidations: XCTestCase {
     func testStringQuote(){
         do {
             let ast = try test(STLRStringTest.stringQuote._rule(), with: "\"")
-            XCTFail("See below, should be checking the range of the result")
-//            XCTAssertEqual(context.matchedString, "\"")
+
+            XCTAssertEqual(ast.matchedString, "\"")
         } catch {
             XCTFail("Match should not have thrown: \(error)")
         }
@@ -126,9 +128,9 @@ class FixValidations: XCTestCase {
         
         for character in characters {
             do {
-                try test(STLRStringTest.escapedCharacter._rule(), with: "\\\(character)")
-                XCTFail("See below, should be checking the range of the result")
-//                XCTAssertEqual(context.matchedString, "\\\(character)")
+                let ast = try test(STLRStringTest.escapedCharacter._rule(), with: "\\\(character)")
+
+                XCTAssertEqual(ast.matchedString, "\\\(character)")
             } catch {
                 XCTFail("Match should not have thrown for \(character): \(error)")
             }
