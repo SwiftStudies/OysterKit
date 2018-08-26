@@ -47,94 +47,34 @@ enum OneOfEverythingGrammar : Int, Token {
             
         /// integer
         case .integer:
-            return [
-                [
-                    CharacterSet.decimalDigits.require(.oneOrMore),
-                    T.ws.rule.require(.one)].sequence
-                
-                ].sequence.parse(as: self)
-            
+            return [CharacterSet.decimalDigits.require(.oneOrMore), T.ws.rule].sequence.reference(.structural(token: self))
         /// byte
         case .byte:
-            return [
-                [
-                    CharacterSet.decimalDigits.require(.oneOrMore),
-                    T.ws.rule.require(.one)].sequence
-                
-                ].sequence.parse(as: self)
-            
+            return [CharacterSet.decimalDigits.require(.oneOrMore), T.ws.rule].sequence.reference(.structural(token: self))
         /// word
         case .word:
-            return [
-                [
-                    CharacterSet.decimalDigits.require(.oneOrMore),
-                    T.ws.rule.require(.one)].sequence
-                
-                ].sequence.parse(as: self)
-            
+            return [CharacterSet.decimalDigits.require(.oneOrMore), T.ws.rule].sequence.reference(.structural(token: self))
         /// longWord
         case .longWord:
-            return [
-                [
-                    CharacterSet.decimalDigits.require(.oneOrMore),
-                    T.ws.rule.require(.one)].sequence
-                
-                ].sequence.parse(as: self)
-            
+            return [CharacterSet.decimalDigits.require(.oneOrMore), T.ws.rule].sequence.reference(.structural(token: self))
         /// longLongWord
         case .longLongWord:
-            return [
-                [
-                    CharacterSet.decimalDigits.require(.oneOrMore),
-                    T.ws.rule.require(.one)].sequence
-                
-                ].sequence.parse(as: self)
-            
+            return [CharacterSet.decimalDigits.require(.oneOrMore), T.ws.rule].sequence.reference(.structural(token: self))
         /// unsignedInteger
         case .unsignedInteger:
-            return [
-                [
-                    CharacterSet.decimalDigits.require(.oneOrMore),
-                    T.ws.rule.require(.one)].sequence
-                
-                ].sequence.parse(as: self)
-            
+            return [CharacterSet.decimalDigits.require(.oneOrMore), T.ws.rule].sequence.reference(.structural(token: self))
         /// unsignedByte
         case .unsignedByte:
-            return [
-                [
-                    CharacterSet.decimalDigits.require(.oneOrMore),
-                    T.ws.rule.require(.one)].sequence
-                
-                ].sequence.parse(as: self)
-            
+            return [CharacterSet.decimalDigits.require(.oneOrMore), T.ws.rule].sequence.reference(.structural(token: self))
         /// unsignedWord
         case .unsignedWord:
-            return [
-                [
-                    CharacterSet.decimalDigits.require(.oneOrMore),
-                    T.ws.rule.require(.one)].sequence
-                
-                ].sequence.parse(as: self)
-            
+            return [CharacterSet.decimalDigits.require(.oneOrMore), T.ws.rule].sequence.reference(.structural(token: self))
         /// unsignedLongWord
         case .unsignedLongWord:
-            return [
-                [
-                    CharacterSet.decimalDigits.require(.oneOrMore),
-                    T.ws.rule.require(.one)].sequence
-                
-                ].sequence.parse(as: self)
-            
+            return [CharacterSet.decimalDigits.require(.oneOrMore), T.ws.rule].sequence.reference(.structural(token: self))
         /// unsignedLongLongWord
         case .unsignedLongLongWord:
-            return [
-                [
-                    CharacterSet.decimalDigits.require(.oneOrMore),
-                    T.ws.rule.require(.one)].sequence
-                
-                ].sequence.parse(as: self)
-            
+            return [CharacterSet.decimalDigits.require(.oneOrMore), T.ws.rule].sequence.reference(.structural(token: self))
         /// float
         case .float:
             return [
