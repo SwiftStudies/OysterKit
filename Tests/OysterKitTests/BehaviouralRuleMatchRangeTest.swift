@@ -42,11 +42,15 @@ class BehaviourRuleMatchRangeTest : XCTestCase {
                      "   stringBody   "
                      """
         let root = LabelledToken(withLabel: "root")
-
-        let choice = SequenceRule(Behaviour(.structural(token: root), cardinality: .one), and: [:], for: [voidRule, transientRule, tokenRule, transientRule, voidRule])
-
+        let sequence = [voidRule, transientRule, tokenRule, transientRule, voidRule].sequence.parse(as: root)
+        
+        XCTAssertTrue(voidRule.skipping)
+        XCTAssertTrue(transientRule.scanning)
+        XCTAssertTrue(tokenRule.structural)
+        
         do {
-            let tree = try AbstractSyntaxTreeConstructor().build(source, using: Parser(grammar: [choice]))
+            let tree = try AbstractSyntaxTreeConstructor().build(source, using: Parser(grammar: [sequence]))
+            print(tree.description)
             XCTAssertEqual("   stringBody   ", tree.matchedString)
             XCTAssertEqual("stringBody", "\(tree.children[0].token)")
         } catch {

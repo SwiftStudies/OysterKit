@@ -80,9 +80,8 @@ class FixValidations: XCTestCase {
     func testTerminalBody(){
         let source = "This is the body of a string \\\" that ends here\""
         do {
-            try test(STLRStringTest.terminalBody._rule(), with: source)
-            XCTFail("See below, should be checking the range of the result")
-//            XCTAssertEqual(source[context.range.upperBound..<source.unicodeScalars.endIndex], "\"")
+            let ast = try test(STLRStringTest.terminalBody._rule(), with: source)
+            XCTAssertEqual("\"", ast.matchedString)
         } catch {
             XCTFail("Match should not have thrown: \(error)")
         }
@@ -114,7 +113,7 @@ class FixValidations: XCTestCase {
     
     func testStringQuote(){
         do {
-            try test(STLRStringTest.stringQuote._rule(), with: "\"")
+            let ast = try test(STLRStringTest.stringQuote._rule(), with: "\"")
             XCTFail("See below, should be checking the range of the result")
 //            XCTAssertEqual(context.matchedString, "\"")
         } catch {

@@ -25,35 +25,7 @@
 import XCTest
 @testable import OysterKit
 
-class TestIR : IntermediateRepresentation {
-    enum MatchResult {
-        case success(Token,RuleAnnotations,Range<String.Index>), failed
-    }
-    func evaluating(_ token: Token) {
-        
-    }
-    
-    func succeeded(token: Token, annotations: RuleAnnotations, range: Range<String.Index>) {
-        results.append(.success(token, annotations, range))
-    }
-    
-    func failed() {
-        results.append(.failed)
-    }
-    
-    var results = [MatchResult]()
-    
-    required init(){
-        
-    }
-
-    func willBuildFrom(source: String, with: Language) {
-    }
-    func didBuild() {
-    }
-    func resetState() {
-    }
-}
+typealias TestIR = AbstractSyntaxTreeConstructor
 
 class RuleTests: XCTestCase {
 
@@ -111,20 +83,14 @@ class RuleTests: XCTestCase {
     
     func testOneFromCharacterSetToken(){
         let source = "Hello World"
-        let rule = LabelledToken(withLabel: "letter").from(CharacterSet.letters.require(.one))
+        let rule = CharacterSet.letters.require(.one).parse(as: LabelledToken(withLabel: "letter"))
         let lexer = Lexer(source: source)
-        let testIR = TestIR()
+        let testIR = AbstractSyntaxTreeConstructor(with: source)
         
         do {
             try rule.match(with: lexer, for: testIR)
-            
-            XCTFail("Shoudl check the specific results see below")
-//            case .success(let context):
-//                //Test stuff
-//                XCTAssertEqual("H", context.matchedString)
-//            default:
-//                XCTFail("Should have succeeded")
-//            }
+            let ast = try testIR.generate(HomogenousTree.self)
+            XCTAssertEqual("H", ast.matchedString)
         } catch {
             XCTFail("Unexpected error from match")
         }
@@ -138,14 +104,8 @@ class RuleTests: XCTestCase {
         
         do {
             try rule.match(with: lexer, for: testIR)
-            
-            XCTFail("Shoudl check the specific results see below")
-//            case .success(let context):
-//                //Test stuff
-//                XCTAssertEqual("Hello", context.matchedString)
-//            default:
-//                XCTFail("Should have succeeded")
-//            }
+            let ast = try testIR.generate(HomogenousTree.self, source: source)
+            XCTAssertEqual("Hello", ast.matchedString)
         } catch {
             XCTFail("Unexpected error from match")
         }
@@ -159,14 +119,8 @@ class RuleTests: XCTestCase {
         
         do {
             try rule.match(with: lexer, for: testIR)
-            XCTFail("Shoudl check the specific results see below")
-//            switch matchResult{
-//            case .success(let context):
-//                //Test stuff
-//                XCTAssertEqual("", context.matchedString)
-//            default:
-//                XCTFail("Should have succeeded")
-//            }
+            let ast = try testIR.generate(HomogenousTree.self, source: source)
+            XCTAssertEqual("", ast.matchedString)
         } catch {
             XCTFail("Unexpected error from match")
         }
@@ -182,25 +136,37 @@ class RuleTests: XCTestCase {
         
         do {
             try rule.match(with: lexer, for: testIR)
-            XCTFail("Shoudl check the specific results see below")
-//            case .success(let context):
-//                //Test stuff
-//                XCTAssertEqual("", context.matchedString)
-//                switch try " ".match(with: lexer, for: testIR){
-//                case .success(let context):
-//                    XCTAssertEqual(" ", context.matchedString)
-//                    switch try rule.match(with: lexer, for: testIR){
-//                    case .success(let context):
-//                        XCTAssertEqual("", context.matchedString)
-//                    default:
-//                        XCTFail("Should have succeeded")
-//                    }
-//                default:
-//                    XCTFail("Should have succeeded")
-//                }
-//            default:
-//                XCTFail("Should have succeeded")
-//            }
+            try " ".match(with: lexer, for: testIR)
+            try rule.match(with: lexer, for: testIR)
+            let ast = try testIR.generate(HomogenousTree.self, source: source)
+            XCTAssertEqual("", ast.children.first?.matchedString ?? "error")
+            XCTAssertEqual("", ast.children.last?.matchedString ?? "error")
+            XCTAssertEqual("letter", "\(ast.children.first?.token ?? "error")")
+            XCTAssertEqual("letter", "\(ast.children.last?.token ?? "error")")
+            XCTAssertEqual(" World", ast.matchedString) //Not super intuitive but the sequence is scanning not skipping
+        } catch {
+            XCTFail("Unexpected error from match")
+        }
+    }
+    
+    func testGreedilyConsumeCharacterSetSkipStartAndEndToken(){
+        let source = "Hello World"
+        let rule : Rule = -[CharacterSet.letters.require(.oneOrMore).parse(as: LabelledToken(withLabel: "letter"))].sequence
+        let lexer = Lexer(source: source)
+        let testIR = TestIR()
+        
+        lexer.mark()
+        
+        do {
+            try rule.match(with: lexer, for: testIR)
+            try " ".match(with: lexer, for: testIR)
+            try rule.match(with: lexer, for: testIR)
+            let ast = try testIR.generate(HomogenousTree.self, source: source)
+            XCTAssertEqual("", ast.children.first?.matchedString ?? "error")
+            XCTAssertEqual("", ast.children.last?.matchedString ?? "error")
+            XCTAssertEqual("letter", "\(ast.children.first?.token ?? "error")")
+            XCTAssertEqual("letter", "\(ast.children.last?.token ?? "error")")
+            XCTAssertEqual(" ", ast.matchedString)
         } catch {
             XCTFail("Unexpected error from match")
         }
