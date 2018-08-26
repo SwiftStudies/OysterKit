@@ -43,16 +43,7 @@ enum OneOfEverythingGrammar : Int, Token {
             
         /// boolean
         case .boolean:
-            return [
-                [
-                    [
-                        "true".require(.one),
-                        "false".require(.one)].choice
-                    ,
-                    T.ws.rule.require(.one)
-                ].sequence
-                
-                ].sequence.parse(as: self)
+            return [["true","false"].choice, T.ws.rule].sequence.reference(.structural(token: self))
             
         /// integer
         case .integer:
