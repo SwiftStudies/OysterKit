@@ -234,7 +234,7 @@ public class AbstractSyntaxTreeConstructor  {
      - Parameter using: The ``AbstractSyntaxTree`` to construct
      - Returns: The ``AbstractSyntaxTree``
      */
-    func generate<AST:AbstractSyntaxTree>(_ astType:AST.Type) throws ->AST {
+    func generate<AST:AbstractSyntaxTree>(_ astType:AST.Type, source:String? = nil) throws ->AST {
         do {
             let topNode : IntermediateRepresentationNode
             
@@ -249,7 +249,7 @@ public class AbstractSyntaxTreeConstructor  {
             } else {
                 topNode = topNodes[0]
             }
-            return try AST(with: topNode, from: source)
+            return try AST(with: topNode, from: source ?? self.source)
         } catch {
             _errors.append(error)
             throw ConstructionError.constructionFailed(causes: _errors)
@@ -349,12 +349,7 @@ extension AbstractSyntaxTreeConstructor : IntermediateRepresentation {
     public func succeeded(token: Token, annotations: RuleAnnotations, range: Range<String.Index>) {
         let children = nodeStack.pop().nodes
         
-        let node : IntermediateRepresentationNode
-        if children.count == 0 {
-            node = IntermediateRepresentationNode(for: token, at: range,  annotations: annotations)
-        } else {
-            node = IntermediateRepresentationNode(for: token, at: children.combinedRange, children: children, annotations: annotations)
-        }
+        let node = IntermediateRepresentationNode(for: token, at: range, children: children, annotations: annotations)
         
         nodeStack.top?.append(node)
     }
