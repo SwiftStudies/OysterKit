@@ -292,6 +292,7 @@ extension Rule{
      
      - Parameter behaviour: The new behaviour
      */
+    #warning("Refactor to rule(with behaviour)")
     internal func instanceWith(with behaviour:Behaviour)->Rule{
         return rule(with: behaviour, annotations: nil)
     }
@@ -302,7 +303,8 @@ extension Rule{
      
      - Parameter annotations: The new annotations
      */
+    #warning("Get rid of this, it's the same as annotate with")
     internal func instanceWith(annotations:RuleAnnotations)->Rule{
-        return rule(with: nil, annotations: annotations)
+        return annotatedWith(annotations)
     }
 }
