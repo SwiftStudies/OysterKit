@@ -232,10 +232,16 @@ public extension Rule {
             if matches == 0 && skippable {
                 #warning("If a structural node is pinned we should tell the IR to create a node anyway")
                 lexer.rewind()
+                if structural {
+                    ir.failed()
+                }
                 return
             }
             if matches < behaviour.cardinality.minimumMatches {
                 lexer.rewind()
+                if structural {
+                    ir.failed()
+                }
                 if let specificError = self.error {
                     throw LanguageError.scanningError(at: lexer.index..<lexer.index, message: specificError)
                 } else {
