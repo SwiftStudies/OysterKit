@@ -125,10 +125,7 @@ public extension Rule {
     
     /// `true` if the rule creates ndoes, false otherwise
     public var structural : Bool {
-        if case .structural(_) = behaviour.kind {
-            return true
-        }
-        return false
+        return behaviour.token != nil
     }
     
     /// `true` if the rule creates ndoes, false otherwise
@@ -141,7 +138,10 @@ public extension Rule {
     
     /// `true` if the rule creates ndoes, false otherwise
     public var scanning : Bool {
-        return behaviour.token != nil
+        if case .scanning = behaviour.kind {
+            return true
+        }
+        return false
     }
 
     /**
@@ -178,6 +178,7 @@ public extension Rule {
         //Prepare for any lookahead by putting a fake IR in place if is lookahead
         //as well as taking an additional mark to ensure position will always be
         //where it was
+        let printDebugMessages = false
         let ir = behaviour.lookahead ? LookAheadIR() : ir
         if behaviour.lookahead {
             lexer.mark(skipping:true)
@@ -245,13 +246,7 @@ public extension Rule {
 
         switch behaviour.kind {
         case .structural(let token):
-            if behaviour.negate {
-                _ = lexer.proceed()
-                ir.evaluating(token)
-                ir.succeeded(token: token, annotations: annotations, range: lexer.proceed().range)
-            } else {
-                ir.succeeded(token: token, annotations: annotations, range: lexer.proceed().range)
-            }
+            ir.succeeded(token: token, annotations: annotations, range: lexer.proceed().range)
         case .scanning, .skipping:
             _ = lexer.proceed()
         }
