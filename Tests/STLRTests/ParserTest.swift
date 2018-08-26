@@ -35,43 +35,43 @@ fileprivate enum Tokens : Int, Token {
     var rule: Rule {
         switch self {
         case .dummy:
-            return ParserRule.terminal(produces: self, "😁",nil)
+            return "😁"
         case .whitespace:
-            return ParserRule.terminalFrom(produces: self, CharacterSet.whitespaces,nil)
+            return CharacterSet.whitespaces
         case .whitespaces:
-            return ParserRule.repeated(produces: self, Tokens.whitespace.rule,min: 1, limit: nil,nil)
+            return Tokens.whitespace.rule.require(.oneOrMore).reference(.structural(token: self))
         case .letter:
-            return ParserRule.terminalFrom(produces: self, CharacterSet.letters,nil)
+            return CharacterSet.letters
         case .word:
-            return ParserRule.repeated(produces: self, Tokens.letter.rule, min: 1, limit: nil,nil)
+            return Tokens.letter.rule.require(.oneOrMore).reference(.structural(token: self))
         case .punctuationCharacters:
-            return ParserRule.terminalFrom(produces: self, CharacterSet.punctuationCharacters,nil)
+            return CharacterSet.punctuationCharacters.reference(.scanning)
         case .whitespaceWord:
-            return ParserRule.sequence(produces: self, [Tokens.whitespaces.rule,Tokens.word.rule],nil)
+            return [Tokens.whitespace.rule, Tokens.word.rule].sequence.reference(.structural(token: self))
         case .optionalWhitespaceWord:
-            return ParserRule.optional(produces: self, Tokens.whitespaceWord.rule,nil)
+            return Tokens.whitespaceWord.rule.require(.optionally).reference(.structural(token: self))
         case .repeatedOptionalWhitespaceWord:
-            return ParserRule.repeated(produces: self, Tokens.optionalWhitespaceWord.rule, min: nil, limit: nil,nil)
+            return Tokens.whitespaceWord.rule.require(.noneOrMore).reference(.structural(token: self))
         case .fullStop:
-            return ParserRule.terminal(produces: self, ".",nil)
+            return "."
         case .questionMark:
-            return ParserRule.terminal(produces: self, "?",nil)
+            return "?"
         case .exlamationMark:
-            return ParserRule.terminal(produces: self, "!",nil)
+            return "!"
         case .endOfSentance:
-            return ParserRule.oneOf(produces: self, [
+            return [
                 Tokens.fullStop.rule,
                 Tokens.questionMark.rule,
-                Tokens.exlamationMark.rule,
-                ],nil)
+                Tokens.exlamationMark.rule
+            ].choice.reference(.structural(token: self))
         case .greeting:
-            return ParserRule.terminal(produces:self, "Hello",nil)
+            return "Hello".reference(.structural(token: self))
         case .sentance:
-            return ParserRule.sequence(produces: self, [
+            return [
                 Tokens.word.rule,
                 Tokens.repeatedOptionalWhitespaceWord.rule,
                 Tokens.endOfSentance.rule
-                ],nil)
+                ].sequence.reference(.structural(token: self))
         }
     }
 }
@@ -148,8 +148,8 @@ class ParserTest: XCTestCase {
     }
     
     func testOptionalNegative(){
-        let pling = ParserRule.terminal(produces: Tokens.exlamationMark, "!",nil)
-        let optional = ParserRule.optional(produces: Tokens.exlamationMark, pling, nil)
+        let pling = "!".parse(as: Tokens.exlamationMark)
+        let optional = pling.require(.optionally)
         
         let parser = TestParser(source: "?", grammar: [optional])
         

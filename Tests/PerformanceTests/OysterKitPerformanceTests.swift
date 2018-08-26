@@ -926,28 +926,22 @@ class FullSwiftParser : Parser{
     }
     
     fileprivate final class NullIR : IntermediateRepresentation{
-        func willEvaluate(token: Token, at position: String.UnicodeScalarView.Index) -> MatchResult? {
-            return nil
+        func evaluating(_ token: Token) {
         }
         
-        func didEvaluate(token: Token, annotations: RuleAnnotations, matchResult: MatchResult) {
-            
+        func succeeded(token: Token, annotations: RuleAnnotations, range: Range<String.Index>) {
         }
         
+        func failed() {
+        }
+        
+
         fileprivate func willBuildFrom(source: String, with: Language) {
             
         }
         
         fileprivate func didBuild() {
             
-        }
-        
-        fileprivate func didEvaluate(rule: Rule, matchResult: MatchResult) {
-            
-        }
-        
-        fileprivate func willEvaluate(rule: Rule, at position: String.UnicodeScalarView.Index) -> MatchResult? {
-            return nil
         }
         
         func resetState() {
@@ -977,12 +971,7 @@ class FullSwiftParser : Parser{
         // This is an example of a performance test case.
         self.measure {
             do {
-                let result = try parser.grammar[0].match(with: Lexer(source:self.stlrSource007), for: NullIR())
-                if case .success = result {
-                    
-                } else {
-                    XCTFail("Failed to parse")
-                }
+                try parser.grammar[0].match(with: Lexer(source:self.stlrSource007), for: NullIR())
             } catch (let error){
                 XCTFail("Unexpected failure \(error)")
             }
