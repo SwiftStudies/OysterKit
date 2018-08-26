@@ -42,12 +42,52 @@ prefix  operator ~
 
 public extension Rule {
     /**
-     Creates a new instance of the rule annotated with the specified annotations
+     Creates a new instance of the rule annotated with the specified annotations.
+     If you supply annotations that impact scanning (token, void, transient), they
+     will be filtered out, but applied to the resultant behaviour.
+     
      - Parameter annotations: The desired annotations
      - Returns: A new instance of the rule with the specified annotations
      */
     public func annotatedWith(_ annotations:RuleAnnotations)->Rule{
-        return rule(with: nil, annotations: annotations)
+        var resultantRule : Rule = self
+        var filterOut = [RuleAnnotation]()
+        
+        for (annotation,value) in annotations {
+            switch annotation {
+            case .transient,.void:
+                filterOut.append(annotation)
+                switch value {
+                case .bool(let value):
+                    if !value {
+                        continue
+                    }
+                    fallthrough
+                case .set:
+                    if case .void = annotation {
+                        resultantRule = resultantRule.skip()
+                    } else {
+                        resultantRule = resultantRule.scan()
+                    }
+                default:
+                    #warning("This should be a log entry")
+                    print("Warning: \(annotation) supplied with \(value) when only supports .set")
+                }
+            case .token:
+                filterOut.append(annotation)
+                switch value {
+                case .string(let stringValue):
+                    resultantRule = resultantRule.parse(as: LabelledToken(withLabel: stringValue))
+                default:
+                    #warning("This should be a log entry")
+                    print("Warning: \(annotation) supplied with \(value) when only supports .string")
+                    resultantRule = resultantRule.parse(as: LabelledToken(withLabel: "\(value)"))
+                }
+            default: break
+            }
+        }
+        
+        return resultantRule.rule(with: nil, annotations: annotations.filter({!filterOut.contains($0.key)}))
     }
     
     /**
@@ -98,7 +138,7 @@ public extension Rule{
      - Returns: A new version of the rule
      */
     public func negate()->Rule{
-        return rule(with: Behaviour(.scanning, cardinality: behaviour.cardinality, negated: true, lookahead: behaviour.lookahead), annotations: annotations)
+        return rule(with: Behaviour(behaviour.kind, cardinality: behaviour.cardinality, negated: true, lookahead: behaviour.lookahead), annotations: annotations)
     }
     
     /**
