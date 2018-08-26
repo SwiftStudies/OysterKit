@@ -95,6 +95,23 @@ class TestAbstractSyntaxTree: XCTestCase {
         }
     }
     
+    func testRepeatedNegatedCharacters(){
+        let token = LabelledToken(withLabel: "match")
+        let rule = !CharacterSet.decimalDigits.require(.oneOrMore).parse(as: token)
+        let shouldMatch = "Hello"
+        let source = shouldMatch
+        
+        do {
+            let ast = try AbstractSyntaxTreeConstructor(with: source).build(using: Parser(grammar: [rule]))
+            XCTAssertEqual(ast.matchedString, shouldMatch)
+            XCTAssertEqual("\(ast.token)", "\(token)")
+            XCTAssertEqual(ast.children.count, 0)
+            print(ast)
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+    }
+    
     func testBuildFromSkipScanTokenScanSkipMatch(){
         let token = LabelledToken(withLabel: "match")
         let rule = [
