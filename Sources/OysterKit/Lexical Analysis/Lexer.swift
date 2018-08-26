@@ -172,27 +172,46 @@ open class Lexer : LexicalAnalyzer, CustomStringConvertible{
     open func proceed() -> LexicalContext {
         let mark = marks.removeLast()
         
-        if !mark.skipping {
-            marks.last?.scanEnd = mark.scanEnd
-            if marks.last?.preSkipLocation == mark.preSkipLocation {
-                marks.last?.postSkipLocation = mark.postSkipLocation
-            }
-        } else {
+        if mark.skipping {
             mark.postSkipLocation = scanner.scanLocation
+            // If scan end is nil, the new top hasn't started scanning yet
             if marks.last?.scanEnd == nil {
                 marks.last?.postSkipLocation = scanner.scanLocation
             }
+        } else {
+            marks.last?.scanEnd = mark.scanEnd ?? scanner.scanLocation
+            if marks.last?.preSkipLocation == mark.preSkipLocation {
+                marks.last?.postSkipLocation = mark.postSkipLocation
+            }
         }
+        
         return LexerContext(mark: mark, endLocation: mark.scanEnd ?? scanner.scanLocation, source: source)
     }
     
     internal func describeUnwoundStack(){
-        var stackCopy = marks
-        let originalDepth = marks.count
-        while let top = stackCopy.first{
-            stackCopy.removeFirst()
-            print(String(repeating: "ᐧ", count: originalDepth-depth), scanner.string[top.preSkipLocation..<top.postSkipLocation],"⇥",scanner.string[top.postSkipLocation..<scanner.scanLocation], separator: "")
+        func prefix(_ string:String, markedWith mark:Mark, at currentLocation:String.UnicodeScalarView.Index)->String{
+            return String(string[mark.preSkipLocation..<mark.postSkipLocation])
         }
+
+        func scanned(_ string:String, markedWith mark:Mark, at currentLocation:String.UnicodeScalarView.Index)->String{
+            return String(string[mark.postSkipLocation..<(mark.scanEnd ?? currentLocation)])
+        }
+
+        func suffix(_ string:String, markedWith mark:Mark, at currentLocation:String.UnicodeScalarView.Index)->String{
+            if let scanEnd = mark.scanEnd {
+                return String(string[scanEnd..<currentLocation])
+            } else {
+                return ""
+            }
+        }
+
+        for mark in marks.reversed() {
+            let before = prefix(scanner.string, markedWith: mark, at: scanner.scanLocation)
+            let scan = scanned(scanner.string, markedWith: mark, at: scanner.scanLocation)
+            let after = suffix(scanner.string, markedWith: mark, at: scanner.scanLocation)
+            print("'\(before)'⊕'\(scan)'⊕'\(after)'")
+        }
+        
     }
     
     /// Removes the top most `Mark` from the stack without creating a new `LexicalContext` effectively advancing the scanning position
