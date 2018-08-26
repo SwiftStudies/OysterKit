@@ -319,8 +319,11 @@ open class Lexer : LexicalAnalyzer, CustomStringConvertible{
         var result = "Scanning: \(scanner.string.count) characters, currently at \(scanner) '\(scanner.current)':\n"
         
         for mark in marks {
-            let position = scanner.string.unicodeScalars.distance(from: scanner.string.unicodeScalars.startIndex, to: mark.preSkipLocation)
-            result += "\t\(position)\n"
+            let preskipPosition = scanner.string.unicodeScalars.distance(from: scanner.string.unicodeScalars.startIndex, to: mark.preSkipLocation)
+            let postskipPosition = scanner.string.unicodeScalars.distance(from: scanner.string.unicodeScalars.startIndex, to: mark.postSkipLocation)
+            let matchIfSatisfied = "\(scanner.string[mark.preSkipLocation..<mark.postSkipLocation])⇥\(scanner.string[mark.preSkipLocation..<scanner.scanLocation])"
+            result += "\t\(mark.skipping ? "↱" : "→") \(preskipPosition):\(scanner.string[mark.preSkipLocation...mark.preSkipLocation])⇥\(postskipPosition):\(scanner.string[mark.postSkipLocation...mark.postSkipLocation])\n"
+            result += "\t\t\(matchIfSatisfied)\n"
         }
         
         return result
