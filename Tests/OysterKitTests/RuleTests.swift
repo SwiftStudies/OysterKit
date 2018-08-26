@@ -151,7 +151,7 @@ class RuleTests: XCTestCase {
     
     func testGreedilyConsumeCharacterSetSkipStartAndEndToken(){
         let source = "Hello World"
-        let rule : Rule = -[CharacterSet.letters.require(.oneOrMore).parse(as: LabelledToken(withLabel: "letter"))].sequence
+        let rule : Rule = CharacterSet.letters.require(.oneOrMore).skip().reference(.structural(token: LabelledToken(withLabel: "letter")))
         let lexer = Lexer(source: source)
         let testIR = TestIR()
         
@@ -167,6 +167,7 @@ class RuleTests: XCTestCase {
             XCTAssertEqual("letter", "\(ast.children.first?.token ?? "error")")
             XCTAssertEqual("letter", "\(ast.children.last?.token ?? "error")")
             XCTAssertEqual(" ", ast.matchedString)
+            print(ast.description)
         } catch {
             XCTFail("Unexpected error from match")
         }
