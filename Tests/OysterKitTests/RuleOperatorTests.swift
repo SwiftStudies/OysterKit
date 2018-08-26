@@ -90,6 +90,8 @@ class RuleOperatorTests: XCTestCase {
     }
     
     func testNotOperator(){
+        #warning("It's likely this can be just changed as negated rules should now support token creation directly. Make sure all other tests are passing first")
+        
         let hello = LabelledToken(withLabel: "hello")
         let singleCardinalityRule = "hello".parse(as: hello)
         let multipleCardinalityRule = "hello".parse(as: hello).require(.oneOrMore)
