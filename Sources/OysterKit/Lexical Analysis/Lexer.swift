@@ -191,7 +191,7 @@ open class Lexer : LexicalAnalyzer, CustomStringConvertible{
             top?.postSkipLocation = mark.postSkipLocation
             top?.scanEnd = mark.scanEnd ?? scanner.scanLocation
         } else {
-            top?.scanEnd = mark.scanEnd ?? scanner.scanLocation
+            top?.scanEnd = mark.scanEnd ?? mark.preSkipLocation
         }
         
         assert(mark.postSkipLocation <= mark.scanEnd ?? mark.postSkipLocation)
