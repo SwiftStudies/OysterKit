@@ -177,19 +177,28 @@ open class Lexer : LexicalAnalyzer, CustomStringConvertible{
         let mark = marks.removeLast()
         
         if mark.skipping {
-            mark.postSkipLocation = scanner.scanLocation
-            // If scan end is nil, the new top hasn't started scanning yet
-            if marks.last?.scanEnd == nil {
-                marks.last?.postSkipLocation = scanner.scanLocation
+            // If the skip is at the start of its parents run
+            if top?.postSkipLocation == mark.preSkipLocation {
+                top?.postSkipLocation = scanner.scanLocation
+                top?.scanEnd = scanner.scanLocation
+            // Otherwise if I'm the first skip (because a previous skip will have set this)
+            } else if top?.scanEnd == nil {
+                top?.scanEnd = mark.preSkipLocation
             }
+            return LexerContext(mark: mark, endLocation: mark.postSkipLocation, source: source)
+        }
+
+        // If we started at the same place, skip the same as I did apply the same skip range
+        if top?.preSkipLocation == mark.preSkipLocation {
+            top?.postSkipLocation = mark.postSkipLocation
+            top?.scanEnd = mark.scanEnd ?? scanner.scanLocation
         } else {
-            marks.last?.scanEnd = mark.scanEnd ?? scanner.scanLocation
-            if marks.last?.preSkipLocation == mark.preSkipLocation {
-                marks.last?.postSkipLocation = mark.postSkipLocation
-            }
+            top?.scanEnd = mark.scanEnd ?? scanner.scanLocation
         }
         
-        return LexerContext(mark: mark, endLocation: mark.scanEnd ?? scanner.scanLocation, source: source)
+        assert(mark.postSkipLocation <= mark.scanEnd ?? mark.postSkipLocation)
+        
+        return LexerContext(mark: mark, endLocation: mark.scanEnd ?? mark.postSkipLocation, source: source)
     }
     
     internal func describeUnwoundStack(){
