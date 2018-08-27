@@ -85,7 +85,7 @@ fileprivate extension StringProtocol {
 
 fileprivate extension _GrammarStructure.Node {
     func stringEnum(to output:TextFile, accessLevel:String){
-        output.print("","// \(dataType(accessLevel))","\(accessLevel) enum \(dataType(accessLevel)) : Swift.String, Codable {").indent()
+        output.print("","// \(dataType(accessLevel))","\(accessLevel) enum \(dataType(accessLevel)) : Swift.String, Codable, CaseIterable {").indent()
         let cases = children.map({
             let caseMatchedString = $0.name.hasPrefix("\"") ? String($0.name.dropFirst().dropLast()) : $0.name
             let caseMatchedName   = caseMatchedString.caseName.propertyName
