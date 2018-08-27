@@ -47,7 +47,7 @@ fileprivate enum STLRStringTest : Int, Token {
                         T.stringQuote._rule(),
                         ~CharacterSet.newlines,
                     ].choice),
-                ].choice
+                ].choice.reference(.structural(token: self))
         // terminalBody
         case .terminalBody:
             return T.stringCharacter._rule().instanceWith(with: Behaviour(.skipping, cardinality: .oneOrMore))
@@ -77,6 +77,7 @@ fileprivate enum STLRStringTest : Int, Token {
 
 class FixValidations: XCTestCase {
 
+    
     func testTerminalBody(){
         let source = "This is the body of a string \\\" that ends here\""
         do {
@@ -106,7 +107,7 @@ class FixValidations: XCTestCase {
         
         for character in characters {
             do {
-                try test(STLRStringTest.stringCharacter._rule(), with: "\\\(character)")
+                print(try test(STLRStringTest.stringCharacter._rule(), with: "\\\(character)").description)
             } catch {
                 XCTFail("Match should not have thrown for \(character): \(error)")
             }
