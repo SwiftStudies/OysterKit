@@ -129,6 +129,10 @@ open class Lexer : LexicalAnalyzer, CustomStringConvertible{
         }
     }
     
+    private var top : Mark? {
+        return marks.last
+    }
+    
     /// The current depth of the `Mark` stack used for unwinding failed rules
     public var depth: Int {
         return marks.count
