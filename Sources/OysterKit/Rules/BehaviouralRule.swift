@@ -179,7 +179,9 @@ public extension Rule {
         //as well as taking an additional mark to ensure position will always be
         //where it was
         let printDebugMessages = false
-        let ir = behaviour.lookahead ? LookAheadIR() : ir
+        
+        // Neither skipping nor lookahead should generate tokens
+        let ir = behaviour.lookahead || skipping ? LookAheadIR() : ir
         if behaviour.lookahead {
             lexer.mark(skipping:true)
         }
