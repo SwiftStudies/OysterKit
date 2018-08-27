@@ -45,7 +45,16 @@ public final class ReferenceRule : Rule {
     }
     
     public func rule(with behaviour: Behaviour?, annotations: RuleAnnotations?) -> Rule {
-        return ReferenceRule(behaviour ?? self.behaviour, and: annotations ?? self.annotations, for: references)
+        // Changes to scanning, skipping, structure should be applied differently
+        if let behaviour = behaviour, behaviour.kind != self.behaviour.kind {
+            // Apply the new kind to just the referenced rule, but leave this one's kind untouched
+            let referenceRuleBehaviour = Behaviour(self.behaviour.kind, cardinality: behaviour.cardinality, negated: behaviour.negate, lookahead: behaviour.lookahead)
+            let referencedRuleBehaviour = Behaviour(behaviour.kind, cardinality: references.behaviour.cardinality, negated: references.behaviour.negate, lookahead: references.behaviour.lookahead)
+
+            return ReferenceRule(referenceRuleBehaviour, and: annotations ?? self.annotations, for: references.rule(with: referencedRuleBehaviour, annotations: nil))
+        } else {
+            return ReferenceRule(behaviour ?? self.behaviour, and: annotations ?? self.annotations, for: references)
+        }
     }
     
     /// A textual description of the rule

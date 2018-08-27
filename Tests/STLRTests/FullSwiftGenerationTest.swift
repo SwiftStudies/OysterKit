@@ -150,38 +150,106 @@ class FullSwiftGenerationTest: XCTestCase {
         }
     }
 
-
+    func makeAST(for token:STLRTokens, from source:String) throws -> HomogenousTree {
+        return try AbstractSyntaxTreeConstructor(with: source).build(using: Parser(grammar: [token.rule]))
+    }
     
     func testQuantifier(){
         XCTAssertNoThrow(try checkSimplePassFail(for: .quantifier, passing: ["*","?","+"], failing: ["&"], expectNode: true))
+        
+        do {
+            let ast = try makeAST(for: .quantifier, from: "*")
+            XCTAssertEqual(0, ast.children.count)
+            XCTAssertEqual(STLRTokens.quantifier, ast.token as! STLRTokens)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
     
     func testNegated(){
         XCTAssertNoThrow(try checkSimplePassFail(for: .negated, passing: ["!"], failing: ["&"], expectNode: true))
+        do {
+            let token : STLRTokens = .negated
+            let ast = try makeAST(for: token, from: "!")
+            XCTAssertEqual(0, ast.children.count)
+            XCTAssertEqual(token, ast.token as! STLRTokens)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testLookahead(){
         XCTAssertNoThrow(try checkSimplePassFail(for: .lookahead, passing: [">>"], failing: [">&"], expectNode: true))
-    }
+        do {
+            let token : STLRTokens = .lookahead
+            let ast = try makeAST(for: token, from: ">>")
+            XCTAssertEqual(0, ast.children.count)
+            XCTAssertEqual(token, ast.token as! STLRTokens)
+        } catch {
+            XCTFail("\(error)")
+        }    }
 
     func testTransient(){
         XCTAssertNoThrow(try checkSimplePassFail(for: .transient, passing: ["~"], failing: ["-","&"], expectNode: true))
+        do {
+            let token = STLRTokens.transient
+            let ast = try makeAST(for: token, from: "~")
+            XCTAssertEqual(0, ast.children.count)
+            XCTAssertEqual(token, ast.token as! STLRTokens)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
     
     func testVoid(){
         XCTAssertNoThrow(try checkSimplePassFail(for: .void, passing: ["-"], failing: ["~","&"], expectNode: true))
+        do {
+            let token = STLRTokens.void
+            let ast = try makeAST(for: token, from: "-")
+            XCTAssertEqual(0, ast.children.count)
+            XCTAssertEqual(token, ast.token as! STLRTokens)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testStringQuote(){
         XCTAssertNoThrow(try checkSimplePassFail(for: .stringQuote, passing: ["\""], failing: ["'","\\\""], expectNode: true))
-    }
+        do {
+            let token = STLRTokens.stringQuote
+            let ast = try makeAST(for: token, from: "\"")
+            XCTAssertEqual(0, ast.children.count)
+            XCTAssertEqual(token, ast.token as! STLRTokens)
+        } catch {
+            XCTFail("\(error)")
+        }    }
     
     func testTerminalBody(){
         XCTAssertNoThrow(try checkSimplePassFail(for: .terminalBody, passing: ["lkjdslkf","\\\"escape quote should be ok"], failing: ["ddd","\""], expectNode: true))
+        do {
+            let token = STLRTokens.terminalBody
+            let source = "Terminal"
+            let ast = try makeAST(for: token, from: source)
+            XCTAssertEqual(0, ast.children.count)
+            XCTAssertEqual(token, ast.token as! STLRTokens)
+            XCTAssertEqual(source, ast.matchedString)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testStringBody(){
         XCTAssertNoThrow(try checkSimplePassFail(for: .stringBody, passing: ["lkjdslkf","\\\"escape quote should be ok"], failing: ["ddd","\""], expectNode: true))
+        do {
+            let token = STLRTokens.stringBody
+            let source = "String"
+            let ast = try makeAST(for: token, from: source)
+            XCTAssertEqual(0, ast.children.count)
+            XCTAssertEqual(token, ast.token as! STLRTokens)
+            XCTAssertEqual(source, ast.matchedString)
+        } catch {
+            XCTFail("\(error)")
+        }
     }
 
     func testString(){
@@ -192,6 +260,21 @@ class FullSwiftGenerationTest: XCTestCase {
             ""
         ]
         XCTAssertNoThrow(try checkSimplePassFail(for: .string, passing: matches.map({"\"\($0)\""}), failing: ["\"ddd","\"kdlsfj\n","dsfdsf"], expectNode: true, matches: matches))
+        do {
+            let token = STLRTokens.string
+            let source = "\"String\""
+            let ast = try makeAST(for: token, from: source)
+            XCTAssertEqual(1, ast.children.count)
+            XCTAssertEqual(token, ast.token as! STLRTokens)
+            if let body = ast.children.first, ast.children.count == 1 {
+                XCTAssertEqual(.stringBody, body.token as! STLRTokens)
+                XCTAssertEqual(String(source.dropLast().dropFirst()), body.matchedString)
+            } else {
+                XCTFail("Expected exactly one child of type stringBody")
+            }
+        } catch {
+            XCTFail("\(error)")
+        }
     }
     
     func testTerminalString(){

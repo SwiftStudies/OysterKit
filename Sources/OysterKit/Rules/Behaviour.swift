@@ -37,13 +37,34 @@ public struct Behaviour {
      (structural), is scanning (should be included in the match range, but creates no token) or
      skipping (must be matched, but is not included in the bounds of the match range).
      */
-    public enum Kind {
+    public enum Kind : Equatable {
         /// Do not include any matches in the bounds of the match
         case    skipping
         /// Do not create structure but do include in the bounds of the match
         case    scanning
         /// Include in the bounds of the match and create a structural node in the AST
         case    structural(token:Token)
+        
+        /// Compares two kinds
+        public static func ==(lhs:Kind, rhs:Kind)->Bool{
+            switch lhs {
+            case .skipping:
+                if case Kind.skipping = rhs {
+                    return true
+                }
+                return false
+            case .scanning:
+                if case Kind.skipping = rhs {
+                    return true
+                }
+                return false
+            case .structural(let lhsToken):
+                if case let Kind.structural(rhsToken) = rhs {
+                    return lhsToken == rhsToken
+                }
+                return false
+            }
+        }
     }
 
     
