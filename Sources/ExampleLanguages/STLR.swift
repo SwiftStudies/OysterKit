@@ -85,7 +85,7 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
                             
             /// characterSet
             case .characterSet:
-                return [    -".",    T.characterSetName.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Unknown character set")])].sequence.reference(.structural(token: self))
+                return [    -".",    T.characterSetName.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Unknown character set")]).scan()].sequence.reference(.structural(token: self))
                             
             /// rangeOperator
             case .rangeOperator:
@@ -305,7 +305,7 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
 public struct STLR : Codable {
     
     // Quantifier
-    public enum Quantifier : Swift.String, Codable {
+    public enum Quantifier : Swift.String, Codable, CaseIterable {
         case star = "*",plus = "+",questionMark = "?",dash = "-"
     }
     
@@ -320,7 +320,7 @@ public struct STLR : Codable {
     }
     
     // CharacterSetName
-    public enum CharacterSetName : Swift.String, Codable {
+    public enum CharacterSetName : Swift.String, Codable, CaseIterable {
         case letter,uppercaseLetter,lowercaseLetter,alphaNumeric,decimalDigit,whitespaceOrNewline,whitespace,newline,backslash
     }
     
@@ -332,7 +332,7 @@ public struct STLR : Codable {
     public typealias CharacterRange = [TerminalString] 
     
     // Boolean
-    public enum Boolean : Swift.String, Codable {
+    public enum Boolean : Swift.String, Codable, CaseIterable {
         case `true` = "true",`false` = "false"
     }
     
@@ -583,7 +583,7 @@ public struct STLR : Codable {
     }
     
     // StandardType
-    public enum StandardType : Swift.String, Codable {
+    public enum StandardType : Swift.String, Codable, CaseIterable {
         case int = "Int",double = "Double",string = "String",bool = "Bool"
     }
     

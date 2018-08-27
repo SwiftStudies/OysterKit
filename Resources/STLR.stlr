@@ -77,7 +77,7 @@ characterSetName                = "letter" |
 "newline" |
 "backslash"
 
-characterSet                    = -"." @error("Unknown character set") characterSetName
+characterSet                    = -"." @error("Unknown character set") ~characterSetName
 
 -rangeOperator                  = ".." @error("Expected ... in character range") "."
 characterRange                  = terminalString rangeOperator @error("Range must be terminated") terminalString
