@@ -284,11 +284,11 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
                             
             /// modules
             case .modules:
-                return T.moduleImport.rule.require(.oneOrMore).reference(.structural(token: self), annotations: [:])
+                return [T.moduleImport.rule.require(.oneOrMore)].sequence.reference(.structural(token: self), annotations: [:])
                             
             /// rules
             case .rules:
-                return T.rule.rule.require(.oneOrMore).annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected at least one rule")]).reference(.structural(token: self), annotations: [:])
+                return [T.rule.rule.require(.oneOrMore).annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected at least one rule")])].sequence.reference(.structural(token: self), annotations: [:])
                             
         }
     }
