@@ -32,6 +32,12 @@ public protocol Token {
     var rawValue : Int { get }
 }
 
+extension Token {
+    public static func ==(lhs:Token, rhs:Token)->Bool{
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
 /// Extensions to enable any Int to be used as a token. Note that **only positive integers should be used**
 extension Int {
     /// A token from this integer value
