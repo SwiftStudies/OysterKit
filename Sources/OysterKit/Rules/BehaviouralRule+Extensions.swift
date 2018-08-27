@@ -166,6 +166,7 @@ public extension Rule{
     }
     
     public func reference(_ kind:Behaviour.Kind, annotations: RuleAnnotations? = nil)->Rule{
+        #warning("If I am already a reference I should wrap myself in a sequence and return that")
         return ReferenceRule(Behaviour(kind, cardinality: .one, negated: false, lookahead: false), and: annotations ?? [:], for: self)
     }
 }
