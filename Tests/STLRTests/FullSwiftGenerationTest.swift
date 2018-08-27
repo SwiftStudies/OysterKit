@@ -55,8 +55,6 @@ class FullSwiftGenerationTest: XCTestCase {
     func parse(source:String, with rule:Rule) throws{
         ast = nil
         ast = try AbstractSyntaxTreeConstructor().build(source, using: Parser(grammar:[rule]))
-        
-        print(ast.description)
     }
     
     func parse(source:String, with token:STLRTokens, ignoreNoNodes:Bool = true, appendMopUpRule mopup:Rule? = nil) throws {

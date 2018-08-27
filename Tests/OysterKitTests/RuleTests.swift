@@ -162,7 +162,6 @@ class RuleTests: XCTestCase {
             let ast = try testIR.generate(HomogenousTree.self, source: source)
             XCTAssertEqual(0, ast.children.count)
             XCTAssertEqual(" ", ast.matchedString)
-            print(ast.description)
         } catch {
             XCTFail("Unexpected error from match")
         }

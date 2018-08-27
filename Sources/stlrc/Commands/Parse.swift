@@ -68,8 +68,6 @@ class ParseCommand : Command, IndexableOptioned, IndexableParameterized, Grammar
             ctr.errors.report(in: input)
             return
         }
-        
-        print(ast.description)
     }
     
     override func run() -> RunnableReturnValue {
