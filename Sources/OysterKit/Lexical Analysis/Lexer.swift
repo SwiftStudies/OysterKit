@@ -180,7 +180,7 @@ open class Lexer : LexicalAnalyzer, CustomStringConvertible{
             // If the skip is at the start of its parents run
             if top?.postSkipLocation == mark.preSkipLocation {
                 top?.postSkipLocation = scanner.scanLocation
-                top?.scanEnd = scanner.scanLocation
+                top?.scanEnd = nil
             // Otherwise if I'm the first skip (because a previous skip will have set this)
             }
             return LexerContext(mark: mark, endLocation: mark.postSkipLocation, source: source)
