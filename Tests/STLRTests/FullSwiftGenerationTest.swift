@@ -7,7 +7,7 @@
 
 import XCTest
 @testable import OysterKit
-@testable import STLR
+import STLR
 @testable import ExampleLanguages
 
 class FullSwiftGenerationTest: XCTestCase {

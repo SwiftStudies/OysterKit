@@ -2,7 +2,7 @@ import Foundation
 import OysterKit
 
 /// Intermediate Representation of the grammar
-fileprivate enum STLRTokens : Int, Token, CaseIterable, Equatable {
+internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
     typealias T = STLRTokens
     // Cache for compiled regular expressions
     private static var regularExpressionCache = [String : NSRegularExpression]()
@@ -85,7 +85,7 @@ fileprivate enum STLRTokens : Int, Token, CaseIterable, Equatable {
             
         /// characterSet
         case .characterSet:
-            return [    -".",    T.characterSetName.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Unknown character set")])].sequence.reference(.structural(token: self))
+            return [    -".",    T.characterSetName.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Unknown character set")]).scan()].sequence.reference(.structural(token: self))
             
         /// rangeOperator
         case .rangeOperator:
@@ -284,11 +284,11 @@ fileprivate enum STLRTokens : Int, Token, CaseIterable, Equatable {
             
         /// modules
         case .modules:
-            return T.moduleImport.rule.require(.oneOrMore).reference(.structural(token: self), annotations: [:])
+            return [T.moduleImport.rule.require(.oneOrMore)].sequence.reference(.structural(token: self), annotations: [:])
             
         /// rules
         case .rules:
-            return T.rule.rule.require(.oneOrMore).annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected at least one rule")]).reference(.structural(token: self), annotations: [:])
+            return [T.rule.rule.require(.oneOrMore).annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected at least one rule")])].sequence.reference(.structural(token: self), annotations: [:])
             
         }
     }
@@ -305,7 +305,7 @@ fileprivate enum STLRTokens : Int, Token, CaseIterable, Equatable {
 public struct _STLR : Codable {
     
     // Quantifier
-    public enum Quantifier : Swift.String, Codable {
+    public enum Quantifier : Swift.String, Codable, CaseIterable {
         case star = "*",plus = "+",questionMark = "?",dash = "-"
     }
     
@@ -320,7 +320,7 @@ public struct _STLR : Codable {
     }
     
     // CharacterSetName
-    public enum CharacterSetName : Swift.String, Codable {
+    public enum CharacterSetName : Swift.String, Codable, CaseIterable {
         case letter,uppercaseLetter,lowercaseLetter,alphaNumeric,decimalDigit,whitespaceOrNewline,whitespace,newline,backslash
     }
     
@@ -332,7 +332,7 @@ public struct _STLR : Codable {
     public typealias CharacterRange = [TerminalString]
     
     // Boolean
-    public enum Boolean : Swift.String, Codable {
+    public enum Boolean : Swift.String, Codable, CaseIterable {
         case `true` = "true",`false` = "false"
     }
     
@@ -423,11 +423,11 @@ public struct _STLR : Codable {
     public enum Terminal : Codable {
         case characterRange(characterRange:CharacterRange)
         case terminalString(terminalString:TerminalString)
-        case characterSet(characterSet:CharacterSet)
         case regex(regex:Swift.String)
+        case characterSet(characterSet:CharacterSet)
         
         enum CodingKeys : Swift.String, CodingKey {
-            case characterRange,terminalString,characterSet,regex
+            case characterRange,terminalString,regex,characterSet
         }
         
         public init(from decoder: Decoder) throws {
@@ -439,14 +439,14 @@ public struct _STLR : Codable {
             } else if let terminalString = try? container.decode(TerminalString.self, forKey: .terminalString){
                 self = .terminalString(terminalString: terminalString)
                 return
-            } else if let characterSet = try? container.decode(CharacterSet.self, forKey: .characterSet){
-                self = .characterSet(characterSet: characterSet)
-                return
             } else if let regex = try? container.decode(Swift.String.self, forKey: .regex){
                 self = .regex(regex: regex)
                 return
+            } else if let characterSet = try? container.decode(CharacterSet.self, forKey: .characterSet){
+                self = .characterSet(characterSet: characterSet)
+                return
             }
-            throw DecodingError.valueNotFound(Expression.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Tried to decode one of CharacterRange,TerminalString,CharacterSet,Swift.String but found none of those types"))
+            throw DecodingError.valueNotFound(Expression.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Tried to decode one of CharacterRange,TerminalString,Swift.String,CharacterSet but found none of those types"))
         }
         public func encode(to encoder:Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
@@ -455,10 +455,10 @@ public struct _STLR : Codable {
                 try container.encode(characterRange, forKey: .characterRange)
             case .terminalString(let terminalString):
                 try container.encode(terminalString, forKey: .terminalString)
-            case .characterSet(let characterSet):
-                try container.encode(characterSet, forKey: .characterSet)
             case .regex(let regex):
                 try container.encode(regex, forKey: .regex)
+            case .characterSet(let characterSet):
+                try container.encode(characterSet, forKey: .characterSet)
             }
         }
     }
@@ -477,15 +477,15 @@ public struct _STLR : Codable {
     
     /// Element
     public class Element : Codable {
-        public let identifier: Swift.String?
-        public let annotations: Annotations?
-        public let negated: Swift.String?
-        public let lookahead: Swift.String?
-        public let terminal: Terminal?
-        public let void: Swift.String?
         public let quantifier: Quantifier?
-        public let transient: Swift.String?
+        public let annotations: Annotations?
         public let group: Group?
+        public let void: Swift.String?
+        public let transient: Swift.String?
+        public let terminal: Terminal?
+        public let lookahead: Swift.String?
+        public let identifier: Swift.String?
+        public let negated: Swift.String?
         
         /// Default initializer
         public init(annotations:Annotations?, group:Group?, identifier:Swift.String?, lookahead:Swift.String?, negated:Swift.String?, quantifier:Quantifier?, terminal:Terminal?, transient:Swift.String?, void:Swift.String?){
@@ -514,36 +514,36 @@ public struct _STLR : Codable {
     
     // Expression
     public enum Expression : Codable {
-        case choice(choice:Choice)
         case element(element:Element)
+        case choice(choice:Choice)
         case sequence(sequence:Sequence)
         
         enum CodingKeys : Swift.String, CodingKey {
-            case choice,element,sequence
+            case element,choice,sequence
         }
         
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             
-            if let choice = try? container.decode(Choice.self, forKey: .choice){
-                self = .choice(choice: choice)
-                return
-            } else if let element = try? container.decode(Element.self, forKey: .element){
+            if let element = try? container.decode(Element.self, forKey: .element){
                 self = .element(element: element)
+                return
+            } else if let choice = try? container.decode(Choice.self, forKey: .choice){
+                self = .choice(choice: choice)
                 return
             } else if let sequence = try? container.decode(Sequence.self, forKey: .sequence){
                 self = .sequence(sequence: sequence)
                 return
             }
-            throw DecodingError.valueNotFound(Expression.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Tried to decode one of Choice,Element,Sequence but found none of those types"))
+            throw DecodingError.valueNotFound(Expression.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Tried to decode one of Element,Choice,Sequence but found none of those types"))
         }
         public func encode(to encoder:Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             switch self {
-            case .choice(let choice):
-                try container.encode(choice, forKey: .choice)
             case .element(let element):
                 try container.encode(element, forKey: .element)
+            case .choice(let choice):
+                try container.encode(choice, forKey: .choice)
             case .sequence(let sequence):
                 try container.encode(sequence, forKey: .sequence)
             }
@@ -552,50 +552,50 @@ public struct _STLR : Codable {
     
     // TokenType
     public enum TokenType : Codable {
-        case standardType(standardType:StandardType)
         case customType(customType:Swift.String)
+        case standardType(standardType:StandardType)
         
         enum CodingKeys : Swift.String, CodingKey {
-            case standardType,customType
+            case customType,standardType
         }
         
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             
-            if let standardType = try? container.decode(StandardType.self, forKey: .standardType){
-                self = .standardType(standardType: standardType)
-                return
-            } else if let customType = try? container.decode(Swift.String.self, forKey: .customType){
+            if let customType = try? container.decode(Swift.String.self, forKey: .customType){
                 self = .customType(customType: customType)
                 return
+            } else if let standardType = try? container.decode(StandardType.self, forKey: .standardType){
+                self = .standardType(standardType: standardType)
+                return
             }
-            throw DecodingError.valueNotFound(Expression.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Tried to decode one of StandardType,Swift.String but found none of those types"))
+            throw DecodingError.valueNotFound(Expression.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Tried to decode one of Swift.String,StandardType but found none of those types"))
         }
         public func encode(to encoder:Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             switch self {
-            case .standardType(let standardType):
-                try container.encode(standardType, forKey: .standardType)
             case .customType(let customType):
                 try container.encode(customType, forKey: .customType)
+            case .standardType(let standardType):
+                try container.encode(standardType, forKey: .standardType)
             }
         }
     }
     
     // StandardType
-    public enum StandardType : Swift.String, Codable {
+    public enum StandardType : Swift.String, Codable, CaseIterable {
         case int = "Int",double = "Double",string = "String",bool = "Bool"
     }
     
     /// Rule
     public struct Rule : Codable {
-        public let annotations: Annotations?
         public let expression: Expression
-        public let void: Swift.String?
+        public let annotations: Annotations?
         public let tokenType: TokenType?
+        public let void: Swift.String?
+        public let assignmentOperators: AssignmentOperators
         public let transient: Swift.String?
         public let identifier: Swift.String
-        public let assignmentOperators: AssignmentOperators
     }
     
     /// ModuleImport
@@ -605,9 +605,9 @@ public struct _STLR : Codable {
     
     /// Grammar
     public struct Grammar : Codable {
+        public let modules: Modules?
         public let rules: Rules
         public let scopeName: Swift.String
-        public let modules: Modules?
     }
     
     public typealias Modules = [ModuleImport]
