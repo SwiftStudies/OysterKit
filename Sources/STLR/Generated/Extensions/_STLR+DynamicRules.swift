@@ -216,7 +216,7 @@ fileprivate extension _STLR.Rule {
     }
 }
 
-extension _STLR.Grammar {
+public extension _STLR.Grammar {
     /// Builds a set of `Rule`s that can be used directly at run-time in your application
     public var dynamicRules : [Rule] {
         let symbolTable = SymbolTable<Symbol>(self)
