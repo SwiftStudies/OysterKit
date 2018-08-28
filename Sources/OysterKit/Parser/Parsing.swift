@@ -74,6 +74,7 @@ enum ParsingStrategy {
                 do {
                     try rule.match(with: context.lexer, for: context.ir)
                     success = true
+                    productionErrors.removeAll()
                     break
                 } catch {
                     productionErrors.append(error)
