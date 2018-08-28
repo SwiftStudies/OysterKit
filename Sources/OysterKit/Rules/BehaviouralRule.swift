@@ -25,6 +25,8 @@
 @available(*, deprecated, message: "Replace with Rule")
 typealias BehaviouralRule = Rule
 
+var okDebugEvaluation = false
+
 /**
  Behavioural rule is both an extension to and ultimately a replacement for current
  `Rule`. It bakes in the logic for repeating, negation, lookahead, as well as
@@ -153,15 +155,11 @@ public extension Rule {
     */
     public func match(with lexer: LexicalAnalyzer, for ir: IntermediateRepresentation) throws {
         // Log entrance
-//        let log = true //behaviour.token != nil
-//        if log { print(String(repeating: "  ", count: lexer.depth)+shortDescription+" evaluating at \(lexer.position) '\(lexer.endOfInput ? "🏁" : lexer.current.debugDescription.dropFirst().dropLast())'") }
         do {
             try evaluate(test,using: lexer, and: ir)
             //Log result
-//            if log { print(String(repeating: "  ", count: lexer.depth)+shortDescription+" "+result.description) }
         } catch {
             // Log failure
-//            if log { print(String(repeating: "  ", count: lexer.depth)+shortDescription+" \(error)") }
             throw error
         }
     }
@@ -178,7 +176,6 @@ public extension Rule {
         //Prepare for any lookahead by putting a fake IR in place if is lookahead
         //as well as taking an additional mark to ensure position will always be
         //where it was
-        let printDebugMessages = true
         
         // Neither skipping nor lookahead should generate tokens
         let ir = behaviour.lookahead || skipping ? LookAheadIR() : ir
