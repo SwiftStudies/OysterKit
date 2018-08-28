@@ -59,8 +59,11 @@ public final class BehaviouralRecursiveRule : Rule, CustomStringConvertible{
     }
     
     public var description: String{
-        // Can't actuall print rule because if there is a looping recursion it could go on forwever
-        return "\(rule == nil ? "\(_behaviour.kind)" : "🔃\(rule!.shortDescription)")"
+        if let rule = rule {
+            return behaviour.describe(match: "🔃\(rule.shortDescription)")
+        } else {
+            return shortDescription
+        }
     }
     
     /// An abreviated description of the rule
