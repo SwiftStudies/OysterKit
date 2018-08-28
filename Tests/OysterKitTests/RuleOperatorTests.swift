@@ -90,14 +90,12 @@ class RuleOperatorTests: XCTestCase {
     }
     
     func testNotOperator(){
-        #warning("It's likely this can be just changed as negated rules should now support token creation directly. Make sure all other tests are passing first")
-        
         let hello = LabelledToken(withLabel: "hello")
         let singleCardinalityRule = "hello".parse(as: hello)
         let multipleCardinalityRule = "hello".parse(as: hello).require(.oneOrMore)
         
         let singleNegated = !singleCardinalityRule
-        XCTAssertNil(singleNegated.behaviour.token, "Negating a rule means it cannot generate a token directly and should be scanning/skipping")
+        XCTAssertNotNil(singleNegated.behaviour.token, "Negated rules can now generate tokens")
         XCTAssertEqual(singleNegated.behaviour.negate, true)
         XCTAssertTrue(matchSucceeds(for: singleNegated, with: "hullo"))
         do {
@@ -108,7 +106,7 @@ class RuleOperatorTests: XCTestCase {
         }
         
         let multipleNegated = !multipleCardinalityRule
-        XCTAssertNil(multipleNegated.behaviour.token, "Negating a rule means it cannot generate a token directly and should be scanning/skipping")
+        XCTAssertNotNil(multipleNegated.behaviour.token, "Negated rules can now generate tokens")
         XCTAssertEqual(multipleNegated.behaviour.negate, true, "Rule correctly appears to be negated")
         XCTAssertEqual(multipleNegated.behaviour.cardinality, .oneOrMore, "Cardinality should be preserved on the outer rule")
         XCTAssertFalse(matchSucceeds(for: multipleNegated, with: "hello"))
