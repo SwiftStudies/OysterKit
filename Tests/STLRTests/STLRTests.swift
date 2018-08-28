@@ -41,45 +41,12 @@ class STLRTest: XCTestCase {
                 }
                 XCTAssertEqual("\(ast.token)", "id")
             } catch {
-                XCTFail("Parsing failed, but it should have succeeded")
+                XCTFail("\(error)")
             }
         } catch {
             XCTFail("Unexpected error: \(error)")
         }
         
-    }
-    
-    func testPinnedNodes(){
-        do {
-            let ruleSource = """
-            letters = .letter+
-            digits = .decimalDigit+
-
-            pass = letters " " @pin @token("numbers") digits
-"""
-            
-            let stlr = try _STLR.build(testGrammarName+ruleSource)
-            let testLanguage = Parser(grammar: stlr.grammar.dynamicRules)
-            
-            //        print(stlr.ast.swift(grammar: "Test")!)
-            
-            var source = "abc 123"
-            let ast = try! AbstractSyntaxTreeConstructor().build(source, using: testLanguage)
-            
-            //        print(ast.description)
-            XCTAssertNotNil(ast["letters"])
-            XCTAssertNotNil(ast["numbers"])
-            XCTAssertNil(ast["numbers"]?["digits"]) //Numbers should have directly subsumed the expression from digits, and not just wrapped the node
-            XCTAssertEqual(ast["letters"]?.matchedString ?? "", "abc")
-            XCTAssertEqual(ast["numbers"]?.matchedString ?? "", "123")
-            
-            
-            // This should fail
-            source = "abc "
-            XCTAssertNil(try? AbstractSyntaxTreeConstructor().build(source, using: testLanguage))
-        } catch {
-            XCTFail("Unexpected error: \(error)")
-        }
     }
     
     func testVoidSugar(){
