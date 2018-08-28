@@ -190,6 +190,9 @@ public struct ParsingDecoder{
                     // Fallback on earlier versions
                 }
             }
+            if let ast = ast as? HomogenousTree {
+                print(ast.description)
+            }
             throw error
         }
 

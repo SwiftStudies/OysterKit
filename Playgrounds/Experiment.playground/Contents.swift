@@ -1,13 +1,40 @@
 import Foundation
 import OysterKit
 
-let plus    = -"+"
-let number  = CharacterSet.decimalDigits.require(.oneOrMore).parse(as: LabelledToken(withLabel: "number"))
-let sum     = [ number, plus, number ].sequence.parse(as: LabelledToken(withLabel: "sum"))
+STLRTokens.group.rule.shortDescription
+STLRTokens.group.rule.description
+let groupRecursive = STLRTokens.group.rule as! BehaviouralRecursiveRule
+let expressionRecursive = STLRTokens.rule.rule as? ReferenceRule
+groupRecursive.behaviour.describe(match: "")
+groupRecursive.surrogateRule
+
+let groupSource = """
+(.letter)
+"""
+
+let ruleSource = """
+a = \(groupSource)
+"""
+
+let grammarSource = """
+grammar Test
+
+\(ruleSource)
+"""
 
 do {
-    let ast = try AbstractSyntaxTreeConstructor(with: "10+2").build(using: Parser(grammar: [sum]))
-    print(ast.description)
+    let ast1 = try AbstractSyntaxTreeConstructor(with: groupSource).build(using: Parser(grammar:[STLRTokens.element.rule]))
+    print("\(ast1)")
+    let ast2 = try AbstractSyntaxTreeConstructor(with: ruleSource).build(using: Parser(grammar:[STLRTokens.rule.rule]))
+    print("\(ast2)")
 } catch {
-    print("😢 \(error)")
+    print("\(error)")
+}
+
+do {
+    let rule = "identifier = (.letter)"
+    let result = try _STLR.build("grammar Test\n\n"+rule)
+    print("Done!")
+} catch {
+    print("Unexpected error: \(error)")
 }

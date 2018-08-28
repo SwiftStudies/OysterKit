@@ -33,6 +33,10 @@ struct BehaviouralRecursiveInstance : Rule {
         try original.test(with: lexer, for: ir)
     }
     
+    func match(with lexer: LexicalAnalyzer, for ir: IntermediateRepresentation) throws {
+        try original.surrogateRule?.test(with: lexer, for: ir)
+    }
+    
     var description: String {
         return behaviour.describe(match: original.description)
     }

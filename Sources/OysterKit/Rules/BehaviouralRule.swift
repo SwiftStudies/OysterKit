@@ -178,7 +178,7 @@ public extension Rule {
         //Prepare for any lookahead by putting a fake IR in place if is lookahead
         //as well as taking an additional mark to ensure position will always be
         //where it was
-        let printDebugMessages = false
+        let printDebugMessages = true
         
         // Neither skipping nor lookahead should generate tokens
         let ir = behaviour.lookahead || skipping ? LookAheadIR() : ir

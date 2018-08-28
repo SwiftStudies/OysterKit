@@ -120,6 +120,15 @@ class STLRTest: XCTestCase {
             XCTFail("Unexpected error: \(error)")
         }
     }
+
+    func testExpressionGroupExpressionElement(){
+        do {
+            let rule = "identifier = (.letter)"
+            _ = try _STLR.build(testGrammarName+rule)            
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+    }
     
     func testParseSelf(){
 ////        for bundle in Bundle.allBundles{

@@ -167,7 +167,18 @@ public extension Rule{
     
     public func reference(_ kind:Behaviour.Kind, annotations: RuleAnnotations? = nil)->Rule{
         #warning("If I am already a reference I should wrap myself in a sequence and return that")
-        return ReferenceRule(Behaviour(kind, cardinality: .one, negated: false, lookahead: false), and: annotations ?? [:], for: self)
+        let reference = ReferenceRule(Behaviour(.scanning, cardinality: .one, negated: false, lookahead: false), and: annotations ?? [:], for: self)
+        
+        switch kind {
+        case .scanning:
+            reference.references = self.scan()
+        case .skipping:
+            reference.references = self.skip()
+        case .structural(let token):
+            reference.references = self.parse(as: token)
+        }
+        
+        return reference
     }
 }
 

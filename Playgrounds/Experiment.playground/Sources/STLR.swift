@@ -1,8 +1,9 @@
 import Foundation
 import OysterKit
 
+
 /// Intermediate Representation of the grammar
-internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
+public enum STLRTokens : Int, Token, CaseIterable, Equatable {
     typealias T = STLRTokens
     // Cache for compiled regular expressions
     private static var regularExpressionCache = [String : NSRegularExpression]()
@@ -29,7 +30,7 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
     case `whitespace`, `ows`, `quantifier`, `negated`, `lookahead`, `transient`, `void`, `stringQuote`, `terminalBody`, `stringBody`, `string`, `terminalString`, `characterSetName`, `characterSet`, `rangeOperator`, `characterRange`, `number`, `boolean`, `literal`, `annotation`, `annotations`, `customLabel`, `definedLabel`, `label`, `regexDelimeter`, `startRegex`, `endRegex`, `regexBody`, `regex`, `terminal`, `group`, `identifier`, `element`, `assignmentOperators`, `or`, `then`, `choice`, `notNewRule`, `sequence`, `expression`, `tokenType`, `standardType`, `customType`, `lhs`, `rule`, `moduleName`, `moduleImport`, `scopeName`, `grammar`, `modules`, `rules`
     
     /// The rule for the token
-    var rule : Rule {
+    public var rule : Rule {
         switch self {
         /// whitespace
         case .whitespace:
@@ -158,7 +159,7 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
                 let recursiveRule = BehaviouralRecursiveRule(stubFor: Behaviour(.structural(token: self), cardinality: Cardinality.one), with: [:])
                 T.leftHandRecursiveRules[self.rawValue] = recursiveRule
                 // Create the rule we would normally generate
-                let rule = [    "(",    T.whitespace.rule.require(.noneOrMore),    T.expression.rule.annotatedWith([RuleAnnotation.custom(label: "test") : RuleAnnotationValue.set]),    T.whitespace.rule.require(.noneOrMore),    ")".annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected \')\'")])].sequence.reference(.structural(token: self))
+                let rule = [    "(",    T.whitespace.rule.require(.noneOrMore),    T.expression.rule,    T.whitespace.rule.require(.noneOrMore),    ")".annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected \')\'")])].sequence.reference(.structural(token: self))
                 
                 recursiveRule.surrogateRule = rule
                 return recursiveRule

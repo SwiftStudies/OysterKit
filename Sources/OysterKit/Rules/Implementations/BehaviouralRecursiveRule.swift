@@ -77,6 +77,13 @@ public final class BehaviouralRecursiveRule : Rule, CustomStringConvertible{
         try rule.test(with: lexer, for: ir)
     }
     
+    public func match(with lexer: LexicalAnalyzer, for ir: IntermediateRepresentation) throws {
+        guard let rule = rule else {
+            throw TestError.undefinedError(message: "Recursive rule for \(behaviour.kind) has no surrogate set", at: lexer.index, causes: [])
+        }
+        try rule.test(with: lexer, for: ir)
+    }
+    
     /// Delegated to the the surrogate rule
     public var behaviour: Behaviour {
         get {

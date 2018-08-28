@@ -643,8 +643,8 @@ class FullSwiftGenerationTest: XCTestCase {
         XCTAssertNoThrow(try checkSimplePassFail(for: .group, passing: passing, failing: failing, expectNode: true))
         do {
             let token = STLRTokens.group
-            let ast = try makeAST(for: token, from: "(a b c)")
-            
+            let ast = try makeAST(for: token, from: "(a | b | c)")
+            print(ast.description)
             var childMatches = [STLRTokens.expression]
             XCTAssertEqual(childMatches.count, ast.children.count)
             XCTAssertEqual(token, ast.token as! STLRTokens)
