@@ -114,9 +114,13 @@ class FullSwiftGenerationTest: XCTestCase {
     }
     
     func testOptionalWhiteSpace(){
-        if case Behaviour.Kind.skipping = STLRTokens.ows.rule.behaviour.kind {
+        if let rule = STLRTokens.ows.rule as? ReferenceRule {
+            if case Behaviour.Kind.skipping = rule.references.behaviour.kind {
+            } else {
+                XCTFail("ows should be skipping")
+            }
         } else {
-            XCTFail("ows should be skipping")
+            XCTFail("Unable to check if ows is skipping")
         }
         
         do {
