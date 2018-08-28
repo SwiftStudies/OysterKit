@@ -37,11 +37,11 @@ fileprivate enum Tokens : Int, Token {
         case .dummy:
             return "😁"
         case .whitespace:
-            return CharacterSet.whitespaces
+            return CharacterSet.whitespaces.reference(.structural(token: self))
         case .whitespaces:
             return Tokens.whitespace.rule.require(.oneOrMore).reference(.structural(token: self))
         case .letter:
-            return CharacterSet.letters
+            return CharacterSet.letters.reference(.structural(token: self))
         case .word:
             return Tokens.letter.rule.require(.oneOrMore).reference(.structural(token: self))
         case .punctuationCharacters:
@@ -53,11 +53,11 @@ fileprivate enum Tokens : Int, Token {
         case .repeatedOptionalWhitespaceWord:
             return Tokens.whitespaceWord.rule.require(.noneOrMore).reference(.structural(token: self))
         case .fullStop:
-            return "."
+            return ".".reference(.structural(token: self))
         case .questionMark:
-            return "?"
+            return "?".reference(.structural(token: self))
         case .exlamationMark:
-            return "!"
+            return "!".reference(.structural(token: self))
         case .endOfSentance:
             return [
                 Tokens.fullStop.rule,
