@@ -206,10 +206,10 @@ fileprivate extension _STLR.Rule {
         if symbolTable.ast.isLeftHandRecursive(identifier: identifier){
             let rule = BehaviouralRecursiveRule(stubFor: behaviour, with: ruleAnnotations)
             symbolTable[identifier] = Symbol(behaviouralRule: rule)
-            rule.surrogateRule = expression.rule(with: behaviour, and: ruleAnnotations, using: symbolTable)
+            rule.surrogateRule = expression.rule(with: behaviour, and: ruleAnnotations, using: symbolTable).reference(behaviour.kind)
             return rule
         } else {
-            let rule = expression.rule(with: behaviour, and: ruleAnnotations, using: symbolTable)
+            let rule = expression.rule(with: behaviour, and: ruleAnnotations, using: symbolTable).reference(behaviour.kind)
             symbolTable[identifier] = Symbol(behaviouralRule: rule)
             return rule
         }
