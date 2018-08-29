@@ -26,14 +26,40 @@ import Foundation
 import OysterKit
 
 fileprivate final class Symbol : SymbolType {
-    var behaviouralRule : Rule
+    let identifier : String
+    private var expression: Rule
+    private var baseAnnotations : RuleAnnotations
+    private var baseKind : Behaviour.Kind
 
-    static func buildRule(for identifier: String, from grammar: _STLR.Grammar, in symbolTable: SymbolTable<Symbol>) -> Symbol {
-        return Symbol(behaviouralRule: grammar[identifier].rule(using: symbolTable))
+    static func build(for identifier: String, from grammar: _STLR.Grammar, in symbolTable: SymbolTable<Symbol>) -> Symbol {
+        let symbol : Symbol
+        let declaration = grammar[identifier]
+        if grammar.isLeftHandRecursive(identifier: identifier){
+            let recursive = BehaviouralRecursiveRule(stubFor: Behaviour(.scanning), with: [:])
+            symbol = Symbol(identifier, with: recursive, baseKind: declaration.behaviour.kind, baseAnnotations: declaration.annotations?.ruleAnnotations ?? [:])
+            symbolTable[identifier] = symbol
+            recursive.surrogateRule = grammar[identifier].expression.rule(using: symbolTable)
+        } else {
+            symbol = Symbol(identifier, with: grammar[identifier].expression.rule(using: symbolTable), baseKind: declaration.behaviour.kind, baseAnnotations: declaration.annotations?.ruleAnnotations ?? [:])
+            symbolTable[identifier] = symbol
+        }
+        
+        return symbol
     }
     
-    fileprivate init(behaviouralRule:Rule){
-        self.behaviouralRule = behaviouralRule
+    init(_ identifier:String, with expression:Rule, baseKind: Behaviour.Kind, baseAnnotations:RuleAnnotations){
+        self.identifier = identifier
+        self.expression = expression
+        self.baseKind = baseKind
+        self.baseAnnotations = baseAnnotations
+    }
+    
+    func reference(with behaviour:Behaviour, and instanceAnnotations:RuleAnnotations)->Rule{
+        return expression.annotatedWith(baseAnnotations.merge(with: instanceAnnotations)).reference(behaviour.kind).rule(with:behaviour,annotations: nil).scan()
+    }
+    
+    var  rule : Rule {
+        return expression.rule(with: Behaviour(baseKind), annotations: baseAnnotations)
     }
 }
 
@@ -99,21 +125,25 @@ fileprivate extension Array where Element == _STLR.Element {
 }
 
 fileprivate extension _STLR.Element {
-    func rule(symbolTable:SymbolTable<Symbol>)->Rule {
-        if let group = group {
-            return group.expression.rule(with: behaviour, and: ruleAnnotations, using: symbolTable)
-        } else if let terminal = terminal {
-            return terminal.rule(with:behaviour, and: ruleAnnotations)
-        } else if let identifier = identifier {
-            let symbolRule = symbolTable[identifier].behaviouralRule
-            return symbolRule.rule(with: behaviour, annotations: symbolRule.annotations.merge(with: ruleAnnotations))
+    private static func rule(for element:_STLR.Element, using symbolTable:SymbolTable<Symbol>)->Rule {
+        if let terminal = element.terminal {
+            return terminal.rule(with: element.behaviour, and: element.annotations?.ruleAnnotations ?? [:])
+        } else if let identifier = element.identifier {
+            return symbolTable[identifier].reference(with: element.behaviour, and: element.annotations?.ruleAnnotations ?? [:])
+        } else if let group = element.group {
+            return group.expression.rule(using: symbolTable).rule(with: element.behaviour,annotations: element.annotations?.ruleAnnotations ?? [:])
         }
-        fatalError("Could not generate rule for, \(self) it appears to not be a group, terminal or identifier")
+        fatalError("Element is not a terminal, and identifier reference, or a group")
     }
-    
-    func rule(with behaviour:Behaviour, and annotations:RuleAnnotations, using symbolTable:SymbolTable<Symbol>)->Rule {
-        return rule(symbolTable: symbolTable).rule(with: behaviour, annotations: ruleAnnotations.merge(with:annotations))
-    }
+    func rule(symbolTable:SymbolTable<Symbol>)->Rule {
+        let element : _STLR.Element
+        if let token = token {
+            element = _STLR.Element(annotations: annotations?.filter({!$0.label.isToken}), group: nil, identifier: "\(token)", lookahead: lookahead, negated: negated, quantifier: quantifier, terminal: nil, transient: transient, void: void)
+        } else {
+            element = self
+        }
+        return _STLR.Element.rule(for:element, using:symbolTable)
+     }
 }
 
 extension _STLR.CharacterSetName {
@@ -159,15 +189,18 @@ extension _STLR.Terminal {
 }
 
 fileprivate extension _STLR.Expression {
-    func rule(with behaviour:Behaviour, and annotations:RuleAnnotations, using symbolTable:SymbolTable<Symbol>)->Rule {
+    func rule(using symbolTable:SymbolTable<Symbol>)->Rule {
         switch self {
         case .sequence(let elements):
-            return elements.sequence(with: behaviour, and: annotations, using: symbolTable)
+            return elements.map({ (element) -> Rule in
+                element.rule(symbolTable: symbolTable)
+            }).sequence
         case .choice(let elements):
-            return elements.choice(with: behaviour, and: annotations, using: symbolTable)
+            return elements.map({ (element) -> Rule in
+                element.rule(symbolTable: symbolTable)
+            }).choice
         case .element(let element):
-            #warning("There is an optimization oppertunity here. If it's a single element with no specific annotations we don't need to wrap in a sequence but can 'merge' and hoist")
-            return [element].sequence(with: behaviour, and: annotations, using: symbolTable)
+            return element.rule(symbolTable: symbolTable)
         }
     }
 }
@@ -198,22 +231,6 @@ fileprivate extension _STLR.Rule {
         return assumed.merge(with: annotations?.ruleAnnotations ?? [:])
     }
 
-    func rule(using symbolTable:SymbolTable<Symbol>)->Rule {
-        if symbolTable[hasRule: identifier] {
-            return symbolTable[identifier].behaviouralRule
-        }
-        
-        if symbolTable.ast.isLeftHandRecursive(identifier: identifier){
-            let rule = BehaviouralRecursiveRule(stubFor: behaviour, with: ruleAnnotations)
-            symbolTable[identifier] = Symbol(behaviouralRule: rule)
-            rule.surrogateRule = expression.rule(with: behaviour, and: ruleAnnotations, using: symbolTable).reference(behaviour.kind)
-            return rule
-        } else {
-            let rule = expression.rule(with: behaviour, and: ruleAnnotations, using: symbolTable).reference(behaviour.kind)
-            symbolTable[identifier] = Symbol(behaviouralRule: rule)
-            return rule
-        }
-    }
 }
 
 public extension _STLR.Grammar {
@@ -229,9 +246,11 @@ public extension _STLR.Grammar {
             guard let lastRule = rules.last else {
                 return []
             }
-            return [lastRule.rule(using: symbolTable)]
+            return [
+                symbolTable[lastRule.identifier].rule
+            ]
         } else {
-            return rootRules.map({$0.rule(using: symbolTable)})
+            return rootRules.map({symbolTable[$0.identifier].rule})
         }
     }
 }
