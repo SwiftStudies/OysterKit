@@ -22,10 +22,12 @@
 //    OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 //    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import Foundation
+import OysterKit
 
 public protocol SymbolType {
-    static func buildRule(for identifier: String, from grammar: _STLR.Grammar, in symbolTable: SymbolTable<Self>)->Self
+    static func build(for identifier: String, from grammar: _STLR.Grammar, in symbolTable: SymbolTable<Self>)->Self
+    
+    var identifier   : String {get}
 }
 
 public class SymbolTable<Symbol:SymbolType> {
@@ -48,12 +50,14 @@ public class SymbolTable<Symbol:SymbolType> {
     
     subscript(_ identifier:String)->Symbol{
         get {
+
             if let cached = identifiers[identifier] {
                 return cached
+            } else {
+                let symbol = Symbol.build(for: identifier, from: ast, in: self)
+                identifiers[identifier] = symbol
+                return symbol
             }
-            let symbol = Symbol.buildRule(for:identifier, from:ast, in: self)
-            identifiers[identifier] = symbol
-            return symbol
         }
         
         set{
