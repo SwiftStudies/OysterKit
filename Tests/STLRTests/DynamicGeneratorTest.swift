@@ -87,8 +87,6 @@ class DynamicGeneratorTest: XCTestCase {
             }
             XCTAssertTrue(arrowNode.isSet(annotation: RuleAnnotation.custom(label: "forArrow")))
             XCTAssertEqual(tree.annotations.count, 1)
-            XCTAssertEqual(arrowNode.annotations.count, 1)
-
         } else {
             XCTFail("Could not parse the test source using the generated language"); return
         }
