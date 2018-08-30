@@ -239,6 +239,14 @@ extension Array where Element == Rule {
     public var sequence : Rule{
         return SequenceRule(Behaviour(.scanning), and: [:], for: map({$0.rule(with: nil, annotations: nil)}))
     }
+    
+    var longDescription : String {
+        return map({$0.description}).joined(separator: "\n")
+    }
+    
+    var shortDescription : String {
+        return map({$0.shortDescription}).joined(separator: "\n")
+    }
 }
 
 extension Rule{
