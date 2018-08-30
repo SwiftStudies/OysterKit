@@ -27,6 +27,9 @@ import OysterKit
 public protocol SymbolType {
     static func build(for identifier: String, from grammar: _STLR.Grammar, in symbolTable: SymbolTable<Self>)->Self
     
+    func resolve(from grammar:_STLR.Grammar, in symbolTable: SymbolTable<Self>) throws
+    func validate(from grammar:_STLR.Grammar, in symbolTable: SymbolTable<Self>) throws
+
     var identifier   : String {get}
 }
 
@@ -35,8 +38,62 @@ public class SymbolTable<Symbol:SymbolType> {
     public let ast : _STLR.Grammar
     private var identifiers = [String : Symbol]()
 
-    init(_ grammr:_STLR.Grammar){
+    /**
+     Creates a new symbol table for the specified grammar. The table will be empty, and the caller
+     should subsequently call `build()`, `resolve()`, then `validate()` before the table can be used.
+     **/
+    public init(_ grammr:_STLR.Grammar){
         ast = grammr
+    }
+    
+    /**
+     Builds the symbol table. Implementers of the `SymbolType` should not attempt to resolve
+     recursion at this stage, but create a forward reference that can be turned into a final
+     reference in the resolution phase.
+     **/
+    public func build() throws{
+        for rule in ast.rules {
+            if identifiers[rule.identifier] == nil {
+                identifiers[rule.identifier] = Symbol.build(for: rule.identifier, from: ast, in: self)
+            }
+        }
+    }
+
+    /**
+     Any evaluation of symbols (for example as a result of recursion) that were left as forward
+     references should be resolved at this stage.
+     **/
+    public func resolve() throws{
+        var errors = [Error]()
+        for (_,symbol) in identifiers {
+            do {
+                try symbol.resolve(from: ast, in: self)
+            } catch {
+                errors.append(error)
+            }
+        }
+        
+        if !errors.isEmpty {
+            throw TestError.interpretationError(message: "Failed to resolve symbol table", causes: errors)
+        }
+    }
+    
+    /**
+     A final validation step to ensure there are no issues in the table.
+     **/
+    public func validate() throws {
+        var errors = [Error]()
+        for (_,symbol) in identifiers {
+            do {
+                try symbol.validate(from: ast, in: self)
+            } catch {
+                errors.append(error)
+            }
+        }
+        
+        if !errors.isEmpty {
+            throw TestError.interpretationError(message: "Failed to validate symbol table", causes: errors)
+        }
     }
     
     public func isLeftHandRecursive(_ identifier:String)->Bool{
@@ -48,6 +105,10 @@ public class SymbolTable<Symbol:SymbolType> {
         return identifiers[identifier] != nil
     }
     
+    private func set(_ identifier:String, to symbol:Symbol){
+        identifiers[identifier] = symbol
+    }
+    
     subscript(_ identifier:String)->Symbol{
         get {
 
@@ -55,13 +116,11 @@ public class SymbolTable<Symbol:SymbolType> {
                 return cached
             } else {
                 let symbol = Symbol.build(for: identifier, from: ast, in: self)
-                identifiers[identifier] = symbol
+                set(identifier, to: symbol)
+                
                 return symbol
             }
         }
-        
-        set{
-            identifiers[identifier] = newValue
-        }
+
     }
 }
