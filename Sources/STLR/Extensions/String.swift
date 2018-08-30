@@ -57,13 +57,11 @@ public extension String {
 
         
         
-        guard let rule =  compiled.grammar.dynamicRules.first?.rule(with: Behaviour(kind), annotations: nil) else {
+        guard let rule = compiled.grammar.dynamicRules.first else {
             throw TestError.interpretationError(message: "No rules created from \(self)", causes: [])
         }
         
-        print(rule.description)
-        
-        return rule
+        return rule.rule(with: Behaviour(kind, cardinality: rule.behaviour.cardinality, negated: rule.behaviour.negate, lookahead: rule.behaviour.lookahead), annotations: rule.annotations)
     }
 }
 
