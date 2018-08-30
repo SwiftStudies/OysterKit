@@ -25,6 +25,31 @@
 import Foundation
 import OysterKit
 
+fileprivate struct RecursionWrapper : Rule {
+    var behaviour: Behaviour
+    var annotations: RuleAnnotations
+    var wrapped : BehaviouralRecursiveRule
+    
+    func test(with lexer: LexicalAnalyzer, for ir: IntermediateRepresentation) throws {
+        try wrapped.test(with: lexer, for: ir)
+    }
+    
+    func rule(with behaviour: Behaviour?, annotations: RuleAnnotations?) -> Rule {
+        return RecursionWrapper(behaviour: behaviour ?? self.behaviour, annotations: annotations ?? self.annotations, wrapped: wrapped)
+    }
+    
+    var shortDescription: String {
+        #warning("This and description are wrong. BehaviouralRecursive should not show behaviour (nor BehaviouralRecursiveInstance) and this should")
+        return wrapped.shortDescription
+    }
+    
+    var description: String {
+        return wrapped.description
+    }
+    
+    
+}
+
 fileprivate final class Symbol : SymbolType {
     let identifier : String
     private var expression: Rule
@@ -36,15 +61,16 @@ fileprivate final class Symbol : SymbolType {
         let declaration = grammar[identifier]
         if grammar.isLeftHandRecursive(identifier: identifier){
             let recursive = BehaviouralRecursiveRule(stubFor: Behaviour(.scanning), with: [:])
-            return Symbol(identifier, with: recursive, baseKind: declaration.behaviour.kind, baseAnnotations: declaration.annotations?.ruleAnnotations ?? [:])
+            let wrapped = RecursionWrapper(behaviour: Behaviour(.scanning), annotations: [:], wrapped: recursive)
+            return Symbol(identifier, with: wrapped, baseKind: declaration.behaviour.kind, baseAnnotations: declaration.annotations?.ruleAnnotations ?? [:])
         } else {
             return Symbol(identifier, with: grammar[identifier].expression.rule(using: symbolTable), baseKind: declaration.behaviour.kind, baseAnnotations: declaration.annotations?.ruleAnnotations ?? [:])
         }
     }
     
     func resolve(from grammar:_STLR.Grammar, in symbolTable: SymbolTable<Symbol>) throws {
-        if let expression = expression as? BehaviouralRecursiveRule {
-            expression.surrogateRule = grammar[identifier].expression.rule(using: symbolTable)
+        if let wrapper = expression as? RecursionWrapper {
+            wrapper.wrapped.surrogateRule = grammar[identifier].expression.rule(using: symbolTable)
         }
     }
     
@@ -64,7 +90,8 @@ fileprivate final class Symbol : SymbolType {
     }
     
     var  rule : Rule {
-        return expression.rule(with: Behaviour(baseKind), annotations: baseAnnotations)
+        let behaviour = Behaviour(baseKind, cardinality: expression.behaviour.cardinality, negated: expression.behaviour.negate, lookahead: expression.behaviour.lookahead)
+        return expression.rule(with: behaviour, annotations: baseAnnotations.merge(with: expression.annotations))
     }
 }
 
@@ -136,7 +163,13 @@ fileprivate extension _STLR.Element {
         } else if let identifier = element.identifier {
             return symbolTable[identifier].reference(with: element.behaviour, and: element.annotations?.ruleAnnotations ?? [:])
         } else if let group = element.group {
-            return group.expression.rule(using: symbolTable).rule(with: element.behaviour,annotations: element.annotations?.ruleAnnotations ?? [:])
+//            if case let _STLR.Expression.element(singleElement) = group.expression {
+//                #warning("Could this be more efficiently implemented by creating a RuleReference rather than a sequence?")
+//                return [singleElement.rule(symbolTable: symbolTable)].sequence.rule(with: element.behaviour, annotations: element.annotations?.ruleAnnotations ?? [:])
+//            } else {
+                #warning("This might be bogus, remove warning when tests pass")
+                return [group.expression.rule(using: symbolTable)].sequence.rule(with: element.behaviour,annotations: element.annotations?.ruleAnnotations ?? [:])
+//            }
         }
         fatalError("Element is not a terminal, and identifier reference, or a group")
     }
