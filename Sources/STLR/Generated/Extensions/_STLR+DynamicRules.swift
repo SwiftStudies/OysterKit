@@ -30,21 +30,26 @@ fileprivate final class Symbol : SymbolType {
     private var expression: Rule
     private var baseAnnotations : RuleAnnotations
     private var baseKind : Behaviour.Kind
-
+    
     static func build(for identifier: String, from grammar: _STLR.Grammar, in symbolTable: SymbolTable<Symbol>) -> Symbol {
-        let symbol : Symbol
+
         let declaration = grammar[identifier]
         if grammar.isLeftHandRecursive(identifier: identifier){
             let recursive = BehaviouralRecursiveRule(stubFor: Behaviour(.scanning), with: [:])
-            symbol = Symbol(identifier, with: recursive, baseKind: declaration.behaviour.kind, baseAnnotations: declaration.annotations?.ruleAnnotations ?? [:])
-            symbolTable[identifier] = symbol
-            recursive.surrogateRule = grammar[identifier].expression.rule(using: symbolTable)
+            return Symbol(identifier, with: recursive, baseKind: declaration.behaviour.kind, baseAnnotations: declaration.annotations?.ruleAnnotations ?? [:])
         } else {
-            symbol = Symbol(identifier, with: grammar[identifier].expression.rule(using: symbolTable), baseKind: declaration.behaviour.kind, baseAnnotations: declaration.annotations?.ruleAnnotations ?? [:])
-            symbolTable[identifier] = symbol
+            return Symbol(identifier, with: grammar[identifier].expression.rule(using: symbolTable), baseKind: declaration.behaviour.kind, baseAnnotations: declaration.annotations?.ruleAnnotations ?? [:])
         }
+    }
+    
+    func resolve(from grammar:_STLR.Grammar, in symbolTable: SymbolTable<Symbol>) throws {
+        if let expression = expression as? BehaviouralRecursiveRule {
+            expression.surrogateRule = grammar[identifier].expression.rule(using: symbolTable)
+        }
+    }
+    
+    func validate(from grammar: _STLR.Grammar, in symbolTable: SymbolTable<Symbol>) throws {
         
-        return symbol
     }
     
     init(_ identifier:String, with expression:Rule, baseKind: Behaviour.Kind, baseAnnotations:RuleAnnotations){
@@ -237,6 +242,14 @@ public extension _STLR.Grammar {
     /// Builds a set of `Rule`s that can be used directly at run-time in your application
     public var dynamicRules : [Rule] {
         let symbolTable = SymbolTable<Symbol>(self)
+        
+        do {
+            try symbolTable.build()
+            try symbolTable.resolve()
+            try symbolTable.validate()
+        } catch {
+            fatalError("Failed to construct symbol table: \(error)")
+        }
         
         let rootRules = rules.filter({
             return self.isRoot(identifier: $0.identifier)
