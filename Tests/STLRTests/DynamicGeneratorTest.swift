@@ -63,6 +63,10 @@ class DynamicGeneratorTest: XCTestCase {
         _STLR.removeAllOptimizations()
     }
 
+    func testSwiftSTLREquivalency(){
+        #warning("Dynamically generate STLR and use it to decode Swift generated STLR")
+    }
+    
     /// Intended to test the fix for Issue #39
     func testGrammarRuleProductionIdentifierNonRecursive(){
         let stlr = testGrammarName+"""
@@ -79,7 +83,6 @@ class DynamicGeneratorTest: XCTestCase {
         }
         
         if let tree = try? AbstractSyntaxTreeConstructor().build(">", using: dynamicLanguage)  {
-//            print(tree.description)
             XCTAssertTrue("\(tree.token)" == "arrows", "Root node should be arrows")
             XCTAssertTrue(tree.isSet(annotation: RuleAnnotation.custom(label: "forArrows")))
             guard let arrowNode = tree.nodeAtPath(["arrow"]) else {
@@ -137,8 +140,9 @@ class DynamicGeneratorTest: XCTestCase {
         }
         
         do {
+            okDebugEvaluation = true
             let tree = try AbstractSyntaxTreeConstructor().build(">", using: dynamicLanguage)
-            //           print(tree.description)
+            
             XCTAssertTrue("\(tree.token)" == "arrows", "Root node should be arrows")
             XCTAssertTrue(tree.isSet(annotation: RuleAnnotation.custom(label: "forArrows")))
             guard let arrowNode = tree.nodeAtPath(["arrow"]) else {
