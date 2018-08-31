@@ -43,7 +43,7 @@ class OptimizersTest: GrammarTest {
                     XCTFail("Expected an error \(parser.grammar.rules[1])")
                     return
                 }
-                XCTAssert("\(error)".hasPrefix("Expected X"),"Incorrect error \(error)")
+                XCTAssert("\(error)".contains("Expected X"),"Incorrect error \(error)")
             } catch {
                 XCTFail("Unexpected error \(error)")
             }
