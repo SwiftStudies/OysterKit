@@ -55,7 +55,15 @@ public final class TerminalRule : Rule {
      - Parameter ir: The IR building the AST
      */
     public func test(with lexer: LexicalAnalyzer, for ir: IntermediateRepresentation) throws {
-        try terminal.test(lexer: lexer, producing: behaviour.token)
+        do {
+            try terminal.test(lexer: lexer, producing: behaviour.token)
+        } catch {
+            if let specificError = annotations.error {
+                throw TestError.scanningError(message: specificError, position: lexer.index, causes: [])
+            } else {
+                throw error
+            }
+        }
     }
     
     /**
