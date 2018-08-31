@@ -216,7 +216,7 @@ class RuleTests: XCTestCase {
     func testScannerRuleForRegularExpression(){
         let catRule = try! NSRegularExpression(pattern: "Cat", options: []).parse(as: LabelledToken(withLabel: "Cat"))
         
-        XCTAssertEqual(catRule.description, "{/Cat/}►Cat")
+        XCTAssertEqual(catRule.description, "/Cat/►Cat")
         let commaRule = ","
 
         let source = "Cat,Dog"
@@ -241,7 +241,7 @@ class RuleTests: XCTestCase {
         
         let felineRule = catRule.parse(as: LabelledToken(withLabel: "Feline"))
         
-        XCTAssertEqual("\(felineRule)", "{/Cat/}►Feline")
+        XCTAssertEqual("\(felineRule)", "/Cat/►Feline")
         XCTAssertNotEqual(catRule.behaviour.token!.rawValue, felineRule.behaviour.token!.rawValue)
     }
     
