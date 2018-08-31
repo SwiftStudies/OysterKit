@@ -60,7 +60,7 @@ public final class BehaviouralRecursiveRule : Rule, CustomStringConvertible{
     
     public var description: String{
         if let rule = rule {
-            return behaviour.describe(match: "🔃\(rule.shortDescription)")
+            return behaviour.describe(match: "🔃\(rule.shortDescription)", annotatedWith: rule.annotations)
         } else {
             return shortDescription
         }
@@ -68,7 +68,7 @@ public final class BehaviouralRecursiveRule : Rule, CustomStringConvertible{
     
     /// An abreviated description of the rule
     public var shortDescription: String{
-        return rule?.shortDescription ?? _behaviour.describe(match: "❌")
+        return rule?.shortDescription ?? _behaviour.describe(match: "❌", annotatedWith: rule?.annotations ?? [:])
     }
 
     

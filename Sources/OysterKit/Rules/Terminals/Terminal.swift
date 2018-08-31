@@ -46,7 +46,7 @@ public extension Terminal {
     }
     
     public var shortDescription: String {
-        return behaviour.describe(match: matchDescription, requiresScanningPrefix: false)
+        return behaviour.describe(match: matchDescription, requiresScanningPrefix: false, annotatedWith: annotations)
     }
     
     

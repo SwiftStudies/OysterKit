@@ -38,7 +38,7 @@ struct BehaviouralRecursiveInstance : Rule {
     }
     
     var description: String {
-        return behaviour.describe(match: original.description)
+        return behaviour.describe(match: original.description, annotatedWith: original.surrogateRule?.annotations ?? [:])
     }
     
     var shortDescription: String {
@@ -49,9 +49,9 @@ struct BehaviouralRecursiveInstance : Rule {
             indicator = "❌"
         }
         if let token = behaviour.token {
-            return behaviour.describe(match: "\(indicator)\(token)", requiresStructuralPrefix: false)
+            return behaviour.describe(match: "\(indicator)\(token)", requiresStructuralPrefix: false, annotatedWith: original.surrogateRule?.annotations ?? [:])
         }
-        return behaviour.describe(match: "\(indicator)❌", requiresStructuralPrefix: false)
+        return behaviour.describe(match: "\(indicator)❌", requiresStructuralPrefix: false, annotatedWith: original.surrogateRule?.annotations ?? [:])
     }
     
     func rule(with behaviour: Behaviour?, annotations: RuleAnnotations?) -> Rule {

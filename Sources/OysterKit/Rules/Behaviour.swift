@@ -174,12 +174,12 @@ public struct Behaviour {
      - Parameter match: A description of the match
      - Returns: A wrapped description of the match which includes the behaviour
     */
-    public func describe(match:String, requiresScanningPrefix requiresScanning:Bool = true, requiresStructuralPrefix requiresStructural:Bool = true)->String{
+    public func describe(match:String, requiresScanningPrefix requiresScanning:Bool = true, requiresStructuralPrefix requiresStructural:Bool = true, annotatedWith annotations: RuleAnnotations)->String{
         var prefix : String
         switch kind {
         case .skipping: prefix = "-"
-        case .scanning: prefix = requiresScanning ? "~" : ""
-        case .structural: prefix = requiresStructural ? "{" : ""
+        case .scanning: prefix = requiresScanning ? "" : ""
+        case .structural: prefix = requiresStructural ? "" : ""
         }
         var suffix : String
         
@@ -196,9 +196,16 @@ public struct Behaviour {
         }
         
         if case let Kind.structural(token) = kind, requiresStructural{
-            suffix += "}►\(token)"
+            suffix += "►\(token)"
         } else {
             suffix += ""
+        }
+        
+        if !annotations.isEmpty {
+            let annotationsSuffix = annotations.map({ (key,value) -> String in
+                return "\(key):\(value)"
+            }).joined(separator: ",")
+            suffix += "[\(annotationsSuffix)]"
         }
         
         if negate {

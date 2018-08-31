@@ -81,16 +81,16 @@ public final class ChoiceRule : Rule {
     
     /// A textual description of the rule
     public var description: String {
-        return "\(annotations.isEmpty ? "" : "\(annotations.description) ")"+behaviour.describe(match:"(\(choices.map({$0.description}).joined(separator: " | ")))")
+        return behaviour.describe(match:"(\(choices.map({$0.description}).joined(separator: " | ")))", annotatedWith: annotations)
     }
     
     /// An abreviated description of the rule
     public var shortDescription: String{
         if let produces = behaviour.token {
-            return behaviour.describe(match: "\(produces)", requiresStructuralPrefix: false)
+            return behaviour.describe(match: "\(produces)", requiresStructuralPrefix: false, annotatedWith: annotations)
         }
         let match = choices.map({$0.shortDescription}).joined(separator: "|")
-        return behaviour.describe(match: "(\(match))")
+        return behaviour.describe(match: "(\(match))", annotatedWith: annotations)
     }
 
 }

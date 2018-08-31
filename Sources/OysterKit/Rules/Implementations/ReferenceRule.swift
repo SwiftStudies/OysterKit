@@ -52,18 +52,18 @@ public final class ReferenceRule : Rule {
     
     /// A textual description of the rule
     public var description: String {
-        let    annotates = "\(annotations.isEmpty ? "" : "\(annotations.description) ")"
-        return annotates + behaviour.describe(match:"(\(references.description))")
+        
+        return behaviour.describe(match:"(\(references.description))", annotatedWith: annotations)
     }
     
     /// An abreviated description of the rule
     public var shortDescription: String{
         if let produces = behaviour.token {
-            return behaviour.describe(match: "\(produces)", requiresStructuralPrefix: false)
+            return behaviour.describe(match: "\(produces)", requiresStructuralPrefix: false, annotatedWith: annotations)
         }
         if let referenceProduces = references.behaviour.token{
-            return behaviour.describe(match: "\(referenceProduces)", requiresStructuralPrefix: false)
+            return behaviour.describe(match: "\(referenceProduces)", requiresStructuralPrefix: false, annotatedWith: annotations)
         }
-        return behaviour.describe(match: "(\(references.shortDescription))")
+        return behaviour.describe(match: "(\(references.shortDescription))", annotatedWith: annotations)
     }
 }
