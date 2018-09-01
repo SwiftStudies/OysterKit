@@ -24,7 +24,7 @@
 
 import Foundation
 
-struct BehaviouralRecursiveInstance : Rule {
+struct RecursiveRuleInstance : Rule {
     let original : RecursiveRule
     let behaviour: Behaviour
     let annotations: RuleAnnotations
@@ -55,6 +55,6 @@ struct BehaviouralRecursiveInstance : Rule {
     }
     
     func rule(with behaviour: Behaviour?, annotations: RuleAnnotations?) -> Rule {
-        return BehaviouralRecursiveInstance(original: original, behaviour: behaviour ?? self.behaviour, annotations: annotations ?? self.annotations)
+        return RecursiveRuleInstance(original: original, behaviour: behaviour ?? self.behaviour, annotations: annotations ?? self.annotations)
     }
 }
