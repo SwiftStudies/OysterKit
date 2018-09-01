@@ -39,12 +39,11 @@ fileprivate struct RecursionWrapper : Rule {
     }
     
     var shortDescription: String {
-        #warning("This and description are wrong. BehaviouralRecursive should not show behaviour (nor BehaviouralRecursiveInstance) and this should")
-        return wrapped.shortDescription
+        return behaviour.describe(match: wrapped.description, annotatedWith: annotations)
     }
     
     var description: String {
-        return wrapped.description
+        return behaviour.describe(match: wrapped.shortDescription, annotatedWith: annotations)
     }
     
     
