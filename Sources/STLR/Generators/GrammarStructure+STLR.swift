@@ -40,7 +40,7 @@ public class GrammarStructure {
                 self = .none
             } else if element.isNegated || element.cardinality == .one{
                 self = .one
-            } else if element.cardinality == .optionally {
+            } else if element.cardinality == .zeroOrOne {
                 self = .optional
             } else if element.cardinality == .zeroOrMore {
                 self = .many(true)

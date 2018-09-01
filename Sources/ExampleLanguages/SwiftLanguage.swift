@@ -41,7 +41,7 @@ public class SwiftParser : Parser{
                     [
                         ~".",
                         CharacterSet.decimalDigits.require(.oneOrMore),
-                        ].sequence.require(.optionally),
+                        ].sequence.require(.zeroOrOne),
                     ].sequence.parse(as: self)
             // stringQuote
             case .stringQuote:

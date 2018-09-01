@@ -422,7 +422,7 @@ public extension STLR.Element {
         
         switch quantifier {
         case .questionMark:
-            return .optionally
+            return .zeroOrOne
         case .star:
             return .zeroOrMore
         case .plus:

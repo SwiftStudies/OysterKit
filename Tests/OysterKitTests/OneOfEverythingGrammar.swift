@@ -124,7 +124,7 @@ enum OneOfEverythingGrammar : Int, Token {
                     T.float.rule.require(.one),
                     T.double.rule.require(.one),
                     T.string.rule.require(.one),
-                    T.string.rule.require(.optionally),
+                    T.string.rule.require(.zeroOrOne),
                     T.ws.rule.require(.one)].sequence
                 
                 ].sequence.parse(as: self)

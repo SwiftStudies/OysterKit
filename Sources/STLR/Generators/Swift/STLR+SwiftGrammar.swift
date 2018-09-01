@@ -158,8 +158,8 @@ fileprivate func identifiersAndTerminals(for element:STLR.Element, in file:TextF
         file.print(terminator: "",".require(.oneOrMore)")
     case .zeroOrMore:
         file.print(terminator: "",".require(.zeroOrMore)")
-    case .optionally:
-        file.print(terminator: "",".require(.optionally)")
+    case .zeroOrOne:
+        file.print(terminator: "",".require(.zeroOrOne)")
     default:
         file.print(terminator: "","[\(element.cardinality.minimumMatches)...\(element.cardinality.maximumMatches == nil ? "" : "\(element.cardinality.maximumMatches!)")]")
     }

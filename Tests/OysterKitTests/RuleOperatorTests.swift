@@ -233,7 +233,7 @@ class RuleOperatorTests: XCTestCase {
     func testCardinalityChanges(){
         
         XCTAssertEqual(Cardinality(1...1),  "hello".behaviour.cardinality)
-        XCTAssertEqual(Cardinality(0...1),  "hello".require(.optionally).behaviour.cardinality)
+        XCTAssertEqual(Cardinality(0...1),  "hello".require(.zeroOrOne).behaviour.cardinality)
         XCTAssertEqual(Cardinality(0...),   "hello".require(.zeroOrMore).behaviour.cardinality)
         XCTAssertEqual(Cardinality(1...),   "hello".require(.oneOrMore).behaviour.cardinality)
         XCTAssertEqual(Cardinality(1...1),  "hello".require(.one).behaviour.cardinality)

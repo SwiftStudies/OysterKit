@@ -49,7 +49,7 @@ fileprivate enum Tokens : Int, Token {
         case .whitespaceWord:
             return [Tokens.whitespace.rule, Tokens.word.rule].sequence.reference(.structural(token: self))
         case .optionalWhitespaceWord:
-            return Tokens.whitespaceWord.rule.require(.optionally).reference(.structural(token: self))
+            return Tokens.whitespaceWord.rule.require(.zeroOrOne).reference(.structural(token: self))
         case .repeatedOptionalWhitespaceWord:
             return Tokens.whitespaceWord.rule.require(.zeroOrMore).reference(.structural(token: self))
         case .fullStop:
@@ -149,7 +149,7 @@ class ParserTest: XCTestCase {
     
     func testOptionalNegative(){
         let pling = "!".parse(as: Tokens.exlamationMark)
-        let optional = pling.require(.optionally)
+        let optional = pling.require(.zeroOrOne)
         
         let parser = TestParser(source: "?", grammar: [optional])
         

@@ -226,7 +226,7 @@ class DecoderTests: XCTestCase {
     func testNestedUnkeyed(){
         let arrayEntry = [
             OneOfEverythingGrammar.oneOfEverything.rule.parse(as: LabelledToken(withLabel: "entry")),
-            -",".require(.optionally)
+            -",".require(.zeroOrOne)
         ].sequence
         
         
@@ -263,7 +263,7 @@ class DecoderTests: XCTestCase {
                 -"[",
                 [
                     OneOfEverythingGrammar.oneOfEverything.rule.parse(as: LabelledToken(withLabel: "entry")),
-                    -",".require(.optionally)
+                    -",".require(.zeroOrOne)
                 ].sequence.require(.oneOrMore),
                 -"]",
             ].sequence
@@ -295,11 +295,11 @@ class DecoderTests: XCTestCase {
         let rules : [Rule] = [
             [
                 OneOfEverythingGrammar.oneOfEverything.rule.parse(as: LabelledToken(withLabel: "thing1")),
-                -",".require(.optionally),
+                -",".require(.zeroOrOne),
                 OneOfEverythingGrammar.oneOfEverything.rule.parse(as: LabelledToken(withLabel: "thing2")),
-                -",".require(.optionally),
+                -",".require(.zeroOrOne),
                 OneOfEverythingGrammar.oneOfEverything.rule.parse(as: LabelledToken(withLabel: "thing3")),
-                -",".require(.optionally),
+                -",".require(.zeroOrOne),
             ].sequence.parse(as:LabelledToken(withLabel:"dictionary")),
         ]
         let source = """
