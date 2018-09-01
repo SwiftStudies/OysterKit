@@ -27,7 +27,7 @@ import OysterKit
 
 public typealias Scope = STLR
 
-public class _GrammarStructure {
+public class GrammarStructure {
     /// The cardinality of the node, with fundamentally four values
     /// optional (0 or 1), one, or many (optional or not)
     public enum Cardinality {
@@ -519,14 +519,14 @@ public class _GrammarStructure {
     
 }
 
-fileprivate extension Array where Element == _GrammarStructure.Node {
+fileprivate extension Array where Element == GrammarStructure.Node {
     
-    fileprivate subscript(_ name:String)->_GrammarStructure.Node? {
+    fileprivate subscript(_ name:String)->GrammarStructure.Node? {
         return self.filter({$0.name == name}).first
     }
     
     fileprivate func consolidate(accessLevel:String)->[Element]{
-        var existingFields = [String : _GrammarStructure.Node]()
+        var existingFields = [String : GrammarStructure.Node]()
         
         for child in self {
             if let existingType = existingFields[child.name]?.dataType(accessLevel) {

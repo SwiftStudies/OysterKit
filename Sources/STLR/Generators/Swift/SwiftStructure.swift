@@ -25,7 +25,7 @@
 import Foundation
 import OysterKit
 
-extension _GrammarStructure {
+extension GrammarStructure {
     func swift(to output:TextFile, scope:STLR, accessLevel:String){
         for child in structure.children {
             child.swift(to: output, scope: scope, accessLevel: accessLevel)
@@ -83,7 +83,7 @@ fileprivate extension StringProtocol {
     }
 }
 
-fileprivate extension _GrammarStructure.Node {
+fileprivate extension GrammarStructure.Node {
     func stringEnum(to output:TextFile, accessLevel:String){
         output.print("","// \(dataType(accessLevel))","\(accessLevel) enum \(dataType(accessLevel)) : Swift.String, Codable, CaseIterable {").indent()
         let cases = children.map({
@@ -258,7 +258,7 @@ public class SwiftStructure : Generator{
         }
         
         // Now the structure
-        let structure = _GrammarStructure(for: scope, accessLevel:accessLevel)
+        let structure = GrammarStructure(for: scope, accessLevel:accessLevel)
         output.print("public struct \(name) : Codable {").indent()
         
         structure.swift(to: output, scope: scope, accessLevel: "public")
