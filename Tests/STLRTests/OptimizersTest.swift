@@ -22,6 +22,35 @@ class OptimizersTest: GrammarTest {
         super.tearDown()
         _STLR.removeAllOptimizations()
     }
+
+    func testAttributePreservationOnInlineReference(){
+        do {
+            source += """
+            grammar Test
+            x = "x"
+            xyz = @error("Expected X") x "y" "z"
+            """
+            
+            _STLR.register(optimizer: InlineIdentifierOptimization())
+            let parser = try _STLR.build(source)
+            
+            let compiledLanguage = Parser(grammar: parser.grammar.dynamicRules)
+            
+            do {
+                let _ = try AbstractSyntaxTreeConstructor().build("yz", using: compiledLanguage)
+            } catch AbstractSyntaxTreeConstructor.ConstructionError.constructionFailed(let errors) {
+                guard let error = errors.first else {
+                    XCTFail("Expected an error \(parser.grammar.rules[1])")
+                    return
+                }
+                XCTAssert("\(error)".contains("Expected X"),"Incorrect error \(error)")
+            } catch {
+                XCTFail("Unexpected error \(error)")
+            }
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+    }
     
     func testAttributePreservationOnInline(){
         do {

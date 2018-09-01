@@ -63,7 +63,14 @@ fileprivate final class Symbol : SymbolType {
             let wrapped = RecursionWrapper(behaviour: Behaviour(.scanning), annotations: [:], wrapped: recursive)
             return Symbol(identifier, with: wrapped, baseKind: declaration.behaviour.kind, baseAnnotations: declaration.annotations?.ruleAnnotations ?? [:])
         } else {
-            return Symbol(identifier, with: grammar[identifier].expression.rule(using: symbolTable), baseKind: declaration.behaviour.kind, baseAnnotations: declaration.annotations?.ruleAnnotations ?? [:])
+            var rule = grammar[identifier].expression.rule(using: symbolTable)
+            
+            // Terminal rules
+            if let terminalRule = rule as? TerminalRule, !terminalRule.annotations.isEmpty {
+                rule = [rule].sequence
+            }
+            
+            return Symbol(identifier, with: rule, baseKind: declaration.behaviour.kind, baseAnnotations: declaration.annotations?.ruleAnnotations ?? [:])
         }
     }
     
