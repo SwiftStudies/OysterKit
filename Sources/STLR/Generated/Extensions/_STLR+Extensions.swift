@@ -25,18 +25,23 @@
 import Foundation
 import OysterKit
 
-extension _STLR.Label {
+/// Used when STLR is @testable in tests to distinguish between this actual
+/// STLR and the one used in the package for pre-flight testing before moving
+/// a newly generated STLR into this module
+internal typealias ProductionSTLR = STLR
+
+extension STLR.Label {
     init(_ ruleAnnotation:RuleAnnotation){
         switch ruleAnnotation{
             
         case .token:
-            self = .definedLabel(definedLabel: _STLR.DefinedLabel.token)
+            self = .definedLabel(definedLabel: STLR.DefinedLabel.token)
         case .error:
-            self = .definedLabel(definedLabel: _STLR.DefinedLabel.error)
+            self = .definedLabel(definedLabel: STLR.DefinedLabel.error)
         case .void:
-            self = .definedLabel(definedLabel: _STLR.DefinedLabel.void)
+            self = .definedLabel(definedLabel: STLR.DefinedLabel.void)
         case .transient:
-            self = .definedLabel(definedLabel: _STLR.DefinedLabel.transient)
+            self = .definedLabel(definedLabel: STLR.DefinedLabel.transient)
         case .pinned:
             #warning("Should be defined as standard type in STLR.stlr")
             self = .customLabel(customLabel: "pin")
@@ -49,20 +54,20 @@ extension _STLR.Label {
     }
 }
 
-extension _STLR.String{
+extension STLR.String{
     init(_ string:Swift.String){
         stringBody = string
     }
 }
 
-extension _STLR.Literal {
+extension STLR.Literal {
     init?(_ value:RuleAnnotationValue){
         switch value{
             
         case .string(let string):
-            self = .string(string: _STLR.String(string))
+            self = .string(string: STLR.String(string))
         case .bool(let boolean):
-            self = .boolean(boolean: boolean ? _STLR.Boolean.true : _STLR.Boolean.false)
+            self = .boolean(boolean: boolean ? STLR.Boolean.true : STLR.Boolean.false)
         case .int(let int):
             self = .number(number: int)
         case .set:
@@ -71,14 +76,14 @@ extension _STLR.Literal {
     }
 }
 
-extension _STLR.Annotation {
+extension STLR.Annotation {
     init(_ annotation:RuleAnnotation, value:RuleAnnotationValue){
-        label = _STLR.Label(annotation)
-        literal = _STLR.Literal(value)
+        label = STLR.Label(annotation)
+        literal = STLR.Literal(value)
     }
 }
 
-extension _STLR.TokenType {
+extension STLR.TokenType {
     var name : String {
         switch self {
         case .standardType(let standardType):
@@ -98,11 +103,11 @@ extension _STLR.TokenType {
     }
 }
 
-extension _STLR.Rule {
-    init(_ identifier:String, type:_STLR.TokenType? = nil, void:Bool, transient:Bool, annotations:RuleAnnotations, expression: _STLR.Expression){
-        assignmentOperators = _STLR.AssignmentOperators.equals
-        self.annotations = annotations.map({ (key,value) -> _STLR.Annotation in
-            return _STLR.Annotation(key, value: value)
+extension STLR.Rule {
+    init(_ identifier:String, type:STLR.TokenType? = nil, void:Bool, transient:Bool, annotations:RuleAnnotations, expression: STLR.Expression){
+        assignmentOperators = STLR.AssignmentOperators.equals
+        self.annotations = annotations.map({ (key,value) -> STLR.Annotation in
+            return STLR.Annotation(key, value: value)
         })
         self.identifier = identifier
         if void {
@@ -129,9 +134,9 @@ extension _STLR.Rule {
     }
 }
 
-public extension _STLR.Grammar {
+public extension STLR.Grammar {
     
-    fileprivate func embeddedIdentifier(_ tokenName:String)->_STLR.Element?{
+    fileprivate func embeddedIdentifier(_ tokenName:String)->STLR.Element?{
         for rule in rules {
             if let element = rule.expression.embeddedIdentifier(tokenName){
                 return element
@@ -151,9 +156,9 @@ public extension _STLR.Grammar {
         return embeddedIdentifier(identifier) != nil
     }
 
-    func extractInlinedRules(element:_STLR.Element)->[_STLR.Rule]{
+    func extractInlinedRules(element:STLR.Element)->[STLR.Rule]{
         if let group = element.group {
-            var additionalRules = [_STLR.Rule]()
+            var additionalRules = [STLR.Rule]()
             
             if let inlinedRule = element.annotations?.token {
                 additionalRules.append(self[inlinedRule])
@@ -174,14 +179,14 @@ public extension _STLR.Grammar {
     }
 
     
-    fileprivate func extractInlinedRules(expression:_STLR.Expression)->[_STLR.Rule]{
+    fileprivate func extractInlinedRules(expression:STLR.Expression)->[STLR.Rule]{
         switch expression {
         case .element(let element):
             if let inlined = element.annotations?.token {
                 return [self[inlined]]
             }
         case .sequence(let elements), .choice(let elements):
-            var inlined = [_STLR.Rule]()
+            var inlined = [STLR.Rule]()
             for element in elements {
                 inlined.append(contentsOf: extractInlinedRules(element:element))
             }
@@ -190,8 +195,8 @@ public extension _STLR.Grammar {
         return []
     }
     
-    internal var inlinedRules : _STLR.Rules {
-        var inlined = _STLR.Rules()
+    internal var inlinedRules : STLR.Rules {
+        var inlined = STLR.Rules()
         
         for rule in rules {
             inlined.append(contentsOf: extractInlinedRules(expression: rule.expression))
@@ -201,14 +206,14 @@ public extension _STLR.Grammar {
     }
     
     /// All rules, including those defined inline
-    public var allRules : _STLR.Rules {
-        var all = _STLR.Rules()
+    public var allRules : STLR.Rules {
+        var all = STLR.Rules()
         all.append(contentsOf: rules)
         all.append(contentsOf: inlinedRules)
         return all
     }
     
-    public subscript(_ identifier:String)->_STLR.Rule{
+    public subscript(_ identifier:String)->STLR.Rule{
         for rule in rules {
             if rule.identifier == identifier {
                 return rule
@@ -224,7 +229,7 @@ public extension _STLR.Grammar {
         do {
             let expression = try element.expression(for: identifier, in: self)
             
-            return _STLR.Rule(identifier,
+            return STLR.Rule(identifier,
                               void: annotations?.void ?? false,
                               transient: annotations?.transient ?? false,
                               annotations: annotations?.ruleAnnotations ?? [:],
@@ -254,7 +259,7 @@ public extension _STLR.Grammar {
         return true
     }
 
-    public func validate(rule:_STLR.Rule) throws {
+    public func validate(rule:STLR.Rule) throws {
         if isDirectLeftHandRecursive(identifier: rule.identifier){
             throw TestError.interpretationError(message: "\(rule.identifier) is directly left hand recursive (references itself without moving scan head forward)", causes: [])
         }
@@ -262,7 +267,7 @@ public extension _STLR.Grammar {
     
 }
 
-public extension _STLR.Rule {
+public extension STLR.Rule {
     /// True if the rule is skipping
     public var isVoid : Bool {
         return void != nil || (annotations?.void ?? false)
@@ -278,7 +283,7 @@ public extension _STLR.Rule {
     }
 }
 
-public extension _STLR.Quantifier {
+public extension STLR.Quantifier {
     /// The minimum number of matches required to satisfy the quantifier
     public var minimumMatches : Int {
         switch self {
@@ -304,8 +309,8 @@ public extension _STLR.Quantifier {
     }
 }
 
-public extension _STLR.Expression {
-    fileprivate var elements : [_STLR.Element] {
+public extension STLR.Expression {
+    fileprivate var elements : [STLR.Element] {
         switch self {
         case .sequence(let sequence):
             return sequence
@@ -316,7 +321,7 @@ public extension _STLR.Expression {
         }
     }
 
-    fileprivate func embeddedIdentifier(_ tokenName:String)->_STLR.Element?{
+    fileprivate func embeddedIdentifier(_ tokenName:String)->STLR.Element?{
         switch self {
         case .element(let element):
             return element.embeddedIdentifier(tokenName)
@@ -330,7 +335,7 @@ public extension _STLR.Expression {
         }
     }
     
-    public func directlyReferences(_ identifier:String, grammar:_STLR.Grammar, closedList:inout [String])->Bool {
+    public func directlyReferences(_ identifier:String, grammar:STLR.Grammar, closedList:inout [String])->Bool {
         for element in elements {
             if element.directlyReferences(identifier, grammar: grammar, closedList: &closedList){
                 return true
@@ -345,7 +350,7 @@ public extension _STLR.Expression {
     }
 
     
-    public func references(_ identifier:String, grammar:_STLR.Grammar, closedList: inout [String])->Bool {
+    public func references(_ identifier:String, grammar:STLR.Grammar, closedList: inout [String])->Bool {
         for element in elements {
             if element.references(identifier, grammar: grammar, closedList: &closedList){
                 return true
@@ -355,7 +360,7 @@ public extension _STLR.Expression {
     }
 }
 
-public extension _STLR.Element {
+public extension STLR.Element {
 
     /// The annotations defined as `RuleAnnotations`
     public var ruleAnnotations : RuleAnnotations {
@@ -432,7 +437,7 @@ public extension _STLR.Element {
         return Behaviour(kind, cardinality: cardinality, negated: isNegated, lookahead: isLookahead)
     }
     
-    fileprivate func embeddedIdentifier(_ tokenName:String)->_STLR.Element?{
+    fileprivate func embeddedIdentifier(_ tokenName:String)->STLR.Element?{
         if annotations?.token ?? "" == tokenName {
             return self
         }
@@ -455,12 +460,12 @@ public extension _STLR.Element {
      - Parameter grammar: The grammar both the identifier and this element is in
      - Returns: `true` if the identifier could be referenced before the scan head has moved
     */
-    public func directlyReferences(_ identifier:String, grammar:_STLR.Grammar)->Bool{
+    public func directlyReferences(_ identifier:String, grammar:STLR.Grammar)->Bool{
         var closedList = [String]()
         return directlyReferences(identifier, grammar: grammar, closedList: &closedList)
     }
     
-    func directlyReferences(_ identifier:String, grammar:_STLR.Grammar, closedList:inout [String])->Bool {
+    func directlyReferences(_ identifier:String, grammar:STLR.Grammar, closedList:inout [String])->Bool {
         if let group = group {
             return group.expression.directlyReferences(identifier, grammar: grammar, closedList: &closedList)
         } else if let _ = terminal {
@@ -485,12 +490,12 @@ public extension _STLR.Element {
      - Parameter grammar: The grammar both the identifier and this element is in
      - Returns: `true` if the identifier is referenced
      */
-    func references(_ identifier:String, grammar:_STLR.Grammar)->Bool{
+    func references(_ identifier:String, grammar:STLR.Grammar)->Bool{
         var closedList = [String]()
         return references(identifier, grammar: grammar, closedList: &closedList)
     }
 
-    func references(_ identifier:String, grammar:_STLR.Grammar, closedList:inout [String])->Bool {
+    func references(_ identifier:String, grammar:STLR.Grammar, closedList:inout [String])->Bool {
         if let group = group {
             return group.expression.references(identifier, grammar: grammar, closedList: &closedList)
         } else if let _ = terminal {
@@ -508,12 +513,12 @@ public extension _STLR.Element {
         return false
     }
     
-    func expression(for tokenName:String, in grammar:_STLR.Grammar) throws ->_STLR.Expression {
+    func expression(for tokenName:String, in grammar:STLR.Grammar) throws ->STLR.Expression {
         if let group = group {
             return group.expression
         } else if let terminal = terminal {
-            let newElement = _STLR.Element(annotations: annotations?.filter({!$0.label.isToken}), group: nil, identifier: nil, lookahead: lookahead, negated: negated, quantifier: quantifier, terminal: terminal, transient: transient, void: void)
-            return _STLR.Expression.element(element: newElement)
+            let newElement = STLR.Element(annotations: annotations?.filter({!$0.label.isToken}), group: nil, identifier: nil, lookahead: lookahead, negated: negated, quantifier: quantifier, terminal: terminal, transient: transient, void: void)
+            return STLR.Expression.element(element: newElement)
         } else if let identifier = identifier {
             if identifier == tokenName {
                 throw TestError.interpretationError(message: "Recursive inline definition of \(tokenName)", causes: [])
@@ -537,19 +542,19 @@ extension String {
     }
 }
 
-extension _STLR.String {
+extension STLR.String {
     public var terminal : String {
         return stringBody.unescaped
     }
 }
 
-extension _STLR.TerminalString {
+extension STLR.TerminalString {
     public var terminal : String {
         return terminalBody.unescaped
     }
 }
 
-extension _STLR.CharacterSet {
+extension STLR.CharacterSet {
     /// Creates the appropriate terminal from the character set node
     public var terminal : Terminal {
         switch characterSetName {
@@ -576,7 +581,7 @@ extension _STLR.CharacterSet {
     
 }
 
-internal extension _STLR.Label {
+internal extension STLR.Label {
     /// `true` if the annotation is a token annotation
     var isToken : Bool {
         switch self {
@@ -610,7 +615,7 @@ internal extension _STLR.Label {
     }
 }
 
-internal extension Array where Element == _STLR.Annotation {
+internal extension Array where Element == STLR.Annotation {
     /// The annotations on the element with any that would be captured in `Behaviour` removed (@token, @transient, @void)
     internal var unfilteredRuleAnnotationsForTesting : RuleAnnotations {        
         var ruleAnnotations = [RuleAnnotation : RuleAnnotationValue]()
@@ -621,7 +626,7 @@ internal extension Array where Element == _STLR.Annotation {
     }
 }
 
-public extension Array where Element == _STLR.Annotation {
+public extension Array where Element == STLR.Annotation {
     
     subscript(_ desiredAnnotation:RuleAnnotation)->RuleAnnotationValue?{
         for annotation in self {

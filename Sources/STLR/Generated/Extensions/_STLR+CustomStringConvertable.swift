@@ -24,7 +24,7 @@
 
 import Foundation
 
-extension _STLR : CustomStringConvertible {
+extension STLR : CustomStringConvertible {
     public var description: Swift.String {
         let result = TextFile(grammar.scopeName+".STLR")
 
@@ -42,13 +42,13 @@ extension _STLR : CustomStringConvertible {
     }
 }
 
-extension _STLR.Rule : CustomStringConvertible{
+extension STLR.Rule : CustomStringConvertible{
     public var description : String {
         return "\(identifier)\(tokenType == nil ? "" : "\(tokenType!)") \(assignmentOperators.rawValue) \(expression)"
     }
 }
 
-extension _STLR.Expression : CustomStringConvertible {
+extension STLR.Expression : CustomStringConvertible {
     public var description : String {
         switch  self {
         case .element(let element):
@@ -61,7 +61,7 @@ extension _STLR.Expression : CustomStringConvertible {
     }
 }
 
-extension _STLR.Element : CustomStringConvertible {
+extension STLR.Element : CustomStringConvertible {
     public var description : String {
         let quantity = quantifier?.rawValue ?? ""
         let allAttribs = annotations?.map({"\($0)"}).joined(separator: " ") ?? ""
@@ -80,13 +80,13 @@ extension _STLR.Element : CustomStringConvertible {
     }
 }
 
-extension _STLR.Annotation : CustomStringConvertible {
+extension STLR.Annotation : CustomStringConvertible {
     public var description : String {
         return "@\(label)"+(literal == nil ? "" : "(\(literal!))")
     }
 }
 
-extension _STLR.Literal : CustomStringConvertible {
+extension STLR.Literal : CustomStringConvertible {
     public var description : String {
         switch self {
         case .boolean(let value):
@@ -99,7 +99,7 @@ extension _STLR.Literal : CustomStringConvertible {
     }
 }
 
-extension _STLR.Terminal : CustomStringConvertible {
+extension STLR.Terminal : CustomStringConvertible {
     public var description : String {
         switch self {
         case .characterSet(let characterSet):

@@ -8,7 +8,7 @@
 
 import XCTest
 import OysterKit
-import STLR
+@testable import STLR
 import ExampleLanguages
 
 class OysterKitPerformanceTests: XCTestCase {
@@ -903,7 +903,7 @@ class FullSwiftParser : Parser{
 
     func testPerformanceSTLR() {
         do {
-            _ = Parser(grammar: try _STLR.build(stlrSource).grammar.dynamicRules)
+            _ = Parser(grammar: try ProductionSTLR.build(stlrSource).grammar.dynamicRules)
         } catch {
             XCTFail("Could not compile \(error)")
             return
@@ -911,7 +911,7 @@ class FullSwiftParser : Parser{
         
         // This is an example of a performance test case.
         self.measure {
-            let stlr = try! _STLR.build(self.stlrSource)
+            let stlr = try! ProductionSTLR.build(self.stlrSource)
             
             XCTAssertEqual(45, stlr.grammar.rules.count)
             
@@ -962,7 +962,7 @@ class FullSwiftParser : Parser{
     func testPerformanceSTLRParseOnly() {
         let parser : Parser
         do {
-            parser = Parser(grammar: try _STLR.build(stlrSource).grammar.dynamicRules)
+            parser = Parser(grammar: try ProductionSTLR.build(stlrSource).grammar.dynamicRules)
         } catch {
             XCTFail("Failed to compile: \(error)")
             return

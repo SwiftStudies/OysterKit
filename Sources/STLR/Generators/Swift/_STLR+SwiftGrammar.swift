@@ -25,7 +25,7 @@
 import Foundation
 
 /// Generates Swift Source for the rules in a grammar
-public extension _STLR {
+public extension STLR {
     /**
      Generates Swift code that uses OysterKit to implement the parsed grammar
      
@@ -93,9 +93,9 @@ public extension _STLR {
     }
 }
 
-extension _STLR.Rule {
+extension STLR.Rule {
     @discardableResult
-    func swift(in file:TextFile, grammar:_STLR.Grammar)->TextFile{
+    func swift(in file:TextFile, grammar:STLR.Grammar)->TextFile{
         var suffix : String = ".reference("
         if isVoid {
             suffix += ".skipping"
@@ -114,9 +114,9 @@ extension _STLR.Rule {
     }
 }
 
-extension _STLR.Expression {
+extension STLR.Expression {
     @discardableResult
-    func swift(in file:TextFile, grammar:_STLR.Grammar)->TextFile{
+    func swift(in file:TextFile, grammar:STLR.Grammar)->TextFile{
         switch self {
         case .element(let element):
             file.printFile(element.swift(in: TextFile(), grammar: grammar))
@@ -133,7 +133,7 @@ extension _STLR.Expression {
     }
 }
 
-fileprivate func identifiersAndTerminals(for element:_STLR.Element, in file:TextFile, grammar:_STLR.Grammar)->TextFile{
+fileprivate func identifiersAndTerminals(for element:STLR.Element, in file:TextFile, grammar:STLR.Grammar)->TextFile{
     file.print(terminator: "", element.isTransient  ? "~" : (element.isVoid       ? "-" : ""))
     
     if let terminal = element.terminal {
@@ -178,11 +178,11 @@ fileprivate func identifiersAndTerminals(for element:_STLR.Element, in file:Text
     return file
 }
 
-extension _STLR.Element {
+extension STLR.Element {
     @discardableResult
-    func swift(in file:TextFile, grammar:_STLR.Grammar)->TextFile{
+    func swift(in file:TextFile, grammar:STLR.Grammar)->TextFile{
         if let token = token {
-            let pseudoElement = _STLR.Element(annotations: annotations?.filter({!$0.label.isToken}), group: nil, identifier: "\(token)", lookahead: lookahead, negated: negated, quantifier: quantifier, terminal: nil, transient: transient, void: void)
+            let pseudoElement = STLR.Element(annotations: annotations?.filter({!$0.label.isToken}), group: nil, identifier: "\(token)", lookahead: lookahead, negated: negated, quantifier: quantifier, terminal: nil, transient: transient, void: void)
             return identifiersAndTerminals(for: pseudoElement, in: file, grammar: grammar)
         }
         
@@ -190,7 +190,7 @@ extension _STLR.Element {
     }
 }
 
-extension Array where Element == _STLR.Annotation {
+extension Array where Element == STLR.Annotation {
     var swift : String {
         if isEmpty {
             return "[:]"
@@ -199,7 +199,7 @@ extension Array where Element == _STLR.Annotation {
     }
 }
 
-extension _STLR.Label {
+extension STLR.Label {
     var swift : String {
         var result = "."
         switch self {
@@ -215,7 +215,7 @@ extension _STLR.Label {
     }
 }
 
-extension _STLR.Literal {
+extension STLR.Literal {
     var swift : String {
         switch self {
         case .string(let string):
@@ -228,13 +228,13 @@ extension _STLR.Literal {
     }
 }
 
-extension _STLR.Annotation {
+extension STLR.Annotation {
     var swift : String {
         return "RuleAnnotation\(label.swift):RuleAnnotationValue\(literal?.swift ?? ".set")"
     }
 }
 
-extension _STLR.Terminal {
+extension STLR.Terminal {
     @discardableResult
     func swift()->String{
         switch self {

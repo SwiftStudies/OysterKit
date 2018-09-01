@@ -26,7 +26,7 @@ import Foundation
 import OysterKit
 
 extension _GrammarStructure {
-    func swift(to output:TextFile, scope:_STLR, accessLevel:String){
+    func swift(to output:TextFile, scope:STLR, accessLevel:String){
         for child in structure.children {
             child.swift(to: output, scope: scope, accessLevel: accessLevel)
         }
@@ -98,7 +98,7 @@ fileprivate extension _GrammarStructure.Node {
         output.print("case \(cases)").outdent().print("}")
     }
     
-    func swiftEnum(to output:TextFile, scope:_STLR, accessLevel:String){
+    func swiftEnum(to output:TextFile, scope:STLR, accessLevel:String){
         let _ = ""
         if children.reduce(true, {$0 && $1.dataType(accessLevel) == "Swift.String?"}){
             stringEnum(to: output, accessLevel:accessLevel)
@@ -149,7 +149,7 @@ fileprivate extension _GrammarStructure.Node {
     }
     
     
-    func swift(to output:TextFile, scope:_STLR, accessLevel:String){
+    func swift(to output:TextFile, scope:STLR, accessLevel:String){
         var isClass = false
         if type != .unknown {
             if children.isEmpty{
@@ -232,7 +232,7 @@ public class SwiftStructure : Generator{
     ///
     ///  - Parameter scope: The scope to use to generate
     ///  - Returns: A single `TextFile` containing the Swift source
-    public static func generate(for scope: _STLR, grammar name:String, accessLevel:String) throws -> [Operation] {
+    public static func generate(for scope: STLR, grammar name:String, accessLevel:String) throws -> [Operation] {
         let name   = scope.grammar.scopeName
         let output = TextFile("\(name).swift")
         

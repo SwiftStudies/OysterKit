@@ -22,12 +22,7 @@
 //    OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 //    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import Foundation
+import STLR
 
-/// Provides functions for optimizing the grammar as represented in the AST
-public extension STLR.Grammar{
-    
-    /// Optimizes the grammar using the optimizers registered by `register(optimizer:STLROptimizer)`
-    public func optimize(){
-    }
-}
+/// Deals with an ambiguity of STLR (the module) Operations when used together in a file that imports Foundation (which also has an operation)
+typealias STLROperation = Operation

@@ -24,7 +24,7 @@
 
 import XCTest
 @testable import OysterKit
-import STLR
+@testable import STLR
 
 class TestAbstractSyntaxTree: XCTestCase {
 
@@ -32,7 +32,7 @@ class TestAbstractSyntaxTree: XCTestCase {
         do {
             let source = "grammar Test\nwibble = .letters"
             
-            _ = try _STLR.build(source)
+            _ = try ProductionSTLR.build(source)
             XCTFail("Expected error")
 
         } catch {
@@ -44,7 +44,7 @@ class TestAbstractSyntaxTree: XCTestCase {
         do {
             let source = ""
             
-            _ = try _STLR.build(source)
+            _ = try ProductionSTLR.build(source)
             XCTFail("Expected error")
         } catch {
             //Pass

@@ -43,7 +43,7 @@ class GrammarTest: XCTestCase {
         net(){
             source.add(line: "x = \"x\"")
             
-            let stlr = try _STLR.build(testGrammarName+source)
+            let stlr = try ProductionSTLR.build(testGrammarName+source)
             
             let ast = stlr.grammar
             
@@ -61,7 +61,7 @@ class GrammarTest: XCTestCase {
         net(){
             source.add(line: "animal = /Cat|Dog/")
             
-            let stlr = try _STLR.build(testGrammarName+source)
+            let stlr = try ProductionSTLR.build(testGrammarName+source)
             
             let ast = stlr.grammar
             
@@ -131,7 +131,7 @@ class GrammarTest: XCTestCase {
     }
     
     func generateAndCheck(grammar:String, parsing testString:String, expecting: [String]) throws {
-        let language = try _STLR.build(testGrammarName+grammar)
+        let language = try ProductionSTLR.build(testGrammarName+grammar)
         let ast = language.grammar
         
         let parser = Parser(grammar: ast.dynamicRules)
@@ -155,7 +155,7 @@ class GrammarTest: XCTestCase {
         net(){
             source.add(line: "xy = \"x\" @error(\"expected y\")@custom\"y\"")
             
-            let parser = try _STLR.build(testGrammarName+source)
+            let parser = try ProductionSTLR.build(testGrammarName+source)
             
             guard parser.grammar.rules.count == 1 else {
                 XCTFail("Expected just one rule but got \(parser.grammar.rules.count): \(parser.grammar.rules)")
@@ -186,7 +186,7 @@ class GrammarTest: XCTestCase {
             source.add(line: "xy = x \"y\"")
             source.add(line: "justX = x")
             
-            let stlr = try _STLR.build(testGrammarName+source)
+            let stlr = try ProductionSTLR.build(testGrammarName+source)
             
             let ast = stlr.grammar
             
@@ -208,7 +208,7 @@ class GrammarTest: XCTestCase {
             source.add(line: "x  = \"x\" >>!\"y\" ")
             source.add(line: "xy = \"x\" \"y\" ")
             
-            let stlr = try _STLR.build(testGrammarName+source)
+            let stlr = try ProductionSTLR.build(testGrammarName+source)
             
             let ast = stlr.grammar
             guard ast.rules.count == 2 else {
@@ -235,7 +235,7 @@ class GrammarTest: XCTestCase {
             source.add(line: "whitespace = ws+")
             source.add(line: "word = .letter+")
             
-            let stlr = try _STLR.build(testGrammarName+source)
+            let stlr = try ProductionSTLR.build(testGrammarName+source)
             
             let ast = stlr.grammar
             
@@ -257,7 +257,7 @@ class GrammarTest: XCTestCase {
         net(){
             source.add(line: "x = y")
             
-            let stlr = try _STLR.build(testGrammarName+source)
+            let stlr = try ProductionSTLR.build(testGrammarName+source)
             
             let ast = stlr.grammar
             
@@ -309,7 +309,7 @@ class GrammarTest: XCTestCase {
             source.add(line: "y = \"y\"")
             source.add(line: "z=\"z\"")
             
-            let stlr = try _STLR.build(testGrammarName+source)
+            let stlr = try ProductionSTLR.build(testGrammarName+source)
             
             let ast = stlr.grammar
             
@@ -330,7 +330,7 @@ class GrammarTest: XCTestCase {
         do{
             source.add(line: "hello = \"hello\" .whiteSpacesAndNewlines")
             
-            _ = try _STLR.build(testGrammarName+source)
+            _ = try ProductionSTLR.build(testGrammarName+source)
             
             XCTFail("Expected an error")
         } catch AbstractSyntaxTreeConstructor.ConstructionError.constructionFailed(let causes) {
@@ -350,7 +350,7 @@ class GrammarTest: XCTestCase {
         do {
             source.add(line: "hello = \"hello")
             
-            _ = try _STLR.build(testGrammarName+source)
+            _ = try ProductionSTLR.build(testGrammarName+source)
 
             XCTFail("Expected an error")
         } catch AbstractSyntaxTreeConstructor.ConstructionError.constructionFailed(let errors){
@@ -369,12 +369,12 @@ class GrammarTest: XCTestCase {
     
     
     func testAnnotationsOnIdentifiers(){
-        let parser : _STLR
+        let parser : ProductionSTLR
         do {
             source.add(line: "x = \"x\"")
             source.add(line: "xyz = @error(\"Expected X\")\nx \"y\" \"z\"")
             
-            parser = try _STLR.build(testGrammarName+source)
+            parser = try ProductionSTLR.build(testGrammarName+source)
             
             let compiledLanguage = Parser(grammar:parser.grammar.dynamicRules)
             
@@ -393,7 +393,7 @@ class GrammarTest: XCTestCase {
             source.add(line: "x = \"x\"")
             source.add(line: "xyz = @error(\"Expected xy\")(@error(\"Expected x\")x \"y\") \"z\"")
             
-            let parser = try _STLR.build(testGrammarName+source)
+            let parser = try ProductionSTLR.build(testGrammarName+source)
             
             do {
                 let _ = try AbstractSyntaxTreeConstructor().build("yz", using: Parser(grammar: parser.grammar.dynamicRules))

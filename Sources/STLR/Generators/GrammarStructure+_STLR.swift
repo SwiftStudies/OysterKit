@@ -25,7 +25,7 @@
 import Foundation
 import OysterKit
 
-public typealias Scope = _STLR
+public typealias Scope = STLR
 
 public class _GrammarStructure {
     /// The cardinality of the node, with fundamentally four values
@@ -33,7 +33,7 @@ public class _GrammarStructure {
     public enum Cardinality {
         case none,optional, one, many(Bool)
         
-        init(element:_STLR.Element, referencing rule:Scope.Rule?){
+        init(element:STLR.Element, referencing rule:Scope.Rule?){
             let notStructural = element.token == nil && ((element.isVoid || element.isTransient) || (rule?.isVoid ?? false || rule?.isTransient ?? false))
             
             if notStructural || element.isLookahead{
@@ -91,7 +91,7 @@ public class _GrammarStructure {
     public enum Kind {
         case transient, void, pinned, structural, lookahead
         
-        init(rule:_STLR.Rule){
+        init(rule:STLR.Rule){
 
             if rule.annotations?[.pinned] != nil {
                 self = .pinned
@@ -104,7 +104,7 @@ public class _GrammarStructure {
             }
         }
         
-        init(element:_STLR.Element, referencing rule:Scope.Rule?, defaultValue:Kind){
+        init(element:STLR.Element, referencing rule:Scope.Rule?, defaultValue:Kind){
             if element.isLookahead {
                 self = .lookahead
             } else if element.isVoid {
@@ -399,7 +399,7 @@ public class _GrammarStructure {
         
     }
     
-    func generate(element:_STLR.Element)->[Node]{
+    func generate(element:STLR.Element)->[Node]{
         if let group = element.group {
             if case let Behaviour.Kind.structural(tokenName) = element.kind {
                 let rule = scope.grammar["\(tokenName)"]
@@ -477,7 +477,7 @@ public class _GrammarStructure {
         fatalError("Element is not of any known types")
     }
     
-    func generate(expression:_STLR.Expression)->[Node] {
+    func generate(expression:STLR.Expression)->[Node] {
         var nodes = [Node]()
         switch expression {
         case .element(let element):
@@ -547,7 +547,7 @@ fileprivate extension Array where Element == _GrammarStructure.Node {
     }
 }
 
-extension _STLR {
+extension STLR {
     func identifierIsLeftHandRecursive(_ name:Swift.String)->Bool{
         return grammar.isLeftHandRecursive(identifier: name)
     }
@@ -555,7 +555,7 @@ extension _STLR {
         if !grammar.defined(identifier: name){
             return "Swift.String"
         }
-        let rule : _STLR.Rule = grammar[name]
+        let rule : STLR.Rule = grammar[name]
         
         guard let type = rule.declaredType else {
             return "Swift.String"

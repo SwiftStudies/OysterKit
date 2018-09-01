@@ -302,7 +302,7 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
     }
 }
 
-public struct _STLR : Codable {
+public struct STLR : Codable {
     
     // Quantifier
     public enum Quantifier : Swift.String, Codable, CaseIterable {
@@ -621,10 +621,10 @@ public struct _STLR : Codable {
      - Parameter source: The string to parse
      - Returns: A new instance of the data-structure
      */
-    public static func build(_ source : Swift.String) throws ->_STLR{
-        let root = HomogenousTree(with: LabelledToken(withLabel: "root"), matching: source, children: [try AbstractSyntaxTreeConstructor().build(source, using: _STLR.generatedLanguage)])
+    public static func build(_ source : Swift.String) throws ->STLR{
+        let root = HomogenousTree(with: LabelledToken(withLabel: "root"), matching: source, children: [try AbstractSyntaxTreeConstructor().build(source, using: STLR.generatedLanguage)])
         // print(root.description)
-        return try ParsingDecoder().decode(_STLR.self, using: root)
+        return try ParsingDecoder().decode(STLR.self, using: root)
     }
     
     public static var generatedLanguage : Language {return Parser(grammar:STLRTokens.generatedRules)}

@@ -55,7 +55,7 @@ fileprivate final class Symbol : SymbolType {
     private var baseAnnotations : RuleAnnotations
     private var baseKind : Behaviour.Kind
     
-    static func build(for identifier: String, from grammar: _STLR.Grammar, in symbolTable: SymbolTable<Symbol>) -> Symbol {
+    static func build(for identifier: String, from grammar: STLR.Grammar, in symbolTable: SymbolTable<Symbol>) -> Symbol {
 
         let declaration = grammar[identifier]
         if grammar.isLeftHandRecursive(identifier: identifier){
@@ -74,13 +74,13 @@ fileprivate final class Symbol : SymbolType {
         }
     }
     
-    func resolve(from grammar:_STLR.Grammar, in symbolTable: SymbolTable<Symbol>) throws {
+    func resolve(from grammar:STLR.Grammar, in symbolTable: SymbolTable<Symbol>) throws {
         if let wrapper = expression as? RecursionWrapper {
             wrapper.wrapped.surrogateRule = grammar[identifier].expression.rule(using: symbolTable)
         }
     }
     
-    func validate(from grammar: _STLR.Grammar, in symbolTable: SymbolTable<Symbol>) throws {
+    func validate(from grammar: STLR.Grammar, in symbolTable: SymbolTable<Symbol>) throws {
         
     }
     
@@ -101,7 +101,7 @@ fileprivate final class Symbol : SymbolType {
     }
 }
 
-extension _STLR.DefinedLabel {
+extension STLR.DefinedLabel {
     var ruleAnnotation : RuleAnnotation{
         switch self {
         case .token:
@@ -116,7 +116,7 @@ extension _STLR.DefinedLabel {
     }
 }
 
-extension _STLR.Label {
+extension STLR.Label {
     var ruleAnnotation : RuleAnnotation {
         switch self {
         case .customLabel(let customLabel):
@@ -127,7 +127,7 @@ extension _STLR.Label {
     }
 }
 
-extension _STLR.Literal {
+extension STLR.Literal {
     var ruleAnnotationValue : RuleAnnotationValue {
         switch self {
         case .string(let string):
@@ -140,7 +140,7 @@ extension _STLR.Literal {
     }
 }
 
-extension _STLR.Annotation {
+extension STLR.Annotation {
     var ruleAnnotation : RuleAnnotation {
         return label.ruleAnnotation
     }
@@ -153,7 +153,7 @@ extension _STLR.Annotation {
 
 
 
-fileprivate extension Array where Element == _STLR.Element {
+fileprivate extension Array where Element == STLR.Element {
     func choice(with behaviour: Behaviour, and annotations:RuleAnnotations, using symbolTable:SymbolTable<Symbol>) -> Rule {
         return ChoiceRule(behaviour, and: annotations, for: map({$0.rule(symbolTable: symbolTable)}))
     }
@@ -162,8 +162,8 @@ fileprivate extension Array where Element == _STLR.Element {
     }
 }
 
-fileprivate extension _STLR.Element {
-    private static func rule(for element:_STLR.Element, using symbolTable:SymbolTable<Symbol>)->Rule {
+fileprivate extension STLR.Element {
+    private static func rule(for element:STLR.Element, using symbolTable:SymbolTable<Symbol>)->Rule {
         if let terminal = element.terminal {
             return terminal.rule(with: element.behaviour, and: element.annotations?.ruleAnnotations ?? [:])
         } else if let identifier = element.identifier {
@@ -180,17 +180,17 @@ fileprivate extension _STLR.Element {
         fatalError("Element is not a terminal, and identifier reference, or a group")
     }
     func rule(symbolTable:SymbolTable<Symbol>)->Rule {
-        let element : _STLR.Element
+        let element : STLR.Element
         if let token = token {
-            element = _STLR.Element(annotations: annotations?.filter({!$0.label.isToken}), group: nil, identifier: "\(token)", lookahead: lookahead, negated: negated, quantifier: quantifier, terminal: nil, transient: transient, void: void)
+            element = STLR.Element(annotations: annotations?.filter({!$0.label.isToken}), group: nil, identifier: "\(token)", lookahead: lookahead, negated: negated, quantifier: quantifier, terminal: nil, transient: transient, void: void)
         } else {
             element = self
         }
-        return _STLR.Element.rule(for:element, using:symbolTable)
+        return STLR.Element.rule(for:element, using:symbolTable)
      }
 }
 
-extension _STLR.CharacterSetName {
+extension STLR.CharacterSetName {
     var characterSet : CharacterSet {
         switch self {
         case .letter:
@@ -215,7 +215,7 @@ extension _STLR.CharacterSetName {
     }
 }
 
-extension _STLR.Terminal {
+extension STLR.Terminal {
     func rule(with behaviour:Behaviour, and annotations:RuleAnnotations)->Rule {
         switch self {
         case .regex(let regex):
@@ -232,7 +232,7 @@ extension _STLR.Terminal {
     }
 }
 
-fileprivate extension _STLR.Expression {
+fileprivate extension STLR.Expression {
     func rule(using symbolTable:SymbolTable<Symbol>)->Rule {
         switch self {
         case .sequence(let elements):
@@ -249,7 +249,7 @@ fileprivate extension _STLR.Expression {
     }
 }
 
-fileprivate extension _STLR.Rule {
+fileprivate extension STLR.Rule {
     var cardinality : Cardinality {
         return Cardinality.one
     }
@@ -277,7 +277,7 @@ fileprivate extension _STLR.Rule {
 
 }
 
-public extension _STLR.Grammar {
+public extension STLR.Grammar {
     /// Builds a set of `Rule`s that can be used directly at run-time in your application
     public var dynamicRules : [Rule] {
         let symbolTable = SymbolTable<Symbol>(self)

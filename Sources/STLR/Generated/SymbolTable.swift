@@ -25,24 +25,24 @@
 import OysterKit
 
 public protocol SymbolType {
-    static func build(for identifier: String, from grammar: _STLR.Grammar, in symbolTable: SymbolTable<Self>)->Self
+    static func build(for identifier: String, from grammar: STLR.Grammar, in symbolTable: SymbolTable<Self>)->Self
     
-    func resolve(from grammar:_STLR.Grammar, in symbolTable: SymbolTable<Self>) throws
-    func validate(from grammar:_STLR.Grammar, in symbolTable: SymbolTable<Self>) throws
+    func resolve(from grammar:STLR.Grammar, in symbolTable: SymbolTable<Self>) throws
+    func validate(from grammar:STLR.Grammar, in symbolTable: SymbolTable<Self>) throws
 
     var identifier   : String {get}
 }
 
 public class SymbolTable<Symbol:SymbolType> {
 
-    public let ast : _STLR.Grammar
+    public let ast : STLR.Grammar
     private var identifiers = [String : Symbol]()
 
     /**
      Creates a new symbol table for the specified grammar. The table will be empty, and the caller
      should subsequently call `build()`, `resolve()`, then `validate()` before the table can be used.
      **/
-    public init(_ grammr:_STLR.Grammar){
+    public init(_ grammr:STLR.Grammar){
         ast = grammr
     }
     

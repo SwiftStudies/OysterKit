@@ -13,7 +13,7 @@ class CompilerTest: XCTestCase {
 
 
     func testRegularExpressionBuild() {
-        let terminalASN = _STLR.Terminal.regex(regex: "Cat")
+        let terminalASN = ProductionSTLR.Terminal.regex(regex: "Cat")
         
         if let terminal = terminalASN.rule(with: Behaviour(.skipping), and: [:]) as? TerminalRule{
             if let regularExpression = terminal.terminal as? NSRegularExpression {

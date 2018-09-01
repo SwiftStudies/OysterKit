@@ -28,7 +28,7 @@ class STLRTest: XCTestCase {
             let ruleSource = """
             id = \(backSlash) "x"
             """
-            let testLanguage = Parser(grammar: try _STLR.build(testGrammarName+ruleSource).grammar.dynamicRules)
+            let testLanguage = Parser(grammar: try ProductionSTLR.build(testGrammarName+ruleSource).grammar.dynamicRules)
 
             let source = "\\x"
             
@@ -52,13 +52,13 @@ class STLRTest: XCTestCase {
     func testVoidSugar(){
         do {
             let rule = "-identifier = -\"/\""
-            let parser = try _STLR.build(testGrammarName+rule)
+            let parser = try ProductionSTLR.build(testGrammarName+rule)
             
             let identifier = parser.grammar["identifier"]
             
             XCTAssert(identifier.isVoid)
             
-            if case let _STLR.Expression.element(element) = identifier.expression {
+            if case let ProductionSTLR.Expression.element(element) = identifier.expression {
                 XCTAssert(element.isVoid)
             } else {
                 XCTFail("Expected the identifier element to be an element")
@@ -72,13 +72,13 @@ class STLRTest: XCTestCase {
     func testTransientSugar(){
         do {
             let rule = "~identifier = ~(\"/\")"
-            let parser = try _STLR.build(testGrammarName+rule)
+            let parser = try ProductionSTLR.build(testGrammarName+rule)
             
             let identifier = parser.grammar["identifier"]
             
             XCTAssert(identifier.isTransient)
             
-            if case let _STLR.Expression.element(element) = identifier.expression {
+            if case let ProductionSTLR.Expression.element(element) = identifier.expression {
                 XCTAssert(element.isTransient)
             } else {
                 XCTFail("Expected the identifier element to be an element")
@@ -91,7 +91,7 @@ class STLRTest: XCTestCase {
     func testExpressionGroupExpressionElement(){
         do {
             let rule = "identifier = (.letter)"
-            _ = try _STLR.build(testGrammarName+rule)            
+            _ = try ProductionSTLR.build(testGrammarName+rule)            
         } catch {
             XCTFail("Unexpected error: \(error)")
         }

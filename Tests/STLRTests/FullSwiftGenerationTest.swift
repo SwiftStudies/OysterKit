@@ -30,27 +30,6 @@ class FullSwiftGenerationTest: XCTestCase {
         print("Not all tokens were tested:\n\t"+untestedTokens.map({"\($0)"}).joined(separator: "\n\t"))
         assert(untestedTokens.isEmpty)
     }
-    
-    func testGeneratedCode(){
-        return
-        #warning("This should go")
-        do {
-            let source = try String(contentsOfFile: "/Users/nhughes/Documents/Code/SPM/OysterKit/Resources/STLR.stlr")
-            let stlr = try _STLR.build(source)
-            
-            let operations = try SwiftStructure.generate(for: stlr, grammar: "Test", accessLevel: "public")
-            
-            let context = OperationContext(with: URL(fileURLWithPath: "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/ExampleLanguages")){
-                print($0)
-            }
-            
-            for operation in operations {
-                try operation.perform(in: context)
-            }
-        } catch {
-            print("Error: \(error)")
-        }
-    }
 
     func parse(source:String, with rule:Rule) throws{
         ast = nil
@@ -312,7 +291,7 @@ class FullSwiftGenerationTest: XCTestCase {
     
     func testCharacterSetName(){
         XCTAssertNoThrow(try checkSimplePassFail(for: .characterSetName, passing: characterSetNames, failing: ["sdfsdf",".anything"], expectNode: false))
-        XCTAssertEqual(STLR.CharacterSetName.allCases.map({"\($0)"}), characterSetNames,"Test is not exhaustive not all character set names are covered")
+        XCTAssertEqual(TestSTLR.CharacterSetName.allCases.map({"\($0)"}), characterSetNames,"Test is not exhaustive not all character set names are covered")
         do {
             let token = STLRTokens.characterSetName
             let ast = try makeAST(for: token, from: "letter")
@@ -1048,7 +1027,7 @@ class FullSwiftGenerationTest: XCTestCase {
     
     func testGeneratedIR() {
         do {
-            let rules = try STLR.build("grammar Test\nhello = .letter").grammar.rules
+            let rules = try TestSTLR.build("grammar Test\nhello = .letter").grammar.rules
             
             guard rules.count == 1 else {
                 XCTFail("Expected 1 rule")
@@ -1059,8 +1038,8 @@ class FullSwiftGenerationTest: XCTestCase {
             
             if case let .element(element) = helloRule.expression {
                 
-                if case .characterSet(let characterSet) = element.terminal ?? STLR.Terminal.regex(regex: "") {
-                    XCTAssertEqual(STLR.CharacterSetName.letter, characterSet.characterSetName)
+                if case .characterSet(let characterSet) = element.terminal ?? TestSTLR.Terminal.regex(regex: "") {
+                    XCTAssertEqual(TestSTLR.CharacterSetName.letter, characterSet.characterSetName)
                 } else {
                     XCTAssertNotNil("Expected a character set terminal")
                 }

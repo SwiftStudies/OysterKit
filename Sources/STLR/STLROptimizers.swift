@@ -40,13 +40,13 @@ public protocol STLRExpressionOptimizer : STLROptimizer{
      - Parameter expression: The expression to optimize
      - Returns: An optimized expression or `nil` if the expression could not be optimized
     */
-    func optimize(expression:_STLR.Expression)->_STLR.Expression?
+    func optimize(expression:STLR.Expression)->STLR.Expression?
 }
 
 private var optmizers = [STLROptimizer]()
 
 /// Adds methods to register optimizers
-public extension _STLR{
+public extension STLR{
     /**
      Registers a new optimizer. Optimizers are applied in the order they are registered
      
@@ -63,11 +63,11 @@ public extension _STLR{
 }
 
 /// Adds a property to all `Expressions` that will returned the optimized form of the expression
-extension _STLR.Expression{
+extension STLR.Expression{
     
     /// The optimized form of the expression
-    var optimize : _STLR.Expression?{
-        var optimizedForm : _STLR.Expression?
+    var optimize : STLR.Expression?{
+        var optimizedForm : STLR.Expression?
 
         optmizers.compactMap({$0 as? STLRExpressionOptimizer}).forEach(){
             if let appliedOptimization = $0.optimize(expression: optimizedForm ?? self) {

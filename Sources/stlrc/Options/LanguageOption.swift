@@ -47,7 +47,7 @@ class LanguageOption : Option, IndexableParameterized {
                 }
             }
             
-            func operations(in scope:_STLR, for grammarName:String) throws ->[STLR.Operation]? {
+            func operations(in scope:STLR, for grammarName:String) throws ->[STLROperation]? {
                 switch self {
                 case .swift:
                     return nil
@@ -59,12 +59,12 @@ class LanguageOption : Option, IndexableParameterized {
             }
             
             
-            func generate(grammarName: String, from stlr:_STLR, optimize:Bool, outputTo:String) throws {
+            func generate(grammarName: String, from stlr:STLR, optimize:Bool, outputTo:String) throws {
                 if optimize {
-                    _STLR.register(optimizer: InlineIdentifierOptimization())
-                    _STLR.register(optimizer: CharacterSetOnlyChoiceOptimizer())
+                    STLR.register(optimizer: InlineIdentifierOptimization())
+                    STLR.register(optimizer: CharacterSetOnlyChoiceOptimizer())
                 } else {
-                    _STLR.removeAllOptimizations()
+                    STLR.removeAllOptimizations()
                 }
                 
                 stlr.grammar.optimize()

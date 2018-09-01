@@ -28,7 +28,7 @@ class SwiftGenerationTest: XCTestCase {
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        _STLR.removeAllOptimizations()
+        ProductionSTLR.removeAllOptimizations()
     }
     
     override func tearDown() {
@@ -37,7 +37,7 @@ class SwiftGenerationTest: XCTestCase {
     }
     
     func swift(for source:String, desiredIdentifier identifierName:String)throws ->String {
-        let ast = try _STLR.build("grammar SwiftGenerationTest\n"+source).grammar
+        let ast = try ProductionSTLR.build("grammar SwiftGenerationTest\n"+source).grammar
         
         let identifier = ast[identifierName]
     
@@ -48,7 +48,7 @@ class SwiftGenerationTest: XCTestCase {
     }
     
     func swift(for source:String, desiredRule rule: Int = 0)throws ->String {
-        let ast = try _STLR.build("grammar SwiftGenerationTest\n"+source).grammar
+        let ast = try ProductionSTLR.build("grammar SwiftGenerationTest\n"+source).grammar
         
         if ast.rules.count <= rule {
             throw TestError.expected("at least \(rule + 1) rule, but got \(ast.rules.count)")
@@ -122,8 +122,8 @@ class SwiftGenerationTest: XCTestCase {
     
     #warning("This needs to be changed when optimizers have been re-implemented")
     func testTerminalChoiceWithIndividualAnnotationsOptimized(){
-        _STLR.register(optimizer: InlineIdentifierOptimization())
-        _STLR.register(optimizer: CharacterSetOnlyChoiceOptimizer())
+        ProductionSTLR.register(optimizer: InlineIdentifierOptimization())
+        ProductionSTLR.register(optimizer: CharacterSetOnlyChoiceOptimizer())
         do {
             let result = try swift(for: "letter = @error(\"error a\") \"a\"| @error(\"error b\")\"b\"| @error(\"error c\") \"c\"").replacingOccurrences(of: "\n", with: "").replacingOccurrences(of: "\t", with: "")
             
@@ -236,7 +236,7 @@ class SwiftGenerationTest: XCTestCase {
             declaration = @error("Declaration requires id") id
 """
             
-            let ast = try _STLR.build(stlrSource).grammar
+            let ast = try ProductionSTLR.build(stlrSource).grammar
             
             var file = TextFile("Test")
             let idSwift = ast["id"].swift(in: file, grammar: ast).content
@@ -260,7 +260,7 @@ class SwiftGenerationTest: XCTestCase {
             declaration = @error("Declaration requires id") id .letter
 """
             
-            let ast = try _STLR.build(stlrSource).grammar
+            let ast = try ProductionSTLR.build(stlrSource).grammar
             
             let idSwift = ast["id"].swift(in: TextFile("Test"), grammar: ast).content
             let declarationSwift = ast["declaration"].swift(in: TextFile(""), grammar: ast).content
@@ -280,7 +280,7 @@ class SwiftGenerationTest: XCTestCase {
             declaration = (@error("Declaration requires id") id .letter) .letter+
 """
             
-            let ast = try _STLR.build(stlrSource).grammar
+            let ast = try ProductionSTLR.build(stlrSource).grammar
             
             let idSwift = ast["id"].swift(in:TextFile(""), grammar: ast).content
             let declarationSwift = ast["declaration"].swift(in: TextFile(""), grammar: ast).content

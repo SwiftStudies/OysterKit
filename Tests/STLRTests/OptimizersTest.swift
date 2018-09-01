@@ -8,7 +8,7 @@
 
 import XCTest
 import OysterKit
-import STLR
+@testable import STLR
 
 class OptimizersTest: GrammarTest {
 
@@ -20,7 +20,7 @@ class OptimizersTest: GrammarTest {
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
-        _STLR.removeAllOptimizations()
+        ProductionSTLR.removeAllOptimizations()
     }
 
     func testAttributePreservationOnInlineReference(){
@@ -31,8 +31,8 @@ class OptimizersTest: GrammarTest {
             xyz = @error("Expected X") x "y" "z"
             """
             
-            _STLR.register(optimizer: InlineIdentifierOptimization())
-            let parser = try _STLR.build(source)
+            ProductionSTLR.register(optimizer: InlineIdentifierOptimization())
+            let parser = try ProductionSTLR.build(source)
             
             let compiledLanguage = Parser(grammar: parser.grammar.dynamicRules)
             
@@ -60,8 +60,8 @@ class OptimizersTest: GrammarTest {
             xyz = x "y" "z"
             """
             
-            _STLR.register(optimizer: InlineIdentifierOptimization())
-            let parser = try _STLR.build(source)
+            ProductionSTLR.register(optimizer: InlineIdentifierOptimization())
+            let parser = try ProductionSTLR.build(source)
             
             let compiledLanguage = Parser(grammar: parser.grammar.dynamicRules) 
             

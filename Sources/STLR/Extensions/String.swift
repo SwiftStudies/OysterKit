@@ -53,7 +53,7 @@ public extension String {
      - Returns: `nil` if compilation failed
      */
     public func dynamicRule(_ kind:Behaviour.Kind) throws ->Rule{
-        let compiled = try _STLR.build("grammar Dynamic\n_ = \(self)")
+        let compiled = try STLR.build("grammar Dynamic\n_ = \(self)")
 
         
         

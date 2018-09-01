@@ -54,13 +54,13 @@ class DynamicGeneratorTest: XCTestCase {
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        _STLR.removeAllOptimizations()
+        ProductionSTLR.removeAllOptimizations()
     }
     
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
-        _STLR.removeAllOptimizations()
+        ProductionSTLR.removeAllOptimizations()
     }
 
     func testSwiftSTLREquivalency(){
@@ -76,7 +76,7 @@ class DynamicGeneratorTest: XCTestCase {
         
         let dynamicLanguage : Parser
         do {
-            dynamicLanguage = try Parser(grammar:_STLR.build(stlr).grammar.dynamicRules)
+            dynamicLanguage = try Parser(grammar:ProductionSTLR.build(stlr).grammar.dynamicRules)
         } catch {
             XCTFail("Failed to compile: \(error)")
             return
@@ -103,7 +103,7 @@ class DynamicGeneratorTest: XCTestCase {
         
         let dynamicLanguage : Parser
         do {
-            dynamicLanguage = try Parser(grammar:_STLR.build(stlr).grammar.dynamicRules)
+            dynamicLanguage = try Parser(grammar:ProductionSTLR.build(stlr).grammar.dynamicRules)
         } catch {
             XCTFail("Failed to compile: \(error)")
             return
@@ -133,7 +133,7 @@ class DynamicGeneratorTest: XCTestCase {
         
         let dynamicLanguage : Parser
         do {
-            dynamicLanguage = try Parser(grammar:_STLR.build(stlr).grammar.dynamicRules)
+            dynamicLanguage = try Parser(grammar:ProductionSTLR.build(stlr).grammar.dynamicRules)
         } catch {
             XCTFail("Failed to compile: \(error)")
             return
@@ -163,7 +163,7 @@ class DynamicGeneratorTest: XCTestCase {
         
         let dynamicLanguage : Parser
         do {
-            dynamicLanguage = try Parser(grammar:_STLR.build(stlr).grammar.dynamicRules)
+            dynamicLanguage = try Parser(grammar:ProductionSTLR.build(stlr).grammar.dynamicRules)
         } catch {
             XCTFail("Failed to compile: \(error)")
             return
@@ -196,7 +196,7 @@ class DynamicGeneratorTest: XCTestCase {
         
         let dynamicLanguage : Parser
         do {
-            let ast = try _STLR.build(stlr)
+            let ast = try ProductionSTLR.build(stlr)
             dynamicLanguage = Parser(grammar:ast.grammar.dynamicRules)
         } catch {
             XCTFail("Failed to compile: \(error)")
@@ -235,7 +235,7 @@ class DynamicGeneratorTest: XCTestCase {
         
         let dynamicLanguage : Parser
         do {
-            dynamicLanguage = try Parser(grammar:_STLR.build(stlr).grammar.dynamicRules)
+            dynamicLanguage = try Parser(grammar:ProductionSTLR.build(stlr).grammar.dynamicRules)
         } catch {
             XCTFail("Failed to compile: \(error)")
             return
@@ -277,7 +277,7 @@ class DynamicGeneratorTest: XCTestCase {
         
         let dynamicLanguage : Parser
         do {
-            dynamicLanguage = try Parser(grammar:_STLR.build(stlr).grammar.dynamicRules)
+            dynamicLanguage = try Parser(grammar:ProductionSTLR.build(stlr).grammar.dynamicRules)
         } catch {
             XCTFail("Failed to compile: \(error)")
             return
@@ -604,7 +604,7 @@ class DynamicGeneratorTest: XCTestCase {
                         rhs =  rhs "|" rhs
                         """
         do {
-            let stlr = try _STLR.build(source)
+            let stlr = try ProductionSTLR.build(source)
             for rule in stlr.grammar.rules {
                 XCTAssertTrue(stlr.grammar.isDirectLeftHandRecursive(identifier: rule.identifier))
             }
@@ -621,9 +621,9 @@ class DynamicGeneratorTest: XCTestCase {
                         rhs = "|" expr
                         expr= ">" rhs
                         """
-        let stlr : _STLR
+        let stlr : ProductionSTLR
         do {
-            stlr = try _STLR.build(source)
+            stlr = try ProductionSTLR.build(source)
         } catch {
             XCTFail("Failed to compile: \(error)")
             return
@@ -638,9 +638,9 @@ class DynamicGeneratorTest: XCTestCase {
     func testIllegalLeftHandRecursionDetection(){
         let source = "grammar recursionCheck\n rhs = rhs\n expr = lhs\n lhs = (expr \" \")\n"
 
-        let stlr : _STLR
+        let stlr : ProductionSTLR
         do {
-            stlr = try _STLR.build(source)
+            stlr = try ProductionSTLR.build(source)
         } catch {
             XCTFail("Failed to compile: \(error)")
             return
@@ -661,9 +661,9 @@ class DynamicGeneratorTest: XCTestCase {
     func testDirectLeftHandRecursion(){
         let source = testGrammarName+"rhs = (\">\" rhs) | (\"<\" rhs)"
 
-        let stlr : _STLR
+        let stlr : ProductionSTLR
         do {
-            stlr = try _STLR.build(source)
+            stlr = try ProductionSTLR.build(source)
         } catch {
             XCTFail("Failed to compile: \(error)")
             return
@@ -823,10 +823,10 @@ class DynamicGeneratorTest: XCTestCase {
     }
 
     func generatedStringSerialization(for source:String, desiredIdentifier identifierName:String)throws ->String {
-        let grammar : _STLR.Grammar
+        let grammar : ProductionSTLR.Grammar
         
         do {
-            grammar = try _STLR.build("grammar Test\n"+source).grammar
+            grammar = try ProductionSTLR.build("grammar Test\n"+source).grammar
         } catch {
             XCTFail("Failed to compile: \(error)")
             return "Could not compile"
@@ -847,9 +847,9 @@ class DynamicGeneratorTest: XCTestCase {
     }
     
     func generatedStringSerialization(for source:String, desiredRule rule: Int = 0)throws ->String {
-        let ast : _STLR.Grammar
+        let ast : ProductionSTLR.Grammar
         do {
-            ast = try _STLR.build("grammar Test\n"+source).grammar
+            ast = try ProductionSTLR.build("grammar Test\n"+source).grammar
         } catch {
             throw TestError.expected("compilation but failed with \(error)")
         }
@@ -942,8 +942,8 @@ class DynamicGeneratorTest: XCTestCase {
     }
     
     func testTerminalChoiceWithIndividualAnnotationsOptimized(){
-        _STLR.register(optimizer: InlineIdentifierOptimization())
-        _STLR.register(optimizer: CharacterSetOnlyChoiceOptimizer())
+        ProductionSTLR.register(optimizer: InlineIdentifierOptimization())
+        ProductionSTLR.register(optimizer: CharacterSetOnlyChoiceOptimizer())
         do {
             let result = try generatedStringSerialization(for: "letter = @error(\"error a\") \"a\"| @error(\"error b\")\"b\"| @error(\"error c\") \"c\"").replacingOccurrences(of: "\n", with: "").replacingOccurrences(of: "\t", with: "")
             

@@ -24,7 +24,7 @@
 
 import XCTest
 import OysterKit
-import STLR
+@testable import STLR
 
 class GrammarStructureTeset: XCTestCase {
     
@@ -36,7 +36,7 @@ class GrammarStructureTeset: XCTestCase {
                         quantifier = "*" | "+" | "?" | "-"
                         """
             
-            let scope     = try _STLR.build(source)
+            let scope     = try ProductionSTLR.build(source)
             XCTAssertEqual(1, scope.grammar.rules.count,"Expected compliation into 1 rule")
             let grammar   = _GrammarStructure(for: scope, accessLevel: "internal")
             
@@ -60,7 +60,7 @@ class GrammarStructureTeset: XCTestCase {
                         """
 
         do {
-            let scope     = try _STLR.build(source)
+            let scope     = try ProductionSTLR.build(source)
             XCTAssertEqual(2, scope.grammar.rules.count,"Expected compliation into 2 rules")
             let grammar   = _GrammarStructure(for: scope, accessLevel: "internal")
             
