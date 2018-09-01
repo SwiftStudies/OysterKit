@@ -85,7 +85,7 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
                             
             /// characterSet
             case .characterSet:
-                return [    -".",    T.characterSetName.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Unknown character set")]).scan()].sequence.reference(.structural(token: self))
+                return [    -".",    T.characterSetName.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Unknown character set")])].sequence.reference(.structural(token: self))
                             
             /// rangeOperator
             case .rangeOperator:
@@ -284,11 +284,11 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
                             
             /// modules
             case .modules:
-                return [T.moduleImport.rule.require(.oneOrMore)].sequence.reference(.structural(token: self), annotations: [:])
+                return T.moduleImport.rule.require(.oneOrMore).reference(.structural(token: self), annotations: [:])
                             
             /// rules
             case .rules:
-                return [T.rule.rule.require(.oneOrMore).annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected at least one rule")])].sequence.reference(.structural(token: self), annotations: [:])
+                return T.rule.rule.require(.oneOrMore).annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected at least one rule")]).reference(.structural(token: self), annotations: [:])
                             
         }
     }
@@ -339,11 +339,11 @@ public struct STLR : Codable {
     // Literal
     public enum Literal : Codable {
         case boolean(boolean:Boolean)
-        case string(string:String)
         case number(number:Int)
+        case string(string:String)
         
         enum CodingKeys : Swift.String, CodingKey {
-            case boolean,string,number
+            case boolean,number,string
         }
         
         public init(from decoder: Decoder) throws {
@@ -352,38 +352,38 @@ public struct STLR : Codable {
             if let boolean = try? container.decode(Boolean.self, forKey: .boolean){
             	self = .boolean(boolean: boolean)
             	return
-            } else if let string = try? container.decode(String.self, forKey: .string){
-            	self = .string(string: string)
-            	return
             } else if let number = try? container.decode(Int.self, forKey: .number){
             	self = .number(number: number)
             	return
+            } else if let string = try? container.decode(String.self, forKey: .string){
+            	self = .string(string: string)
+            	return
             }
-            throw DecodingError.valueNotFound(Expression.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Tried to decode one of Boolean,String,Int but found none of those types"))
+            throw DecodingError.valueNotFound(Expression.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Tried to decode one of Boolean,Int,String but found none of those types"))
         }
         public func encode(to encoder:Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             switch self {
             case .boolean(let boolean):
                 try container.encode(boolean, forKey: .boolean)
-            case .string(let string):
-                try container.encode(string, forKey: .string)
             case .number(let number):
                 try container.encode(number, forKey: .number)
+            case .string(let string):
+                try container.encode(string, forKey: .string)
             }
         }
     }
     
     /// Annotation 
     public struct Annotation : Codable {
-        public let literal: Literal?
         public let label: Label
+        public let literal: Literal?
     }
     
     public typealias Annotations = [Annotation] 
     
     // DefinedLabel
-    public enum DefinedLabel : Swift.String, Codable {
+    public enum DefinedLabel : Swift.String, Codable, CaseIterable {
         case token,error,void,transient
     }
     
@@ -422,12 +422,12 @@ public struct STLR : Codable {
     // Terminal
     public enum Terminal : Codable {
         case characterRange(characterRange:CharacterRange)
-        case terminalString(terminalString:TerminalString)
         case regex(regex:Swift.String)
         case characterSet(characterSet:CharacterSet)
+        case terminalString(terminalString:TerminalString)
         
         enum CodingKeys : Swift.String, CodingKey {
-            case characterRange,terminalString,regex,characterSet
+            case characterRange,regex,characterSet,terminalString
         }
         
         public init(from decoder: Decoder) throws {
@@ -436,29 +436,29 @@ public struct STLR : Codable {
             if let characterRange = try? container.decode(CharacterRange.self, forKey: .characterRange){
             	self = .characterRange(characterRange: characterRange)
             	return
-            } else if let terminalString = try? container.decode(TerminalString.self, forKey: .terminalString){
-            	self = .terminalString(terminalString: terminalString)
-            	return
             } else if let regex = try? container.decode(Swift.String.self, forKey: .regex){
             	self = .regex(regex: regex)
             	return
             } else if let characterSet = try? container.decode(CharacterSet.self, forKey: .characterSet){
             	self = .characterSet(characterSet: characterSet)
             	return
+            } else if let terminalString = try? container.decode(TerminalString.self, forKey: .terminalString){
+            	self = .terminalString(terminalString: terminalString)
+            	return
             }
-            throw DecodingError.valueNotFound(Expression.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Tried to decode one of CharacterRange,TerminalString,Swift.String,CharacterSet but found none of those types"))
+            throw DecodingError.valueNotFound(Expression.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Tried to decode one of CharacterRange,Swift.String,CharacterSet,TerminalString but found none of those types"))
         }
         public func encode(to encoder:Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             switch self {
             case .characterRange(let characterRange):
                 try container.encode(characterRange, forKey: .characterRange)
-            case .terminalString(let terminalString):
-                try container.encode(terminalString, forKey: .terminalString)
             case .regex(let regex):
                 try container.encode(regex, forKey: .regex)
             case .characterSet(let characterSet):
                 try container.encode(characterSet, forKey: .characterSet)
+            case .terminalString(let terminalString):
+                try container.encode(terminalString, forKey: .terminalString)
             }
         }
     }
@@ -477,15 +477,15 @@ public struct STLR : Codable {
     
     /// Element 
     public class Element : Codable {
-        public let quantifier: Quantifier?
-        public let annotations: Annotations?
-        public let group: Group?
-        public let void: Swift.String?
-        public let transient: Swift.String?
-        public let terminal: Terminal?
-        public let lookahead: Swift.String?
         public let identifier: Swift.String?
+        public let transient: Swift.String?
+        public let group: Group?
+        public let terminal: Terminal?
+        public let annotations: Annotations?
+        public let void: Swift.String?
+        public let lookahead: Swift.String?
         public let negated: Swift.String?
+        public let quantifier: Quantifier?
         
         /// Default initializer
         public init(annotations:Annotations?, group:Group?, identifier:Swift.String?, lookahead:Swift.String?, negated:Swift.String?, quantifier:Quantifier?, terminal:Terminal?, transient:Swift.String?, void:Swift.String?){
@@ -504,7 +504,7 @@ public struct STLR : Codable {
     }
     
     // AssignmentOperators
-    public enum AssignmentOperators : Swift.String, Codable {
+    public enum AssignmentOperators : Swift.String, Codable, CaseIterable {
         case equals = "=",plusEquals = "+=",pipeEquals = "|="
     }
     
@@ -514,70 +514,70 @@ public struct STLR : Codable {
     
     // Expression
     public enum Expression : Codable {
+        case sequence(sequence:Sequence)
         case element(element:Element)
         case choice(choice:Choice)
-        case sequence(sequence:Sequence)
         
         enum CodingKeys : Swift.String, CodingKey {
-            case element,choice,sequence
+            case sequence,element,choice
         }
         
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             
-            if let element = try? container.decode(Element.self, forKey: .element){
+            if let sequence = try? container.decode(Sequence.self, forKey: .sequence){
+            	self = .sequence(sequence: sequence)
+            	return
+            } else if let element = try? container.decode(Element.self, forKey: .element){
             	self = .element(element: element)
             	return
             } else if let choice = try? container.decode(Choice.self, forKey: .choice){
             	self = .choice(choice: choice)
             	return
-            } else if let sequence = try? container.decode(Sequence.self, forKey: .sequence){
-            	self = .sequence(sequence: sequence)
-            	return
             }
-            throw DecodingError.valueNotFound(Expression.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Tried to decode one of Element,Choice,Sequence but found none of those types"))
+            throw DecodingError.valueNotFound(Expression.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Tried to decode one of Sequence,Element,Choice but found none of those types"))
         }
         public func encode(to encoder:Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             switch self {
+            case .sequence(let sequence):
+                try container.encode(sequence, forKey: .sequence)
             case .element(let element):
                 try container.encode(element, forKey: .element)
             case .choice(let choice):
                 try container.encode(choice, forKey: .choice)
-            case .sequence(let sequence):
-                try container.encode(sequence, forKey: .sequence)
             }
         }
     }
     
     // TokenType
     public enum TokenType : Codable {
-        case customType(customType:Swift.String)
         case standardType(standardType:StandardType)
+        case customType(customType:Swift.String)
         
         enum CodingKeys : Swift.String, CodingKey {
-            case customType,standardType
+            case standardType,customType
         }
         
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             
-            if let customType = try? container.decode(Swift.String.self, forKey: .customType){
-            	self = .customType(customType: customType)
-            	return
-            } else if let standardType = try? container.decode(StandardType.self, forKey: .standardType){
+            if let standardType = try? container.decode(StandardType.self, forKey: .standardType){
             	self = .standardType(standardType: standardType)
             	return
+            } else if let customType = try? container.decode(Swift.String.self, forKey: .customType){
+            	self = .customType(customType: customType)
+            	return
             }
-            throw DecodingError.valueNotFound(Expression.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Tried to decode one of Swift.String,StandardType but found none of those types"))
+            throw DecodingError.valueNotFound(Expression.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Tried to decode one of StandardType,Swift.String but found none of those types"))
         }
         public func encode(to encoder:Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             switch self {
-            case .customType(let customType):
-                try container.encode(customType, forKey: .customType)
             case .standardType(let standardType):
                 try container.encode(standardType, forKey: .standardType)
+            case .customType(let customType):
+                try container.encode(customType, forKey: .customType)
             }
         }
     }
@@ -589,13 +589,13 @@ public struct STLR : Codable {
     
     /// Rule 
     public struct Rule : Codable {
+        public let transient: Swift.String?
         public let expression: Expression
         public let annotations: Annotations?
         public let tokenType: TokenType?
         public let void: Swift.String?
-        public let assignmentOperators: AssignmentOperators
-        public let transient: Swift.String?
         public let identifier: Swift.String
+        public let assignmentOperators: AssignmentOperators
     }
     
     /// ModuleImport 
@@ -605,9 +605,9 @@ public struct STLR : Codable {
     
     /// Grammar 
     public struct Grammar : Codable {
-        public let modules: Modules?
         public let rules: Rules
         public let scopeName: Swift.String
+        public let modules: Modules?
     }
     
     public typealias Modules = [ModuleImport] 
