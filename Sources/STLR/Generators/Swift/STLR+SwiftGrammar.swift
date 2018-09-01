@@ -59,7 +59,7 @@ public extension STLR {
                 
                 file.print(       "guard let cachedRule = T.leftHandRecursiveRules[self.rawValue] else {").indent()
                 file.print(           "// Create recursive shell")
-                file.print(           "let recursiveRule = BehaviouralRecursiveRule(stubFor: \(behaviour), with: \(rule.annotations?.swift ?? "[:]"))")
+                file.print(           "let recursiveRule = RecursiveRule(stubFor: \(behaviour), with: \(rule.annotations?.swift ?? "[:]"))")
                 file.print(           "T.leftHandRecursiveRules[self.rawValue] = recursiveRule")
                 file.print(           "// Create the rule we would normally generate")
                 file.printBlock(      "let rule = \(rule.swift(in: TextFile(), grammar: grammar).content)").print("")

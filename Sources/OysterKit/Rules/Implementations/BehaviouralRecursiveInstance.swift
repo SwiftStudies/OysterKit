@@ -25,7 +25,7 @@
 import Foundation
 
 struct BehaviouralRecursiveInstance : Rule {
-    let original : BehaviouralRecursiveRule
+    let original : RecursiveRule
     let behaviour: Behaviour
     let annotations: RuleAnnotations
     

@@ -28,7 +28,7 @@ import OysterKit
 fileprivate struct RecursionWrapper : Rule {
     var behaviour: Behaviour
     var annotations: RuleAnnotations
-    var wrapped : BehaviouralRecursiveRule
+    var wrapped : RecursiveRule
     
     func test(with lexer: LexicalAnalyzer, for ir: IntermediateRepresentation) throws {
         try wrapped.test(with: lexer, for: ir)
@@ -59,7 +59,7 @@ fileprivate final class Symbol : SymbolType {
 
         let declaration = grammar[identifier]
         if grammar.isLeftHandRecursive(identifier: identifier){
-            let recursive = BehaviouralRecursiveRule(stubFor: Behaviour(.scanning), with: [:])
+            let recursive = RecursiveRule(stubFor: Behaviour(.scanning), with: [:])
             let wrapped = RecursionWrapper(behaviour: Behaviour(.scanning), annotations: [:], wrapped: recursive)
             return Symbol(identifier, with: wrapped, baseKind: declaration.behaviour.kind, baseAnnotations: declaration.annotations?.ruleAnnotations ?? [:])
         } else {

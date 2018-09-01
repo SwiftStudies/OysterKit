@@ -27,7 +27,7 @@ import Foundation
 /**
  When a rule definition calls itself whilst evaluating itself (left hand recursion) you cannot create the rule directly as it will become caught in an infinite look (creating instances of itself, which create instances of itself etc until the stack is empty).  To avoid this a rule can use this wrapper to manage lazy initialization of itself. The recursive rule enables a reference to be added on the RHS, but the actual rule will not be initiialized until later, and this wrapper will then call that lazily initalized rule.
  */
-public final class BehaviouralRecursiveRule : Rule, CustomStringConvertible{
+public final class RecursiveRule : Rule, CustomStringConvertible{
 
     
 

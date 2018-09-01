@@ -155,7 +155,7 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
             case .group:
                 guard let cachedRule = T.leftHandRecursiveRules[self.rawValue] else {
                     // Create recursive shell
-                    let recursiveRule = BehaviouralRecursiveRule(stubFor: Behaviour(.structural(token: self), cardinality: Cardinality.one), with: [:])
+                    let recursiveRule = RecursiveRule(stubFor: Behaviour(.structural(token: self), cardinality: Cardinality.one), with: [:])
                     T.leftHandRecursiveRules[self.rawValue] = recursiveRule
                     // Create the rule we would normally generate
                     let rule = [    "(",    T.whitespace.rule.require(.noneOrMore),    T.expression.rule,    T.whitespace.rule.require(.noneOrMore),    ")".annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected \')\'")])].sequence.reference(.structural(token: self))
@@ -174,7 +174,7 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
             case .element:
                 guard let cachedRule = T.leftHandRecursiveRules[self.rawValue] else {
                     // Create recursive shell
-                    let recursiveRule = BehaviouralRecursiveRule(stubFor: Behaviour(.structural(token: self), cardinality: Cardinality.one), with: [:])
+                    let recursiveRule = RecursiveRule(stubFor: Behaviour(.structural(token: self), cardinality: Cardinality.one), with: [:])
                     T.leftHandRecursiveRules[self.rawValue] = recursiveRule
                     // Create the rule we would normally generate
                     let rule = [    T.annotations.rule.require(.optionally),    [        T.lookahead.rule,        T.transient.rule,        T.void.rule].choice.require(.optionally),    T.negated.rule.require(.optionally),    [        T.group.rule,        T.terminal.rule,        [            T.identifier.rule,            [                T.ows.rule,                "="].sequence.lookahead().negate()].sequence].choice,    T.quantifier.rule.require(.optionally)].sequence.reference(.structural(token: self))
@@ -201,7 +201,7 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
             case .choice:
                 guard let cachedRule = T.leftHandRecursiveRules[self.rawValue] else {
                     // Create recursive shell
-                    let recursiveRule = BehaviouralRecursiveRule(stubFor: Behaviour(.structural(token: self), cardinality: Cardinality.one), with: [:])
+                    let recursiveRule = RecursiveRule(stubFor: Behaviour(.structural(token: self), cardinality: Cardinality.one), with: [:])
                     T.leftHandRecursiveRules[self.rawValue] = recursiveRule
                     // Create the rule we would normally generate
                     let rule = [    T.element.rule,    [        T.or.rule,        T.element.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected terminal, identifier, or group")])].sequence.require(.oneOrMore)].sequence.reference(.structural(token: self))
@@ -220,7 +220,7 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
             case .sequence:
                 guard let cachedRule = T.leftHandRecursiveRules[self.rawValue] else {
                     // Create recursive shell
-                    let recursiveRule = BehaviouralRecursiveRule(stubFor: Behaviour(.structural(token: self), cardinality: Cardinality.one), with: [:])
+                    let recursiveRule = RecursiveRule(stubFor: Behaviour(.structural(token: self), cardinality: Cardinality.one), with: [:])
                     T.leftHandRecursiveRules[self.rawValue] = recursiveRule
                     // Create the rule we would normally generate
                     let rule = [    T.element.rule,    [        T.then.rule,        T.notNewRule.rule.lookahead(),        T.element.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected terminal, identifier, or group")])].sequence.require(.oneOrMore)].sequence.reference(.structural(token: self))
@@ -235,7 +235,7 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
             case .expression:
                 guard let cachedRule = T.leftHandRecursiveRules[self.rawValue] else {
                     // Create recursive shell
-                    let recursiveRule = BehaviouralRecursiveRule(stubFor: Behaviour(.structural(token: self), cardinality: Cardinality.one), with: [:])
+                    let recursiveRule = RecursiveRule(stubFor: Behaviour(.structural(token: self), cardinality: Cardinality.one), with: [:])
                     T.leftHandRecursiveRules[self.rawValue] = recursiveRule
                     // Create the rule we would normally generate
                     let rule = [    T.choice.rule,    T.sequence.rule,    T.element.rule].choice.reference(.structural(token: self))
