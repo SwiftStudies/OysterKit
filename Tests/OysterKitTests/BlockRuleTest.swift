@@ -156,7 +156,7 @@ class BlockRuleTest: XCTestCase {
         
         let structuralRule = singleLetterRule.newBehaviour(.structural(token: aToken)).annotatedWith([.error: .string(specificError)])
         
-        for failure in validate(lowLevelResult: check(rule:structuralRule, on:source, includeAST: true), index: source.startIndex, errors: ["\(specificError) from 0 to 0"], token: nil){
+        for failure in validate(lowLevelResult: check(rule:structuralRule, on:source, includeAST: true), index: source.startIndex, errors: ["Parsing Error: \(specificError) at 0 caused by Match failed"], token: nil){
             XCTFail(failure)
         }
     }
@@ -167,7 +167,7 @@ class BlockRuleTest: XCTestCase {
         
         
         
-        for failure in validate(lowLevelResult: check(rule:singleLetterRule.instanceWith(annotations: [.error : .string(specificError)]), on:source), index: source.startIndex, errors: ["\(specificError) from 0 to 0"]){
+        for failure in validate(lowLevelResult: check(rule:singleLetterRule.instanceWith(annotations: [.error : .string(specificError)]), on:source), index: source.startIndex, errors: ["Parsing Error: \(specificError) at 0 caused by Match failed"]){
             XCTFail(failure)
         }
     }

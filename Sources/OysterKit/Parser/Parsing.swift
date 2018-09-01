@@ -76,8 +76,11 @@ enum ParsingStrategy {
                     success = true
                     productionErrors.removeAll()
                     break
+                } catch TestError.fatalError(let message, let causes) {
+                    throw TestError.fatalError(message: message, causes: causes)
                 } catch {
                     productionErrors.append(error)
+                    
                 }
             }
             

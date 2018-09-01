@@ -227,6 +227,8 @@ public extension Rule {
                 }
                 matches += 1
             }
+        } catch TestError.fatalError(let message,let causes){
+            throw TestError.fatalError(message: message, causes: causes)
         } catch {
             if matches == 0 && skippable {
                 #warning("If a structural node is pinned we should tell the IR to create a node anyway")
@@ -242,7 +244,11 @@ public extension Rule {
                     ir.failed()
                 }
                 if let specificError = self.error {
-                    throw LanguageError.scanningError(at: lexer.index..<lexer.index, message: specificError)
+                    #warning("Make this a predefined token")
+                    if annotations[RuleAnnotation.custom(label: "fatal")] != nil {
+                        throw TestError.fatalError(message: specificError, causes: [error])
+                    }
+                    throw TestError.parsingError(message: specificError, range: lexer.index...lexer.index, causes: [error])
                 } else {
                     throw error
                 }
@@ -251,7 +257,8 @@ public extension Rule {
 
         switch behaviour.kind {
         case .structural(let token):
-            ir.succeeded(token: token, annotations: annotations, range: lexer.proceed().range)
+            let context = lexer.proceed()
+            ir.succeeded(token: token, annotations: annotations, range: context.range)
         case .scanning, .skipping:
             _ = lexer.proceed()
         }

@@ -171,7 +171,7 @@ class GrammarTest: XCTestCase {
                 XCTAssertEqual(errors.count, 1)
                 let errorText = "\(errors[0])"
                 
-                XCTAssert(errorText.hasPrefix("expected y"), "Unexpected error \(errorText)")
+                XCTAssert(errorText.hasPrefix("Parsing Error: expected y"), "Unexpected error \(errorText)")
             } catch {
                 XCTFail("Expected a single error")
                 return
@@ -382,7 +382,7 @@ class GrammarTest: XCTestCase {
 
             XCTFail("Expected an error \(parser.grammar.rules[1])")
         } catch AbstractSyntaxTreeConstructor.ConstructionError.constructionFailed(let errors) {
-            XCTAssert("\(errors[0])".hasPrefix("Expected X"),"Incorrect error \(errors)")
+            XCTAssert("\(errors[0])".hasPrefix("Parsing Error: Expected X"),"Incorrect error \(errors)")
         } catch {
             XCTFail("Unexpected error \(error)")
         }
@@ -403,11 +403,30 @@ class GrammarTest: XCTestCase {
                     XCTFail("Expected an error \(parser.grammar.rules[1])")
                     return
                 }
-                XCTAssert("\(error)".hasPrefix("Expected x"),"Incorrect error \(error)")
+                XCTAssert("\(error)".hasPrefix("Parsing Error: Expected x"),"Incorrect error \(error)")
             } catch {
                 XCTFail("Unexpected error \(error)")
             }
         }
-        
+    }
+    
+    func testFatalError(){
+        #warning("This demonstrates a bug in referenced rules. The annotation is lost (although exists in the generated Swift) for error (not captured by any match) on expression. ")
+        do {
+            
+            _ = try ProductionSTLR.build(
+                    """
+                        grammar Test
+
+                        whitespace = .whitespace
+                        newline = .newLine
+                    """)
+            
+            XCTFail("Should have had a fatal error")
+        } catch {
+            XCTAssert("\(error)".hasPrefix("Fatal Error: Expected expression"))
+            // This is a good thing
+            print("\(error)")
+        }
     }
 }

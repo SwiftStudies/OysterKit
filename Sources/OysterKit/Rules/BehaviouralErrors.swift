@@ -81,6 +81,8 @@ public enum TestError : TestErrorType {
     case parsingError(message:String,range:ClosedRange<String.Index>,causes:[Error])
     /// An error during interpretation of parsed results, with a defined message
     case interpretationError(message:String,causes:[Error])
+    /// A fatal error that should stop parsing and cause exit to the top
+    case fatalError(message:String, causes:[Error])
     
     /**
      Constructs a scanning or parsing error (depending on wether or not a `TokenType` is supplied) from the supplied data.
@@ -106,6 +108,8 @@ public enum TestError : TestErrorType {
     /// The errors that caused this error, or nil if this is the root error
     public var causedBy: [Error]?{
         switch self {
+        case .fatalError(_, let causes):
+            return causes
         case .internalError(let cause):
             return [cause]
         case .scanningError(_, _,let causes):
@@ -119,11 +123,36 @@ public enum TestError : TestErrorType {
         }
     }
     
+    internal var causeRange : ClosedRange<String.Index>?{
+        var lowerBound : String.Index?
+        var upperBound : String.Index?
+        
+        for cause in causedBy ?? []{
+            if let causeRange = (cause as? TestErrorType)?.range {
+                lowerBound = min(lowerBound ?? causeRange.lowerBound, causeRange.lowerBound)
+                upperBound = max(upperBound ?? causeRange.upperBound, causeRange.upperBound)
+            }
+        }
+        
+        switch (lowerBound, upperBound) {
+        case (let lower, nil) where lower != nil:
+            return lower!...lower!
+        case (nil, let upper) where upper != nil:
+            return upper!...upper!
+        case (let lower,let upper) where upper != nil && lower != nil:
+            return lower!...upper!
+        default:
+            return nil
+        }
+    }
+    
     /// The range in the source string that caused this error, or nil (for example an internal error)
     public var range: ClosedRange<String.Index>?{
         switch self {
         case .internalError, .interpretationError:
             return nil
+        case .fatalError:
+            return causeRange
         case .scanningError(_, let position, _), .undefinedError(_, let position, _):
             return position...position
         case .parsingError(_, let range, _):
@@ -158,6 +187,9 @@ public enum TestError : TestErrorType {
                 return "Parsing Error: \(message) at \(range.lowerBound.encodedOffset)"+(causeText.isEmpty ? "" : " caused by \(causeText)")
             }
             return "Parsing Error: \(message) between \(range.lowerBound.encodedOffset) and \(range.upperBound.encodedOffset)"+(causeText.isEmpty ? "" : " caused by \(causeText)")
+        case .fatalError(let message, let causes):
+            let causeText = causes.map({"\($0)"}).joined(separator: ", ")
+            return "Fatal Error: \(message)"+(causeText.isEmpty ? "" : " caused by \(causeText)")
         case .interpretationError(let message, _):
             return "Interpretation Error: \(message)"
         }

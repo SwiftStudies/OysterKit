@@ -170,7 +170,7 @@ customType      = ("_"|.uppercaseLetter) ("_"|.letter|.decimalDigit)*
                         -whitespace*
                     )?
                     assignmentOperators
-rule            = lhs whitespace* @error("Expected expression")expression whitespace*
+rule            = lhs whitespace* @error("Expected expression") @fatal expression whitespace*
 
 //
 // Importing
