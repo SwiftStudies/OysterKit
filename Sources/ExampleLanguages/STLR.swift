@@ -37,7 +37,7 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
                             
             /// ows
             case .ows:
-                return T.whitespace.rule.require(.noneOrMore).reference(.skipping)
+                return T.whitespace.rule.require(.zeroOrMore).reference(.skipping)
                             
             /// quantifier
             case .quantifier:
@@ -117,7 +117,7 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
                             
             /// customLabel
             case .customLabel:
-                return [    [        CharacterSet.letters,        "_"].choice.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Labels must start with a letter or _")]),    [        CharacterSet.letters,        CharacterSet.decimalDigits,        "_"].choice.require(.noneOrMore)].sequence.reference(.structural(token: self))
+                return [    [        CharacterSet.letters,        "_"].choice.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Labels must start with a letter or _")]),    [        CharacterSet.letters,        CharacterSet.decimalDigits,        "_"].choice.require(.zeroOrMore)].sequence.reference(.structural(token: self))
                             
             /// definedLabel
             case .definedLabel:
@@ -158,7 +158,7 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
                     let recursiveRule = RecursiveRule(stubFor: Behaviour(.structural(token: self), cardinality: Cardinality.one), with: [:])
                     T.leftHandRecursiveRules[self.rawValue] = recursiveRule
                     // Create the rule we would normally generate
-                    let rule = [    "(",    T.whitespace.rule.require(.noneOrMore),    T.expression.rule,    T.whitespace.rule.require(.noneOrMore),    ")".annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected \')\'")])].sequence.reference(.structural(token: self))
+                    let rule = [    "(",    T.whitespace.rule.require(.zeroOrMore),    T.expression.rule,    T.whitespace.rule.require(.zeroOrMore),    ")".annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected \')\'")])].sequence.reference(.structural(token: self))
                                         
                     recursiveRule.surrogateRule = rule
                     return recursiveRule
@@ -191,11 +191,11 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
                             
             /// or
             case .or:
-                return [    T.whitespace.rule.require(.noneOrMore),    "|",    T.whitespace.rule.require(.noneOrMore)].sequence.reference(.skipping)
+                return [    T.whitespace.rule.require(.zeroOrMore),    "|",    T.whitespace.rule.require(.zeroOrMore)].sequence.reference(.skipping)
                             
             /// then
             case .then:
-                return [    [        T.whitespace.rule.require(.noneOrMore),        "+",        T.whitespace.rule.require(.noneOrMore)].sequence,    T.whitespace.rule.require(.oneOrMore)].choice.reference(.skipping)
+                return [    [        T.whitespace.rule.require(.zeroOrMore),        "+",        T.whitespace.rule.require(.zeroOrMore)].sequence,    T.whitespace.rule.require(.oneOrMore)].choice.reference(.skipping)
                             
             /// choice
             case .choice:
@@ -214,7 +214,7 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
             
             /// notNewRule
             case .notNewRule:
-                return [    T.annotations.rule.require(.optionally),    T.identifier.rule,    T.whitespace.rule.require(.noneOrMore),    [        ":",        T.whitespace.rule.require(.noneOrMore),        CharacterSet.letters.require(.oneOrMore),        T.whitespace.rule.require(.noneOrMore)].sequence.require(.optionally),    T.assignmentOperators.rule].sequence.negate().reference(.skipping)
+                return [    T.annotations.rule.require(.optionally),    T.identifier.rule,    T.whitespace.rule.require(.zeroOrMore),    [        ":",        T.whitespace.rule.require(.zeroOrMore),        CharacterSet.letters.require(.oneOrMore),        T.whitespace.rule.require(.zeroOrMore)].sequence.require(.optionally),    T.assignmentOperators.rule].sequence.negate().reference(.skipping)
                             
             /// sequence
             case .sequence:
@@ -256,19 +256,19 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
                             
             /// customType
             case .customType:
-                return [    [        "_",        CharacterSet.uppercaseLetters].choice,    [        "_",        CharacterSet.letters,        CharacterSet.decimalDigits].choice.require(.noneOrMore)].sequence.reference(.structural(token: self))
+                return [    [        "_",        CharacterSet.uppercaseLetters].choice,    [        "_",        CharacterSet.letters,        CharacterSet.decimalDigits].choice.require(.zeroOrMore)].sequence.reference(.structural(token: self))
                             
             /// lhs
             case .lhs:
-                return [    T.whitespace.rule.require(.noneOrMore),    T.annotations.rule.require(.optionally),    T.transient.rule.require(.optionally),    T.void.rule.require(.optionally),    T.identifier.rule,    T.whitespace.rule.require(.noneOrMore),    [        -":",        -T.whitespace.rule.require(.noneOrMore),        T.tokenType.rule,        -T.whitespace.rule.require(.noneOrMore)].sequence.require(.optionally),    T.assignmentOperators.rule].sequence.reference(.scanning)
+                return [    T.whitespace.rule.require(.zeroOrMore),    T.annotations.rule.require(.optionally),    T.transient.rule.require(.optionally),    T.void.rule.require(.optionally),    T.identifier.rule,    T.whitespace.rule.require(.zeroOrMore),    [        -":",        -T.whitespace.rule.require(.zeroOrMore),        T.tokenType.rule,        -T.whitespace.rule.require(.zeroOrMore)].sequence.require(.optionally),    T.assignmentOperators.rule].sequence.reference(.scanning)
                             
             /// rule
             case .rule:
-                return [    T.lhs.rule,    T.whitespace.rule.require(.noneOrMore),    T.expression.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected expression")]),    T.whitespace.rule.require(.noneOrMore)].sequence.reference(.structural(token: self))
+                return [    T.lhs.rule,    T.whitespace.rule.require(.zeroOrMore),    T.expression.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected expression")]),    T.whitespace.rule.require(.zeroOrMore)].sequence.reference(.structural(token: self))
                             
             /// moduleName
             case .moduleName:
-                return [    [        CharacterSet.letters,        "_"].choice,    [        CharacterSet.letters,        "_",        CharacterSet.decimalDigits].choice.require(.noneOrMore)].sequence.reference(.structural(token: self))
+                return [    [        CharacterSet.letters,        "_"].choice,    [        CharacterSet.letters,        "_",        CharacterSet.decimalDigits].choice.require(.zeroOrMore)].sequence.reference(.structural(token: self))
                             
             /// moduleImport
             case .moduleImport:
@@ -276,11 +276,11 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
                             
             /// scopeName
             case .scopeName:
-                return [    -"grammar",    -T.whitespace.rule,    T.ows.rule,    ~[        CharacterSet.letters,        [            CharacterSet.letters,            CharacterSet.decimalDigits].choice.require(.noneOrMore)].sequence,    -T.whitespace.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Unexpected input")]),    -T.ows.rule].sequence.reference(.structural(token: self))
+                return [    -"grammar",    -T.whitespace.rule,    T.ows.rule,    ~[        CharacterSet.letters,        [            CharacterSet.letters,            CharacterSet.decimalDigits].choice.require(.zeroOrMore)].sequence,    -T.whitespace.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Unexpected input")]),    -T.ows.rule].sequence.reference(.structural(token: self))
                             
             /// grammar
             case .grammar:
-                return [    -T.whitespace.rule.require(.noneOrMore),    T.scopeName.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("You must declare the name of the grammar before any other declarations (e.g. grammar <your-grammar-name>)")]),    T.modules.rule.require(.optionally).annotatedWith([:]),    T.rules.rule.annotatedWith([:])].sequence.reference(.structural(token: self))
+                return [    -T.whitespace.rule.require(.zeroOrMore),    T.scopeName.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("You must declare the name of the grammar before any other declarations (e.g. grammar <your-grammar-name>)")]),    T.modules.rule.require(.optionally).annotatedWith([:]),    T.rules.rule.annotatedWith([:])].sequence.reference(.structural(token: self))
                             
             /// modules
             case .modules:
@@ -338,36 +338,36 @@ public struct STLR : Codable {
     
     // Literal
     public enum Literal : Codable {
-        case string(string:String)
         case boolean(boolean:Boolean)
+        case string(string:String)
         case number(number:Int)
         
         enum CodingKeys : Swift.String, CodingKey {
-            case string,boolean,number
+            case boolean,string,number
         }
         
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             
-            if let string = try? container.decode(String.self, forKey: .string){
-            	self = .string(string: string)
-            	return
-            } else if let boolean = try? container.decode(Boolean.self, forKey: .boolean){
+            if let boolean = try? container.decode(Boolean.self, forKey: .boolean){
             	self = .boolean(boolean: boolean)
+            	return
+            } else if let string = try? container.decode(String.self, forKey: .string){
+            	self = .string(string: string)
             	return
             } else if let number = try? container.decode(Int.self, forKey: .number){
             	self = .number(number: number)
             	return
             }
-            throw DecodingError.valueNotFound(Expression.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Tried to decode one of String,Boolean,Int but found none of those types"))
+            throw DecodingError.valueNotFound(Expression.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Tried to decode one of Boolean,String,Int but found none of those types"))
         }
         public func encode(to encoder:Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             switch self {
-            case .string(let string):
-                try container.encode(string, forKey: .string)
             case .boolean(let boolean):
                 try container.encode(boolean, forKey: .boolean)
+            case .string(let string):
+                try container.encode(string, forKey: .string)
             case .number(let number):
                 try container.encode(number, forKey: .number)
             }
@@ -389,76 +389,76 @@ public struct STLR : Codable {
     
     // Label
     public enum Label : Codable {
-        case definedLabel(definedLabel:DefinedLabel)
         case customLabel(customLabel:Swift.String)
+        case definedLabel(definedLabel:DefinedLabel)
         
         enum CodingKeys : Swift.String, CodingKey {
-            case definedLabel,customLabel
+            case customLabel,definedLabel
         }
         
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             
-            if let definedLabel = try? container.decode(DefinedLabel.self, forKey: .definedLabel){
-            	self = .definedLabel(definedLabel: definedLabel)
-            	return
-            } else if let customLabel = try? container.decode(Swift.String.self, forKey: .customLabel){
+            if let customLabel = try? container.decode(Swift.String.self, forKey: .customLabel){
             	self = .customLabel(customLabel: customLabel)
             	return
+            } else if let definedLabel = try? container.decode(DefinedLabel.self, forKey: .definedLabel){
+            	self = .definedLabel(definedLabel: definedLabel)
+            	return
             }
-            throw DecodingError.valueNotFound(Expression.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Tried to decode one of DefinedLabel,Swift.String but found none of those types"))
+            throw DecodingError.valueNotFound(Expression.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Tried to decode one of Swift.String,DefinedLabel but found none of those types"))
         }
         public func encode(to encoder:Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             switch self {
-            case .definedLabel(let definedLabel):
-                try container.encode(definedLabel, forKey: .definedLabel)
             case .customLabel(let customLabel):
                 try container.encode(customLabel, forKey: .customLabel)
+            case .definedLabel(let definedLabel):
+                try container.encode(definedLabel, forKey: .definedLabel)
             }
         }
     }
     
     // Terminal
     public enum Terminal : Codable {
-        case characterSet(characterSet:CharacterSet)
-        case regex(regex:Swift.String)
-        case characterRange(characterRange:CharacterRange)
         case terminalString(terminalString:TerminalString)
+        case characterRange(characterRange:CharacterRange)
+        case regex(regex:Swift.String)
+        case characterSet(characterSet:CharacterSet)
         
         enum CodingKeys : Swift.String, CodingKey {
-            case characterSet,regex,characterRange,terminalString
+            case terminalString,characterRange,regex,characterSet
         }
         
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             
-            if let characterSet = try? container.decode(CharacterSet.self, forKey: .characterSet){
-            	self = .characterSet(characterSet: characterSet)
-            	return
-            } else if let regex = try? container.decode(Swift.String.self, forKey: .regex){
-            	self = .regex(regex: regex)
+            if let terminalString = try? container.decode(TerminalString.self, forKey: .terminalString){
+            	self = .terminalString(terminalString: terminalString)
             	return
             } else if let characterRange = try? container.decode(CharacterRange.self, forKey: .characterRange){
             	self = .characterRange(characterRange: characterRange)
             	return
-            } else if let terminalString = try? container.decode(TerminalString.self, forKey: .terminalString){
-            	self = .terminalString(terminalString: terminalString)
+            } else if let regex = try? container.decode(Swift.String.self, forKey: .regex){
+            	self = .regex(regex: regex)
+            	return
+            } else if let characterSet = try? container.decode(CharacterSet.self, forKey: .characterSet){
+            	self = .characterSet(characterSet: characterSet)
             	return
             }
-            throw DecodingError.valueNotFound(Expression.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Tried to decode one of CharacterSet,Swift.String,CharacterRange,TerminalString but found none of those types"))
+            throw DecodingError.valueNotFound(Expression.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Tried to decode one of TerminalString,CharacterRange,Swift.String,CharacterSet but found none of those types"))
         }
         public func encode(to encoder:Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             switch self {
-            case .characterSet(let characterSet):
-                try container.encode(characterSet, forKey: .characterSet)
-            case .regex(let regex):
-                try container.encode(regex, forKey: .regex)
-            case .characterRange(let characterRange):
-                try container.encode(characterRange, forKey: .characterRange)
             case .terminalString(let terminalString):
                 try container.encode(terminalString, forKey: .terminalString)
+            case .characterRange(let characterRange):
+                try container.encode(characterRange, forKey: .characterRange)
+            case .regex(let regex):
+                try container.encode(regex, forKey: .regex)
+            case .characterSet(let characterSet):
+                try container.encode(characterSet, forKey: .characterSet)
             }
         }
     }
@@ -477,15 +477,15 @@ public struct STLR : Codable {
     
     /// Element 
     public class Element : Codable {
-        public let transient: Swift.String?
-        public let annotations: Annotations?
-        public let group: Group?
-        public let void: Swift.String?
         public let identifier: Swift.String?
-        public let terminal: Terminal?
+        public let void: Swift.String?
+        public let annotations: Annotations?
+        public let lookahead: Swift.String?
+        public let transient: Swift.String?
         public let negated: Swift.String?
         public let quantifier: Quantifier?
-        public let lookahead: Swift.String?
+        public let group: Group?
+        public let terminal: Terminal?
         
         /// Default initializer
         public init(annotations:Annotations?, group:Group?, identifier:Swift.String?, lookahead:Swift.String?, negated:Swift.String?, quantifier:Quantifier?, terminal:Terminal?, transient:Swift.String?, void:Swift.String?){
@@ -514,38 +514,38 @@ public struct STLR : Codable {
     
     // Expression
     public enum Expression : Codable {
-        case sequence(sequence:Sequence)
         case element(element:Element)
         case choice(choice:Choice)
+        case sequence(sequence:Sequence)
         
         enum CodingKeys : Swift.String, CodingKey {
-            case sequence,element,choice
+            case element,choice,sequence
         }
         
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             
-            if let sequence = try? container.decode(Sequence.self, forKey: .sequence){
-            	self = .sequence(sequence: sequence)
-            	return
-            } else if let element = try? container.decode(Element.self, forKey: .element){
+            if let element = try? container.decode(Element.self, forKey: .element){
             	self = .element(element: element)
             	return
             } else if let choice = try? container.decode(Choice.self, forKey: .choice){
             	self = .choice(choice: choice)
             	return
+            } else if let sequence = try? container.decode(Sequence.self, forKey: .sequence){
+            	self = .sequence(sequence: sequence)
+            	return
             }
-            throw DecodingError.valueNotFound(Expression.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Tried to decode one of Sequence,Element,Choice but found none of those types"))
+            throw DecodingError.valueNotFound(Expression.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Tried to decode one of Element,Choice,Sequence but found none of those types"))
         }
         public func encode(to encoder:Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             switch self {
-            case .sequence(let sequence):
-                try container.encode(sequence, forKey: .sequence)
             case .element(let element):
                 try container.encode(element, forKey: .element)
             case .choice(let choice):
                 try container.encode(choice, forKey: .choice)
+            case .sequence(let sequence):
+                try container.encode(sequence, forKey: .sequence)
             }
         }
     }
@@ -589,13 +589,13 @@ public struct STLR : Codable {
     
     /// Rule 
     public struct Rule : Codable {
-        public let annotations: Annotations?
-        public let assignmentOperators: AssignmentOperators
         public let identifier: Swift.String
         public let void: Swift.String?
+        public let assignmentOperators: AssignmentOperators
         public let tokenType: TokenType?
-        public let expression: Expression
+        public let annotations: Annotations?
         public let transient: Swift.String?
+        public let expression: Expression
     }
     
     /// ModuleImport 
@@ -606,8 +606,8 @@ public struct STLR : Codable {
     /// Grammar 
     public struct Grammar : Codable {
         public let scopeName: Swift.String
-        public let modules: Modules?
         public let rules: Rules
+        public let modules: Modules?
     }
     
     public typealias Modules = [ModuleImport] 

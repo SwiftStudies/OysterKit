@@ -80,12 +80,12 @@ enum XMLGenerated : Int, Token {
                 [
                     [
                         -T.singleQuote.rule.require(.one),
-                        !T.singleQuote.rule.require(.noneOrMore),
+                        !T.singleQuote.rule.require(.zeroOrMore),
                         -T.singleQuote.rule.require(.one)].sequence
                     ,
                     [
                         -T.doubleQuote.rule.require(.one),
-                        !T.doubleQuote.rule.require(.noneOrMore),
+                        !T.doubleQuote.rule.require(.zeroOrMore),
                         -T.doubleQuote.rule.require(.one)].sequence
                     ].choice
                 
@@ -98,9 +98,9 @@ enum XMLGenerated : Int, Token {
                     T.ws.rule.require(.oneOrMore),
                     T.identifier.rule.require(.one),
                     [
-                        T.ws.rule.require(.noneOrMore),
+                        T.ws.rule.require(.zeroOrMore),
                         -"=".require(.one),
-                        T.ws.rule.require(.noneOrMore),
+                        T.ws.rule.require(.zeroOrMore),
                         T.value.rule.require(.one)].sequence
                     ].sequence
                 
@@ -122,12 +122,12 @@ enum XMLGenerated : Int, Token {
         case .openTag:
             return [
                 [
-                    T.ws.rule.require(.noneOrMore),
+                    T.ws.rule.require(.zeroOrMore),
                     -"<".require(.one),
                     T.identifier.rule.require(.one),
                     [
                         T.attributes.rule.require(.one),
-                        T.ws.rule.require(.noneOrMore)].choice
+                        T.ws.rule.require(.zeroOrMore)].choice
                     ,
                     -">".require(.one)].sequence
                 
@@ -137,10 +137,10 @@ enum XMLGenerated : Int, Token {
         case .closeTag:
             return -[
                 [
-                    T.ws.rule.require(.noneOrMore),
+                    T.ws.rule.require(.zeroOrMore),
                     -"</".require(.one),
                     T.identifier.rule.require(.one),
-                    T.ws.rule.require(.noneOrMore),
+                    T.ws.rule.require(.zeroOrMore),
                     -">".require(.one)].sequence
                 
                 ].sequence
@@ -149,12 +149,12 @@ enum XMLGenerated : Int, Token {
         case .inlineTag:
             return [
                 [
-                    T.ws.rule.require(.noneOrMore),
+                    T.ws.rule.require(.zeroOrMore),
                     -"<".require(.one),
                     T.identifier.rule.require(.one),
                     [
                         T.attribute.rule.require(.oneOrMore),
-                        T.ws.rule.require(.noneOrMore)].choice
+                        T.ws.rule.require(.zeroOrMore)].choice
                     ,
                     -"/>".require(.one)].sequence
                 

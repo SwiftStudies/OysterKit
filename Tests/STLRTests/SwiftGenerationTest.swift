@@ -191,7 +191,7 @@ class SwiftGenerationTest: XCTestCase {
         do {
             let result = try swift(for: "-ref=\"x\"\n-a = ref*", desiredRule: 1)
             
-            XCTAssertEqual(result,"T.ref.rule.require(.noneOrMore).reference(.skipping)")
+            XCTAssertEqual(result,"T.ref.rule.require(.zeroOrMore).reference(.skipping)")
         } catch (let error){
             XCTFail("\(error)")
         }

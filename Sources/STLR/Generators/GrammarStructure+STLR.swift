@@ -42,7 +42,7 @@ public class GrammarStructure {
                 self = .one
             } else if element.cardinality == .optionally {
                 self = .optional
-            } else if element.cardinality == .noneOrMore {
+            } else if element.cardinality == .zeroOrMore {
                 self = .many(true)
             } else {
                 self = .many(false)

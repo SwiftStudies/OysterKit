@@ -63,7 +63,7 @@ public struct Cardinality : Equatable {
     public static let optionally = Cardinality(0...1)
     
     /// A pre-specified constant for optional but unbound matches (between 0 and infinity matches)
-    public static let noneOrMore = Cardinality(0...)
+    public static let zeroOrMore = Cardinality(0...)
     
     /// A pre-specified constant for required but unbound matches (between 1 and infinity matches)
     public static let oneOrMore = Cardinality(1...)

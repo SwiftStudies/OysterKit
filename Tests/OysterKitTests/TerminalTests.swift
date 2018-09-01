@@ -131,7 +131,7 @@ class TerminalTests: XCTestCase {
             return
         }
         
-        rule = -"Hello".require(.noneOrMore)
+        rule = -"Hello".require(.zeroOrMore)
         
         guard rule.behaviour.cardinality.maximumMatches == nil && rule.behaviour.cardinality.minimumMatches == 0 else{
             XCTFail("Cardinality not passed on")

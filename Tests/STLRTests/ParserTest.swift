@@ -51,7 +51,7 @@ fileprivate enum Tokens : Int, Token {
         case .optionalWhitespaceWord:
             return Tokens.whitespaceWord.rule.require(.optionally).reference(.structural(token: self))
         case .repeatedOptionalWhitespaceWord:
-            return Tokens.whitespaceWord.rule.require(.noneOrMore).reference(.structural(token: self))
+            return Tokens.whitespaceWord.rule.require(.zeroOrMore).reference(.structural(token: self))
         case .fullStop:
             return ".".reference(.structural(token: self))
         case .questionMark:

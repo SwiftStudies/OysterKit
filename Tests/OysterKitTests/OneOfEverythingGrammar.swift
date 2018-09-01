@@ -38,7 +38,7 @@ enum OneOfEverythingGrammar : Int, Token {
         /// ws
         case .ws:
             return -[
-                CharacterSet.whitespacesAndNewlines.require(.noneOrMore)
+                CharacterSet.whitespacesAndNewlines.require(.zeroOrMore)
                 ].sequence
             
         /// boolean

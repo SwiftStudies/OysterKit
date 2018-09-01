@@ -156,8 +156,8 @@ fileprivate func identifiersAndTerminals(for element:STLR.Element, in file:TextF
 //        file.print(terminator: "",".require(.one)")
     case .oneOrMore:
         file.print(terminator: "",".require(.oneOrMore)")
-    case .noneOrMore:
-        file.print(terminator: "",".require(.noneOrMore)")
+    case .zeroOrMore:
+        file.print(terminator: "",".require(.zeroOrMore)")
     case .optionally:
         file.print(terminator: "",".require(.optionally)")
     default:

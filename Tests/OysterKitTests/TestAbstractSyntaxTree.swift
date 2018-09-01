@@ -117,7 +117,7 @@ class TestAbstractSyntaxTree: XCTestCase {
         let rule = [
             "\"".skip(),
             " ".require(.oneOrMore),
-            CharacterSet.letters.require(.noneOrMore),
+            CharacterSet.letters.require(.zeroOrMore),
             " ".require(.oneOrMore),
             "\"".skip()
         ].sequence.parse(as: token)

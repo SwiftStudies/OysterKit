@@ -37,7 +37,7 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
                             
             /// ows
             case .ows:
-                return T.whitespace.rule.require(.noneOrMore).reference(.skipping)
+                return T.whitespace.rule.require(.zeroOrMore).reference(.skipping)
                             
             /// quantifier
             case .quantifier:
@@ -117,7 +117,7 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
                             
             /// customLabel
             case .customLabel:
-                return [    [        CharacterSet.letters,        "_"].choice.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Labels must start with a letter or _")]),    [        CharacterSet.letters,        CharacterSet.decimalDigits,        "_"].choice.require(.noneOrMore)].sequence.reference(.structural(token: self))
+                return [    [        CharacterSet.letters,        "_"].choice.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Labels must start with a letter or _")]),    [        CharacterSet.letters,        CharacterSet.decimalDigits,        "_"].choice.require(.zeroOrMore)].sequence.reference(.structural(token: self))
                             
             /// definedLabel
             case .definedLabel:
@@ -158,7 +158,7 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
                     let recursiveRule = RecursiveRule(stubFor: Behaviour(.structural(token: self), cardinality: Cardinality.one), with: [:])
                     T.leftHandRecursiveRules[self.rawValue] = recursiveRule
                     // Create the rule we would normally generate
-                    let rule = [    "(",    T.whitespace.rule.require(.noneOrMore),    T.expression.rule,    T.whitespace.rule.require(.noneOrMore),    ")".annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected \')\'")])].sequence.reference(.structural(token: self))
+                    let rule = [    "(",    T.whitespace.rule.require(.zeroOrMore),    T.expression.rule,    T.whitespace.rule.require(.zeroOrMore),    ")".annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected \')\'")])].sequence.reference(.structural(token: self))
                                         
                     recursiveRule.surrogateRule = rule
                     return recursiveRule
@@ -191,11 +191,11 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
                             
             /// or
             case .or:
-                return [    T.whitespace.rule.require(.noneOrMore),    "|",    T.whitespace.rule.require(.noneOrMore)].sequence.reference(.skipping)
+                return [    T.whitespace.rule.require(.zeroOrMore),    "|",    T.whitespace.rule.require(.zeroOrMore)].sequence.reference(.skipping)
                             
             /// then
             case .then:
-                return [    [        T.whitespace.rule.require(.noneOrMore),        "+",        T.whitespace.rule.require(.noneOrMore)].sequence,    T.whitespace.rule.require(.oneOrMore)].choice.reference(.skipping)
+                return [    [        T.whitespace.rule.require(.zeroOrMore),        "+",        T.whitespace.rule.require(.zeroOrMore)].sequence,    T.whitespace.rule.require(.oneOrMore)].choice.reference(.skipping)
                             
             /// choice
             case .choice:
@@ -214,7 +214,7 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
             
             /// notNewRule
             case .notNewRule:
-                return [    T.annotations.rule.require(.optionally),    T.identifier.rule,    T.whitespace.rule.require(.noneOrMore),    [        ":",        T.whitespace.rule.require(.noneOrMore),        CharacterSet.letters.require(.oneOrMore),        T.whitespace.rule.require(.noneOrMore)].sequence.require(.optionally),    T.assignmentOperators.rule].sequence.negate().reference(.skipping)
+                return [    T.annotations.rule.require(.optionally),    T.identifier.rule,    T.whitespace.rule.require(.zeroOrMore),    [        ":",        T.whitespace.rule.require(.zeroOrMore),        CharacterSet.letters.require(.oneOrMore),        T.whitespace.rule.require(.zeroOrMore)].sequence.require(.optionally),    T.assignmentOperators.rule].sequence.negate().reference(.skipping)
                             
             /// sequence
             case .sequence:
@@ -256,19 +256,19 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
                             
             /// customType
             case .customType:
-                return [    [        "_",        CharacterSet.uppercaseLetters].choice,    [        "_",        CharacterSet.letters,        CharacterSet.decimalDigits].choice.require(.noneOrMore)].sequence.reference(.structural(token: self))
+                return [    [        "_",        CharacterSet.uppercaseLetters].choice,    [        "_",        CharacterSet.letters,        CharacterSet.decimalDigits].choice.require(.zeroOrMore)].sequence.reference(.structural(token: self))
                             
             /// lhs
             case .lhs:
-                return [    T.whitespace.rule.require(.noneOrMore),    T.annotations.rule.require(.optionally),    T.transient.rule.require(.optionally),    T.void.rule.require(.optionally),    T.identifier.rule,    T.whitespace.rule.require(.noneOrMore),    [        -":",        -T.whitespace.rule.require(.noneOrMore),        T.tokenType.rule,        -T.whitespace.rule.require(.noneOrMore)].sequence.require(.optionally),    T.assignmentOperators.rule].sequence.reference(.scanning)
+                return [    T.whitespace.rule.require(.zeroOrMore),    T.annotations.rule.require(.optionally),    T.transient.rule.require(.optionally),    T.void.rule.require(.optionally),    T.identifier.rule,    T.whitespace.rule.require(.zeroOrMore),    [        -":",        -T.whitespace.rule.require(.zeroOrMore),        T.tokenType.rule,        -T.whitespace.rule.require(.zeroOrMore)].sequence.require(.optionally),    T.assignmentOperators.rule].sequence.reference(.scanning)
                             
             /// rule
             case .rule:
-                return [    T.lhs.rule,    T.whitespace.rule.require(.noneOrMore),    T.expression.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected expression")]),    T.whitespace.rule.require(.noneOrMore)].sequence.reference(.structural(token: self))
+                return [    T.lhs.rule,    T.whitespace.rule.require(.zeroOrMore),    T.expression.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected expression")]),    T.whitespace.rule.require(.zeroOrMore)].sequence.reference(.structural(token: self))
                             
             /// moduleName
             case .moduleName:
-                return [    [        CharacterSet.letters,        "_"].choice,    [        CharacterSet.letters,        "_",        CharacterSet.decimalDigits].choice.require(.noneOrMore)].sequence.reference(.structural(token: self))
+                return [    [        CharacterSet.letters,        "_"].choice,    [        CharacterSet.letters,        "_",        CharacterSet.decimalDigits].choice.require(.zeroOrMore)].sequence.reference(.structural(token: self))
                             
             /// moduleImport
             case .moduleImport:
@@ -276,11 +276,11 @@ internal enum STLRTokens : Int, Token, CaseIterable, Equatable {
                             
             /// scopeName
             case .scopeName:
-                return [    -"grammar",    -T.whitespace.rule,    T.ows.rule,    ~[        CharacterSet.letters,        [            CharacterSet.letters,            CharacterSet.decimalDigits].choice.require(.noneOrMore)].sequence,    -T.whitespace.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Unexpected input")]),    -T.ows.rule].sequence.reference(.structural(token: self))
+                return [    -"grammar",    -T.whitespace.rule,    T.ows.rule,    ~[        CharacterSet.letters,        [            CharacterSet.letters,            CharacterSet.decimalDigits].choice.require(.zeroOrMore)].sequence,    -T.whitespace.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Unexpected input")]),    -T.ows.rule].sequence.reference(.structural(token: self))
                             
             /// grammar
             case .grammar:
-                return [    -T.whitespace.rule.require(.noneOrMore),    T.scopeName.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("You must declare the name of the grammar before any other declarations (e.g. grammar <your-grammar-name>)")]),    T.modules.rule.require(.optionally).annotatedWith([:]),    T.rules.rule.annotatedWith([:])].sequence.reference(.structural(token: self))
+                return [    -T.whitespace.rule.require(.zeroOrMore),    T.scopeName.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("You must declare the name of the grammar before any other declarations (e.g. grammar <your-grammar-name>)")]),    T.modules.rule.require(.optionally).annotatedWith([:]),    T.rules.rule.annotatedWith([:])].sequence.reference(.structural(token: self))
                             
             /// modules
             case .modules:

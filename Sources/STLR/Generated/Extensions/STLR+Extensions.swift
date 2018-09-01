@@ -424,7 +424,7 @@ public extension STLR.Element {
         case .questionMark:
             return .optionally
         case .star:
-            return .noneOrMore
+            return .zeroOrMore
         case .plus:
             return .oneOrMore
         default:

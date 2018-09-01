@@ -233,7 +233,7 @@ class DecoderTests: XCTestCase {
         let rules : [Rule] = [
             [
                 -"[",
-                arrayEntry.require(.noneOrMore),
+                arrayEntry.require(.zeroOrMore),
                 -"]",
             ].sequence.parse(as:LabelledToken(withLabel: "array"))
         ]

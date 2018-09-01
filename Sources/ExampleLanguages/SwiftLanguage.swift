@@ -65,14 +65,14 @@ public class SwiftParser : Parser{
             case .string:
                 return [
                     ~"\"",
-                    GrammarToken.stringCharacter._rule().require(.noneOrMore),
+                    GrammarToken.stringCharacter._rule().require(.zeroOrMore),
                     ~"\"",
                     ].sequence.parse(as: self)
             // keyword
             case .keyword:
                 return [
                     ["private", "class", "func", "var", "guard", "let", "static", "init", "case", "typealias", "enum"].choice,
-                    CharacterSet.whitespacesAndNewlines.require(.noneOrMore),
+                    CharacterSet.whitespacesAndNewlines.require(.zeroOrMore),
                     ].sequence.parse(as:self)
             // variable
             case .variable:

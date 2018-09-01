@@ -254,7 +254,7 @@ class RuleTests: XCTestCase {
             """
         let singleLineComment = [
             ~"//",
-            (!CharacterSet.newlines).require(.noneOrMore),
+            (!CharacterSet.newlines).require(.zeroOrMore),
             ~CharacterSet.newlines
             ].sequence.parse(as:LabelledToken(withLabel: "singleLineComment"))
         
