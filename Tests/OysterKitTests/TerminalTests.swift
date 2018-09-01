@@ -31,7 +31,7 @@ class TerminalTests: XCTestCase {
     func testStringTerminal() {
         let passSource = "Hello"
         let failSource = "Hullo"
-        let helloToken = "Hello".parse(as: LabelledToken(withLabel: "hello"))
+        let helloToken = "Hello".parse(as: StringToken("hello"))
         
         if let tree = try? AbstractSyntaxTreeConstructor().build(passSource, using: Parser(grammar: [helloToken])){
             XCTAssertNotNil(tree.token)
@@ -55,7 +55,7 @@ class TerminalTests: XCTestCase {
         let passSource = "Hello"
         let failSource = "1.233"
         let helloRegex = try! NSRegularExpression(pattern: "[:alpha:]+", options: [])
-        let helloToken = helloRegex.parse(as: LabelledToken(withLabel: "hello"))
+        let helloToken = helloRegex.parse(as: StringToken("hello"))
         
         if let tree = try? AbstractSyntaxTreeConstructor().build(passSource, using: Parser(grammar: [helloToken])){
             XCTAssertNotNil(tree.token)
@@ -79,7 +79,7 @@ class TerminalTests: XCTestCase {
         let passSource = "Hello"
         let failSource = "1.233"
         let letters = CharacterSet.letters
-        let helloToken = letters.parse(as: LabelledToken(withLabel: "hello")).require(.oneOrMore)
+        let helloToken = letters.parse(as: StringToken("hello")).require(.oneOrMore)
         
         if let tree = try? AbstractSyntaxTreeConstructor().build(passSource, using: Parser(grammar: [helloToken])){
             XCTAssertNotNil(tree.token)
@@ -103,7 +103,7 @@ class TerminalTests: XCTestCase {
         let passSource = "Hello"
         let failSource = "Hullo"
         let choices = ["H","e","l", "o"].choice
-        let choice = choices.parse(as:LabelledToken(withLabel: "hello")).require(.oneOrMore)
+        let choice = choices.parse(as:StringToken("hello")).require(.oneOrMore)
         
         if let tree = try? AbstractSyntaxTreeConstructor().build(passSource, using: Parser(grammar: [choice])){
             XCTAssertNotNil(tree.token)

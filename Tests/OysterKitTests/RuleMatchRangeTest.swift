@@ -33,7 +33,7 @@ class RuleMatchRangeTest : XCTestCase {
     let transientRule = ClosureRule(with: Behaviour(.scanning, cardinality: .oneOrMore)) { (lexer, ir) in
         try lexer.scan(terminal: " ")
     }
-    let tokenRule = ClosureRule(with: Behaviour(.structural(token: LabelledToken(withLabel: "stringBody")), cardinality: .oneOrMore)) { (lexer, ir) in
+    let tokenRule = ClosureRule(with: Behaviour(.structural(token: StringToken("stringBody")), cardinality: .oneOrMore)) { (lexer, ir) in
         try lexer.scan(oneOf: CharacterSet.letters)
     }
 
@@ -41,7 +41,7 @@ class RuleMatchRangeTest : XCTestCase {
         let source = """
                      "   stringBody   "
                      """
-        let root = LabelledToken(withLabel: "root")
+        let root = StringToken("root")
         let sequence = [voidRule, transientRule, tokenRule, transientRule, voidRule].sequence.parse(as: root)
         
         XCTAssertTrue(voidRule.skipping)
@@ -67,7 +67,7 @@ class RuleMatchRangeTest : XCTestCase {
         let lexer = Lexer(source: source)
         let ir = AbstractSyntaxTreeConstructor(with: source)
 
-        let root = LabelledToken(withLabel: "root")
+        let root = StringToken("root")
         
         do {
             lexer.mark()

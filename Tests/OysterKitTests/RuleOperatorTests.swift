@@ -60,7 +60,7 @@ class RuleOperatorTests: XCTestCase {
     }
 
     func testLookaheadOperator() {
-        let hello = LabelledToken(withLabel: "hello")
+        let hello = StringToken("hello")
         let singleCardinalityRule = "hello".parse(as: hello)
         let multipleCardinalityRule = "hello".parse(as: hello).require(.oneOrMore)
         
@@ -90,7 +90,7 @@ class RuleOperatorTests: XCTestCase {
     }
     
     func testNotOperator(){
-        let hello = LabelledToken(withLabel: "hello")
+        let hello = StringToken("hello")
         let singleCardinalityRule = "hello".parse(as: hello)
         let multipleCardinalityRule = "hello".parse(as: hello).require(.oneOrMore)
         
@@ -120,7 +120,7 @@ class RuleOperatorTests: XCTestCase {
     }
     
     func testSkipOperator(){
-        let hello = LabelledToken(withLabel: "hello")
+        let hello = StringToken("hello")
         let singleCardinalityRule = "hello".parse(as: hello)
         let multipleCardinalityRule = "hello".parse(as: hello).require(.oneOrMore)
         
@@ -149,7 +149,7 @@ class RuleOperatorTests: XCTestCase {
     }
     
     func testScanOperator(){
-        let hello = LabelledToken(withLabel: "hello")
+        let hello = StringToken("hello")
         let singleCardinalityRule = "hello".parse(as: hello)
         let multipleCardinalityRule = "hello".parse(as: hello).require(.oneOrMore)
 
@@ -194,8 +194,8 @@ class RuleOperatorTests: XCTestCase {
     
     
     func testFromOperator(){
-        let hello = LabelledToken(withLabel: "hello")
-        let greeting = LabelledToken(withLabel: "greeting")
+        let hello = StringToken("hello")
+        let greeting = StringToken("greeting")
         let singleCardinalityRule = "hello".parse(as: hello)
         let multipleCardinalityRule = "hello".parse(as: hello).require(.oneOrMore)
 
@@ -222,7 +222,7 @@ class RuleOperatorTests: XCTestCase {
     }
     
     func testAnnotationOperator(){
-        let hello = LabelledToken(withLabel: "hello")
+        let hello = StringToken("hello")
         let single = "hello".parse(as: hello).annotatedWith([.custom(label: "test") : .string("set")])
         let multiple = "hello".parse(as: hello).require(.oneOrMore).annotatedWith([.custom(label: "test") : .string("set")])
 

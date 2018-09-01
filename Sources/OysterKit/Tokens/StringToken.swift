@@ -27,7 +27,7 @@ import Foundation
 /**
  A generic ``TokenType`` implementation that is labelled (has an associated ``String`). The value is automatically generated
  */
-public struct LabelledToken : TokenType, CustomStringConvertible {
+public struct StringToken : TokenType, CustomStringConvertible {
     /// The label for the token
     private     let label : String
     
@@ -39,7 +39,7 @@ public struct LabelledToken : TokenType, CustomStringConvertible {
      
      - Parameter label: The textual representation of the token
      */
-    public init(withLabel label: String){
+    public init(_ label: String){
         self.label = label
         rawValue = label.hashValue
     }

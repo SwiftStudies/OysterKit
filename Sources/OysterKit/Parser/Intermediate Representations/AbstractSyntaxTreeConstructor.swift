@@ -245,7 +245,7 @@ public class AbstractSyntaxTreeConstructor  {
             
             if topNodes.count > 1 {
                 // Wrap it in a single node
-                topNode = IntermediateRepresentationNode(for: LabelledToken(withLabel: "root"), at: topNodes.combinedRange, children: topNodes , annotations: [:])
+                topNode = IntermediateRepresentationNode(for: StringToken("root"), at: topNodes.combinedRange, children: topNodes , annotations: [:])
             } else {
                 topNode = topNodes[0]
             }

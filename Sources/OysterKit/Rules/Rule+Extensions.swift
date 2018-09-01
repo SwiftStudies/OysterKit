@@ -77,11 +77,11 @@ public extension Rule {
                 filterOut.append(annotation)
                 switch value {
                 case .string(let stringValue):
-                    resultantRule = resultantRule.parse(as: LabelledToken(withLabel: stringValue))
+                    resultantRule = resultantRule.parse(as: StringToken(stringValue))
                 default:
                     #warning("This should be a log entry")
                     print("Warning: \(annotation) supplied with \(value) when only supports .string")
-                    resultantRule = resultantRule.parse(as: LabelledToken(withLabel: "\(value)"))
+                    resultantRule = resultantRule.parse(as: StringToken("\(value)"))
                 }
             default: break
             }

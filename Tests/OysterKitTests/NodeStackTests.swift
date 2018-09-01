@@ -62,10 +62,10 @@ class NodeStackTests: XCTestCase {
         let source = "Hello world good to meet you"
         let stack = NodeStack<TestNode>()
         
-        stack.top?.append(TestNode(for: LabelledToken(withLabel: "hello"), at: source.range(of: "Hello")!, annotations: [:]))
+        stack.top?.append(TestNode(for: StringToken("hello"), at: source.range(of: "Hello")!, annotations: [:]))
         stack.push()
-        stack.top?.append(TestNode(for: LabelledToken(withLabel: "world"), at: source.range(of: "world")!, annotations: [:]))
-        stack.top?.append(TestNode(for: LabelledToken(withLabel: "good"), at: source.range(of: "good")!, annotations: [:]))
+        stack.top?.append(TestNode(for: StringToken("world"), at: source.range(of: "world")!, annotations: [:]))
+        stack.top?.append(TestNode(for: StringToken("good"), at: source.range(of: "good")!, annotations: [:]))
         
         //Key thing is 2 nodes first to make sure it has been reversed
         XCTAssertEqual(stack.all.description,"[2 nodes, with [] errors, 1 nodes, with [] errors]")
@@ -121,7 +121,7 @@ class NodeStackTests: XCTestCase {
         let source = "Hello"
         let nodeStack = NodeStack<TestNode>()
 
-        nodeStack.top?.append(TestNode(for: LabelledToken(withLabel: "hello"), at: source.startIndex..<source.endIndex, annotations: [
+        nodeStack.top?.append(TestNode(for: StringToken("hello"), at: source.startIndex..<source.endIndex, annotations: [
             RuleAnnotation.void : RuleAnnotationValue.set
             ]))
         

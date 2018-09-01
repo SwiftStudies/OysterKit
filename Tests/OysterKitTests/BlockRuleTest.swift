@@ -13,7 +13,7 @@ fileprivate func isLetter(lexer:LexicalAnalyzer, ir:IntermediateRepresentation) 
     try lexer.scan(oneOf: CharacterSet.letters)
 }
 
-fileprivate let aToken = LabelledToken(withLabel: "a")
+fileprivate let aToken = StringToken("a")
 
 class BlockRuleTest: XCTestCase {
     typealias LowLevelResult = (lexer:Lexer,ir:AbstractSyntaxTreeConstructor, root:TokenType?)

@@ -277,7 +277,7 @@ public class SwiftStructure : Generator{
             " - Returns: A new instance of the data-structure",
             " */",
             "\(accessLevel) static func build(_ source : Swift.String) throws ->\(name){").indent().print(
-                "let root = HomogenousTree(with: LabelledToken(withLabel: \"root\"), matching: source, children: [try AbstractSyntaxTreeConstructor().build(source, using: \(name).generatedLanguage)])",
+                "let root = HomogenousTree(with: StringToken(\"root\"), matching: source, children: [try AbstractSyntaxTreeConstructor().build(source, using: \(name).generatedLanguage)])",
                 "// print(root.description)",
                 "return try ParsingDecoder().decode(\(name).self, using: root)").outdent().print(
                     "}",

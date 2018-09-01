@@ -260,7 +260,7 @@ fileprivate extension STLR.Rule {
         } else if let _ = transient {
             return .scanning
         } else {
-            return .structural(token: LabelledToken(withLabel: identifier))
+            return .structural(token: StringToken(identifier))
         }
     }
     

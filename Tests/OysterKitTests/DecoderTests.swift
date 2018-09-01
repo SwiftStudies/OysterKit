@@ -225,7 +225,7 @@ class DecoderTests: XCTestCase {
     
     func testNestedUnkeyed(){
         let arrayEntry = [
-            OneOfEverythingGrammar.oneOfEverything.rule.parse(as: LabelledToken(withLabel: "entry")),
+            OneOfEverythingGrammar.oneOfEverything.rule.parse(as: StringToken("entry")),
             -",".require(.zeroOrOne)
         ].sequence
         
@@ -235,7 +235,7 @@ class DecoderTests: XCTestCase {
                 -"[",
                 arrayEntry.require(.zeroOrMore),
                 -"]",
-            ].sequence.parse(as:LabelledToken(withLabel: "array"))
+            ].sequence.parse(as:StringToken("array"))
         ]
         
         let source = """
@@ -262,7 +262,7 @@ class DecoderTests: XCTestCase {
             [
                 -"[",
                 [
-                    OneOfEverythingGrammar.oneOfEverything.rule.parse(as: LabelledToken(withLabel: "entry")),
+                    OneOfEverythingGrammar.oneOfEverything.rule.parse(as: StringToken("entry")),
                     -",".require(.zeroOrOne)
                 ].sequence.require(.oneOrMore),
                 -"]",
@@ -294,13 +294,13 @@ class DecoderTests: XCTestCase {
     func testNestedKeyedDeep(){
         let rules : [Rule] = [
             [
-                OneOfEverythingGrammar.oneOfEverything.rule.parse(as: LabelledToken(withLabel: "thing1")),
+                OneOfEverythingGrammar.oneOfEverything.rule.parse(as: StringToken("thing1")),
                 -",".require(.zeroOrOne),
-                OneOfEverythingGrammar.oneOfEverything.rule.parse(as: LabelledToken(withLabel: "thing2")),
+                OneOfEverythingGrammar.oneOfEverything.rule.parse(as: StringToken("thing2")),
                 -",".require(.zeroOrOne),
-                OneOfEverythingGrammar.oneOfEverything.rule.parse(as: LabelledToken(withLabel: "thing3")),
+                OneOfEverythingGrammar.oneOfEverything.rule.parse(as: StringToken("thing3")),
                 -",".require(.zeroOrOne),
-            ].sequence.parse(as:LabelledToken(withLabel:"dictionary")),
+            ].sequence.parse(as:StringToken("dictionary")),
         ]
         let source = """
         true 1 2 3 4 5 6 7 8 9 10 11.0 12.0 string ,true 1 2 3 4 5 6 7 8 9 10 11.0 12.0 string ,true 1 2 3 4 5 6 7 8 9 10 11.0 12.0 string

@@ -83,7 +83,7 @@ class RuleTests: XCTestCase {
     
     func testOneFromCharacterSetToken(){
         let source = "Hello World"
-        let rule = CharacterSet.letters.require(.one).parse(as: LabelledToken(withLabel: "letter"))
+        let rule = CharacterSet.letters.require(.one).parse(as: StringToken("letter"))
         let lexer = Lexer(source: source)
         let testIR = AbstractSyntaxTreeConstructor(with: source)
         
@@ -98,7 +98,7 @@ class RuleTests: XCTestCase {
     
     func testOneOrMoreFromCharacterSetToken(){
         let source = "Hello World"
-        let rule = LabelledToken(withLabel: "letter").from(~CharacterSet.letters.require(.oneOrMore))
+        let rule = StringToken("letter").from(~CharacterSet.letters.require(.oneOrMore))
         let lexer = Lexer(source: source)
         let testIR = TestIR()
         
@@ -113,7 +113,7 @@ class RuleTests: XCTestCase {
     
     func testLazyConsumeCharacterSetToken(){
         let source = "Hello World"
-        let rule : Rule = [-CharacterSet.letters].sequence.parse(as: LabelledToken(withLabel: "letter"))
+        let rule : Rule = [-CharacterSet.letters].sequence.parse(as: StringToken("letter"))
         let lexer = Lexer(source: source)
         let testIR = TestIR()
         
@@ -128,7 +128,7 @@ class RuleTests: XCTestCase {
 
     func testGreedilyConsumeCharacterSetToken(){
         let source = "Hello World"
-        let rule : Rule = [-CharacterSet.letters.require(.oneOrMore)].sequence.parse(as: LabelledToken(withLabel: "letter"))
+        let rule : Rule = [-CharacterSet.letters.require(.oneOrMore)].sequence.parse(as: StringToken("letter"))
         let lexer = Lexer(source: source)
         let testIR = TestIR()
         
@@ -158,7 +158,7 @@ class RuleTests: XCTestCase {
         lexer.mark()
         
         do {
-            try [rule, " ", rule].sequence.parse(as: LabelledToken(withLabel: "Greeting")).match(with: lexer, for: testIR)
+            try [rule, " ", rule].sequence.parse(as: StringToken("Greeting")).match(with: lexer, for: testIR)
             let ast = try testIR.generate(HomogenousTree.self, source: source)
             XCTAssertEqual(0, ast.children.count)
             XCTAssertEqual(" ", ast.matchedString)
@@ -214,7 +214,7 @@ class RuleTests: XCTestCase {
     }
     
     func testScannerRuleForRegularExpression(){
-        let catRule = try! NSRegularExpression(pattern: "Cat", options: []).parse(as: LabelledToken(withLabel: "Cat"))
+        let catRule = try! NSRegularExpression(pattern: "Cat", options: []).parse(as: StringToken("Cat"))
         
         XCTAssertEqual(catRule.description, "/Cat/►Cat")
         let commaRule = ","
@@ -239,7 +239,7 @@ class RuleTests: XCTestCase {
             
         }
         
-        let felineRule = catRule.parse(as: LabelledToken(withLabel: "Feline"))
+        let felineRule = catRule.parse(as: StringToken("Feline"))
         
         XCTAssertEqual("\(felineRule)", "/Cat/►Feline")
         XCTAssertNotEqual(catRule.behaviour.token!.rawValue, felineRule.behaviour.token!.rawValue)
@@ -256,7 +256,7 @@ class RuleTests: XCTestCase {
             ~"//",
             (!CharacterSet.newlines).require(.zeroOrMore),
             ~CharacterSet.newlines
-            ].sequence.parse(as:LabelledToken(withLabel: "singleLineComment"))
+            ].sequence.parse(as:StringToken("singleLineComment"))
         
         let lexer = Lexer(source: source)
         let ir = AbstractSyntaxTreeConstructor(with: source)
@@ -273,7 +273,7 @@ class RuleTests: XCTestCase {
     
     func testKnownAnnotations(){
         let error = "Valid error"
-        let rule = CharacterSet.letters.parse(as:LabelledToken(withLabel: "test")).require(.oneOrMore)
+        let rule = CharacterSet.letters.parse(as:StringToken("test")).require(.oneOrMore)
         let validError = rule.annotatedWith([
             RuleAnnotation.error : RuleAnnotationValue.string(error),
             RuleAnnotation.void  : RuleAnnotationValue.set,

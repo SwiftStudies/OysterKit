@@ -404,11 +404,11 @@ public extension STLR.Element {
             return .scanning
         }
         if let token = annotations?.token {
-            return .structural(token: LabelledToken(withLabel: token))
+            return .structural(token: StringToken(token))
         } else {
             if let identifier = identifier {
                 #warning("Possible bug? should it be returning the kid of the identifier?")
-                return .structural(token:LabelledToken(withLabel: identifier))
+                return .structural(token:StringToken(identifier))
             }
             return .scanning
         }
