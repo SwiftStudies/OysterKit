@@ -102,6 +102,7 @@ You can also use predefined character sets that match multiple characters. These
   - `.newline` All newline characters, matching for example both newline and carriage return
   - `.whitespaceOrNewline` All white space and newline characters
   - `.backslash` The backslash character
+  - `.endOfFile` The end of the file. NB: Normally you will use lookahead with this character class (e.g. if you want to ensure you are at the end of the file `>>.endOfFile` or that you  are not at the end of the file `>>!.endOfFile`)
   
 For example, a rule to capture a co-ordinate might be
 

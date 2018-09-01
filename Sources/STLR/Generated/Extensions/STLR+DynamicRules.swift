@@ -228,6 +228,8 @@ extension STLR.Terminal {
             return TerminalRule(behaviour, and: annotations, for: characterSet.terminal)
         case .terminalString(let terminalString):
             return TerminalRule(behaviour, and: annotations, for: terminalString.terminal)
+        case .endOfFile(_):
+            return TerminalRule(behaviour, and: annotations, for: EndOfFile())
         }
     }
 }

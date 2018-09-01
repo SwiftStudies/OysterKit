@@ -67,15 +67,15 @@ terminalString       = -stringQuote @error("Terminals must have at least one cha
 //
 // Character Sets and Ranges
 //
-characterSetName                = "letter" |
-"uppercaseLetter" |
-"lowercaseLetter" |
-"alphaNumeric" |
-"decimalDigit" |
-"whitespaceOrNewline" |
-"whitespace" |
-"newline" |
-"backslash"
+characterSetName =  "letter" |
+                    "uppercaseLetter" |
+                    "lowercaseLetter" |
+                    "alphaNumeric" |
+                    "decimalDigit" |
+                    "whitespaceOrNewline" |
+                    "whitespace" |
+                    "newline" |
+                    "backslash"
 
 characterSet                    = -"." @error("Unknown character set") characterSetName
 
@@ -116,9 +116,14 @@ label                           = definedLabel | customLabel
 regex = startRegex regexBody endRegex 
 
 //
+// Special Cases
+//
+endOfFile = ".endOfFile"
+
+//
 // Element
 //
-terminal                                = characterSet | characterRange | terminalString | regex
+terminal                                =  endOfFile | characterSet | characterRange | terminalString | regex
 group                                   = "(" whitespace*
 expression whitespace*
 @error("Expected ')'")

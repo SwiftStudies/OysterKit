@@ -238,14 +238,15 @@ extension STLR.Terminal {
     @discardableResult
     func swift()->String{
         switch self {
-            
+        case .endOfFile(_):
+            return "EndOfFile()"
         case .characterSet(let characterSet):
             switch characterSet.characterSetName {
             case .whitespaceOrNewline:
                 return "CharacterSet.whitespacesAndNewlines"
             case .backslash:
                 return "\\".asSwiftString
-            default:
+            case .letter, .uppercaseLetter, .lowercaseLetter, .alphaNumeric, .decimalDigit, .whitespace, .newline:
                 return "CharacterSet\(self)s"
             }
         case .regex(let regex):

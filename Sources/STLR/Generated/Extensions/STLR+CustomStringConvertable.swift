@@ -102,6 +102,8 @@ extension STLR.Literal : CustomStringConvertible {
 extension STLR.Terminal : CustomStringConvertible {
     public var description : String {
         switch self {
+        case .endOfFile(_):
+            return ".endOfFile"
         case .characterSet(let characterSet):
             return ".\(characterSet.characterSetName)"
         case .regex(let regex):

@@ -198,6 +198,18 @@ class FullSwiftGenerationTest: XCTestCase {
         }
     }
 
+    func testEndOfFile(){
+        let token = STLRTokens.endOfFile
+        XCTAssertNoThrow(try checkSimplePassFail(for: token, passing: [".endOfFile"], failing: [".letter"], expectNode: true))
+        do {
+            let ast = try makeAST(for: token, from: ".endOfFile")
+            XCTAssertEqual(0, ast.children.count)
+            XCTAssertEqual(token, ast.token as! STLRTokens)
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+    
     func testStringQuote(){
         XCTAssertNoThrow(try checkSimplePassFail(for: .stringQuote, passing: ["\""], failing: ["'","\\\""], expectNode: true))
         do {

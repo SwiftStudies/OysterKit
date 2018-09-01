@@ -67,6 +67,22 @@ class DynamicGeneratorTest: XCTestCase {
         #warning("Dynamically generate STLR and use it to decode Swift generated STLR")
     }
     
+    func testEndOfFile(){
+        let stlr =
+            """
+            grammar Test
+            
+            testEnds = >>!.endOfFile "a" >>.endOfFile
+            """
+        do {
+            let tree = try AbstractSyntaxTreeConstructor(with: "a").build(using: Parser(grammar: STLR.build(stlr).grammar.dynamicRules))
+            XCTAssertEqual(tree.matchedString, "a")
+            XCTAssertEqual("\(tree.token)", "testEnds")
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+    
     /// Intended to test the fix for Issue #39
     func testGrammarRuleProductionIdentifierNonRecursive(){
         let stlr = testGrammarName+"""
