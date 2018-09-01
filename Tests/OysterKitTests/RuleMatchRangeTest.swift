@@ -25,7 +25,7 @@
 import XCTest
 @testable import OysterKit
 
-class BehaviourRuleMatchRangeTest : XCTestCase {
+class RuleMatchRangeTest : XCTestCase {
     
     let voidRule = ClosureRule(with: Behaviour(.skipping, cardinality: .one)) { (lexer, ir) in
         try lexer.scan(terminal: "\"")
