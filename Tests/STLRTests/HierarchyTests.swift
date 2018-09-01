@@ -114,7 +114,7 @@ import OysterKit
 //
 // XML Parser
 //
-enum XML : Int, Token {
+enum XML : Int, TokenType {
     typealias T = XML
     
     // Cache for compiled regular expressions

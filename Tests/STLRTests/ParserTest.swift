@@ -9,13 +9,13 @@
 import XCTest
 @testable import OysterKit
 
-fileprivate enum QuotedEscapedStringTestTokens : Int, Token {
+fileprivate enum QuotedEscapedStringTestTokens : Int, TokenType {
     case escapedQuote,quote,character,string
 }
 
 
 
-fileprivate enum Tokens : Int, Token {
+fileprivate enum Tokens : Int, TokenType {
     case whitespace
     case whitespaces
     case dummy
@@ -90,7 +90,7 @@ class ParserTest: XCTestCase {
     }
     
     @discardableResult
-    private func check(_ source:String, produces output: [Token], using rules:[Rule], expectingEndOfInput:Bool? = nil)->[Error]{
+    private func check(_ source:String, produces output: [TokenType], using rules:[Rule], expectingEndOfInput:Bool? = nil)->[Error]{
         let debugOutput = true
         let parser = TestParser(source: source, grammar: rules)
         
@@ -230,7 +230,7 @@ class ParserTest: XCTestCase {
     }
     
     func testRuleTerminalFrom(){
-        check("Hello", produces: Array<Token>(repeating:Tokens.letter, count:5), using: [Tokens.letter.rule], expectingEndOfInput: true)
+        check("Hello", produces: Array<TokenType>(repeating:Tokens.letter, count:5), using: [Tokens.letter.rule], expectingEndOfInput: true)
     }
     
     func testRuleSimpleRepeat(){

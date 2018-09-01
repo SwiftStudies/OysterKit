@@ -95,7 +95,7 @@ public class AbstractSyntaxTreeConstructor  {
      */
     public struct IntermediateRepresentationNode : Node {
         /// The token created
-        public      let token       : Token
+        public      let token       : TokenType
         /// The range of the match in the source string
         public      let range       : Range<String.UnicodeScalarView.Index>
         
@@ -108,11 +108,11 @@ public class AbstractSyntaxTreeConstructor  {
         /**
          Creates a new instance with no `value`
          
-         -Parameter for: The `Token` the node captures
+         -Parameter for: The `TokenType` the node captures
          -Parameter at: The range the token was matched at in the original source string
          -Prameter annotations: Any annotations that should be stored with the node
          */
-        public init(for token: Token, at range: Range<String.UnicodeScalarView.Index>, annotations:RuleAnnotations) {
+        public init(for token: TokenType, at range: Range<String.UnicodeScalarView.Index>, annotations:RuleAnnotations) {
             self.token = token
             self.range = range
             self.children = []
@@ -122,12 +122,12 @@ public class AbstractSyntaxTreeConstructor  {
         /**
          Creates a new instance
          
-         -Parameter for: The `Token` the node captures
+         -Parameter for: The `TokenType` the node captures
          -Parameter at: The range the token was matched at in the original source string
          -Parameter children: Any child nodes of this node
          -Prameter annotations: Any annotations that should be stored with the node
          */
-        public init(for token: Token, at range: Range<String.UnicodeScalarView.Index>, children:[IntermediateRepresentationNode], annotations:RuleAnnotations) {
+        public init(for token: TokenType, at range: Range<String.UnicodeScalarView.Index>, children:[IntermediateRepresentationNode], annotations:RuleAnnotations) {
             self.token = token
             self.range = range
             self.children = children
@@ -342,11 +342,11 @@ extension AbstractSyntaxTreeConstructor : IntermediateRepresentation {
     public func willBuildFrom(source: String, with: Language) {
     }
     
-    public func evaluating(_ token: Token) {
+    public func evaluating(_ token: TokenType) {
         nodeStack.push()
     }
     
-    public func succeeded(token: Token, annotations: RuleAnnotations, range: Range<String.Index>) {
+    public func succeeded(token: TokenType, annotations: RuleAnnotations, range: Range<String.Index>) {
         let children = nodeStack.pop().nodes
         
         let node = IntermediateRepresentationNode(for: token, at: range, children: children, annotations: annotations)

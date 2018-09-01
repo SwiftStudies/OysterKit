@@ -39,7 +39,7 @@ public enum GrammarError : Error, CustomStringConvertible{
     case noTokenCreatedFromMatch
     
     /// Whilst trying to match a token the rule failed (the text did not match). This should be expected during parsing.
-    case matchFailed(token:Token?)
+    case matchFailed(token:TokenType?)
     
     
     /// A textual description of the error

@@ -30,7 +30,7 @@ extension NSRegularExpression : Terminal {
         return "/\(pattern)/"
     }
     
-    public func test(lexer: LexicalAnalyzer, producing token:Token?) throws {
+    public func test(lexer: LexicalAnalyzer, producing token:TokenType?) throws {
         do {
             try lexer.scan(regularExpression: self)
         } catch {

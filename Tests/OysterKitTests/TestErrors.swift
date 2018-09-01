@@ -36,7 +36,7 @@ class TestErrors: XCTestCase {
     }
 
     func testDescriptions() {
-        struct DummyToken : Token {
+        struct DummyToken : TokenType {
             var rawValue: Int = 1
             
             

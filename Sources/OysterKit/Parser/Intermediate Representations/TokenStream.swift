@@ -140,11 +140,11 @@ public class TokenStreamIterator : IteratorProtocol {
 /// This iterator is a very light weight intermediate representation that only constructs top level nodes
 extension TokenStreamIterator : IntermediateRepresentation {
 
-    public func evaluating(_ token: Token) {
+    public func evaluating(_ token: TokenType) {
         depth += 1
     }
     
-    public func succeeded(token: Token, annotations: RuleAnnotations, range: Range<String.Index>) {
+    public func succeeded(token: TokenType, annotations: RuleAnnotations, range: Range<String.Index>) {
         depth -= 1
         if depth == 1  {
             nextToken = StreamedToken(for: token, at: range, annotations: annotations)

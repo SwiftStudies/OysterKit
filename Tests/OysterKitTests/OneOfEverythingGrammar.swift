@@ -6,7 +6,7 @@
 import Foundation
 import OysterKit
 
-enum OneOfEverythingGrammar : Int, Token {
+enum OneOfEverythingGrammar : Int, TokenType {
     typealias T = OneOfEverythingGrammar
     // Cache for compiled regular expressions
     private static var regularExpressionCache = [String : NSRegularExpression]()

@@ -26,7 +26,7 @@ import XCTest
 @testable import OysterKit
 
 struct TestNode : Node, CustomStringConvertible {
-    var token: Token
+    var token: TokenType
     
     var range: Range<String.UnicodeScalarView.Index>
     
@@ -34,7 +34,7 @@ struct TestNode : Node, CustomStringConvertible {
     
     var children: [TestNode]
     
-    init(for token: Token, at range: Range<String.UnicodeScalarView.Index>, annotations: [RuleAnnotation : RuleAnnotationValue]) {
+    init(for token: TokenType, at range: Range<String.UnicodeScalarView.Index>, annotations: [RuleAnnotation : RuleAnnotationValue]) {
         self.token = token
         self.range = range
         self.annotations = annotations

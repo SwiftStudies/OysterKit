@@ -10,7 +10,7 @@ import XCTest
 @testable import OysterKit
 @testable import ExampleLanguages
 
-fileprivate enum STLRStringTest : Int, Token {
+fileprivate enum STLRStringTest : Int, TokenType {
     
     // Convenience alias
     private typealias T = STLRStringTest

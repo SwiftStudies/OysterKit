@@ -43,7 +43,7 @@ public struct Behaviour {
         /// Do not create structure but do include in the bounds of the match
         case    scanning
         /// Include in the bounds of the match and create a structural node in the AST
-        case    structural(token:Token)
+        case    structural(token:TokenType)
         
         /// Compares two kinds
         public static func ==(lhs:Kind, rhs:Kind)->Bool{
@@ -83,7 +83,7 @@ public struct Behaviour {
     public let cardinality : Cardinality
     
     /// The token produced if structural or nil otherwise
-    public var token : Token? {
+    public var token : TokenType? {
         switch kind {
         case .structural(let token):
             return token

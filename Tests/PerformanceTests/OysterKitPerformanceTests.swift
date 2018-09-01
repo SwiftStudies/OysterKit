@@ -29,8 +29,8 @@ class FullSwiftParser : Parser{
     // Convenience alias
     private typealias GrammarToken = Tokens
 
-    // Token & Rules Definition
-    enum Tokens : Int, Token {
+    // TokenType & Rules Definition
+    enum Tokens : Int, TokenType {
         case _transient, comment, ws, eol, access, scope, number, key, entry, dictionary, dictionary, array, string, variable, inherit, parameter, parameters, index, import, class, alias, enum, case, caseBlock, func, switch, return, reference, var, call, guard, assignment, block, statement, swift
 
         func _rule(_ annotations: RuleAnnotations = [ : ])->Rule {
@@ -926,10 +926,10 @@ class FullSwiftParser : Parser{
     }
     
     fileprivate final class NullIR : IntermediateRepresentation{
-        func evaluating(_ token: Token) {
+        func evaluating(_ token: TokenType) {
         }
         
-        func succeeded(token: Token, annotations: RuleAnnotations, range: Range<String.Index>) {
+        func succeeded(token: TokenType, annotations: RuleAnnotations, range: Range<String.Index>) {
         }
         
         func failed() {

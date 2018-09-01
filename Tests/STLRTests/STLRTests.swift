@@ -13,7 +13,7 @@ import XCTest
 @testable import ExampleLanguages
 @testable import STLR
 
-fileprivate enum TestToken : Int, Token{
+fileprivate enum TestToken : Int, TokenType{
     case pass
 }
 

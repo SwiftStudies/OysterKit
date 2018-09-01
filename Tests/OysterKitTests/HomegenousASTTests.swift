@@ -11,7 +11,7 @@ import OysterKit
 //
 // XML Parser
 //
-enum XMLGenerated : Int, Token {
+enum XMLGenerated : Int, TokenType {
     typealias T = XMLGenerated
     
     // Cache for compiled regular expressions

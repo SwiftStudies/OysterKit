@@ -24,7 +24,7 @@
 
 import Foundation
 
-public extension Token {
+public extension TokenType {
     /**
      Creates an instance of the rule producer that will generate the token when satisfied
      
@@ -50,7 +50,7 @@ public extension Rule {
      - Parameter rule: The rule (or thing that can become a rule)
      - Returns: A rule
      */
-    public func parse(as token:Token)->Rule{
+    public func parse(as token:TokenType)->Rule{
         return token.from(self)
     }
 }

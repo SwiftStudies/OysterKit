@@ -16,7 +16,7 @@ fileprivate func isLetter(lexer:LexicalAnalyzer, ir:IntermediateRepresentation) 
 fileprivate let aToken = LabelledToken(withLabel: "a")
 
 class BlockRuleTest: XCTestCase {
-    typealias LowLevelResult = (lexer:Lexer,ir:AbstractSyntaxTreeConstructor, root:Token?)
+    typealias LowLevelResult = (lexer:Lexer,ir:AbstractSyntaxTreeConstructor, root:TokenType?)
 
     let singleLetterRule = ClosureRule(with: Behaviour(.scanning), using: isLetter)
 
@@ -24,7 +24,7 @@ class BlockRuleTest: XCTestCase {
         return try AbstractSyntaxTreeConstructor().build("a", using: Parser(grammar: rules))
     }
     
-    func validate(lowLevelResult:LowLevelResult, index: String.Index? = nil, errors:[String]? = nil, token:Token? = nil)->[String] {
+    func validate(lowLevelResult:LowLevelResult, index: String.Index? = nil, errors:[String]? = nil, token:TokenType? = nil)->[String] {
         var failures = [String]()
 
         if let token = token {

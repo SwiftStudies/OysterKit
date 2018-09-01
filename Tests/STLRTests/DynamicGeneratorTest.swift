@@ -26,7 +26,7 @@ import XCTest
 @testable import OysterKit
 @testable import STLR
 
-fileprivate enum Tokens : Int, Token {
+fileprivate enum Tokens : Int, TokenType {
     case tokenA = 1
 }
 
@@ -38,7 +38,7 @@ class DynamicGeneratorTest: XCTestCase {
 
     let testGrammarName = "grammar STLRTest\n"
     
-    fileprivate enum TT : Int, Token {
+    fileprivate enum TT : Int, TokenType {
         case character = 1
         case xyz
         case whitespace

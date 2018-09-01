@@ -30,7 +30,7 @@ extension String : Terminal {
         return "\"\(self)\""
     }
     
-    public func test(lexer: LexicalAnalyzer, producing token:Token?) throws {
+    public func test(lexer: LexicalAnalyzer, producing token:TokenType?) throws {
         do {
             try lexer.scan(terminal: self)
         } catch {

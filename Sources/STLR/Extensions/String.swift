@@ -32,7 +32,7 @@ public extension String {
      - Returns: `nil` if compilation failed
     */
     @available(*,deprecated,message: "Use .dynamicRule(Behaviour.Kind) instead")
-    public func  dynamicRule(token:Token)->Rule? {
+    public func  dynamicRule(token:TokenType)->Rule? {
         let grammarDef = "grammar Dynamic\n_ = \(self)"
         
         let compiler = STLRParser(source: grammarDef)

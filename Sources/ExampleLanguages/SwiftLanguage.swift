@@ -14,8 +14,8 @@ public class SwiftParser : Parser{
     // Convenience alias
     private typealias GrammarToken = Tokens
     
-    // Token & Rules Definition
-    enum Tokens : Int, Token {
+    // TokenType & Rules Definition
+    enum Tokens : Int, TokenType {
         case _transient, whitespace, symbol, comment, number, stringQuote, escapedCharacter, stringCharacter, string, keyword, variable
         
         func _rule(_ annotations: RuleAnnotations = [ : ])->Rule {

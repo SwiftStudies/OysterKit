@@ -100,7 +100,7 @@ class GrammarTest: XCTestCase {
         
         let iterator = stream.makeIterator()
         
-        var acquiredTokens = [Token]()
+        var acquiredTokens = [TokenType]()
         var count = 0
         while let node = iterator.next() {
             acquiredTokens.append(node.token)

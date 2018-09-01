@@ -37,7 +37,7 @@ public protocol AbstractSyntaxTree {
 }
 
 /**
- HomogenousTree is used as the default form of AbstractSyntaxTree. Each node in the tree captures its `Token`, the `String` it mtached, and any children.
+ HomogenousTree is used as the default form of AbstractSyntaxTree. Each node in the tree captures its `TokenType`, the `String` it mtached, and any children.
  */
 public struct HomogenousTree : AbstractSyntaxTree, CustomStringConvertible {
     /**
@@ -58,12 +58,12 @@ public struct HomogenousTree : AbstractSyntaxTree, CustomStringConvertible {
      will be created by an `AbstractSyntaxTreeConstructor`. However if you wish to manually alter a generated tree
      creating nodes via this method may be appropriate.
  
-     - Parameter token: The `Token` for the node
+     - Parameter token: The `TokenType` for the node
      - Parameter matchedString: The string that was matched
      - Parameter children: The child nodes
      - Parameter annotations: The annotations on the node
     */
-    public init(with token:Token, matching:String, children:[HomogenousTree], annotations:[RuleAnnotation:RuleAnnotationValue] = [:]){
+    public init(with token:TokenType, matching:String, children:[HomogenousTree], annotations:[RuleAnnotation:RuleAnnotationValue] = [:]){
         self.token = token
         self.matchedString = matching
         self.children = children
@@ -71,7 +71,7 @@ public struct HomogenousTree : AbstractSyntaxTree, CustomStringConvertible {
     }
     
     /// The captured `Token`
-    public let     token         : Token
+    public let     token         : TokenType
     
     /// The `String` that was matched to satisfy the rules for the `token`.
     public let     matchedString : String

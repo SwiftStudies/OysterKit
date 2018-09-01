@@ -25,9 +25,9 @@
 import Foundation
 
 /**
- A generic ``Token`` implementation that is labelled (has an associated ``String`). The value is automatically generated
+ A generic ``TokenType`` implementation that is labelled (has an associated ``String`). The value is automatically generated
  */
-public struct LabelledToken : Token, CustomStringConvertible {
+public struct LabelledToken : TokenType, CustomStringConvertible {
     /// The label for the token
     private     let label : String
     

@@ -25,15 +25,15 @@
 import Foundation
 
 /**
- `Token`s are generated when rules are matched (usually, sometime a rule just advances the scan-head). Tokens with a `rawValue` of -1 are considered transient, meaning that they should not be included in any construction of an AST. However, they may provide context to the AST.
+ `TokenType`s are generated when rules are matched (usually, sometime a rule just advances the scan-head). Tokens with a `rawValue` of -1 are considered transient, meaning that they should not be included in any construction of an AST. However, they may provide context to the AST.
  */
-public protocol Token {
+public protocol TokenType {
     /// A rawValue that unless the token is transient should be unique
     var rawValue : Int { get }
 }
 
-extension Token {
-    public static func ==(lhs:Token, rhs:Token)->Bool{
+extension TokenType {
+    public static func ==(lhs:TokenType, rhs:TokenType)->Bool{
         return lhs.rawValue == rhs.rawValue
     }
 }
@@ -41,16 +41,16 @@ extension Token {
 /// Extensions to enable any Int to be used as a token. Note that **only positive integers should be used**
 extension Int {
     /// A token from this integer value
-    var token : Token {
-        struct TransientToken : Token { let rawValue : Int }
+    var token : TokenType {
+        struct TransientToken : TokenType { let rawValue : Int }
         return TransientToken(rawValue: self)
     }
 }
 
 /**
- An extension to allow any `Int` to be used as a `Token`.
+ An extension to allow any `Int` to be used as a `TokenType`.
  */
-extension Int : Token{
+extension Int : TokenType{
     /// Itself
     public var rawValue: Int{
         return self
@@ -58,9 +58,9 @@ extension Int : Token{
 }
 
 /**
- An extension to allow any `String` to be used as a `Token`.
+ An extension to allow any `String` to be used as a `TokenType`.
  */
-extension String : Token {
+extension String : TokenType {
     /// Returns the `hash` of the `String`
     public var rawValue : Int {
         return self.hash
@@ -70,7 +70,7 @@ extension String : Token {
 /**
  Compares two tokens for equality
  */
-public func ==(lhs:Token, rhs:Token)->Bool{
+public func ==(lhs:TokenType, rhs:TokenType)->Bool{
     return lhs.rawValue == rhs.rawValue
 }
 

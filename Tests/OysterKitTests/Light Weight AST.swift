@@ -27,16 +27,16 @@ import Foundation
 @testable import OysterKit
 
 final class LightWeightNode : Node, CustomStringConvertible{
-    let token   : Token
+    let token   : TokenType
     let _range   : Range<String.UnicodeScalarView.Index>
     let children: [LightWeightNode]
     let annotations: [RuleAnnotation : RuleAnnotationValue]
     
-    init(for token: Token, at range: Range<String.UnicodeScalarView.Index>, annotations : [RuleAnnotation : RuleAnnotationValue]) {
+    init(for token: TokenType, at range: Range<String.UnicodeScalarView.Index>, annotations : [RuleAnnotation : RuleAnnotationValue]) {
         fatalError("Should not be created by anything other than ColoringIR")
     }
     
-    init(for token: Token, range: Range<String.UnicodeScalarView.Index>, children:[LightWeightNode]?,annotations : [RuleAnnotation : RuleAnnotationValue] ){
+    init(for token: TokenType, range: Range<String.UnicodeScalarView.Index>, children:[LightWeightNode]?,annotations : [RuleAnnotation : RuleAnnotationValue] ){
         self.token = token
         self._range = range
         self.children = children ?? []
@@ -72,11 +72,11 @@ final class LightWeightAST : IntermediateRepresentation{
         nodeStack.reset()
     }
     
-    func evaluating(_ token: Token) {
+    func evaluating(_ token: TokenType) {
         nodeStack.push()
     }
     
-    func succeeded(token: Token, annotations: RuleAnnotations, range: Range<String.Index>) {
+    func succeeded(token: TokenType, annotations: RuleAnnotations, range: Range<String.Index>) {
         let children = nodeStack.pop()
         
         if ignoreNodes.contains("\(token)"){

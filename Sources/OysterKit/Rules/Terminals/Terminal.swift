@@ -33,7 +33,7 @@ public protocol Terminal : Rule {
      - Parameter lexer: The lexer being used for scanning
      - Parameter token: The token produced if any. 
     */
-    func test(lexer: LexicalAnalyzer, producing token:Token?) throws
+    func test(lexer: LexicalAnalyzer, producing token:TokenType?) throws
     
     /// Provides a textual description of the match
     var matchDescription : String {get}

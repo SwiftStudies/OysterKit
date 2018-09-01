@@ -25,13 +25,13 @@
 import Foundation
 
 /**
- Nodes are the basic elements of `IntermediateRepresentation`s. They record a `Token`, the range of the `String`'s `UnicodeScalarView` the match occured in
+ Nodes are the basic elements of `IntermediateRepresentation`s. They record a `TokenType`, the range of the `String`'s `UnicodeScalarView` the match occured in
  as well as any annotations that were made on the token.
 
  */
 public protocol Node : CustomStringConvertible{
     /// The token representing the match
-    var token               : Token { get }
+    var token               : TokenType { get }
     
     /// The range of the match in the original source
     var range               : Range<String.UnicodeScalarView.Index> { get }
@@ -49,7 +49,7 @@ public protocol Node : CustomStringConvertible{
      Parameter range: The range of the match
      Parameter annotations: The annotations that were made on the token
      */
-    init(`for` token:Token, at range:Range<String.UnicodeScalarView.Index>, annotations: [RuleAnnotation:RuleAnnotationValue])
+    init(`for` token:TokenType, at range:Range<String.UnicodeScalarView.Index>, annotations: [RuleAnnotation:RuleAnnotationValue])
 }
 
 /**
@@ -67,16 +67,16 @@ public protocol IntermediateRepresentation : class {
      
      - Parameter token: The token that will be created if the rule is matched
      */
-    func evaluating(_ token:Token)
+    func evaluating(_ token:TokenType)
     
     /**
-     Called after the `Token` has been successfully matched (or an ignorable failure for a pinned token)
+     Called after the `TokenType` has been successfully matched (or an ignorable failure for a pinned token)
      
-     - Parameter token: The `Token` that has been evaluated
+     - Parameter token: The `TokenType` that has been evaluated
      - Parameter annotations: Any annotations required for the resultant node
      - Parameter range: The range of the match
      */
-    func succeeded(token:Token, annotations:RuleAnnotations,  range:Range<String.Index>)
+    func succeeded(token:TokenType, annotations:RuleAnnotations,  range:Range<String.Index>)
     
     /**
       Called when a token being evaluated failed to be matched

@@ -43,11 +43,11 @@ private struct EmptyLexicalContext : LexicalContext {
  */
 final class LookAheadIR : IntermediateRepresentation{
     /// Does nothing
-    final func evaluating(_ token: Token) {
+    final func evaluating(_ token: TokenType) {
     }
     
     /// Does nothing
-    final func succeeded(token: Token, annotations: RuleAnnotations, range: Range<String.Index>) {
+    final func succeeded(token: TokenType, annotations: RuleAnnotations, range: Range<String.Index>) {
     }
     
     /// Does nothing

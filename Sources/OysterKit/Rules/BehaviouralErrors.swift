@@ -83,7 +83,7 @@ public enum TestError : TestErrorType {
     case interpretationError(message:String,causes:[Error])
     
     /**
-     Constructs a scanning or parsing error (depending on wether or not a `Token` is supplied) from the supplied data.
+     Constructs a scanning or parsing error (depending on wether or not a `TokenType` is supplied) from the supplied data.
      
      - Parameter behaviour: The behaviour of the rule that encountered the error
      - Parameter annotations: Annotations on the rule that encountered the error

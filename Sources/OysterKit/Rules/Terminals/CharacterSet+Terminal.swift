@@ -60,7 +60,7 @@ extension CharacterSet : Terminal {
         return ".customCharacterSet"
     }
     
-    public func test(lexer: LexicalAnalyzer, producing token:Token?) throws {
+    public func test(lexer: LexicalAnalyzer, producing token:TokenType?) throws {
         do {
             try lexer.scan(oneOf: self)
         } catch {

@@ -388,7 +388,7 @@ public extension STLR.Element {
     }
     
     /// Returns the token name (if any) of the element
-    public var token : Token? {
+    public var token : TokenType? {
         if case let Behaviour.Kind.structural(token) = kind {
             return token
         }

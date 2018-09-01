@@ -103,7 +103,7 @@ public enum Platform{
     }
 }
 
-fileprivate enum TransientToken : Int, Token, CustomStringConvertible {
+fileprivate enum TransientToken : Int, TokenType, CustomStringConvertible {
     fileprivate var description: String{
         return "_transient"
     }

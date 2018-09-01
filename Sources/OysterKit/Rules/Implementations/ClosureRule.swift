@@ -42,7 +42,7 @@ public final class ClosureRule : Rule {
      Create a an instance supplied annotations and token that will use the supplied `Test` closure
      to perform its match
      
-     - Parameter token: The new ``Token`` or ``nil`` if the token should remain the same
+     - Parameter token: The new ``TokenType`` or ``nil`` if the token should remain the same
      - Parameter annotations: The new ``Annotations`` or ``nil`` if the annotations are unchanged
      - Parameter matcher: The `Test` closure
      */

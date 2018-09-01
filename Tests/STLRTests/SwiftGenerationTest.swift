@@ -10,7 +10,7 @@ import XCTest
 @testable import OysterKit
 @testable import STLR
 
-fileprivate enum Tokens : Int, Token {
+fileprivate enum Tokens : Int, TokenType {
     case tokenA = 1
 }
 
@@ -18,7 +18,7 @@ fileprivate enum TestError : Error {
     case expected(String)
 }
 
-fileprivate enum TestTokens : Int, Token {
+fileprivate enum TestTokens : Int, TokenType {
     case testToken
 }
 
