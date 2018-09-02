@@ -24,6 +24,13 @@
 
 import Foundation
 
+/// Depricated, use `Grammar`
+@available(*,deprecated,message: "Parser has been depricated the rules used at initialization can be directly used as a Grammar. e.g. let parser = Parser(grammar:rules) becomes let parser = rules")
+public typealias Parser = Grammar
+
+/// Depricated, use `Grammar`
+@available(*,deprecated,message: "Replace with Grammar and use the rules property of Grammar instead of a grammar property of Language")
+public typealias Language = Grammar
 
 /**
  A language stores a set of grammar rules that can be used to parse `String`s. Extensions provide additional methods (such as parsing) that operate on these rules.
