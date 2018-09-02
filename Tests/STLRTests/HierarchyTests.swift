@@ -39,7 +39,7 @@ class HierarchyTests: XCTestCase {
 //        let xmlLanguage : Grammar
 //        
 //        do {
-//            xmlLanguage = try Parser(grammar: ProductionSTLR.build(grammarSource).grammar.dynamicRules)
+//            xmlLanguage = try ProductionSTLR.build(grammarSource).grammar.dynamicRules
 //
 //        } catch {
 //            fatalError("Could not create language")

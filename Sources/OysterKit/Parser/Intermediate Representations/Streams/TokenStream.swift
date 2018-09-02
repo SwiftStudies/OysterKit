@@ -35,26 +35,26 @@ public class TokenStream : Sequence{
     /// The lexer to use for the iterator
     let lexerType   : LexicalAnalyzer.Type
     
-    /// The language to use to parse
-    let language    : Grammar
+    /// The grammar to use to parse
+    let grammar    : Grammar
     
     /// The source ``String`` to parse
     let source      : String
     
-    public init(_ source:String, using language:Grammar){
+    public init(_ source:String, using grammar:Grammar){
         self.source = source
         self.lexerType = Lexer.self
-        self.language = language
+        self.grammar = grammar
     }
 
-    public init<Lex:LexicalAnalyzer>(_ source:String, using language:Grammar, with lexer:Lex.Type){
+    public init<Lex:LexicalAnalyzer>(_ source:String, using grammar:Grammar, with lexer:Lex.Type){
         self.lexerType = lexer
-        self.language = language
+        self.grammar = grammar
         self.source = source
     }
     
     public func makeIterator() -> Iterator {
-        return TokenStreamIterator(with: lexerType.init(source: source), and: language)
+        return TokenStreamIterator(with: lexerType.init(source: source), and: grammar)
     }
 
 }
@@ -80,10 +80,10 @@ public class TokenStreamIterator : IteratorProtocol {
      Creates a new instance of the iterator
      
      - Parameter lexer: The ``LexicalAnalyzer`` to use
-     - Parameter language: The ``Language`` to use
+     - Parameter grammar: The ``Language`` to use
     */
-    init(with lexer:LexicalAnalyzer, and language:Grammar){
-        parsingContext = ParsingStrategy.ParsingContext(lexer: lexer, ir: self, language: language)
+    init(with lexer:LexicalAnalyzer, and grammar:Grammar){
+        parsingContext = ParsingStrategy.ParsingContext(lexer: lexer, ir: self, grammar: grammar)
     }
     
     /**
@@ -100,7 +100,7 @@ public class TokenStreamIterator : IteratorProtocol {
         
         nextToken = nil
         resetState()
-        willBuildFrom(source: parsingContext.lexer.source, with: parsingContext.language)
+        willBuildFrom(source: parsingContext.lexer.source, with: parsingContext.grammar)
         
         do {
             if try ParsingStrategy.pass(in: parsingContext) == false{

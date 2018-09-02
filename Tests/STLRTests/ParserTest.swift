@@ -215,7 +215,7 @@ class ParserTest: XCTestCase {
         
         var count = 0
         
-        let parser = Parser(grammar: [string])
+        let parser = [string]
         
         
         for node in TokenStream(source, using: parser){

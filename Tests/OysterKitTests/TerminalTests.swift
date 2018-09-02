@@ -33,19 +33,19 @@ class TerminalTests: XCTestCase {
         let failSource = "Hullo"
         let helloToken = "Hello".parse(as: StringToken("hello"))
         
-        if let tree = try? AbstractSyntaxTreeConstructor().build(passSource, using: Parser(grammar: [helloToken])){
+        if let tree = try? AbstractSyntaxTreeConstructor().build(passSource, using: [helloToken]){
             XCTAssertNotNil(tree.token)
             XCTAssertEqual(passSource, tree.matchedString )
         } else {
             XCTFail("Failed to create tree")
         }
 
-        if (try? AbstractSyntaxTreeConstructor().build(failSource, using: Parser(grammar: [helloToken]))) != nil{
+        if (try? AbstractSyntaxTreeConstructor().build(failSource, using: [helloToken])) != nil{
             XCTFail("Should have failed")
         }
 
 
-        if (try? AbstractSyntaxTreeConstructor().build(failSource, using: Parser(grammar: [~"Hello"]))) != nil{
+        if (try? AbstractSyntaxTreeConstructor().build(failSource, using: [~"Hello"])) != nil{
             XCTFail("Should have failed")
         }
 
@@ -57,19 +57,19 @@ class TerminalTests: XCTestCase {
         let helloRegex = try! NSRegularExpression(pattern: "[:alpha:]+", options: [])
         let helloToken = helloRegex.parse(as: StringToken("hello"))
         
-        if let tree = try? AbstractSyntaxTreeConstructor().build(passSource, using: Parser(grammar: [helloToken])){
+        if let tree = try? AbstractSyntaxTreeConstructor().build(passSource, using: [helloToken]){
             XCTAssertNotNil(tree.token)
             XCTAssertEqual(passSource, tree.matchedString )
         } else {
             XCTFail("Failed to create tree")
         }
         
-        if (try? AbstractSyntaxTreeConstructor().build(failSource, using: Parser(grammar: [helloToken]))) != nil{
+        if (try? AbstractSyntaxTreeConstructor().build(failSource, using: [helloToken])) != nil{
             XCTFail("Should have failed")
         }
         
         
-        if (try? AbstractSyntaxTreeConstructor().build(failSource, using: Parser(grammar: [~helloRegex]))) != nil{
+        if (try? AbstractSyntaxTreeConstructor().build(failSource, using: [~helloRegex])) != nil{
             XCTFail("Should have failed")
         }
         
@@ -81,19 +81,19 @@ class TerminalTests: XCTestCase {
         let letters = CharacterSet.letters
         let helloToken = letters.parse(as: StringToken("hello")).require(.oneOrMore)
         
-        if let tree = try? AbstractSyntaxTreeConstructor().build(passSource, using: Parser(grammar: [helloToken])){
+        if let tree = try? AbstractSyntaxTreeConstructor().build(passSource, using: [helloToken]){
             XCTAssertNotNil(tree.token)
             XCTAssertEqual(passSource, tree.matchedString )
         } else {
             XCTFail("Failed to create tree")
         }
         
-        if (try? AbstractSyntaxTreeConstructor().build(failSource, using: Parser(grammar: [helloToken]))) != nil{
+        if (try? AbstractSyntaxTreeConstructor().build(failSource, using: [helloToken])) != nil{
             XCTFail("Should have failed")
         }
         
         
-        if (try? AbstractSyntaxTreeConstructor().build(failSource, using: Parser(grammar: [~letters.require(.oneOrMore)]))) != nil{
+        if (try? AbstractSyntaxTreeConstructor().build(failSource, using: [~letters.require(.oneOrMore)])) != nil{
             XCTFail("Should have failed")
         }
         
@@ -105,19 +105,19 @@ class TerminalTests: XCTestCase {
         let choices = ["H","e","l", "o"].choice
         let choice = choices.parse(as:StringToken("hello")).require(.oneOrMore)
         
-        if let tree = try? AbstractSyntaxTreeConstructor().build(passSource, using: Parser(grammar: [choice])){
+        if let tree = try? AbstractSyntaxTreeConstructor().build(passSource, using: [choice]){
             XCTAssertNotNil(tree.token)
             XCTAssertEqual(passSource, tree.matchedString )
         } else {
             XCTFail("Failed to create tree")
         }
         
-        if (try? AbstractSyntaxTreeConstructor().build(failSource, using: Parser(grammar: [choice]))) != nil{
+        if (try? AbstractSyntaxTreeConstructor().build(failSource, using: [choice])) != nil{
             XCTFail("Should have failed")
         }
         
         
-        if (try? AbstractSyntaxTreeConstructor().build(failSource, using: Parser(grammar: [~choices.require(.oneOrMore)]))) != nil{
+        if (try? AbstractSyntaxTreeConstructor().build(failSource, using: [~choices.require(.oneOrMore)])) != nil{
             XCTFail("Should have failed")
         }
         

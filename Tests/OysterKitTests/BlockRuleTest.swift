@@ -21,7 +21,7 @@ class BlockRuleTest: XCTestCase {
     let singleLetterRule = ClosureRule(with: Behaviour(.scanning), using: isLetter)
 
     func checkTree(from source:String, with rules: [Rule]) throws ->HomogenousTree {
-        return try AbstractSyntaxTreeConstructor().build("a", using: Parser(grammar: rules))
+        return try AbstractSyntaxTreeConstructor().build("a", using: rules)
     }
     
     func validate(lowLevelResult:LowLevelResult, index: String.Index? = nil, errors:[String]? = nil, token:TokenType? = nil)->[String] {

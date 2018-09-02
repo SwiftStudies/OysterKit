@@ -75,7 +75,7 @@ class DynamicGeneratorTest: XCTestCase {
             testEnds = >>!.endOfFile "a" >>.endOfFile
             """
         do {
-            let tree = try AbstractSyntaxTreeConstructor(with: "a").build(using: Parser(grammar: STLR.build(stlr).grammar.dynamicRules))
+            let tree = try AbstractSyntaxTreeConstructor(with: "a").build(using: STLR.build(stlr).grammar.dynamicRules)
             XCTAssertEqual(tree.matchedString, "a")
             XCTAssertEqual("\(tree.token)", "testEnds")
         } catch {
@@ -90,9 +90,9 @@ class DynamicGeneratorTest: XCTestCase {
         @forArrows arrows = arrow
         """
         
-        let dynamicLanguage : Parser
+        let dynamicLanguage : Grammar
         do {
-            dynamicLanguage = try Parser(grammar:ProductionSTLR.build(stlr).grammar.dynamicRules)
+            dynamicLanguage = try ProductionSTLR.build(stlr).grammar.dynamicRules
         } catch {
             XCTFail("Failed to compile: \(error)")
             return
@@ -117,9 +117,9 @@ class DynamicGeneratorTest: XCTestCase {
         @forArrows arrows = @token("arrow") @forArrow ">"
         """
         
-        let dynamicLanguage : Parser
+        let dynamicLanguage : Grammar
         do {
-            dynamicLanguage = try Parser(grammar:ProductionSTLR.build(stlr).grammar.dynamicRules)
+            dynamicLanguage = try ProductionSTLR.build(stlr).grammar.dynamicRules
         } catch {
             XCTFail("Failed to compile: \(error)")
             return
@@ -147,9 +147,9 @@ class DynamicGeneratorTest: XCTestCase {
         @forArrows arrows = arrow
         """
         
-        let dynamicLanguage : Parser
+        let dynamicLanguage : Grammar
         do {
-            dynamicLanguage = try Parser(grammar:ProductionSTLR.build(stlr).grammar.dynamicRules)
+            dynamicLanguage = try ProductionSTLR.build(stlr).grammar.dynamicRules
         } catch {
             XCTFail("Failed to compile: \(error)")
             return
@@ -177,9 +177,9 @@ class DynamicGeneratorTest: XCTestCase {
         @forArrows arrows = @token("arrow") @forArrow ">" arrows?
         """
         
-        let dynamicLanguage : Parser
+        let dynamicLanguage : Grammar
         do {
-            dynamicLanguage = try Parser(grammar:ProductionSTLR.build(stlr).grammar.dynamicRules)
+            dynamicLanguage = try ProductionSTLR.build(stlr).grammar.dynamicRules
         } catch {
             XCTFail("Failed to compile: \(error)")
             return
@@ -210,10 +210,10 @@ class DynamicGeneratorTest: XCTestCase {
         ca  =   "c" @three a
         """
         
-        let dynamicLanguage : Parser
+        let dynamicLanguage : Grammar
         do {
             let ast = try ProductionSTLR.build(stlr)
-            dynamicLanguage = Parser(grammar:ast.grammar.dynamicRules)
+            dynamicLanguage = ast.grammar.dynamicRules
         } catch {
             XCTFail("Failed to compile: \(error)")
             return
@@ -249,9 +249,9 @@ class DynamicGeneratorTest: XCTestCase {
         ts   = @transient ":" t @transient ":" @transient t @transient ":"
         """
         
-        let dynamicLanguage : Parser
+        let dynamicLanguage : Grammar
         do {
-            dynamicLanguage = try Parser(grammar:ProductionSTLR.build(stlr).grammar.dynamicRules)
+            dynamicLanguage = try ProductionSTLR.build(stlr).grammar.dynamicRules
         } catch {
             XCTFail("Failed to compile: \(error)")
             return
@@ -291,9 +291,9 @@ class DynamicGeneratorTest: XCTestCase {
         ts   = ~":" t ~":" ~t ~":"
         """
         
-        let dynamicLanguage : Parser
+        let dynamicLanguage : Grammar
         do {
-            dynamicLanguage = try Parser(grammar:ProductionSTLR.build(stlr).grammar.dynamicRules)
+            dynamicLanguage = try ProductionSTLR.build(stlr).grammar.dynamicRules
         } catch {
             XCTFail("Failed to compile: \(error)")
             return

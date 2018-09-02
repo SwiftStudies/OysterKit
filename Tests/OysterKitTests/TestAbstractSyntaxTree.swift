@@ -85,7 +85,7 @@ class TestAbstractSyntaxTree: XCTestCase {
         let source = shouldMatch
         
         do {
-            let ast = try AbstractSyntaxTreeConstructor(with: source).build(using: Parser(grammar: [rule]))
+            let ast = try AbstractSyntaxTreeConstructor(with: source).build(using: [rule])
             XCTAssertEqual(ast.matchedString, shouldMatch)
             XCTAssertEqual("\(ast.token)", "\(token)")
             XCTAssertEqual(ast.children.count, 0)
@@ -102,7 +102,7 @@ class TestAbstractSyntaxTree: XCTestCase {
         let source = shouldMatch
         
         do {
-            let ast = try AbstractSyntaxTreeConstructor(with: source).build(using: Parser(grammar: [rule]))
+            let ast = try AbstractSyntaxTreeConstructor(with: source).build(using: [rule])
             XCTAssertEqual(ast.matchedString, shouldMatch)
             XCTAssertEqual("\(ast.token)", "\(token)")
             XCTAssertEqual(ast.children.count, 0)
@@ -125,7 +125,7 @@ class TestAbstractSyntaxTree: XCTestCase {
         let source = "\"\(shouldMatch)\""
         
         do {
-            let ast = try AbstractSyntaxTreeConstructor(with: source).build(using: Parser(grammar: [rule]))
+            let ast = try AbstractSyntaxTreeConstructor(with: source).build(using: [rule])
             XCTAssertEqual(ast.matchedString, shouldMatch)
             XCTAssertEqual(ast.token.rawValue, token.rawValue)
             XCTAssertEqual(ast.children.count, 0)

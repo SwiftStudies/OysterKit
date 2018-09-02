@@ -9,7 +9,7 @@ import OysterKit
 //
 // SwiftParser Parser
 //
-public class SwiftParser : Parser{
+public class SwiftParser {
     
     // Convenience alias
     private typealias GrammarToken = Tokens
@@ -82,10 +82,9 @@ public class SwiftParser : Parser{
                 
     }
     
-
-    
-    // Initialize the parser with the base rule set
-    public init(){
-        super.init(grammar: [GrammarToken.whitespace._rule(), GrammarToken.symbol._rule(), GrammarToken.comment._rule(), GrammarToken.number._rule(), GrammarToken.string._rule(), GrammarToken.keyword._rule(), GrammarToken.variable._rule()])
+    /// Generate the base rule set as a grammar
+    public var grammar : Grammar {
+        return  [GrammarToken.whitespace._rule(), GrammarToken.symbol._rule(), GrammarToken.comment._rule(), GrammarToken.number._rule(), GrammarToken.string._rule(), GrammarToken.keyword._rule(), GrammarToken.variable._rule()]
     }
+
 }

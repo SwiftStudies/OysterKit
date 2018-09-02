@@ -28,7 +28,7 @@ class STLRTest: XCTestCase {
             let ruleSource = """
             id = \(backSlash) "x"
             """
-            let testLanguage = Parser(grammar: try ProductionSTLR.build(testGrammarName+ruleSource).grammar.dynamicRules)
+            let testLanguage = try ProductionSTLR.build(testGrammarName+ruleSource).grammar.dynamicRules
 
             let source = "\\x"
             

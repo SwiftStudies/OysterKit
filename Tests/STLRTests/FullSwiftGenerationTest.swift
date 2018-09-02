@@ -33,7 +33,7 @@ class FullSwiftGenerationTest: XCTestCase {
 
     func parse(source:String, with rule:Rule) throws{
         ast = nil
-        ast = try AbstractSyntaxTreeConstructor().build(source, using: Parser(grammar:[rule]))
+        ast = try AbstractSyntaxTreeConstructor().build(source, using: [rule])
     }
     
     func parse(source:String, with token:STLRTokens, ignoreNoNodes:Bool = true, appendMopUpRule mopup:Rule? = nil) throws {
@@ -142,7 +142,7 @@ class FullSwiftGenerationTest: XCTestCase {
         if let mopup = mopup {
             grammar = [[token.rule, -mopup].sequence]
         }
-        return try AbstractSyntaxTreeConstructor(with: source).build(using: Parser(grammar: grammar))
+        return try AbstractSyntaxTreeConstructor(with: source).build(using: grammar)
     }
     
     func testQuantifier(){

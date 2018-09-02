@@ -135,7 +135,7 @@ class GrammarTest: XCTestCase {
         let language = try ProductionSTLR.build(testGrammarName+grammar)
         let ast = language.grammar
         
-        let parser = Parser(grammar: ast.dynamicRules)
+        let parser = ast.dynamicRules
     
         var count = 0
         
@@ -163,7 +163,7 @@ class GrammarTest: XCTestCase {
                 return
             }
             
-            let language = Parser(grammar: parser.grammar.dynamicRules)
+            let language = parser.grammar.dynamicRules
             
             do {
                 let _ = try AbstractSyntaxTreeConstructor().build("xx", using: language)
@@ -196,7 +196,7 @@ class GrammarTest: XCTestCase {
             XCTAssertEqual(ast.rules[1].identifier,"xy")
             
             do {
-                try checkGeneratedLanguage(language: Parser(grammar: ast.dynamicRules), on: "xyx", expecting: ["xy","justX"])
+                try checkGeneratedLanguage(language: ast.dynamicRules, on: "xyx", expecting: ["xy","justX"])
             } catch (let error) {
                 XCTFail("\(error)")
             }
@@ -220,7 +220,7 @@ class GrammarTest: XCTestCase {
             XCTAssert(ast.rules[1].identifier == "xy")
             
             do {
-                try checkGeneratedLanguage(language: Parser(grammar: ast.dynamicRules), on: "xxyx", expecting: ["x","xy","x"])
+                try checkGeneratedLanguage(language: ast.dynamicRules, on: "xxyx", expecting: ["x","xy","x"])
             } catch (let error) {
                 XCTFail("\(error)")
             }
@@ -245,7 +245,7 @@ class GrammarTest: XCTestCase {
             XCTAssert(ast.rules[2].identifier == "word")
             
             do {
-                try checkGeneratedLanguage(language: Parser(grammar: ast.dynamicRules), on: "hello world", expecting: ["word","whitespace","word"])
+                try checkGeneratedLanguage(language: ast.dynamicRules, on: "hello world", expecting: ["word","whitespace","word"])
             } catch (let error) {
                 XCTFail("\(error)")
             }
@@ -378,7 +378,7 @@ class GrammarTest: XCTestCase {
             
             parser = try ProductionSTLR.build(testGrammarName+source)
             
-            let compiledLanguage = Parser(grammar:parser.grammar.dynamicRules)
+            let compiledLanguage = parser.grammar.dynamicRules
             
             _ = try AbstractSyntaxTreeConstructor().build("yz", using: compiledLanguage)
 
@@ -401,7 +401,7 @@ class GrammarTest: XCTestCase {
             let parser = try ProductionSTLR.build(testGrammarName+source)
             
             do {
-                let _ = try AbstractSyntaxTreeConstructor().build("yz", using: Parser(grammar: parser.grammar.dynamicRules))
+                let _ = try AbstractSyntaxTreeConstructor().build("yz", using: parser.grammar.dynamicRules)
                 XCTFail("Expected an error \(parser.grammar.rules[rangeChecked: 1]?.description ?? "but the rule is missing")")
             } catch let error as ProcessingError {
                 let desired = error.filtered { (error) -> Bool in

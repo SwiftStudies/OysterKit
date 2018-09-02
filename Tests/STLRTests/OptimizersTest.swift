@@ -34,7 +34,7 @@ class OptimizersTest: GrammarTest {
             ProductionSTLR.register(optimizer: InlineIdentifierOptimization())
             let parser = try ProductionSTLR.build(source)
             
-            let compiledLanguage = Parser(grammar: parser.grammar.dynamicRules)
+            let compiledLanguage = parser.grammar.dynamicRules
             
             do {
                 let _ = try AbstractSyntaxTreeConstructor().build("yz", using: compiledLanguage)
@@ -59,7 +59,7 @@ class OptimizersTest: GrammarTest {
             ProductionSTLR.register(optimizer: InlineIdentifierOptimization())
             let parser = try ProductionSTLR.build(source)
             
-            let compiledLanguage = Parser(grammar: parser.grammar.dynamicRules) 
+            let compiledLanguage = parser.grammar.dynamicRules 
             
             do {
                 let _ = try AbstractSyntaxTreeConstructor().build("yz", using: compiledLanguage)

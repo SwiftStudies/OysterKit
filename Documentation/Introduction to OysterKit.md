@@ -12,7 +12,7 @@ The remaining sections will discuss how rules can be built, but whatever you are
     let rules  = [rule1, rule2, ...]        // Replace with your rules
 
     do {
-        let tree = try AbstractSyntaxTreeConstructor().build(source, using: Parser(grammar: [rules]))
+        let tree = try AbstractSyntaxTreeConstructor().build(source, using: rules)
         print(tree)
     } catch {
         print("Error: \(error)")

@@ -76,7 +76,7 @@ class ParseCommand : Command, IndexableOptioned, IndexableParameterized, Grammar
             return RunnableReturnValue.failure(error: GrammarOption.Errors.couldNotParseGrammar, code: -1)
         }
         
-        let language = Parser(grammar: grammar.grammar.dynamicRules) 
+        let language = grammar.grammar.dynamicRules
 
         if interactiveMode {
             print("stlr interactive mode. Send a blank line to parse, two to terminate. Parsing grammar \(grammar.grammar.scopeName)")

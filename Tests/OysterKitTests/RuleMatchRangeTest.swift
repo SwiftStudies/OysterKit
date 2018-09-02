@@ -49,7 +49,7 @@ class RuleMatchRangeTest : XCTestCase {
         XCTAssertTrue(tokenRule.structural)
         
         do {
-            let tree = try AbstractSyntaxTreeConstructor().build(source, using: Parser(grammar: [sequence]))
+            let tree = try [sequence].parse(source)
             print(tree.description)
             XCTAssertEqual("   stringBody   ", tree.matchedString)
             XCTAssertEqual("stringBody", "\(tree.children[0].token)")

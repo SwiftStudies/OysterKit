@@ -55,8 +55,8 @@ fileprivate enum STLRStringTest : Int, TokenType {
     }
     
     // Create a language that can be used for parsing etc
-    static var generatedLanguage : Parser {
-        return Parser(grammar: [T.terminalString.rule])
+    static var generatedLanguage : Grammar {
+        return [T.terminalString.rule]
     }
     
     // Convient way to apply your grammar to a string

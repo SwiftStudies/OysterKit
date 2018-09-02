@@ -221,7 +221,7 @@ class RuleTests: XCTestCase {
 
         let source = "Cat,Dog"
         let lexer = Lexer(source: source)
-        let ir = TokenStreamIterator(with: lexer, and: [catRule, commaRule].language)
+        let ir = TokenStreamIterator(with: lexer, and: [catRule, commaRule])
         
         do {
             _ = try catRule.match(with: lexer, for: ir)

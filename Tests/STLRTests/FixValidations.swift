@@ -134,7 +134,7 @@ class FixValidations: XCTestCase {
         print(rule)
         
         do {
-            _ = try AbstractSyntaxTreeConstructor(with: ".bogusCharacterSet").build(using: Parser(grammar: [rule]))
+            _ = try AbstractSyntaxTreeConstructor(with: ".bogusCharacterSet").build(using: [rule])
             XCTFail("Should have failed")
         } catch let error as ProcessingError {
             print(error.debugDescription)

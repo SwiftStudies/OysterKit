@@ -9,7 +9,7 @@
 import XCTest
 import OysterKit
 @testable import STLR
-import ExampleLanguages
+@testable import ExampleLanguages
 
 class OysterKitPerformanceTests: XCTestCase {
 
@@ -903,7 +903,7 @@ class FullSwiftParser : Parser{
 
     func testPerformanceSTLR() {
         do {
-            _ = Parser(grammar: try ProductionSTLR.build(stlrSource).grammar.dynamicRules)
+            _ = try ProductionSTLR.build(stlrSource).grammar.dynamicRules
         } catch {
             XCTFail("Could not compile \(error)")
             return
@@ -951,18 +951,18 @@ class FullSwiftParser : Parser{
     
     func testSwiftParserPerformance(){
         let parser = SwiftParser()
-        let _ = try? AbstractSyntaxTreeConstructor().build(swiftSource, using: parser)
+        let _ = try? AbstractSyntaxTreeConstructor().build(swiftSource, using: parser.grammar)
         
         self.measure {
-            let _ = try? AbstractSyntaxTreeConstructor().build(swiftSource, using: parser)
+            let _ = try? AbstractSyntaxTreeConstructor().build(swiftSource, using: parser.grammar)
         }
         
     }
     
     func testPerformanceSTLRParseOnly() {
-        let parser : Parser
+        let parser : Grammar
         do {
-            parser = Parser(grammar: try ProductionSTLR.build(stlrSource).grammar.dynamicRules)
+            parser = try ProductionSTLR.build(stlrSource).grammar.dynamicRules
         } catch {
             XCTFail("Failed to compile: \(error)")
             return
