@@ -67,7 +67,7 @@ public extension Grammar {
      - Parameter source: The source to parse
      - Returns: An iterable stream of tokens
      **/
-    public func stream(_ source:String)->TokenStream{
+    public func tokenize(_ source:String)->TokenStream{
         return TokenStream(source, using: self)
     }
     
