@@ -30,15 +30,11 @@ extension String : Terminal {
         return "\"\(self)\""
     }
     
-    public func test(lexer: LexicalAnalyzer, producing token:Token?) throws {
+    public func test(lexer: LexicalAnalyzer, producing token:TokenType?) throws {
         do {
             try lexer.scan(terminal: self)
         } catch {
-            if let token = token {
-                throw TestError.parsingError(message: "Failed to match \(token), expected '\(self)'", range: lexer.index...lexer.index, causes: [error])
-            } else {
-                throw TestError.scanningError(message: "Expected \(self)", position: lexer.index, causes: [])
-            }
+            throw ProcessingError.scanning(message: "Failed to match \(token == nil ? "\(self)" : "\(token!)")", position: lexer.index, causes: [error])
         }
     }
 }

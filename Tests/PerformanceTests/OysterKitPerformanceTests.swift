@@ -8,8 +8,8 @@
 
 import XCTest
 import OysterKit
-import STLR
-import ExampleLanguages
+@testable import STLR
+@testable import ExampleLanguages
 
 class OysterKitPerformanceTests: XCTestCase {
 
@@ -29,8 +29,8 @@ class FullSwiftParser : Parser{
     // Convenience alias
     private typealias GrammarToken = Tokens
 
-    // Token & Rules Definition
-    enum Tokens : Int, Token {
+    // TokenType & Rules Definition
+    enum Tokens : Int, TokenType {
         case _transient, comment, ws, eol, access, scope, number, key, entry, dictionary, dictionary, array, string, variable, inherit, parameter, parameters, index, import, class, alias, enum, case, caseBlock, func, switch, return, reference, var, call, guard, assignment, block, statement, swift
 
         func _rule(_ annotations: RuleAnnotations = [ : ])->Rule {
@@ -903,7 +903,7 @@ class FullSwiftParser : Parser{
 
     func testPerformanceSTLR() {
         do {
-            _ = Parser(grammar: try _STLR.build(stlrSource).grammar.dynamicRules)
+            _ = try ProductionSTLR.build(stlrSource).grammar.dynamicRules
         } catch {
             XCTFail("Could not compile \(error)")
             return
@@ -911,7 +911,7 @@ class FullSwiftParser : Parser{
         
         // This is an example of a performance test case.
         self.measure {
-            let stlr = try! _STLR.build(self.stlrSource)
+            let stlr = try! ProductionSTLR.build(self.stlrSource)
             
             XCTAssertEqual(45, stlr.grammar.rules.count)
             
@@ -926,28 +926,22 @@ class FullSwiftParser : Parser{
     }
     
     fileprivate final class NullIR : IntermediateRepresentation{
-        func willEvaluate(token: Token, at position: String.UnicodeScalarView.Index) -> MatchResult? {
-            return nil
+        func evaluating(_ token: TokenType) {
         }
         
-        func didEvaluate(token: Token, annotations: RuleAnnotations, matchResult: MatchResult) {
-            
+        func succeeded(token: TokenType, annotations: RuleAnnotations, range: Range<String.Index>) {
         }
         
-        fileprivate func willBuildFrom(source: String, with: Language) {
+        func failed() {
+        }
+        
+
+        fileprivate func willBuildFrom(source: String, with: Grammar) {
             
         }
         
         fileprivate func didBuild() {
             
-        }
-        
-        fileprivate func didEvaluate(rule: Rule, matchResult: MatchResult) {
-            
-        }
-        
-        fileprivate func willEvaluate(rule: Rule, at position: String.UnicodeScalarView.Index) -> MatchResult? {
-            return nil
         }
         
         func resetState() {
@@ -957,18 +951,18 @@ class FullSwiftParser : Parser{
     
     func testSwiftParserPerformance(){
         let parser = SwiftParser()
-        let _ = try? AbstractSyntaxTreeConstructor().build(swiftSource, using: parser)
+        let _ = try? AbstractSyntaxTreeConstructor().build(swiftSource, using: parser.grammar)
         
         self.measure {
-            let _ = try? AbstractSyntaxTreeConstructor().build(swiftSource, using: parser)
+            let _ = try? AbstractSyntaxTreeConstructor().build(swiftSource, using: parser.grammar)
         }
         
     }
     
     func testPerformanceSTLRParseOnly() {
-        let parser : Parser
+        let parser : Grammar
         do {
-            parser = Parser(grammar: try _STLR.build(stlrSource).grammar.dynamicRules)
+            parser = try ProductionSTLR.build(stlrSource).grammar.dynamicRules
         } catch {
             XCTFail("Failed to compile: \(error)")
             return
@@ -977,12 +971,7 @@ class FullSwiftParser : Parser{
         // This is an example of a performance test case.
         self.measure {
             do {
-                let result = try parser.grammar[0].match(with: Lexer(source:self.stlrSource007), for: NullIR())
-                if case .success = result {
-                    
-                } else {
-                    XCTFail("Failed to parse")
-                }
+                try parser.rules[0].match(with: Lexer(source:self.stlrSource007), for: NullIR())
             } catch (let error){
                 XCTFail("Unexpected failure \(error)")
             }

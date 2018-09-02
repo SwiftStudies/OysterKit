@@ -47,10 +47,7 @@ public enum Log {
     }
     
     private static func describe(rule:Rule)->String{
-        if rule.produces.transient {
-            return "\(rule)"
-        }
-        return "\(rule.produces)"
+        return rule.shortDescription
     }
     
     static func beginRule(rule:Rule){

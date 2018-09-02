@@ -74,7 +74,7 @@ internal class Mark : CustomStringConvertible {
 
 /**
  `Lexer` provides a concrete implementation of the `LexicalAnalyzer` protocol and is used by default for the rest of the OysterKit stack (for example
- in `Language.stream<N:Node,L:LexicalAnalyzer>(lexer:L)->AnySequence<N>`).
+ in `Grammar.stream<N:Node,L:LexicalAnalyzer>(lexer:L)->AnySequence<N>`).
  
  In addition to the requirements of the `LexicalAnalyzer` protocol, this implementation provides the ability to skip characters from a `CharacterSet` when
  a call to `mark()` is made. This can be useful when the consumer always wants, for example, to ignore white space in a file.
@@ -129,6 +129,10 @@ open class Lexer : LexicalAnalyzer, CustomStringConvertible{
         }
     }
     
+    private var top : Mark? {
+        return marks.last
+    }
+    
     /// The current depth of the `Mark` stack used for unwinding failed rules
     public var depth: Int {
         return marks.count
@@ -172,27 +176,53 @@ open class Lexer : LexicalAnalyzer, CustomStringConvertible{
     open func proceed() -> LexicalContext {
         let mark = marks.removeLast()
         
-        if !mark.skipping {
-            marks.last?.scanEnd = mark.scanEnd
-            if marks.last?.preSkipLocation == mark.preSkipLocation {
-                marks.last?.postSkipLocation = mark.postSkipLocation
+        if mark.skipping {
+            // If the skip is at the start of its parents run
+            if top?.postSkipLocation == mark.preSkipLocation {
+                top?.postSkipLocation = scanner.scanLocation
+                top?.scanEnd = nil
+            // Otherwise if I'm the first skip (because a previous skip will have set this)
             }
-        } else {
-            mark.postSkipLocation = scanner.scanLocation
-            if marks.last?.scanEnd == nil {
-                marks.last?.postSkipLocation = scanner.scanLocation
-            }
+            return LexerContext(mark: mark, endLocation: mark.postSkipLocation, source: source)
         }
-        return LexerContext(mark: mark, endLocation: mark.scanEnd ?? scanner.scanLocation, source: source)
+
+        // If we started at the same place, skip the same as I did apply the same skip range
+        if top?.preSkipLocation == mark.preSkipLocation {
+            top?.postSkipLocation = mark.postSkipLocation
+            top?.scanEnd = mark.scanEnd ?? scanner.scanLocation
+        } else {
+            top?.scanEnd = mark.scanEnd ?? mark.preSkipLocation
+        }
+        
+        assert(mark.postSkipLocation <= mark.scanEnd ?? mark.postSkipLocation)
+        
+        return LexerContext(mark: mark, endLocation: mark.scanEnd ?? mark.postSkipLocation, source: source)
     }
     
     internal func describeUnwoundStack(){
-        var stackCopy = marks
-        let originalDepth = marks.count
-        while let top = stackCopy.first{
-            stackCopy.removeFirst()
-            print(String(repeating: "ᐧ", count: originalDepth-depth), scanner.string[top.preSkipLocation..<top.postSkipLocation],"⇥",scanner.string[top.postSkipLocation..<scanner.scanLocation], separator: "")
+        func prefix(_ string:String, markedWith mark:Mark, at currentLocation:String.UnicodeScalarView.Index)->String{
+            return String(string[mark.preSkipLocation..<mark.postSkipLocation])
         }
+
+        func scanned(_ string:String, markedWith mark:Mark, at currentLocation:String.UnicodeScalarView.Index)->String{
+            return String(string[mark.postSkipLocation..<(mark.scanEnd ?? currentLocation)])
+        }
+
+        func suffix(_ string:String, markedWith mark:Mark, at currentLocation:String.UnicodeScalarView.Index)->String{
+            if let scanEnd = mark.scanEnd {
+                return String(string[scanEnd..<currentLocation])
+            } else {
+                return ""
+            }
+        }
+
+        for mark in marks.reversed() {
+            let before = prefix(scanner.string, markedWith: mark, at: scanner.scanLocation)
+            let scan = scanned(scanner.string, markedWith: mark, at: scanner.scanLocation)
+            let after = suffix(scanner.string, markedWith: mark, at: scanner.scanLocation)
+            print("'\(before)'⊕'\(scan)'⊕'\(after)'")
+        }
+        
     }
     
     /// Removes the top most `Mark` from the stack without creating a new `LexicalContext` effectively advancing the scanning position
@@ -231,7 +261,7 @@ open class Lexer : LexicalAnalyzer, CustomStringConvertible{
     */
     open func scan(terminal: String) throws {
         if !scanner.scan(string: terminal){
-            throw GrammarError.matchFailed(token: nil)
+            throw ProcessingError.scannedMatchFailed
         }
         advanceScanEnd()
     }
@@ -245,7 +275,7 @@ open class Lexer : LexicalAnalyzer, CustomStringConvertible{
     */
     open func scan(oneOf: CharacterSet) throws {
         if !scanner.scan(characterFrom: oneOf) {
-            throw GrammarError.matchFailed(token: nil)
+            throw ProcessingError.scannedMatchFailed
         }
         advanceScanEnd()
     }
@@ -259,7 +289,7 @@ open class Lexer : LexicalAnalyzer, CustomStringConvertible{
     */
     open func scanUpTo(terminal:String) throws {
         if !scanner.scanUpTo(string: terminal){
-            throw GrammarError.matchFailed(token: nil)
+            throw ProcessingError.scannedMatchFailed
         }
         advanceScanEnd()
     }
@@ -273,7 +303,7 @@ open class Lexer : LexicalAnalyzer, CustomStringConvertible{
      */
     open func scanUpTo(oneOf terminal:CharacterSet) throws {
         if !scanner.scanUpTo(characterFrom: terminal){
-            throw GrammarError.matchFailed(token: nil)
+            throw ProcessingError.scannedMatchFailed
         }
         advanceScanEnd()
     }
@@ -286,7 +316,7 @@ open class Lexer : LexicalAnalyzer, CustomStringConvertible{
      */
     open func scan(regularExpression regex: NSRegularExpression) throws {
         if !scanner.scan(regularExpression: regex){
-            throw GrammarError.matchFailed(token: nil)
+            throw ProcessingError.scannedMatchFailed
         }
         advanceScanEnd()
     }
@@ -296,7 +326,7 @@ open class Lexer : LexicalAnalyzer, CustomStringConvertible{
     */
     open func scanNext() throws {
         if scanner.scanNext() == nil {
-            throw GrammarError.matchFailed(token: nil)
+            throw ProcessingError.scannedMatchFailed
         }
         advanceScanEnd()
     }
@@ -319,8 +349,11 @@ open class Lexer : LexicalAnalyzer, CustomStringConvertible{
         var result = "Scanning: \(scanner.string.count) characters, currently at \(scanner) '\(scanner.current)':\n"
         
         for mark in marks {
-            let position = scanner.string.unicodeScalars.distance(from: scanner.string.unicodeScalars.startIndex, to: mark.preSkipLocation)
-            result += "\t\(position)\n"
+            let preskipPosition = scanner.string.unicodeScalars.distance(from: scanner.string.unicodeScalars.startIndex, to: mark.preSkipLocation)
+            let postskipPosition = scanner.string.unicodeScalars.distance(from: scanner.string.unicodeScalars.startIndex, to: mark.postSkipLocation)
+            let matchIfSatisfied = "\(scanner.string[mark.preSkipLocation..<mark.postSkipLocation])⇥\(scanner.string[mark.preSkipLocation..<scanner.scanLocation])"
+            result += "\t\(mark.skipping ? "↱" : "→") \(preskipPosition):\(scanner.string[mark.preSkipLocation...mark.preSkipLocation])⇥\(postskipPosition):\(scanner.string[mark.postSkipLocation...mark.postSkipLocation])\n"
+            result += "\t\t\(matchIfSatisfied)\n"
         }
         
         return result

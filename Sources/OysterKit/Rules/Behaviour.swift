@@ -37,13 +37,34 @@ public struct Behaviour {
      (structural), is scanning (should be included in the match range, but creates no token) or
      skipping (must be matched, but is not included in the bounds of the match range).
      */
-    public enum Kind {
+    public enum Kind : Equatable {
         /// Do not include any matches in the bounds of the match
         case    skipping
         /// Do not create structure but do include in the bounds of the match
         case    scanning
         /// Include in the bounds of the match and create a structural node in the AST
-        case    structural(token:Token)
+        case    structural(token:TokenType)
+        
+        /// Compares two kinds
+        public static func ==(lhs:Kind, rhs:Kind)->Bool{
+            switch lhs {
+            case .skipping:
+                if case Kind.skipping = rhs {
+                    return true
+                }
+                return false
+            case .scanning:
+                if case Kind.skipping = rhs {
+                    return true
+                }
+                return false
+            case .structural(let lhsToken):
+                if case let Kind.structural(rhsToken) = rhs {
+                    return lhsToken == rhsToken
+                }
+                return false
+            }
+        }
     }
 
     
@@ -62,7 +83,7 @@ public struct Behaviour {
     public let cardinality : Cardinality
     
     /// The token produced if structural or nil otherwise
-    public var token : Token? {
+    public var token : TokenType? {
         switch kind {
         case .structural(let token):
             return token
@@ -153,12 +174,12 @@ public struct Behaviour {
      - Parameter match: A description of the match
      - Returns: A wrapped description of the match which includes the behaviour
     */
-    public func describe(match:String, requiresScanningPrefix requiresScanning:Bool = true, requiresStructuralPrefix requiresStructural:Bool = true)->String{
+    public func describe(match:String, requiresScanningPrefix requiresScanning:Bool = true, requiresStructuralPrefix requiresStructural:Bool = true, annotatedWith annotations: RuleAnnotations)->String{
         var prefix : String
         switch kind {
         case .skipping: prefix = "-"
-        case .scanning: prefix = requiresScanning ? "~" : ""
-        case .structural: prefix = requiresStructural ? "{" : ""
+        case .scanning: prefix = requiresScanning ? "" : ""
+        case .structural: prefix = requiresStructural ? "" : ""
         }
         var suffix : String
         
@@ -175,9 +196,16 @@ public struct Behaviour {
         }
         
         if case let Kind.structural(token) = kind, requiresStructural{
-            suffix += "}►\(token)"
+            suffix += "►\(token)"
         } else {
             suffix += ""
+        }
+        
+        if !annotations.isEmpty {
+            let annotationsSuffix = annotations.map({ (key,value) -> String in
+                return "\(key):\(value)"
+            }).joined(separator: ",")
+            suffix += "[\(annotationsSuffix)]"
         }
         
         if negate {

@@ -9,14 +9,6 @@
 import XCTest
 @testable import OysterKit
 
-fileprivate enum TestToken : Int, Token{
-    case dummy
-    
-    private var productionRule: Rule{
-        return ParserRule.terminal(produces: self, "dummy", nil)
-    }
-}
-
 class LexerTest: XCTestCase {
 
     override func setUp() {
@@ -27,6 +19,67 @@ class LexerTest: XCTestCase {
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
+    }
+
+    func testNestedScanSkipAtStart(){
+        let source = "1234"
+        let lexer = Lexer(source: source)
+        
+        do{
+            lexer.mark(skipping: false)
+            
+            //Scan{Skip}
+            lexer.mark(skipping: false)
+            lexer.mark(skipping: true)
+            try lexer.scanNext()
+            _ = lexer.proceed()
+            _ = lexer.proceed()
+
+            //Do some scanning
+            try lexer.scanNext()
+            try lexer.scanNext()
+
+            //Skip
+            lexer.mark(skipping: true)
+            try lexer.scanNext()
+            _ = lexer.proceed()
+            
+            let match = lexer.proceed()
+            XCTAssertEqual("23", match.matchedString)
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+    }
+
+    
+    func testNestedScanSkipAtEnd(){
+        let source = "1234"
+        let lexer = Lexer(source: source)
+
+        do{
+            lexer.mark(skipping: false)
+            
+            //Skip
+            lexer.mark(skipping: true)
+                try lexer.scanNext()
+            _ = lexer.proceed()
+            
+            //Do some scanning
+            try lexer.scanNext()
+            try lexer.scanNext()
+
+            //Scan{Skip}
+            lexer.mark(skipping: false)
+                lexer.mark(skipping: true)
+                    try lexer.scanNext()
+                _ = lexer.proceed()
+            _ = lexer.proceed()
+            
+            let match = lexer.proceed()
+            XCTAssertEqual("23", match.matchedString)
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
     }
     
     func testSkipAtStart(){

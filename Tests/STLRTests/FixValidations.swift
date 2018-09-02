@@ -9,6 +9,7 @@
 import XCTest
 @testable import OysterKit
 @testable import STLR
+@testable import ExampleLanguages
 
 class FixValidations: XCTestCase {
 
@@ -17,7 +18,7 @@ class FixValidations: XCTestCase {
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        _STLR.removeAllOptimizations()
+        ProductionSTLR.removeAllOptimizations()
     }
     
     override func tearDown() {
@@ -34,7 +35,7 @@ class FixValidations: XCTestCase {
         let grammarString = testGrammarName+"number  = .decimalDigit*\n keyword = \"import\" | \"wibble\""
         
         do {
-            let stlr = try _STLR.build(grammarString)
+            let stlr = try ProductionSTLR.build(grammarString)
             
             let grammar = stlr.grammar
             
@@ -63,8 +64,8 @@ class FixValidations: XCTestCase {
         """
         
         do {
-            _STLR.register(optimizer: InlineIdentifierOptimization())
-            let stlr = try _STLR.build(grammar)
+            ProductionSTLR.register(optimizer: InlineIdentifierOptimization())
+            let stlr = try ProductionSTLR.build(grammar)
             XCTAssertEqual(stlr.grammar .rules[1].description, "expr = inlined !inlined+ inlined")
         } catch {
             XCTFail("Unexpted failure: \(error)")
@@ -80,7 +81,7 @@ class FixValidations: XCTestCase {
         do {
             let grammarString = testGrammarName+"operators = \":=\" | \";\""
             
-            let stlr = try _STLR.build(grammarString)
+            let stlr = try ProductionSTLR.build(grammarString)
             
             let ast = stlr.grammar
             
@@ -91,7 +92,7 @@ class FixValidations: XCTestCase {
             
             XCTAssert("\(ast.rules[0])" == "operators = \":=\" | \";\"", "Malformed rule: \(ast.rules[0])")
             
-            _STLR.register(optimizer: CharacterSetOnlyChoiceOptimizer())
+            ProductionSTLR.register(optimizer: CharacterSetOnlyChoiceOptimizer())
             ast.optimize()
             
             XCTAssert("\(ast.rules[0])" == "operators = \":=\" | \";\"", "Malformed rule: \(ast.rules[0])")
@@ -112,7 +113,7 @@ class FixValidations: XCTestCase {
             doubleLetter    = letter "+" letter
             phrase          = doubleLetter .whitespace @token("doubleLetter2") doubleLetter
             """
-            let compiled = try _STLR.build(source)
+            let compiled = try ProductionSTLR.build(source)
         
 //            print()
             
@@ -120,5 +121,31 @@ class FixValidations: XCTestCase {
         } catch {
             XCTFail("\(error)")
         }
+    }
+    
+    func testErrorOnDeclaration(){
+        #warning("Errors annotated on declarations are not thrown as specificErrors")
+    }
+        
+    
+    func testErrorOnRecursiveRule(){
+        let rule = ExampleLanguages.STLRTokens.expression.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected expression"),RuleAnnotation.custom(label:"fatal"):RuleAnnotationValue.set])
+
+        print(rule)
+        
+        do {
+            _ = try AbstractSyntaxTreeConstructor(with: ".bogusCharacterSet").build(using: [rule])
+            XCTFail("Should have failed")
+        } catch let error as ProcessingError {
+            print(error.debugDescription)
+            if let error = error.filtered(including: [.fatal]){
+                XCTAssertEqual((error.causedBy?.first as? ProcessingError)?.message ?? "", "Fatal Error: Expected expression")
+                return
+            }
+            XCTFail("Incorrect error type")
+        } catch {
+            XCTFail("Incorrect error type")
+        }
+        
     }
 }

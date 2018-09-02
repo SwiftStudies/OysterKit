@@ -59,17 +59,15 @@ class ParseCommand : Command, IndexableOptioned, IndexableParameterized, Grammar
                    parameters: Parameters.all)
     }
 
-    func parseInput(language:Language, input:String) throws {
+    func parseInput(language:Grammar, input:String) throws {
         let ctr = AbstractSyntaxTreeConstructor()
-        let ast = try ctr.build(input, using: language)
+        _ = try ctr.build(input, using: language)
 
         guard ctr.errors.count == 0 else {
             print("Parsing failed: ".color(.red))
             ctr.errors.report(in: input)
             return
         }
-        
-        print(ast.description)
     }
     
     override func run() -> RunnableReturnValue {
@@ -78,7 +76,7 @@ class ParseCommand : Command, IndexableOptioned, IndexableParameterized, Grammar
             return RunnableReturnValue.failure(error: GrammarOption.Errors.couldNotParseGrammar, code: -1)
         }
         
-        let language = Parser(grammar: grammar.grammar.dynamicRules) 
+        let language = grammar.grammar.dynamicRules
 
         if interactiveMode {
             print("stlr interactive mode. Send a blank line to parse, two to terminate. Parsing grammar \(grammar.grammar.scopeName)")

@@ -32,18 +32,8 @@ public extension String {
      - Returns: `nil` if compilation failed
     */
     @available(*,deprecated,message: "Use .dynamicRule(Behaviour.Kind) instead")
-    public func  dynamicRule(token:Token)->Rule? {
-        let grammarDef = "grammar Dynamic\n_ = \(self)"
-        
-        let compiler = STLRParser(source: grammarDef)
-        
-        let ast = compiler.ast
-        
-        guard ast.grammar.rules.count > 0 else {
-            return nil
-        }
-        
-        return ast.grammar.dynamicRules[0].parse(as:token)
+    public func  dynamicRule(token:TokenType)->Rule? {
+        return try? dynamicRule(Behaviour.Kind.structural(token: token))
     }
     
     /**
@@ -52,18 +42,16 @@ public extension String {
      - Parameter kind: The kind of the rule
      - Returns: `nil` if compilation failed
      */
-    public func dynamicRule(_ kind:Behaviour.Kind) throws ->BehaviouralRule{
-        let compiled = try _STLR.build("grammar Dynamic\n_ = \(self)")
+    public func dynamicRule(_ kind:Behaviour.Kind) throws ->Rule{
+        let compiled = try STLR.build("grammar Dynamic\n_ = \(self)")
 
         
         
-        guard let rule =  compiled.grammar.dynamicRules.first?.rule(with: Behaviour(kind), annotations: nil) else {
-            throw TestError.interpretationError(message: "No rules created from \(self)", causes: [])
+        guard let rule = compiled.grammar.dynamicRules.first else {
+            throw ProcessingError.interpretation(message: "No rules created from \(self)", causes: [])
         }
         
-        print(rule.description)
-        
-        return rule
+        return rule.rule(with: Behaviour(kind, cardinality: rule.behaviour.cardinality, negated: rule.behaviour.negate, lookahead: rule.behaviour.lookahead), annotations: rule.annotations)
     }
 }
 

@@ -9,13 +9,13 @@
 import XCTest
 @testable import OysterKit
 
-fileprivate enum QuotedEscapedStringTestTokens : Int, Token {
+fileprivate enum QuotedEscapedStringTestTokens : Int, TokenType {
     case escapedQuote,quote,character,string
 }
 
 
 
-fileprivate enum Tokens : Int, Token {
+fileprivate enum Tokens : Int, TokenType {
     case whitespace
     case whitespaces
     case dummy
@@ -35,43 +35,43 @@ fileprivate enum Tokens : Int, Token {
     var rule: Rule {
         switch self {
         case .dummy:
-            return ParserRule.terminal(produces: self, "😁",nil)
+            return "😁"
         case .whitespace:
-            return ParserRule.terminalFrom(produces: self, CharacterSet.whitespaces,nil)
+            return CharacterSet.whitespaces.reference(.structural(token: self))
         case .whitespaces:
-            return ParserRule.repeated(produces: self, Tokens.whitespace.rule,min: 1, limit: nil,nil)
+            return Tokens.whitespace.rule.require(.oneOrMore).reference(.structural(token: self))
         case .letter:
-            return ParserRule.terminalFrom(produces: self, CharacterSet.letters,nil)
+            return CharacterSet.letters.reference(.structural(token: self))
         case .word:
-            return ParserRule.repeated(produces: self, Tokens.letter.rule, min: 1, limit: nil,nil)
+            return Tokens.letter.rule.require(.oneOrMore).reference(.structural(token: self))
         case .punctuationCharacters:
-            return ParserRule.terminalFrom(produces: self, CharacterSet.punctuationCharacters,nil)
+            return CharacterSet.punctuationCharacters.reference(.scanning)
         case .whitespaceWord:
-            return ParserRule.sequence(produces: self, [Tokens.whitespaces.rule,Tokens.word.rule],nil)
+            return [Tokens.whitespace.rule, Tokens.word.rule].sequence.reference(.structural(token: self))
         case .optionalWhitespaceWord:
-            return ParserRule.optional(produces: self, Tokens.whitespaceWord.rule,nil)
+            return Tokens.whitespaceWord.rule.require(.zeroOrOne).reference(.structural(token: self))
         case .repeatedOptionalWhitespaceWord:
-            return ParserRule.repeated(produces: self, Tokens.optionalWhitespaceWord.rule, min: nil, limit: nil,nil)
+            return Tokens.whitespaceWord.rule.require(.zeroOrMore).reference(.structural(token: self))
         case .fullStop:
-            return ParserRule.terminal(produces: self, ".",nil)
+            return ".".reference(.structural(token: self))
         case .questionMark:
-            return ParserRule.terminal(produces: self, "?",nil)
+            return "?".reference(.structural(token: self))
         case .exlamationMark:
-            return ParserRule.terminal(produces: self, "!",nil)
+            return "!".reference(.structural(token: self))
         case .endOfSentance:
-            return ParserRule.oneOf(produces: self, [
+            return [
                 Tokens.fullStop.rule,
                 Tokens.questionMark.rule,
-                Tokens.exlamationMark.rule,
-                ],nil)
+                Tokens.exlamationMark.rule
+            ].choice.reference(.structural(token: self))
         case .greeting:
-            return ParserRule.terminal(produces:self, "Hello",nil)
+            return "Hello".reference(.structural(token: self))
         case .sentance:
-            return ParserRule.sequence(produces: self, [
+            return [
                 Tokens.word.rule,
                 Tokens.repeatedOptionalWhitespaceWord.rule,
                 Tokens.endOfSentance.rule
-                ],nil)
+                ].sequence.reference(.structural(token: self))
         }
     }
 }
@@ -90,7 +90,7 @@ class ParserTest: XCTestCase {
     }
     
     @discardableResult
-    private func check(_ source:String, produces output: [Token], using rules:[Rule], expectingEndOfInput:Bool? = nil)->[Error]{
+    private func check(_ source:String, produces output: [TokenType], using rules:[Rule], expectingEndOfInput:Bool? = nil)->[Error]{
         let debugOutput = true
         let parser = TestParser(source: source, grammar: rules)
         
@@ -148,8 +148,8 @@ class ParserTest: XCTestCase {
     }
     
     func testOptionalNegative(){
-        let pling = ParserRule.terminal(produces: Tokens.exlamationMark, "!",nil)
-        let optional = ParserRule.optional(produces: Tokens.exlamationMark, pling, nil)
+        let pling = "!".parse(as: Tokens.exlamationMark)
+        let optional = pling.require(.zeroOrOne)
         
         let parser = TestParser(source: "?", grammar: [optional])
         
@@ -215,7 +215,7 @@ class ParserTest: XCTestCase {
         
         var count = 0
         
-        let parser = Parser(grammar: [string])
+        let parser = [string]
         
         
         for node in TokenStream(source, using: parser){
@@ -230,7 +230,7 @@ class ParserTest: XCTestCase {
     }
     
     func testRuleTerminalFrom(){
-        check("Hello", produces: Array<Token>(repeating:Tokens.letter, count:5), using: [Tokens.letter.rule], expectingEndOfInput: true)
+        check("Hello", produces: Array<TokenType>(repeating:Tokens.letter, count:5), using: [Tokens.letter.rule], expectingEndOfInput: true)
     }
     
     func testRuleSimpleRepeat(){
@@ -244,10 +244,8 @@ class ParserTest: XCTestCase {
     func testAllRuleFailure(){
         let errors = check("Hello", produces: [], using: [Tokens.whitespace.rule, Tokens.exlamationMark.rule], expectingEndOfInput: false )
         
-        if let parsingError = errors.first {
-            if case AbstractSyntaxTreeConstructor.ConstructionError.parsingFailed(let errors) = parsingError {
-                XCTAssertEqual(2, errors.count)
-            }
+        if let parsingError = errors.first as? ProcessingError{
+            XCTAssertEqual(parsingError.causedBy?.count ?? 0, 2)
         }
         
     }

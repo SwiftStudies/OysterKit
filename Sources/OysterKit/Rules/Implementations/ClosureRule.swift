@@ -25,10 +25,10 @@
 import Foundation
 
 /**
- An implementation of a `BehaviouralRule` that allows the specification of a `Test`
+ An implementation of a `Rule` that allows the specification of a `Test`
  closure to provide the required check.
  */
-public final class ClosureRule : BehaviouralRule {
+public final class ClosureRule : Rule {
     /// Annotations for the rule
     public let annotations: RuleAnnotations
 
@@ -42,7 +42,7 @@ public final class ClosureRule : BehaviouralRule {
      Create a an instance supplied annotations and token that will use the supplied `Test` closure
      to perform its match
      
-     - Parameter token: The new ``Token`` or ``nil`` if the token should remain the same
+     - Parameter token: The new ``TokenType`` or ``nil`` if the token should remain the same
      - Parameter annotations: The new ``Annotations`` or ``nil`` if the annotations are unchanged
      - Parameter matcher: The `Test` closure
      */
@@ -67,7 +67,7 @@ public final class ClosureRule : BehaviouralRule {
      should use the same behaviour as this instance.
      - Returns: A new instance with the specified behaviour and annotations.
      */
-    public func rule(with behaviour: Behaviour? = nil, annotations: RuleAnnotations? = nil) -> BehaviouralRule {
+    public func rule(with behaviour: Behaviour? = nil, annotations: RuleAnnotations? = nil) -> Rule {
         let newBehaviour = behaviour ?? self.behaviour
         let newAnnotations = annotations ?? self.annotations
         
@@ -89,15 +89,15 @@ public final class ClosureRule : BehaviouralRule {
 
     /// A textual description of the rule
     public var description: String{
-        return "\(annotations.isEmpty ? "" : "\(annotations.description) ")"+behaviour.describe(match:"{closure}")
+        return behaviour.describe(match:"{closure}", annotatedWith: annotations)
     }
     
     /// An abreviated description of the rule
     public var shortDescription: String{
         if let produces = behaviour.token {
-            return behaviour.describe(match: "\(produces)", requiresStructuralPrefix: false)
+            return behaviour.describe(match: "\(produces)", requiresStructuralPrefix: false, annotatedWith: annotations)
         }
-        return behaviour.describe(match: "{closure}")
+        return behaviour.describe(match: "{closure}", annotatedWith: annotations)
     }
 
     

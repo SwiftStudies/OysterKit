@@ -26,7 +26,7 @@ import XCTest
 @testable import OysterKit
 
 struct TestNode : Node, CustomStringConvertible {
-    var token: Token
+    var token: TokenType
     
     var range: Range<String.UnicodeScalarView.Index>
     
@@ -34,7 +34,7 @@ struct TestNode : Node, CustomStringConvertible {
     
     var children: [TestNode]
     
-    init(for token: Token, at range: Range<String.UnicodeScalarView.Index>, annotations: [RuleAnnotation : RuleAnnotationValue]) {
+    init(for token: TokenType, at range: Range<String.UnicodeScalarView.Index>, annotations: [RuleAnnotation : RuleAnnotationValue]) {
         self.token = token
         self.range = range
         self.annotations = annotations
@@ -62,13 +62,13 @@ class NodeStackTests: XCTestCase {
         let source = "Hello world good to meet you"
         let stack = NodeStack<TestNode>()
         
-        stack.top?.append(TestNode(for: LabelledToken(withLabel: "hello"), at: source.range(of: "Hello")!, annotations: [:]))
+        stack.top?.append(TestNode(for: StringToken("hello"), at: source.range(of: "Hello")!, annotations: [:]))
         stack.push()
-        stack.top?.append(TestNode(for: LabelledToken(withLabel: "world"), at: source.range(of: "world")!, annotations: [:]))
-        stack.top?.append(TestNode(for: LabelledToken(withLabel: "good"), at: source.range(of: "good")!, annotations: [:]))
+        stack.top?.append(TestNode(for: StringToken("world"), at: source.range(of: "world")!, annotations: [:]))
+        stack.top?.append(TestNode(for: StringToken("good"), at: source.range(of: "good")!, annotations: [:]))
         
         //Key thing is 2 nodes first to make sure it has been reversed
-        XCTAssertEqual(stack.all.description,"[2 nodes, with [] errors, 1 nodes, with [] errors]")
+        XCTAssertEqual(stack.all.description,"[2 nodes, 1 nodes]")
     }
     
     func testArrayAppend(){
@@ -84,55 +84,18 @@ class NodeStackTests: XCTestCase {
         XCTAssertTrue(setLikeArray.contains(1))
         XCTAssertTrue(setLikeArray.contains(0))
     }
-
-    func testAddError(){
-        let source = "Hello"
-        let nodeStack = NodeStack<TestNode>()
-        
-        nodeStack.top?.addError(error: LanguageError.scanningError(at: source.startIndex..<source.endIndex, message: "Top Error"))
-        XCTAssertEqual(1, nodeStack.top!.errors.count)
-        nodeStack.push()
-        nodeStack.top?.addError(error: LanguageError.scanningError(at: source.endIndex..<source.endIndex, message: "Top Error"))
-        nodeStack.top?.addError(error: LanguageError.parsingError(at: source.startIndex..<source.startIndex, message: "Top Error"))
-        //Should not be added as one already exists
-        nodeStack.top?.addError(error: LanguageError.warning(at: source.startIndex..<source.startIndex, message: "Top Error"))
-        XCTAssertEqual(2, nodeStack.top!.errors.count)
-        let _ = nodeStack.pop()
-        XCTAssertEqual(1, nodeStack.top!.errors.count)
-    }
-    
-    func testAddErrors(){
-        let source = "Hello"
-        let nodeStack = NodeStack<TestNode>()
-        
-        nodeStack.top?.addError(error: LanguageError.scanningError(at: source.startIndex..<source.endIndex, message: "Top Error"))
-        nodeStack.top?.addErrors([
-            LanguageError.scanningError(at: source.endIndex..<source.endIndex, message: "Top Error"),
-            LanguageError.scanningError(at: source.endIndex..<source.endIndex, message: "Top Error"),
-            LanguageError.parsingError(at: source.startIndex..<source.startIndex, message: "Top Error"),
-            ])
-        XCTAssertEqual(3, nodeStack.top!.errors.count)
-
-        nodeStack.top?.flushErrors()
-        XCTAssertEqual(0, nodeStack.top!.errors.count)
-    }
     
     func testDescription(){
         let source = "Hello"
         let nodeStack = NodeStack<TestNode>()
 
-        nodeStack.top?.append(TestNode(for: LabelledToken(withLabel: "hello"), at: source.startIndex..<source.endIndex, annotations: [
+        nodeStack.top?.append(TestNode(for: StringToken("hello"), at: source.startIndex..<source.endIndex, annotations: [
             RuleAnnotation.void : RuleAnnotationValue.set
             ]))
         
         nodeStack.push()
-        nodeStack.top?.addErrors([
-            LanguageError.scanningError(at: source.endIndex..<source.endIndex, message: "Top Error"),
-            LanguageError.scanningError(at: source.endIndex..<source.endIndex, message: "Top Error"),
-            LanguageError.parsingError(at: source.startIndex..<source.startIndex, message: "Top Error"),
-            ])
 
-        XCTAssertEqual(nodeStack.description, "NodeStack: \n0 nodes, with [Top Error from 5 to 5, Top Error from 0 to 0] errors\n1 nodes, with [] errors\n")
+        XCTAssertEqual(nodeStack.description, "NodeStack: \n0 nodes\n1 nodes\n")
         
     }
 }

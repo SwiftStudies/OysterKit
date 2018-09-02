@@ -23,7 +23,7 @@
         <a class="header-link" href="index.html">
           OysterKit Docs
         </a>
-         (95% documented)
+         (93% documented)
       </p>
     
       <p class="header-col--secondary">
@@ -51,10 +51,10 @@
                 <a class="nav-group-task-link" href="Classes/AbstractSyntaxTreeConstructor.html">AbstractSyntaxTreeConstructor</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/AbstractSyntaxTreeConstructor/ConstructionError.html">– ConstructionError</a>
+                <a class="nav-group-task-link" href="Classes/AbstractSyntaxTreeConstructor/IntermediateRepresentationNode.html">– IntermediateRepresentationNode</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/AbstractSyntaxTreeConstructor/IntermediateRepresentationNode.html">– IntermediateRepresentationNode</a>
+                <a class="nav-group-task-link" href="Classes/ChoiceRule.html">ChoiceRule</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/ClosureRule.html">ClosureRule</a>
@@ -69,16 +69,22 @@
                 <a class="nav-group-task-link" href="Classes/NodeStackEntry.html">NodeStackEntry</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/Parser.html">Parser</a>
+                <a class="nav-group-task-link" href="Classes/RecursiveRule.html">RecursiveRule</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/RecursiveRule.html">RecursiveRule</a>
+                <a class="nav-group-task-link" href="Classes/ReferenceRule.html">ReferenceRule</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/SequenceRule.html">SequenceRule</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/StateCache.html">StateCache</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/StringScanner.html">StringScanner</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/TerminalRule.html">TerminalRule</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/TokenStream.html">TokenStream</a>
@@ -89,22 +95,8 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a class="nav-group-name-link" href="Global Variables.html">Global Variables</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Global Variables.html#/s:9OysterKit19transientTokenValueSivp">transientTokenValue</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
             <a class="nav-group-name-link" href="Enums.html">Enumerations</a>
             <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Enums/GrammarError.html">GrammarError</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Enums/LanguageError.html">LanguageError</a>
-              </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Enums/Log.html">Log</a>
               </li>
@@ -112,19 +104,13 @@
                 <a class="nav-group-task-link" href="Enums/MatchResult.html">MatchResult</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Enums/ParserRule.html">ParserRule</a>
+                <a class="nav-group-task-link" href="Enums/ProcessingError.html">ProcessingError</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Enums/RuleAnnotation.html">RuleAnnotation</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Enums/RuleAnnotationValue.html">RuleAnnotationValue</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Enums/ScannerRule.html">ScannerRule</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Enums/TransientToken.html">TransientToken</a>
               </li>
             </ul>
           </li>
@@ -144,7 +130,13 @@
                 <a class="nav-group-task-link" href="Extensions/Decodable.html">Decodable</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/Dictionary.html">Dictionary</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Extensions/Int.html">Int</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/NSRegularExpression.html">NSRegularExpression</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Extensions/String.html">String</a>
@@ -158,10 +150,22 @@
             <a class="nav-group-name-link" href="Functions.html">Functions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Functions.html#/s:9OysterKit2eeoiySbAA5Token_p_AaC_ptF">==(_:_:)</a>
+                <a class="nav-group-task-link" href="Functions.html#/s:9OysterKit1nopyAA4Rule_pAaC_pF">!(_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Functions.html#/s:9OysterKit1sopyAA4Rule_pAaC_pF">-(_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Functions.html#/s:9OysterKit2eeoiySbAA9TokenType_p_AaC_ptF">==(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Functions.html#/s:9OysterKit2ggopyAA4Rule_pAaC_pF">&gt;&gt;(_:)</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Functions.html#/s:9OysterKit8areEqual3lhs3rhsSbSDyAA14RuleAnnotationOAA0gH5ValueOG_AItF">areEqual(lhs:rhs:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Functions.html#/s:9OysterKit1topyAA4Rule_pAaC_pF">~(_:)</a>
               </li>
             </ul>
           </li>
@@ -172,19 +176,16 @@
                 <a class="nav-group-task-link" href="Protocols/AbstractSyntaxTree.html">AbstractSyntaxTree</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Protocols/BehaviouralRule.html">BehaviouralRule</a>
+                <a class="nav-group-task-link" href="Protocols/CausalErrorType.html">CausalErrorType</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/DecodeableAbstractSyntaxTree.html">DecodeableAbstractSyntaxTree</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Protocols/HumanConsumableError.html">HumanConsumableError</a>
+                <a class="nav-group-task-link" href="Protocols/Grammar.html">Grammar</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Protocols/Language.html">Language</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a>
@@ -199,7 +200,10 @@
                 <a class="nav-group-task-link" href="Protocols/Rule.html">Rule</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Protocols/Token.html">Token</a>
+                <a class="nav-group-task-link" href="Protocols/Terminal.html">Terminal</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/TokenType.html">TokenType</a>
               </li>
             </ul>
           </li>
@@ -216,13 +220,19 @@
                 <a class="nav-group-task-link" href="Structs/Cardinality.html">Cardinality</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/EndOfFile.html">EndOfFile</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/HomogenousTree.html">HomogenousTree</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/LabelledToken.html">LabelledToken</a>
+                <a class="nav-group-task-link" href="Structs/ParsingDecoder.html">ParsingDecoder</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/ParsingDecoder.html">ParsingDecoder</a>
+                <a class="nav-group-task-link" href="Structs/ProcessingErrorType.html">ProcessingErrorType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/StringToken.html">StringToken</a>
               </li>
             </ul>
           </li>
@@ -230,7 +240,10 @@
             <a class="nav-group-name-link" href="Typealiases.html">Type Aliases</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Typealiases.html#/s:9OysterKit17CustomRuleClosurea">CustomRuleClosure</a>
+                <a class="nav-group-task-link" href="Typealiases.html#/s:9OysterKit8Languagea">Language</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Typealiases.html#/s:9OysterKit6Parsera">Parser</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a>
@@ -273,7 +286,7 @@
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p><code>Lexer</code> provides a concrete implementation of the <code><a href="Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a></code> protocol and is used by default for the rest of the OysterKit stack (for example
-in <code>Language.stream&lt;N:Node,L:LexicalAnalyzer&gt;(lexer:L)-&gt;AnySequence&lt;N&gt;</code>).</p>
+in <code>Grammar.stream&lt;N:Node,L:LexicalAnalyzer&gt;(lexer:L)-&gt;AnySequence&lt;N&gt;</code>).</p>
 
 <p>In addition to the requirements of the <code><a href="Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a></code> protocol, this implementation provides the ability to skip characters from a <code>CharacterSet</code> when
 a call to <code>mark()</code> is made. This can be useful when the consumer always wants, for example, to ignore white space in a file.</p>
@@ -372,67 +385,6 @@ any Swift Type by utlizing the Swift Decoder framework to decode the intermediat
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit11TokenStreamC"></a>
-                    <a name="//apple_ref/swift/Class/TokenStream" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit11TokenStreamC">TokenStream</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>A <code>TokenStream</code> provides lazy iterators that minimize memory consumption and overhead allowing you to iterate through the tokens created by the
-root rules (those at the lowest level in the language) in the supplied <code><a href="Protocols/Language.html">Language</a></code></p>
-
-                        <a href="Classes/TokenStream.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">TokenStream</span> <span class="p">:</span> <span class="kt">Sequence</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:9OysterKit19TokenStreamIteratorC"></a>
-                    <a name="//apple_ref/swift/Class/TokenStreamIterator" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit19TokenStreamIteratorC">TokenStreamIterator</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The Iterator created by token streams</p>
-
-                        <a href="Classes/TokenStreamIterator.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">TokenStreamIterator</span> <span class="p">:</span> <span class="kt">IteratorProtocol</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul class="item-container">
-                <li class="item">
-                  <div>
-                    <code>
                     <a name="/s:9OysterKit14NodeStackEntryC"></a>
                     <a name="//apple_ref/swift/Class/NodeStackEntry" class="dashAnchor"></a>
                     <a class="token" href="#/s:9OysterKit14NodeStackEntryC">NodeStackEntry</a>
@@ -493,43 +445,6 @@ root rules (those at the lowest level in the language) in the supplied <code><a 
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit6ParserC"></a>
-                    <a name="//apple_ref/swift/Class/Parser" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit6ParserC">Parser</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>A default implementation of a <code><a href="Protocols/Language.html">Language</a></code>. AST construction is automatically provided by standard extensions to <code><a href="Protocols/Language.html">Language</a></code></p>
-<div class="aside aside-see-also">
-    <p class="aside-title">See also</p>
-    <code><a href="Protocols/Language.html">Language</a></code>
-
-</div>
-
-                        <a href="Classes/Parser.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">class</span> <span class="kt">Parser</span> <span class="p">:</span> <span class="kt"><a href="Protocols/Language.html">Language</a></span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul class="item-container">
-                <li class="item">
-                  <div>
-                    <code>
                     <a name="/s:9OysterKit10StateCacheC"></a>
                     <a name="//apple_ref/swift/Class/StateCache" class="dashAnchor"></a>
                     <a class="token" href="#/s:9OysterKit10StateCacheC">StateCache</a>
@@ -562,6 +477,99 @@ root rules (those at the lowest level in the language) in the supplied <code><a 
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:9OysterKit11TokenStreamC"></a>
+                    <a name="//apple_ref/swift/Class/TokenStream" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit11TokenStreamC">TokenStream</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A <code>TokenStream</code> provides lazy iterators that minimize memory consumption and overhead allowing you to iterate through the tokens created by the
+root rules (those at the lowest level in the language) in the supplied <code><a href="Protocols/Grammar.html">Grammar</a></code></p>
+
+                        <a href="Classes/TokenStream.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">TokenStream</span> <span class="p">:</span> <span class="kt">Sequence</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit19TokenStreamIteratorC"></a>
+                    <a name="//apple_ref/swift/Class/TokenStreamIterator" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit19TokenStreamIteratorC">TokenStreamIterator</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The Iterator created by token streams</p>
+
+                        <a href="Classes/TokenStreamIterator.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">TokenStreamIterator</span> <span class="p">:</span> <span class="kt">IteratorProtocol</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit10ChoiceRuleC"></a>
+                    <a name="//apple_ref/swift/Class/ChoiceRule" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit10ChoiceRuleC">ChoiceRule</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A <code>ChoiceRule</code> will match if one of the child rules is matched. It can be thought of as a logical OR.</p>
+
+                        <a href="Classes/ChoiceRule.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">ChoiceRule</span> <span class="p">:</span> <span class="kt"><a href="Protocols/Rule.html">Rule</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:9OysterKit11ClosureRuleC"></a>
                     <a name="//apple_ref/swift/Class/ClosureRule" class="dashAnchor"></a>
                     <a class="token" href="#/s:9OysterKit11ClosureRuleC">ClosureRule</a>
@@ -572,7 +580,7 @@ root rules (those at the lowest level in the language) in the supplied <code><a 
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>An implementation of a <code><a href="Protocols/BehaviouralRule.html">BehaviouralRule</a></code> that allows the specification of a <code><a href="Typealiases.html#/s:9OysterKit4Testa">Test</a></code>
+                        <p>An implementation of a <code><a href="Protocols/Rule.html">Rule</a></code> that allows the specification of a <code><a href="Typealiases.html#/s:9OysterKit4Testa">Test</a></code>
 closure to provide the required check.</p>
 
                         <a href="Classes/ClosureRule.html" class="slightly-smaller">See more</a>
@@ -581,7 +589,7 @@ closure to provide the required check.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">ClosureRule</span> <span class="p">:</span> <span class="kt"><a href="Protocols/BehaviouralRule.html">BehaviouralRule</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">ClosureRule</span> <span class="p">:</span> <span class="kt"><a href="Protocols/Rule.html">Rule</a></span></code></pre>
 
                         </div>
                       </div>
@@ -613,7 +621,103 @@ closure to provide the required check.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">RecursiveRule</span> <span class="p">:</span> <span class="kt"><a href="Protocols/Rule.html">Rule</a></span><span class="p">,</span> <span class="kt">CustomStringConvertible</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">RecursiveRule</span> <span class="p">:</span> <span class="kt"><a href="Protocols/Rule.html">Rule</a></span><span class="p">,</span> <span class="kt">CustomStringConvertible</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit13ReferenceRuleC"></a>
+                    <a name="//apple_ref/swift/Class/ReferenceRule" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit13ReferenceRuleC">ReferenceRule</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Classes/ReferenceRule.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">ReferenceRule</span> <span class="p">:</span> <span class="kt"><a href="Protocols/Rule.html">Rule</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit12SequenceRuleC"></a>
+                    <a name="//apple_ref/swift/Class/SequenceRule" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit12SequenceRuleC">SequenceRule</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Classes/SequenceRule.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">SequenceRule</span> <span class="p">:</span> <span class="kt"><a href="Protocols/Rule.html">Rule</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit12TerminalRuleC"></a>
+                    <a name="//apple_ref/swift/Class/TerminalRule" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit12TerminalRuleC">TerminalRule</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A rule that matches the specified Terminal</p>
+
+                        <a href="Classes/TerminalRule.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">TerminalRule</span> <span class="p">:</span> <span class="kt"><a href="Protocols/Rule.html">Rule</a></span></code></pre>
 
                         </div>
                       </div>
@@ -628,7 +732,7 @@ closure to provide the required check.</p>
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-07-17)</p>
+      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-09-02)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

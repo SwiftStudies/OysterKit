@@ -27,7 +27,7 @@ import Foundation
 /**
  A rule that matches the specified Terminal
  */
-public final class TerminalRule : BehaviouralRule {
+public final class TerminalRule : Rule {
     /// The behaviour of the rule
     public var behaviour: Behaviour
     /// Annotations on the rule
@@ -55,7 +55,15 @@ public final class TerminalRule : BehaviouralRule {
      - Parameter ir: The IR building the AST
      */
     public func test(with lexer: LexicalAnalyzer, for ir: IntermediateRepresentation) throws {
-        try terminal.test(lexer: lexer, producing: behaviour.token)
+        do {
+            try terminal.test(lexer: lexer, producing: behaviour.token)
+        } catch {
+            if let specificError = annotations.error {
+                throw ProcessingError.scanning(message: specificError, position: lexer.index, causes: [])
+            } else {
+                throw error
+            }
+        }
     }
     
     /**
@@ -65,22 +73,22 @@ public final class TerminalRule : BehaviouralRule {
      - Parameter behaviour: If specified will replace this instance's behaviour in the new instance
      - Parameter annotations: If specified will replace this instance's annotations in the new instance
      */
-    public func rule(with behaviour: Behaviour? = nil, annotations: RuleAnnotations? = nil) -> BehaviouralRule {
+    public func rule(with behaviour: Behaviour? = nil, annotations: RuleAnnotations? = nil) -> Rule {
         return TerminalRule(behaviour ?? self.behaviour, and: annotations ?? self.annotations, for: terminal)
     }
     
     /// A textual description of the rule
     public var description: String {
         
-        return "\(annotations.isEmpty ? "" : "\(annotations.description) ")"+behaviour.describe(match:"\(terminal.matchDescription)", requiresScanningPrefix: false)
+        return behaviour.describe(match:"\(terminal.matchDescription)", requiresScanningPrefix: false, annotatedWith: annotations)
     }
     
     /// An abreviated description of the rule
     public var shortDescription: String{
         if let produces = behaviour.token {
-            return behaviour.describe(match: "\(produces)", requiresScanningPrefix: false, requiresStructuralPrefix: false)
+            return behaviour.describe(match: "\(produces)", requiresScanningPrefix: false, requiresStructuralPrefix: false, annotatedWith: annotations)
         }
-        return behaviour.describe(match: "\(terminal.matchDescription)", requiresScanningPrefix: false, requiresStructuralPrefix: false)
+        return behaviour.describe(match: "\(terminal.matchDescription)", requiresScanningPrefix: false, requiresStructuralPrefix: false, annotatedWith: annotations)
     }
     
 }

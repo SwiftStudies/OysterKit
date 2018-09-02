@@ -24,7 +24,7 @@
 
 import XCTest
 import OysterKit
-import STLR
+@testable import STLR
 
 class GrammarStructureTeset: XCTestCase {
     
@@ -36,16 +36,16 @@ class GrammarStructureTeset: XCTestCase {
                         quantifier = "*" | "+" | "?" | "-"
                         """
             
-            let scope     = try _STLR.build(source)
+            let scope     = try ProductionSTLR.build(source)
             XCTAssertEqual(1, scope.grammar.rules.count,"Expected compliation into 1 rule")
-            let grammar   = _GrammarStructure(for: scope, accessLevel: "internal")
+            let grammar   = GrammarStructure(for: scope, accessLevel: "internal")
             
             guard let quantifierNode = grammar.structure.children.first, grammar.structure.children.count == 1 else {
                 XCTFail("Expected one child")
                 return
             }
             XCTAssertEqual("quantifier", quantifierNode.name)
-            XCTAssertEqual(_GrammarStructure.DataType.enumeration, quantifierNode.type)
+            XCTAssertEqual(GrammarStructure.DataType.enumeration, quantifierNode.type)
 
         } catch {
             XCTFail("Unexpected error: \(error)")
@@ -60,16 +60,16 @@ class GrammarStructureTeset: XCTestCase {
                         """
 
         do {
-            let scope     = try _STLR.build(source)
+            let scope     = try ProductionSTLR.build(source)
             XCTAssertEqual(2, scope.grammar.rules.count,"Expected compliation into 2 rules")
-            let grammar   = _GrammarStructure(for: scope, accessLevel: "internal")
+            let grammar   = GrammarStructure(for: scope, accessLevel: "internal")
             
             guard let quantifierNode = grammar.structure.children.first, grammar.structure.children.count == 2 else {
                 XCTFail("Expected two children")
                 return
             }
             XCTAssertEqual("quantifier", quantifierNode.name)
-            XCTAssertEqual(_GrammarStructure.DataType.enumeration, quantifierNode.type)
+            XCTAssertEqual(GrammarStructure.DataType.enumeration, quantifierNode.type)
 
         } catch {
             XCTFail("Unexpected error")

@@ -32,5 +32,5 @@ public protocol Generator {
     ///
     ///  - Parameter scope: The scope
     #warning("Make name optional and overriding")
-    static func generate(for scope:_STLR, grammar name:String, accessLevel:String) throws ->[Operation]
+    static func generate(for scope:STLR, grammar name:String, accessLevel:String) throws ->[Operation]
 }

@@ -27,18 +27,14 @@ import Foundation
 /// Extends `NSRegularExpresion` to implement `Terminal`
 extension NSRegularExpression : Terminal {
     public var matchDescription: String {
-        return "/\(pattern.dropFirst())/"
+        return "/\(pattern)/"
     }
     
-    public func test(lexer: LexicalAnalyzer, producing token:Token?) throws {
+    public func test(lexer: LexicalAnalyzer, producing token:TokenType?) throws {
         do {
             try lexer.scan(regularExpression: self)
         } catch {
-            if let token = token {
-                throw TestError.parsingError(message: "Failed to match \(token), expected '\(self)'", range: lexer.index...lexer.index, causes: [error])
-            } else {
-                throw TestError.scanningError(message: "Expected \(self)", position: lexer.index, causes: [])
-            }
+            throw ProcessingError.scanning(message: "Failed to match \(token == nil ? "\(self.pattern)" : "\(token!)")", position: lexer.index, causes: [error])
         }
     }
 }

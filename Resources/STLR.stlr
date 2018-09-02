@@ -61,25 +61,25 @@ stringQuote          = "\""
 terminalBody         = /(\\.|[^"\\\n])+/
 stringBody           = /(\\.|[^"\\\n])*/
 
-string               = -stringQuote stringBody @error("Missing terminating quote") -stringQuote
-terminalString       = -stringQuote @error("Terminals must have at least one character") terminalBody @error("Missing terminating quote") -stringQuote
+string               = -stringQuote stringBody @error("Missing terminating quote") @coalesce -stringQuote
+terminalString       = -stringQuote @error("Terminals must have at least one character") @coalesce terminalBody @error("Missing terminating quote") @coalesce -stringQuote
 
 //
 // Character Sets and Ranges
 //
-characterSetName                = "letter" |
-"uppercaseLetter" |
-"lowercaseLetter" |
-"alphaNumeric" |
-"decimalDigit" |
-"whitespaceOrNewline" |
-"whitespace" |
-"newline" |
-"backslash"
+characterSetName =  "letter" |
+                    "uppercaseLetter" |
+                    "lowercaseLetter" |
+                    "alphaNumeric" |
+                    "decimalDigit" |
+                    "whitespaceOrNewline" |
+                    "whitespace" |
+                    "newline" |
+                    "backslash"
 
-characterSet                    = -"." @error("Unknown character set") characterSetName
+characterSet                    = -"." @error("Unknown character set") @coalesce characterSetName
 
--rangeOperator                  = ".." @error("Expected ... in character range") "."
+-rangeOperator                  = ".." @error("Expected ... in character range") @coalesce "."
 characterRange                  = terminalString rangeOperator @error("Range must be terminated") terminalString
 
 //
@@ -116,16 +116,23 @@ label                           = definedLabel | customLabel
 regex = startRegex regexBody endRegex 
 
 //
+// Special Cases
+//
+endOfFile = ".endOfFile"
+
+//
 // Element
 //
-terminal                                = characterSet | characterRange | terminalString | regex
+@error("Expected terminal")
+terminal                                =  endOfFile | characterSet | characterRange | terminalString | regex
+
 group                                   = "(" whitespace*
-expression whitespace*
-@error("Expected ')'")
-")"
+                                            expression whitespace*
+                                            @error("Expected ')'") ")"
+
 identifier                              = /[:alpha:]\w*|_\w*/
 
-element                                 = annotations? (lookahead | transient | void)? negated? ( group | terminal | (identifier >>!(ows "=") ) ) quantifier?
+element                                 = annotations? (lookahead | transient | void)? negated? ( @error("Expecting a group") group | @error("Expecting a terminal") terminal | @error("Expecting an identifier") (identifier >>!(ows "=") ) ) quantifier?
 
 //
 // Expressions
@@ -139,7 +146,7 @@ choice                                  = element (or @error("Expected terminal,
 -notNewRule                             = !(annotations? identifier whitespace* (":" whitespace* .letter+ whitespace*)? assignmentOperators)
 sequence                                = element (then >>notNewRule @error("Expected terminal, identifier, or group")element)+
 
-expression                              = choice | sequence | element
+expression                              = @error("Expected a choice") choice | @error("Expected a sequence") sequence | @error("Expected an element") element
 
 //
 // Types
@@ -156,7 +163,7 @@ customType      = ("_"|.uppercaseLetter) ("_"|.letter|.decimalDigit)*
                     annotations?
                     transient?
                     void?
-                    identifier
+                    @error("Expected an identifier") identifier
                     whitespace*
                     (
                         -":"
@@ -164,8 +171,9 @@ customType      = ("_"|.uppercaseLetter) ("_"|.letter|.decimalDigit)*
                         tokenType
                         -whitespace*
                     )?
-                    assignmentOperators
-rule            = lhs whitespace* @error("Expected expression")expression whitespace*
+                    @error("Missing assignment operator") assignmentOperators
+
+rule            = lhs whitespace* @error("Expected expression") @fatal (expression) whitespace*
 
 //
 // Importing
@@ -186,3 +194,4 @@ scopeName       =   -"grammar" -whitespace ows ~(.letter (.letter | .decimalDigi
 grammar         =   -whitespace* @error("You must declare the name of the grammar before any other declarations (e.g. grammar <your-grammar-name>)") scopeName
                     @token("modules") (moduleImport+)?
                     @token("rules") (@error("Expected at least one rule") rule+)
+                    @error("Previous error stopped rule evaluation before end of file") >>.endOfFile

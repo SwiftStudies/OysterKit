@@ -13,7 +13,7 @@ import XCTest
 @testable import ExampleLanguages
 @testable import STLR
 
-fileprivate enum TestToken : Int, Token{
+fileprivate enum TestToken : Int, TokenType{
     case pass
 }
 
@@ -28,7 +28,7 @@ class STLRTest: XCTestCase {
             let ruleSource = """
             id = \(backSlash) "x"
             """
-            let testLanguage = Parser(grammar: try _STLR.build(testGrammarName+ruleSource).grammar.dynamicRules)
+            let testLanguage = try ProductionSTLR.build(testGrammarName+ruleSource).grammar.dynamicRules
 
             let source = "\\x"
             
@@ -41,7 +41,7 @@ class STLRTest: XCTestCase {
                 }
                 XCTAssertEqual("\(ast.token)", "id")
             } catch {
-                XCTFail("Parsing failed, but it should have succeeded")
+                XCTFail("\(error)")
             }
         } catch {
             XCTFail("Unexpected error: \(error)")
@@ -49,49 +49,16 @@ class STLRTest: XCTestCase {
         
     }
     
-    func testPinnedNodes(){
-        do {
-            let ruleSource = """
-            letters = .letter+
-            digits = .decimalDigit+
-
-            pass = letters " " @pin @token("numbers") digits
-"""
-            
-            let stlr = try _STLR.build(testGrammarName+ruleSource)
-            let testLanguage = Parser(grammar: stlr.grammar.dynamicRules)
-            
-            //        print(stlr.ast.swift(grammar: "Test")!)
-            
-            var source = "abc 123"
-            let ast = try! AbstractSyntaxTreeConstructor().build(source, using: testLanguage)
-            
-            //        print(ast.description)
-            XCTAssertNotNil(ast["letters"])
-            XCTAssertNotNil(ast["numbers"])
-            XCTAssertNil(ast["numbers"]?["digits"]) //Numbers should have directly subsumed the expression from digits, and not just wrapped the node
-            XCTAssertEqual(ast["letters"]?.matchedString ?? "", "abc")
-            XCTAssertEqual(ast["numbers"]?.matchedString ?? "", "123")
-            
-            
-            // This should fail
-            source = "abc "
-            XCTAssertNil(try? AbstractSyntaxTreeConstructor().build(source, using: testLanguage))
-        } catch {
-            XCTFail("Unexpected error: \(error)")
-        }
-    }
-    
     func testVoidSugar(){
         do {
             let rule = "-identifier = -\"/\""
-            let parser = try _STLR.build(testGrammarName+rule)
+            let parser = try ProductionSTLR.build(testGrammarName+rule)
             
             let identifier = parser.grammar["identifier"]
             
             XCTAssert(identifier.isVoid)
             
-            if case let _STLR.Expression.element(element) = identifier.expression {
+            if case let ProductionSTLR.Expression.element(element) = identifier.expression {
                 XCTAssert(element.isVoid)
             } else {
                 XCTFail("Expected the identifier element to be an element")
@@ -105,17 +72,26 @@ class STLRTest: XCTestCase {
     func testTransientSugar(){
         do {
             let rule = "~identifier = ~(\"/\")"
-            let parser = try _STLR.build(testGrammarName+rule)
+            let parser = try ProductionSTLR.build(testGrammarName+rule)
             
             let identifier = parser.grammar["identifier"]
             
             XCTAssert(identifier.isTransient)
             
-            if case let _STLR.Expression.element(element) = identifier.expression {
+            if case let ProductionSTLR.Expression.element(element) = identifier.expression {
                 XCTAssert(element.isTransient)
             } else {
                 XCTFail("Expected the identifier element to be an element")
             }
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+    }
+
+    func testExpressionGroupExpressionElement(){
+        do {
+            let rule = "identifier = (.letter)"
+            _ = try ProductionSTLR.build(testGrammarName+rule)            
         } catch {
             XCTFail("Unexpected error: \(error)")
         }

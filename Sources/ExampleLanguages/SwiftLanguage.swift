@@ -9,16 +9,16 @@ import OysterKit
 //
 // SwiftParser Parser
 //
-public class SwiftParser : Parser{
+public class SwiftParser {
     
     // Convenience alias
     private typealias GrammarToken = Tokens
     
-    // Token & Rules Definition
-    enum Tokens : Int, Token {
+    // TokenType & Rules Definition
+    enum Tokens : Int, TokenType {
         case _transient, whitespace, symbol, comment, number, stringQuote, escapedCharacter, stringCharacter, string, keyword, variable
         
-        func _rule(_ annotations: RuleAnnotations = [ : ])->BehaviouralRule {
+        func _rule(_ annotations: RuleAnnotations = [ : ])->Rule {
             switch self {
             case ._transient:
                 return ~CharacterSet(charactersIn: "")
@@ -41,7 +41,7 @@ public class SwiftParser : Parser{
                     [
                         ~".",
                         CharacterSet.decimalDigits.require(.oneOrMore),
-                        ].sequence.require(.optionally),
+                        ].sequence.require(.zeroOrOne),
                     ].sequence.parse(as: self)
             // stringQuote
             case .stringQuote:
@@ -65,14 +65,14 @@ public class SwiftParser : Parser{
             case .string:
                 return [
                     ~"\"",
-                    GrammarToken.stringCharacter._rule().require(.noneOrMore),
+                    GrammarToken.stringCharacter._rule().require(.zeroOrMore),
                     ~"\"",
                     ].sequence.parse(as: self)
             // keyword
             case .keyword:
                 return [
                     ["private", "class", "func", "var", "guard", "let", "static", "init", "case", "typealias", "enum"].choice,
-                    CharacterSet.whitespacesAndNewlines.require(.noneOrMore),
+                    CharacterSet.whitespacesAndNewlines.require(.zeroOrMore),
                     ].sequence.parse(as:self)
             // variable
             case .variable:
@@ -82,10 +82,9 @@ public class SwiftParser : Parser{
                 
     }
     
-
-    
-    // Initialize the parser with the base rule set
-    public init(){
-        super.init(grammar: [GrammarToken.whitespace._rule(), GrammarToken.symbol._rule(), GrammarToken.comment._rule(), GrammarToken.number._rule(), GrammarToken.string._rule(), GrammarToken.keyword._rule(), GrammarToken.variable._rule()])
+    /// Generate the base rule set as a grammar
+    public var grammar : Grammar {
+        return  [GrammarToken.whitespace._rule(), GrammarToken.symbol._rule(), GrammarToken.comment._rule(), GrammarToken.number._rule(), GrammarToken.string._rule(), GrammarToken.keyword._rule(), GrammarToken.variable._rule()]
     }
+
 }

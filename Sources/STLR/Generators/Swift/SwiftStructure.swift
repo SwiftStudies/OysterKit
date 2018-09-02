@@ -25,8 +25,8 @@
 import Foundation
 import OysterKit
 
-extension _GrammarStructure {
-    func swift(to output:TextFile, scope:_STLR, accessLevel:String){
+extension GrammarStructure {
+    func swift(to output:TextFile, scope:STLR, accessLevel:String){
         for child in structure.children {
             child.swift(to: output, scope: scope, accessLevel: accessLevel)
         }
@@ -83,9 +83,9 @@ fileprivate extension StringProtocol {
     }
 }
 
-fileprivate extension _GrammarStructure.Node {
+fileprivate extension GrammarStructure.Node {
     func stringEnum(to output:TextFile, accessLevel:String){
-        output.print("","// \(dataType(accessLevel))","\(accessLevel) enum \(dataType(accessLevel)) : Swift.String, Codable {").indent()
+        output.print("","// \(dataType(accessLevel))","\(accessLevel) enum \(dataType(accessLevel)) : Swift.String, Codable, CaseIterable {").indent()
         let cases = children.map({
             let caseMatchedString = $0.name.hasPrefix("\"") ? String($0.name.dropFirst().dropLast()) : $0.name
             let caseMatchedName   = caseMatchedString.caseName.propertyName
@@ -98,7 +98,7 @@ fileprivate extension _GrammarStructure.Node {
         output.print("case \(cases)").outdent().print("}")
     }
     
-    func swiftEnum(to output:TextFile, scope:_STLR, accessLevel:String){
+    func swiftEnum(to output:TextFile, scope:STLR, accessLevel:String){
         let _ = ""
         if children.reduce(true, {$0 && $1.dataType(accessLevel) == "Swift.String?"}){
             stringEnum(to: output, accessLevel:accessLevel)
@@ -149,7 +149,7 @@ fileprivate extension _GrammarStructure.Node {
     }
     
     
-    func swift(to output:TextFile, scope:_STLR, accessLevel:String){
+    func swift(to output:TextFile, scope:STLR, accessLevel:String){
         var isClass = false
         if type != .unknown {
             if children.isEmpty{
@@ -232,7 +232,7 @@ public class SwiftStructure : Generator{
     ///
     ///  - Parameter scope: The scope to use to generate
     ///  - Returns: A single `TextFile` containing the Swift source
-    public static func generate(for scope: _STLR, grammar name:String, accessLevel:String) throws -> [Operation] {
+    public static func generate(for scope: STLR, grammar name:String, accessLevel:String) throws -> [Operation] {
         let name   = scope.grammar.scopeName
         let output = TextFile("\(name).swift")
         
@@ -258,7 +258,7 @@ public class SwiftStructure : Generator{
         }
         
         // Now the structure
-        let structure = _GrammarStructure(for: scope, accessLevel:accessLevel)
+        let structure = GrammarStructure(for: scope, accessLevel:accessLevel)
         output.print("public struct \(name) : Codable {").indent()
         
         structure.swift(to: output, scope: scope, accessLevel: "public")
@@ -277,12 +277,12 @@ public class SwiftStructure : Generator{
             " - Returns: A new instance of the data-structure",
             " */",
             "\(accessLevel) static func build(_ source : Swift.String) throws ->\(name){").indent().print(
-                "let root = HomogenousTree(with: LabelledToken(withLabel: \"root\"), matching: source, children: [try AbstractSyntaxTreeConstructor().build(source, using: \(name).generatedLanguage)])",
+                "let root = HomogenousTree(with: StringToken(\"root\"), matching: source, children: [try AbstractSyntaxTreeConstructor().build(source, using: \(name).generatedLanguage)])",
                 "// print(root.description)",
                 "return try ParsingDecoder().decode(\(name).self, using: root)").outdent().print(
                     "}",
                     "",
-                    "\(accessLevel) static var generatedLanguage : Language {return Parser(grammar:\(name)Tokens.generatedRules)}"
+                    "\(accessLevel) static var generatedLanguage : Grammar {return Parser(grammar:\(name)Tokens.generatedRules)}"
         )
         
         output.outdent().print("}")

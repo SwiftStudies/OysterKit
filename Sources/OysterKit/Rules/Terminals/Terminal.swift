@@ -25,7 +25,7 @@
 
 import Foundation
 
-public protocol Terminal : BehaviouralRule {
+public protocol Terminal : Rule {
     /**
      Tests the the `Terminal` is available at the current scanner head position,
      throwing an `Error` if not
@@ -33,7 +33,7 @@ public protocol Terminal : BehaviouralRule {
      - Parameter lexer: The lexer being used for scanning
      - Parameter token: The token produced if any. 
     */
-    func test(lexer: LexicalAnalyzer, producing token:Token?) throws
+    func test(lexer: LexicalAnalyzer, producing token:TokenType?) throws
     
     /// Provides a textual description of the match
     var matchDescription : String {get}
@@ -46,7 +46,7 @@ public extension Terminal {
     }
     
     public var shortDescription: String {
-        return behaviour.describe(match: matchDescription, requiresScanningPrefix: false)
+        return behaviour.describe(match: matchDescription, requiresScanningPrefix: false, annotatedWith: annotations)
     }
     
     

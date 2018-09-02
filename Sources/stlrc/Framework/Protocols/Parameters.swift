@@ -120,7 +120,7 @@ public class Parameter{
     public func consume(argument:Argument) throws {
         
         guard let parameterValue = definition.type.transform(argument.value) else {
-            throw Argument.ParsingError.incorrectParameterFormat(expected: definition.type.name, actual: argument.value)
+            throw Argument.Errors.incorrectParameterFormat(expected: definition.type.name, actual: argument.value)
         }
         values.append(parameterValue)
     }
@@ -173,7 +173,7 @@ extension Parameterized {
             }
             
             if captured < parameter.definition.requiredCardinality.min {
-                throw Argument.ParsingError.insufficientParameters(requiredOccurence: parameter.definition.requiredCardinality)
+                throw Argument.Errors.insufficientParameters(requiredOccurence: parameter.definition.requiredCardinality)
             }
             
         }

@@ -41,7 +41,7 @@ open class Command : Optioned, Runnable, Parameterized{
         //While we still have options to process
         while let nextArgument = arguments.top, nextArgument.type == .option {
             guard let option = self[optionCalled: nextArgument.value] else {
-                throw Argument.ParsingError.optionNotFound
+                throw Argument.Errors.optionNotFound
             }
             
             arguments.consume()
@@ -58,7 +58,7 @@ open class Command : Optioned, Runnable, Parameterized{
         //Make sure we have all required options
         for option in options where option.required == true{
             if !option.isSet {
-                throw Argument.ParsingError.requiredOptionNotFound(optionName: option.longForm)
+                throw Argument.Errors.requiredOptionNotFound(optionName: option.longForm)
             }
         }
         

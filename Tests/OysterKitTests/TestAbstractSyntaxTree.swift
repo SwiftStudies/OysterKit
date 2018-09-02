@@ -24,7 +24,7 @@
 
 import XCTest
 @testable import OysterKit
-import STLR
+@testable import STLR
 
 class TestAbstractSyntaxTree: XCTestCase {
 
@@ -32,7 +32,7 @@ class TestAbstractSyntaxTree: XCTestCase {
         do {
             let source = "grammar Test\nwibble = .letters"
             
-            _ = try _STLR.build(source)
+            _ = try ProductionSTLR.build(source)
             XCTFail("Expected error")
 
         } catch {
@@ -44,22 +44,22 @@ class TestAbstractSyntaxTree: XCTestCase {
         do {
             let source = ""
             
-            _ = try _STLR.build(source)
+            _ = try ProductionSTLR.build(source)
             XCTFail("Expected error")
         } catch {
             //Pass
         }
     }
 
-    func testConstruction() {
+    func testInitialiseWithNodes() {
         let exampleString = "Hello World"
-        let worldNode = AbstractSyntaxTreeConstructor.IntermediateRepresentationNode(for: LabelledToken(withLabel: "world"), at: exampleString.range(of: "World")!, annotations: [
+        let worldNode = AbstractSyntaxTreeConstructor.IntermediateRepresentationNode(for: StringToken("world"), at: exampleString.range(of: "World")!, annotations: [
             RuleAnnotation.void : RuleAnnotationValue.set,
             RuleAnnotation.custom(label: "Integer") : RuleAnnotationValue.int(10),
             RuleAnnotation.custom(label: "Boolean") : RuleAnnotationValue.bool(true),
             RuleAnnotation.custom(label: "String") : RuleAnnotationValue.string("value"),
             ])
-        let helloNode = AbstractSyntaxTreeConstructor.IntermediateRepresentationNode(for: LabelledToken(withLabel: "hello"), at: exampleString.range(of: "Hello World")!, children: [worldNode], annotations: [
+        let helloNode = AbstractSyntaxTreeConstructor.IntermediateRepresentationNode(for: StringToken("hello"), at: exampleString.range(of: "Hello World")!, children: [worldNode], annotations: [
             RuleAnnotation.void : RuleAnnotationValue.set
             ])
 
@@ -76,6 +76,63 @@ class TestAbstractSyntaxTree: XCTestCase {
         } catch {
             XCTFail("AST contruction resulted in: \(error)")
         }        
+    }
+
+    func testBuildFromRepeatedCharacters(){
+        let token = StringToken("match")
+        let rule = CharacterSet.letters.require(.oneOrMore).parse(as: token)
+        let shouldMatch = "Hello"
+        let source = shouldMatch
+        
+        do {
+            let ast = try AbstractSyntaxTreeConstructor(with: source).build(using: [rule])
+            XCTAssertEqual(ast.matchedString, shouldMatch)
+            XCTAssertEqual("\(ast.token)", "\(token)")
+            XCTAssertEqual(ast.children.count, 0)
+            print(ast)
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+    }
+    
+    func testRepeatedNegatedCharacters(){
+        let token = StringToken("match")
+        let rule = !CharacterSet.decimalDigits.require(.oneOrMore).parse(as: token)
+        let shouldMatch = "Hello"
+        let source = shouldMatch
+        
+        do {
+            let ast = try AbstractSyntaxTreeConstructor(with: source).build(using: [rule])
+            XCTAssertEqual(ast.matchedString, shouldMatch)
+            XCTAssertEqual("\(ast.token)", "\(token)")
+            XCTAssertEqual(ast.children.count, 0)
+            print(ast)
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+    }
+    
+    func testBuildFromSkipScanTokenScanSkipMatch(){
+        let token = StringToken("match")
+        let rule = [
+            "\"".skip(),
+            " ".require(.oneOrMore),
+            CharacterSet.letters.require(.zeroOrMore),
+            " ".require(.oneOrMore),
+            "\"".skip()
+        ].sequence.parse(as: token)
+        let shouldMatch = "      String      "
+        let source = "\"\(shouldMatch)\""
+        
+        do {
+            let ast = try AbstractSyntaxTreeConstructor(with: source).build(using: [rule])
+            XCTAssertEqual(ast.matchedString, shouldMatch)
+            XCTAssertEqual(ast.token.rawValue, token.rawValue)
+            XCTAssertEqual(ast.children.count, 0)
+            print(ast)
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
     }
 
 }

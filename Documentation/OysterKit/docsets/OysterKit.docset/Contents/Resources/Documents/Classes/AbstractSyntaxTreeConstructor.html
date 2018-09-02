@@ -23,7 +23,7 @@
         <a class="header-link" href="../index.html">
           OysterKit Docs
         </a>
-         (95% documented)
+         (93% documented)
       </p>
     
       <p class="header-col--secondary">
@@ -51,10 +51,10 @@
                 <a class="nav-group-task-link" href="../Classes/AbstractSyntaxTreeConstructor.html">AbstractSyntaxTreeConstructor</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Classes/AbstractSyntaxTreeConstructor/ConstructionError.html">– ConstructionError</a>
+                <a class="nav-group-task-link" href="../Classes/AbstractSyntaxTreeConstructor/IntermediateRepresentationNode.html">– IntermediateRepresentationNode</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Classes/AbstractSyntaxTreeConstructor/IntermediateRepresentationNode.html">– IntermediateRepresentationNode</a>
+                <a class="nav-group-task-link" href="../Classes/ChoiceRule.html">ChoiceRule</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/ClosureRule.html">ClosureRule</a>
@@ -69,16 +69,22 @@
                 <a class="nav-group-task-link" href="../Classes/NodeStackEntry.html">NodeStackEntry</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Classes/Parser.html">Parser</a>
+                <a class="nav-group-task-link" href="../Classes/RecursiveRule.html">RecursiveRule</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Classes/RecursiveRule.html">RecursiveRule</a>
+                <a class="nav-group-task-link" href="../Classes/ReferenceRule.html">ReferenceRule</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/SequenceRule.html">SequenceRule</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/StateCache.html">StateCache</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/StringScanner.html">StringScanner</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/TerminalRule.html">TerminalRule</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/TokenStream.html">TokenStream</a>
@@ -89,22 +95,8 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a class="nav-group-name-link" href="../Global Variables.html">Global Variables</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Global Variables.html#/s:9OysterKit19transientTokenValueSivp">transientTokenValue</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
             <a class="nav-group-name-link" href="../Enums.html">Enumerations</a>
             <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Enums/GrammarError.html">GrammarError</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Enums/LanguageError.html">LanguageError</a>
-              </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/Log.html">Log</a>
               </li>
@@ -112,19 +104,13 @@
                 <a class="nav-group-task-link" href="../Enums/MatchResult.html">MatchResult</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Enums/ParserRule.html">ParserRule</a>
+                <a class="nav-group-task-link" href="../Enums/ProcessingError.html">ProcessingError</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/RuleAnnotation.html">RuleAnnotation</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/RuleAnnotationValue.html">RuleAnnotationValue</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Enums/ScannerRule.html">ScannerRule</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Enums/TransientToken.html">TransientToken</a>
               </li>
             </ul>
           </li>
@@ -144,7 +130,13 @@
                 <a class="nav-group-task-link" href="../Extensions/Decodable.html">Decodable</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Dictionary.html">Dictionary</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Extensions/Int.html">Int</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/NSRegularExpression.html">NSRegularExpression</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Extensions/String.html">String</a>
@@ -158,10 +150,22 @@
             <a class="nav-group-name-link" href="../Functions.html">Functions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit2eeoiySbAA5Token_p_AaC_ptF">==(_:_:)</a>
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit1nopyAA4Rule_pAaC_pF">!(_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit1sopyAA4Rule_pAaC_pF">-(_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit2eeoiySbAA9TokenType_p_AaC_ptF">==(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit2ggopyAA4Rule_pAaC_pF">&gt;&gt;(_:)</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit8areEqual3lhs3rhsSbSDyAA14RuleAnnotationOAA0gH5ValueOG_AItF">areEqual(lhs:rhs:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit1topyAA4Rule_pAaC_pF">~(_:)</a>
               </li>
             </ul>
           </li>
@@ -172,19 +176,16 @@
                 <a class="nav-group-task-link" href="../Protocols/AbstractSyntaxTree.html">AbstractSyntaxTree</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/BehaviouralRule.html">BehaviouralRule</a>
+                <a class="nav-group-task-link" href="../Protocols/CausalErrorType.html">CausalErrorType</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/DecodeableAbstractSyntaxTree.html">DecodeableAbstractSyntaxTree</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/HumanConsumableError.html">HumanConsumableError</a>
+                <a class="nav-group-task-link" href="../Protocols/Grammar.html">Grammar</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/Language.html">Language</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a>
@@ -199,7 +200,10 @@
                 <a class="nav-group-task-link" href="../Protocols/Rule.html">Rule</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/Token.html">Token</a>
+                <a class="nav-group-task-link" href="../Protocols/Terminal.html">Terminal</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/TokenType.html">TokenType</a>
               </li>
             </ul>
           </li>
@@ -216,13 +220,19 @@
                 <a class="nav-group-task-link" href="../Structs/Cardinality.html">Cardinality</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/EndOfFile.html">EndOfFile</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/HomogenousTree.html">HomogenousTree</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Structs/LabelledToken.html">LabelledToken</a>
+                <a class="nav-group-task-link" href="../Structs/ParsingDecoder.html">ParsingDecoder</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Structs/ParsingDecoder.html">ParsingDecoder</a>
+                <a class="nav-group-task-link" href="../Structs/ProcessingErrorType.html">ProcessingErrorType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/StringToken.html">StringToken</a>
               </li>
             </ul>
           </li>
@@ -230,7 +240,10 @@
             <a class="nav-group-name-link" href="../Typealiases.html">Type Aliases</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit17CustomRuleClosurea">CustomRuleClosure</a>
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit8Languagea">Language</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit6Parsera">Parser</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a>
@@ -271,9 +284,9 @@ any Swift Type by utlizing the Swift Decoder framework to decode the intermediat
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit29AbstractSyntaxTreeConstructorC17ConstructionErrorO"></a>
-                    <a name="//apple_ref/swift/Enum/ConstructionError" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit29AbstractSyntaxTreeConstructorC17ConstructionErrorO">ConstructionError</a>
+                    <a name="/s:9OysterKit29AbstractSyntaxTreeConstructorC17ConstructionErrora"></a>
+                    <a name="//apple_ref/swift/Alias/ConstructionError" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit29AbstractSyntaxTreeConstructorC17ConstructionErrora">ConstructionError</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -283,13 +296,13 @@ any Swift Type by utlizing the Swift Decoder framework to decode the intermediat
                       <div class="abstract">
                         <p>Errors that can occur during AST creation</p>
 
-                        <a href="../Classes/AbstractSyntaxTreeConstructor/ConstructionError.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">ConstructionError</span> <span class="p">:</span> <span class="kt">Error</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">@available(*, deprecated, message: "Use ProcessingError instead")</span>
+<span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">ConstructionError</span> <span class="o">=</span> <span class="kt"><a href="../Enums/ProcessingError.html">ProcessingError</a></span></code></pre>
 
                         </div>
                       </div>
@@ -408,9 +421,9 @@ any Swift Type by utlizing the Swift Decoder framework to decode the intermediat
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit29AbstractSyntaxTreeConstructorC5build_5using4fromAExxm_q_mSSAA8Language_ptKSeRzAA010DecodeablecdE0R_r0_lF"></a>
+                    <a name="/s:9OysterKit29AbstractSyntaxTreeConstructorC5build_5using4fromAExxm_q_mSSAA7Grammar_ptKSeRzAA010DecodeablecdE0R_r0_lF"></a>
                     <a name="//apple_ref/swift/Method/build(_:using:from:using:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit29AbstractSyntaxTreeConstructorC5build_5using4fromAExxm_q_mSSAA8Language_ptKSeRzAA010DecodeablecdE0R_r0_lF">build(_:using:from:using:)</a>
+                    <a class="token" href="#/s:9OysterKit29AbstractSyntaxTreeConstructorC5build_5using4fromAExxm_q_mSSAA7Grammar_ptKSeRzAA010DecodeablecdE0R_r0_lF">build(_:using:from:using:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -420,7 +433,7 @@ any Swift Type by utlizing the Swift Decoder framework to decode the intermediat
                       <div class="abstract">
                         <p>Constructs a heterogenous AST by first constructing the specified DecodableAbstractSyntaxTree (meeting the requirements of the <code><a href="../Structs/ParsingDecoder.html">ParsingDecoder</a></code> class).
 You typically do not need to use this method (where you are specifying your own AST to use) and you should consider
-<code>build&lt;T:Decodable&gt;(_ heterogenousType:T.Type, from source: String, using language: Language)</code> which will create a <code>HomegenousTree</code> which is very
+<code>build&lt;T:Decodable&gt;(_ heterogenousType:T.Type, from source: String, using language: Grammar)</code> which will create a <code>HomegenousTree</code> which is very
 easy to use to decode into a concrete type.</p>
 
                       </div>
@@ -428,7 +441,7 @@ easy to use to decode into a concrete type.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">build</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">,</span> <span class="kt">AST</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">heterogenousType</span><span class="p">:</span> <span class="kt">T</span><span class="o">.</span><span class="k">Type</span><span class="p">,</span> <span class="n">using</span> <span class="nv">astType</span><span class="p">:</span> <span class="kt">AST</span><span class="o">.</span><span class="k">Type</span><span class="p">,</span> <span class="n">from</span> <span class="nv">source</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">using</span> <span class="nv">language</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Language.html">Language</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">T</span> <span class="k">where</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">AST</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/DecodeableAbstractSyntaxTree.html">DecodeableAbstractSyntaxTree</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">build</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">,</span> <span class="kt">AST</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">heterogenousType</span><span class="p">:</span> <span class="kt">T</span><span class="o">.</span><span class="k">Type</span><span class="p">,</span> <span class="n">using</span> <span class="nv">astType</span><span class="p">:</span> <span class="kt">AST</span><span class="o">.</span><span class="k">Type</span><span class="p">,</span> <span class="n">from</span> <span class="nv">source</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">using</span> <span class="nv">language</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Grammar.html">Grammar</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">T</span> <span class="k">where</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">AST</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/DecodeableAbstractSyntaxTree.html">DecodeableAbstractSyntaxTree</a></span></code></pre>
 
                         </div>
                       </div>
@@ -525,9 +538,9 @@ a series of failures of evaluating a previous set of tokens before failing.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit29AbstractSyntaxTreeConstructorC5build_4from5usingxxm_SSAA8Language_ptKSeRzlF"></a>
+                    <a name="/s:9OysterKit29AbstractSyntaxTreeConstructorC5build_4from5usingxxm_SSAA7Grammar_ptKSeRzlF"></a>
                     <a name="//apple_ref/swift/Method/build(_:from:using:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit29AbstractSyntaxTreeConstructorC5build_4from5usingxxm_SSAA8Language_ptKSeRzlF">build(_:from:using:)</a>
+                    <a class="token" href="#/s:9OysterKit29AbstractSyntaxTreeConstructorC5build_4from5usingxxm_SSAA7Grammar_ptKSeRzlF">build(_:from:using:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -543,7 +556,7 @@ Swift&rsquo;s Decoder framework to create the heterogenous AST.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">build</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">heterogenousType</span><span class="p">:</span> <span class="kt">T</span><span class="o">.</span><span class="k">Type</span><span class="p">,</span> <span class="n">from</span> <span class="nv">source</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">using</span> <span class="nv">language</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Language.html">Language</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">T</span> <span class="k">where</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt">Decodable</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">build</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">heterogenousType</span><span class="p">:</span> <span class="kt">T</span><span class="o">.</span><span class="k">Type</span><span class="p">,</span> <span class="n">from</span> <span class="nv">source</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">using</span> <span class="nv">language</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Grammar.html">Grammar</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">T</span> <span class="k">where</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt">Decodable</span></code></pre>
 
                         </div>
                       </div>
@@ -600,9 +613,9 @@ Swift&rsquo;s Decoder framework to create the heterogenous AST.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit29AbstractSyntaxTreeConstructorC5build_4from5usingxxm_SSAA8Language_ptKAA0cdE0RzlF"></a>
+                    <a name="/s:9OysterKit29AbstractSyntaxTreeConstructorC5build_4from5usingxxm_SSAA7Grammar_ptKAA0cdE0RzlF"></a>
                     <a name="//apple_ref/swift/Method/build(_:from:using:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit29AbstractSyntaxTreeConstructorC5build_4from5usingxxm_SSAA8Language_ptKAA0cdE0RzlF">build(_:from:using:)</a>
+                    <a class="token" href="#/s:9OysterKit29AbstractSyntaxTreeConstructorC5build_4from5usingxxm_SSAA7Grammar_ptKAA0cdE0RzlF">build(_:from:using:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -611,7 +624,7 @@ Swift&rsquo;s Decoder framework to create the heterogenous AST.</p>
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Constructs a homogenous AST from the supplied source and language. You typically do not need to use this method (where you are
-specifying your own AST to use) and you should consider <code>build(from source: String, using language: Language)</code> which creates a
+specifying your own AST to use) and you should consider <code>build(from source: String, using language: Grammar)</code> which creates a
 <code>HomegenousTree</code> which is very easy to work with.</p>
 
                       </div>
@@ -619,7 +632,7 @@ specifying your own AST to use) and you should consider <code>build(from source:
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">build</span><span class="o">&lt;</span><span class="kt">AST</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">astType</span><span class="p">:</span> <span class="kt">AST</span><span class="o">.</span><span class="k">Type</span><span class="p">,</span> <span class="n">from</span> <span class="nv">source</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">using</span> <span class="nv">language</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Language.html">Language</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">AST</span> <span class="k">where</span> <span class="kt">AST</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/AbstractSyntaxTree.html">AbstractSyntaxTree</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">build</span><span class="o">&lt;</span><span class="kt">AST</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">astType</span><span class="p">:</span> <span class="kt">AST</span><span class="o">.</span><span class="k">Type</span><span class="p">,</span> <span class="n">from</span> <span class="nv">source</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">using</span> <span class="nv">language</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Grammar.html">Grammar</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">AST</span> <span class="k">where</span> <span class="kt">AST</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/AbstractSyntaxTree.html">AbstractSyntaxTree</a></span></code></pre>
 
                         </div>
                       </div>
@@ -676,9 +689,9 @@ specifying your own AST to use) and you should consider <code>build(from source:
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit29AbstractSyntaxTreeConstructorC5build_5usingAA010HomogenousE0VSS_AA8Language_ptKF"></a>
+                    <a name="/s:9OysterKit29AbstractSyntaxTreeConstructorC5build_5usingAA010HomogenousE0VSS_AA7Grammar_ptKF"></a>
                     <a name="//apple_ref/swift/Method/build(_:using:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit29AbstractSyntaxTreeConstructorC5build_5usingAA010HomogenousE0VSS_AA8Language_ptKF">build(_:using:)</a>
+                    <a class="token" href="#/s:9OysterKit29AbstractSyntaxTreeConstructorC5build_5usingAA010HomogenousE0VSS_AA7Grammar_ptKF">build(_:using:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -693,7 +706,7 @@ specifying your own AST to use) and you should consider <code>build(from source:
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">build</span><span class="p">(</span><span class="n">_</span> <span class="nv">source</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">using</span> <span class="nv">language</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Language.html">Language</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/HomogenousTree.html">HomogenousTree</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">build</span><span class="p">(</span><span class="n">_</span> <span class="nv">source</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">using</span> <span class="nv">language</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Grammar.html">Grammar</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/HomogenousTree.html">HomogenousTree</a></span></code></pre>
 
                         </div>
                       </div>
@@ -716,7 +729,57 @@ specifying your own AST to use) and you should consider <code>build(from source:
                             <tr>
                               <td>
                                 <code>
-                                <em>using</em>
+                                <em>language</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The language to use to parse the source</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A <code>HomogenousAbstractSyntaxTree</code></p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit29AbstractSyntaxTreeConstructorC5build5usingAA010HomogenousE0VAA7Grammar_p_tKF"></a>
+                    <a name="//apple_ref/swift/Method/build(using:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit29AbstractSyntaxTreeConstructorC5build5usingAA010HomogenousE0VAA7Grammar_p_tKF">build(using:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Constructs a homogenous AST from the supplied language.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">build</span><span class="p">(</span><span class="n">using</span> <span class="nv">language</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Grammar.html">Grammar</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/HomogenousTree.html">HomogenousTree</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>language</em>
                                 </code>
                               </td>
                               <td>
@@ -742,9 +805,9 @@ specifying your own AST to use) and you should consider <code>build(from source:
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit29AbstractSyntaxTreeConstructorC13willBuildFrom6source4withySS_AA8Language_ptF"></a>
+                    <a name="/s:9OysterKit29AbstractSyntaxTreeConstructorC13willBuildFrom6source4withySS_AA7Grammar_ptF"></a>
                     <a name="//apple_ref/swift/Method/willBuildFrom(source:with:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit29AbstractSyntaxTreeConstructorC13willBuildFrom6source4withySS_AA8Language_ptF">willBuildFrom(source:with:)</a>
+                    <a class="token" href="#/s:9OysterKit29AbstractSyntaxTreeConstructorC13willBuildFrom6source4withySS_AA7Grammar_ptF">willBuildFrom(source:with:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -759,7 +822,7 @@ specifying your own AST to use) and you should consider <code>build(from source:
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">willBuildFrom</span><span class="p">(</span><span class="nv">source</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">with</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Language.html">Language</a></span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">willBuildFrom</span><span class="p">(</span><span class="nv">source</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">with</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Grammar.html">Grammar</a></span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -769,9 +832,9 @@ specifying your own AST to use) and you should consider <code>build(from source:
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit29AbstractSyntaxTreeConstructorC12willEvaluate4rule2atAA11MatchResultOSgAA4Rule_p_SS5IndexVtF"></a>
-                    <a name="//apple_ref/swift/Method/willEvaluate(rule:at:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit29AbstractSyntaxTreeConstructorC12willEvaluate4rule2atAA11MatchResultOSgAA4Rule_p_SS5IndexVtF">willEvaluate(rule:at:)</a>
+                    <a name="/s:9OysterKit26IntermediateRepresentationP10evaluatingyyAA9TokenType_pF"></a>
+                    <a name="//apple_ref/swift/Method/evaluating(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit26IntermediateRepresentationP10evaluatingyyAA9TokenType_pF">evaluating(_:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -779,14 +842,13 @@ specifying your own AST to use) and you should consider <code>build(from source:
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Does nothing</p>
-
+                        
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">willEvaluate</span><span class="p">(</span><span class="nv">rule</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Rule.html">Rule</a></span><span class="p">,</span> <span class="n">at</span> <span class="nv">position</span><span class="p">:</span> <span class="kt">String</span><span class="o">.</span><span class="kt">UnicodeScalarView</span><span class="o">.</span><span class="kt">Index</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Enums/MatchResult.html">MatchResult</a></span><span class="p">?</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">evaluating</span><span class="p">(</span><span class="n">_</span> <span class="nv">token</span><span class="p">:</span> <span class="kt"><a href="../Protocols/TokenType.html">TokenType</a></span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -796,9 +858,9 @@ specifying your own AST to use) and you should consider <code>build(from source:
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit29AbstractSyntaxTreeConstructorC12willEvaluate5token2atAA11MatchResultOSgAA5Token_p_SS5IndexVtF"></a>
-                    <a name="//apple_ref/swift/Method/willEvaluate(token:at:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit29AbstractSyntaxTreeConstructorC12willEvaluate5token2atAA11MatchResultOSgAA5Token_p_SS5IndexVtF">willEvaluate(token:at:)</a>
+                    <a name="/s:9OysterKit26IntermediateRepresentationP9succeeded5token11annotations5rangeyAA9TokenType_p_SDyAA14RuleAnnotationOAA0kL5ValueOGSnySS5IndexVGtF"></a>
+                    <a name="//apple_ref/swift/Method/succeeded(token:annotations:range:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit26IntermediateRepresentationP9succeeded5token11annotations5rangeyAA9TokenType_p_SDyAA14RuleAnnotationOAA0kL5ValueOGSnySS5IndexVGtF">succeeded(token:annotations:range:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -806,14 +868,13 @@ specifying your own AST to use) and you should consider <code>build(from source:
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Prepare for evaluation</p>
-
+                        
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">willEvaluate</span><span class="p">(</span><span class="nv">token</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Token.html">Token</a></span><span class="p">,</span> <span class="n">at</span> <span class="nv">position</span><span class="p">:</span> <span class="kt">String</span><span class="o">.</span><span class="kt">UnicodeScalarView</span><span class="o">.</span><span class="kt">Index</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Enums/MatchResult.html">MatchResult</a></span><span class="p">?</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">succeeded</span><span class="p">(</span><span class="nv">token</span><span class="p">:</span> <span class="kt"><a href="../Protocols/TokenType.html">TokenType</a></span><span class="p">,</span> <span class="nv">annotations</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></span><span class="p">,</span> <span class="nv">range</span><span class="p">:</span> <span class="kt">Range</span><span class="o">&lt;</span><span class="kt">String</span><span class="o">.</span><span class="kt">Index</span><span class="o">&gt;</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -823,9 +884,9 @@ specifying your own AST to use) and you should consider <code>build(from source:
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit29AbstractSyntaxTreeConstructorC11didEvaluate5token11annotations11matchResultyAA5Token_p_SDyAA14RuleAnnotationOAA0nO5ValueOGAA05MatchL0OtF"></a>
-                    <a name="//apple_ref/swift/Method/didEvaluate(token:annotations:matchResult:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit29AbstractSyntaxTreeConstructorC11didEvaluate5token11annotations11matchResultyAA5Token_p_SDyAA14RuleAnnotationOAA0nO5ValueOGAA05MatchL0OtF">didEvaluate(token:annotations:matchResult:)</a>
+                    <a name="/s:9OysterKit26IntermediateRepresentationP6failedyyF"></a>
+                    <a name="//apple_ref/swift/Method/failed()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit26IntermediateRepresentationP6failedyyF">failed()</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -833,41 +894,13 @@ specifying your own AST to use) and you should consider <code>build(from source:
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Process the results of evalution</p>
-
+                        
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didEvaluate</span><span class="p">(</span><span class="nv">token</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Token.html">Token</a></span><span class="p">,</span> <span class="nv">annotations</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></span><span class="p">,</span> <span class="nv">matchResult</span><span class="p">:</span> <span class="kt"><a href="../Enums/MatchResult.html">MatchResult</a></span><span class="p">)</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:9OysterKit29AbstractSyntaxTreeConstructorC11didEvaluate4rule11matchResultyAA4Rule_p_AA05MatchK0OtF"></a>
-                    <a name="//apple_ref/swift/Method/didEvaluate(rule:matchResult:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit29AbstractSyntaxTreeConstructorC11didEvaluate4rule11matchResultyAA4Rule_p_AA05MatchK0OtF">didEvaluate(rule:matchResult:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Processes the results of evaluation</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">didEvaluate</span><span class="p">(</span><span class="nv">rule</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Rule.html">Rule</a></span><span class="p">,</span> <span class="nv">matchResult</span><span class="p">:</span> <span class="kt"><a href="../Enums/MatchResult.html">MatchResult</a></span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">failed</span><span class="p">()</span></code></pre>
 
                         </div>
                       </div>
@@ -928,187 +961,6 @@ specifying your own AST to use) and you should consider <code>build(from source:
                     </section>
                   </div>
                 </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:9OysterKit29AbstractSyntaxTreeConstructorC5match5token11annotations7context8childrenAC30IntermediateRepresentationNodeVSgAA5Token_p_SDyAA14RuleAnnotationOAA0pQ5ValueOGAA14LexicalContext_pSayAJGtF"></a>
-                    <a name="//apple_ref/swift/Method/match(token:annotations:context:children:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit29AbstractSyntaxTreeConstructorC5match5token11annotations7context8childrenAC30IntermediateRepresentationNodeVSgAA5Token_p_SDyAA14RuleAnnotationOAA0pQ5ValueOGAA14LexicalContext_pSayAJGtF">match(token:annotations:context:children:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>If the token is transient <code>nil</code> is returned. Otherwise the behaviour is determined by the number of children</p>
-
-<ul>
-<li>0: A new instance of <code>HeterogeneousNode</code> is created and returned</li>
-<li>1: Providing the token is not @pin&rsquo;d a new <code>HeterogeousNode</code> is created for the child&rsquo;s range and value and returned If it is @pin&rsquo;d behaviour falls through to</li>
-<li><p><em>n</em>: Return a new <code>HeterogeneousNode</code> with the combined range of all children and the children are set as the node&rsquo;s value</p></li>
-</ul>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">final</span> <span class="kd">public</span> <span class="kd">func</span> <span class="nf">match</span><span class="p">(</span><span class="nv">token</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Token.html">Token</a></span><span class="p">,</span> <span class="nv">annotations</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></span><span class="p">,</span> <span class="nv">context</span><span class="p">:</span> <span class="kt"><a href="../Protocols/LexicalContext.html">LexicalContext</a></span><span class="p">,</span> <span class="nv">children</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Classes/AbstractSyntaxTreeConstructor/IntermediateRepresentationNode.html">IntermediateRepresentationNode</a></span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/AbstractSyntaxTreeConstructor/IntermediateRepresentationNode.html">IntermediateRepresentationNode</a></span><span class="p">?</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>token</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The token that has been successfully identified in the source</p>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>annotations</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The annotations that had been marked on this instance of the token</p>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>context</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The <code><a href="../Protocols/LexicalContext.html">LexicalContext</a></code> from the <code><a href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a></code> from which an implementation can extract the matched range.</p>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>children</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>Any <code><a href="../Protocols/Node.html">Node</a></code>s that were created while this token was being evaluated.</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p>Any <code><a href="../Protocols/Node.html">Node</a></code> that was created, or <code>nil</code> if not</p>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:9OysterKit29AbstractSyntaxTreeConstructorC17ignoreableFailure5token11annotations5indexAC30IntermediateRepresentationNodeVSgAA5Token_p_SDyAA14RuleAnnotationOAA0pQ5ValueOGSS5IndexVtF"></a>
-                    <a name="//apple_ref/swift/Method/ignoreableFailure(token:annotations:index:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit29AbstractSyntaxTreeConstructorC17ignoreableFailure5token11annotations5indexAC30IntermediateRepresentationNodeVSgAA5Token_p_SDyAA14RuleAnnotationOAA0pQ5ValueOGSS5IndexVtF">ignoreableFailure(token:annotations:index:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>If the token is not transient but is pinned a node is created with a range at the current scan-head but no value. Otherwise <code>nil</code> is returned.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">ignoreableFailure</span><span class="p">(</span><span class="nv">token</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Token.html">Token</a></span><span class="p">,</span> <span class="nv">annotations</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Enums/RuleAnnotation.html">RuleAnnotation</a></span> <span class="p">:</span> <span class="kt"><a href="../Enums/RuleAnnotationValue.html">RuleAnnotationValue</a></span><span class="p">],</span> <span class="nv">index</span><span class="p">:</span> <span class="kt">String</span><span class="o">.</span><span class="kt">UnicodeScalarView</span><span class="o">.</span><span class="kt">Index</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/AbstractSyntaxTreeConstructor/IntermediateRepresentationNode.html">IntermediateRepresentationNode</a></span><span class="p">?</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>token</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The token that failed to be matched identified in the source</p>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>annotations</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The annotations that had been marked on this instance of the token</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p>Any <code><a href="../Protocols/Node.html">Node</a></code> that was created, or <code>nil</code> if not</p>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:9OysterKit29AbstractSyntaxTreeConstructorC6failed5tokenyAA5Token_p_tF"></a>
-                    <a name="//apple_ref/swift/Method/failed(token:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit29AbstractSyntaxTreeConstructorC6failed5tokenyAA5Token_p_tF">failed(token:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>No behaviour</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">failed</span><span class="p">(</span><span class="nv">token</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Token.html">Token</a></span><span class="p">)</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
               </ul>
             </div>
           </div>
@@ -1117,7 +969,7 @@ specifying your own AST to use) and you should consider <code>build(from source:
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-07-17)</p>
+      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-09-02)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

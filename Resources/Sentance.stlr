@@ -1,0 +1,11 @@
+grammar Sentance
+
+punctuation = "." | "," | "!" | "?"
+
+properNoun  = .uppercaseLetter .lowercaseLetter*
+other       = .letter+
+
+word        = properNoun | other
+words       = (word .whitespace+)
+
+sentance    = words punctuation

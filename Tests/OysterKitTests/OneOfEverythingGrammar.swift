@@ -6,7 +6,7 @@
 import Foundation
 import OysterKit
 
-enum OneOfEverythingGrammar : Int, Token {
+enum OneOfEverythingGrammar : Int, TokenType {
     typealias T = OneOfEverythingGrammar
     // Cache for compiled regular expressions
     private static var regularExpressionCache = [String : NSRegularExpression]()
@@ -33,117 +33,48 @@ enum OneOfEverythingGrammar : Int, Token {
     case `ws`, `boolean`, `integer`, `byte`, `word`, `longWord`, `longLongWord`, `unsignedInteger`, `unsignedByte`, `unsignedWord`, `unsignedLongWord`, `unsignedLongLongWord`, `float`, `double`, `string`, `oneOfEverything`
     
     /// The rule for the token
-    var rule : BehaviouralRule {
+    var rule : Rule {
         switch self {
         /// ws
         case .ws:
             return -[
-                CharacterSet.whitespacesAndNewlines.require(.noneOrMore)
+                CharacterSet.whitespacesAndNewlines.require(.zeroOrMore)
                 ].sequence
             
         /// boolean
         case .boolean:
-            return [
-                [
-                    [
-                        "true".require(.one),
-                        "false".require(.one)].choice
-                    ,
-                    T.ws.rule.require(.one)
-                ].sequence
-                
-                ].sequence.parse(as: self)
+            return [["true","false"].choice, T.ws.rule].sequence.reference(.structural(token: self))
             
         /// integer
         case .integer:
-            return [
-                [
-                    CharacterSet.decimalDigits.require(.oneOrMore),
-                    T.ws.rule.require(.one)].sequence
-                
-                ].sequence.parse(as: self)
-            
+            return [CharacterSet.decimalDigits.require(.oneOrMore), T.ws.rule].sequence.reference(.structural(token: self))
         /// byte
         case .byte:
-            return [
-                [
-                    CharacterSet.decimalDigits.require(.oneOrMore),
-                    T.ws.rule.require(.one)].sequence
-                
-                ].sequence.parse(as: self)
-            
+            return [CharacterSet.decimalDigits.require(.oneOrMore), T.ws.rule].sequence.reference(.structural(token: self))
         /// word
         case .word:
-            return [
-                [
-                    CharacterSet.decimalDigits.require(.oneOrMore),
-                    T.ws.rule.require(.one)].sequence
-                
-                ].sequence.parse(as: self)
-            
+            return [CharacterSet.decimalDigits.require(.oneOrMore), T.ws.rule].sequence.reference(.structural(token: self))
         /// longWord
         case .longWord:
-            return [
-                [
-                    CharacterSet.decimalDigits.require(.oneOrMore),
-                    T.ws.rule.require(.one)].sequence
-                
-                ].sequence.parse(as: self)
-            
+            return [CharacterSet.decimalDigits.require(.oneOrMore), T.ws.rule].sequence.reference(.structural(token: self))
         /// longLongWord
         case .longLongWord:
-            return [
-                [
-                    CharacterSet.decimalDigits.require(.oneOrMore),
-                    T.ws.rule.require(.one)].sequence
-                
-                ].sequence.parse(as: self)
-            
+            return [CharacterSet.decimalDigits.require(.oneOrMore), T.ws.rule].sequence.reference(.structural(token: self))
         /// unsignedInteger
         case .unsignedInteger:
-            return [
-                [
-                    CharacterSet.decimalDigits.require(.oneOrMore),
-                    T.ws.rule.require(.one)].sequence
-                
-                ].sequence.parse(as: self)
-            
+            return [CharacterSet.decimalDigits.require(.oneOrMore), T.ws.rule].sequence.reference(.structural(token: self))
         /// unsignedByte
         case .unsignedByte:
-            return [
-                [
-                    CharacterSet.decimalDigits.require(.oneOrMore),
-                    T.ws.rule.require(.one)].sequence
-                
-                ].sequence.parse(as: self)
-            
+            return [CharacterSet.decimalDigits.require(.oneOrMore), T.ws.rule].sequence.reference(.structural(token: self))
         /// unsignedWord
         case .unsignedWord:
-            return [
-                [
-                    CharacterSet.decimalDigits.require(.oneOrMore),
-                    T.ws.rule.require(.one)].sequence
-                
-                ].sequence.parse(as: self)
-            
+            return [CharacterSet.decimalDigits.require(.oneOrMore), T.ws.rule].sequence.reference(.structural(token: self))
         /// unsignedLongWord
         case .unsignedLongWord:
-            return [
-                [
-                    CharacterSet.decimalDigits.require(.oneOrMore),
-                    T.ws.rule.require(.one)].sequence
-                
-                ].sequence.parse(as: self)
-            
+            return [CharacterSet.decimalDigits.require(.oneOrMore), T.ws.rule].sequence.reference(.structural(token: self))
         /// unsignedLongLongWord
         case .unsignedLongLongWord:
-            return [
-                [
-                    CharacterSet.decimalDigits.require(.oneOrMore),
-                    T.ws.rule.require(.one)].sequence
-                
-                ].sequence.parse(as: self)
-            
+            return [CharacterSet.decimalDigits.require(.oneOrMore), T.ws.rule].sequence.reference(.structural(token: self))
         /// float
         case .float:
             return [
@@ -193,7 +124,7 @@ enum OneOfEverythingGrammar : Int, Token {
                     T.float.rule.require(.one),
                     T.double.rule.require(.one),
                     T.string.rule.require(.one),
-                    T.string.rule.require(.optionally),
+                    T.string.rule.require(.zeroOrOne),
                     T.ws.rule.require(.one)].sequence
                 
                 ].sequence.parse(as: self)

@@ -10,61 +10,53 @@ import XCTest
 @testable import OysterKit
 @testable import ExampleLanguages
 
-fileprivate enum STLRStringTest : Int, Token {
+fileprivate enum STLRStringTest : Int, TokenType {
     
     // Convenience alias
     private typealias T = STLRStringTest
     
-    case _transient = -1, `stringQuote`, `escapedCharacters`, `escapedCharacter`, `stringCharacter`, `terminalBody`, `terminalString`
+    private static var regularExpressionCache = [String : NSRegularExpression]()
     
-    func _rule(_ annotations: RuleAnnotations = [ : ])->BehaviouralRule {
+    /// Returns a pre-compiled pattern from the cache, or if not in the cache builds
+    /// the pattern, caches and returns the regular expression
+    ///
+    /// - Parameter pattern: The pattern the should be built
+    /// - Returns: A compiled version of the pattern
+    ///
+    private static func regularExpression(_ pattern:String)->NSRegularExpression{
+        if let cached = regularExpressionCache[pattern] {
+            return cached
+        }
+        do {
+            let new = try NSRegularExpression(pattern: pattern, options: [])
+            regularExpressionCache[pattern] = new
+            return new
+        } catch {
+            fatalError("Failed to compile pattern /\(pattern)/\n\(error)")
+        }
+    }
+    case _transient = -1, `stringQuote`, `terminalBody`, `terminalString`
+    var rule : Rule {
         switch self {
         case ._transient:
             return ~CharacterSet(charactersIn: "")
-        // stringQuote
+        /// stringQuote
         case .stringQuote:
-            return "\"".parse(as:T.stringQuote).annotatedWith(annotations)
-        // escapedCharacters
-        case .escapedCharacters:
-            return [
-                T.stringQuote._rule(),
-                ~"r",
-                ~"n",
-                ~"t",
-                ~"\\",
-                ].choice.parse(as: self).annotatedWith(annotations)
-        // escapedCharacter
-        case .escapedCharacter:
-            return [
-                ~"\\",
-                T.escapedCharacters._rule(),
-                ].sequence.parse(as:self).annotatedWith(annotations)
-        // stringCharacter
-        case .stringCharacter:
-            return -[
-                T.escapedCharacter._rule(),
-                    ~(![
-                        T.stringQuote._rule(),
-                        ~CharacterSet.newlines,
-                    ].choice),
-                ].choice
-        // terminalBody
+            return "\"".reference(.structural(token: self))
+            
+        /// terminalBody
         case .terminalBody:
-            return T.stringCharacter._rule().instanceWith(with: Behaviour(.skipping, cardinality: .oneOrMore))
-        // terminalString
+            return T.regularExpression("^(\\\\.|[^\"\\\\\\n])+").reference(.structural(token: self))
+            
+        /// terminalString
         case .terminalString:
-            return [
-                T.stringQuote._rule(),
-                T.terminalBody._rule([RuleAnnotation.error : RuleAnnotationValue.string("Terminals must have at least one character")]),
-                T.stringQuote._rule([RuleAnnotation.error : RuleAnnotationValue.string("Missing terminating quote")]) ,
-                ].sequence.parse(as:self).annotatedWith(annotations)
-
+            return [    -T.stringQuote.rule,    T.terminalBody.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Terminals must have at least one character")]),    -T.stringQuote.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Missing terminating quote")])].sequence.reference(.structural(token: self))
         }
     }
     
     // Create a language that can be used for parsing etc
-    static var generatedLanguage : Parser {
-        return Parser(grammar: [T.terminalString._rule()])
+    static var generatedLanguage : Grammar {
+        return [T.terminalString.rule]
     }
     
     // Convient way to apply your grammar to a string
@@ -77,26 +69,25 @@ fileprivate enum STLRStringTest : Int, Token {
 
 class FixValidations: XCTestCase {
 
+    
     func testTerminalBody(){
         let source = "This is the body of a string \\\" that ends here\""
         do {
-            let result = try test(STLRStringTest.terminalBody._rule(), with: source)
-            guard case let .consume(context) = result else {
-                XCTFail("Result should have been success but was \(result)")
-                return
-            }
-            XCTAssertEqual(source[context.range.upperBound..<source.unicodeScalars.endIndex], "\"")
+            // Adding a token because by default it's skipping
+            let ast = try test(STLRStringTest.terminalBody.rule.scan(), with: source)
+            print(ast.description)
+            XCTAssertEqual(String(source.dropLast()), ast.matchedString)
         } catch {
             XCTFail("Match should not have thrown: \(error)")
         }
     }
     
     func testNotStringCharacter(){
-        let characters = ["\"","\n","\r"]
+        let characters = ["\"","\n"]
         
         for character in characters {
             do {
-                _ = try test(STLRStringTest.stringCharacter._rule(), with: character)
+                _ = try test(STLRStringTest.terminalBody.rule, with: character)
                 XCTFail("Match should not have passed for \(character.debugDescription)")
             } catch {
             }
@@ -108,11 +99,7 @@ class FixValidations: XCTestCase {
         
         for character in characters {
             do {
-                let result = try test(STLRStringTest.stringCharacter._rule(), with: "\\\(character)")
-                guard case .consume(_) = result else {
-                    XCTFail("Result should have been success but was \(result) for \(character)")
-                    continue
-                }
+                print(try test(STLRStringTest.terminalBody.rule, with: "\\\(character)").description)
             } catch {
                 XCTFail("Match should not have thrown for \(character): \(error)")
             }
@@ -121,31 +108,11 @@ class FixValidations: XCTestCase {
     
     func testStringQuote(){
         do {
-            let result = try test(STLRStringTest.stringQuote._rule(), with: "\"")
-            guard case let .success(context) = result else {
-                XCTFail("Result should have been success but was \(result)")
-                return
-            }
-            XCTAssertEqual(context.matchedString, "\"")
+            let ast = try test(STLRStringTest.stringQuote.rule, with: "\"")
+
+            XCTAssertEqual(ast.matchedString, "\"")
         } catch {
             XCTFail("Match should not have thrown: \(error)")
-        }
-    }
-    
-    func testEscapedCharacter(){
-        let characters = ["r","n","t","\"","\\"]
-        
-        for character in characters {
-            do {
-                let result = try test(STLRStringTest.escapedCharacter._rule(), with: "\\\(character)")
-                guard case let .success(context) = result else {
-                    XCTFail("Result should have been success but was \(result) for \(character)")
-                    return
-                }
-                XCTAssertEqual(context.matchedString, "\\\(character)")
-            } catch {
-                XCTFail("Match should not have thrown for \(character): \(error)")
-            }
         }
     }
     
@@ -157,9 +124,9 @@ class FixValidations: XCTestCase {
         do{
             let _ = try STLRStringTest.parse(source: "\"h\n")
             XCTFail("Expected unterminated string error" )
-        } catch AbstractSyntaxTreeConstructor.ConstructionError.constructionFailed(let errors) {
-            XCTAssertEqual(errors.count, 1)
-            XCTAssertTrue("\(errors[0])".hasPrefix("Missing terminating quote"))
+        } catch let error as ProcessingError {
+            XCTAssertEqual(error.causedBy?.count ?? 0,1)
+            XCTAssertTrue(error.hasCause(description: "Parsing Error: Missing terminating quote at 2"))
         } catch {
             XCTFail("Unexpected error \(error)")
         }

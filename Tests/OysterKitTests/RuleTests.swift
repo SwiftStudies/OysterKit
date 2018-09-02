@@ -25,34 +25,7 @@
 import XCTest
 @testable import OysterKit
 
-class TestIR : IntermediateRepresentation {
-    func willEvaluate(token: Token, at position: String.UnicodeScalarView.Index) -> MatchResult? {
-        return nil
-    }
-    
-    func didEvaluate(token: Token, annotations: RuleAnnotations, matchResult: MatchResult) {
-        results.append(matchResult)
-    }
-    
-    
-    var results = [MatchResult]()
-    
-    required init(){
-        
-    }
-    func willEvaluate(rule: Rule, at position: String.UnicodeScalarView.Index) -> MatchResult? {
-        return nil
-    }
-    func didEvaluate(rule: Rule, matchResult: MatchResult) {
-        didEvaluate(token: rule.produces, annotations: rule.annotations, matchResult: matchResult)
-    }
-    func willBuildFrom(source: String, with: Language) {
-    }
-    func didBuild() {
-    }
-    func resetState() {
-    }
-}
+typealias TestIR = AbstractSyntaxTreeConstructor
 
 class RuleTests: XCTestCase {
 
@@ -100,18 +73,6 @@ class RuleTests: XCTestCase {
         XCTAssertEqual("Hello World", matchResults.success.matchedString)
     }
     
-    func testTransientTokenValue(){
-        XCTAssertEqual(-1, LabelledToken.transientToken.rawValue)
-    }
-    
-    func testTransientTokenDescriptions(){
-        let unlabelledTransientToken = TransientToken.anonymous
-        let labelledTransientToken = TransientToken.labelled("label")
-        
-        XCTAssertEqual("transient", unlabelledTransientToken.description)
-        XCTAssertEqual("label", labelledTransientToken.description)
-    }
-    
     func testStringTokenExtension(){
         XCTAssertEqual("hello".rawValue, "hello".hash)
     }
@@ -122,18 +83,14 @@ class RuleTests: XCTestCase {
     
     func testOneFromCharacterSetToken(){
         let source = "Hello World"
-        let rule = LabelledToken(withLabel: "letter").from(CharacterSet.letters.require(.one))
+        let rule = CharacterSet.letters.require(.one).parse(as: StringToken("letter"))
         let lexer = Lexer(source: source)
-        let testIR = TestIR()
+        let testIR = AbstractSyntaxTreeConstructor(with: source)
         
         do {
-            switch try rule.match(with: lexer, for: testIR){
-            case .success(let context):
-                //Test stuff
-                XCTAssertEqual("H", context.matchedString)
-            default:
-                XCTFail("Should have succeeded")
-            }
+            try rule.match(with: lexer, for: testIR)
+            let ast = try testIR.generate(HomogenousTree.self)
+            XCTAssertEqual("H", ast.matchedString)
         } catch {
             XCTFail("Unexpected error from match")
         }
@@ -141,18 +98,14 @@ class RuleTests: XCTestCase {
     
     func testOneOrMoreFromCharacterSetToken(){
         let source = "Hello World"
-        let rule = LabelledToken(withLabel: "letter").from(~CharacterSet.letters.require(.oneOrMore))
+        let rule = StringToken("letter").from(~CharacterSet.letters.require(.oneOrMore))
         let lexer = Lexer(source: source)
         let testIR = TestIR()
         
         do {
-            switch try rule.match(with: lexer, for: testIR){
-            case .success(let context):
-                //Test stuff
-                XCTAssertEqual("Hello", context.matchedString)
-            default:
-                XCTFail("Should have succeeded")
-            }
+            try rule.match(with: lexer, for: testIR)
+            let ast = try testIR.generate(HomogenousTree.self, source: source)
+            XCTAssertEqual("Hello", ast.matchedString)
         } catch {
             XCTFail("Unexpected error from match")
         }
@@ -160,19 +113,14 @@ class RuleTests: XCTestCase {
     
     func testLazyConsumeCharacterSetToken(){
         let source = "Hello World"
-        let rule : BehaviouralRule = [-CharacterSet.letters].sequence.parse(as: LabelledToken(withLabel: "letter"))
+        let rule : Rule = [-CharacterSet.letters].sequence.parse(as: StringToken("letter"))
         let lexer = Lexer(source: source)
         let testIR = TestIR()
         
         do {
-            let matchResult = try rule.match(with: lexer, for: testIR)
-            switch matchResult{
-            case .success(let context):
-                //Test stuff
-                XCTAssertEqual("", context.matchedString)
-            default:
-                XCTFail("Should have succeeded")
-            }
+            try rule.match(with: lexer, for: testIR)
+            let ast = try testIR.generate(HomogenousTree.self, source: source)
+            XCTAssertEqual("", ast.matchedString)
         } catch {
             XCTFail("Unexpected error from match")
         }
@@ -180,32 +128,40 @@ class RuleTests: XCTestCase {
 
     func testGreedilyConsumeCharacterSetToken(){
         let source = "Hello World"
-        let rule : BehaviouralRule = [-CharacterSet.letters.require(.oneOrMore)].sequence.parse(as: LabelledToken(withLabel: "letter"))
+        let rule : Rule = [-CharacterSet.letters.require(.oneOrMore)].sequence.parse(as: StringToken("letter"))
         let lexer = Lexer(source: source)
         let testIR = TestIR()
         
         lexer.mark()
         
         do {
-            switch try rule.match(with: lexer, for: testIR){
-            case .success(let context):
-                //Test stuff
-                XCTAssertEqual("", context.matchedString)
-                switch try " ".match(with: lexer, for: testIR){
-                case .success(let context):
-                    XCTAssertEqual(" ", context.matchedString)
-                    switch try rule.match(with: lexer, for: testIR){
-                    case .success(let context):
-                        XCTAssertEqual("", context.matchedString)
-                    default:
-                        XCTFail("Should have succeeded")
-                    }
-                default:
-                    XCTFail("Should have succeeded")
-                }
-            default:
-                XCTFail("Should have succeeded")
-            }
+            try rule.match(with: lexer, for: testIR)
+            try " ".match(with: lexer, for: testIR)
+            try rule.match(with: lexer, for: testIR)
+            let ast = try testIR.generate(HomogenousTree.self, source: source)
+            XCTAssertEqual("", ast.children.first?.matchedString ?? "error")
+            XCTAssertEqual("", ast.children.last?.matchedString ?? "error")
+            XCTAssertEqual("letter", "\(ast.children.first?.token ?? "error")")
+            XCTAssertEqual("letter", "\(ast.children.last?.token ?? "error")")
+            XCTAssertEqual(" World", ast.matchedString) //Not super intuitive but the sequence is scanning not skipping
+        } catch {
+            XCTFail("Unexpected error from match")
+        }
+    }
+    
+    func testGreedilyConsumeCharacterSetSkipStartAndEndToken(){
+        let source = "Hello World"
+        let rule : Rule = CharacterSet.letters.require(.oneOrMore).parse(as: "Anything").reference(.skipping)
+        let lexer = Lexer(source: source)
+        let testIR = TestIR()
+        
+        lexer.mark()
+        
+        do {
+            try [rule, " ", rule].sequence.parse(as: StringToken("Greeting")).match(with: lexer, for: testIR)
+            let ast = try testIR.generate(HomogenousTree.self, source: source)
+            XCTAssertEqual(0, ast.children.count)
+            XCTAssertEqual(" ", ast.matchedString)
         } catch {
             XCTFail("Unexpected error from match")
         }
@@ -257,24 +213,15 @@ class RuleTests: XCTestCase {
 
     }
     
-    func testInstanceTokenModification(){
-        let rule = CharacterSet.letters.parse(as: LabelledToken(withLabel: "letter")).require(.oneOrMore)
-        let newRule = rule.instance(with: transientTokenValue.token)
-        
-        XCTAssertEqual(newRule.produces.rawValue, transientTokenValue)
-    }
-    
     func testScannerRuleForRegularExpression(){
-        let catRegex = try! NSRegularExpression(pattern: "Cat", options: [])
+        let catRule = try! NSRegularExpression(pattern: "Cat", options: []).parse(as: StringToken("Cat"))
         
-        let catRule = ScannerRule.regularExpression(token: LabelledToken(withLabel: "Cat"), regularExpression: catRegex, annotations: [:])
-        XCTAssertEqual(catRule.description, "Cat = /Cat/")
-        let commaRule = ScannerRule.oneOf(token: transientTokenValue.token, [","], [:])
-        
+        XCTAssertEqual(catRule.description, "/Cat/►Cat")
+        let commaRule = ","
+
         let source = "Cat,Dog"
-        
         let lexer = Lexer(source: source)
-        let ir = TokenStreamIterator(with: lexer, and: [catRule, commaRule].language)
+        let ir = TokenStreamIterator(with: lexer, and: [catRule, commaRule])
         
         do {
             _ = try catRule.match(with: lexer, for: ir)
@@ -292,10 +239,10 @@ class RuleTests: XCTestCase {
             
         }
         
-        let felineRule = catRule.instance(with: LabelledToken(withLabel: "Feline"), andAnnotations: [RuleAnnotation.pinned : RuleAnnotationValue.set])
+        let felineRule = catRule.parse(as: StringToken("Feline"))
         
-        XCTAssertEqual("\(felineRule)", "Feline = @pin /Cat/")
-        XCTAssertNotEqual(catRule.produces.rawValue, felineRule.produces.rawValue)
+        XCTAssertEqual("\(felineRule)", "/Cat/►Feline")
+        XCTAssertNotEqual(catRule.behaviour.token!.rawValue, felineRule.behaviour.token!.rawValue)
     }
     
     func testOptionalRepeatedNot(){
@@ -307,9 +254,9 @@ class RuleTests: XCTestCase {
             """
         let singleLineComment = [
             ~"//",
-            (!CharacterSet.newlines).require(.noneOrMore),
+            (!CharacterSet.newlines).require(.zeroOrMore),
             ~CharacterSet.newlines
-            ].sequence.parse(as:LabelledToken(withLabel: "singleLineComment"))
+            ].sequence.parse(as:StringToken("singleLineComment"))
         
         let lexer = Lexer(source: source)
         let ir = AbstractSyntaxTreeConstructor(with: source)
@@ -326,53 +273,51 @@ class RuleTests: XCTestCase {
     
     func testKnownAnnotations(){
         let error = "Valid error"
-        let rule = CharacterSet.letters.parse(as:LabelledToken(withLabel: "test")).require(.oneOrMore)
-        let validError = rule.instance(with: [
+        let rule = CharacterSet.letters.parse(as:StringToken("test")).require(.oneOrMore)
+        let validError = rule.annotatedWith([
             RuleAnnotation.error : RuleAnnotationValue.string(error),
             RuleAnnotation.void  : RuleAnnotationValue.set,
             ])
-        let invalidError = rule.instance(with: [
+        let invalidError = rule.annotatedWith([
             RuleAnnotation.error : RuleAnnotationValue.int(19),
             RuleAnnotation.void  : RuleAnnotationValue.bool(true)
             ])
-        let invalidVoidWithInt = rule.instance(with: [
+        let invalidVoidWithInt = rule.annotatedWith([
             RuleAnnotation.void  : RuleAnnotationValue.int(10)
             ])
-        let invalid3 = rule.instance(with: [
+        let invalid3 = rule.annotatedWith([
             RuleAnnotation.void  : RuleAnnotationValue.string("true")
             ])
-        let invalid4 = rule.instance(with: [
+        let invalid4 = rule.annotatedWith([
             RuleAnnotation.transient  : RuleAnnotationValue.set
             ])
-        let invalid5 = rule.instance(with: [
+        let invalid5 = rule.annotatedWith([
             RuleAnnotation.transient  : RuleAnnotationValue.bool(true)
             ])
-        let invalid6 = rule.instance(with: [
+        let invalid6 = rule.annotatedWith([
             RuleAnnotation.transient  : RuleAnnotationValue.int(10)
             ])
 
         XCTAssertEqual(error,validError.error ?? "Nil")
         XCTAssertEqual("Unexpected annotation value: 19",invalidError.error ?? "Nil")
-        XCTAssertTrue(validError.void)
-        XCTAssertTrue(invalidError.void)
-        XCTAssertFalse(invalidVoidWithInt.void)
-        XCTAssertFalse(invalid3.void)
-        XCTAssertFalse(invalid4.void)
+        XCTAssertTrue(validError.skipping)
+        XCTAssertTrue(invalidError.skipping)
+        XCTAssertFalse(invalidVoidWithInt.skipping)
+        XCTAssertFalse(invalid3.skipping)
+        XCTAssertFalse(invalid4.skipping)
         
-        let transientRule = LabelledToken.transientToken
-        XCTAssertTrue(transientRule.transient)
-        XCTAssertFalse(rule.transient)
-        XCTAssertTrue(invalid4.transient)
-        XCTAssertTrue(invalid5.transient)
-        XCTAssertFalse(invalid6.transient)
+        XCTAssertFalse(rule.scanning)
+        XCTAssertTrue(invalid4.scanning)
+        XCTAssertTrue(invalid5.scanning)
+        XCTAssertFalse(invalid6.scanning)
 
     }
     
     func testHumanConsumableError(){
         let text = "Hello\nworld my friend"
+        let range = text.range(of: "world")!
+        let pointError = ProcessingError.parsing(message: "Expected to find World not world", range: range.lowerBound...range.upperBound, causes: [])
         
-        let pointError = LanguageError.parsingError(at: text.range(of: "world")!, message: "Expected to find World not world")
-        
-        XCTAssertEqual("Expected to find World not world at line 1, column 1: \nworld my friend\n                                                       ^", pointError.formattedErrorMessage(in: text))
+        XCTAssertEqual("Parsing Error: Expected to find World not world between 6 and 11", pointError.debugDescription)
     }
 }

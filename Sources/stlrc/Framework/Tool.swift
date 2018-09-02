@@ -83,7 +83,7 @@ extension Tool {
     
     /**
      */
-    internal func handle(_ error: Argument.ParsingError) {
+    internal func handle(_ error: Argument.Errors) {
         var actionLog = ""
         var remedyLog = ""
         // var askLog = ""
@@ -181,7 +181,7 @@ extension Tool {
             if let commandArgument = arguments.top, commandArgument.type == .command {
                 arguments.consume()
                 guard let requestedCommand = self[commandNamed: commandArgument.value] else {
-                    throw Argument.ParsingError.commandNotFound(for: commandArgument.value)
+                    throw Argument.Errors.commandNotFound(for: commandArgument.value)
                 }
                 command = requestedCommand
             } else {
@@ -190,7 +190,7 @@ extension Tool {
             
             return try command.execute(withArguments: arguments)
         } catch {
-            if let error = error as? Argument.ParsingError {
+            if let error = error as? Argument.Errors {
                 handle(error)
             } 
             return -1

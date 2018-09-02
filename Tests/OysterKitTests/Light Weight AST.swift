@@ -27,16 +27,16 @@ import Foundation
 @testable import OysterKit
 
 final class LightWeightNode : Node, CustomStringConvertible{
-    let token   : Token
+    let token   : TokenType
     let _range   : Range<String.UnicodeScalarView.Index>
     let children: [LightWeightNode]
     let annotations: [RuleAnnotation : RuleAnnotationValue]
     
-    init(for token: Token, at range: Range<String.UnicodeScalarView.Index>, annotations : [RuleAnnotation : RuleAnnotationValue]) {
+    init(for token: TokenType, at range: Range<String.UnicodeScalarView.Index>, annotations : [RuleAnnotation : RuleAnnotationValue]) {
         fatalError("Should not be created by anything other than ColoringIR")
     }
     
-    init(for token: Token, range: Range<String.UnicodeScalarView.Index>, children:[LightWeightNode]?,annotations : [RuleAnnotation : RuleAnnotationValue] ){
+    init(for token: TokenType, range: Range<String.UnicodeScalarView.Index>, children:[LightWeightNode]?,annotations : [RuleAnnotation : RuleAnnotationValue] ){
         self.token = token
         self._range = range
         self.children = children ?? []
@@ -58,8 +58,6 @@ final class LightWeightNode : Node, CustomStringConvertible{
 }
 
 final class LightWeightAST : IntermediateRepresentation{
-
-    
     private var     scalars   : String.UnicodeScalarView!
     private var     nodeStack = NodeStack<LightWeightNode>()
     
@@ -74,17 +72,33 @@ final class LightWeightAST : IntermediateRepresentation{
         nodeStack.reset()
     }
     
-    final func willEvaluate(rule: Rule, at position: String.UnicodeScalarView.Index) -> MatchResult? {
-        return willEvaluate(token: rule.produces, at: position)
-    }
-    
-    func willEvaluate(token: Token, at position: String.UnicodeScalarView.Index) -> MatchResult? {
+    func evaluating(_ token: TokenType) {
         nodeStack.push()
-        return nil
     }
     
+    func succeeded(token: TokenType, annotations: RuleAnnotations, range: Range<String.Index>) {
+        let children = nodeStack.pop()
+        
+        if ignoreNodes.contains("\(token)"){
+            nodeStack.top?.adopt(children.nodes)
+            return
+        }
+        
+        let newNode : LightWeightNode
+        if children.nodes.count > 0 {
+            newNode = LightWeightNode(for: token, range: range, children: children.nodes, annotations: annotations)
+        } else {
+            newNode = LightWeightNode(for: token, range: range, children: nil, annotations: annotations)
+        }
+        
+        nodeStack.top?.append(newNode)
+    }
     
-    final func willBuildFrom(source: String, with: Language) {
+    func failed() {
+        return
+    }
+    
+    final func willBuildFrom(source: String, with: Grammar) {
         scalars = source.unicodeScalars
         nodeStack.reset()
     }
@@ -94,32 +108,5 @@ final class LightWeightAST : IntermediateRepresentation{
     }
     
     let ignoreNodes : Set<String> =  ["whitespace","comment","oneLineComment","oneLineCommentStart","restOfLine","character","newline","step","then","or"]
-    
-    func didEvaluate(token: Token, annotations: RuleAnnotations, matchResult: MatchResult) {
-        let children = nodeStack.pop()
-        
-        switch matchResult {
-        case .success(let context):
-            if (annotations.transient || token.transient) || ignoreNodes.contains("\(token)"){
-                nodeStack.top?.adopt(children.nodes)
-                return
-            }
-            
-            let newNode : LightWeightNode
-            if children.nodes.count > 0 {
-                newNode = LightWeightNode(for: token, range: context.range, children: children.nodes, annotations: annotations)
-            } else {
-                newNode = LightWeightNode(for: token, range: context.range, children: nil, annotations: annotations)
-            }
-            
-            nodeStack.top?.append(newNode)
-        default: return
-        }
-    }
-
-    
-    final func didEvaluate(rule: Rule, matchResult: MatchResult) {
-        didEvaluate(token: rule.produces, annotations: rule.annotations, matchResult: matchResult)
-    }
     
 }

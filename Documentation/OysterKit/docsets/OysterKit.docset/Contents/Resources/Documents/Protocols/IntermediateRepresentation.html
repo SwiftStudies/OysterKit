@@ -23,7 +23,7 @@
         <a class="header-link" href="../index.html">
           OysterKit Docs
         </a>
-         (95% documented)
+         (93% documented)
       </p>
     
       <p class="header-col--secondary">
@@ -51,10 +51,10 @@
                 <a class="nav-group-task-link" href="../Classes/AbstractSyntaxTreeConstructor.html">AbstractSyntaxTreeConstructor</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Classes/AbstractSyntaxTreeConstructor/ConstructionError.html">– ConstructionError</a>
+                <a class="nav-group-task-link" href="../Classes/AbstractSyntaxTreeConstructor/IntermediateRepresentationNode.html">– IntermediateRepresentationNode</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Classes/AbstractSyntaxTreeConstructor/IntermediateRepresentationNode.html">– IntermediateRepresentationNode</a>
+                <a class="nav-group-task-link" href="../Classes/ChoiceRule.html">ChoiceRule</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/ClosureRule.html">ClosureRule</a>
@@ -69,16 +69,22 @@
                 <a class="nav-group-task-link" href="../Classes/NodeStackEntry.html">NodeStackEntry</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Classes/Parser.html">Parser</a>
+                <a class="nav-group-task-link" href="../Classes/RecursiveRule.html">RecursiveRule</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Classes/RecursiveRule.html">RecursiveRule</a>
+                <a class="nav-group-task-link" href="../Classes/ReferenceRule.html">ReferenceRule</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/SequenceRule.html">SequenceRule</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/StateCache.html">StateCache</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/StringScanner.html">StringScanner</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/TerminalRule.html">TerminalRule</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/TokenStream.html">TokenStream</a>
@@ -89,22 +95,8 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a class="nav-group-name-link" href="../Global Variables.html">Global Variables</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Global Variables.html#/s:9OysterKit19transientTokenValueSivp">transientTokenValue</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
             <a class="nav-group-name-link" href="../Enums.html">Enumerations</a>
             <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Enums/GrammarError.html">GrammarError</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Enums/LanguageError.html">LanguageError</a>
-              </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/Log.html">Log</a>
               </li>
@@ -112,19 +104,13 @@
                 <a class="nav-group-task-link" href="../Enums/MatchResult.html">MatchResult</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Enums/ParserRule.html">ParserRule</a>
+                <a class="nav-group-task-link" href="../Enums/ProcessingError.html">ProcessingError</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/RuleAnnotation.html">RuleAnnotation</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/RuleAnnotationValue.html">RuleAnnotationValue</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Enums/ScannerRule.html">ScannerRule</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Enums/TransientToken.html">TransientToken</a>
               </li>
             </ul>
           </li>
@@ -144,7 +130,13 @@
                 <a class="nav-group-task-link" href="../Extensions/Decodable.html">Decodable</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Dictionary.html">Dictionary</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Extensions/Int.html">Int</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/NSRegularExpression.html">NSRegularExpression</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Extensions/String.html">String</a>
@@ -158,10 +150,22 @@
             <a class="nav-group-name-link" href="../Functions.html">Functions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit2eeoiySbAA5Token_p_AaC_ptF">==(_:_:)</a>
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit1nopyAA4Rule_pAaC_pF">!(_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit1sopyAA4Rule_pAaC_pF">-(_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit2eeoiySbAA9TokenType_p_AaC_ptF">==(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit2ggopyAA4Rule_pAaC_pF">&gt;&gt;(_:)</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit8areEqual3lhs3rhsSbSDyAA14RuleAnnotationOAA0gH5ValueOG_AItF">areEqual(lhs:rhs:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit1topyAA4Rule_pAaC_pF">~(_:)</a>
               </li>
             </ul>
           </li>
@@ -172,19 +176,16 @@
                 <a class="nav-group-task-link" href="../Protocols/AbstractSyntaxTree.html">AbstractSyntaxTree</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/BehaviouralRule.html">BehaviouralRule</a>
+                <a class="nav-group-task-link" href="../Protocols/CausalErrorType.html">CausalErrorType</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/DecodeableAbstractSyntaxTree.html">DecodeableAbstractSyntaxTree</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/HumanConsumableError.html">HumanConsumableError</a>
+                <a class="nav-group-task-link" href="../Protocols/Grammar.html">Grammar</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/Language.html">Language</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a>
@@ -199,7 +200,10 @@
                 <a class="nav-group-task-link" href="../Protocols/Rule.html">Rule</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/Token.html">Token</a>
+                <a class="nav-group-task-link" href="../Protocols/Terminal.html">Terminal</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/TokenType.html">TokenType</a>
               </li>
             </ul>
           </li>
@@ -216,13 +220,19 @@
                 <a class="nav-group-task-link" href="../Structs/Cardinality.html">Cardinality</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/EndOfFile.html">EndOfFile</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/HomogenousTree.html">HomogenousTree</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Structs/LabelledToken.html">LabelledToken</a>
+                <a class="nav-group-task-link" href="../Structs/ParsingDecoder.html">ParsingDecoder</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Structs/ParsingDecoder.html">ParsingDecoder</a>
+                <a class="nav-group-task-link" href="../Structs/ProcessingErrorType.html">ProcessingErrorType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/StringToken.html">StringToken</a>
               </li>
             </ul>
           </li>
@@ -230,7 +240,10 @@
             <a class="nav-group-name-link" href="../Typealiases.html">Type Aliases</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit17CustomRuleClosurea">CustomRuleClosure</a>
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit8Languagea">Language</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit6Parsera">Parser</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a>
@@ -302,9 +315,9 @@ matcher (such as start and end of evaluation of a rule). See below for standard 
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit26IntermediateRepresentationP12willEvaluate4rule2atAA11MatchResultOSgAA4Rule_p_SS5IndexVtF"></a>
-                    <a name="//apple_ref/swift/Method/willEvaluate(rule:at:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit26IntermediateRepresentationP12willEvaluate4rule2atAA11MatchResultOSgAA4Rule_p_SS5IndexVtF">willEvaluate(rule:at:)</a>
+                    <a name="/s:9OysterKit26IntermediateRepresentationP10evaluatingyyAA9TokenType_pF"></a>
+                    <a name="//apple_ref/swift/Method/evaluating(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit26IntermediateRepresentationP10evaluatingyyAA9TokenType_pF">evaluating(_:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -312,85 +325,14 @@ matcher (such as start and end of evaluation of a rule). See below for standard 
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Called when the parser is about to evaluate a rule. This is an oppertunity to prepare any appropriate data structures.
-It is also possible that <code>IntermediateRepresentation</code> could maintain a cache of previous results at this position in order
-to improve performance, if this is the case and there is already an existing <code><a href="../Enums/MatchResult.html">MatchResult</a></code> then it can be returned from this
-function and will be used instead of reevaluating the result.</p>
+                        <p>Called when the parser is about to evaluate a structural rule. This is an oppertunity to prepare any appropriate data structures.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">willEvaluate</span><span class="p">(</span><span class="nv">rule</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Rule.html">Rule</a></span><span class="p">,</span> <span class="n">at</span> <span class="nv">position</span><span class="p">:</span> <span class="kt">String</span><span class="o">.</span><span class="kt">UnicodeScalarView</span><span class="o">.</span><span class="kt">Index</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Enums/MatchResult.html">MatchResult</a></span><span class="p">?</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>rule</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The <code><a href="../Protocols/Rule.html">Rule</a></code> that will be evaluated</p>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>at</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The position in the source of the scan-head</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p>A pre-existing <code><a href="../Enums/MatchResult.html">MatchResult</a></code> if known for this rule at this position, or <code>nil</code> if evaluation should proceed</p>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:9OysterKit26IntermediateRepresentationP12willEvaluate5token2atAA11MatchResultOSgAA5Token_p_SS5IndexVtF"></a>
-                    <a name="//apple_ref/swift/Method/willEvaluate(token:at:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit26IntermediateRepresentationP12willEvaluate5token2atAA11MatchResultOSgAA5Token_p_SS5IndexVtF">willEvaluate(token:at:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Called when the parser is about to evaluate a structural rule. This is an oppertunity to prepare any appropriate data structures.
-It is also possible that <code>IntermediateRepresentation</code> could maintain a cache of previous results at this position in order
-to improve performance, if this is the case and there is already an existing <code><a href="../Enums/MatchResult.html">MatchResult</a></code> then it can be returned from this
-function and will be used instead of reevaluating the result.</p>
-
-<p>This variant is used for ExtendedRules where it is known that skipping or scanning behaviours will not cause will Evaluate to
-be called (i.e. no evaluation of annotations is reuqired)</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">willEvaluate</span><span class="p">(</span><span class="nv">token</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Token.html">Token</a></span><span class="p">,</span> <span class="n">at</span> <span class="nv">position</span><span class="p">:</span> <span class="kt">String</span><span class="o">.</span><span class="kt">UnicodeScalarView</span><span class="o">.</span><span class="kt">Index</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Enums/MatchResult.html">MatchResult</a></span><span class="p">?</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">evaluating</span><span class="p">(</span><span class="n">_</span> <span class="nv">token</span><span class="p">:</span> <span class="kt"><a href="../Protocols/TokenType.html">TokenType</a></span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -410,24 +352,8 @@ be called (i.e. no evaluation of annotations is reuqired)</p>
                                 </div>
                               </td>
                             </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>at</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The position in the source of the scan-head</p>
-                                </div>
-                              </td>
-                            </tr>
                           </tbody>
                         </table>
-                      </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p>A pre-existing <code><a href="../Enums/MatchResult.html">MatchResult</a></code> if known for this rule at this position, or <code>nil</code> if evaluation should proceed</p>
                       </div>
                     </section>
                   </div>
@@ -435,9 +361,9 @@ be called (i.e. no evaluation of annotations is reuqired)</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit26IntermediateRepresentationP11didEvaluate5token11annotations11matchResultyAA5Token_p_SDyAA14RuleAnnotationOAA0lM5ValueOGAA05MatchJ0OtF"></a>
-                    <a name="//apple_ref/swift/Method/didEvaluate(token:annotations:matchResult:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit26IntermediateRepresentationP11didEvaluate5token11annotations11matchResultyAA5Token_p_SDyAA14RuleAnnotationOAA0lM5ValueOGAA05MatchJ0OtF">didEvaluate(token:annotations:matchResult:)</a>
+                    <a name="/s:9OysterKit26IntermediateRepresentationP9succeeded5token11annotations5rangeyAA9TokenType_p_SDyAA14RuleAnnotationOAA0kL5ValueOGSnySS5IndexVGtF"></a>
+                    <a name="//apple_ref/swift/Method/succeeded(token:annotations:range:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit26IntermediateRepresentationP9succeeded5token11annotations5rangeyAA9TokenType_p_SDyAA14RuleAnnotationOAA0kL5ValueOGSnySS5IndexVGtF">succeeded(token:annotations:range:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -445,18 +371,14 @@ be called (i.e. no evaluation of annotations is reuqired)</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Called after a <code><a href="../Protocols/Rule.html">Rule</a></code> has been evaluated allowing the AST to make appropriate changes to its structure, or perhaps cache the result
-to improve performance of subsequent evaluation</p>
-
-<p>This variant is used for ExtendedRules where it is known that skipping or scanning behaviours will not cause will Evaluate to
-be called (i.e. no evaluation of annotations is required)</p>
+                        <p>Called after the <code><a href="../Protocols/TokenType.html">TokenType</a></code> has been successfully matched (or an ignorable failure for a pinned token)</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">didEvaluate</span><span class="p">(</span><span class="nv">token</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Token.html">Token</a></span><span class="p">,</span> <span class="nv">annotations</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></span><span class="p">,</span> <span class="nv">matchResult</span><span class="p">:</span> <span class="kt"><a href="../Enums/MatchResult.html">MatchResult</a></span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">succeeded</span><span class="p">(</span><span class="nv">token</span><span class="p">:</span> <span class="kt"><a href="../Protocols/TokenType.html">TokenType</a></span><span class="p">,</span> <span class="nv">annotations</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></span><span class="p">,</span> <span class="nv">range</span><span class="p">:</span> <span class="kt">Range</span><span class="o">&lt;</span><span class="kt">String</span><span class="o">.</span><span class="kt">Index</span><span class="o">&gt;</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -472,7 +394,7 @@ be called (i.e. no evaluation of annotations is required)</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>The <code><a href="../Protocols/Token.html">Token</a></code> that has been evaluated</p>
+                                  <p>The <code><a href="../Protocols/TokenType.html">TokenType</a></code> that has been evaluated</p>
                                 </div>
                               </td>
                             </tr>
@@ -491,12 +413,12 @@ be called (i.e. no evaluation of annotations is required)</p>
                             <tr>
                               <td>
                                 <code>
-                                <em>matchResult</em>
+                                <em>range</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The result of the evaluation</p>
+                                  <p>The range of the match</p>
                                 </div>
                               </td>
                             </tr>
@@ -509,9 +431,9 @@ be called (i.e. no evaluation of annotations is required)</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit26IntermediateRepresentationP11didEvaluate4rule11matchResultyAA4Rule_p_AA05MatchI0OtF"></a>
-                    <a name="//apple_ref/swift/Method/didEvaluate(rule:matchResult:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit26IntermediateRepresentationP11didEvaluate4rule11matchResultyAA4Rule_p_AA05MatchI0OtF">didEvaluate(rule:matchResult:)</a>
+                    <a name="/s:9OysterKit26IntermediateRepresentationP6failedyyF"></a>
+                    <a name="//apple_ref/swift/Method/failed()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit26IntermediateRepresentationP6failedyyF">failed()</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -519,48 +441,16 @@ be called (i.e. no evaluation of annotations is required)</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Called after a <code><a href="../Protocols/Rule.html">Rule</a></code> has been evaluated allowing the AST to make appropriate changes to its structure, or perhaps cache the result
-to improve performance of subsequent evaluation</p>
+                        <p>Called when a token being evaluated failed to be matched</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">didEvaluate</span><span class="p">(</span><span class="nv">rule</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Rule.html">Rule</a></span><span class="p">,</span> <span class="nv">matchResult</span><span class="p">:</span> <span class="kt"><a href="../Enums/MatchResult.html">MatchResult</a></span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">failed</span><span class="p">()</span></code></pre>
 
                         </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>rule</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The <code><a href="../Protocols/Rule.html">Rule</a></code> that has been evaluated</p>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>matchResult</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The result of the evaluation</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
                       </div>
                     </section>
                   </div>
@@ -568,9 +458,9 @@ to improve performance of subsequent evaluation</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit26IntermediateRepresentationP13willBuildFrom6source4withySS_AA8Language_ptF"></a>
+                    <a name="/s:9OysterKit26IntermediateRepresentationP13willBuildFrom6source4withySS_AA7Grammar_ptF"></a>
                     <a name="//apple_ref/swift/Method/willBuildFrom(source:with:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit26IntermediateRepresentationP13willBuildFrom6source4withySS_AA8Language_ptF">willBuildFrom(source:with:)</a>
+                    <a class="token" href="#/s:9OysterKit26IntermediateRepresentationP13willBuildFrom6source4withySS_AA7Grammar_ptF">willBuildFrom(source:with:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -585,7 +475,7 @@ to improve performance of subsequent evaluation</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">willBuildFrom</span><span class="p">(</span><span class="nv">source</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">with</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Language.html">Language</a></span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">willBuildFrom</span><span class="p">(</span><span class="nv">source</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">with</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Grammar.html">Grammar</a></span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -654,7 +544,7 @@ to improve performance of subsequent evaluation</p>
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-07-17)</p>
+      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-09-02)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

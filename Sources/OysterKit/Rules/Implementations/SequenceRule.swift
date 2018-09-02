@@ -24,12 +24,12 @@
 
 import Foundation
 
-public final class SequenceRule : BehaviouralRule {
+public final class SequenceRule : Rule {
     public var behaviour: Behaviour
     public var annotations: RuleAnnotations
-    public var sequence : [BehaviouralRule]
+    public var sequence : [Rule]
     
-    public init(_ behaviour:Behaviour, and annotations:RuleAnnotations, for sequence:[BehaviouralRule]){
+    public init(_ behaviour:Behaviour, and annotations:RuleAnnotations, for sequence:[Rule]){
         self.behaviour = behaviour
         self.annotations = annotations
         self.sequence = sequence
@@ -44,24 +44,23 @@ public final class SequenceRule : BehaviouralRule {
         }
     }
     
-    public func rule(with behaviour: Behaviour?, annotations: RuleAnnotations?) -> BehaviouralRule {
+    public func rule(with behaviour: Behaviour?, annotations: RuleAnnotations?) -> Rule {
         return SequenceRule(behaviour ?? self.behaviour, and: annotations ?? self.annotations, for: sequence)
     }
     
     /// A textual description of the rule
     public var description: String {
         let    match = sequence.map({$0.description}).joined(separator: " ")
-        let    annotates = "\(annotations.isEmpty ? "" : "\(annotations.description) ")"
 
-        return annotates + behaviour.describe(match:"(\(match))")
+        return behaviour.describe(match:"(\(match))", annotatedWith: annotations)
     }
     
     /// An abreviated description of the rule
     public var shortDescription: String{
         if let produces = behaviour.token {
-            return behaviour.describe(match: "\(produces)", requiresStructuralPrefix: false)
+            return behaviour.describe(match: "\(produces)", requiresStructuralPrefix: false, annotatedWith: annotations)
         }
         let match = sequence.map({$0.shortDescription}).joined(separator: " ")
-        return behaviour.describe(match: "(\(match))")
+        return behaviour.describe(match: "(\(match))", annotatedWith: annotations)
     }
 }

@@ -36,10 +36,10 @@ class HierarchyTests: XCTestCase {
 //            fatalError("Could not load grammar")
 //        }
 //        
-//        let xmlLanguage : Language
+//        let xmlLanguage : Grammar
 //        
 //        do {
-//            xmlLanguage = try Parser(grammar: _STLR.build(grammarSource).grammar.dynamicRules)
+//            xmlLanguage = try ProductionSTLR.build(grammarSource).grammar.dynamicRules
 //
 //        } catch {
 //            fatalError("Could not create language")
@@ -114,7 +114,7 @@ import OysterKit
 //
 // XML Parser
 //
-enum XML : Int, Token {
+enum XML : Int, TokenType {
     typealias T = XML
     
     // Cache for compiled regular expressions
@@ -142,7 +142,7 @@ enum XML : Int, Token {
     case `ws`, `identifier`, `singleQuote`, `doubleQuote`, `value`, `attribute`, `attributes`, `data`, `openTag`, `closeTag`, `inlineTag`, `nestingTag`, `tag`, `contents`, `xml`
     
     /// The rule for the token
-    var rule : BehaviouralRule {
+    var rule : Rule {
         switch self {
         /// ws
         case .ws:
@@ -183,12 +183,12 @@ enum XML : Int, Token {
                 [
                     [
                         -T.singleQuote.rule.require(.one),
-                        !T.singleQuote.rule.require(.noneOrMore),
+                        !T.singleQuote.rule.require(.zeroOrMore),
                         -T.singleQuote.rule.require(.one)].sequence
                     ,
                     [
                         -T.doubleQuote.rule.require(.one),
-                        !T.doubleQuote.rule.require(.noneOrMore),
+                        !T.doubleQuote.rule.require(.zeroOrMore),
                         -T.doubleQuote.rule.require(.one)].sequence
                     ].choice
                 
@@ -201,9 +201,9 @@ enum XML : Int, Token {
                     T.ws.rule.require(.oneOrMore),
                     T.identifier.rule.require(.one),
                     [
-                        T.ws.rule.require(.noneOrMore),
+                        T.ws.rule.require(.zeroOrMore),
                         -"=".require(.one),
-                        T.ws.rule.require(.noneOrMore),
+                        T.ws.rule.require(.zeroOrMore),
                         T.value.rule.require(.one)].sequence
                     ].sequence
                 
@@ -225,12 +225,12 @@ enum XML : Int, Token {
         case .openTag:
             return [
                 [
-                    T.ws.rule.require(.noneOrMore),
+                    T.ws.rule.require(.zeroOrMore),
                     -"<".require(.one),
                     T.identifier.rule.require(.one),
                     [
                         T.attributes.rule.require(.one),
-                        T.ws.rule.require(.noneOrMore)].choice
+                        T.ws.rule.require(.zeroOrMore)].choice
                     ,
                     -">".require(.one)].sequence
                 
@@ -240,10 +240,10 @@ enum XML : Int, Token {
         case .closeTag:
             return -[
                 [
-                    T.ws.rule.require(.noneOrMore),
+                    T.ws.rule.require(.zeroOrMore),
                     -"</".require(.one),
                     T.identifier.rule.require(.one),
-                    T.ws.rule.require(.noneOrMore),
+                    T.ws.rule.require(.zeroOrMore),
                     -">".require(.one)].sequence
                 
                 ].sequence
@@ -252,12 +252,12 @@ enum XML : Int, Token {
         case .inlineTag:
             return [
                 [
-                    T.ws.rule.require(.noneOrMore),
+                    T.ws.rule.require(.zeroOrMore),
                     -"<".require(.one),
                     T.identifier.rule.require(.one),
                     [
                         T.attribute.rule.require(.oneOrMore),
-                        T.ws.rule.require(.noneOrMore)].choice
+                        T.ws.rule.require(.zeroOrMore)].choice
                     ,
                     -"/>".require(.one)].sequence
                 

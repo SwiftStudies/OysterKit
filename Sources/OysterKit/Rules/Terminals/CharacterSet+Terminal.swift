@@ -60,16 +60,12 @@ extension CharacterSet : Terminal {
         return ".customCharacterSet"
     }
     
-    public func test(lexer: LexicalAnalyzer, producing token:Token?) throws {
+    public func test(lexer: LexicalAnalyzer, producing token:TokenType?) throws {
         do {
             try lexer.scan(oneOf: self)
         } catch {
             let failedAt = lexer.endOfInput ? "EOF" : lexer.current
-            if let token = token {
-                throw TestError.parsingError(message: "Failed to match \(token), expected \(matchDescription) but got \(failedAt)", range: lexer.index...lexer.index, causes: [error])
-            } else {
-                throw TestError.scanningError(message: "Expected \(matchDescription) but got \(failedAt)", position: lexer.index, causes: [])
-            }
+            throw ProcessingError.scanning(message: "Exptected \(token == nil ? "\(self)" : "\(token!)") but got \(failedAt)", position: lexer.index, causes: [error])
         }
     }
 }

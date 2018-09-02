@@ -28,7 +28,7 @@ public struct Argument {
     /**
      An error relating to improper user input
      */
-    enum ParsingError: Error {
+    enum Errors: Error {
         case invalidToolName
         case commandNotFound(for: String)
         case optionNotFound

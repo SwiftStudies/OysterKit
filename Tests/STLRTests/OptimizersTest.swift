@@ -8,7 +8,7 @@
 
 import XCTest
 import OysterKit
-import STLR
+@testable import STLR
 
 class OptimizersTest: GrammarTest {
 
@@ -20,7 +20,32 @@ class OptimizersTest: GrammarTest {
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
-        _STLR.removeAllOptimizations()
+        ProductionSTLR.removeAllOptimizations()
+    }
+
+    func testAttributePreservationOnInlineReference(){
+        do {
+            source += """
+            grammar Test
+            x = "x"
+            xyz = @error("Expected X") x "y" "z"
+            """
+            
+            ProductionSTLR.register(optimizer: InlineIdentifierOptimization())
+            let parser = try ProductionSTLR.build(source)
+            
+            let compiledLanguage = parser.grammar.dynamicRules
+            
+            do {
+                let _ = try AbstractSyntaxTreeConstructor().build("yz", using: compiledLanguage)
+            } catch let error as ProcessingError {
+                XCTAssertNotNil(error.filtered(includingMessagesMatching: ".*Expected X.*"))
+            } catch {
+                XCTFail("Unexpected error \(error)")
+            }
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
     }
     
     func testAttributePreservationOnInline(){
@@ -31,19 +56,15 @@ class OptimizersTest: GrammarTest {
             xyz = x "y" "z"
             """
             
-            _STLR.register(optimizer: InlineIdentifierOptimization())
-            let parser = try _STLR.build(source)
+            ProductionSTLR.register(optimizer: InlineIdentifierOptimization())
+            let parser = try ProductionSTLR.build(source)
             
-            let compiledLanguage = Parser(grammar: parser.grammar.dynamicRules) 
+            let compiledLanguage = parser.grammar.dynamicRules 
             
             do {
                 let _ = try AbstractSyntaxTreeConstructor().build("yz", using: compiledLanguage)
-            } catch AbstractSyntaxTreeConstructor.ConstructionError.constructionFailed(let errors) {
-                guard let error = errors.first else {
-                    XCTFail("Expected an error \(parser.grammar.rules[1])")
-                    return
-                }
-                XCTAssert("\(error)".hasPrefix("Expected X"),"Incorrect error \(error)")
+            } catch let error as ProcessingError {
+                XCTAssertNotNil(error.filtered(includingMessagesMatching: ".*Expected X.*"))
             } catch {
                 XCTFail("Unexpected error \(error)")
             }
