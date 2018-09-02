@@ -61,7 +61,7 @@ class ParseCommand : Command, IndexableOptioned, IndexableParameterized, Grammar
 
     func parseInput(language:Language, input:String) throws {
         let ctr = AbstractSyntaxTreeConstructor()
-        let ast = try ctr.build(input, using: language)
+        _ = try ctr.build(input, using: language)
 
         guard ctr.errors.count == 0 else {
             print("Parsing failed: ".color(.red))
