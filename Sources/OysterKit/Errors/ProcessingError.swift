@@ -24,129 +24,32 @@
 
 import Foundation
 
-/**
- An error type that captures not just a current error, but the hierarchy of
- errors that caused it.
- */
-public protocol CausalErrorType : Error, CustomStringConvertible, CustomDebugStringConvertible{
-    /// Any errors which can be rolled up into this error
-    var causedBy : [Error]? {get}
-    
-    /// The range of the error in the source `String`
-    var range    : ClosedRange<String.Index>? {get}
-    
-    /// The message associated with the error
-    var message  : String {get}
-    
-    /// The error should stop subsequent processing
-    var isFatal : Bool {get}
-}
 
-/**
- Adds some core standard functionality for automatically assembling error messages
- */
-public extension CausalErrorType {
-    /// A textural description of the error
-    var description : String {
-        return message
-    }
-    /// A more detailed description of the error including the hierarchy of errors that built to this error
-    var debugDescription : String {
-        func dumpCauses(_ indent:Int = 1, causes:[Error])->String{
-            var result = ""
-            for cause in causes {
-                if let cause = cause as? CausalErrorType {
-                    result += "\(String(repeating:"\t",count:indent))- \(cause.description)\n\(dumpCauses(indent+1,causes: cause.causedBy ?? []))"
-                } else {
-                    result += "\(String(repeating:"\t",count:indent))- \(cause.localizedDescription)\n"
-                }
-            }
-            return result
-        }
-        if let causes = causedBy, !causes.isEmpty {
-            return "\(message). Caused by:\n\(dumpCauses(causes: causes))"
-        } else {
-            return description
-        }
-    }
-}
 
-/// Represents the type of processing error.
-public struct ProcessingErrorType : OptionSet {
-    public let rawValue: Int
-    
-    /**
-     Creates a new instance with the specified rawValue. Supported types are all captured with static constants and you should not need this
-     
-     - Parameter rawValue: The raw value
-    **/
-    public init(rawValue:Int){
-        self.rawValue = rawValue
-    }
-    
-    /**
-     Creates a new instance classifying the supplied error
-     
-     - Parameter error: The error to classify
-    **/
-    public init(from error:Error){
-        if let error = error as? ProcessingError {
-            switch error {
-            case .internal(_):
-                rawValue = ProcessingErrorType.internal.rawValue
-            case .undefined(_,_,_):
-                rawValue = ProcessingErrorType.undefined.rawValue
-            case .scanning(_,_,_):
-                rawValue = ProcessingErrorType.scanning.rawValue
-            case .parsing(_,_,_):
-                rawValue = ProcessingErrorType.parsing.rawValue
-            case .interpretation(_,_):
-                rawValue = ProcessingErrorType.interpretation.rawValue
-            case .fatal(_,_):
-                rawValue = ProcessingErrorType.fatal.rawValue
-            }
-        } else {
-            rawValue = ProcessingErrorType.foreign.rawValue
-        }
-    }
-    
-    /// A non OysterKit error
-    public static let foreign           = ProcessingErrorType(rawValue:1 << 0)
-    
-    /// An internal `ProcessingError`
-    public static let `internal`        = ProcessingErrorType(rawValue:1 << 1)
-    
-    /// An undefined `ProcessingError`
-    public static let undefined         = ProcessingErrorType(rawValue:1 << 2)
-    
-    /// A scanning `ProcessingError`
-    public static let scanning          = ProcessingErrorType(rawValue:1 << 3)
-    
-    /// A parsing `ProcessingError`
-    public static let parsing           = ProcessingErrorType(rawValue:1 << 4)
-    
-    /// An interpretation `ProcessingError`
-    public static let interpretation    = ProcessingErrorType(rawValue:1 << 5)
-    
-    /// A fatal `ProcessingError`
-    public static let fatal             = ProcessingErrorType(rawValue:1 << 6)
-}
 
 /**
  A useful standard implementation of `TestErrorType` that enables the reporting of most kinds of issues
  */
 public enum ProcessingError : CausalErrorType {
+    /// A low level scanner error
+    case scannedMatchFailed
+    
     /// An internal error (perhaps an exception thrown compiling a regular expression) that can be wrapped
     /// to provide a `TestError`
     case `internal`(cause:Error)
+    
     /// An error where no specific error message has been defined
     case undefined(message:String, at: String.Index, causes:[Error])
+    
     /// An error during scanning, with a defined message
     case scanning(message:String,position:String.Index,causes:[Error])
+    
     /// An error during parsing, with a defined message
     case parsing(message:String,range:ClosedRange<String.Index>,causes:[Error])
+    
     /// An error during interpretation of parsed results, with a defined message
     case interpretation(message:String,causes:[Error])
+    
     /// A fatal error that should stop parsing and cause exit to the top
     case fatal(message:String, causes:[Error])
     
@@ -194,6 +97,8 @@ public enum ProcessingError : CausalErrorType {
             return causes
         case .undefined(_,_, let causes):
             return causes
+        case .scannedMatchFailed:
+            return nil
         }
     }
     
@@ -212,6 +117,8 @@ public enum ProcessingError : CausalErrorType {
             return position...position
         case .parsing(_, let range, _):
             return range
+        case .scannedMatchFailed:
+            return nil
         }
     }
     
@@ -237,6 +144,8 @@ public enum ProcessingError : CausalErrorType {
             return "Fatal Error: \(message)"
         case .interpretation(let message, _):
             return "Interpretation Error: \(message)"
+        case .scannedMatchFailed:
+            return "Scanner failed to match"
         }
     }
     
@@ -281,6 +190,8 @@ public enum ProcessingError : CausalErrorType {
             return ProcessingError.interpretation(message: message, causes: filteredCauses)
         case .fatal(let message, _):
             return ProcessingError.fatal(message: message, causes: filteredCauses)
+        case .scannedMatchFailed:
+            return nil
         }
     }
     
@@ -330,54 +241,4 @@ public enum ProcessingError : CausalErrorType {
     }
 }
 
-public extension CausalErrorType {
-    /**
-     Returns true if the supplied error includes the supplied description in its description
-    
-     - Parameter description: The text being searched for
-     - Returns: True if it contains the message, false if not
-    */
-    public func hasCause(description:String)->Bool{
-        if message.contains(description){
-            return true
-        }
-        for cause in causedBy ?? [] {
-            if let cause = cause as? CausalErrorType, cause.hasCause(description: description){
-                return true
-            } else if "\(cause)".contains(description){
-                return true
-            }
-        }
-        return false
-    }
-}
 
-public extension Array where Element == Error {
-    /// Extracts any causal errors from the array and builds a range from them
-    var range    : ClosedRange<String.Index>? {
-        var lowerBound : String.Index?
-        var upperBound : String.Index?
-        
-        for cause in compactMap({$0 as? CausalErrorType}){
-            if let existingLower = lowerBound, let causeLower = cause.range?.lowerBound {
-                lowerBound = Swift.min(existingLower, causeLower)
-            } else {
-                lowerBound = cause.range?.lowerBound
-            }
-            if let existingUpper = upperBound, let causeUpper = cause.range?.upperBound {
-                upperBound = Swift.max(existingUpper, causeUpper)
-            }
-        }
-        
-        switch (lowerBound, upperBound) {
-        case (let lower, nil) where lower != nil:
-            return lower!...lower!
-        case (nil, let upper) where upper != nil:
-            return upper!...upper!
-        case (let lower,let upper) where upper != nil && lower != nil:
-            return lower!...upper!
-        default:
-            return nil
-        }
-    }
-}

@@ -1,4 +1,4 @@
-//    Copyright (c) 2014, RED When Excited
+//    Copyright (c) 2018, RED When Excited
 //    All rights reserved.
 //
 //    Redistribution and use in source and binary forms, with or without
@@ -24,35 +24,33 @@
 
 import Foundation
 
-/**
- An enumeration of the `Error`s that can occur during parsing.
- */
-public enum GrammarError : Error, CustomStringConvertible{
-    
-    /// Recursive rule references itself without advancing the scanner
-    case recursiveRuleDoesNotAdvanceScanner
-    
-    /// Some element of the implementation has not been provided
-    case notImplemented
-    
-    /// A rule matched, but no token could be created
-    case noTokenCreatedFromMatch
-    
-    /// Whilst trying to match a token the rule failed (the text did not match). This should be expected during parsing.
-    case matchFailed(token:TokenType?)
-    
-    
-    /// A textual description of the error
-    public var description: String{
-        switch self {
-        case .recursiveRuleDoesNotAdvanceScanner:
-            return "Recursive rule does not advance scanner"
-        case .notImplemented:
-            return "Operation not implemented"
-        case .noTokenCreatedFromMatch:
-            return "No token created from a match"
-        case .matchFailed:
-            return "Match failed"
+
+public extension Array where Element == Error {
+    /// Extracts any causal errors from the array and builds a range from them
+    var range    : ClosedRange<String.Index>? {
+        var lowerBound : String.Index?
+        var upperBound : String.Index?
+        
+        for cause in compactMap({$0 as? CausalErrorType}){
+            if let existingLower = lowerBound, let causeLower = cause.range?.lowerBound {
+                lowerBound = Swift.min(existingLower, causeLower)
+            } else {
+                lowerBound = cause.range?.lowerBound
+            }
+            if let existingUpper = upperBound, let causeUpper = cause.range?.upperBound {
+                upperBound = Swift.max(existingUpper, causeUpper)
+            }
+        }
+        
+        switch (lowerBound, upperBound) {
+        case (let lower, nil) where lower != nil:
+            return lower!...lower!
+        case (nil, let upper) where upper != nil:
+            return upper!...upper!
+        case (let lower,let upper) where upper != nil && lower != nil:
+            return lower!...upper!
+        default:
+            return nil
         }
     }
 }

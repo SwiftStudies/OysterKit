@@ -261,7 +261,7 @@ open class Lexer : LexicalAnalyzer, CustomStringConvertible{
     */
     open func scan(terminal: String) throws {
         if !scanner.scan(string: terminal){
-            throw GrammarError.matchFailed(token: nil)
+            throw ProcessingError.scannedMatchFailed
         }
         advanceScanEnd()
     }
@@ -275,7 +275,7 @@ open class Lexer : LexicalAnalyzer, CustomStringConvertible{
     */
     open func scan(oneOf: CharacterSet) throws {
         if !scanner.scan(characterFrom: oneOf) {
-            throw GrammarError.matchFailed(token: nil)
+            throw ProcessingError.scannedMatchFailed
         }
         advanceScanEnd()
     }
@@ -289,7 +289,7 @@ open class Lexer : LexicalAnalyzer, CustomStringConvertible{
     */
     open func scanUpTo(terminal:String) throws {
         if !scanner.scanUpTo(string: terminal){
-            throw GrammarError.matchFailed(token: nil)
+            throw ProcessingError.scannedMatchFailed
         }
         advanceScanEnd()
     }
@@ -303,7 +303,7 @@ open class Lexer : LexicalAnalyzer, CustomStringConvertible{
      */
     open func scanUpTo(oneOf terminal:CharacterSet) throws {
         if !scanner.scanUpTo(characterFrom: terminal){
-            throw GrammarError.matchFailed(token: nil)
+            throw ProcessingError.scannedMatchFailed
         }
         advanceScanEnd()
     }
@@ -316,7 +316,7 @@ open class Lexer : LexicalAnalyzer, CustomStringConvertible{
      */
     open func scan(regularExpression regex: NSRegularExpression) throws {
         if !scanner.scan(regularExpression: regex){
-            throw GrammarError.matchFailed(token: nil)
+            throw ProcessingError.scannedMatchFailed
         }
         advanceScanEnd()
     }
@@ -326,7 +326,7 @@ open class Lexer : LexicalAnalyzer, CustomStringConvertible{
     */
     open func scanNext() throws {
         if scanner.scanNext() == nil {
-            throw GrammarError.matchFailed(token: nil)
+            throw ProcessingError.scannedMatchFailed
         }
         advanceScanEnd()
     }

@@ -43,8 +43,6 @@ class TestErrors: XCTestCase {
         }
         
         
-        XCTAssert(GrammarError.notImplemented.description == "Operation not implemented")
-        XCTAssert(GrammarError.noTokenCreatedFromMatch.description == "No token created from a match")
-        XCTAssert(GrammarError.matchFailed(token:DummyToken()).description == "Match failed")
+        XCTAssertEqual(ProcessingError.scannedMatchFailed.description,"Scanner failed to match")
     }
 }

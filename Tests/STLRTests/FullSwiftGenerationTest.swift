@@ -113,8 +113,8 @@ class FullSwiftGenerationTest: XCTestCase {
             XCTAssertNil(ast)
         } catch ProcessingError.parsing(_, _, let causes){
             // It's OK that the lexer didn't advance
-            if let primaryCause = causes.first {
-                XCTAssert("\(primaryCause)".hasPrefix("Lexer not advanced"))
+            if let primaryCause = causes.first as? ProcessingError{
+                XCTAssert("\(primaryCause)".hasPrefix("Scanning Error: Lexer not advanced at 0"))
             } else {
                 XCTFail("Unexpected error")
             }

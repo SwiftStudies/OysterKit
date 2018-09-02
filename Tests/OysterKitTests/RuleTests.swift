@@ -315,9 +315,9 @@ class RuleTests: XCTestCase {
     
     func testHumanConsumableError(){
         let text = "Hello\nworld my friend"
+        let range = text.range(of: "world")!
+        let pointError = ProcessingError.parsing(message: "Expected to find World not world", range: range.lowerBound...range.upperBound, causes: [])
         
-        let pointError = LanguageError.parsingError(at: text.range(of: "world")!, message: "Expected to find World not world")
-        
-        XCTAssertEqual("Expected to find World not world at line 1, column 1: \nworld my friend\n                                                       ^", pointError.formattedErrorMessage(in: text))
+        XCTAssertEqual("Parsing Error: Expected to find World not world between 6 and 11", pointError.debugDescription)
     }
 }

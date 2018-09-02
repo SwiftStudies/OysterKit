@@ -89,7 +89,7 @@ enum ParsingStrategy {
             }
             
             if context.lexer.index == positionBeforeParsing {
-                throw LanguageError.parsingError(at: context.lexer.index..<context.lexer.index, message: "Lexer not advanced")
+                throw ProcessingError.scanning(message: "Lexer not advanced", position: context.lexer.index, causes: [])
             }
             
             if context.lexer.endOfInput {
@@ -98,7 +98,7 @@ enum ParsingStrategy {
             
             return success
         } else {
-            throw LanguageError.scanningError(at: context.lexer.index..<context.lexer.source.unicodeScalars.endIndex, message: "Unexpected end of input")
+            throw ProcessingError.scanning(message: "Unexpected end of input", position: context.lexer.source.unicodeScalars.endIndex, causes: [])
         }
     }
     

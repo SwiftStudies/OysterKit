@@ -95,7 +95,7 @@ class BlockRuleTest: XCTestCase {
             try lexer.scanNext()
         }
         
-        for failure in validate(lowLevelResult: check(rule:rule, on:source, includeAST: false), index: source.startIndex, errors: ["Match failed"], token: nil){
+        for failure in validate(lowLevelResult: check(rule:rule, on:source, includeAST: false), index: source.startIndex, errors: ["Scanner failed to match"], token: nil){
             XCTFail(failure)
         }
     }
@@ -111,7 +111,7 @@ class BlockRuleTest: XCTestCase {
     func testStructureFail(){
         let source = "1"
         
-        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(.structural(token: aToken)), on:source, includeAST: true), index: source.startIndex, errors: ["Match failed"], token: nil){
+        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(.structural(token: aToken)), on:source, includeAST: true), index: source.startIndex, errors: ["Scanner failed to match"], token: nil){
             XCTFail(failure)
         }
     }
@@ -189,7 +189,7 @@ class BlockRuleTest: XCTestCase {
     
     func testScanFailure(){
         let source = "1"
-        for failure in validate(lowLevelResult: check(rule:singleLetterRule, on:source), index: source.startIndex, errors: ["Match failed"]){
+        for failure in validate(lowLevelResult: check(rule:singleLetterRule, on:source), index: source.startIndex, errors: ["Scanner failed to match"]){
             XCTFail(failure)
         }
     }
@@ -212,7 +212,7 @@ class BlockRuleTest: XCTestCase {
     func testLookaheadFailure(){
         //Look-ahead, positive, failure
         let source = "1"
-        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(lookahead:true), on:source), index: source.startIndex, errors: ["Match failed"]){
+        for failure in validate(lowLevelResult: check(rule:singleLetterRule.newBehaviour(lookahead:true), on:source), index: source.startIndex, errors: ["Scanner failed to match"]){
             XCTFail(failure)
         }
     }
