@@ -1,6 +1,6 @@
 ## OysterKit
 
-<img style="float: left;" src="./blob/development/0.6/Resources/Artwork/Images/OysterKit%20152x152.png">
+<img style="float: left;" src="Resources/Artwork/Images/OysterKit%20152x152.png">
 
 |       	| Status|
 | --------- | :-----|
