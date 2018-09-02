@@ -25,18 +25,6 @@
 import Foundation
 
 /**
- Abstract Syntax Trees are responsible to for taking an IntermediateRepresentation and building a data structure suitable for semantic analysis
- */
-public protocol AbstractSyntaxTree {
-    /**
-     Create a new instance of the object using the supplied node
-     
-     - Parameter node: The node to use to populate the fields of the type
-     */
-    init(with node:AbstractSyntaxTreeConstructor.IntermediateRepresentationNode, from source:String) throws
-}
-
-/**
  HomogenousTree is used as the default form of AbstractSyntaxTree. Each node in the tree captures its `TokenType`, the `String` it mtached, and any children.
  */
 public struct HomogenousTree : AbstractSyntaxTree, CustomStringConvertible {
@@ -57,12 +45,12 @@ public struct HomogenousTree : AbstractSyntaxTree, CustomStringConvertible {
      Creates a new instance of the node using the supplied parameters. You do not normally need to call this as nodes
      will be created by an `AbstractSyntaxTreeConstructor`. However if you wish to manually alter a generated tree
      creating nodes via this method may be appropriate.
- 
+     
      - Parameter token: The `TokenType` for the node
      - Parameter matchedString: The string that was matched
      - Parameter children: The child nodes
      - Parameter annotations: The annotations on the node
-    */
+     */
     public init(with token:TokenType, matching:String, children:[HomogenousTree], annotations:[RuleAnnotation:RuleAnnotationValue] = [:]){
         self.token = token
         self.matchedString = matching
@@ -81,7 +69,7 @@ public struct HomogenousTree : AbstractSyntaxTree, CustomStringConvertible {
     
     /// Any associated annotations made on the node
     public      let annotations: [RuleAnnotation : RuleAnnotationValue]
-
+    
     /// Access a child based on the name of the token of the child
     public subscript(_ tokenName:String)->HomogenousTree?{
         for child in children {

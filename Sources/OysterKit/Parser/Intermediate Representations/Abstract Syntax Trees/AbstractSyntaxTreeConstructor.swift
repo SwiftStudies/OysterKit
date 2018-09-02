@@ -226,60 +226,6 @@ public class AbstractSyntaxTreeConstructor  {
     
 }
 
-//Adds the ability to quickly access standard annotations
-public extension Dictionary where Key == RuleAnnotation, Value == RuleAnnotationValue {
-    
-    /// Any annotated error message, or nil if not set
-    public var error : String? {
-        if let error = self[.error] {
-            if case let .string(message) = error {
-                return message
-            }
-        }
-        return nil
-    }
-    
-    /// Any annotated error message, or nil if not set
-    public var token : String? {
-        if let token = self[.token] {
-            if case let .string(label) = token {
-                return label
-            }
-        }
-        return nil
-    }
-
-    /// True if the annotations included the pinned annotation
-    public var pinned : Bool {
-        if let value = self[.pinned] {
-            if case .set = value {
-                return true
-            }
-        }
-        return false
-    }
-
-    /// True if the annotations include the void annotation
-    public var void : Bool {
-        if let value = self[.void] {
-            if case .set = value {
-                return true
-            }
-        }
-        return false
-    }
-    
-    /// True if the annotations include the transient annotation
-    public var transient : Bool {
-        if let value = self[.transient] {
-            if case .set = value {
-                return true
-            }
-        }
-        return false
-    }
-}
-
 /**
  Provide the required implementation of the `IntermediateRepresentation` without exposing API consumers to it. This will enable more
  aggressive refactoring without code breaking changes

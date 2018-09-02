@@ -174,3 +174,4 @@ extension TokenStreamIterator : IntermediateRepresentation {
     }
 
 }
+

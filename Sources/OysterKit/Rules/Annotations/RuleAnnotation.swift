@@ -24,36 +24,7 @@
 
 import Foundation
 
-/**
- Represents the value for a rule annotation
- */
-public enum RuleAnnotationValue : CustomStringConvertible, Equatable{
-    /// A `String` value
-    case    string(String)
-    
-    /// A `Bool` value
-    case    bool(Bool)
-    
-    /// An `Int` value
-    case    int(Int)
-    
-    /// No value, but the annotation was present
-    case    set
-    
-    /// A human readable description of the annotation value
-    public var description: String{
-        switch self{
-        case .set:
-            return ""
-        case .int(let value):
-            return "\(value)"
-        case .bool(let value):
-            return "\(value)"
-        case .string(let value):
-            return "\"\(value)\""
-        }
-    }
-}
+
 
 /**
  An annotation that can be associated with any rule influencing how matches are interpretted and providing additional data about the token. The following annotations represent "reserved words", but otherwise you can define any annotations you want.
@@ -130,56 +101,4 @@ public enum RuleAnnotation : Hashable, CustomStringConvertible{
     }
 }
 
-/// A dictionary of annotations and their values
-public typealias RuleAnnotations = [RuleAnnotation : RuleAnnotationValue]
 
-/// Compares two ``RuleAnnotations``
-public func areEqual(lhs: RuleAnnotations, rhs: RuleAnnotations)->Bool{
-    func areEqual(lhs:RuleAnnotationValue, rhs:RuleAnnotationValue)->Bool{
-        return lhs.description == rhs.description
-    }
-    if lhs.count != rhs.count {
-        return false
-    }
-    
-    for tuple in lhs {
-        guard let rhsValue = rhs[tuple.key] else {
-            return false
-        }
-        if !areEqual(lhs: rhsValue, rhs: tuple.value) {
-            return false
-        }
-    }
-    
-    return true
-}
-
-/// An extension for dictionaries of `RuleAnnotations`
-public extension Collection where Iterator.Element == (key:RuleAnnotation,value:RuleAnnotationValue){
-    
-    /// Creates a new collection of RuleAnnotations where the merged annotations override those in
-    /// this object
-    /// - Parameter with: The annotations which will add to or override those already in the dictionary
-    public func merge(with incoming:RuleAnnotations)->RuleAnnotations{
-        var merged = self as! RuleAnnotations
-        for annotation in incoming {
-            merged[annotation.key] = annotation.value
-        }
-        
-        return merged
-    }
-    
-    /// A description in STLR format of the `RuleAnnotations`
-    public var stlrDescription : String {
-        var result = ""
-        for tuple in self {
-            result += "@\(tuple.0)"
-            let value = tuple.1.description
-            if !value.isEmpty {
-                result+="(\(value))"
-            }
-        }
-        
-        return result
-    }
-}
