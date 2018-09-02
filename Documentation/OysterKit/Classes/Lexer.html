@@ -23,7 +23,7 @@
         <a class="header-link" href="../index.html">
           OysterKit Docs
         </a>
-         (95% documented)
+         (93% documented)
       </p>
     
       <p class="header-col--secondary">
@@ -51,10 +51,10 @@
                 <a class="nav-group-task-link" href="../Classes/AbstractSyntaxTreeConstructor.html">AbstractSyntaxTreeConstructor</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Classes/AbstractSyntaxTreeConstructor/ConstructionError.html">– ConstructionError</a>
+                <a class="nav-group-task-link" href="../Classes/AbstractSyntaxTreeConstructor/IntermediateRepresentationNode.html">– IntermediateRepresentationNode</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Classes/AbstractSyntaxTreeConstructor/IntermediateRepresentationNode.html">– IntermediateRepresentationNode</a>
+                <a class="nav-group-task-link" href="../Classes/ChoiceRule.html">ChoiceRule</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/ClosureRule.html">ClosureRule</a>
@@ -69,16 +69,22 @@
                 <a class="nav-group-task-link" href="../Classes/NodeStackEntry.html">NodeStackEntry</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Classes/Parser.html">Parser</a>
+                <a class="nav-group-task-link" href="../Classes/RecursiveRule.html">RecursiveRule</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Classes/RecursiveRule.html">RecursiveRule</a>
+                <a class="nav-group-task-link" href="../Classes/ReferenceRule.html">ReferenceRule</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/SequenceRule.html">SequenceRule</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/StateCache.html">StateCache</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/StringScanner.html">StringScanner</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/TerminalRule.html">TerminalRule</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/TokenStream.html">TokenStream</a>
@@ -89,22 +95,8 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a class="nav-group-name-link" href="../Global Variables.html">Global Variables</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Global Variables.html#/s:9OysterKit19transientTokenValueSivp">transientTokenValue</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
             <a class="nav-group-name-link" href="../Enums.html">Enumerations</a>
             <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Enums/GrammarError.html">GrammarError</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Enums/LanguageError.html">LanguageError</a>
-              </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/Log.html">Log</a>
               </li>
@@ -112,19 +104,13 @@
                 <a class="nav-group-task-link" href="../Enums/MatchResult.html">MatchResult</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Enums/ParserRule.html">ParserRule</a>
+                <a class="nav-group-task-link" href="../Enums/ProcessingError.html">ProcessingError</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/RuleAnnotation.html">RuleAnnotation</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/RuleAnnotationValue.html">RuleAnnotationValue</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Enums/ScannerRule.html">ScannerRule</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Enums/TransientToken.html">TransientToken</a>
               </li>
             </ul>
           </li>
@@ -144,7 +130,13 @@
                 <a class="nav-group-task-link" href="../Extensions/Decodable.html">Decodable</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Dictionary.html">Dictionary</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Extensions/Int.html">Int</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/NSRegularExpression.html">NSRegularExpression</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Extensions/String.html">String</a>
@@ -158,10 +150,22 @@
             <a class="nav-group-name-link" href="../Functions.html">Functions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit2eeoiySbAA5Token_p_AaC_ptF">==(_:_:)</a>
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit1nopyAA4Rule_pAaC_pF">!(_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit1sopyAA4Rule_pAaC_pF">-(_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit2eeoiySbAA9TokenType_p_AaC_ptF">==(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit2ggopyAA4Rule_pAaC_pF">&gt;&gt;(_:)</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit8areEqual3lhs3rhsSbSDyAA14RuleAnnotationOAA0gH5ValueOG_AItF">areEqual(lhs:rhs:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit1topyAA4Rule_pAaC_pF">~(_:)</a>
               </li>
             </ul>
           </li>
@@ -172,19 +176,16 @@
                 <a class="nav-group-task-link" href="../Protocols/AbstractSyntaxTree.html">AbstractSyntaxTree</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/Rule.html">Rule</a>
+                <a class="nav-group-task-link" href="../Protocols/CausalErrorType.html">CausalErrorType</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/DecodeableAbstractSyntaxTree.html">DecodeableAbstractSyntaxTree</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/HumanConsumableError.html">HumanConsumableError</a>
+                <a class="nav-group-task-link" href="../Protocols/Grammar.html">Grammar</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/Language.html">Language</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a>
@@ -199,7 +200,10 @@
                 <a class="nav-group-task-link" href="../Protocols/Rule.html">Rule</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/Token.html">Token</a>
+                <a class="nav-group-task-link" href="../Protocols/Terminal.html">Terminal</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/TokenType.html">TokenType</a>
               </li>
             </ul>
           </li>
@@ -216,13 +220,19 @@
                 <a class="nav-group-task-link" href="../Structs/Cardinality.html">Cardinality</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/EndOfFile.html">EndOfFile</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/HomogenousTree.html">HomogenousTree</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Structs/LabelledToken.html">LabelledToken</a>
+                <a class="nav-group-task-link" href="../Structs/ParsingDecoder.html">ParsingDecoder</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Structs/ParsingDecoder.html">ParsingDecoder</a>
+                <a class="nav-group-task-link" href="../Structs/ProcessingErrorType.html">ProcessingErrorType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/StringToken.html">StringToken</a>
               </li>
             </ul>
           </li>
@@ -230,7 +240,10 @@
             <a class="nav-group-name-link" href="../Typealiases.html">Type Aliases</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit17CustomRuleClosurea">CustomRuleClosure</a>
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit8Languagea">Language</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit6Parsera">Parser</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a>
@@ -257,7 +270,7 @@
                 </div>
               </div>
             <p><code>Lexer</code> provides a concrete implementation of the <code><a href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a></code> protocol and is used by default for the rest of the OysterKit stack (for example
-in <code>Language.stream&lt;N:Node,L:LexicalAnalyzer&gt;(lexer:L)-&gt;AnySequence&lt;N&gt;</code>).</p>
+in <code>Grammar.stream&lt;N:Node,L:LexicalAnalyzer&gt;(lexer:L)-&gt;AnySequence&lt;N&gt;</code>).</p>
 
 <p>In addition to the requirements of the <code><a href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a></code> protocol, this implementation provides the ability to skip characters from a <code>CharacterSet</code> when
 a call to <code>mark()</code> is made. This can be useful when the consumer always wants, for example, to ignore white space in a file.</p>
@@ -476,7 +489,35 @@ should always be a matching call to either <code><a href="../Classes/Lexer.html#
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">mark</span><span class="p">()</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">func</span> <span class="nf">mark</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit5LexerC4mark8skippingySb_tF"></a>
+                    <a name="//apple_ref/swift/Method/mark(skipping:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit5LexerC4mark8skippingySb_tF">mark(skipping:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Mark the position of the scanner. It should be noted that at this point any characters matching <code><a href="../Classes/Lexer.html#/s:9OysterKit5LexerC4skip10Foundation12CharacterSetVSgvp">skip</a></code> will be skipped. There
+should always be a matching call to either <code><a href="../Classes/Lexer.html#/s:9OysterKit5LexerC6rewindyyF">rewind()</a></code> or <code>proceed()-&gt;LexicalContext</code></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">mark</span><span class="p">(</span><span class="nv">skipping</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -579,6 +620,34 @@ of the new topmost mark to this position.</p>
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:9OysterKit5LexerC11fastForwardAA14LexicalContext_pyF"></a>
+                    <a name="//apple_ref/swift/Method/fastForward()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit5LexerC11fastForwardAA14LexicalContext_pyF">fastForward()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Removes the top most <code>Mark</code> from the stack without creating a new <code><a href="../Protocols/LexicalContext.html">LexicalContext</a></code> effectively advancing the scanning position
+of the new topmost mark to this position.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">func</span> <span class="nf">fastForward</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Protocols/LexicalContext.html">LexicalContext</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:9OysterKit5LexerC10endOfInputSbvp"></a>
                     <a name="//apple_ref/swift/Property/endOfInput" class="dashAnchor"></a>
                     <a class="token" href="#/s:9OysterKit5LexerC10endOfInputSbvp">endOfInput</a>
@@ -617,7 +686,7 @@ of the new topmost mark to this position.</p>
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Scans until the specified terminal is reached in the source <code>String</code>. If the end of the <code>String</code> is reached before
-the supplied <code>String</code> is matched a <code><a href="../Enums/GrammarError.html">GrammarError</a></code> is thrown. If the terminal is matched, the scanning position will
+the supplied <code>String</code> is matched a <code>GrammarError</code> is thrown. If the terminal is matched, the scanning position will
 be at the end of that match.</p>
 <div class="aside aside-see-also">
     <p class="aside-title">See also</p>
@@ -670,7 +739,7 @@ be at the end of that match.</p>
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Scans until one of the characters in the supplied <code>CharacterSet</code> is found. If the end of the source is reached before a
-character from the set is found a <code><a href="../Enums/GrammarError.html">GrammarError</a></code> is thrown. The scanner position will be directly after the matched
+character from the set is found a <code>GrammarError</code> is thrown. The scanner position will be directly after the matched
 character.</p>
 
                       </div>
@@ -718,7 +787,7 @@ character.</p>
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Scans up to (that is, the position of the scanner will be at the start of the match, not after it) the supplied <code>String</code>. If the terminal is not found
-a <code><a href="../Enums/GrammarError.html">GrammarError</a></code> is thrown. The scanner position will be at the first character of the matched <code>terminal</code>.</p>
+a <code>GrammarError</code> is thrown. The scanner position will be at the first character of the matched <code>terminal</code>.</p>
 <div class="aside aside-see-also">
     <p class="aside-title">See also</p>
     <code>scan(terminal:String)</code>
@@ -770,7 +839,7 @@ a <code><a href="../Enums/GrammarError.html">GrammarError</a></code> is thrown. 
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Scans up to one of the characters in the supplied <code>CharacterSet</code> is found. If the end of the source is reached before a
-character from the set is found a <code><a href="../Enums/GrammarError.html">GrammarError</a></code> is thrown. The scanner position will be directly at the matched
+character from the set is found a <code>GrammarError</code> is thrown. The scanner position will be directly at the matched
 character.</p>
 
                       </div>
@@ -967,7 +1036,7 @@ position should be directly after the matched pattern.</p>
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-07-17)</p>
+      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-09-02)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

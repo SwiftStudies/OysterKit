@@ -22,7 +22,7 @@
         <a class="header-link" href="index.html">
           OysterKit Docs
         </a>
-         (95% documented)
+         (93% documented)
       </p>
     
       <p class="header-col--secondary">
@@ -50,10 +50,10 @@
                 <a class="nav-group-task-link" href="Classes/AbstractSyntaxTreeConstructor.html">AbstractSyntaxTreeConstructor</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/AbstractSyntaxTreeConstructor/ConstructionError.html">– ConstructionError</a>
+                <a class="nav-group-task-link" href="Classes/AbstractSyntaxTreeConstructor/IntermediateRepresentationNode.html">– IntermediateRepresentationNode</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/AbstractSyntaxTreeConstructor/IntermediateRepresentationNode.html">– IntermediateRepresentationNode</a>
+                <a class="nav-group-task-link" href="Classes/ChoiceRule.html">ChoiceRule</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/ClosureRule.html">ClosureRule</a>
@@ -68,16 +68,22 @@
                 <a class="nav-group-task-link" href="Classes/NodeStackEntry.html">NodeStackEntry</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/Parser.html">Parser</a>
+                <a class="nav-group-task-link" href="Classes/RecursiveRule.html">RecursiveRule</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/RecursiveRule.html">RecursiveRule</a>
+                <a class="nav-group-task-link" href="Classes/ReferenceRule.html">ReferenceRule</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/SequenceRule.html">SequenceRule</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/StateCache.html">StateCache</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/StringScanner.html">StringScanner</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/TerminalRule.html">TerminalRule</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/TokenStream.html">TokenStream</a>
@@ -88,22 +94,8 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a class="nav-group-name-link" href="Global Variables.html">Global Variables</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Global Variables.html#/s:9OysterKit19transientTokenValueSivp">transientTokenValue</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
             <a class="nav-group-name-link" href="Enums.html">Enumerations</a>
             <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Enums/GrammarError.html">GrammarError</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Enums/LanguageError.html">LanguageError</a>
-              </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Enums/Log.html">Log</a>
               </li>
@@ -111,19 +103,13 @@
                 <a class="nav-group-task-link" href="Enums/MatchResult.html">MatchResult</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Enums/ParserRule.html">ParserRule</a>
+                <a class="nav-group-task-link" href="Enums/ProcessingError.html">ProcessingError</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Enums/RuleAnnotation.html">RuleAnnotation</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Enums/RuleAnnotationValue.html">RuleAnnotationValue</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Enums/ScannerRule.html">ScannerRule</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Enums/TransientToken.html">TransientToken</a>
               </li>
             </ul>
           </li>
@@ -143,7 +129,13 @@
                 <a class="nav-group-task-link" href="Extensions/Decodable.html">Decodable</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/Dictionary.html">Dictionary</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Extensions/Int.html">Int</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/NSRegularExpression.html">NSRegularExpression</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Extensions/String.html">String</a>
@@ -157,10 +149,22 @@
             <a class="nav-group-name-link" href="Functions.html">Functions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Functions.html#/s:9OysterKit2eeoiySbAA5Token_p_AaC_ptF">==(_:_:)</a>
+                <a class="nav-group-task-link" href="Functions.html#/s:9OysterKit1nopyAA4Rule_pAaC_pF">!(_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Functions.html#/s:9OysterKit1sopyAA4Rule_pAaC_pF">-(_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Functions.html#/s:9OysterKit2eeoiySbAA9TokenType_p_AaC_ptF">==(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Functions.html#/s:9OysterKit2ggopyAA4Rule_pAaC_pF">&gt;&gt;(_:)</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Functions.html#/s:9OysterKit8areEqual3lhs3rhsSbSDyAA14RuleAnnotationOAA0gH5ValueOG_AItF">areEqual(lhs:rhs:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Functions.html#/s:9OysterKit1topyAA4Rule_pAaC_pF">~(_:)</a>
               </li>
             </ul>
           </li>
@@ -171,19 +175,16 @@
                 <a class="nav-group-task-link" href="Protocols/AbstractSyntaxTree.html">AbstractSyntaxTree</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Protocols/BehaviouralRule.html">BehaviouralRule</a>
+                <a class="nav-group-task-link" href="Protocols/CausalErrorType.html">CausalErrorType</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/DecodeableAbstractSyntaxTree.html">DecodeableAbstractSyntaxTree</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Protocols/HumanConsumableError.html">HumanConsumableError</a>
+                <a class="nav-group-task-link" href="Protocols/Grammar.html">Grammar</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Protocols/Language.html">Language</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a>
@@ -198,7 +199,10 @@
                 <a class="nav-group-task-link" href="Protocols/Rule.html">Rule</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Protocols/Token.html">Token</a>
+                <a class="nav-group-task-link" href="Protocols/Terminal.html">Terminal</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/TokenType.html">TokenType</a>
               </li>
             </ul>
           </li>
@@ -215,13 +219,19 @@
                 <a class="nav-group-task-link" href="Structs/Cardinality.html">Cardinality</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/EndOfFile.html">EndOfFile</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/HomogenousTree.html">HomogenousTree</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/LabelledToken.html">LabelledToken</a>
+                <a class="nav-group-task-link" href="Structs/ParsingDecoder.html">ParsingDecoder</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/ParsingDecoder.html">ParsingDecoder</a>
+                <a class="nav-group-task-link" href="Structs/ProcessingErrorType.html">ProcessingErrorType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/StringToken.html">StringToken</a>
               </li>
             </ul>
           </li>
@@ -229,7 +239,10 @@
             <a class="nav-group-name-link" href="Typealiases.html">Type Aliases</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Typealiases.html#/s:9OysterKit17CustomRuleClosurea">CustomRuleClosure</a>
+                <a class="nav-group-task-link" href="Typealiases.html#/s:9OysterKit8Languagea">Language</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Typealiases.html#/s:9OysterKit6Parsera">Parser</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a>
@@ -251,25 +264,22 @@
             
             <h2 id='oysterkit' class='heading'>OysterKit</h2>
 
-<table><thead>
-<tr>
-<th></th>
-<th style="text-align: left">Status</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>Linux/macOS/iOS/tvOS</td>
-<td style="text-align: left"><a href="https://travis-ci.org/SwiftStudies/OysterKit"><img src="https://travis-ci.org/SwiftStudies/OysterKit.svg?branch=master" alt="Build Status"></a></td>
-</tr>
-<tr>
-<td>Test Coverage</td>
-<td style="text-align: left"><a href="https://codecov.io/gh/SwiftStudies/OysterKit"><img src="https://codecov.io/gh/SwiftStudies/OysterKit/branch/master/graph/badge.svg" alt="codecov"></a></td>
-</tr>
-<tr>
-<td>Documentation Coverage</td>
-<td style="text-align: left">97%</td>
-</tr>
-</tbody></table>
+<p align="center">
+<img src="Resources/Artwork/Images/OysterKit%20180x180.png" height="180" alt="OysterKit">
+<p align="center"><strong>A Swift Framework for Tokenizing, Parsing, and Interpreting Languages</strong></p>
+</p>
+
+<p align="center">
+<a href="https://travis-ci.org/SwiftStudies/OysterKit">
+<img src="https://travis-ci.org/SwiftStudies/OysterKit.svg?branch=master" alt="Build Status - Master">
+</a>
+<img src="https://codecov.io/gh/SwiftStudies/OysterKit/branch/master/graph/badge.svg" alt="codecov">
+<img src="https://img.shields.io/badge/documentation-97%25-brightgreen.svg" alt="Documentation Coverage">
+<img src="https://img.shields.io/badge/platforms-Linux%20%7C%20MacOS%20%7C%20iOS%20%7C%20tvOS%20%7C%20watchOS-green.svg" alt="Platforms">
+<img src="https://img.shields.io/pypi/l/Django.svg" alt="BSD">
+<a href="https://codecov.io/gh/SwiftStudies/OysterKit">
+</a>
+</p>
 
 <p>OysterKit enables native Swift scanning, lexical analysis, and parsing capabilities as a pure Swift framework. Two additional elements are also provided in this package. The first is a second framework STLR which uses OysterKit to provide a plain text grammar specification language called STLR (Swift Tool for Language Recognition). Finally a command line tool, <code>stlr</code> can be used to automatically generate Swift source code for OysterKit for STLR grammars, as well as dynamically apply STLR grammars to a number of use-cases. The following documentation is available: </p>
 
@@ -283,6 +293,8 @@
 </ul></li>
 <li><a href="https://github.com/SwiftStudies/OysterKit/blob/master/Documentation/stlr-toolc.md">stlrc Command Line Tool reference</a> Instructions for using the <code>stlrc</code> command line tool. Note that some of the tutorials referenced above also provide some concrete usage examples.</li>
 </ul>
+
+<p><strong>Please note</strong> all development is now for Swift 4.2 and beyond only. If you wish to use the last Swift 4.1 compatible release please use the <code>swift/4.1</code> branch </p>
 <h2 id='key-features' class='heading'>Key Features</h2>
 
 <ul>
@@ -301,17 +313,252 @@
 <li>Complied STLR can be used immediately at run time, or through the generation of a Swift source file</li>
 </ul></li>
 </ul>
+<h2 id='examples' class='heading'>Examples</h2>
+<h3 id='creating-a-rule-and-tokenizing-a-string' class='heading'>Creating a rule and tokenizing a String</h3>
+
+<p>OysterKit can be used to create and use grammars very quickly and simply directly in Swift. Here are are few simple examples</p>
+<pre class="highlight plaintext"><code>/// Scanning
+let letter = CharacterSet.letters.parse(as:StringToken("letter"))
+
+for token in [letter].tokenize("Hello"){
+    print(token)
+}
+</code></pre>
+
+<p>Instances <code>CharacterSet</code>, <code>String</code>, and <code>NSRegularExpression</code> can all be used as rules directly. To make a rule produce a token just use the <code>parse(as:TokenType)</code> function of a rule. A grammar is simply an array of rules, and you can use that grammar to tokenise a string. </p>
+<h3 id='making-choices' class='heading'>Making choices</h3>
+
+<p>A choice rule is simply one where any of the rules contained can match to satisfy the <code>choice</code>. In this case the <code>punctuation</code> rule can be one of a number of strings. We can then tokenize</p>
+<pre class="highlight plaintext"><code>/// Choices
+let punctuation = [".",",","!","?"].choice.parse(as: StringToken("punctuation"))
+
+for token in [letter, punctuation].tokenize("Hello!"){
+    print(token)
+}
+</code></pre>
+<h3 id='skipping-content' class='heading'>Skipping Content</h3>
+
+<p>You don&rsquo;t always want to create tokens for everything. You can chain modifications to any rule together as rules have value based semantics&hellip; you don&rsquo;t change the original. </p>
+<pre class="highlight plaintext"><code>/// Skipping
+let space = CharacterSet.whitespaces.skip()
+
+for token in [letter, punctuation, space].tokenize("Hello, World!"){
+    print(token)
+}
+</code></pre>
+
+<p>We use all three of our different rules to tokenize <q>Hello, World!</q>, but notice that we call <code>skip()</code> on the <code>space</code> rule. That means no token will be created (and when we get to more complex parsing later&hellip; it also means that if this rule forms part of another more complex rule, the skipped rules at the beginning and end won&rsquo;t be included in the matched range. But more on that later). You&rsquo;ll only get <code>letter</code> and <code>punctuation</code> tokens iun this example, but you&rsquo;ll still match spaces. </p>
+<h3 id='repetition' class='heading'>Repetition</h3>
+
+<p>You can also tell a rule how many times it must match before generating a token. Here we create a <code>word</code> token which repeats our <code>letter</code> rule one or more times. </p>
+<pre class="highlight plaintext"><code>let word = letter.require(.oneOrMore).parse(as: StringToken("word"))
+
+for token in [word, punctuation, space].tokenize("Hello, World!"){
+    print(token)
+}
+</code></pre>
+
+<p>There are standard ones for <code>one</code>,<code>noneOrOne</code>, <code>noneOrMore</code>, and <code>oneOrMore</code> but you can also specify a closed or open range (e.g. <code>.require(2...)</code> would match two or more. </p>
+<h3 id='sequences' class='heading'>Sequences</h3>
+
+<p>Rules can be made up of sequences of other rules. In this example we create a <code>properNoun</code> rule which requires an uppercase letter followed by zero or more lowercase letters. Note that we create a new rule from our previous <code>word</code> rule that generates a different token (<code>other</code>). Then we make our new <code>choice</code> generate the <code>word</code> token. We&rsquo;ve just created a little hierarchy in our grammar. <code>word</code> will match <code>properNoun</code> or <code>other</code> (our old <code>word</code> rule). You&rsquo;ll see why this is useful later. When you stream you&rsquo;ll just get <code>word</code> (not <code>properNoun</code> or <code>other</code>). </p>
+<pre class="highlight plaintext"><code>// Sequences
+let properNoun = [CharacterSet.uppercaseLetters, CharacterSet.lowercaseLetters.require(.zeroOrMore)].sequence.parse(as: StringToken("properNoun"))
+let classifiedWord = [properNoun,word.parse(as: StringToken("other"))].choice.parse(as: StringToken("word"))
+
+print("Word classification")
+for token in [classifiedWord, punctuation, space].tokenize("Jon was here!"){
+    print(token)
+}
+</code></pre>
+<h3 id='parsing-beyond-tokenization' class='heading'>Parsing - Beyond Tokenization</h3>
+
+<p>Tokenizing is great, and there are many applications where it&rsquo;s enough (syntax highlighting anyone?), but if you are going to attempt anything like building an actual language, or want to parse a more complex data structure you are going to want to build an Abstract Syntax Tree. OysterKit can build HomogenousTree&rsquo;s from any grammar. Wait! Don&rsquo;t go. It&rsquo;s not that bad! Here it is in action. </p>
+<pre class="highlight plaintext"><code>do {
+    print(try [[classifiedWord, punctuation, space].choice].parse("Jon was here!"))
+
+} catch let error as ProcessingError {
+    print(error.debugDescription)
+}
+</code></pre>
+
+<p>Here we use <code>parse()</code> instead of <code>tokenize()</code>. We need to wrap it in a <code>do-catch</code> block because whereas with tokenization we just stopped streaming when something went wrong, we can get a lot more information when we parse including errors. This code simply tries to parse (note this time we are creating a single rule grammar, but that single rule is a <code>choice</code> of all our other rules) the same string as before, but this time it produces a tree. Here&rsquo;s what would be printed out</p>
+<pre class="highlight plaintext"><code>root 
+    word 
+        properNoun - 'Jon'
+    word 
+        other - 'was'
+    word 
+        other - 'here'
+    punctuation - '!'
+</code></pre>
+
+<p>Now we can see our word classification. </p>
+<h3 id='building-complex-heterogenous-abstract-syntax-trees' class='heading'>Building Complex Heterogenous Abstract Syntax Trees</h3>
+
+<p>I know&hellip; I did it again&hellip; jargon. It&rsquo;s pretty simple though. Homogenous means <q>of the same kind</q>, so a Homogenous tree is just one where every node in the tree is the same type. That&rsquo;s what the <code>parse</code> function creates. <code>build</code> can create heterogenous (data structures populated with different kinds of data) of data structures, such as Swift types. OysterKit uses the power of Swift make this really quite simple.</p>
+
+<p>Out of the box you can <code>Decode</code> and <code>Decodable</code> type using an OysterKit grammar (and if you think this is powerful, wait until you&rsquo;ve had a look at <a href="https://github.com/SwiftStudies/OysterKit/blob/master/Documentation/STLR.md">STLR</a> and auto-generated the Swift source code instead of doing all of the typing you are about to see!). </p>
+
+<p>First, let&rsquo;s declare some data structures for words and sentances. </p>
+<pre class="highlight plaintext"><code>struct Word : Decodable, CustomStringConvertible {
+    let properNoun : String?
+    let other : String?
+
+    var description: String {
+        return properNoun != nil ? "properNoun: \(properNoun!)" : "other: \(other!)"
+    }
+}
+
+struct Sentance : Decodable {
+    let words : [Word]
+    let punctuation : String
+}
+</code></pre>
+
+<p>Fairly straightforward (if inaccurate&hellip; you can normally have more punctuation than just at the end). Now we define a grammar that produces tokens with names that match the properties of our types, and OysterKit (and Swift) will do the rest. </p>
+<pre class="highlight plaintext"><code>do {
+    let words = [classifiedWord, space.require(.zeroOrMore)].sequence.require(.oneOrMore).parse(as:StringToken("words"))
+    let sentance = try [ [words, punctuation ].sequence ].build("Jon was here!", as: Sentance.self)
+
+    print(sentance)
+} catch let error as ProcessingError {
+    print(error.debugDescription)
+} catch {
+    print(error)
+}
+</code></pre>
+
+<p>Instead of <code>parse()</code> we <code>build()</code>. We need an extra parameter here; you need to tell <code>build</code> what you want to build it <code>as</code>. </p>
+<pre class="highlight plaintext"><code>.build("Jon was here!", as: Sentance.self)
+</code></pre>
+
+<p>That tree we saw in the previous example can be exactly matched against our data-structure. </p>
+<h3 id='but-what-if-i-want-a-heterogeneous-tree-but-don-39-t-want-to-go-to-all-that-effort' class='heading'>But what if I want a Heterogeneous Tree but don&rsquo;t want to go to all that effort?</h3>
+
+<p>Luckily OysterKit comes hand in hand with STLR which is a language for writing grammars. You can either dynamically turn this into Swift in memory (perfect if you just want to <code>parse</code>) or use the final member of the trinity <code>stlrc</code> to generate the Swift not just for the rules, but the Swift data structures too. You can read <a href="">full documentation for STLR here</a>, but I wanted to leave you with an example of the STLR for the grammar we finished with, and the Swift it generates, but not before showing you the only Swift you&rsquo;ll need to write to use it</p>
+<h4 id='the-only-code-you-39-ll-have-to-write' class='heading'>The only code you&rsquo;ll have to write</h4>
+
+<p>All you need to do is build an instance of the generated type&hellip;</p>
+<pre class="highlight plaintext"><code>do {
+    let sentance = Sentance.build("Hello Jon!")
+} catch {
+    print(error)
+}
+</code></pre>
+
+<p>It&rsquo;s really that simple. OK, here&rsquo;s where it came from</p>
+<h4 id='the-stlr' class='heading'>The STLR</h4>
+<pre class="highlight plaintext"><code>grammar Sentance
+
+punctuation = "." | "," | "!" | "?"
+
+properNoun  = .uppercaseLetter .lowercaseLetter*
+other       = .letter+
+
+word        = properNoun | other
+words       = (word .whitespace+)
+
+sentance    = words punctuation
+</code></pre>
+
+<p>Yup. That&rsquo;s it. Here&rsquo;s the Swift that was generated. There seems to be a lot of it&hellip; but remember, you don&rsquo;t even need to look at it if you don&rsquo;t want to! When you do though, you should see all of the things you&rsquo;ve learned in there</p>
+<h4 id='the-generated-swift' class='heading'>The Generated Swift</h4>
+
+<p>We can now use <code>stlrc</code> to compile the STLR into Swift. This simple command will do that</p>
+<pre class="highlight plaintext"><code>stlrc generate -g Sentance.stlr -l swiftIR -ot ./
+</code></pre>
+
+<p>The above command will generate a Sentance.swift file in the current directory. You should see what it does if you change <code>-l swiftIR</code> to <code>-l SwiftPM</code>&hellip; but that&rsquo;s another story. Here&rsquo;s what&rsquo;s in Sentance.swift</p>
+<pre class="highlight plaintext"><code>import Foundation
+import OysterKit
+
+/// Intermediate Representation of the grammar
+internal enum SentanceTokens : Int, TokenType, CaseIterable, Equatable {
+    typealias T = SentanceTokens
+
+    /// The tokens defined by the grammar
+    case `punctuation`, `properNoun`, `other`, `word`, `words`, `sentance`
+
+    /// The rule for the token
+    var rule : Rule {
+        switch self {
+            /// punctuation
+            case .punctuation:
+                return [".",",","!","?"].choice.reference(.structural(token: self))
+
+            /// properNoun
+            case .properNoun:
+                return [CharacterSet.uppercaseLetters,CharacterSet.lowercaseLetters.require(.zeroOrMore)].sequence.reference(.structural(token: self))
+
+            /// other
+            case .other:
+                return CharacterSet.letters.require(.oneOrMore).reference(.structural(token: self))
+
+            /// word
+            case .word:
+                return [T.properNoun.rule,T.other.rule].choice.reference(.structural(token: self))
+
+            /// words
+            case .words:
+                return [T.word.rule,CharacterSet.whitespaces.require(.oneOrMore)].sequence.reference(.structural(token: self))
+
+            /// sentance
+            case .sentance:
+                return [T.words.rule,T.punctuation.rule].sequence.reference(.structural(token: self))
+
+        }
+    }
+
+    /// Create a language that can be used for parsing etc
+    public static var generatedRules: [Rule] {
+        return [T.sentance.rule]
+    }
+}
+
+public struct Sentance : Codable {
+
+    // Punctuation
+    public enum Punctuation : Swift.String, Codable, CaseIterable {
+        case period = ".",comma = ",",ping = "!",questionMark = "?"
+    }
+
+    // Word
+    public enum Word : Swift.String, Codable, CaseIterable {
+        case properNoun,other
+    }
+
+    /// Words 
+    typealias Words = [Word]
+
+    /// Sentance 
+    public struct Sentance : Codable {
+        public let punctuation: Punctuation
+        public let words: Words
+    }
+    public let sentance : Sentance
+
+    /**
+    Parses the supplied string using the generated grammar into a new instance of
+    the generated data structure
+
+    - Parameter source: The string to parse
+    - Returns: A new instance of the data-structure
+    */
+    public static func build(_ source : Swift.String) throws -&gt;Sentance{
+        return try generatedLanguage.build(source, Sentance.self)
+    }
+
+    public static var generatedLanguage : Grammar {return Parser(grammar:SentanceTokens.generatedRules)}
+}
+</code></pre>
+
+<p>There are some interesting (and I think rather clever) things in there. Note that for the <code>Word</code> type STLR has been clever and determined that there are only a couple of possible values and that both of those are just Strings, so it&rsquo;s created an enum instead. It&rsquo;s done that for <code>Punctuation</code> as well, but that&rsquo;s a little easier as it was just a choice of simple strings. It&rsquo;s also determined that it doesn&rsquo;t really need to create a new type for Words, it can just use a <code>typealias</code>. </p>
+
+<p>I mention this because you will be interacting with this data structure, so I&rsquo;ve spent a lot of time making sure it genertes easy to use Swift, that&rsquo;s strongly typed. This is going to make it easier for you to work with once building is complete. </p>
 <h2 id='status' class='heading'>Status</h2>
 
-<ul>
-<li>Swift 4.2 development is proceeding on the 4.2 branch, in addition new features are also being added there. Check the status of the 4.2 pull request to confirm that all tests are passing, but you are safe to use this branch for development if you wish. I have been merging changes into the master branch providing they do not break 4.1.x compatibility.<br>
-
-<ul>
-<li>All tests are passing</li>
-</ul></li>
-</ul>
-
-<p>For those that used v1.0 there are significant performance and capability benefits of moving to v2. I have not yet built an OKScript translator, but that could quite easily be done if there is demand. </p>
+<p>You will notice there are some warnings in this build. You should not be concerned by these as they are largely forward references to further clean up that can be done now that STLR is generating the Swift code for both Rules/Tokens as well as the data-structures for itself. Deprication is in full swing now as I start to move closer to 1.0 and want to get old code out. </p>
 
           </div>
         </section>
@@ -320,7 +567,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-07-17)</p>
+      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-09-02)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>ProcessingError Enumeration Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Enum/ProcessingError" class="dashAnchor"></a>
+
+    <a title="ProcessingError Enumeration Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="../index.html">
+          OysterKit Docs
+        </a>
+         (93% documented)
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="../search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../index.html">OysterKit Reference</a>
+      <img class="carat" src="../img/carat.png" />
+      ProcessingError Enumeration Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/AbstractSyntaxTreeConstructor.html">AbstractSyntaxTreeConstructor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/AbstractSyntaxTreeConstructor/IntermediateRepresentationNode.html">– IntermediateRepresentationNode</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ChoiceRule.html">ChoiceRule</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ClosureRule.html">ClosureRule</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/Lexer.html">Lexer</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/NodeStack.html">NodeStack</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/NodeStackEntry.html">NodeStackEntry</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/RecursiveRule.html">RecursiveRule</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ReferenceRule.html">ReferenceRule</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/SequenceRule.html">SequenceRule</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/StateCache.html">StateCache</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/StringScanner.html">StringScanner</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/TerminalRule.html">TerminalRule</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/TokenStream.html">TokenStream</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/TokenStreamIterator.html">TokenStreamIterator</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/Log.html">Log</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/MatchResult.html">MatchResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/ProcessingError.html">ProcessingError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/RuleAnnotation.html">RuleAnnotation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/RuleAnnotationValue.html">RuleAnnotationValue</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Array.html">Array</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/CharacterSet.html">CharacterSet</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Collection.html">Collection</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Decodable.html">Decodable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Dictionary.html">Dictionary</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Int.html">Int</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/NSRegularExpression.html">NSRegularExpression</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/String.html">String</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/_ParsingDecoder.html">_ParsingDecoder</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Functions.html">Functions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit1nopyAA4Rule_pAaC_pF">!(_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit1sopyAA4Rule_pAaC_pF">-(_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit2eeoiySbAA9TokenType_p_AaC_ptF">==(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit2ggopyAA4Rule_pAaC_pF">&gt;&gt;(_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit8areEqual3lhs3rhsSbSDyAA14RuleAnnotationOAA0gH5ValueOG_AItF">areEqual(lhs:rhs:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit1topyAA4Rule_pAaC_pF">~(_:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/AbstractSyntaxTree.html">AbstractSyntaxTree</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/CausalErrorType.html">CausalErrorType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/DecodeableAbstractSyntaxTree.html">DecodeableAbstractSyntaxTree</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/Grammar.html">Grammar</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/LexicalContext.html">LexicalContext</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/Node.html">Node</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/Rule.html">Rule</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/Terminal.html">Terminal</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/TokenType.html">TokenType</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Behaviour.html">Behaviour</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Behaviour/Kind.html">– Kind</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Cardinality.html">Cardinality</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/EndOfFile.html">EndOfFile</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/HomogenousTree.html">HomogenousTree</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ParsingDecoder.html">ParsingDecoder</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/ProcessingErrorType.html">ProcessingErrorType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/StringToken.html">StringToken</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit8Languagea">Language</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit6Parsera">Parser</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit13StreamedTokena">StreamedToken</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit4Testa">Test</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            <h1>ProcessingError</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">ProcessingError</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/CausalErrorType.html">CausalErrorType</a></span></code></pre>
+
+                </div>
+              </div>
+            <p>A useful standard implementation of <code>TestErrorType</code> that enables the reporting of most kinds of issues</p>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit15ProcessingErrorO18scannedMatchFailedyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/scannedMatchFailed" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit15ProcessingErrorO18scannedMatchFailedyA2CmF">scannedMatchFailed</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A low level scanner error</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">scannedMatchFailed</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit15ProcessingErrorO8internalyACs0D0_p_tcACmF"></a>
+                    <a name="//apple_ref/swift/Element/internal(cause:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit15ProcessingErrorO8internalyACs0D0_p_tcACmF">internal(cause:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>An internal error (perhaps an exception thrown compiling a regular expression) that can be wrapped
+to provide a <code>TestError</code></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="p">`</span><span class="nv">internal</span><span class="p">`(</span><span class="nv">cause</span><span class="p">:</span> <span class="kt">Error</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit15ProcessingErrorO9undefinedyACSS_SS5IndexVSays0D0_pGtcACmF"></a>
+                    <a name="//apple_ref/swift/Element/undefined(message:at:causes:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit15ProcessingErrorO9undefinedyACSS_SS5IndexVSays0D0_pGtcACmF">undefined(message:at:causes:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>An error where no specific error message has been defined</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">undefined</span><span class="p">(</span><span class="nv">message</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">at</span><span class="p">:</span> <span class="kt">String</span><span class="o">.</span><span class="kt">Index</span><span class="p">,</span> <span class="nv">causes</span><span class="p">:</span> <span class="p">[</span><span class="kt">Error</span><span class="p">])</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit15ProcessingErrorO8scanningyACSS_SS5IndexVSays0D0_pGtcACmF"></a>
+                    <a name="//apple_ref/swift/Element/scanning(message:position:causes:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit15ProcessingErrorO8scanningyACSS_SS5IndexVSays0D0_pGtcACmF">scanning(message:position:causes:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>An error during scanning, with a defined message</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">scanning</span><span class="p">(</span><span class="nv">message</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">position</span><span class="p">:</span> <span class="kt">String</span><span class="o">.</span><span class="kt">Index</span><span class="p">,</span> <span class="nv">causes</span><span class="p">:</span> <span class="p">[</span><span class="kt">Error</span><span class="p">])</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit15ProcessingErrorO7parsingyACSS_SNySS5IndexVGSays0D0_pGtcACmF"></a>
+                    <a name="//apple_ref/swift/Element/parsing(message:range:causes:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit15ProcessingErrorO7parsingyACSS_SNySS5IndexVGSays0D0_pGtcACmF">parsing(message:range:causes:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>An error during parsing, with a defined message</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">parsing</span><span class="p">(</span><span class="nv">message</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">range</span><span class="p">:</span> <span class="kt">ClosedRange</span><span class="o">&lt;</span><span class="kt">String</span><span class="o">.</span><span class="kt">Index</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">causes</span><span class="p">:</span> <span class="p">[</span><span class="kt">Error</span><span class="p">])</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit15ProcessingErrorO14interpretationyACSS_Says0D0_pGtcACmF"></a>
+                    <a name="//apple_ref/swift/Element/interpretation(message:causes:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit15ProcessingErrorO14interpretationyACSS_Says0D0_pGtcACmF">interpretation(message:causes:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>An error during interpretation of parsed results, with a defined message</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">interpretation</span><span class="p">(</span><span class="nv">message</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">causes</span><span class="p">:</span> <span class="p">[</span><span class="kt">Error</span><span class="p">])</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit15ProcessingErrorO5fatalyACSS_Says0D0_pGtcACmF"></a>
+                    <a name="//apple_ref/swift/Element/fatal(message:causes:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit15ProcessingErrorO5fatalyACSS_Says0D0_pGtcACmF">fatal(message:causes:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A fatal error that should stop parsing and cause exit to the top</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">fatal</span><span class="p">(</span><span class="nv">message</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">causes</span><span class="p">:</span> <span class="p">[</span><span class="kt">Error</span><span class="p">])</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit15ProcessingErrorO7isFatalSbvp"></a>
+                    <a name="//apple_ref/swift/Property/isFatal" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit15ProcessingErrorO7isFatalSbvp">isFatal</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p><code>true</code> if <code>ProcessingError.fatal</code></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">isFatal</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit15ProcessingErrorO4with3and9whenUsing6causesAcA9BehaviourV_SDyAA14RuleAnnotationOAA0kL5ValueOGAA15LexicalAnalyzer_pSays0D0_pGSgtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(with:and:whenUsing:causes:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit15ProcessingErrorO4with3and9whenUsing6causesAcA9BehaviourV_SDyAA14RuleAnnotationOAA0kL5ValueOGAA15LexicalAnalyzer_pSays0D0_pGSgtcfc">init(with:and:whenUsing:causes:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Constructs a scanning or parsing error (depending on wether or not a <code><a href="../Protocols/TokenType.html">TokenType</a></code> is supplied) from the supplied data.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">with</span> <span class="nv">behaviour</span><span class="p">:</span> <span class="kt"><a href="../Structs/Behaviour.html">Behaviour</a></span><span class="p">,</span> <span class="n">and</span> <span class="nv">annotations</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a></span><span class="p">,</span> <span class="n">whenUsing</span> <span class="nv">lexer</span><span class="p">:</span> <span class="kt"><a href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a></span><span class="p">,</span> <span class="n">causes</span> <span class="nv">errors</span><span class="p">:</span> <span class="p">[</span><span class="kt">Error</span><span class="p">]?)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>behaviour</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The behaviour of the rule that encountered the error</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>annotations</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Annotations on the rule that encountered the error</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>lexer</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The lexical analyzer being used for scanning</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>errors</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>That were generated by any contained tests</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit15ProcessingErrorO8causedBySays0D0_pGSgvp"></a>
+                    <a name="//apple_ref/swift/Property/causedBy" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit15ProcessingErrorO8causedBySays0D0_pGSgvp">causedBy</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The errors that caused this error, or nil if this is the root error</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">causedBy</span><span class="p">:</span> <span class="p">[</span><span class="kt">Error</span><span class="p">]?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit15ProcessingErrorO5rangeSNySS5IndexVGSgvp"></a>
+                    <a name="//apple_ref/swift/Property/range" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit15ProcessingErrorO5rangeSNySS5IndexVGSgvp">range</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The range in the source string that caused this error, or nil (for example an internal error)</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">range</span><span class="p">:</span> <span class="kt">ClosedRange</span><span class="o">&lt;</span><span class="kt">String</span><span class="o">.</span><span class="kt">Index</span><span class="o">&gt;</span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit15ProcessingErrorO7messageSSvp"></a>
+                    <a name="//apple_ref/swift/Property/message" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit15ProcessingErrorO7messageSSvp">message</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A human readable version of the error message. It does not include any causes
+except for internal error (where the cause really is the error being reported)</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">message</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit15ProcessingErrorO11descriptionSSvp"></a>
+                    <a name="//apple_ref/swift/Property/description" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit15ProcessingErrorO11descriptionSSvp">description</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A textual description of the error and its causes</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">description</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit15ProcessingErrorO8filtered7includeACSgSbs0D0_pXE_tF"></a>
+                    <a name="//apple_ref/swift/Method/filtered(include:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit15ProcessingErrorO8filtered7includeACSgSbs0D0_pXE_tF">filtered(include:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Filters the error and its caueses by the using the supplied block. Note that internal errors with no
+matching cause will also be filtered out.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">filtered</span><span class="p">(</span><span class="nv">include</span><span class="p">:</span> <span class="p">(</span><span class="kt">Error</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">ProcessingError</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>include</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A closure that should return true if the supplied error should be included in the filtered result</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A filtered version of the error or <code>nil</code> if the error itself does not match the filter</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit15ProcessingErrorO8filtered9includingACSgAA0cD4TypeV_tF"></a>
+                    <a name="//apple_ref/swift/Method/filtered(including:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit15ProcessingErrorO8filtered9includingACSgAA0cD4TypeV_tF">filtered(including:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Filters this error and all of its causes including only those that are of the types provided</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">filtered</span><span class="p">(</span><span class="n">including</span> <span class="nv">includedTypes</span><span class="p">:</span> <span class="kt"><a href="../Structs/ProcessingErrorType.html">ProcessingErrorType</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">ProcessingError</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>includedTypes</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The types that should be included after filtering</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit15ProcessingErrorO8filtered25includingMessagesMatchingACSgSS_tF"></a>
+                    <a name="//apple_ref/swift/Method/filtered(includingMessagesMatching:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit15ProcessingErrorO8filtered25includingMessagesMatchingACSgSS_tF">filtered(includingMessagesMatching:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Filters this error and all of its causes including only those that have messages matching the
+supplied regular expression pattern.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">filtered</span><span class="p">(</span><span class="n">includingMessagesMatching</span> <span class="nv">pattern</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">ProcessingError</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>pattern</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A regular expression to use to check messages from teh errors</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p><code>nil</code> if no errors match, or a new error with just matching children and their parents</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit15ProcessingErrorO010processingD4TypeAA0cdF0Vvp"></a>
+                    <a name="//apple_ref/swift/Property/processingErrorType" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit15ProcessingErrorO010processingD4TypeAA0cdF0Vvp">processingErrorType</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The type of the error</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">processingErrorType</span><span class="p">:</span> <span class="kt"><a href="../Structs/ProcessingErrorType.html">ProcessingErrorType</a></span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-09-02)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>

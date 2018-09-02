@@ -23,7 +23,7 @@
         <a class="header-link" href="index.html">
           OysterKit Docs
         </a>
-         (95% documented)
+         (93% documented)
       </p>
     
       <p class="header-col--secondary">
@@ -51,10 +51,10 @@
                 <a class="nav-group-task-link" href="Classes/AbstractSyntaxTreeConstructor.html">AbstractSyntaxTreeConstructor</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/AbstractSyntaxTreeConstructor/ConstructionError.html">– ConstructionError</a>
+                <a class="nav-group-task-link" href="Classes/AbstractSyntaxTreeConstructor/IntermediateRepresentationNode.html">– IntermediateRepresentationNode</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/AbstractSyntaxTreeConstructor/IntermediateRepresentationNode.html">– IntermediateRepresentationNode</a>
+                <a class="nav-group-task-link" href="Classes/ChoiceRule.html">ChoiceRule</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/ClosureRule.html">ClosureRule</a>
@@ -69,16 +69,22 @@
                 <a class="nav-group-task-link" href="Classes/NodeStackEntry.html">NodeStackEntry</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/Parser.html">Parser</a>
+                <a class="nav-group-task-link" href="Classes/RecursiveRule.html">RecursiveRule</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Classes/RecursiveRule.html">RecursiveRule</a>
+                <a class="nav-group-task-link" href="Classes/ReferenceRule.html">ReferenceRule</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/SequenceRule.html">SequenceRule</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/StateCache.html">StateCache</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/StringScanner.html">StringScanner</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/TerminalRule.html">TerminalRule</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Classes/TokenStream.html">TokenStream</a>
@@ -89,22 +95,8 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a class="nav-group-name-link" href="Global Variables.html">Global Variables</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Global Variables.html#/s:9OysterKit19transientTokenValueSivp">transientTokenValue</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
             <a class="nav-group-name-link" href="Enums.html">Enumerations</a>
             <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Enums/GrammarError.html">GrammarError</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Enums/LanguageError.html">LanguageError</a>
-              </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Enums/Log.html">Log</a>
               </li>
@@ -112,19 +104,13 @@
                 <a class="nav-group-task-link" href="Enums/MatchResult.html">MatchResult</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Enums/ParserRule.html">ParserRule</a>
+                <a class="nav-group-task-link" href="Enums/ProcessingError.html">ProcessingError</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Enums/RuleAnnotation.html">RuleAnnotation</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Enums/RuleAnnotationValue.html">RuleAnnotationValue</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Enums/ScannerRule.html">ScannerRule</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Enums/TransientToken.html">TransientToken</a>
               </li>
             </ul>
           </li>
@@ -144,7 +130,13 @@
                 <a class="nav-group-task-link" href="Extensions/Decodable.html">Decodable</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/Dictionary.html">Dictionary</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Extensions/Int.html">Int</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/NSRegularExpression.html">NSRegularExpression</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Extensions/String.html">String</a>
@@ -158,10 +150,22 @@
             <a class="nav-group-name-link" href="Functions.html">Functions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Functions.html#/s:9OysterKit2eeoiySbAA5Token_p_AaC_ptF">==(_:_:)</a>
+                <a class="nav-group-task-link" href="Functions.html#/s:9OysterKit1nopyAA4Rule_pAaC_pF">!(_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Functions.html#/s:9OysterKit1sopyAA4Rule_pAaC_pF">-(_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Functions.html#/s:9OysterKit2eeoiySbAA9TokenType_p_AaC_ptF">==(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Functions.html#/s:9OysterKit2ggopyAA4Rule_pAaC_pF">&gt;&gt;(_:)</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Functions.html#/s:9OysterKit8areEqual3lhs3rhsSbSDyAA14RuleAnnotationOAA0gH5ValueOG_AItF">areEqual(lhs:rhs:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Functions.html#/s:9OysterKit1topyAA4Rule_pAaC_pF">~(_:)</a>
               </li>
             </ul>
           </li>
@@ -172,19 +176,16 @@
                 <a class="nav-group-task-link" href="Protocols/AbstractSyntaxTree.html">AbstractSyntaxTree</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Protocols/Rule.html">Rule</a>
+                <a class="nav-group-task-link" href="Protocols/CausalErrorType.html">CausalErrorType</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/DecodeableAbstractSyntaxTree.html">DecodeableAbstractSyntaxTree</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Protocols/HumanConsumableError.html">HumanConsumableError</a>
+                <a class="nav-group-task-link" href="Protocols/Grammar.html">Grammar</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Protocols/Language.html">Language</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a>
@@ -199,7 +200,10 @@
                 <a class="nav-group-task-link" href="Protocols/Rule.html">Rule</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Protocols/Token.html">Token</a>
+                <a class="nav-group-task-link" href="Protocols/Terminal.html">Terminal</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Protocols/TokenType.html">TokenType</a>
               </li>
             </ul>
           </li>
@@ -216,13 +220,19 @@
                 <a class="nav-group-task-link" href="Structs/Cardinality.html">Cardinality</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/EndOfFile.html">EndOfFile</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Structs/HomogenousTree.html">HomogenousTree</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/LabelledToken.html">LabelledToken</a>
+                <a class="nav-group-task-link" href="Structs/ParsingDecoder.html">ParsingDecoder</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Structs/ParsingDecoder.html">ParsingDecoder</a>
+                <a class="nav-group-task-link" href="Structs/ProcessingErrorType.html">ProcessingErrorType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/StringToken.html">StringToken</a>
               </li>
             </ul>
           </li>
@@ -230,7 +240,10 @@
             <a class="nav-group-name-link" href="Typealiases.html">Type Aliases</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Typealiases.html#/s:9OysterKit17CustomRuleClosurea">CustomRuleClosure</a>
+                <a class="nav-group-task-link" href="Typealiases.html#/s:9OysterKit8Languagea">Language</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Typealiases.html#/s:9OysterKit6Parsera">Parser</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a>
@@ -282,6 +295,39 @@ provided through an extension.</p>
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">DecodeableAbstractSyntaxTree</span> <span class="p">:</span> <span class="kt"><a href="Protocols/AbstractSyntaxTree.html">AbstractSyntaxTree</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9OysterKit15CausalErrorTypeP"></a>
+                    <a name="//apple_ref/swift/Protocol/CausalErrorType" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit15CausalErrorTypeP">CausalErrorType</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>An error type that captures not just a current error, but the hierarchy of
+errors that caused it.</p>
+
+                        <a href="Protocols/CausalErrorType.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">CausalErrorType</span> <span class="p">:</span> <span class="kt">CustomDebugStringConvertible</span><span class="p">,</span> <span class="kt">CustomStringConvertible</span><span class="p">,</span> <span class="kt">Error</span></code></pre>
 
                         </div>
                       </div>
@@ -367,6 +413,38 @@ confirming that the last rule was essentially matched.</p>
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:9OysterKit7GrammarP"></a>
+                    <a name="//apple_ref/swift/Protocol/Grammar" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit7GrammarP">Grammar</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A language stores a set of grammar rules that can be used to parse <code>String</code>s. Extensions provide additional methods (such as parsing) that operate on these rules.</p>
+
+                        <a href="Protocols/Grammar.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Grammar</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:9OysterKit18AbstractSyntaxTreeP"></a>
                     <a name="//apple_ref/swift/Protocol/AbstractSyntaxTree" class="dashAnchor"></a>
                     <a class="token" href="#/s:9OysterKit18AbstractSyntaxTreeP">AbstractSyntaxTree</a>
@@ -409,7 +487,7 @@ confirming that the last rule was essentially matched.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Nodes are the basic elements of <code><a href="Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></code>s. They record a <code><a href="Protocols/Token.html">Token</a></code>, the range of the <code>String</code>&lsquo;s <code>UnicodeScalarView</code> the match occured in
+                        <p>Nodes are the basic elements of <code><a href="Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></code>s. They record a <code><a href="Protocols/TokenType.html">TokenType</a></code>, the range of the <code>String</code>&lsquo;s <code>UnicodeScalarView</code> the match occured in
 as well as any annotations that were made on the token.</p>
 
                         <a href="Protocols/Node.html" class="slightly-smaller">See more</a>
@@ -467,9 +545,9 @@ matcher (such as start and end of evaluation of a rule). See below for standard 
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit20HumanConsumableErrorP"></a>
-                    <a name="//apple_ref/swift/Protocol/HumanConsumableError" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit20HumanConsumableErrorP">HumanConsumableError</a>
+                    <a name="/s:9OysterKit8TerminalP"></a>
+                    <a name="//apple_ref/swift/Protocol/Terminal" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit8TerminalP">Terminal</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -477,43 +555,15 @@ matcher (such as start and end of evaluation of a rule). See below for standard 
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>To be implemented by any error that is expected to be meaningful to a user looking at parsing results</p>
+                        <p>Undocumented</p>
 
-                        <a href="Protocols/HumanConsumableError.html" class="slightly-smaller">See more</a>
+                        <a href="Protocols/Terminal.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">HumanConsumableError</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:9OysterKit8LanguageP"></a>
-                    <a name="//apple_ref/swift/Protocol/Language" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit8LanguageP">Language</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>A language stores a set of grammar rules that can be used to parse <code>String</code>s. Extensions provide additional methods (such as parsing) that operate on these rules.</p>
-
-                        <a href="Protocols/Language.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Language</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Terminal</span> <span class="p">:</span> <span class="kt"><a href="Protocols/Rule.html">Rule</a></span></code></pre>
 
                         </div>
                       </div>
@@ -527,9 +577,9 @@ matcher (such as start and end of evaluation of a rule). See below for standard 
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9OysterKit15RuleP"></a>
-                    <a name="//apple_ref/swift/Protocol/Rule" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit15RuleP">Rule</a>
+                    <a name="/s:9OysterKit9TokenTypeP"></a>
+                    <a name="//apple_ref/swift/Protocol/TokenType" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9OysterKit9TokenTypeP">TokenType</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -537,19 +587,15 @@ matcher (such as start and end of evaluation of a rule). See below for standard 
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Behavioural rule is both an extension to and ultimately a replacement for current
-<code><a href="Protocols/Rule.html">Rule</a></code>. It bakes in the logic for repeating, negation, lookahead, as well as
-transient and void rules both flattening the evaluation hierarchy and making it
-easier to extend (previously implementations would have to add any of this logic
-themselves, and it&rsquo;s easy to get wrong.</p>
+                        <p><code>TokenType</code>s are generated when rules are matched (usually, sometime a rule just advances the scan-head). Tokens with a <code>rawValue</code> of -1 are considered transient, meaning that they should not be included in any construction of an AST. However, they may provide context to the AST.</p>
 
-                        <a href="Protocols/Rule.html" class="slightly-smaller">See more</a>
+                        <a href="Protocols/TokenType.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Rule</span> <span class="p">:</span> <span class="kt"><a href="Protocols/Rule.html">Rule</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">TokenType</span></code></pre>
 
                         </div>
                       </div>
@@ -560,34 +606,6 @@ themselves, and it&rsquo;s easy to get wrong.</p>
             </div>
             <div class="task-group">
               <ul class="item-container">
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:9OysterKit5TokenP"></a>
-                    <a name="//apple_ref/swift/Protocol/Token" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9OysterKit5TokenP">Token</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p><code>Token</code>s are generated when rules are matched (usually, sometime a rule just advances the scan-head). Tokens with a <code>rawValue</code> of -1 are considered transient, meaning that they should not be included in any construction of an AST. However, they may provide context to the AST.</p>
-
-                        <a href="Protocols/Token.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Token</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
                 <li class="item">
                   <div>
                     <code>
@@ -601,7 +619,11 @@ themselves, and it&rsquo;s easy to get wrong.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The protocol that parsing and scanning rules must adhere to. There is no need to fully implement this protocol unless you are looking for bespoke <code><a href="Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a></code> or <code><a href="Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a></code> control. It is recommended to use <code>ParserRule.custom</code> in almost all cases.</p>
+                        <p>Behavioural rule is both an extension to and ultimately a replacement for current
+<code>Rule</code>. It bakes in the logic for repeating, negation, lookahead, as well as
+transient and void rules both flattening the evaluation hierarchy and making it
+easier to extend (previously implementations would have to add any of this logic
+themselves, and it&rsquo;s easy to get wrong.</p>
 
                         <a href="Protocols/Rule.html" class="slightly-smaller">See more</a>
                       </div>
@@ -609,7 +631,7 @@ themselves, and it&rsquo;s easy to get wrong.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Rule</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Rule</span> <span class="p">:</span> <span class="kt">CustomStringConvertible</span></code></pre>
 
                         </div>
                       </div>
@@ -624,7 +646,7 @@ themselves, and it&rsquo;s easy to get wrong.</p>
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-07-17)</p>
+      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-09-02)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

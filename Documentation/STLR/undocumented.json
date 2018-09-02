@@ -1,64 +1,1058 @@
 {
   "warnings": [
     {
-      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Extensions/String.swift",
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/Extensions/STLR+Extensions.swift",
+      "line": 149,
+      "symbol": "STLR.Grammar.defined(identifier:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/Extensions/STLR+Extensions.swift",
+      "line": 159,
+      "symbol": "STLR.Grammar.extractInlinedRules(element:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/Extensions/STLR+Extensions.swift",
+      "line": 216,
+      "symbol": "STLR.Grammar.subscript(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.subscript",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/Extensions/STLR+Extensions.swift",
+      "line": 242,
+      "symbol": "STLR.Grammar.isLeftHandRecursive(identifier:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/Extensions/STLR+Extensions.swift",
+      "line": 247,
+      "symbol": "STLR.Grammar.isDirectLeftHandRecursive(identifier:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/Extensions/STLR+Extensions.swift",
+      "line": 252,
+      "symbol": "STLR.Grammar.isRoot(identifier:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/Extensions/STLR+Extensions.swift",
+      "line": 262,
+      "symbol": "STLR.Grammar.validate(rule:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/Extensions/STLR+Extensions.swift",
+      "line": 281,
+      "symbol": "STLR.Rule.type",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/Extensions/STLR+Extensions.swift",
+      "line": 338,
+      "symbol": "STLR.Expression.directlyReferences(_:grammar:closedList:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/Extensions/STLR+Extensions.swift",
+      "line": 353,
+      "symbol": "STLR.Expression.references(_:grammar:closedList:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/Extensions/STLR+Extensions.swift",
+      "line": 468,
+      "symbol": "STLR.Element.directlyReferences(_:grammar:closedList:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/Extensions/STLR+Extensions.swift",
+      "line": 498,
+      "symbol": "STLR.Element.references(_:grammar:closedList:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/Extensions/STLR+Extensions.swift",
+      "line": 516,
+      "symbol": "STLR.Element.expression(for:in:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/Extensions/STLR+Extensions.swift",
+      "line": 546,
+      "symbol": "STLR.String.terminal",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/Extensions/STLR+Extensions.swift",
+      "line": 552,
+      "symbol": "STLR.TerminalString.terminal",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/Extensions/STLR+Extensions.swift",
+      "line": 631,
+      "symbol": "Array.subscript(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.subscript",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/Extensions/STLR+Extensions.swift",
+      "line": 673,
+      "symbol": "Array.type",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": null,
+      "symbol": "STLR",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": null,
+      "symbol": "STLR",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": null,
+      "symbol": "STLR",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": null,
+      "symbol": "STLR",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": null,
+      "symbol": "STLR.Expression",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": null,
+      "symbol": "STLR.Expression",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": null,
+      "symbol": "STLR.Expression",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": null,
+      "symbol": "STLR.Label",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": null,
+      "symbol": "STLR.Literal",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": null,
+      "symbol": "STLR.Quantifier",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": null,
+      "symbol": "STLR.Terminal",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 309,
+      "symbol": "STLR",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 312,
+      "symbol": "STLR.Quantifier",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 313,
+      "symbol": "STLR.Quantifier.dash",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 313,
+      "symbol": "STLR.Quantifier.plus",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 313,
+      "symbol": "STLR.Quantifier.questionMark",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 313,
+      "symbol": "STLR.Quantifier.star",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 318,
+      "symbol": "STLR.String.stringBody",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 323,
+      "symbol": "STLR.TerminalString.terminalBody",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 327,
+      "symbol": "STLR.CharacterSetName",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 328,
+      "symbol": "STLR.CharacterSetName.alphaNumeric",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 328,
+      "symbol": "STLR.CharacterSetName.backslash",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 328,
+      "symbol": "STLR.CharacterSetName.decimalDigit",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 328,
+      "symbol": "STLR.CharacterSetName.letter",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 328,
+      "symbol": "STLR.CharacterSetName.lowercaseLetter",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 328,
+      "symbol": "STLR.CharacterSetName.newline",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 328,
+      "symbol": "STLR.CharacterSetName.uppercaseLetter",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 328,
+      "symbol": "STLR.CharacterSetName.whitespace",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 328,
+      "symbol": "STLR.CharacterSetName.whitespaceOrNewline",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 333,
+      "symbol": "STLR.CharacterSet.characterSetName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 336,
+      "symbol": "STLR.CharacterRange",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 339,
+      "symbol": "STLR.Boolean",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 340,
+      "symbol": "STLR.Boolean.false",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 340,
+      "symbol": "STLR.Boolean.true",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 344,
+      "symbol": "STLR.Literal",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 345,
+      "symbol": "STLR.Literal.string(string:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 346,
+      "symbol": "STLR.Literal.number(number:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 347,
+      "symbol": "STLR.Literal.boolean(boolean:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 383,
+      "symbol": "STLR.Annotation.label",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 384,
+      "symbol": "STLR.Annotation.literal",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 387,
+      "symbol": "STLR.Annotations",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 390,
+      "symbol": "STLR.DefinedLabel",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 391,
+      "symbol": "STLR.DefinedLabel.error",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 391,
+      "symbol": "STLR.DefinedLabel.token",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 391,
+      "symbol": "STLR.DefinedLabel.transient",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 391,
+      "symbol": "STLR.DefinedLabel.void",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 395,
+      "symbol": "STLR.Label",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 396,
+      "symbol": "STLR.Label.definedLabel(definedLabel:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 397,
+      "symbol": "STLR.Label.customLabel(customLabel:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 427,
+      "symbol": "STLR.Terminal",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 428,
+      "symbol": "STLR.Terminal.terminalString(terminalString:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 429,
+      "symbol": "STLR.Terminal.characterRange(characterRange:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 430,
+      "symbol": "STLR.Terminal.characterSet(characterSet:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 431,
+      "symbol": "STLR.Terminal.endOfFile(endOfFile:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 432,
+      "symbol": "STLR.Terminal.regex(regex:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 478,
+      "symbol": "STLR.Group.expression",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 490,
+      "symbol": "STLR.Element.group",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 491,
+      "symbol": "STLR.Element.lookahead",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 492,
+      "symbol": "STLR.Element.terminal",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 493,
+      "symbol": "STLR.Element.identifier",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 494,
+      "symbol": "STLR.Element.void",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 495,
+      "symbol": "STLR.Element.quantifier",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 496,
+      "symbol": "STLR.Element.transient",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 497,
+      "symbol": "STLR.Element.negated",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 498,
+      "symbol": "STLR.Element.annotations",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 517,
+      "symbol": "STLR.AssignmentOperators",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 518,
+      "symbol": "STLR.AssignmentOperators.equals",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 518,
+      "symbol": "STLR.AssignmentOperators.pipeEquals",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 518,
+      "symbol": "STLR.AssignmentOperators.plusEquals",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 521,
+      "symbol": "STLR.Choice",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 523,
+      "symbol": "STLR.Sequence",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 526,
+      "symbol": "STLR.Expression",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 527,
+      "symbol": "STLR.Expression.choice(choice:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 528,
+      "symbol": "STLR.Expression.sequence(sequence:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 529,
+      "symbol": "STLR.Expression.element(element:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 564,
+      "symbol": "STLR.TokenType",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 565,
+      "symbol": "STLR.TokenType.customType(customType:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 566,
+      "symbol": "STLR.TokenType.standardType(standardType:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 596,
+      "symbol": "STLR.StandardType",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 597,
+      "symbol": "STLR.StandardType.bool",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 597,
+      "symbol": "STLR.StandardType.double",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 597,
+      "symbol": "STLR.StandardType.int",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 597,
+      "symbol": "STLR.StandardType.string",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 602,
+      "symbol": "STLR.Rule.identifier",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 603,
+      "symbol": "STLR.Rule.tokenType",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 604,
+      "symbol": "STLR.Rule.void",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 605,
+      "symbol": "STLR.Rule.assignmentOperators",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 606,
+      "symbol": "STLR.Rule.transient",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 607,
+      "symbol": "STLR.Rule.expression",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 608,
+      "symbol": "STLR.Rule.annotations",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 613,
+      "symbol": "STLR.ModuleImport.moduleName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 618,
+      "symbol": "STLR.Grammar.rules",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 619,
+      "symbol": "STLR.Grammar.scopeName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 620,
+      "symbol": "STLR.Grammar.modules",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 623,
+      "symbol": "STLR.Modules",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 625,
+      "symbol": "STLR.Rules",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 626,
+      "symbol": "STLR.grammar",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/STLR.swift",
+      "line": 640,
+      "symbol": "STLR.grammar",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/SymbolTable.swift",
+      "line": 27,
+      "symbol": "SymbolType",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/SymbolTable.swift",
       "line": 28,
-      "symbol": "String.dynamicRule(token:)",
+      "symbol": "SymbolType.build(for:from:in:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/SymbolTable.swift",
+      "line": 30,
+      "symbol": "SymbolType.resolve(from:in:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generators/DynamicParserGenerator.swift",
-      "line": 39,
-      "symbol": "STLRScope.runtimeLanguage",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generators/DynamicParserGenerator.swift",
-      "line": 170,
-      "symbol": "STLRScope.GrammarRule.rule(from:creating:)",
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/SymbolTable.swift",
+      "line": 31,
+      "symbol": "SymbolType.validate(from:in:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generators/DynamicParserGenerator.swift",
-      "line": 231,
-      "symbol": "STLRScope.Identifier.token",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generators/DynamicParserGenerator.swift",
-      "line": 235,
-      "symbol": "STLRScope.Identifier.rule(from:creating:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generators/DynamicParserGenerator.swift",
-      "line": 332,
-      "symbol": "STLRScope.Element.token",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generators/SourceGenerator.swift",
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/SymbolTable.swift",
       "line": 33,
+      "symbol": "SymbolType.identifier",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/SymbolTable.swift",
+      "line": 36,
+      "symbol": "SymbolTable",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/SymbolTable.swift",
+      "line": 38,
+      "symbol": "SymbolTable.ast",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generated/SymbolTable.swift",
+      "line": 99,
+      "symbol": "SymbolTable.isLeftHandRecursive(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generators/Framework/Operations/Branching.swift",
+      "line": 27,
+      "symbol": "Check",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generators/Framework/Operations/Branching.swift",
+      "line": 28,
+      "symbol": "Check.ifFileExists(path:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generators/Framework/Operations/Branching.swift",
+      "line": 29,
+      "symbol": "Check.ifEnvEquals(name:requiredValue:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generators/Framework/Operations/Branching.swift",
+      "line": 48,
+      "symbol": "Condition",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generators/Framework/Operations/Branching.swift",
+      "line": 63,
+      "symbol": "Condition.perform(in:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generators/Framework/Operations/Operation.swift",
+      "line": 39,
+      "symbol": "Operation.perform(in:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generators/Framework/Operations/System.swift",
+      "line": 47,
+      "symbol": "System.perform(in:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generators/Framework/TextFile.swift",
+      "line": 45,
       "symbol": "TextFile.content",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generators/Generator.swift",
+      "line": 35,
+      "symbol": "Generator.generate(for:grammar:accessLevel:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generators/GrammarStructure+STLR.swift",
+      "line": 28,
+      "symbol": "Scope",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generators/GrammarStructure+STLR.swift",
+      "line": 30,
+      "symbol": "GrammarStructure",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generators/GrammarStructure+STLR.swift",
+      "line": 34,
+      "symbol": "GrammarStructure.Cardinality.many(_:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generators/GrammarStructure+STLR.swift",
+      "line": 34,
+      "symbol": "GrammarStructure.Cardinality.none",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generators/GrammarStructure+STLR.swift",
+      "line": 34,
+      "symbol": "GrammarStructure.Cardinality.one",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generators/GrammarStructure+STLR.swift",
+      "line": 34,
+      "symbol": "GrammarStructure.Cardinality.optional",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generators/GrammarStructure+STLR.swift",
+      "line": 92,
+      "symbol": "GrammarStructure.Kind.lookahead",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generators/GrammarStructure+STLR.swift",
+      "line": 92,
+      "symbol": "GrammarStructure.Kind.pinned",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generators/GrammarStructure+STLR.swift",
+      "line": 92,
+      "symbol": "GrammarStructure.Kind.structural",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generators/GrammarStructure+STLR.swift",
+      "line": 92,
+      "symbol": "GrammarStructure.Kind.transient",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generators/GrammarStructure+STLR.swift",
+      "line": 92,
+      "symbol": "GrammarStructure.Kind.void",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generators/GrammarStructure+STLR.swift",
+      "line": 148,
+      "symbol": "GrammarStructure.DataType.enumeration",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generators/GrammarStructure+STLR.swift",
+      "line": 148,
+      "symbol": "GrammarStructure.DataType.string",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generators/GrammarStructure+STLR.swift",
+      "line": 148,
+      "symbol": "GrammarStructure.DataType.structure",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generators/GrammarStructure+STLR.swift",
+      "line": 148,
+      "symbol": "GrammarStructure.DataType.typealias",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generators/GrammarStructure+STLR.swift",
+      "line": 148,
+      "symbol": "GrammarStructure.DataType.unknown",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Generators/Swift/SwiftPackageManager.swift",
+      "line": 29,
+      "symbol": "SwiftPackageManager.generate(for:grammar:accessLevel:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
       "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Optimisers/CharacterSetOnlyChoiceOptimizer.swift",
-      "line": 42,
+      "line": 30,
       "symbol": "CharacterSetOnlyChoiceOptimizer",
       "symbol_kind": "source.lang.swift.decl.struct",
       "warning": "undocumented"
     },
     {
       "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/Optimisers/CharacterSetOnlyChoiceOptimizer.swift",
-      "line": 49,
+      "line": 37,
       "symbol": "CharacterSetOnlyChoiceOptimizer.init()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
@@ -75,41 +1069,6 @@
       "line": 18,
       "symbol": "InlineIdentifierOptimization.init()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/STLRCompiler.swift",
-      "line": 28,
-      "symbol": "STLRCompilerError",
-      "symbol_kind": "source.lang.swift.decl.enum",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/STLRCompiler.swift",
-      "line": 29,
-      "symbol": "STLRCompilerError.unknownIdentifier(named:)",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/STLRCompiler.swift",
-      "line": 30,
-      "symbol": "STLRCompilerError.identifierAlreadyDefined(named:)",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/STLRCompiler.swift",
-      "line": 31,
-      "symbol": "STLRCompilerError.noTokenNameSpecified",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/nhughes/Documents/Code/SPM/OysterKit/Sources/STLR/STLRParser.swift",
-      "line": 31,
-      "symbol": "STLRParser.ast",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     }
   ],

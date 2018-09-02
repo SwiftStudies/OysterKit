@@ -23,7 +23,7 @@
         <a class="header-link" href="../index.html">
           OysterKit Docs
         </a>
-         (95% documented)
+         (93% documented)
       </p>
     
       <p class="header-col--secondary">
@@ -51,10 +51,10 @@
                 <a class="nav-group-task-link" href="../Classes/AbstractSyntaxTreeConstructor.html">AbstractSyntaxTreeConstructor</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Classes/AbstractSyntaxTreeConstructor/ConstructionError.html">– ConstructionError</a>
+                <a class="nav-group-task-link" href="../Classes/AbstractSyntaxTreeConstructor/IntermediateRepresentationNode.html">– IntermediateRepresentationNode</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Classes/AbstractSyntaxTreeConstructor/IntermediateRepresentationNode.html">– IntermediateRepresentationNode</a>
+                <a class="nav-group-task-link" href="../Classes/ChoiceRule.html">ChoiceRule</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/ClosureRule.html">ClosureRule</a>
@@ -69,16 +69,22 @@
                 <a class="nav-group-task-link" href="../Classes/NodeStackEntry.html">NodeStackEntry</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Classes/Parser.html">Parser</a>
+                <a class="nav-group-task-link" href="../Classes/RecursiveRule.html">RecursiveRule</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Classes/RecursiveRule.html">RecursiveRule</a>
+                <a class="nav-group-task-link" href="../Classes/ReferenceRule.html">ReferenceRule</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/SequenceRule.html">SequenceRule</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/StateCache.html">StateCache</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/StringScanner.html">StringScanner</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/TerminalRule.html">TerminalRule</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/TokenStream.html">TokenStream</a>
@@ -89,22 +95,8 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a class="nav-group-name-link" href="../Global Variables.html">Global Variables</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Global Variables.html#/s:9OysterKit19transientTokenValueSivp">transientTokenValue</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
             <a class="nav-group-name-link" href="../Enums.html">Enumerations</a>
             <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Enums/GrammarError.html">GrammarError</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Enums/LanguageError.html">LanguageError</a>
-              </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/Log.html">Log</a>
               </li>
@@ -112,19 +104,13 @@
                 <a class="nav-group-task-link" href="../Enums/MatchResult.html">MatchResult</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Enums/ParserRule.html">ParserRule</a>
+                <a class="nav-group-task-link" href="../Enums/ProcessingError.html">ProcessingError</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/RuleAnnotation.html">RuleAnnotation</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/RuleAnnotationValue.html">RuleAnnotationValue</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Enums/ScannerRule.html">ScannerRule</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Enums/TransientToken.html">TransientToken</a>
               </li>
             </ul>
           </li>
@@ -144,7 +130,13 @@
                 <a class="nav-group-task-link" href="../Extensions/Decodable.html">Decodable</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/Dictionary.html">Dictionary</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Extensions/Int.html">Int</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/NSRegularExpression.html">NSRegularExpression</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Extensions/String.html">String</a>
@@ -158,10 +150,22 @@
             <a class="nav-group-name-link" href="../Functions.html">Functions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit2eeoiySbAA5Token_p_AaC_ptF">==(_:_:)</a>
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit1nopyAA4Rule_pAaC_pF">!(_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit1sopyAA4Rule_pAaC_pF">-(_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit2eeoiySbAA9TokenType_p_AaC_ptF">==(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit2ggopyAA4Rule_pAaC_pF">&gt;&gt;(_:)</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit8areEqual3lhs3rhsSbSDyAA14RuleAnnotationOAA0gH5ValueOG_AItF">areEqual(lhs:rhs:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:9OysterKit1topyAA4Rule_pAaC_pF">~(_:)</a>
               </li>
             </ul>
           </li>
@@ -172,19 +176,16 @@
                 <a class="nav-group-task-link" href="../Protocols/AbstractSyntaxTree.html">AbstractSyntaxTree</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/BehaviouralRule.html">BehaviouralRule</a>
+                <a class="nav-group-task-link" href="../Protocols/CausalErrorType.html">CausalErrorType</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/DecodeableAbstractSyntaxTree.html">DecodeableAbstractSyntaxTree</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/HumanConsumableError.html">HumanConsumableError</a>
+                <a class="nav-group-task-link" href="../Protocols/Grammar.html">Grammar</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/IntermediateRepresentation.html">IntermediateRepresentation</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/Language.html">Language</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Protocols/LexicalAnalyzer.html">LexicalAnalyzer</a>
@@ -199,7 +200,10 @@
                 <a class="nav-group-task-link" href="../Protocols/Rule.html">Rule</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Protocols/Token.html">Token</a>
+                <a class="nav-group-task-link" href="../Protocols/Terminal.html">Terminal</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/TokenType.html">TokenType</a>
               </li>
             </ul>
           </li>
@@ -216,13 +220,19 @@
                 <a class="nav-group-task-link" href="../Structs/Cardinality.html">Cardinality</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/EndOfFile.html">EndOfFile</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/HomogenousTree.html">HomogenousTree</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Structs/LabelledToken.html">LabelledToken</a>
+                <a class="nav-group-task-link" href="../Structs/ParsingDecoder.html">ParsingDecoder</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Structs/ParsingDecoder.html">ParsingDecoder</a>
+                <a class="nav-group-task-link" href="../Structs/ProcessingErrorType.html">ProcessingErrorType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/StringToken.html">StringToken</a>
               </li>
             </ul>
           </li>
@@ -230,7 +240,10 @@
             <a class="nav-group-name-link" href="../Typealiases.html">Type Aliases</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit17CustomRuleClosurea">CustomRuleClosure</a>
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit8Languagea">Language</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit6Parsera">Parser</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Typealiases.html#/s:9OysterKit15RuleAnnotationsa">RuleAnnotations</a>
@@ -306,7 +319,7 @@ provided through an extension.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Should be the <code>CodingKey</code> for this node. This is normally generated using the name of the <code><a href="../Protocols/Token.html">Token</a></code>.</p>
+                        <p>Should be the <code>CodingKey</code> for this node. This is normally generated using the name of the <code>Token</code>.</p>
 
                       </div>
                       <div class="declaration">
@@ -474,7 +487,7 @@ is provided through an extension.</p>
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-07-17)</p>
+      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-09-02)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

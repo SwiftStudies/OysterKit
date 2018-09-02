@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Element Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../../js/jquery.min.js" defer></script>
+    <script src="../../js/jazzy.js" defer></script>
+    
+    <script src="../../js/lunr.min.js" defer></script>
+    <script src="../../js/typeahead.jquery.js" defer></script>
+    <script src="../../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Class/Element" class="dashAnchor"></a>
+
+    <a title="Element Class Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="../../index.html">
+          STLR Docs
+        </a>
+         (46% documented)
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="../../search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../../index.html">STLR Reference</a>
+      <img class="carat" src="../../img/carat.png" />
+      Element Class Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Classes/GrammarStructure.html">GrammarStructure</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Classes/GrammarStructure/Cardinality.html">– Cardinality</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Classes/GrammarStructure/Kind.html">– Kind</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Classes/GrammarStructure/DataType.html">– DataType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Classes/GrammarStructure/Node.html">– Node</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Classes/OperationContext.html">OperationContext</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Classes/SwiftPackageManager.html">SwiftPackageManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Classes/SwiftStructure.html">SwiftStructure</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Classes/SymbolTable.html">SymbolTable</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Classes/TextFile.html">TextFile</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Enums/Check.html">Check</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Enums/OperationError.html">OperationError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Enums/Platform.html">Platform</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Enums/System.html">System</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Extensions/Array.html">Array</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Extensions/String.html">String</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Protocols/Generator.html">Generator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Protocols/Operation.html">Operation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Protocols/STLRExpressionOptimizer.html">STLRExpressionOptimizer</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Protocols.html#/s:4STLR13STLROptimizerP">STLROptimizer</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Protocols/SymbolType.html">SymbolType</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Structs/CharacterSetOnlyChoiceOptimizer.html">CharacterSetOnlyChoiceOptimizer</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Structs/Condition.html">Condition</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Structs/InlineIdentifierOptimization.html">InlineIdentifierOptimization</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Structs/STLR.html">STLR</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Structs/STLR/Quantifier.html">– Quantifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Structs/STLR/String.html">– String</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Structs/STLR/TerminalString.html">– TerminalString</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Structs/STLR/CharacterSetName.html">– CharacterSetName</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Structs/STLR/CharacterSet.html">– CharacterSet</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Structs/STLR/Boolean.html">– Boolean</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Structs/STLR/Literal.html">– Literal</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Structs/STLR/Annotation.html">– Annotation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Structs/STLR/DefinedLabel.html">– DefinedLabel</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Structs/STLR/Label.html">– Label</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Structs/STLR/Terminal.html">– Terminal</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Structs/STLR/Group.html">– Group</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Structs/STLR/Element.html">– Element</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Structs/STLR/AssignmentOperators.html">– AssignmentOperators</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Structs/STLR/Expression.html">– Expression</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Structs/STLR/TokenType.html">– TokenType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Structs/STLR/StandardType.html">– StandardType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Structs/STLR/Rule.html">– Rule</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Structs/STLR/ModuleImport.html">– ModuleImport</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Structs/STLR/Grammar.html">– Grammar</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../../Typealiases.html#/s:4STLR5Scopea">Scope</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            <h1>Element</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">Element</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
+
+                </div>
+              </div>
+            <p>Element</p>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:4STLRAAV7ElementC5groupAB5GroupCSgvp"></a>
+                    <a name="//apple_ref/swift/Property/group" class="dashAnchor"></a>
+                    <a class="token" href="#/s:4STLRAAV7ElementC5groupAB5GroupCSgvp">group</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">group</span><span class="p">:</span> <span class="kt"><a href="../../Structs/STLR/Group.html">Group</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:4STLRAAV7ElementC9lookaheadSSSgvp"></a>
+                    <a name="//apple_ref/swift/Property/lookahead" class="dashAnchor"></a>
+                    <a class="token" href="#/s:4STLRAAV7ElementC9lookaheadSSSgvp">lookahead</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">lookahead</span><span class="p">:</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt"><a href="../../Structs/STLR/String.html">String</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:4STLRAAV7ElementC8terminalAB8TerminalOSgvp"></a>
+                    <a name="//apple_ref/swift/Property/terminal" class="dashAnchor"></a>
+                    <a class="token" href="#/s:4STLRAAV7ElementC8terminalAB8TerminalOSgvp">terminal</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">terminal</span><span class="p">:</span> <span class="kt"><a href="../../Structs/STLR/Terminal.html">Terminal</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:4STLRAAV7ElementC10identifierSSSgvp"></a>
+                    <a name="//apple_ref/swift/Property/identifier" class="dashAnchor"></a>
+                    <a class="token" href="#/s:4STLRAAV7ElementC10identifierSSSgvp">identifier</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">identifier</span><span class="p">:</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt"><a href="../../Structs/STLR/String.html">String</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:4STLRAAV7ElementC4voidSSSgvp"></a>
+                    <a name="//apple_ref/swift/Property/void" class="dashAnchor"></a>
+                    <a class="token" href="#/s:4STLRAAV7ElementC4voidSSSgvp">void</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">void</span><span class="p">:</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt"><a href="../../Structs/STLR/String.html">String</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:4STLRAAV7ElementC10quantifierAB10QuantifierOSgvp"></a>
+                    <a name="//apple_ref/swift/Property/quantifier" class="dashAnchor"></a>
+                    <a class="token" href="#/s:4STLRAAV7ElementC10quantifierAB10QuantifierOSgvp">quantifier</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">quantifier</span><span class="p">:</span> <span class="kt"><a href="../../Structs/STLR/Quantifier.html">Quantifier</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:4STLRAAV7ElementC9transientSSSgvp"></a>
+                    <a name="//apple_ref/swift/Property/transient" class="dashAnchor"></a>
+                    <a class="token" href="#/s:4STLRAAV7ElementC9transientSSSgvp">transient</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">transient</span><span class="p">:</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt"><a href="../../Structs/STLR/String.html">String</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:4STLRAAV7ElementC7negatedSSSgvp"></a>
+                    <a name="//apple_ref/swift/Property/negated" class="dashAnchor"></a>
+                    <a class="token" href="#/s:4STLRAAV7ElementC7negatedSSSgvp">negated</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">negated</span><span class="p">:</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt"><a href="../../Structs/STLR/String.html">String</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:4STLRAAV7ElementC11annotationsSayAB10AnnotationVGSgvp"></a>
+                    <a name="//apple_ref/swift/Property/annotations" class="dashAnchor"></a>
+                    <a class="token" href="#/s:4STLRAAV7ElementC11annotationsSayAB10AnnotationVGSgvp">annotations</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">annotations</span><span class="p">:</span> <span class="kt"><a href="../../Structs/STLR.html#/s:4STLRAAV11Annotationsa">Annotations</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:4STLRAAV7ElementC11annotations5group10identifier9lookahead7negated10quantifier8terminal9transient4voidADSayAB10AnnotationVGSg_AB5GroupCSgSSSgA2uB10QuantifierOSgAB8TerminalOSgA2Utcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(annotations:group:identifier:lookahead:negated:quantifier:terminal:transient:void:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:4STLRAAV7ElementC11annotations5group10identifier9lookahead7negated10quantifier8terminal9transient4voidADSayAB10AnnotationVGSg_AB5GroupCSgSSSgA2uB10QuantifierOSgAB8TerminalOSgA2Utcfc">init(annotations:group:identifier:lookahead:negated:quantifier:terminal:transient:void:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Default initializer</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">annotations</span><span class="p">:</span> <span class="kt"><a href="../../Structs/STLR.html#/s:4STLRAAV11Annotationsa">Annotations</a></span><span class="p">?,</span> <span class="nv">group</span><span class="p">:</span> <span class="kt"><a href="../../Structs/STLR/Group.html">Group</a></span><span class="p">?,</span> <span class="nv">identifier</span><span class="p">:</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt"><a href="../../Structs/STLR/String.html">String</a></span><span class="p">?,</span> <span class="nv">lookahead</span><span class="p">:</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt"><a href="../../Structs/STLR/String.html">String</a></span><span class="p">?,</span> <span class="nv">negated</span><span class="p">:</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt"><a href="../../Structs/STLR/String.html">String</a></span><span class="p">?,</span> <span class="nv">quantifier</span><span class="p">:</span> <span class="kt"><a href="../../Structs/STLR/Quantifier.html">Quantifier</a></span><span class="p">?,</span> <span class="nv">terminal</span><span class="p">:</span> <span class="kt"><a href="../../Structs/STLR/Terminal.html">Terminal</a></span><span class="p">?,</span> <span class="nv">transient</span><span class="p">:</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt"><a href="../../Structs/STLR/String.html">String</a></span><span class="p">?,</span> <span class="nv">void</span><span class="p">:</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt"><a href="../../Structs/STLR/String.html">String</a></span><span class="p">?)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:s23CustomStringConvertibleP11descriptionSSvp"></a>
+                    <a name="//apple_ref/swift/Property/description" class="dashAnchor"></a>
+                    <a class="token" href="#/s:s23CustomStringConvertibleP11descriptionSSvp">description</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">description</span><span class="p">:</span> <span class="kt"><a href="../../Structs/STLR/String.html">String</a></span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:4STLRAAV7ElementC15ruleAnnotationsSDy9OysterKit14RuleAnnotationOAF0gH5ValueOGvp"></a>
+                    <a name="//apple_ref/swift/Property/ruleAnnotations" class="dashAnchor"></a>
+                    <a class="token" href="#/s:4STLRAAV7ElementC15ruleAnnotationsSDy9OysterKit14RuleAnnotationOAF0gH5ValueOGvp">ruleAnnotations</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The annotations defined as <code>RuleAnnotations</code></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">ruleAnnotations</span><span class="p">:</span> <span class="kt">RuleAnnotations</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:4STLRAAV7ElementC6isVoidSbvp"></a>
+                    <a name="//apple_ref/swift/Property/isVoid" class="dashAnchor"></a>
+                    <a class="token" href="#/s:4STLRAAV7ElementC6isVoidSbvp">isVoid</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>True if the element is skipping</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">isVoid</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:4STLRAAV7ElementC11isTransientSbvp"></a>
+                    <a name="//apple_ref/swift/Property/isTransient" class="dashAnchor"></a>
+                    <a class="token" href="#/s:4STLRAAV7ElementC11isTransientSbvp">isTransient</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>True if it is a scanning element</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">isTransient</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:4STLRAAV7ElementC11isLookaheadSbvp"></a>
+                    <a name="//apple_ref/swift/Property/isLookahead" class="dashAnchor"></a>
+                    <a class="token" href="#/s:4STLRAAV7ElementC11isLookaheadSbvp">isLookahead</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>True if the element is lookahead</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">isLookahead</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:4STLRAAV7ElementC9isNegatedSbvp"></a>
+                    <a name="//apple_ref/swift/Property/isNegated" class="dashAnchor"></a>
+                    <a class="token" href="#/s:4STLRAAV7ElementC9isNegatedSbvp">isNegated</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>True if the element is negated</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">isNegated</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:4STLRAAV7ElementC5token9OysterKit9TokenType_pSgvp"></a>
+                    <a name="//apple_ref/swift/Property/token" class="dashAnchor"></a>
+                    <a class="token" href="#/s:4STLRAAV7ElementC5token9OysterKit9TokenType_pSgvp">token</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returns the token name (if any) of the element</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">token</span><span class="p">:</span> <span class="kt"><a href="../../Structs/STLR/TokenType.html">TokenType</a></span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:4STLRAAV7ElementC4kind9OysterKit9BehaviourV4KindOvp"></a>
+                    <a name="//apple_ref/swift/Property/kind" class="dashAnchor"></a>
+                    <a class="token" href="#/s:4STLRAAV7ElementC4kind9OysterKit9BehaviourV4KindOvp">kind</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The <code>Kind</code> of the rule</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">kind</span><span class="p">:</span> <span class="kt">Behaviour</span><span class="o">.</span><span class="kt">Kind</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:4STLRAAV7ElementC11cardinality9OysterKit11CardinalityVvp"></a>
+                    <a name="//apple_ref/swift/Property/cardinality" class="dashAnchor"></a>
+                    <a class="token" href="#/s:4STLRAAV7ElementC11cardinality9OysterKit11CardinalityVvp">cardinality</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The <code>Cardinality</code> of the match</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">cardinality</span><span class="p">:</span> <span class="kt">Cardinality</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:4STLRAAV7ElementC9behaviour9OysterKit9BehaviourVvp"></a>
+                    <a name="//apple_ref/swift/Property/behaviour" class="dashAnchor"></a>
+                    <a class="token" href="#/s:4STLRAAV7ElementC9behaviour9OysterKit9BehaviourVvp">behaviour</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The <code>Behaviour</code> of the rule</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">behaviour</span><span class="p">:</span> <span class="kt">Behaviour</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:4STLRAAV7ElementC18directlyReferences_7grammarSbSS_AB7GrammarVtF"></a>
+                    <a name="//apple_ref/swift/Method/directlyReferences(_:grammar:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:4STLRAAV7ElementC18directlyReferences_7grammarSbSS_AB7GrammarVtF">directlyReferences(_:grammar:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Determines if the <code>Element</code> directly references the supplied identifier (references it at a point where it is
+possible the scan head has not moved.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">directlyReferences</span><span class="p">(</span><span class="n">_</span> <span class="nv">identifier</span><span class="p">:</span> <span class="kt"><a href="../../Structs/STLR/String.html">String</a></span><span class="p">,</span> <span class="nv">grammar</span><span class="p">:</span> <span class="kt"><a href="../../Structs/STLR.html">STLR</a></span><span class="o">.</span><span class="kt"><a href="../../Structs/STLR/Grammar.html">Grammar</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>identifier</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The identifier that may be referenced</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>grammar</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The grammar both the identifier and this element is in</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p><code>true</code> if the identifier could be referenced before the scan head has moved</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:4STLRAAV7ElementC18directlyReferences_7grammar10closedListSbSS_AB7GrammarVSaySSGztF"></a>
+                    <a name="//apple_ref/swift/Method/directlyReferences(_:grammar:closedList:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:4STLRAAV7ElementC18directlyReferences_7grammar10closedListSbSS_AB7GrammarVSaySSGztF">directlyReferences(_:grammar:closedList:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">directlyReferences</span><span class="p">(</span><span class="n">_</span> <span class="nv">identifier</span><span class="p">:</span> <span class="kt"><a href="../../Structs/STLR/String.html">String</a></span><span class="p">,</span> <span class="nv">grammar</span><span class="p">:</span> <span class="kt"><a href="../../Structs/STLR.html">STLR</a></span><span class="o">.</span><span class="kt"><a href="../../Structs/STLR/Grammar.html">Grammar</a></span><span class="p">,</span> <span class="nv">closedList</span><span class="p">:</span> <span class="k">inout</span> <span class="p">[</span><span class="kt"><a href="../../Structs/STLR/String.html">String</a></span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:4STLRAAV7ElementC10references_7grammarSbSS_AB7GrammarVtF"></a>
+                    <a name="//apple_ref/swift/Method/references(_:grammar:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:4STLRAAV7ElementC10references_7grammarSbSS_AB7GrammarVtF">references(_:grammar:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Determines if the <code>Element</code> references the supplied identifier (that is the identifier appears in the element or some part of
+an expression that forms the element.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">references</span><span class="p">(</span><span class="n">_</span> <span class="nv">identifier</span><span class="p">:</span> <span class="kt"><a href="../../Structs/STLR/String.html">String</a></span><span class="p">,</span> <span class="nv">grammar</span><span class="p">:</span> <span class="kt"><a href="../../Structs/STLR.html">STLR</a></span><span class="o">.</span><span class="kt"><a href="../../Structs/STLR/Grammar.html">Grammar</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>identifier</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The identifier that may be referenced</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>grammar</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The grammar both the identifier and this element is in</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p><code>true</code> if the identifier is referenced</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:4STLRAAV7ElementC10references_7grammar10closedListSbSS_AB7GrammarVSaySSGztF"></a>
+                    <a name="//apple_ref/swift/Method/references(_:grammar:closedList:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:4STLRAAV7ElementC10references_7grammar10closedListSbSS_AB7GrammarVSaySSGztF">references(_:grammar:closedList:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">references</span><span class="p">(</span><span class="n">_</span> <span class="nv">identifier</span><span class="p">:</span> <span class="kt"><a href="../../Structs/STLR/String.html">String</a></span><span class="p">,</span> <span class="nv">grammar</span><span class="p">:</span> <span class="kt"><a href="../../Structs/STLR.html">STLR</a></span><span class="o">.</span><span class="kt"><a href="../../Structs/STLR/Grammar.html">Grammar</a></span><span class="p">,</span> <span class="nv">closedList</span><span class="p">:</span> <span class="k">inout</span> <span class="p">[</span><span class="kt"><a href="../../Structs/STLR/String.html">String</a></span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:4STLRAAV7ElementC10expression3for2inAB10ExpressionOSS_AB7GrammarVtKF"></a>
+                    <a name="//apple_ref/swift/Method/expression(for:in:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:4STLRAAV7ElementC10expression3for2inAB10ExpressionOSS_AB7GrammarVtKF">expression(for:in:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">expression</span><span class="p">(</span><span class="k">for</span> <span class="nv">tokenName</span><span class="p">:</span> <span class="kt"><a href="../../Structs/STLR/String.html">String</a></span><span class="p">,</span> <span class="k">in</span> <span class="nv">grammar</span><span class="p">:</span> <span class="kt"><a href="../../Structs/STLR.html">STLR</a></span><span class="o">.</span><span class="kt"><a href="../../Structs/STLR/Grammar.html">Grammar</a></span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../../Structs/STLR.html">STLR</a></span><span class="o">.</span><span class="kt"><a href="../../Structs/STLR/Expression.html">Expression</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-09-02)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>
