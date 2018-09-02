@@ -65,11 +65,7 @@ extension CharacterSet : Terminal {
             try lexer.scan(oneOf: self)
         } catch {
             let failedAt = lexer.endOfInput ? "EOF" : lexer.current
-            if let token = token {
-                throw ProcessingError.parsing(message: "Failed to match \(token), expected \(matchDescription) but got \(failedAt)", range: lexer.index...lexer.index, causes: [error])
-            } else {
-                throw ProcessingError.scanning(message: "Expected \(matchDescription) but got \(failedAt)", position: lexer.index, causes: [])
-            }
+            throw ProcessingError.scanning(message: "Exptected \(token == nil ? "\(self)" : "\(token!)") but got \(failedAt)", position: lexer.index, causes: [error])
         }
     }
 }

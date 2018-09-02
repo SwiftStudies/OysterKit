@@ -34,11 +34,7 @@ extension NSRegularExpression : Terminal {
         do {
             try lexer.scan(regularExpression: self)
         } catch {
-            if let token = token {
-                throw ProcessingError.parsing(message: "Failed to match \(token), expected '\(self)'", range: lexer.index...lexer.index, causes: [error])
-            } else {
-                throw ProcessingError.scanning(message: "Expected \(self)", position: lexer.index, causes: [])
-            }
+            throw ProcessingError.scanning(message: "Failed to match \(token == nil ? "\(self.pattern)" : "\(token!)")", position: lexer.index, causes: [error])
         }
     }
 }

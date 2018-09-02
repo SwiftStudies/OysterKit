@@ -101,7 +101,7 @@ public final class RecursiveRule : Rule, CustomStringConvertible{
     
     /// Creates a new instance of itself
     public func rule(with behaviour: Behaviour?, annotations: RuleAnnotations?) -> Rule {
-        return RecursiveRuleInstance(original: self,behaviour: behaviour ?? self.behaviour, annotations: annotations ?? self.annotations)
+        return RecursiveRuleInstance(self,behaviour: behaviour ?? self.behaviour, annotations: annotations ?? self.annotations)
     }
         
     

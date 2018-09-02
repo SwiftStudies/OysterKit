@@ -12,22 +12,16 @@ import OysterKit
 extension Array where Element == Error {
     func report(in source:String, from file:String? = nil){
         for error in self {
-            if let constructionError = error as? AbstractSyntaxTreeConstructor.ConstructionError {
-                switch constructionError {
-                case .constructionFailed(let errors), .parsingFailed(let errors):
-                    for error in errors{
-                        if let rangedError = error as? HumanConsumableError {
-                            let reference = TextFileReference(of: rangedError.range, in: source)
-                            print(reference.report(rangedError.message,file:file))
-                        } else {
-                            print("\(error)")
-                        }
+            if let processingError = error as? ProcessingError {
+                print(processingError.message)
+                for cause in processingError.causedBy ?? [] {
+                    if let cause = cause as? CausalErrorType, let range = cause.range {
+                        let reference = TextFileReference(of: range.lowerBound..<range.upperBound, in: source)
+                        print(reference.report(cause.message,file:file))
+                    } else {
+                        print("\(cause)")
                     }
-                case .unknownError(let message):
-                    print("Unknown error: \(message)")
                 }
-            } else if let humanReadable = error as? HumanConsumableError {
-                print(humanReadable.formattedErrorMessage(in: source))
             } else {
                 print("\(error)")
             }

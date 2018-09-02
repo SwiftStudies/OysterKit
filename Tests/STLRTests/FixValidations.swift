@@ -9,6 +9,7 @@
 import XCTest
 @testable import OysterKit
 @testable import STLR
+@testable import ExampleLanguages
 
 class FixValidations: XCTestCase {
 
@@ -120,5 +121,31 @@ class FixValidations: XCTestCase {
         } catch {
             XCTFail("\(error)")
         }
+    }
+    
+    func testErrorOnDeclaration(){
+        #warning("Errors annotated on declarations are not thrown as specificErrors")
+    }
+        
+    
+    func testErrorOnRecursiveRule(){
+        let rule = ExampleLanguages.STLRTokens.expression.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected expression"),RuleAnnotation.custom(label:"fatal"):RuleAnnotationValue.set])
+
+        print(rule)
+        
+        do {
+            _ = try AbstractSyntaxTreeConstructor(with: ".bogusCharacterSet").build(using: Parser(grammar: [rule]))
+            XCTFail("Should have failed")
+        } catch let error as ProcessingError {
+            print(error.debugDescription)
+            if let error = error.filtered(including: [.fatal]){
+                XCTAssertEqual((error.causedBy?.first as? ProcessingError)?.message ?? "", "Fatal Error: Expected expression")
+                return
+            }
+            XCTFail("Incorrect error type")
+        } catch {
+            XCTFail("Incorrect error type")
+        }
+        
     }
 }

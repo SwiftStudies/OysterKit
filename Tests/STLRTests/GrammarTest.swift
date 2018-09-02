@@ -9,6 +9,7 @@
 import XCTest
 @testable import OysterKit
 @testable import STLR
+@testable import ExampleLanguages
 
 extension String {
     mutating func add(line: String){
@@ -167,11 +168,10 @@ class GrammarTest: XCTestCase {
             do {
                 let _ = try AbstractSyntaxTreeConstructor().build("xx", using: language)
                 return
-            } catch AbstractSyntaxTreeConstructor.ConstructionError.constructionFailed(let errors) {
-                XCTAssertEqual(errors.count, 1)
-                let errorText = "\(errors[0])"
+            } catch let error as ProcessingError {
+                XCTAssertEqual(error.causedBy?.count ?? 0, 1)
                 
-                XCTAssert(errorText.hasPrefix("Parsing Error: expected y"), "Unexpected error \(errorText)")
+                XCTAssert(error.hasCause(description: "Parsing Error: expected y"), "Did not find expected cause in \(error)")
             } catch {
                 XCTFail("Expected a single error")
                 return
@@ -330,10 +330,11 @@ class GrammarTest: XCTestCase {
         do{
             source.add(line: "hello = \"hello\" .whiteSpacesAndNewlines")
             
-            _ = try ProductionSTLR.build(testGrammarName+source)
+            _ = try TestSTLR.build(testGrammarName+source)
             
             XCTFail("Expected an error")
-        } catch AbstractSyntaxTreeConstructor.ConstructionError.constructionFailed(let causes) {
+        } catch let error as ProcessingError {
+            #warning("We need to do something much smarter here")
 //            guard causes.count == 4 else {
 //                XCTFail("Expected 4 errors but got \(causes.count)\n\(causes)")
 //                return
@@ -353,7 +354,8 @@ class GrammarTest: XCTestCase {
             _ = try ProductionSTLR.build(testGrammarName+source)
 
             XCTFail("Expected an error")
-        } catch AbstractSyntaxTreeConstructor.ConstructionError.constructionFailed(let errors){
+        } catch let error as ProcessingError {
+            #warning("We need to do something much smarter here")
 //            guard errors.count == 4 else {
 //                XCTFail("Expected 4 errors but got \(errors.count)\n\(errors)")
 //                return
@@ -381,8 +383,11 @@ class GrammarTest: XCTestCase {
             _ = try AbstractSyntaxTreeConstructor().build("yz", using: compiledLanguage)
 
             XCTFail("Expected an error \(parser.grammar.rules[1])")
-        } catch AbstractSyntaxTreeConstructor.ConstructionError.constructionFailed(let errors) {
-            XCTAssert("\(errors[0])".hasPrefix("Parsing Error: Expected X"),"Incorrect error \(errors)")
+        } catch let error as ProcessingError {
+            let desired = error.filtered { (error) -> Bool in
+                return (error as? ProcessingError)?.message ?? "" == "Parsing Error: Expected X at 0"
+            }
+            XCTAssertNotNil(desired)
         } catch {
             XCTFail("Unexpected error \(error)")
         }
@@ -398,12 +403,11 @@ class GrammarTest: XCTestCase {
             do {
                 let _ = try AbstractSyntaxTreeConstructor().build("yz", using: Parser(grammar: parser.grammar.dynamicRules))
                 XCTFail("Expected an error \(parser.grammar.rules[rangeChecked: 1]?.description ?? "but the rule is missing")")
-            } catch AbstractSyntaxTreeConstructor.ConstructionError.constructionFailed(let errors) {
-                guard let error = errors.first else {
-                    XCTFail("Expected an error \(parser.grammar.rules[1])")
-                    return
+            } catch let error as ProcessingError {
+                let desired = error.filtered { (error) -> Bool in
+                    return (error as? ProcessingError)?.message ?? "" == "Parsing Error: Expected x at 0"
                 }
-                XCTAssert("\(error)".hasPrefix("Parsing Error: Expected x"),"Incorrect error \(error)")
+                XCTAssertNotNil(desired)
             } catch {
                 XCTFail("Unexpected error \(error)")
             }
@@ -423,10 +427,13 @@ class GrammarTest: XCTestCase {
                     """)
             
             XCTFail("Should have had a fatal error")
+        } catch let error as ProcessingError {
+            let desired = error.filtered(including: [.fatal])?.filtered { (error) -> Bool in
+                return (error as? ProcessingError)?.message ?? "" == "Fatal Error: Expected expression"
+            }
+            XCTAssertNotNil(desired)
         } catch {
-            XCTAssert("\(error)".hasPrefix("Fatal Error: Expected expression"))
-            // This is a good thing
-            print("\(error)")
+            XCTFail("Incorrect error \(error)")
         }
     }
 }

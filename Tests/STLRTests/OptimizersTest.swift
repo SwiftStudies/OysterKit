@@ -38,12 +38,8 @@ class OptimizersTest: GrammarTest {
             
             do {
                 let _ = try AbstractSyntaxTreeConstructor().build("yz", using: compiledLanguage)
-            } catch AbstractSyntaxTreeConstructor.ConstructionError.constructionFailed(let errors) {
-                guard let error = errors.first else {
-                    XCTFail("Expected an error \(parser.grammar.rules[1])")
-                    return
-                }
-                XCTAssert("\(error)".contains("Expected X"),"Incorrect error \(error)")
+            } catch let error as ProcessingError {
+                XCTAssertNotNil(error.filtered(includingMessagesMatching: ".*Expected X.*"))
             } catch {
                 XCTFail("Unexpected error \(error)")
             }
@@ -67,12 +63,8 @@ class OptimizersTest: GrammarTest {
             
             do {
                 let _ = try AbstractSyntaxTreeConstructor().build("yz", using: compiledLanguage)
-            } catch AbstractSyntaxTreeConstructor.ConstructionError.constructionFailed(let errors) {
-                guard let error = errors.first else {
-                    XCTFail("Expected an error \(parser.grammar.rules[1])")
-                    return
-                }
-                XCTAssert("\(error)".contains("Expected X"),"Incorrect error \(error)")
+            } catch let error as ProcessingError {
+                XCTAssertNotNil(error.filtered(includingMessagesMatching: ".*Expected X.*"))
             } catch {
                 XCTFail("Unexpected error \(error)")
             }

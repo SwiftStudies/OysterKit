@@ -33,66 +33,8 @@ import Foundation
 public class AbstractSyntaxTreeConstructor  {
     
     /// Errors that can occur during AST creation
-    public enum ConstructionError : Error, CausalErrorType {
-        public var isFatal: Bool {
-            return false
-        }
-                
-        public var causedBy: [Error]?{
-            switch self {
-            case .parsingFailed(let causes):
-                return causes
-            case .constructionFailed(let causes):
-                return causes
-            case .unknownError(_):
-                return nil
-            }
-        }
-        
-        public var range: ClosedRange<String.Index>?{
-            guard let causes = causedBy else {
-                return nil
-            }
-            var totalRange : ClosedRange<String.Index>?
-            for cause in causes {
-                if let cause = cause as? CausalErrorType, let range = cause.range {
-                    if totalRange == nil {
-                        totalRange = range
-                    } else {
-                        totalRange = min(totalRange!.lowerBound, range.lowerBound)...(max(totalRange!.upperBound,range.upperBound))
-                    }
-                }
-            }
-            return totalRange
-        }
-        
-        public var message: String {
-            var messages = [String]()
-            switch self {
-            case .parsingFailed(let causes), .constructionFailed(let causes):
-                messages.append(contentsOf: causes.map({ (error) -> String in
-                    if let error = error as? CausalErrorType {
-                        return error.message
-                    } else {
-                        return "\(error)"
-                    }
-                }))
-            case .unknownError(let message):
-                messages.append(message)
-            }
-            return messages.joined(separator: ", ")
-        }
-        
-        /// Parsing failed before the AST could be constructed
-        case parsingFailed(causes: [Error])
-        
-        /// One or more AST nodes could not be constructed
-        case constructionFailed(causes: [Error])
-        
-        /// An error that is wholly unexpected, throwers should provide as much information as possible to guide
-        /// developers to what may have gone wrong (at this point it's not something that will be meaningful to consumers
-        case unknownError(message:String)
-    }
+    @available(*,deprecated,message: "Use ProcessingError instead")
+    public typealias ConstructionError = ProcessingError
     
     /**
      An entry in the tree.
@@ -228,7 +170,7 @@ public class AbstractSyntaxTreeConstructor  {
             return try generate(astType)
         } catch {
             _errors.append(error)
-            throw ConstructionError.constructionFailed(causes: _errors)
+            throw ProcessingError.interpretation(message: "AST construction failed", causes: _errors)
         }
     }
     
@@ -243,8 +185,9 @@ public class AbstractSyntaxTreeConstructor  {
             let topNode : IntermediateRepresentationNode
             
             guard let topNodes = nodeStack.top?.nodes, topNodes.count > 0 else {
-                _errors.append(LanguageError.parsingError(at: scalars.startIndex..<scalars.startIndex, message: "No nodes created"))
-                throw ConstructionError.parsingFailed(causes: errors)
+                let error = ProcessingError.interpretation(message: "No nodes created", causes: _errors)
+                _errors.append(error)
+                throw error
             }
             
             if topNodes.count > 1 {
@@ -256,7 +199,7 @@ public class AbstractSyntaxTreeConstructor  {
             return try AST(with: topNode, from: source ?? self.source)
         } catch {
             _errors.append(error)
-            throw ConstructionError.constructionFailed(causes: _errors)
+            throw ProcessingError.interpretation(message: "AST construction failed", causes: _errors)
         }
     }
     

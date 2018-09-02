@@ -71,6 +71,67 @@ public extension CausalErrorType {
     }
 }
 
+/// Represents the type of processing error.
+public struct ProcessingErrorType : OptionSet {
+    public let rawValue: Int
+    
+    /**
+     Creates a new instance with the specified rawValue. Supported types are all captured with static constants and you should not need this
+     
+     - Parameter rawValue: The raw value
+    **/
+    public init(rawValue:Int){
+        self.rawValue = rawValue
+    }
+    
+    /**
+     Creates a new instance classifying the supplied error
+     
+     - Parameter error: The error to classify
+    **/
+    public init(from error:Error){
+        if let error = error as? ProcessingError {
+            switch error {
+            case .internal(_):
+                rawValue = ProcessingErrorType.internal.rawValue
+            case .undefined(_,_,_):
+                rawValue = ProcessingErrorType.undefined.rawValue
+            case .scanning(_,_,_):
+                rawValue = ProcessingErrorType.scanning.rawValue
+            case .parsing(_,_,_):
+                rawValue = ProcessingErrorType.parsing.rawValue
+            case .interpretation(_,_):
+                rawValue = ProcessingErrorType.interpretation.rawValue
+            case .fatal(_,_):
+                rawValue = ProcessingErrorType.fatal.rawValue
+            }
+        } else {
+            rawValue = ProcessingErrorType.foreign.rawValue
+        }
+    }
+    
+    /// A non OysterKit error
+    public static let foreign           = ProcessingErrorType(rawValue:1 << 0)
+    
+    /// An internal `ProcessingError`
+    public static let `internal`        = ProcessingErrorType(rawValue:1 << 1)
+    
+    /// An undefined `ProcessingError`
+    public static let undefined         = ProcessingErrorType(rawValue:1 << 2)
+    
+    /// A scanning `ProcessingError`
+    public static let scanning          = ProcessingErrorType(rawValue:1 << 3)
+    
+    /// A parsing `ProcessingError`
+    public static let parsing           = ProcessingErrorType(rawValue:1 << 4)
+    
+    /// An interpretation `ProcessingError`
+    public static let interpretation    = ProcessingErrorType(rawValue:1 << 5)
+    
+    /// A fatal `ProcessingError`
+    public static let fatal             = ProcessingErrorType(rawValue:1 << 6)
+}
+
 /**
  A useful standard implementation of `TestErrorType` that enables the reporting of most kinds of issues
  */
@@ -137,26 +198,7 @@ public enum ProcessingError : CausalErrorType {
     }
     
     internal var causeRange : ClosedRange<String.Index>?{
-        var lowerBound : String.Index?
-        var upperBound : String.Index?
-        
-        for cause in causedBy ?? []{
-            if let causeRange = (cause as? CausalErrorType)?.range {
-                lowerBound = min(lowerBound ?? causeRange.lowerBound, causeRange.lowerBound)
-                upperBound = max(upperBound ?? causeRange.upperBound, causeRange.upperBound)
-            }
-        }
-        
-        switch (lowerBound, upperBound) {
-        case (let lower, nil) where lower != nil:
-            return lower!...lower!
-        case (nil, let upper) where upper != nil:
-            return upper!...upper!
-        case (let lower,let upper) where upper != nil && lower != nil:
-            return lower!...upper!
-        default:
-            return nil
-        }
+        return causedBy?.range
     }
     
     /// The range in the source string that caused this error, or nil (for example an internal error)
@@ -182,27 +224,17 @@ public enum ProcessingError : CausalErrorType {
                 return "Internal Error: \(cause.localizedDescription)"
             }
             return "Internal Error"
-        case .undefined(let message, let position, let causes):
-            if causes.isEmpty {
-                return "\(message) at \(position.encodedOffset)"
-            } else {
-                return "\(message) error at \(position.encodedOffset) caused by "+causes.map({"\($0)"}).joined(separator: ", ")
-            }
-        case .scanning(let message, let position, let causes):
-            if causes.isEmpty{
-                return "Scanning Error: \(message) at \(position.encodedOffset)"
-            } else {
-                return "Scanning Error: \(message) at \(position.encodedOffset) caused by "+causes.map({"\($0)"}).joined(separator: ", ")
-            }
-        case .parsing(let message, let range, let causes):
-            let causeText = causes.map({"\($0)"}).joined(separator: ", ")
+        case .undefined(let message, let position, _):
+            return "Undefined Error: \(message) at \(position.encodedOffset)"
+        case .scanning(let message, let position, _):
+            return "Scanning Error: \(message) at \(position.encodedOffset)"
+        case .parsing(let message, let range, _):
             if range.lowerBound == range.upperBound {
-                return "Parsing Error: \(message) at \(range.lowerBound.encodedOffset)"+(causeText.isEmpty ? "" : " caused by \(causeText)")
+                return "Parsing Error: \(message) at \(range.lowerBound.encodedOffset)"
             }
-            return "Parsing Error: \(message) between \(range.lowerBound.encodedOffset) and \(range.upperBound.encodedOffset)"+(causeText.isEmpty ? "" : " caused by \(causeText)")
-        case .fatal(let message, let causes):
-            let causeText = causes.map({"\($0)"}).joined(separator: ", ")
-            return "Fatal Error: \(message)"+(causeText.isEmpty ? "" : " caused by \(causeText)")
+            return "Parsing Error: \(message) between \(range.lowerBound.encodedOffset) and \(range.upperBound.encodedOffset)"
+        case .fatal(let message, _):
+            return "Fatal Error: \(message)"
         case .interpretation(let message, _):
             return "Interpretation Error: \(message)"
         }
@@ -211,6 +243,90 @@ public enum ProcessingError : CausalErrorType {
     /// A textual description of the error and its causes
     public var description: String {
         return message
+    }
+    
+    /**
+     Filters the error and its caueses by the using the supplied block. Note that internal errors with no
+     matching cause will also be filtered out.
+     
+     - Parameter include: A closure that should return true if the supplied error should be included in the filtered result
+     - Returns: A filtered version of the error or `nil` if the error itself does not match the filter
+    **/
+    public func filtered(include:(Error)->Bool)->ProcessingError?{
+        
+        let filteredCauses = causedBy?.compactMap({ (error) -> Error? in
+            if let error = error as? ProcessingError {
+                return error.filtered(include: include)
+            }
+            return include(error) ? error : nil
+        }) ?? []
+
+        if !include(self) && filteredCauses.isEmpty{
+            return nil
+        }
+        
+        switch self {
+        case .internal(_):
+            if filteredCauses.isEmpty {
+                return nil
+            }
+            return self
+        case .undefined(let message, let at, _):
+            return ProcessingError.undefined(message: message, at: at, causes: filteredCauses)
+        case .scanning(let message, let position, _):
+            return ProcessingError.scanning(message: message, position: position, causes: filteredCauses)
+        case .parsing(let message, let range, _):
+            return ProcessingError.parsing(message: message, range: range, causes: filteredCauses)
+        case .interpretation(let message, _):
+            return ProcessingError.interpretation(message: message, causes: filteredCauses)
+        case .fatal(let message, _):
+            return ProcessingError.fatal(message: message, causes: filteredCauses)
+        }
+    }
+    
+    /**
+     Filters this error and all of its causes including only those that are of the types provided
+     
+     - Parameter includedTypes: The types that should be included after filtering
+    **/
+    public func filtered(including includedTypes:ProcessingErrorType)->ProcessingError?{
+        return filtered(include: { (error) -> Bool in
+            return includedTypes.contains(ProcessingErrorType(from: error))
+        })
+    }
+    
+    /**
+     Filters this error and all of its causes including only those that have messages matching the
+     supplied regular expression pattern.
+     
+     - Parameter pattern: A regular expression to use to check messages from teh errors
+     - Returns: `nil` if no errors match, or a new error with just matching children and their parents
+    **/
+    public func filtered(includingMessagesMatching pattern:String)->ProcessingError?{
+        do {
+            let regex = try NSRegularExpression(pattern: pattern, options: [])
+
+            
+            return filtered(include: { (error) -> Bool in
+                let message : String
+                if let processingError = error as? ProcessingError {
+                    message = processingError.message
+                } else {
+                    message = error.localizedDescription
+                }
+                
+                return regex.firstMatch(in: message, options: [], range: NSRange(location: 0, length: message.count)) != nil
+                
+            })
+            
+        } catch {
+            return nil
+        }
+    }
+    
+    /// The type of the error
+    public var processingErrorType : ProcessingErrorType {
+        return ProcessingErrorType(from: self)
     }
 }
 
@@ -233,5 +349,35 @@ public extension CausalErrorType {
             }
         }
         return false
+    }
+}
+
+public extension Array where Element == Error {
+    /// Extracts any causal errors from the array and builds a range from them
+    var range    : ClosedRange<String.Index>? {
+        var lowerBound : String.Index?
+        var upperBound : String.Index?
+        
+        for cause in compactMap({$0 as? CausalErrorType}){
+            if let existingLower = lowerBound, let causeLower = cause.range?.lowerBound {
+                lowerBound = Swift.min(existingLower, causeLower)
+            } else {
+                lowerBound = cause.range?.lowerBound
+            }
+            if let existingUpper = upperBound, let causeUpper = cause.range?.upperBound {
+                upperBound = Swift.max(existingUpper, causeUpper)
+            }
+        }
+        
+        switch (lowerBound, upperBound) {
+        case (let lower, nil) where lower != nil:
+            return lower!...lower!
+        case (nil, let upper) where upper != nil:
+            return upper!...upper!
+        case (let lower,let upper) where upper != nil && lower != nil:
+            return lower!...upper!
+        default:
+            return nil
+        }
     }
 }

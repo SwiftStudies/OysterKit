@@ -244,10 +244,8 @@ class ParserTest: XCTestCase {
     func testAllRuleFailure(){
         let errors = check("Hello", produces: [], using: [Tokens.whitespace.rule, Tokens.exlamationMark.rule], expectingEndOfInput: false )
         
-        if let parsingError = errors.first {
-            if case AbstractSyntaxTreeConstructor.ConstructionError.parsingFailed(let errors) = parsingError {
-                XCTAssertEqual(2, errors.count)
-            }
+        if let parsingError = errors.first as? ProcessingError{
+            XCTAssertEqual(parsingError.causedBy?.count ?? 0, 2)
         }
         
     }

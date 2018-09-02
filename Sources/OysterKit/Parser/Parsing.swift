@@ -55,7 +55,7 @@ enum ParsingStrategy {
         do {
             while !context.complete {
                 if try !pass(in: context) {
-                    throw AbstractSyntaxTreeConstructor.ConstructionError.unknownError(message: "Failure reported in pass() but no error thrown")
+                    throw ProcessingError.interpretation(message: "Failure reported in pass(), but no error was thrown", causes: [])
                 }
             }
         }
@@ -85,7 +85,7 @@ enum ParsingStrategy {
             }
             
             if !productionErrors.isEmpty {
-                throw AbstractSyntaxTreeConstructor.ConstructionError.parsingFailed(causes: productionErrors)
+                throw ProcessingError.parsing(message: "No rules matched input", range: productionErrors.range ?? context.lexer.index...context.lexer.index, causes: productionErrors)
             }
             
             if context.lexer.index == positionBeforeParsing {

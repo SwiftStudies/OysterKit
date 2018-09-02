@@ -76,6 +76,10 @@ class GrammarOption : Option, IndexableParameterized{
             return stlr
         } catch {
             [error].report(in: stlrGrammar, from: grammarUrl.lastPathComponent)
+            print("","Caused by: ",separator: "\n", terminator: "")
+            if let error = error as? ProcessingError {
+                print(error.filtered(including: [ProcessingErrorType.parsing])?.debugDescription ?? "\t\(error)")
+            }
             return nil
         }
     }()

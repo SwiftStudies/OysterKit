@@ -48,13 +48,19 @@ class FullSwiftGenerationTest: XCTestCase {
         
         do {
             try parse(source: source, with: rule)
-        } catch AbstractSyntaxTreeConstructor.ConstructionError.constructionFailed(let causes){
-            if let primaryCause = causes.first {
-                if "\(primaryCause)".hasPrefix("No nodes created") && ignoreNoNodes {
-                    return
-                }
+        } catch let error as ProcessingError {
+            // If there's a no nodes created message and we are ignoring no nodes... keep going
+            if let _ = error.filtered(include: { (error) -> Bool in
+                    guard let processingError = error as? ProcessingError else {
+                        return false
+                    }
+                
+                    return processingError.message == "Interpretation Error: No nodes created"
+            }), ignoreNoNodes {
+                return
             }
-            throw ProcessingError.parsing(message: "Unexpected construction error", range: source.startIndex...source.endIndex, causes: causes)
+            
+            throw ProcessingError.parsing(message: "Unexpected construction error", range: source.startIndex...source.endIndex, causes: error.causedBy ?? [])
         }
     }
     

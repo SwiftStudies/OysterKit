@@ -244,11 +244,18 @@ public extension Rule {
                     ir.failed()
                 }
                 if let specificError = self.error {
-                    #warning("Make this a predefined token")
-                    if annotations[RuleAnnotation.custom(label: "fatal")] != nil {
-                        throw ProcessingError.fatal(message: specificError, causes: [error])
+                    let causes : [Error]
+                    #warning("Make this a predifined annotation")
+                    if annotations[RuleAnnotation.custom(label: "coalesce")] != nil {
+                        causes = []
+                    } else {
+                        causes = [error]
                     }
-                    throw ProcessingError.parsing(message: specificError, range: lexer.index...lexer.index, causes: [error])
+                    #warning("Make this a predefined annotation")
+                    if annotations[RuleAnnotation.custom(label: "fatal")] != nil {
+                        throw ProcessingError.fatal(message: specificError, causes: causes)
+                    }
+                    throw ProcessingError.parsing(message: specificError, range: lexer.index...lexer.index, causes: causes)
                 } else {
                     throw error
                 }

@@ -29,12 +29,23 @@ struct RecursiveRuleInstance : Rule {
     let behaviour: Behaviour
     let annotations: RuleAnnotations
     
+    init(_ original:RecursiveRule, behaviour:Behaviour, annotations:RuleAnnotations){
+        self.original = original
+        self.behaviour = Behaviour(.scanning)
+        self.annotations = annotations
+    }
+    
     func test(with lexer: LexicalAnalyzer, for ir: IntermediateRepresentation) throws {
         try original.test(with: lexer, for: ir)
     }
     
     func match(with lexer: LexicalAnalyzer, for ir: IntermediateRepresentation) throws {
-        try original.surrogateRule?.test(with: lexer, for: ir)
+//        try original.surrogateRule?.test(with: lexer, for: ir)
+        if let surrogateRule = original.surrogateRule {
+            try evaluate(surrogateRule.test, using: lexer, and: ir)
+        } else {
+            throw ProcessingError.fatal(message: "\(original) has no surrogate rule set", causes: [])
+        }
     }
     
     var description: String {
@@ -55,6 +66,6 @@ struct RecursiveRuleInstance : Rule {
     }
     
     func rule(with behaviour: Behaviour?, annotations: RuleAnnotations?) -> Rule {
-        return RecursiveRuleInstance(original: original, behaviour: behaviour ?? self.behaviour, annotations: annotations ?? self.annotations)
+        return RecursiveRuleInstance(original, behaviour: behaviour ?? self.behaviour, annotations: annotations ?? self.annotations)
     }
 }

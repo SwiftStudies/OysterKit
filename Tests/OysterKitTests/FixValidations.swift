@@ -124,9 +124,9 @@ class FixValidations: XCTestCase {
         do{
             let _ = try STLRStringTest.parse(source: "\"h\n")
             XCTFail("Expected unterminated string error" )
-        } catch AbstractSyntaxTreeConstructor.ConstructionError.constructionFailed(let errors) {
-            XCTAssertEqual(errors.count, 1)
-            XCTAssertTrue("\(errors[0])".hasPrefix("Parsing Error: Missing terminating quote at 2"))
+        } catch let error as ProcessingError {
+            XCTAssertEqual(error.causedBy?.count ?? 0,1)
+            XCTAssertTrue(error.hasCause(description: "Parsing Error: Missing terminating quote at 2"))
         } catch {
             XCTFail("Unexpected error \(error)")
         }
