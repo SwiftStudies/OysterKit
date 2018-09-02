@@ -5,7 +5,7 @@ import OysterKit
 let letter = CharacterSet.letters.parse(as:StringToken("letter"))
 
 print("Letters")
-for token in TokenStream("Hello", using: [letter]){
+for token in [letter].stream("Hello"){
     print(token)
 }
 
@@ -13,14 +13,14 @@ for token in TokenStream("Hello", using: [letter]){
 let punctuation = [".",",","!","?"].choice.parse(as: StringToken("punctuation"))
 
 print("Letters and Punctuation")
-for token in TokenStream("Hello!", using: [letter, punctuation]){
+for token in [letter, punctuation].stream("Hello!"){
     print(token)
 }
 
 /// Skipping
 let space = CharacterSet.whitespaces.skip()
 print("Letters,Punctuation, and Whitespace")
-for token in TokenStream("Hello, World!", using: [letter, punctuation, space]){
+for token in [letter, punctuation, space].stream("Hello, World!"){
     print(token)
 }
 
@@ -28,7 +28,7 @@ for token in TokenStream("Hello, World!", using: [letter, punctuation, space]){
 let word = letter.require(.oneOrMore).parse(as: StringToken("word"))
 
 print("Words,Punctuation, and Whitespace")
-for token in TokenStream("Hello, World!", using: [word, punctuation, space]){
+for token in [word, punctuation, space].stream("Hello, World!"){
     print(token)
 }
 
@@ -37,8 +37,14 @@ let properNoun = [CharacterSet.uppercaseLetters, CharacterSet.lowercaseLetters.r
 let classifiedWord = [properNoun,word].choice
 
 print("Word classification")
-for token in TokenStream("Jon was here!", using: [classifiedWord, punctuation, space]){
+for token in [classifiedWord, punctuation, space].stream("Jon was here!"){
     print(token)
 }
 
-try! AbstractSyntaxTreeConstructor(with: "Jon was here!").build(using: [[classifiedWord, punctuation, space].choice])
+do {
+    print(try [[classifiedWord, punctuation, space].choice].parse("Jon was here!"))
+
+} catch let error as ProcessingError {
+    print(error.debugDescription)
+}
+
