@@ -141,7 +141,10 @@ fileprivate func identifiersAndTerminals(for element:STLR.Element, in file:TextF
     } else if let identifier = element.identifier {
         file.print(terminator: "", "T.\(identifier).rule")
     } else if let group = element.group {
-        let expression = String(group.expression.swift(in: TextFile(), grammar: grammar).content.dropLast())
+        var expression = group.expression.swift(in: TextFile(), grammar: grammar).content
+        if expression.hasSuffix("\n") || expression.hasSuffix("\t") {
+           expression = String(expression.dropLast())
+        }
         file.print(terminator: "", expression)
     }
     
