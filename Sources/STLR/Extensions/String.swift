@@ -33,17 +33,7 @@ public extension String {
     */
     @available(*,deprecated,message: "Use .dynamicRule(Behaviour.Kind) instead")
     public func  dynamicRule(token:TokenType)->Rule? {
-        let grammarDef = "grammar Dynamic\n_ = \(self)"
-        
-        let compiler = STLRParser(source: grammarDef)
-        
-        let ast = compiler.ast
-        
-        guard ast.grammar.rules.count > 0 else {
-            return nil
-        }
-        
-        return ast.grammar.dynamicRules[0].parse(as:token)
+        return try? dynamicRule(Behaviour.Kind.structural(token: token))
     }
     
     /**
