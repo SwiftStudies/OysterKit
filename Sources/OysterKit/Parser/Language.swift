@@ -34,7 +34,11 @@ public protocol Language{
 }
 
 /// Extensions to an array where the elements are `Rule`s
-public extension Array where Element == Rule {
+extension Array : Language  where Element == Rule {
+    public var grammar: [Rule] {
+        return self
+    }
+    
     /// The language for the `[Rule]`
     public var language : Language {
         return Parser(grammar: self)
