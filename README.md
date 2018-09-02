@@ -1,6 +1,5 @@
 ## OysterKit
 
-<img style="float: left;" src="Resources/Artwork/Images/OysterKit%20180x180.png">
 
 |       	| Status|
 | --------- | :-----|
@@ -8,7 +7,7 @@
 | Test Coverage    | [![codecov](https://codecov.io/gh/SwiftStudies/OysterKit/branch/master/graph/badge.svg)](https://codecov.io/gh/SwiftStudies/OysterKit)    |
 | Documentation Coverage      | 97% |  
 
-OysterKit enables native Swift scanning, lexical analysis, and parsing capabilities as a pure Swift framework. Two additional elements are also provided in this package. The first is a second framework STLR which uses OysterKit to provide a plain text grammar specification language called STLR (Swift Tool for Language Recognition). Finally a command line tool, ````stlr```` can be used to automatically generate Swift source code for OysterKit for STLR grammars, as well as dynamically apply STLR grammars to a number of use-cases. The following documentation is available: 
+<img style="float: left;" src="Resources/Artwork/Images/OysterKit%20180x180.png"> OysterKit enables native Swift scanning, lexical analysis, and parsing capabilities as a pure Swift framework. Two additional elements are also provided in this package. The first is a second framework STLR which uses OysterKit to provide a plain text grammar specification language called STLR (Swift Tool for Language Recognition). Finally a command line tool, ````stlr```` can be used to automatically generate Swift source code for OysterKit for STLR grammars, as well as dynamically apply STLR grammars to a number of use-cases. The following documentation is available: 
 
  - [OysterKit API Documentation](https://rawgit.com/SwiftStudies/OysterKit/master/Documentation/OysterKit/index.html) Full API documentation for the OysterKit framework
  - [STLR API Documentation](https://rawgit.com/SwiftStudies/OysterKit/master/Documentation/STLR/index.html) Full API documentation for the STLR framework
