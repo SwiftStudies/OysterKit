@@ -50,47 +50,6 @@ public final class NodeStackEntry<NodeType:Node> : CustomStringConvertible{
     /// The child nodes of this node
     public  var nodes    = [NodeType]()
     
-    /// Errors created so far
-    private var _errors   = [LanguageError]()
-    
-    
-    /**
-     Adds an error to the context providing it is unique
-     
-     - Parameter error: The new `LanguageError` to add
-    */
-    public func addError(error:LanguageError){
-        
-        for existingError in _errors{
-            if existingError.range == error.range && existingError.description == error.description {
-                return
-            }
-        }
-        
-        _errors.append(error)
-    }
-    
-    /**
-     Adds all unique errors to the context providing from the supplied array
-     
-     - Parameter errors: The new `LanguageError`s to add
-     */
-    public func addErrors(_ errors:[LanguageError]){
-        for error in errors{
-            addError(error: error)
-        }
-    }
-    
-    /// Removes all errors
-    public func flushErrors(){
-        _errors.removeAll()
-    }
-    
-    /// The errors captured during parsing of sub-rules of this node's token
-    public var errors : [LanguageError]{
-        return _errors
-    }
-    
     /**
      Should be called when a child node is created
      
@@ -111,7 +70,7 @@ public final class NodeStackEntry<NodeType:Node> : CustomStringConvertible{
     
     /// A human readable description of the context
     public var description: String{
-        return "\(nodes.count) nodes, with \(_errors) errors"
+        return "\(nodes.count) nodes"
     }
 }
 
