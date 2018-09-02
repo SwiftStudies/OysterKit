@@ -115,7 +115,7 @@ public class AbstractSyntaxTreeConstructor  {
     /**
      Constructs a heterogenous AST by first constructing the specified DecodableAbstractSyntaxTree (meeting the requirements of the ``ParsingDecoder`` class).
      You typically do not need to use this method (where you are specifying your own AST to use) and you should consider
-     ``build<T:Decodable>(_ heterogenousType:T.Type, from source: String, using language: Language)`` which will create a ``HomegenousTree`` which is very
+     ``build<T:Decodable>(_ heterogenousType:T.Type, from source: String, using language: Grammar)`` which will create a ``HomegenousTree`` which is very
      easy to use to decode into a concrete type.
      
      - Parameter heterogenousType: The ``Decodable`` Swift Type being constructed
@@ -124,7 +124,7 @@ public class AbstractSyntaxTreeConstructor  {
      - Parameter using: The language to use to parse the source
      - Returns: An instance of a decodable type
      */
-    public func build<T:Decodable, AST:DecodeableAbstractSyntaxTree>(_ heterogenousType:T.Type, using astType:AST.Type, from source: String, using language: Language) throws -> T{
+    public func build<T:Decodable, AST:DecodeableAbstractSyntaxTree>(_ heterogenousType:T.Type, using astType:AST.Type, from source: String, using language: Grammar) throws -> T{
         return try heterogenousType.decode(source, with: astType, using: language)
     }
     
@@ -147,13 +147,13 @@ public class AbstractSyntaxTreeConstructor  {
      - Parameter using: The language to use to parse the source
      - Returns: An instance of a decodable type
      */
-    public func build<T:Decodable>(_ heterogenousType:T.Type, from source: String, using language: Language) throws -> T{
+    public func build<T:Decodable>(_ heterogenousType:T.Type, from source: String, using language: Grammar) throws -> T{
         return try build(heterogenousType, using: HomogenousTree.self, from: source, using: language)
     }
     
     /**
      Constructs a homogenous AST from the supplied source and language. You typically do not need to use this method (where you are
-     specifying your own AST to use) and you should consider ``build(from source: String, using language: Language)`` which creates a
+     specifying your own AST to use) and you should consider ``build(from source: String, using language: Grammar)`` which creates a
      ``HomegenousTree`` which is very easy to work with.
      
      - Parameter using: The ``AbstractSyntaxTree`` to construct
@@ -161,7 +161,7 @@ public class AbstractSyntaxTreeConstructor  {
      - Parameter using: The language to use to parse the source
      - Returns: The ``AbstractSyntaxTree``
      */
-    public func build<AST:AbstractSyntaxTree>(_ astType:AST.Type, from source: String, using language: Language) throws -> AST{
+    public func build<AST:AbstractSyntaxTree>(_ astType:AST.Type, from source: String, using language: Grammar) throws -> AST{
         self.source  = source
         self.scalars = source.unicodeScalars
         
@@ -210,7 +210,7 @@ public class AbstractSyntaxTreeConstructor  {
      - Parameter language: The language to use to parse the source
      - Returns: A ``HomogenousAbstractSyntaxTree``
      */
-    public func build(_ source:String, using language:Language) throws -> HomogenousTree{
+    public func build(_ source:String, using language:Grammar) throws -> HomogenousTree{
         return try build(HomogenousTree.self, from: source, using: language)
     }
 
@@ -220,7 +220,7 @@ public class AbstractSyntaxTreeConstructor  {
      - Parameter language: The language to use to parse the source
      - Returns: A ``HomogenousAbstractSyntaxTree``
      */
-    public func build(using language:Language) throws -> HomogenousTree{
+    public func build(using language:Grammar) throws -> HomogenousTree{
         return try build(HomogenousTree.self, from: source, using: language)
     }
     
@@ -232,7 +232,7 @@ public class AbstractSyntaxTreeConstructor  {
  */
 extension AbstractSyntaxTreeConstructor : IntermediateRepresentation {
     /// Does nothing
-    public func willBuildFrom(source: String, with: Language) {
+    public func willBuildFrom(source: String, with: Grammar) {
     }
     
     public func evaluating(_ token: TokenType) {

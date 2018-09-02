@@ -77,17 +77,17 @@ class GrammarTest: XCTestCase {
         }
     }
 
-    func checkGeneratedLanguage(language:Language?, on source:String, expecting: [String]) throws {
+    func checkGeneratedLanguage(language:Grammar?, on source:String, expecting: [String]) throws {
         let debugOutput = false
         guard let language = language else {
-            throw CheckError.checkFailed(reason: "Language did not compile")
+            throw CheckError.checkFailed(reason: "Grammar did not compile")
         }
         
         defer {
             if debugOutput {
                 print("Debugging:")
                 print("\tSource: \(source)")
-                print("\tLanguage: \(language.grammar)")
+                print("\tLanguage: \(language.rules)")
                 print("Output:")
                 do {
                     print(try AbstractSyntaxTreeConstructor().build(source, using: language).description)

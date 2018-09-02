@@ -282,7 +282,7 @@ public class SwiftStructure : Generator{
                 "return try ParsingDecoder().decode(\(name).self, using: root)").outdent().print(
                     "}",
                     "",
-                    "\(accessLevel) static var generatedLanguage : Language {return Parser(grammar:\(name)Tokens.generatedRules)}"
+                    "\(accessLevel) static var generatedLanguage : Grammar {return Parser(grammar:\(name)Tokens.generatedRules)}"
         )
         
         output.outdent().print("}")

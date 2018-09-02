@@ -28,19 +28,14 @@ import Foundation
 /**
  A language stores a set of grammar rules that can be used to parse `String`s. Extensions provide additional methods (such as parsing) that operate on these rules.
  */
-public protocol Language{
+public protocol Grammar{
     /// The rules in the `Language`'s grammar
-    var  grammar : [Rule] {get}
+    var  rules : [Rule] {get}
 }
 
 /// Extensions to an array where the elements are `Rule`s
-extension Array : Language  where Element == Rule {
-    public var grammar: [Rule] {
+extension Array : Grammar  where Element == Rule {
+    public var rules: [Rule] {
         return self
-    }
-    
-    /// The language for the `[Rule]`
-    public var language : Language {
-        return Parser(grammar: self)
-    }
+    }    
 }

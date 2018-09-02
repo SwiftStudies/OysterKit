@@ -15,7 +15,7 @@ class TestParser : TokenStream{
         super.init(source, using: TestLanguage(grammar: grammar))
     }
     
-    required init(from source: String, with language: Language) {
+    required init(from source: String, with language: Grammar) {
         super.init(source, using: language)
     }
 }
@@ -26,16 +26,16 @@ class TestableStream : TokenStream{
     }
 }
 
-class TestLanguage : Language{
+class TestLanguage : Grammar{
     
-    let grammar : [Rule]
+    let rules : [Rule]
     
     init(){
-        grammar = []
+        rules = []
     }
     
     init(grammar:[Rule]){
-        self.grammar = grammar
+        self.rules = grammar
     }
     
     func createLexer(for source:String)->LexicalAnalyzer{

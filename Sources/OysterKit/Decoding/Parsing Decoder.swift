@@ -208,7 +208,7 @@ public struct ParsingDecoder{
      - Parameter ast: The AbstractSyntaxTree representation
      - Returns: An instance of the type
      */
-    public func decode<T : Decodable>(_ type: T.Type, from source:String, using language:Language) throws -> T {
+    public func decode<T : Decodable>(_ type: T.Type, from source:String, using language:Grammar) throws -> T {
         do {
             let ast = try AbstractSyntaxTreeConstructor().build(source, using: language)
             

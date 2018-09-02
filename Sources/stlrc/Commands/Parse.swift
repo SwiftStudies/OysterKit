@@ -59,7 +59,7 @@ class ParseCommand : Command, IndexableOptioned, IndexableParameterized, Grammar
                    parameters: Parameters.all)
     }
 
-    func parseInput(language:Language, input:String) throws {
+    func parseInput(language:Grammar, input:String) throws {
         let ctr = AbstractSyntaxTreeConstructor()
         _ = try ctr.build(input, using: language)
 

@@ -39,7 +39,7 @@ public extension Decodable {
      - Parameter language: The language to parse the source with
      - Returns: A new instance of the Type
     */
-    static func decode(_ source:String, using language:Language) throws ->Self{
+    static func decode(_ source:String, using language:Grammar) throws ->Self{
         do {
             return try decode(source, with: HomogenousTree.self, using: language)
         } catch {
@@ -62,7 +62,7 @@ public extension Decodable {
      - Parameter language: The language to parse the source with
      - Returns: A new instance of the Type
      */
-    static func decode<AST:DecodeableAbstractSyntaxTree>(_ source:String, with astType:AST.Type, using language:Language) throws ->Self{
+    static func decode<AST:DecodeableAbstractSyntaxTree>(_ source:String, with astType:AST.Type, using language:Grammar) throws ->Self{
         do {
             let ast = try AbstractSyntaxTreeConstructor().build(astType, from: source, using: language)
             

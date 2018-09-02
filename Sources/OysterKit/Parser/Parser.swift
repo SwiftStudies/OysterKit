@@ -25,18 +25,18 @@
 import Foundation
 
 /**
- A default implementation of a `Language`. AST construction is automatically provided by standard extensions to `Language`
+ A default implementation of a `Grammar`. AST construction is automatically provided by standard extensions to `Grammar`
  
- - SeeAlso: `Language`
+ - SeeAlso: `Grammar`
  */
-open class Parser : Language{
+open class Parser : Grammar{
     /// The grammar the `Parser` should use
-    public let grammar : [Rule]
+    public let rules : [Rule]
     
     /// Creates a new instance of the parser with the specified rules
     /// - Parameter grammar: The rules to use
     public init(grammar:[Rule]){
-        self.grammar = grammar
+        self.rules = grammar
     }
     
 }

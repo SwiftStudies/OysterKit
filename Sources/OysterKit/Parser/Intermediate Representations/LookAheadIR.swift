@@ -55,7 +55,7 @@ final class LookAheadIR : IntermediateRepresentation{
     }
     
     /// Does nothing
-    final internal func willBuildFrom(source: String, with: Language) {
+    final internal func willBuildFrom(source: String, with: Grammar) {
     }
     
     /// Does nothing

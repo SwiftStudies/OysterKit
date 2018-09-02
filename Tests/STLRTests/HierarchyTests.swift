@@ -36,7 +36,7 @@ class HierarchyTests: XCTestCase {
 //            fatalError("Could not load grammar")
 //        }
 //        
-//        let xmlLanguage : Language
+//        let xmlLanguage : Grammar
 //        
 //        do {
 //            xmlLanguage = try Parser(grammar: ProductionSTLR.build(grammarSource).grammar.dynamicRules)

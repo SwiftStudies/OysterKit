@@ -98,7 +98,7 @@ final class LightWeightAST : IntermediateRepresentation{
         return
     }
     
-    final func willBuildFrom(source: String, with: Language) {
+    final func willBuildFrom(source: String, with: Grammar) {
         scalars = source.unicodeScalars
         nodeStack.reset()
     }

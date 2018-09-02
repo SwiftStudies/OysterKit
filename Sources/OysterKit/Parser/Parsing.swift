@@ -39,17 +39,17 @@ enum ParsingStrategy {
     class ParsingContext {
         let lexer                       : LexicalAnalyzer
         let ir                          : IntermediateRepresentation
-        let language                    : Language
+        let language                    : Grammar
         var complete                    = false
         
-        init(lexer:LexicalAnalyzer, ir:IntermediateRepresentation, language:Language){
+        init(lexer:LexicalAnalyzer, ir:IntermediateRepresentation, language:Grammar){
             self.lexer      = lexer
             self.language   = language
             self.ir         = ir
         }
     }
     
-    static func parse(_ source : String, using language:Language, with lexerType:LexicalAnalyzer.Type = Lexer.self, into ir:IntermediateRepresentation) throws {
+    static func parse(_ source : String, using language:Grammar, with lexerType:LexicalAnalyzer.Type = Lexer.self, into ir:IntermediateRepresentation) throws {
         let context = ParsingContext(lexer: lexerType.init(source: source), ir: ir, language: language)
         
         do {
@@ -70,7 +70,7 @@ enum ParsingStrategy {
         
         if !context.lexer.endOfInput {
             let positionBeforeParsing = context.lexer.index
-            for rule in context.language.grammar {
+            for rule in context.language.rules {
                 do {
                     try rule.match(with: context.lexer, for: context.ir)
                     success = true

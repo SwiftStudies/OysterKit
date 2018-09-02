@@ -74,7 +74,7 @@ internal class Mark : CustomStringConvertible {
 
 /**
  `Lexer` provides a concrete implementation of the `LexicalAnalyzer` protocol and is used by default for the rest of the OysterKit stack (for example
- in `Language.stream<N:Node,L:LexicalAnalyzer>(lexer:L)->AnySequence<N>`).
+ in `Grammar.stream<N:Node,L:LexicalAnalyzer>(lexer:L)->AnySequence<N>`).
  
  In addition to the requirements of the `LexicalAnalyzer` protocol, this implementation provides the ability to skip characters from a `CharacterSet` when
  a call to `mark()` is made. This can be useful when the consumer always wants, for example, to ignore white space in a file.

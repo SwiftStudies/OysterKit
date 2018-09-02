@@ -637,5 +637,5 @@ public struct STLR : Codable {
         return try ParsingDecoder().decode(STLR.self, using: root)
     }
     
-    public static var generatedLanguage : Language {return Parser(grammar:STLRTokens.generatedRules)}
+    public static var generatedLanguage : Grammar {return Parser(grammar:STLRTokens.generatedRules)}
 }

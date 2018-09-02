@@ -86,7 +86,7 @@ public protocol IntermediateRepresentation : class {
     /**
      Called when the parser starts evaluation providing an oppertunity for the AST to prepare it's internal state.
     */
-    func willBuildFrom(source:String, with: Language)
+    func willBuildFrom(source:String, with: Grammar)
     
     /**
      Called when parsing of the source is complete.

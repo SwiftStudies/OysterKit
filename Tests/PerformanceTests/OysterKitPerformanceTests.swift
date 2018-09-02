@@ -936,7 +936,7 @@ class FullSwiftParser : Parser{
         }
         
 
-        fileprivate func willBuildFrom(source: String, with: Language) {
+        fileprivate func willBuildFrom(source: String, with: Grammar) {
             
         }
         
@@ -971,7 +971,7 @@ class FullSwiftParser : Parser{
         // This is an example of a performance test case.
         self.measure {
             do {
-                try parser.grammar[0].match(with: Lexer(source:self.stlrSource007), for: NullIR())
+                try parser.rules[0].match(with: Lexer(source:self.stlrSource007), for: NullIR())
             } catch (let error){
                 XCTFail("Unexpected failure \(error)")
             }

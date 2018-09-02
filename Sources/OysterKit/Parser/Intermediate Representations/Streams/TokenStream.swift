@@ -26,7 +26,7 @@ import Foundation
 
 /**
  A ``TokenStream`` provides lazy iterators that minimize memory consumption and overhead allowing you to iterate through the tokens created by the
- root rules (those at the lowest level in the language) in the supplied ``Language``
+ root rules (those at the lowest level in the language) in the supplied ``Grammar``
  */
 public class TokenStream : Sequence{
     /// The iterator implementation to use
@@ -36,18 +36,18 @@ public class TokenStream : Sequence{
     let lexerType   : LexicalAnalyzer.Type
     
     /// The language to use to parse
-    let language    : Language
+    let language    : Grammar
     
     /// The source ``String`` to parse
     let source      : String
     
-    public init(_ source:String, using language:Language){
+    public init(_ source:String, using language:Grammar){
         self.source = source
         self.lexerType = Lexer.self
         self.language = language
     }
 
-    public init<Lex:LexicalAnalyzer>(_ source:String, using language:Language, with lexer:Lex.Type){
+    public init<Lex:LexicalAnalyzer>(_ source:String, using language:Grammar, with lexer:Lex.Type){
         self.lexerType = lexer
         self.language = language
         self.source = source
@@ -82,7 +82,7 @@ public class TokenStreamIterator : IteratorProtocol {
      - Parameter lexer: The ``LexicalAnalyzer`` to use
      - Parameter language: The ``Language`` to use
     */
-    init(with lexer:LexicalAnalyzer, and language:Language){
+    init(with lexer:LexicalAnalyzer, and language:Grammar){
         parsingContext = ParsingStrategy.ParsingContext(lexer: lexer, ir: self, language: language)
     }
     
@@ -159,7 +159,7 @@ extension TokenStreamIterator : IntermediateRepresentation {
     }
     
     /// Sets the initial depth to 1
-    public func willBuildFrom(source: String, with: Language) {
+    public func willBuildFrom(source: String, with: Grammar) {
         depth = 1
     }
     
