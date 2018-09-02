@@ -223,12 +223,12 @@ public extension Rule {
                 }
                 
                 if behaviour.negate {
-                    throw TestError(with: behaviour, and: annotations, whenUsing: lexer, causes: nil)
+                    throw ProcessingError(with: behaviour, and: annotations, whenUsing: lexer, causes: nil)
                 }
                 matches += 1
             }
-        } catch TestError.fatalError(let message,let causes){
-            throw TestError.fatalError(message: message, causes: causes)
+        } catch let error as CausalErrorType where error.isFatal {
+            throw error
         } catch {
             if matches == 0 && skippable {
                 #warning("If a structural node is pinned we should tell the IR to create a node anyway")
@@ -246,9 +246,9 @@ public extension Rule {
                 if let specificError = self.error {
                     #warning("Make this a predefined token")
                     if annotations[RuleAnnotation.custom(label: "fatal")] != nil {
-                        throw TestError.fatalError(message: specificError, causes: [error])
+                        throw ProcessingError.fatal(message: specificError, causes: [error])
                     }
-                    throw TestError.parsingError(message: specificError, range: lexer.index...lexer.index, causes: [error])
+                    throw ProcessingError.parsing(message: specificError, range: lexer.index...lexer.index, causes: [error])
                 } else {
                     throw error
                 }

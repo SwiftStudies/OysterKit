@@ -74,7 +74,7 @@ public class SymbolTable<Symbol:SymbolType> {
         }
         
         if !errors.isEmpty {
-            throw TestError.interpretationError(message: "Failed to resolve symbol table", causes: errors)
+            throw ProcessingError.interpretation(message: "Failed to resolve symbol table", causes: errors)
         }
     }
     
@@ -92,7 +92,7 @@ public class SymbolTable<Symbol:SymbolType> {
         }
         
         if !errors.isEmpty {
-            throw TestError.interpretationError(message: "Failed to validate symbol table", causes: errors)
+            throw ProcessingError.interpretation(message: "Failed to validate symbol table", causes: errors)
         }
     }
     

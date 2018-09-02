@@ -54,7 +54,7 @@ class FullSwiftGenerationTest: XCTestCase {
                     return
                 }
             }
-            throw TestError.parsingError(message: "Unexpected construction error", range: source.startIndex...source.endIndex, causes: causes)
+            throw ProcessingError.parsing(message: "Unexpected construction error", range: source.startIndex...source.endIndex, causes: causes)
         }
     }
     
@@ -64,11 +64,11 @@ class FullSwiftGenerationTest: XCTestCase {
             try parse(source: source, with: token, ignoreNoNodes: !expectNode, appendMopUpRule: mopup)
             if expectNode {
                 if "\(token)" != "\(ast.token)" {
-                    throw TestError.interpretationError(message: "\(ast.token) != \(token)", causes: [])
+                    throw ProcessingError.interpretation(message: "\(ast.token) != \(token)", causes: [])
                 }
                 if matches.count > count {
                     if matches[count] != ast.matchedString {
-                        throw TestError.interpretationError(message: "\(ast.token) expected to match \(matches[count]) but matched \(ast.matchedString)", causes: [])
+                        throw ProcessingError.interpretation(message: "\(ast.token) expected to match \(matches[count]) but matched \(ast.matchedString)", causes: [])
                     }
                 }
             }
@@ -78,7 +78,7 @@ class FullSwiftGenerationTest: XCTestCase {
         for source in failing {
             do {
                 try parse(source: "&", with: token)
-                throw TestError.interpretationError(message: "\(source) should have failed to create \(token)", causes: [])
+                throw ProcessingError.interpretation(message: "\(source) should have failed to create \(token)", causes: [])
             } catch {}
         }
     }
@@ -105,7 +105,7 @@ class FullSwiftGenerationTest: XCTestCase {
         do {
             try parse(source: "ddd", with: ExampleLanguages.STLRTokens.ows, ignoreNoNodes: true)
             XCTAssertNil(ast)
-        } catch TestError.parsingError(_, _, let causes){
+        } catch ProcessingError.parsing(_, _, let causes){
             // It's OK that the lexer didn't advance
             if let primaryCause = causes.first {
                 XCTAssert("\(primaryCause)".hasPrefix("Lexer not advanced"))
@@ -119,7 +119,7 @@ class FullSwiftGenerationTest: XCTestCase {
         do {
             try parse(source: " ", with: ExampleLanguages.STLRTokens.ows, ignoreNoNodes: true)
             XCTAssertNil(ast)
-        } catch TestError.parsingError(_, _, let causes){
+        } catch ProcessingError.parsing(_, _, let causes){
             // It's OK that the lexer didn't advance
             if let primaryCause = causes.first {
                 XCTAssert("\(primaryCause)".hasPrefix("Lexer not advanced"))

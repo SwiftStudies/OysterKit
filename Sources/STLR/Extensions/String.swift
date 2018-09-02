@@ -48,7 +48,7 @@ public extension String {
         
         
         guard let rule = compiled.grammar.dynamicRules.first else {
-            throw TestError.interpretationError(message: "No rules created from \(self)", causes: [])
+            throw ProcessingError.interpretation(message: "No rules created from \(self)", causes: [])
         }
         
         return rule.rule(with: Behaviour(kind, cardinality: rule.behaviour.cardinality, negated: rule.behaviour.negate, lookahead: rule.behaviour.lookahead), annotations: rule.annotations)

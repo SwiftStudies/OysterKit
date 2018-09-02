@@ -59,7 +59,7 @@ public final class TerminalRule : Rule {
             try terminal.test(lexer: lexer, producing: behaviour.token)
         } catch {
             if let specificError = annotations.error {
-                throw TestError.scanningError(message: specificError, position: lexer.index, causes: [])
+                throw ProcessingError.scanning(message: specificError, position: lexer.index, causes: [])
             } else {
                 throw error
             }

@@ -28,19 +28,24 @@ import Foundation
  An error type that captures not just a current error, but the hierarchy of
  errors that caused it.
  */
-public protocol TestErrorType : Error, CustomStringConvertible, CustomDebugStringConvertible{
+public protocol CausalErrorType : Error, CustomStringConvertible, CustomDebugStringConvertible{
     /// Any errors which can be rolled up into this error
     var causedBy : [Error]? {get}
+    
     /// The range of the error in the source `String`
     var range    : ClosedRange<String.Index>? {get}
+    
     /// The message associated with the error
     var message  : String {get}
+    
+    /// The error should stop subsequent processing
+    var isFatal : Bool {get}
 }
 
 /**
  Adds some core standard functionality for automatically assembling error messages
  */
-public extension TestErrorType {
+public extension CausalErrorType {
     /// A textural description of the error
     var description : String {
         return message
@@ -50,7 +55,7 @@ public extension TestErrorType {
         func dumpCauses(_ indent:Int = 1, causes:[Error])->String{
             var result = ""
             for cause in causes {
-                if let cause = cause as? TestErrorType {
+                if let cause = cause as? CausalErrorType {
                     result += "\(String(repeating:"\t",count:indent))- \(cause.description)\n\(dumpCauses(indent+1,causes: cause.causedBy ?? []))"
                 } else {
                     result += "\(String(repeating:"\t",count:indent))- \(cause.localizedDescription)\n"
@@ -69,20 +74,28 @@ public extension TestErrorType {
 /**
  A useful standard implementation of `TestErrorType` that enables the reporting of most kinds of issues
  */
-public enum TestError : TestErrorType {
+public enum ProcessingError : CausalErrorType {
     /// An internal error (perhaps an exception thrown compiling a regular expression) that can be wrapped
     /// to provide a `TestError`
-    case internalError(cause:Error)
+    case `internal`(cause:Error)
     /// An error where no specific error message has been defined
-    case undefinedError(message:String, at: String.Index, causes:[Error])
+    case undefined(message:String, at: String.Index, causes:[Error])
     /// An error during scanning, with a defined message
-    case scanningError(message:String,position:String.Index,causes:[Error])
+    case scanning(message:String,position:String.Index,causes:[Error])
     /// An error during parsing, with a defined message
-    case parsingError(message:String,range:ClosedRange<String.Index>,causes:[Error])
+    case parsing(message:String,range:ClosedRange<String.Index>,causes:[Error])
     /// An error during interpretation of parsed results, with a defined message
-    case interpretationError(message:String,causes:[Error])
+    case interpretation(message:String,causes:[Error])
     /// A fatal error that should stop parsing and cause exit to the top
-    case fatalError(message:String, causes:[Error])
+    case fatal(message:String, causes:[Error])
+    
+    /// `true` if `ProcessingError.fatal`
+    public var isFatal: Bool{
+        if case ProcessingError.fatal = self {
+            return true
+        }
+        return false
+    }
     
     /**
      Constructs a scanning or parsing error (depending on wether or not a `TokenType` is supplied) from the supplied data.
@@ -96,29 +109,29 @@ public enum TestError : TestErrorType {
         if let error = annotations.error{
             switch behaviour.kind {
             case .skipping, .scanning:
-                self = .scanningError(message: error , position: lexer.index, causes: errors ?? [])
+                self = .scanning(message: error , position: lexer.index, causes: errors ?? [])
             case .structural:
-                self = .parsingError(message: error, range: lexer.index...lexer.index, causes: errors ?? [])
+                self = .parsing(message: error, range: lexer.index...lexer.index, causes: errors ?? [])
             }
         } else {
-            self = .undefinedError(message: "Undefined error", at: lexer.index, causes: errors ?? [])
+            self = .undefined(message: "Undefined error", at: lexer.index, causes: errors ?? [])
         }
     }
     
     /// The errors that caused this error, or nil if this is the root error
     public var causedBy: [Error]?{
         switch self {
-        case .fatalError(_, let causes):
+        case .fatal(_, let causes):
             return causes
-        case .internalError(let cause):
+        case .`internal`(let cause):
             return [cause]
-        case .scanningError(_, _,let causes):
+        case .scanning(_, _,let causes):
             return causes
-        case .parsingError(_, _, let causes):
+        case .parsing(_, _, let causes):
             return causes
-        case .interpretationError(_, let causes):
+        case .interpretation(_, let causes):
             return causes
-        case .undefinedError(_,_, let causes):
+        case .undefined(_,_, let causes):
             return causes
         }
     }
@@ -128,7 +141,7 @@ public enum TestError : TestErrorType {
         var upperBound : String.Index?
         
         for cause in causedBy ?? []{
-            if let causeRange = (cause as? TestErrorType)?.range {
+            if let causeRange = (cause as? CausalErrorType)?.range {
                 lowerBound = min(lowerBound ?? causeRange.lowerBound, causeRange.lowerBound)
                 upperBound = max(upperBound ?? causeRange.upperBound, causeRange.upperBound)
             }
@@ -149,13 +162,13 @@ public enum TestError : TestErrorType {
     /// The range in the source string that caused this error, or nil (for example an internal error)
     public var range: ClosedRange<String.Index>?{
         switch self {
-        case .internalError, .interpretationError:
+        case .`internal`, .interpretation:
             return nil
-        case .fatalError:
+        case .fatal:
             return causeRange
-        case .scanningError(_, let position, _), .undefinedError(_, let position, _):
+        case .scanning(_, let position, _), .undefined(_, let position, _):
             return position...position
-        case .parsingError(_, let range, _):
+        case .parsing(_, let range, _):
             return range
         }
     }
@@ -164,33 +177,33 @@ public enum TestError : TestErrorType {
     /// except for internal error (where the cause really is the error being reported)
     public var message : String {
         switch self {
-        case .internalError(let cause):
+        case .`internal`(let cause):
             if let cause = cause as? LocalizedError {
                 return "Internal Error: \(cause.localizedDescription)"
             }
             return "Internal Error"
-        case .undefinedError(let message, let position, let causes):
+        case .undefined(let message, let position, let causes):
             if causes.isEmpty {
                 return "\(message) at \(position.encodedOffset)"
             } else {
                 return "\(message) error at \(position.encodedOffset) caused by "+causes.map({"\($0)"}).joined(separator: ", ")
             }
-        case .scanningError(let message, let position, let causes):
+        case .scanning(let message, let position, let causes):
             if causes.isEmpty{
                 return "Scanning Error: \(message) at \(position.encodedOffset)"
             } else {
                 return "Scanning Error: \(message) at \(position.encodedOffset) caused by "+causes.map({"\($0)"}).joined(separator: ", ")
             }
-        case .parsingError(let message, let range, let causes):
+        case .parsing(let message, let range, let causes):
             let causeText = causes.map({"\($0)"}).joined(separator: ", ")
             if range.lowerBound == range.upperBound {
                 return "Parsing Error: \(message) at \(range.lowerBound.encodedOffset)"+(causeText.isEmpty ? "" : " caused by \(causeText)")
             }
             return "Parsing Error: \(message) between \(range.lowerBound.encodedOffset) and \(range.upperBound.encodedOffset)"+(causeText.isEmpty ? "" : " caused by \(causeText)")
-        case .fatalError(let message, let causes):
+        case .fatal(let message, let causes):
             let causeText = causes.map({"\($0)"}).joined(separator: ", ")
             return "Fatal Error: \(message)"+(causeText.isEmpty ? "" : " caused by \(causeText)")
-        case .interpretationError(let message, _):
+        case .interpretation(let message, _):
             return "Interpretation Error: \(message)"
         }
     }
@@ -201,7 +214,7 @@ public enum TestError : TestErrorType {
     }
 }
 
-public extension TestErrorType {
+public extension CausalErrorType {
     /**
      Returns true if the supplied error includes the supplied description in its description
     
@@ -213,7 +226,7 @@ public extension TestErrorType {
             return true
         }
         for cause in causedBy ?? [] {
-            if let cause = cause as? TestErrorType, cause.hasCause(description: description){
+            if let cause = cause as? CausalErrorType, cause.hasCause(description: description){
                 return true
             } else if "\(cause)".contains(description){
                 return true

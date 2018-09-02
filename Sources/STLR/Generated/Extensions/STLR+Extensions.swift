@@ -261,7 +261,7 @@ public extension STLR.Grammar {
 
     public func validate(rule:STLR.Rule) throws {
         if isDirectLeftHandRecursive(identifier: rule.identifier){
-            throw TestError.interpretationError(message: "\(rule.identifier) is directly left hand recursive (references itself without moving scan head forward)", causes: [])
+            throw ProcessingError.interpretation(message: "\(rule.identifier) is directly left hand recursive (references itself without moving scan head forward)", causes: [])
         }
     }
     
@@ -521,7 +521,7 @@ public extension STLR.Element {
             return STLR.Expression.element(element: newElement)
         } else if let identifier = identifier {
             if identifier == tokenName {
-                throw TestError.interpretationError(message: "Recursive inline definition of \(tokenName)", causes: [])
+                throw ProcessingError.interpretation(message: "Recursive inline definition of \(tokenName)", causes: [])
             }
             return grammar[identifier].expression
         }

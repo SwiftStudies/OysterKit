@@ -27,7 +27,7 @@ import Foundation
 public struct EndOfFile : Terminal {
     public func test(lexer: LexicalAnalyzer, producing token: TokenType?) throws {
         if !lexer.endOfInput{
-            throw TestError.scanningError(message: "Expected end of file", position: lexer.index, causes: [])
+            throw ProcessingError.scanning(message: "Expected end of file", position: lexer.index, causes: [])
         }
     }
     

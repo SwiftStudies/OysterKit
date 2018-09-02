@@ -66,9 +66,9 @@ extension CharacterSet : Terminal {
         } catch {
             let failedAt = lexer.endOfInput ? "EOF" : lexer.current
             if let token = token {
-                throw TestError.parsingError(message: "Failed to match \(token), expected \(matchDescription) but got \(failedAt)", range: lexer.index...lexer.index, causes: [error])
+                throw ProcessingError.parsing(message: "Failed to match \(token), expected \(matchDescription) but got \(failedAt)", range: lexer.index...lexer.index, causes: [error])
             } else {
-                throw TestError.scanningError(message: "Expected \(matchDescription) but got \(failedAt)", position: lexer.index, causes: [])
+                throw ProcessingError.scanning(message: "Expected \(matchDescription) but got \(failedAt)", position: lexer.index, causes: [])
             }
         }
     }

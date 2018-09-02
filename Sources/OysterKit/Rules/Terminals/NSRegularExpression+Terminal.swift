@@ -35,9 +35,9 @@ extension NSRegularExpression : Terminal {
             try lexer.scan(regularExpression: self)
         } catch {
             if let token = token {
-                throw TestError.parsingError(message: "Failed to match \(token), expected '\(self)'", range: lexer.index...lexer.index, causes: [error])
+                throw ProcessingError.parsing(message: "Failed to match \(token), expected '\(self)'", range: lexer.index...lexer.index, causes: [error])
             } else {
-                throw TestError.scanningError(message: "Expected \(self)", position: lexer.index, causes: [])
+                throw ProcessingError.scanning(message: "Expected \(self)", position: lexer.index, causes: [])
             }
         }
     }

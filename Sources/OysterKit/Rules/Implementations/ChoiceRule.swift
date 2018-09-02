@@ -65,7 +65,7 @@ public final class ChoiceRule : Rule {
                 errors.append(error)
             }
         }
-        throw TestError(with: behaviour, and: annotations, whenUsing: lexer, causes: errors)
+        throw ProcessingError(with: behaviour, and: annotations, whenUsing: lexer, causes: errors)
     }
     
     /**

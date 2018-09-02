@@ -33,7 +33,11 @@ import Foundation
 public class AbstractSyntaxTreeConstructor  {
     
     /// Errors that can occur during AST creation
-    public enum ConstructionError : Error, TestErrorType {
+    public enum ConstructionError : Error, CausalErrorType {
+        public var isFatal: Bool {
+            return false
+        }
+                
         public var causedBy: [Error]?{
             switch self {
             case .parsingFailed(let causes):
@@ -51,7 +55,7 @@ public class AbstractSyntaxTreeConstructor  {
             }
             var totalRange : ClosedRange<String.Index>?
             for cause in causes {
-                if let cause = cause as? TestErrorType, let range = cause.range {
+                if let cause = cause as? CausalErrorType, let range = cause.range {
                     if totalRange == nil {
                         totalRange = range
                     } else {
@@ -67,7 +71,7 @@ public class AbstractSyntaxTreeConstructor  {
             switch self {
             case .parsingFailed(let causes), .constructionFailed(let causes):
                 messages.append(contentsOf: causes.map({ (error) -> String in
-                    if let error = error as? TestErrorType {
+                    if let error = error as? CausalErrorType {
                         return error.message
                     } else {
                         return "\(error)"

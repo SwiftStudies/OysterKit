@@ -75,14 +75,14 @@ public final class RecursiveRule : Rule, CustomStringConvertible{
     /// Delegated to the the surrogate rule
     public func test(with lexer: LexicalAnalyzer, for ir: IntermediateRepresentation) throws {
         guard let rule = rule else {
-            throw TestError.undefinedError(message: "Recursive rule for \(behaviour.kind) has no surrogate set", at: lexer.index, causes: [])
+            throw ProcessingError.undefined(message: "Recursive rule for \(behaviour.kind) has no surrogate set", at: lexer.index, causes: [])
         }
         try rule.test(with: lexer, for: ir)
     }
     
     public func match(with lexer: LexicalAnalyzer, for ir: IntermediateRepresentation) throws {
         guard let rule = rule else {
-            throw TestError.undefinedError(message: "Recursive rule for \(behaviour.kind) has no surrogate set", at: lexer.index, causes: [])
+            throw ProcessingError.undefined(message: "Recursive rule for \(behaviour.kind) has no surrogate set", at: lexer.index, causes: [])
         }
         try rule.test(with: lexer, for: ir)
     }
