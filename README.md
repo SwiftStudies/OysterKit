@@ -1,5 +1,7 @@
 ## OysterKit
 
+<img style="float: left;" src="./blob/development/0.6/Resources/Artwork/Images/OysterKit%20152x152.png">
+
 |       	| Status|
 | --------- | :-----|
 | Linux/macOS/iOS/tvOS      | [![Build Status](https://travis-ci.org/SwiftStudies/OysterKit.svg?branch=master)](https://travis-ci.org/SwiftStudies/OysterKit)  |
