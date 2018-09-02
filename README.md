@@ -25,7 +25,7 @@ OysterKit enables native Swift scanning, lexical analysis, and parsing capabilit
  	- [Tutorials](https://github.com/SwiftStudies/OysterKit/tree/master/Documentation/Tutorials) Tutorials for using OysterKit and STLR for defining and exploiting grammars. 
  - [stlrc Command Line Tool reference](https://github.com/SwiftStudies/OysterKit/blob/master/Documentation/stlr-toolc.md) Instructions for using the ````stlrc```` command line tool. Note that some of the tutorials referenced above also provide some concrete usage examples.
 
-__Please note__ all development is now for Swift 4.2 and beyond only. If you wish to use the last Swift 4.1 compatible release please use the ```swift/4.2``` branch 
+__Please note__ all development is now for Swift 4.2 and beyond only. If you wish to use the last Swift 4.1 compatible release please use the ```swift/4.1``` branch 
 
 ## Key Features
 
