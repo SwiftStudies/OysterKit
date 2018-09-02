@@ -67,8 +67,8 @@ public extension Grammar {
      - Parameter source: The source to parse
      - Returns: An iterable stream of tokens
      **/
-    public func stream(_ source:String)->TokenStreamIterator{
-        return TokenStreamIterator(with: Lexer(source: source), and: self)
+    public func stream(_ source:String)->TokenStream{
+        return TokenStream(source, using: self)
     }
     
     /**
