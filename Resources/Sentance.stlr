@@ -6,6 +6,6 @@ properNoun  = .uppercaseLetter .lowercaseLetter*
 other       = .letter+
 
 word        = properNoun | other
-words       = (word .whitespace+)
+words       = (word -.whitespace+)+
 
 sentance    = words punctuation
