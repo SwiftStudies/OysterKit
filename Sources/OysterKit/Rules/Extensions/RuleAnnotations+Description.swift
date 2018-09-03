@@ -60,7 +60,6 @@ extension RuleAnnotation : Comparable {
      - Parameter rhs: Right hand side of the <
      - Returns: `true` if lhs < rhs
      **/
-
     public static func < (lhs : RuleAnnotation, rhs:RuleAnnotation) -> Bool {
         if let lhs = lhs.customLabelValue, let rhs = rhs.customLabelValue {
             return lhs < rhs
