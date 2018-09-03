@@ -18,9 +18,9 @@ let package = Package(
             targets: ["STLR"]
         ),
         .library(
-            name: "ExampleLanguages",
+            name: "TestingSupport",
             type: .static,
-            targets: ["ExampleLanguages"]
+            targets: ["TestingSupport"]
         ),
         .executable(
             //Swift Tool for Language Recognition Command
@@ -45,16 +45,16 @@ let package = Package(
             name: "stlrc",
             dependencies: ["OysterKit","STLR"]),
         .target(
-            name: "ExampleLanguages",
+            name: "TestingSupport",
             dependencies: ["OysterKit","STLR"]),
         .testTarget(
             name: "OysterKitTests",
-            dependencies: ["OysterKit","ExampleLanguages","STLR"]),
+            dependencies: ["OysterKit","TestingSupport","STLR"]),
         .testTarget(
             name: "STLRTests",
-            dependencies: ["OysterKit","ExampleLanguages","STLR"]),
+            dependencies: ["OysterKit","TestingSupport","STLR"]),
         .testTarget(
             name: "PerformanceTests",
-            dependencies: ["OysterKit","ExampleLanguages","STLR"]),
+            dependencies: ["OysterKit","TestingSupport","STLR"]),
     ]
 )

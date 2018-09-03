@@ -10,7 +10,7 @@ import Foundation
 
 import XCTest
 @testable import OysterKit
-@testable import ExampleLanguages
+@testable import TestingSupport
 @testable import STLR
 
 fileprivate enum TestToken : Int, TokenType{

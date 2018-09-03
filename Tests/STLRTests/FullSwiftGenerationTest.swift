@@ -8,7 +8,7 @@
 import XCTest
 @testable import OysterKit
 import STLR
-@testable import ExampleLanguages
+@testable import TestingSupport
 
 class FullSwiftGenerationTest: XCTestCase {
     var ast : HomogenousTree!
@@ -109,7 +109,7 @@ class FullSwiftGenerationTest: XCTestCase {
         }
         
         do {
-            try parse(source: "ddd", with: ExampleLanguages.STLRTokens.ows, ignoreNoNodes: true)
+            try parse(source: "ddd", with: TestingSupport.STLRTokens.ows, ignoreNoNodes: true)
             XCTAssertNil(ast)
         } catch ProcessingError.parsing(_, _, let causes){
             // It's OK that the lexer didn't advance
@@ -123,7 +123,7 @@ class FullSwiftGenerationTest: XCTestCase {
         }
         
         do {
-            try parse(source: " ", with: ExampleLanguages.STLRTokens.ows, ignoreNoNodes: true)
+            try parse(source: " ", with: TestingSupport.STLRTokens.ows, ignoreNoNodes: true)
             XCTAssertNil(ast)
         } catch ProcessingError.parsing(_, _, let causes){
             // It's OK that the lexer didn't advance
