@@ -60,16 +60,16 @@ struct Word : Decodable, CustomStringConvertible {
     }
 }
 
-struct Sentance : Decodable {
+struct Sentence : Decodable {
     let words : [Word]
     let punctuation : String
 }
 
 do {
     let words = [classifiedWord, space.require(.zeroOrMore)].sequence.require(.oneOrMore).parse(as:StringToken("words"))
-    let sentance = try [ [words, punctuation ].sequence ].build("Jon was here!", as: Sentance.self)
+    let sentence = try [ [words, punctuation ].sequence ].build("Jon was here!", as: Sentence.self)
 
-    print(sentance)
+    print(sentence)
 } catch let error as ProcessingError {
     print(error.debugDescription)
 } catch {

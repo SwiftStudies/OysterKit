@@ -359,7 +359,7 @@ for token in [classifiedWord, punctuation, space].tokenize("Jon was here!"){
 
 <p>Out of the box you can <code>Decode</code> and <code>Decodable</code> type using an OysterKit grammar (and if you think this is powerful, wait until you&rsquo;ve had a look at <a href="https://github.com/SwiftStudies/OysterKit/blob/master/Documentation/STLR.md">STLR</a> and auto-generated the Swift source code instead of doing all of the typing you are about to see!). </p>
 
-<p>First, let&rsquo;s declare some data structures for words and sentances. </p>
+<p>First, let&rsquo;s declare some data structures for words and sentences. </p>
 <pre class="highlight plaintext"><code>struct Word : Decodable, CustomStringConvertible {
     let properNoun : String?
     let other : String?
@@ -369,7 +369,7 @@ for token in [classifiedWord, punctuation, space].tokenize("Jon was here!"){
     }
 }
 
-struct Sentance : Decodable {
+struct Sentence : Decodable {
     let words : [Word]
     let punctuation : String
 }
@@ -378,9 +378,9 @@ struct Sentance : Decodable {
 <p>Fairly straightforward (if inaccurate&hellip; you can normally have more punctuation than just at the end). Now we define a grammar that produces tokens with names that match the properties of our types, and OysterKit (and Swift) will do the rest. </p>
 <pre class="highlight plaintext"><code>do {
     let words = [classifiedWord, space.require(.zeroOrMore)].sequence.require(.oneOrMore).parse(as:StringToken("words"))
-    let sentance = try [ [words, punctuation ].sequence ].build("Jon was here!", as: Sentance.self)
+    let sentence = try [ [words, punctuation ].sequence ].build("Jon was here!", as: Sentence.self)
 
-    print(sentance)
+    print(sentence)
 } catch let error as ProcessingError {
     print(error.debugDescription)
 } catch {
@@ -389,7 +389,7 @@ struct Sentance : Decodable {
 </code></pre>
 
 <p>Instead of <code>parse()</code> we <code>build()</code>. We need an extra parameter here; you need to tell <code>build</code> what you want to build it <code>as</code>. </p>
-<pre class="highlight plaintext"><code>.build("Jon was here!", as: Sentance.self)
+<pre class="highlight plaintext"><code>.build("Jon was here!", as: Sentence.self)
 </code></pre>
 
 <p>That tree we saw in the previous example can be exactly matched against our data-structure. </p>
@@ -400,7 +400,7 @@ struct Sentance : Decodable {
 
 <p>All you need to do is build an instance of the generated type&hellip;</p>
 <pre class="highlight plaintext"><code>do {
-    let sentance = Sentance.build("Hello Jon!")
+    let sentence = Sentence.build("Hello Jon!")
 } catch {
     print(error)
 }
@@ -408,7 +408,7 @@ struct Sentance : Decodable {
 
 <p>It&rsquo;s really that simple. OK, here&rsquo;s where it came from</p>
 <h4 id='the-stlr' class='heading'>The STLR</h4>
-<pre class="highlight plaintext"><code>grammar Sentance
+<pre class="highlight plaintext"><code>grammar Sentence
 
 punctuation = "." | "," | "!" | "?"
 
@@ -418,26 +418,26 @@ other       = .letter+
 word        = properNoun | other
 words       = (word -.whitespace+)+
 
-sentance    = words punctuation
+sentence    = words punctuation
 </code></pre>
 
 <p>Yup. That&rsquo;s it. Here&rsquo;s the Swift that was generated. There seems to be a lot of it&hellip; but remember, you don&rsquo;t even need to look at it if you don&rsquo;t want to! When you do though, you should see all of the things you&rsquo;ve learned in there</p>
 <h4 id='the-generated-swift' class='heading'>The Generated Swift</h4>
 
 <p>We can now use <code>stlrc</code> to compile the STLR into Swift. This simple command will do that</p>
-<pre class="highlight plaintext"><code>stlrc generate -g Sentance.stlr -l swiftIR -ot ./
+<pre class="highlight plaintext"><code>stlrc generate -g Sentence.stlr -l swiftIR -ot ./
 </code></pre>
 
-<p>The above command will generate a Sentance.swift file in the current directory. You should see what it does if you change <code>-l swiftIR</code> to <code>-l SwiftPM</code>&hellip; but that&rsquo;s another story. Here&rsquo;s what&rsquo;s in Sentance.swift</p>
+<p>The above command will generate a Sentence.swift file in the current directory. You should see what it does if you change <code>-l swiftIR</code> to <code>-l SwiftPM</code>&hellip; but that&rsquo;s another story. Here&rsquo;s what&rsquo;s in Sentence.swift</p>
 <pre class="highlight plaintext"><code>import Foundation
 import OysterKit
 
 /// Intermediate Representation of the grammar
-internal enum SentanceTokens : Int, TokenType, CaseIterable, Equatable {
-    typealias T = SentanceTokens
+internal enum SentenceTokens : Int, TokenType, CaseIterable, Equatable {
+    typealias T = SentenceTokens
 
     /// The tokens defined by the grammar
-    case `punctuation`, `properNoun`, `other`, `word`, `words`, `sentance`
+    case `punctuation`, `properNoun`, `other`, `word`, `words`, `sentence`
 
     /// The rule for the token
     var rule : Rule {
@@ -462,19 +462,19 @@ internal enum SentanceTokens : Int, TokenType, CaseIterable, Equatable {
         case .words:
         return [T.word.rule, -CharacterSet.whitespaces.require(.oneOrMore)].sequence.require(.oneOrMore).reference(.structural(token: self))
 
-        /// sentance
-        case .sentance:
+        /// sentence
+        case .sentence:
         return [T.words.rule,T.punctuation.rule].sequence.reference(.structural(token: self))
     }
     }
 
     /// Create a language that can be used for parsing etc
     public static var generatedRules: [Rule] {
-    return [T.sentance.rule]
+    return [T.sentence.rule]
     }
 }
 
-public struct Sentance : Codable {
+public struct Sentence : Codable {
 
     // Punctuation
     public enum Punctuation : Swift.String, Codable, CaseIterable {
@@ -488,12 +488,12 @@ public struct Sentance : Codable {
 
     public typealias Words = [Word] 
 
-    /// Sentance 
-    public struct Sentance : Codable {
+    /// Sentence 
+    public struct Sentence : Codable {
     public let words: Words
     public let punctuation: Punctuation
     }
-    public let sentance : Sentance
+    public let sentence : Sentence
 
     /**
      Parses the supplied string using the generated grammar into a new instance of
@@ -502,13 +502,13 @@ public struct Sentance : Codable {
      - Parameter source: The string to parse
      - Returns: A new instance of the data-structure
      */
-    public static func build(_ source : Swift.String) throws -&gt;Sentance{
-    let root = HomogenousTree(with: StringToken("root"), matching: source, children: [try AbstractSyntaxTreeConstructor().build(source, using: Sentance.generatedLanguage)])
+    public static func build(_ source : Swift.String) throws -&gt;Sentence{
+    let root = HomogenousTree(with: StringToken("root"), matching: source, children: [try AbstractSyntaxTreeConstructor().build(source, using: Sentence.generatedLanguage)])
     // print(root.description)
-    return try ParsingDecoder().decode(Sentance.self, using: root)
+    return try ParsingDecoder().decode(Sentence.self, using: root)
     }
 
-    public static var generatedLanguage : Grammar {return SentanceTokens.generatedRules}
+    public static var generatedLanguage : Grammar {return SentenceTokens.generatedRules}
 }
 </code></pre>
 

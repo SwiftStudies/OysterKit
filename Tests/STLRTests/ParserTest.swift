@@ -27,10 +27,10 @@ fileprivate enum Tokens : Int, TokenType {
     case whitespaceWord
     case optionalWhitespaceWord
     case repeatedOptionalWhitespaceWord
-    case sentance
+    case sentence
     case questionMark
     case exlamationMark
-    case endOfSentance
+    case endOfSentence
     
     var rule: Rule {
         switch self {
@@ -58,7 +58,7 @@ fileprivate enum Tokens : Int, TokenType {
             return "?".reference(.structural(token: self))
         case .exlamationMark:
             return "!".reference(.structural(token: self))
-        case .endOfSentance:
+        case .endOfSentence:
             return [
                 Tokens.fullStop.rule,
                 Tokens.questionMark.rule,
@@ -66,11 +66,11 @@ fileprivate enum Tokens : Int, TokenType {
             ].choice.reference(.structural(token: self))
         case .greeting:
             return "Hello".reference(.structural(token: self))
-        case .sentance:
+        case .sentence:
             return [
                 Tokens.word.rule,
                 Tokens.repeatedOptionalWhitespaceWord.rule,
-                Tokens.endOfSentance.rule
+                Tokens.endOfSentence.rule
                 ].sequence.reference(.structural(token: self))
         }
     }
@@ -172,7 +172,7 @@ class ParserTest: XCTestCase {
     }
     
     func testComplexSequence(){
-        check("How are you?", produces: [Tokens.sentance], using: [Tokens.sentance.rule], expectingEndOfInput: true)
+        check("How are you?", produces: [Tokens.sentence], using: [Tokens.sentence.rule], expectingEndOfInput: true)
     }
     
     func testRuleSequence(){

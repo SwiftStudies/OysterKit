@@ -342,17 +342,17 @@ class LexerTest: XCTestCase {
         let source = "Goodbye cruel world."
         let lexer = TestLexer(source: source)
         
-        let _ = lexer.mark()                                                            //Start of sentance
+        let _ = lexer.mark()                                                            //Start of sentence
         
-        markAndScan(with: lexer,CharacterSet.letters)                           //Word in sentance
+        markAndScan(with: lexer,CharacterSet.letters)                           //Word in sentence
         let goodbye = lexer.proceed()
         markAndScan(with: lexer, CharacterSet.whitespaces)                      //White space
         let _ = lexer.proceed()
-        markAndScan(with: lexer,CharacterSet.letters)                           //Word in sentance
+        markAndScan(with: lexer,CharacterSet.letters)                           //Word in sentence
         let cruel = lexer.proceed()
         markAndScan(with: lexer, CharacterSet.whitespaces)                      //White space
         let _ = lexer.proceed()
-        markAndScan(with: lexer,CharacterSet.letters)                           //Word in sentance
+        markAndScan(with: lexer,CharacterSet.letters)                           //Word in sentence
         let world = lexer.proceed()
         markAndScan(with: lexer,CharacterSet(charactersIn: "."))                //Period
         let period = lexer.proceed()
