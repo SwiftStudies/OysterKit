@@ -1,4 +1,4 @@
-grammar Sentance
+grammar Sentence
 
 punctuation = "." | "," | "!" | "?"
 
@@ -8,4 +8,4 @@ other       = .letter+
 word        = properNoun | other
 words       = (word -.whitespace+)+
 
-sentance    = words punctuation
+sentence    = words punctuation

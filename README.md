@@ -134,7 +134,7 @@ I know... I did it again... jargon. It's pretty simple though. Homogenous means 
 
 Out of the box you can `Decode` and `Decodable` type using an OysterKit grammar (and if you think this is powerful, wait until you've had a look at [STLR](https://github.com/SwiftStudies/OysterKit/blob/master/Documentation/STLR.md) and auto-generated the Swift source code instead of doing all of the typing you are about to see!). 
 
-First, let's declare some data structures for words and sentances. 
+First, let's declare some data structures for words and sentences. 
 
     struct Word : Decodable, CustomStringConvertible {
         let properNoun : String?
@@ -145,7 +145,7 @@ First, let's declare some data structures for words and sentances.
         }
     }
     
-    struct Sentance : Decodable {
+    struct Sentence : Decodable {
         let words : [Word]
         let punctuation : String
     }
@@ -154,9 +154,9 @@ Fairly straightforward (if inaccurate... you can normally have more punctuation 
 
     do {
         let words = [classifiedWord, space.require(.zeroOrMore)].sequence.require(.oneOrMore).parse(as:StringToken("words"))
-        let sentance = try [ [words, punctuation ].sequence ].build("Jon was here!", as: Sentance.self)
+        let sentence = try [ [words, punctuation ].sequence ].build("Jon was here!", as: Sentence.self)
     
-        print(sentance)
+        print(sentence)
     } catch let error as ProcessingError {
         print(error.debugDescription)
     } catch {
@@ -165,7 +165,7 @@ Fairly straightforward (if inaccurate... you can normally have more punctuation 
 
 Instead of `parse()` we `build()`. We need an extra parameter here; you need to tell `build` what you want to build it `as`. 
 
-	.build("Jon was here!", as: Sentance.self)
+	.build("Jon was here!", as: Sentence.self)
 	
 That tree we saw in the previous example can be exactly matched against our data-structure. 
 
@@ -178,7 +178,7 @@ Luckily OysterKit comes hand in hand with STLR which is a language for writing g
 All you need to do is build an instance of the generated type...
 
     do {
-	    let sentance = Sentance.build("Hello Jon!")
+	    let sentence = Sentence.build("Hello Jon!")
     } catch {
 	    print(error)
     }
@@ -187,7 +187,7 @@ It's really that simple. OK, here's where it came from
 
 #### The STLR
 
-	grammar Sentance
+	grammar Sentence
 
 	punctuation = "." | "," | "!" | "?"
 
@@ -197,7 +197,7 @@ It's really that simple. OK, here's where it came from
 	word        = properNoun | other
 	words       = (word -.whitespace+)+
 
-	sentance    = words punctuation
+	sentence    = words punctuation
 
 Yup. That's it. Here's the Swift that was generated. There seems to be a lot of it... but remember, you don't even need to look at it if you don't want to! When you do though, you should see all of the things you've learned in there
 
@@ -205,19 +205,19 @@ Yup. That's it. Here's the Swift that was generated. There seems to be a lot of 
 
 We can now use `stlrc` to compile the STLR into Swift. This simple command will do that
 
-	stlrc generate -g Sentance.stlr -l swiftIR -ot ./
+	stlrc generate -g Sentence.stlr -l swiftIR -ot ./
 	
-The above command will generate a Sentance.swift file in the current directory. You should see what it does if you change `-l swiftIR` to `-l SwiftPM`... but that's another story. Here's what's in Sentance.swift
+The above command will generate a Sentence.swift file in the current directory. You should see what it does if you change `-l swiftIR` to `-l SwiftPM`... but that's another story. Here's what's in Sentence.swift
 
 	import Foundation
 	import OysterKit
 
 	/// Intermediate Representation of the grammar
-	internal enum SentanceTokens : Int, TokenType, CaseIterable, Equatable {
-	    typealias T = SentanceTokens
+	internal enum SentenceTokens : Int, TokenType, CaseIterable, Equatable {
+	    typealias T = SentenceTokens
 
 	    /// The tokens defined by the grammar
-	    case `punctuation`, `properNoun`, `other`, `word`, `words`, `sentance`
+	    case `punctuation`, `properNoun`, `other`, `word`, `words`, `sentence`
 
 	    /// The rule for the token
 	    var rule : Rule {
@@ -242,19 +242,19 @@ The above command will generate a Sentance.swift file in the current directory. 
 		    case .words:
 			return [T.word.rule, -CharacterSet.whitespaces.require(.oneOrMore)].sequence.require(.oneOrMore).reference(.structural(token: self))
 
-		    /// sentance
-		    case .sentance:
+		    /// sentence
+		    case .sentence:
 			return [T.words.rule,T.punctuation.rule].sequence.reference(.structural(token: self))
 		}
 	    }
 
 	    /// Create a language that can be used for parsing etc
 	    public static var generatedRules: [Rule] {
-		return [T.sentance.rule]
+		return [T.sentence.rule]
 	    }
 	}
 
-	public struct Sentance : Codable {
+	public struct Sentence : Codable {
 
 	    // Punctuation
 	    public enum Punctuation : Swift.String, Codable, CaseIterable {
@@ -268,12 +268,12 @@ The above command will generate a Sentance.swift file in the current directory. 
 
 	    public typealias Words = [Word] 
 
-	    /// Sentance 
-	    public struct Sentance : Codable {
+	    /// Sentence 
+	    public struct Sentence : Codable {
 		public let words: Words
 		public let punctuation: Punctuation
 	    }
-	    public let sentance : Sentance
+	    public let sentence : Sentence
 	    
 	    /**
 	     Parses the supplied string using the generated grammar into a new instance of
@@ -282,13 +282,13 @@ The above command will generate a Sentance.swift file in the current directory. 
 	     - Parameter source: The string to parse
 	     - Returns: A new instance of the data-structure
 	     */
-	    public static func build(_ source : Swift.String) throws ->Sentance{
-		let root = HomogenousTree(with: StringToken("root"), matching: source, children: [try AbstractSyntaxTreeConstructor().build(source, using: Sentance.generatedLanguage)])
+	    public static func build(_ source : Swift.String) throws ->Sentence{
+		let root = HomogenousTree(with: StringToken("root"), matching: source, children: [try AbstractSyntaxTreeConstructor().build(source, using: Sentence.generatedLanguage)])
 		// print(root.description)
-		return try ParsingDecoder().decode(Sentance.self, using: root)
+		return try ParsingDecoder().decode(Sentence.self, using: root)
 	    }
 
-	    public static var generatedLanguage : Grammar {return SentanceTokens.generatedRules}
+	    public static var generatedLanguage : Grammar {return SentenceTokens.generatedRules}
 	}
 
 There are some interesting (and I think rather clever) things in there. Note that for the `Word` type STLR has been clever and determined that there are only a couple of possible values and that both of those are just Strings, so it's created an enum instead. It's done that for `Punctuation` as well, but that's a little easier as it was just a choice of simple strings. It's also determined that it doesn't really need to create a new type for Words, it can just use a `typealias`. 

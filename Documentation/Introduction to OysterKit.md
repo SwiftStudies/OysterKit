@@ -132,7 +132,7 @@ Here is an example of a simple grammar that uses this methodology
     // Define an enumeration, that conforms to Token. There is no additional work to do
     enum MyGrammar : Int, Token {
         //Define a case for each token. Make sure to start at 1
-        case word = 1, sentance, punctuation
+        case word = 1, sentence, punctuation
         
         //Define static variables for non-token creating rules that are used in many 
         //other rules. 
@@ -146,7 +146,7 @@ Here is an example of a simple grammar that uses this methodology
                 return CharacterSet.letters.token(self, .oneOrMore)
             case .punctuation:
                 return [".".scan(),"!".scan(),"?".scan()].token(self)
-            case .sentance:
+            case .sentence:
                 return [.word.rule(),[nextWords, .punctuation.rule()].choice].token(self)
             }
         }
