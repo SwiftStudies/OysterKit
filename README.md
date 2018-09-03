@@ -1,20 +1,23 @@
 ## OysterKit
 
 <p align="center">
-<img src="Resources/Artwork/Images/OysterKit%20180x180.png" height="180" alt="OysterKit">
+<img src="https://rawgit.com/SwiftStudies/OysterKit/master/Resources/Artwork/Images/OysterKit%20180x180.png" height="180" alt="OysterKit">
 <p align="center"><strong>A Swift Framework for Tokenizing, Parsing, and Interpreting Languages</strong></p>
 </p>
 
 <p align="center">
+<a href="https://developer.apple.com/swift/"><img src="https://img.shields.io/badge/Swift-4.2-orange.svg?style=flat" style="max-height: 300px;" alt="Swift"/></a>
+<img src="https://img.shields.io/badge/platforms-Linux%20%7C%20MacOS%20%7C%20iOS%20%7C%20tvOS%20%7C%20watchOS-green.svg" alt="Platforms">
+<img src="https://img.shields.io/pypi/l/Django.svg" alt="BSD">
 <a href="https://travis-ci.org/SwiftStudies/OysterKit">
 <img src="https://travis-ci.org/SwiftStudies/OysterKit.svg?branch=master" alt="Build Status - Master">
 </a>
 <img src="https://codecov.io/gh/SwiftStudies/OysterKit/branch/master/graph/badge.svg" alt="codecov">
 <img src="https://img.shields.io/badge/documentation-97%25-brightgreen.svg" alt="Documentation Coverage">
-<img src="https://img.shields.io/badge/platforms-Linux%20%7C%20MacOS%20%7C%20iOS%20%7C%20tvOS%20%7C%20watchOS-green.svg" alt="Platforms">
-<img src="https://img.shields.io/pypi/l/Django.svg" alt="BSD">
 <a href="https://codecov.io/gh/SwiftStudies/OysterKit">
 </a>
+<br>
+<a href="https://twitter.com/Swift_Studies"><img src="https://img.shields.io/badge/Twitter-@Swift__Studies-blue.svg?style=flat" style="max-height: 300px;" alt="Twitter"/></a>
 </p>
 
 OysterKit enables native Swift scanning, lexical analysis, and parsing capabilities as a pure Swift framework. Two additional elements are also provided in this package. The first is a second framework STLR which uses OysterKit to provide a plain text grammar specification language called STLR (Swift Tool for Language Recognition). Finally a command line tool, ````stlr```` can be used to automatically generate Swift source code for OysterKit for STLR grammars, as well as dynamically apply STLR grammars to a number of use-cases. The following documentation is available: 

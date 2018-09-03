@@ -265,20 +265,23 @@
             <h2 id='oysterkit' class='heading'>OysterKit</h2>
 
 <p align="center">
-<img src="Resources/Artwork/Images/OysterKit%20180x180.png" height="180" alt="OysterKit">
+<img src="https://rawgit.com/SwiftStudies/OysterKit/master/Resources/Artwork/Images/OysterKit%20180x180.png" height="180" alt="OysterKit">
 <p align="center"><strong>A Swift Framework for Tokenizing, Parsing, and Interpreting Languages</strong></p>
 </p>
 
 <p align="center">
+<a href="https://developer.apple.com/swift/"><img src="https://img.shields.io/badge/Swift-4.2-orange.svg?style=flat" style="max-height: 300px;" alt="Swift"/></a>
+<img src="https://img.shields.io/badge/platforms-Linux%20%7C%20MacOS%20%7C%20iOS%20%7C%20tvOS%20%7C%20watchOS-green.svg" alt="Platforms">
+<img src="https://img.shields.io/pypi/l/Django.svg" alt="BSD">
 <a href="https://travis-ci.org/SwiftStudies/OysterKit">
 <img src="https://travis-ci.org/SwiftStudies/OysterKit.svg?branch=master" alt="Build Status - Master">
 </a>
 <img src="https://codecov.io/gh/SwiftStudies/OysterKit/branch/master/graph/badge.svg" alt="codecov">
 <img src="https://img.shields.io/badge/documentation-97%25-brightgreen.svg" alt="Documentation Coverage">
-<img src="https://img.shields.io/badge/platforms-Linux%20%7C%20MacOS%20%7C%20iOS%20%7C%20tvOS%20%7C%20watchOS-green.svg" alt="Platforms">
-<img src="https://img.shields.io/pypi/l/Django.svg" alt="BSD">
 <a href="https://codecov.io/gh/SwiftStudies/OysterKit">
 </a>
+<br>
+<a href="https://twitter.com/Swift_Studies"><img src="https://img.shields.io/badge/Twitter-@Swift__Studies-blue.svg?style=flat" style="max-height: 300px;" alt="Twitter"/></a>
 </p>
 
 <p>OysterKit enables native Swift scanning, lexical analysis, and parsing capabilities as a pure Swift framework. Two additional elements are also provided in this package. The first is a second framework STLR which uses OysterKit to provide a plain text grammar specification language called STLR (Swift Tool for Language Recognition). Finally a command line tool, <code>stlr</code> can be used to automatically generate Swift source code for OysterKit for STLR grammars, as well as dynamically apply STLR grammars to a number of use-cases. The following documentation is available: </p>
@@ -457,7 +460,7 @@ properNoun  = .uppercaseLetter .lowercaseLetter*
 other       = .letter+
 
 word        = properNoun | other
-words       = (word .whitespace+)
+words       = (word -.whitespace+)+
 
 sentance    = words punctuation
 </code></pre>
@@ -482,37 +485,36 @@ internal enum SentanceTokens : Int, TokenType, CaseIterable, Equatable {
 
     /// The rule for the token
     var rule : Rule {
-        switch self {
-            /// punctuation
-            case .punctuation:
-                return [".",",","!","?"].choice.reference(.structural(token: self))
+    switch self {
+        /// punctuation
+        case .punctuation:
+        return [".", ",", "!", "?"].choice.reference(.structural(token: self))
 
-            /// properNoun
-            case .properNoun:
-                return [CharacterSet.uppercaseLetters,CharacterSet.lowercaseLetters.require(.zeroOrMore)].sequence.reference(.structural(token: self))
+        /// properNoun
+        case .properNoun:
+        return [CharacterSet.uppercaseLetters,    CharacterSet.lowercaseLetters.require(.zeroOrMore)].sequence.reference(.structural(token: self))
 
-            /// other
-            case .other:
-                return CharacterSet.letters.require(.oneOrMore).reference(.structural(token: self))
+        /// other
+        case .other:
+        return CharacterSet.letters.require(.oneOrMore).reference(.structural(token: self))
 
-            /// word
-            case .word:
-                return [T.properNoun.rule,T.other.rule].choice.reference(.structural(token: self))
+        /// word
+        case .word:
+        return [T.properNoun.rule,T.other.rule].choice.reference(.structural(token: self))
 
-            /// words
-            case .words:
-                return [T.word.rule,CharacterSet.whitespaces.require(.oneOrMore)].sequence.reference(.structural(token: self))
+        /// words
+        case .words:
+        return [T.word.rule, -CharacterSet.whitespaces.require(.oneOrMore)].sequence.require(.oneOrMore).reference(.structural(token: self))
 
-            /// sentance
-            case .sentance:
-                return [T.words.rule,T.punctuation.rule].sequence.reference(.structural(token: self))
-
-        }
+        /// sentance
+        case .sentance:
+        return [T.words.rule,T.punctuation.rule].sequence.reference(.structural(token: self))
+    }
     }
 
     /// Create a language that can be used for parsing etc
     public static var generatedRules: [Rule] {
-        return [T.sentance.rule]
+    return [T.sentance.rule]
     }
 }
 
@@ -520,36 +522,37 @@ public struct Sentance : Codable {
 
     // Punctuation
     public enum Punctuation : Swift.String, Codable, CaseIterable {
-        case period = ".",comma = ",",ping = "!",questionMark = "?"
+    case period = ".",comma = ",",ping = "!",questionMark = "?"
     }
 
     // Word
     public enum Word : Swift.String, Codable, CaseIterable {
-        case properNoun,other
+    case properNoun,other
     }
 
-    /// Words 
-    typealias Words = [Word]
+    public typealias Words = [Word] 
 
     /// Sentance 
     public struct Sentance : Codable {
-        public let punctuation: Punctuation
-        public let words: Words
+    public let words: Words
+    public let punctuation: Punctuation
     }
     public let sentance : Sentance
 
     /**
-    Parses the supplied string using the generated grammar into a new instance of
-    the generated data structure
+     Parses the supplied string using the generated grammar into a new instance of
+     the generated data structure
 
-    - Parameter source: The string to parse
-    - Returns: A new instance of the data-structure
-    */
+     - Parameter source: The string to parse
+     - Returns: A new instance of the data-structure
+     */
     public static func build(_ source : Swift.String) throws -&gt;Sentance{
-        return try generatedLanguage.build(source, Sentance.self)
+    let root = HomogenousTree(with: StringToken("root"), matching: source, children: [try AbstractSyntaxTreeConstructor().build(source, using: Sentance.generatedLanguage)])
+    // print(root.description)
+    return try ParsingDecoder().decode(Sentance.self, using: root)
     }
 
-    public static var generatedLanguage : Grammar {return Parser(grammar:SentanceTokens.generatedRules)}
+    public static var generatedLanguage : Grammar {return SentanceTokens.generatedRules}
 }
 </code></pre>
 
@@ -567,7 +570,7 @@ public struct Sentance : Codable {
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-09-02)</p>
+      <p>&copy; 2018 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2018-09-03)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
