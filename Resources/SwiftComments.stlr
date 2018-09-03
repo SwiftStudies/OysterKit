@@ -1,0 +1,16 @@
+grammar SwiftComments
+
+whitespace = >>.endOfFile | ( whitespaceItem whitespace? )
+
+lineBreak = .newLine | >>.endOfFile
+
+whitespaceItem = lineBreak | comment | multilineComment
+
+comment = "//" commentText lineBreak
+multilineComment = "/*" multilineCommentText "*/"
+
+commentText = commentTextItem commentText?
+commentTextItem = >>!.endOfFile !lineBreak
+
+multilineCommentText = multilineCommentTextItem multilineCommentText?
+multilineCommentTextItem = >>!("/*" | "*/") (multilineComment | commentTextItem)
