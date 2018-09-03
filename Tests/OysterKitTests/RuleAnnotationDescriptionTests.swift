@@ -29,14 +29,6 @@ class RuleAnnotationDescriptionTests: XCTestCase {
 
     var ruleDict: [RuleAnnotation: RuleAnnotationValue]?
 
-    override func setUp() {
-        super.setUp()
-    }
-    
-    override func tearDown() {
-        super.tearDown()
-    }
-
     // MARK: - @token tests
     
     func testTokenString() {
