@@ -183,21 +183,22 @@ All you need to do is build an instance of the generated type...
 It's really that simple. OK, here's where it came from
 
 #### The STLR
-    grammar Sentance
-    
-    punctuation = "." | "," | "!" | "?"
-    
-    properNoun  = .uppercaseLetter .lowercaseLetter*
-    other       = .letter+
-    
-    word        = properNoun | other
-    words       = (word .whitespace+)
-    
-    sentance    = words punctuation
+
+	grammar Sentance
+
+	punctuation = "." | "," | "!" | "?"
+
+	properNoun  = .uppercaseLetter .lowercaseLetter*
+	other       = .letter+
+
+	word        = properNoun | other
+	words       = (word -.whitespace+)+
+
+	sentance    = words punctuation
 
 Yup. That's it. Here's the Swift that was generated. There seems to be a lot of it... but remember, you don't even need to look at it if you don't want to! When you do though, you should see all of the things you've learned in there
 
-####The Generated Swift
+#### The Generated Swift
 
 We can now use `stlrc` to compile the STLR into Swift. This simple command will do that
 
@@ -205,88 +206,87 @@ We can now use `stlrc` to compile the STLR into Swift. This simple command will 
 	
 The above command will generate a Sentance.swift file in the current directory. You should see what it does if you change `-l swiftIR` to `-l SwiftPM`... but that's another story. Here's what's in Sentance.swift
 
+	import Foundation
+	import OysterKit
 
-    import Foundation
-    import OysterKit
-    
-    /// Intermediate Representation of the grammar
-    internal enum SentanceTokens : Int, TokenType, CaseIterable, Equatable {
-        typealias T = SentanceTokens
-    
-        /// The tokens defined by the grammar
-        case `punctuation`, `properNoun`, `other`, `word`, `words`, `sentance`
-        
-        /// The rule for the token
-        var rule : Rule {
-            switch self {
-                /// punctuation
-                case .punctuation:
-                    return [".",",","!","?"].choice.reference(.structural(token: self))
-                                
-                /// properNoun
-                case .properNoun:
-                    return [CharacterSet.uppercaseLetters,CharacterSet.lowercaseLetters.require(.zeroOrMore)].sequence.reference(.structural(token: self))
-                                
-                /// other
-                case .other:
-                    return CharacterSet.letters.require(.oneOrMore).reference(.structural(token: self))
-                                
-                /// word
-                case .word:
-                    return [T.properNoun.rule,T.other.rule].choice.reference(.structural(token: self))
-                                
-                /// words
-                case .words:
-                    return [T.word.rule,CharacterSet.whitespaces.require(.oneOrMore)].sequence.reference(.structural(token: self))
-                                
-                /// sentance
-                case .sentance:
-                    return [T.words.rule,T.punctuation.rule].sequence.reference(.structural(token: self))
-                                
-            }
-        }
-        
-        /// Create a language that can be used for parsing etc
-        public static var generatedRules: [Rule] {
-            return [T.sentance.rule]
-        }
-    }
-    
-    public struct Sentance : Codable {
-        
-        // Punctuation
-        public enum Punctuation : Swift.String, Codable, CaseIterable {
-            case period = ".",comma = ",",ping = "!",questionMark = "?"
-        }
-        
-        // Word
-        public enum Word : Swift.String, Codable, CaseIterable {
-            case properNoun,other
-        }
-        
-        /// Words 
-        typealias Words = [Word]
-        
-        /// Sentance 
-        public struct Sentance : Codable {
-            public let punctuation: Punctuation
-            public let words: Words
-        }
-        public let sentance : Sentance
-        
-        /**
-        Parses the supplied string using the generated grammar into a new instance of
-        the generated data structure
-        
-        - Parameter source: The string to parse
-        - Returns: A new instance of the data-structure
-        */
-        public static func build(_ source : Swift.String) throws ->Sentance{
-            return try generatedLanguage.build(source, Sentance.self)
-        }
-        
-        public static var generatedLanguage : Grammar {return Parser(grammar:SentanceTokens.generatedRules)}
-    }
+	/// Intermediate Representation of the grammar
+	internal enum SentanceTokens : Int, TokenType, CaseIterable, Equatable {
+	    typealias T = SentanceTokens
+
+	    /// The tokens defined by the grammar
+	    case `punctuation`, `properNoun`, `other`, `word`, `words`, `sentance`
+
+	    /// The rule for the token
+	    var rule : Rule {
+		switch self {
+		    /// punctuation
+		    case .punctuation:
+			return [".", ",", "!", "?"].choice.reference(.structural(token: self))
+
+		    /// properNoun
+		    case .properNoun:
+			return [CharacterSet.uppercaseLetters,    CharacterSet.lowercaseLetters.require(.zeroOrMore)].sequence.reference(.structural(token: self))
+
+		    /// other
+		    case .other:
+			return CharacterSet.letters.require(.oneOrMore).reference(.structural(token: self))
+
+		    /// word
+		    case .word:
+			return [T.properNoun.rule,T.other.rule].choice.reference(.structural(token: self))
+
+		    /// words
+		    case .words:
+			return [T.word.rule, -CharacterSet.whitespaces.require(.oneOrMore)].sequence.require(.oneOrMore).reference(.structural(token: self))
+
+		    /// sentance
+		    case .sentance:
+			return [T.words.rule,T.punctuation.rule].sequence.reference(.structural(token: self))
+		}
+	    }
+
+	    /// Create a language that can be used for parsing etc
+	    public static var generatedRules: [Rule] {
+		return [T.sentance.rule]
+	    }
+	}
+
+	public struct Sentance : Codable {
+
+	    // Punctuation
+	    public enum Punctuation : Swift.String, Codable, CaseIterable {
+		case period = ".",comma = ",",ping = "!",questionMark = "?"
+	    }
+
+	    // Word
+	    public enum Word : Swift.String, Codable, CaseIterable {
+		case properNoun,other
+	    }
+
+	    public typealias Words = [Word] 
+
+	    /// Sentance 
+	    public struct Sentance : Codable {
+		public let words: Words
+		public let punctuation: Punctuation
+	    }
+	    public let sentance : Sentance
+	    
+	    /**
+	     Parses the supplied string using the generated grammar into a new instance of
+	     the generated data structure
+
+	     - Parameter source: The string to parse
+	     - Returns: A new instance of the data-structure
+	     */
+	    public static func build(_ source : Swift.String) throws ->Sentance{
+		let root = HomogenousTree(with: StringToken("root"), matching: source, children: [try AbstractSyntaxTreeConstructor().build(source, using: Sentance.generatedLanguage)])
+		// print(root.description)
+		return try ParsingDecoder().decode(Sentance.self, using: root)
+	    }
+
+	    public static var generatedLanguage : Grammar {return SentanceTokens.generatedRules}
+	}
 
 There are some interesting (and I think rather clever) things in there. Note that for the `Word` type STLR has been clever and determined that there are only a couple of possible values and that both of those are just Strings, so it's created an enum instead. It's done that for `Punctuation` as well, but that's a little easier as it was just a choice of simple strings. It's also determined that it doesn't really need to create a new type for Words, it can just use a `typealias`. 
 
