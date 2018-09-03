@@ -24,13 +24,61 @@
 
 import Foundation
 
+extension RuleAnnotation : Comparable {
+    /// I decide what the order of things are. And this is what I have decided.
+    private var sortValue : Int {
+        switch self {
+        case .token:
+            return 2
+        case .error:
+            return 5
+        case .void:
+            return 0
+        case .transient:
+            return 1
+        case .pinned:
+            return 3
+        case .type:
+            return 4
+        case .custom(_):
+            return 10
+        }
+    }
+    
+    private var customLabelValue : String? {
+        if case let RuleAnnotation.custom(label) = self {
+            return label
+        }
+        return nil
+    }
+    
+    /**
+     Compares two rule annotations. Standard annotations go first then custom ones sorted
+     by name.
+     
+     - Parameter lhs: Left hand side of the <
+     - Parameter rhs: Right hand side of the <
+     - Returns: `true` if lhs < rhs
+     **/
+
+    public static func < (lhs : RuleAnnotation, rhs:RuleAnnotation) -> Bool {
+        if let lhs = lhs.customLabelValue, let rhs = rhs.customLabelValue {
+            return lhs < rhs
+        }
+        
+        return lhs.sortValue < rhs.sortValue
+    }
+}
+
 extension Dictionary where Key == RuleAnnotation, Value == RuleAnnotationValue {
     /// Generates a STLR like description of the annotations
     var description : String {
-        return self.map({ (key,value) -> String in
+        return self.sorted(by: { (lhs, rhs) -> Bool in
+            return lhs.key < rhs.key
+        }).map({ (entry) -> String in
             var result = ""
             
-            switch key {
+            switch entry.key {
             case .token:
                 result = "@token"
             case .error:
@@ -47,7 +95,7 @@ extension Dictionary where Key == RuleAnnotation, Value == RuleAnnotationValue {
                 result = "@\(label)"
             }
             
-            switch value {
+            switch entry.value {
                 
             case .string(let string):
                 result += "(\"\(string)\")"
