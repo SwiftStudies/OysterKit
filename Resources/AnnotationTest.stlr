@@ -1,0 +1,20 @@
+/************************************************************
+
+ Grammar for testing annotations are correctly propagated
+
+ ************************************************************/
+
+
+grammar AnnotationTest
+
+@terminal(true)   terminal    = "term "                     // Terminal token should have @terminal(true) annotation
+@group(true)      group       = (terminal)                  // Group token should have @group(true) annotation, nested Terminal token should have @terminal(true) annotation
+@identifier(true) identifier  = terminal                    // Identifer token should have @identifier(true) annotation, nested terminal token should have @terminal(true) annotation
+@recursive(true)  recursive   = "recurse " recursiveItem    // Each recursive instance should have @recursive(true) annotation
+             ~recursiveItem   = recursive
+                                                            // Each token should be as defined
+normal                        = terminal group identifier recursive
+
+                                                            // All tokens generated should have false override their default true except recursive where only the first should be false
+overrides                     = @terminal(false) terminal @group(false) group @identifier(false) identifier @recursive(false) recursive
+
