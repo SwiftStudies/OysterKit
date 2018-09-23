@@ -9,7 +9,7 @@
 import XCTest
 @testable import OysterKit
 @testable import STLR
-@testable import ExampleLanguages
+@testable import TestingSupport
 
 extension String {
     mutating func add(line: String){

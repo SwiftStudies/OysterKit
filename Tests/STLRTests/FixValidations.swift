@@ -9,7 +9,7 @@
 import XCTest
 @testable import OysterKit
 @testable import STLR
-@testable import ExampleLanguages
+@testable import TestingSupport
 
 class FixValidations: XCTestCase {
 
@@ -129,7 +129,7 @@ class FixValidations: XCTestCase {
         
     
     func testErrorOnRecursiveRule(){
-        let rule = ExampleLanguages.STLRTokens.expression.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected expression"),RuleAnnotation.custom(label:"fatal"):RuleAnnotationValue.set])
+        let rule = TestingSupport.STLRTokens.expression.rule.annotatedWith([RuleAnnotation.error:RuleAnnotationValue.string("Expected expression"),RuleAnnotation.custom(label:"fatal"):RuleAnnotationValue.set])
 
         print(rule)
         

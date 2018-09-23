@@ -169,7 +169,7 @@ public struct Behaviour {
     }
     
     /**
-     Takes a description of a match and wraps it in the behavioural annotations of the rule
+     Takes a description of a match and wraps it in the annotations of the rule
      
      - Parameter match: A description of the match
      - Returns: A wrapped description of the match which includes the behaviour

@@ -8,7 +8,7 @@
 
 import XCTest
 @testable import OysterKit
-@testable import ExampleLanguages
+@testable import TestingSupport
 
 fileprivate enum STLRStringTest : Int, TokenType {
     

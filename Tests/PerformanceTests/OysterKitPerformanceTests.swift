@@ -9,7 +9,7 @@
 import XCTest
 import OysterKit
 @testable import STLR
-@testable import ExampleLanguages
+@testable import TestingSupport
 
 class OysterKitPerformanceTests: XCTestCase {
 

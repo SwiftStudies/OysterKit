@@ -29,6 +29,61 @@ class RuleAnnotationDescriptionTests: XCTestCase {
 
     var ruleDict: [RuleAnnotation: RuleAnnotationValue]?
 
+    // MARK: - should sort standard entries
+
+    func testStandardEntrySort() {
+        ruleDict = [
+            .token: .string("fooBar"),
+            .error: .string("some error"),
+            .void: .string("looks at you"),
+            .transient: .set,
+            .pinned: .int(56),
+            .type: .bool(true)
+        ]
+        let desc = "@void(\"looks at you\") @transient @token(\"fooBar\") " +
+                   "@pin(56) @type(true) @error(\"some error\")"
+        XCTAssertEqual(desc, ruleDict?.description)
+    }
+
+    func testCustomEntryPushToBackSort() {
+        ruleDict = [
+            .custom(label: "foo"): .int(42),
+            .token: .string("fooBar"),
+            .error: .string("some error"),
+            .void: .string("looks at you"),
+            .transient: .set,
+            .pinned: .int(33),
+            .type: .bool(true)
+        ]
+        let desc = "@void(\"looks at you\") @transient @token(\"fooBar\") " +
+        "@pin(33) @type(true) @error(\"some error\") @foo(42)"
+        XCTAssertEqual(desc, ruleDict?.description)
+    }
+
+    func testAlphabeticalCustomEntrySort() {
+        ruleDict = [
+            .custom(label: "citrus"): .set,
+            .custom(label: "animal"): .string("lion"),
+            .custom(label: "bee"): .bool(true)
+        ]
+        let desc = "@animal(\"lion\") @bee(true) @citrus"
+        XCTAssertEqual(desc, ruleDict?.description)
+    }
+
+    func testFewStandardAndMultipleCustomEntrySort() {
+        ruleDict = [
+            .custom(label: "pie"): .string("apple"),
+            .custom(label: "eye"): .set,
+            .custom(label: "like"): .bool(true),
+            .token: .string("fooBar"),
+            .void: .string("looks at you"),
+            .pinned: .int(33)
+        ]
+        let desc = "@void(\"looks at you\") @token(\"fooBar\") @pin(33) " +
+                   "@eye @like(true) @pie(\"apple\")"
+        XCTAssertEqual(desc, ruleDict?.description)
+    }
+
     // MARK: - @token tests
     
     func testTokenString() {
