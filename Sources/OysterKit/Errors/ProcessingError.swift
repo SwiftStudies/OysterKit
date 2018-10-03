@@ -34,6 +34,9 @@ public enum ProcessingError : CausalErrorType {
     /// A low level scanner error
     case scannedMatchFailed
     
+    /// Very low level test failed
+    case testFailed
+    
     /// An internal error (perhaps an exception thrown compiling a regular expression) that can be wrapped
     /// to provide a `TestError`
     case `internal`(cause:Error)
@@ -99,6 +102,8 @@ public enum ProcessingError : CausalErrorType {
             return causes
         case .scannedMatchFailed:
             return nil
+        case .testFailed:
+            return nil
         }
     }
     
@@ -118,6 +123,8 @@ public enum ProcessingError : CausalErrorType {
         case .parsing(_, let range, _):
             return range
         case .scannedMatchFailed:
+            return nil
+        case .testFailed:
             return nil
         }
     }
@@ -146,6 +153,8 @@ public enum ProcessingError : CausalErrorType {
             return "Interpretation Error: \(message)"
         case .scannedMatchFailed:
             return "Scanner failed to match"
+        case .testFailed:
+            return "Test failed"
         }
     }
     
@@ -191,6 +200,8 @@ public enum ProcessingError : CausalErrorType {
         case .fatal(let message, _):
             return ProcessingError.fatal(message: message, causes: filteredCauses)
         case .scannedMatchFailed:
+            return nil
+        case .testFailed:
             return nil
         }
     }
