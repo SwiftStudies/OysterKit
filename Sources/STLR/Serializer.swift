@@ -78,7 +78,7 @@ public enum SerializedExpression : CustomStringConvertible{
 public struct SerializedReference : CustomStringConvertible {
     public let identifier : String
     public let recursive  : Bool
-    private func declarationKind(in symbolTable:_SymbolTable<SerializedSymbol>) throws -> Behaviour.Kind{
+    private func declarationKind(in symbolTable:SymbolTable<SerializedSymbol>) throws -> Behaviour.Kind{
         guard let symbol = symbolTable[identifier] else {
             if !symbolTable.ast.defined(identifier: identifier){
                 throw ProcessingError.fatal(message: "No symbol found for \(identifier)", causes: [])
@@ -96,12 +96,12 @@ public struct SerializedReference : CustomStringConvertible {
         return symbol.kind
     }
     
-    public init(to identifier:String, in symbolTable:_SymbolTable<SerializedSymbol>){
+    public init(to identifier:String, in symbolTable:SymbolTable<SerializedSymbol>){
         self.identifier = identifier
         recursive = symbolTable.isLeftHandRecursive(identifier)
     }
     
-    fileprivate func apply(override kind: Behaviour.Kind, from symbolTable:_SymbolTable<SerializedSymbol>) throws ->Behaviour.Kind {
+    fileprivate func apply(override kind: Behaviour.Kind, from symbolTable:SymbolTable<SerializedSymbol>) throws ->Behaviour.Kind {
         let declaredKind = try declarationKind(in: symbolTable)
         switch kind {
         case .structural:
@@ -178,7 +178,7 @@ public struct SerializedTerm : CustomStringConvertible {
     public let cardinality: Cardinality
     public let annotations: RuleAnnotations
     
-    init(_ kind:Behaviour.Kind, requiring cardinality:Cardinality, of term:TermType, annotatedWith annotations:RuleAnnotations, in symbolTable:_SymbolTable<SerializedSymbol>) throws {
+    init(_ kind:Behaviour.Kind, requiring cardinality:Cardinality, of term:TermType, annotatedWith annotations:RuleAnnotations, in symbolTable:SymbolTable<SerializedSymbol>) throws {
         if case let .reference(reference,_,_) = term  {
             self.kind = try reference.apply(override: kind, from: symbolTable)
         } else {
@@ -189,7 +189,7 @@ public struct SerializedTerm : CustomStringConvertible {
         self.term = term
     }
     
-    public func term(_ kind: Behaviour.Kind, term: TermType, requiring cardinality: Cardinality, with annotations: RuleAnnotations, in symbolTable:_SymbolTable<SerializedSymbol>) throws -> SerializedTerm {
+    public func term(_ kind: Behaviour.Kind, term: TermType, requiring cardinality: Cardinality, with annotations: RuleAnnotations, in symbolTable:SymbolTable<SerializedSymbol>) throws -> SerializedTerm {
         return try SerializedTerm(kind, requiring: cardinality, of: term, annotatedWith: annotations, in: symbolTable)
     }
     
@@ -235,7 +235,7 @@ public struct SerializedTerm : CustomStringConvertible {
 }
 
 #warning("When we don't have both implementaions, this can become just Symbol")
-public final class SerializedSymbol : _SymbolType {
+public final class SerializedSymbol : SymbolType {
     public let identifier : String
     public let expression  : SerializedExpression
     public let annotations : RuleAnnotations
@@ -243,7 +243,7 @@ public final class SerializedSymbol : _SymbolType {
     let recursive : Bool
     let referenced : Bool
     
-    public static func build(for identifier: String, in symbolTable: _SymbolTable<SerializedSymbol>) throws -> SerializedSymbol {
+    public static func build(for identifier: String, in symbolTable: SymbolTable<SerializedSymbol>) throws -> SerializedSymbol {
         let grammar = symbolTable.ast
         
         guard symbolTable.ast.defined(identifier: identifier) else {
@@ -258,17 +258,17 @@ public final class SerializedSymbol : _SymbolType {
         return SerializedSymbol(identifier, with: try declaration.expression.serialize(in:symbolTable), kind: kind, annotations: annotations, recursive: symbolTable.ast.isLeftHandRecursive(identifier: identifier), referenced: !symbolTable.ast.isRoot(identifier: identifier))
     }
     
-    public func term(in symbolTable: _SymbolTable<SerializedSymbol>) throws ->  SerializedTerm {
+    public func term(in symbolTable: SymbolTable<SerializedSymbol>) throws ->  SerializedTerm {
         return try SerializedTerm(kind, requiring: .one, of: .group(expression, negated: false, looksahead: false), annotatedWith: annotations, in: symbolTable)
     }
     
-    public func resolve(in symbolTable: _SymbolTable<SerializedSymbol>) throws {
+    public func resolve(in symbolTable: SymbolTable<SerializedSymbol>) throws {
 //        if let wrapper = expression as? RecursionWrapper {
 //            wrapper.wrapped.surrogateRule = grammar[identifier].expression.rule(using: symbolTable)
 //        }
     }
     
-    public func validate(in symbolTable: _SymbolTable<SerializedSymbol>) throws {
+    public func validate(in symbolTable: SymbolTable<SerializedSymbol>) throws {
         
     }
     
@@ -304,8 +304,8 @@ public final class SerializedSymbol : _SymbolType {
 }
 
 extension STLR {
-    func analyze<Symbol:_SymbolType>(_ type : Symbol.Type) throws -> _SymbolTable<Symbol> {
-        let symbolTable = _SymbolTable<Symbol>(self.grammar)
+    func analyze<Symbol:SymbolType>(_ type : Symbol.Type) throws -> SymbolTable<Symbol> {
+        let symbolTable = SymbolTable<Symbol>(self.grammar)
         
         try symbolTable.build()
         
@@ -313,16 +313,16 @@ extension STLR {
     }
 }
 
-public protocol _SymbolType : CustomStringConvertible {
-    static func build(for identifier: String, in symbolTable: _SymbolTable<Self>) throws ->Self
+public protocol SymbolType : CustomStringConvertible {
+    static func build(for identifier: String, in symbolTable: SymbolTable<Self>) throws ->Self
     
-    func resolve(in symbolTable: _SymbolTable<Self>) throws
-    func validate(in symbolTable: _SymbolTable<Self>) throws
+    func resolve(in symbolTable: SymbolTable<Self>) throws
+    func validate(in symbolTable: SymbolTable<Self>) throws
     
     var identifier   : String {get}
 }
 
-public class _SymbolTable<Symbol:_SymbolType> : CustomStringConvertible, Sequence {
+public class SymbolTable<Symbol:SymbolType> : CustomStringConvertible, Sequence {
     public typealias Iterator = Array<Symbol>.Iterator
     public let ast : STLR.Grammar
     private var identifiers = [String : Symbol]()
@@ -402,7 +402,7 @@ public class _SymbolTable<Symbol:_SymbolType> : CustomStringConvertible, Sequenc
         return ast[identifier].expression.references(identifier, grammar: ast, closedList: &closedList)
     }
     
-    public func compactMap<T>(_ using:(_SymbolTable, Symbol) throws ->T?) throws -> [T]{
+    public func compactMap<T>(_ using:(SymbolTable, Symbol) throws ->T?) throws -> [T]{
         return try identifiers.compactMap { (entry) -> T? in
             return try using(self, entry.value)
         }
@@ -422,7 +422,7 @@ public class _SymbolTable<Symbol:_SymbolType> : CustomStringConvertible, Sequenc
 }
 
 fileprivate extension STLR.Expression {
-    func serialize(in symbolTable:_SymbolTable<SerializedSymbol>) throws ->SerializedExpression {
+    func serialize(in symbolTable:SymbolTable<SerializedSymbol>) throws ->SerializedExpression {
         switch self {
         case .choice(let choice):
             return SerializedExpression.choice(try choice.map({try $0.serialize(in: symbolTable)}))
@@ -456,7 +456,7 @@ extension STLR.Terminal {
 
 extension SerializedTerm.TermType {
     
-    static func term(for element:STLR.Element, in symbolTable:_SymbolTable<SerializedSymbol>) throws ->SerializedTerm.TermType {
+    static func term(for element:STLR.Element, in symbolTable:SymbolTable<SerializedSymbol>) throws ->SerializedTerm.TermType {
         if let terminal = element.terminal {
             return .terminal(try terminal.serialized(), negated: element.isNegated, looksahead: element.isLookahead)
         } else if let group = element.group {
@@ -470,7 +470,7 @@ extension SerializedTerm.TermType {
 
 fileprivate extension STLR.Element {
     
-    func serialize(in symbolTable:_SymbolTable<SerializedSymbol>) throws ->SerializedTerm {
+    func serialize(in symbolTable:SymbolTable<SerializedSymbol>) throws ->SerializedTerm {
         //Is there an inline declaration here?
         if let token = ruleAnnotations.token {
             //Create a reference to the identified element

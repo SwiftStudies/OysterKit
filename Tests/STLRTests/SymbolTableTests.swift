@@ -36,7 +36,7 @@ grammar G
 
 class SymbolTableTests: XCTestCase {
     
-    func stlrGrammar() throws -> _SymbolTable<SerializedSymbol> {
+    func stlrGrammar() throws -> SymbolTable<SerializedSymbol> {
         let stlr = try ProductionSTLR.build(STLRSource)
         let grammar = try stlr.analyze(SerializedSymbol.self)
         

@@ -99,7 +99,7 @@ extension SerializedTerminal {
 }
 
 extension SerializedExpression {
-    func test(with lookupTable:LookupTable, from symbolTable:_SymbolTable<SerializedSymbol>) throws -> Testable {
+    func test(with lookupTable:LookupTable, from symbolTable:SymbolTable<SerializedSymbol>) throws -> Testable {
         switch self {
         case .sequence(let elements):
             return SequenceTest(try elements.map({try $0.rule(with: lookupTable, from: symbolTable)}))
@@ -112,7 +112,7 @@ extension SerializedExpression {
 }
 
 extension SerializedReference {
-    private func test(for expression:SerializedExpression, with lookupTable:LookupTable, from symbolTable:_SymbolTable<SerializedSymbol>) throws -> Testable {
+    private func test(for expression:SerializedExpression, with lookupTable:LookupTable, from symbolTable:SymbolTable<SerializedSymbol>) throws -> Testable {
         if recursive {
             return IndirectExpression(token: StringToken(identifier), cache: lookupTable, matchDescription: expression.description)
         } else {
@@ -120,7 +120,7 @@ extension SerializedReference {
         }
     }
     
-    func rule(with lookupTable:LookupTable, from symbolTable:_SymbolTable<SerializedSymbol>) throws -> RuleType {
+    func rule(with lookupTable:LookupTable, from symbolTable:SymbolTable<SerializedSymbol>) throws -> RuleType {
         guard let symbol = symbolTable[identifier] else {
             throw ProcessingError.fatal(message: "Unknown identifier \(identifier)", causes: [])
         }
@@ -130,13 +130,13 @@ extension SerializedReference {
 }
 
 extension SerializedSymbol {
-    func rule(with lookupTable:LookupTable, from symbolTable:_SymbolTable<SerializedSymbol>) throws -> RuleType {
+    func rule(with lookupTable:LookupTable, from symbolTable:SymbolTable<SerializedSymbol>) throws -> RuleType {
         return try term(in: symbolTable).rule(with: lookupTable, from: symbolTable)
     }
 }
 
 extension SerializedTerm {
-    func rule(with lookupTable:LookupTable, from symbolTable:_SymbolTable<SerializedSymbol>) throws -> RuleType {
+    func rule(with lookupTable:LookupTable, from symbolTable:SymbolTable<SerializedSymbol>) throws -> RuleType {
         var rule : RuleType
         
         switch term {
@@ -153,7 +153,7 @@ extension SerializedTerm {
     }
 }
 
-extension _SymbolTable : Grammar where Symbol == SerializedSymbol{
+extension SymbolTable : Grammar where Symbol == SerializedSymbol{
     
     internal subscript(dynamicRuleFor identifier:String)->Rule? {
         do {

@@ -49,58 +49,6 @@ fileprivate struct RecursionWrapper : Rule {
     
 }
 
-fileprivate final class Symbol : SymbolType {
-    let identifier : String
-    private var expression: Rule
-    private var baseAnnotations : RuleAnnotations
-    private var baseKind : Behaviour.Kind
-    
-    static func build(for identifier: String, from grammar: STLR.Grammar, in symbolTable: SymbolTable<Symbol>) -> Symbol {
-
-        let declaration = grammar[identifier]
-        if grammar.isLeftHandRecursive(identifier: identifier){
-            let recursive = RecursiveRule(stubFor: Behaviour(.scanning), with: [:])
-            let wrapped = RecursionWrapper(behaviour: Behaviour(.scanning), annotations: [:], wrapped: recursive)
-            return Symbol(identifier, with: wrapped, baseKind: declaration.behaviour.kind, baseAnnotations: declaration.annotations?.ruleAnnotations ?? [:])
-        } else {
-            var rule = grammar[identifier].expression.rule(using: symbolTable)
-            
-            // Terminal rules
-            if let terminalRule = rule as? TerminalRule, !terminalRule.annotations.isEmpty {
-                rule = [rule].sequence
-            }
-            
-            return Symbol(identifier, with: rule, baseKind: declaration.behaviour.kind, baseAnnotations: declaration.annotations?.ruleAnnotations ?? [:])
-        }
-    }
-    
-    func resolve(from grammar:STLR.Grammar, in symbolTable: SymbolTable<Symbol>) throws {
-        if let wrapper = expression as? RecursionWrapper {
-            wrapper.wrapped.surrogateRule = grammar[identifier].expression.rule(using: symbolTable)
-        }
-    }
-    
-    func validate(from grammar: STLR.Grammar, in symbolTable: SymbolTable<Symbol>) throws {
-        
-    }
-    
-    init(_ identifier:String, with expression:Rule, baseKind: Behaviour.Kind, baseAnnotations:RuleAnnotations){
-        self.identifier = identifier
-        self.expression = expression
-        self.baseKind = baseKind
-        self.baseAnnotations = baseAnnotations
-    }
-    
-    func reference(with behaviour:Behaviour, and instanceAnnotations:RuleAnnotations)->Rule{
-        return expression.annotatedWith(baseAnnotations.merge(with: instanceAnnotations)).reference(behaviour.kind).rule(with:behaviour,annotations: nil).scan()
-    }
-    
-    var  rule : Rule {
-        let behaviour = Behaviour(baseKind, cardinality: expression.behaviour.cardinality, negated: expression.behaviour.negate, lookahead: expression.behaviour.lookahead)
-        return expression.rule(with: behaviour, annotations: baseAnnotations.merge(with: expression.annotations))
-    }
-}
-
 extension STLR.DefinedLabel {
     var ruleAnnotation : RuleAnnotation{
         switch self {
@@ -154,20 +102,23 @@ extension STLR.Annotation {
 
 
 fileprivate extension Array where Element == STLR.Element {
-    func choice(with behaviour: Behaviour, and annotations:RuleAnnotations, using symbolTable:SymbolTable<Symbol>) -> Rule {
+    func choice(with behaviour: Behaviour, and annotations:RuleAnnotations, using symbolTable:SymbolTable<SerializedSymbol>) -> Rule {
         return ChoiceRule(behaviour, and: annotations, for: map({$0.rule(symbolTable: symbolTable)}))
     }
-    func sequence(with behaviour: Behaviour, and annotations:RuleAnnotations, using symbolTable:SymbolTable<Symbol>) -> Rule {
+    func sequence(with behaviour: Behaviour, and annotations:RuleAnnotations, using symbolTable:SymbolTable<SerializedSymbol>) -> Rule {
         return SequenceRule(behaviour, and: annotations, for: map({$0.rule(symbolTable: symbolTable)}))
     }
 }
 
 fileprivate extension STLR.Element {
-    private static func rule(for element:STLR.Element, using symbolTable:SymbolTable<Symbol>)->Rule {
+    private static func rule(for element:STLR.Element, using symbolTable:SymbolTable<SerializedSymbol>)->Rule {
         if let terminal = element.terminal {
             return terminal.rule(with: element.behaviour, and: element.annotations?.ruleAnnotations ?? [:])
         } else if let identifier = element.identifier {
-            return symbolTable[identifier].reference(with: element.behaviour, and: element.annotations?.ruleAnnotations ?? [:])
+            guard let rule = symbolTable[dynamicRuleFor: identifier] else {
+                fatalError("Could not find identifier \(identifier)")
+            }
+            return rule
         } else if let group = element.group {
 //            if case let _STLR.Expression.element(singleElement) = group.expression {
 //                #warning("Could this be more efficiently implemented by creating a RuleReference rather than a sequence?")
@@ -179,7 +130,7 @@ fileprivate extension STLR.Element {
         }
         fatalError("Element is not a terminal, and identifier reference, or a group")
     }
-    func rule(symbolTable:SymbolTable<Symbol>)->Rule {
+    func rule(symbolTable:SymbolTable<SerializedSymbol>)->Rule {
         let element : STLR.Element
         if let token = token {
             element = STLR.Element(annotations: annotations?.filter({!$0.label.isToken}), group: nil, identifier: "\(token)", lookahead: lookahead, negated: negated, quantifier: quantifier, terminal: nil, transient: transient, void: void)
@@ -235,7 +186,7 @@ extension STLR.Terminal {
 }
 
 fileprivate extension STLR.Expression {
-    func rule(using symbolTable:SymbolTable<Symbol>)->Rule {
+    func rule(using symbolTable:SymbolTable<SerializedSymbol>)->Rule {
         switch self {
         case .sequence(let elements):
             return elements.map({ (element) -> Rule in
@@ -282,7 +233,7 @@ fileprivate extension STLR.Rule {
 public extension STLR.Grammar {
     /// Builds a set of `Rule`s that can be used directly at run-time in your application
     public var dynamicRules : [Rule] {
-        let symbolTable = SymbolTable<Symbol>(self)
+        let symbolTable = SymbolTable<SerializedSymbol>(self)
         
         do {
             try symbolTable.build()
@@ -300,11 +251,14 @@ public extension STLR.Grammar {
             guard let lastRule = rules.last else {
                 return []
             }
+            guard let rule = symbolTable[dynamicRuleFor: lastRule.identifier] else {
+                fatalError("Could not find \(lastRule.identifier)")
+            }
             return [
-                symbolTable[lastRule.identifier].rule
+                rule
             ]
         } else {
-            return rootRules.map({symbolTable[$0.identifier].rule})
+            return rootRules.map({symbolTable[dynamicRuleFor: $0.identifier]!})
         }
     }
 }
