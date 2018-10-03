@@ -59,6 +59,8 @@ public struct ProcessingErrorType : OptionSet {
                 rawValue = ProcessingErrorType.interpretation.rawValue
             case .fatal(_,_):
                 rawValue = ProcessingErrorType.fatal.rawValue
+            case .testFailed:
+                rawValue = ProcessingErrorType.testFailed.rawValue
             }
         } else {
             rawValue = ProcessingErrorType.foreign.rawValue
@@ -88,4 +90,7 @@ public struct ProcessingErrorType : OptionSet {
     
     /// A low level scanner (not scanning) error
     public static let scannedMatchFailed = ProcessingErrorType(rawValue: 1 << 7)
+
+    /// A low level test failure
+    public static let testFailed = ProcessingErrorType(rawValue: 1 << 8)
 }

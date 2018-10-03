@@ -1,0 +1,206 @@
+public let STLRSource = """
+
+/************************************************************
+
+Swift Tool for Language Recognition (STLR)
+
+STLR can be fully described itself, and this example is
+provided to both provide  a formal document capturing STLR
+and to illustrate a complex use of the format.
+
+Change log:
+v0.0.0  8  Aug 2016     Initial version
+v0.0.1  15 Aug 2016     Added annotations changed to remove semi-colons and use " not '
+v0.0.2  16 Aug 2016     Added look ahead
+v0.0.3  17 Aug 2016     Added errors to grammar
+v0.0.4  18 Aug 2016     Changed the format of annotations to be more Swift like
+v0.0.5  22 Aug 2016     Added support for nested multiline comments
+v0.0.6  24 Aug 2016     Changed position of negation operator to better match
+                        Swift and added more error information.
+v0.0.7  10 Sep 2017     Added module importing
+v0.1.2  7  Dec 2017     Added backslash character set
+v0.1.3  28 Feb 2018     Changed plurality of character sets
+v0.1.4  9  Jul 2018     Added regular expression terminals
+v0.1.5  11 Jul 2018     Removed support for nested inlines, replaced whitespace rules with regular expression increasing parsing performance by over 2x
+v0.1.6  14 Jul 2018     Added syntactic sugar for @transient (~) and @void (-) as prefixes to identifier declarations and expression elements
+v0.2.0  20 Jul 2018     Annotating with new structure, expect incremental (non-breaking) changes to come
+v0.2.1  22 Jul 2018     Added requirement for grammar name to be declared, added ability to define expected type for code generation to rule declaration
+
+*************************************************************/
+
+grammar STLR
+
+//
+// Whitespace
+//
+-whitespace     = /[:space:]+|/\\*(?:.|\\r?\\n)*?\\*/|//.*(?:\\r?\\n|$)/
+-ows            = whitespace*
+
+//
+// Constants
+//
+//definition                    = "const"       ows identifier ows "=" ows literal .whitespace* whitespace
+
+//
+// Quantifiers
+//
+quantifier                              = "*" | "+" | "?" | "-"
+// quantifier = zeroOrMore : "*" | oneOrMore : "+" | zeroOrOne : "?" | whatDoesThisMean : "-"
+negated                                 = "!"
+
+//
+// Parsing Control
+//
+lookahead                               = ">>"
+transient                               = "~"
+void                                    = "-"
+// structure = transient : "~" | void : "-"
+
+//
+// String
+//
+stringQuote          = "\\""
+terminalBody         = /(\\\\.|[^"\\\\\\n])+/
+stringBody           = /(\\\\.|[^"\\\\\\n])*/
+
+string               = -stringQuote stringBody @error("Missing terminating quote") @coalesce -stringQuote
+terminalString       = -stringQuote @error("Terminals must have at least one character") @coalesce terminalBody @error("Missing terminating quote") @coalesce -stringQuote
+
+//
+// Character Sets and Ranges
+//
+characterSetName =  "letter" |
+                    "uppercaseLetter" |
+                    "lowercaseLetter" |
+                    "alphaNumeric" |
+                    "decimalDigit" |
+                    "whitespaceOrNewline" |
+                    "whitespace" |
+                    "newline" |
+                    "backslash"
+
+characterSet                    = -"." @error("Unknown character set") @coalesce characterSetName
+
+-rangeOperator                  = ".." @error("Expected ... in character range") @coalesce "."
+characterRange                  = terminalString rangeOperator @error("Range must be terminated") terminalString
+
+//
+// Literals
+//
+number : Int = ("-" | "+")? .decimalDigit+
+boolean : Bool = "true" | "false"
+literal  = string | number | boolean
+
+//
+// Annotations
+//
+annotation                      = "@"
+    @error("Expected an annotation label") label (
+    "("
+    @error("A value must be specified or the () omitted")
+    literal
+    @error("Missing ')'")
+    ")"
+    )?
+annotations                     = (annotation ows)+
+
+customLabel                     = @error("Labels must start with a letter or _") (.letter | "_") ( .letter | .decimalDigit | "_" )*
+definedLabel                    = "token" | "error" | "void" | "transient"
+label                           = definedLabel | customLabel
+
+//
+// Regular Expressions
+//
+-regexDelimeter = "/"
+-startRegex = regexDelimeter >>!"*"
+-endRegex = regexDelimeter
+~regexBody = !(regexDelimeter whitespace)+
+regex = startRegex regexBody endRegex 
+
+//
+// Special Cases
+//
+endOfFile = ".endOfFile"
+
+//
+// Element
+//
+@error("Expected terminal")
+terminal                                =  endOfFile | characterSet | characterRange | terminalString | regex
+
+group                                   = "(" whitespace*
+                                            expression whitespace*
+                                            @error("Expected ')'") ")"
+
+identifier                              = /[:alpha:]\\w*|_\\w*/
+
+element                                 = >>notNewRule annotations? (lookahead | transient | void)? negated? (
+                                                @error("Expecting a group") group |
+                                                @error("Expecting a terminal") terminal |
+                                                @error("Expecting an identifier") identifier
+                                          ) quantifier?
+
+//
+// Expressions
+//
+assignmentOperators             = "=" | "+=" | "|="
+// assignementOperators = equals : "=" | thenEquals = "+=" | orEquals = "|="
+-or                                              =  whitespace* "|" whitespace*
+-then                                    = (whitespace* "+" whitespace*) | whitespace+
+
+choice                                  = element (or @error("Expected terminal, identifier, or group") element)+
+notNewRule                              = !(annotations? transient? void? identifier whitespace* (":" whitespace* .letter+ whitespace*)? assignmentOperators)
+test                                    =  (annotations? identifier whitespace* (":" whitespace* .letter+ whitespace*)? assignmentOperators)
+sequence                                = element (then @error("Expected terminal, identifier, or group") element)+
+
+expression                              = @error("Expected a choice") choice | @error("Expected a sequence") sequence | @error("Expected an element") element
+
+//
+// Types
+//
+
+tokenType       = standardType | customType
+standardType    = "Int" | "Double" | "String" | "Bool"
+customType      = ("_"|.uppercaseLetter) ("_"|.letter|.decimalDigit)*
+
+//
+// Rule
+//
+~lhs            =   whitespace*
+                    annotations?
+                    transient?
+                    void?
+                    @error("Expected an identifier") identifier
+                    whitespace*
+                    (
+                        -":"
+                        -whitespace*
+                        tokenType
+                        -whitespace*
+                    )?
+                    @error("Missing assignment operator") assignmentOperators
+
+rule            = lhs whitespace* @error("Expected expression") @fatal (expression) whitespace*
+
+//
+// Importing
+//
+moduleName                              = (.letter | "_") (.letter | "_" | .decimalDigit)*
+moduleImport    = ows -"import" @error("Expected white space followed by module name") -.whitespace+  @error("Expected module name") moduleName @error("Expected newline") -whitespace+
+
+///
+/// Scope
+///
+
+scopeName       =   -"grammar" -whitespace ows ~(.letter (.letter | .decimalDigit)*) @error("Unexpected input") -whitespace -ows
+
+//
+// Grammar
+//
+
+grammar         =   -whitespace* @error("You must declare the name of the grammar before any other declarations (e.g. grammar <your-grammar-name>)") scopeName
+                    @token("modules") (moduleImport+)?
+                    @token("rules") (@error("Expected at least one rule") rule+)
+                    @error("Previous error stopped rule evaluation before end of file") >>.endOfFile
+
+"""
