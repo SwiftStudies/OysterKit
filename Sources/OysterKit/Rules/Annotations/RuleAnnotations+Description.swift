@@ -70,8 +70,11 @@ extension RuleAnnotation : Comparable {
 }
 
 extension Dictionary where Key == RuleAnnotation, Value == RuleAnnotationValue {
-    /// Generates a STLR like description of the annotations
-    var description : String {
+    
+    public var stlrDescription: String{
+        if isEmpty {
+            return ""
+        }
         return self.sorted(by: { (lhs, rhs) -> Bool in
             return lhs.key < rhs.key
         }).map({ (entry) -> String in
@@ -108,5 +111,10 @@ extension Dictionary where Key == RuleAnnotation, Value == RuleAnnotationValue {
             
             return result
         }).joined(separator: " ")
+    }
+    
+    /// Generates a STLR like description of the annotations
+    public var description : String {
+        return stlrDescription
     }
 }
