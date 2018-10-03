@@ -132,7 +132,11 @@ group                                   = "(" whitespace*
 
 identifier                              = /[:alpha:]\w*|_\w*/
 
-element                                 = annotations? (lookahead | transient | void)? negated? ( @error("Expecting a group") group | @error("Expecting a terminal") terminal | @error("Expecting an identifier") (identifier >>!(ows "=") ) ) quantifier?
+element                                 = >>notNewRule annotations? (lookahead | transient | void)? negated? (
+                                                @error("Expecting a group") group |
+                                                @error("Expecting a terminal") terminal |
+                                                @error("Expecting an identifier") identifier
+                                          ) quantifier?
 
 //
 // Expressions
@@ -143,8 +147,9 @@ assignmentOperators             = "=" | "+=" | "|="
 -then                                    = (whitespace* "+" whitespace*) | whitespace+
 
 choice                                  = element (or @error("Expected terminal, identifier, or group") element)+
--notNewRule                             = !(annotations? identifier whitespace* (":" whitespace* .letter+ whitespace*)? assignmentOperators)
-sequence                                = element (then >>notNewRule @error("Expected terminal, identifier, or group")element)+
+notNewRule                              = !(annotations? transient? void? identifier whitespace* (":" whitespace* .letter+ whitespace*)? assignmentOperators)
+test                                    =  (annotations? identifier whitespace* (":" whitespace* .letter+ whitespace*)? assignmentOperators)
+sequence                                = element (then @error("Expected terminal, identifier, or group") element)+
 
 expression                              = @error("Expected a choice") choice | @error("Expected a sequence") sequence | @error("Expected an element") element
 
