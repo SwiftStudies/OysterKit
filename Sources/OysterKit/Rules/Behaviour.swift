@@ -65,6 +65,17 @@ public struct Behaviour {
                 return false
             }
         }
+        
+        public func apply(to rule:RuleType)->RuleType{
+            switch self {
+            case .skipping:
+                return rule.skip()
+            case .scanning:
+                return rule.scan()
+            case .structural(let token):
+                return rule.parse(as: token)
+            }
+        }
     }
 
     
