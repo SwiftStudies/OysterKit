@@ -62,20 +62,6 @@ public extension Collection where Iterator.Element == (key:RuleAnnotation,value:
         
         return merged
     }
-    
-    /// A description in STLR format of the `RuleAnnotations`
-    public var stlrDescription : String {
-        var result = ""
-        for tuple in self {
-            result += "@\(tuple.0)"
-            let value = tuple.1.description
-            if !value.isEmpty {
-                result+="(\(value))"
-            }
-        }
-        
-        return result
-    }
 }
 
 //Adds the ability to quickly access standard annotations

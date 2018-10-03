@@ -24,6 +24,38 @@
 
 import Foundation
 
+public struct ChoiceTest : Testable {
+    public let choices : [RuleType]
+
+    public init(_ elements:[RuleType]) {
+        choices = elements
+    }
+
+    /**
+     The test will be satisfied if any one of the `choices` are satisfied. The child rules are evaluated
+     in order.
+     
+     - Parameter lexer: The `LexicalAnalyzer` managing the scan head
+     - Parameter ir: The IR building the AST
+     */
+    public func test(with lexer: LexicalAnalyzer, for ir: IntermediateRepresentation) throws {
+        var errors = [Error]()
+        for rule in choices {
+            do {
+                let _ = try rule.evaluate(lexer: lexer, ir: ir)
+                return
+            } catch {
+                errors.append(error)
+            }
+        }
+        throw ProcessingError.parsing(message: "Expected one of \(matchDescription)", range: lexer.index...lexer.index, causes: errors)
+    }
+    
+    public var matchDescription: String {
+        return choices.map({$0.description}).joined(separator: " | ")
+    }
+}
+
 /**
  A `ChoiceRule` will match if one of the child rules is matched. It can be thought of as a logical OR.
  */
@@ -92,5 +124,7 @@ public final class ChoiceRule : Rule {
         let match = choices.map({$0.shortDescription}).joined(separator: "|")
         return behaviour.describe(match: "(\(match))", annotatedWith: annotations)
     }
+    
+
 
 }

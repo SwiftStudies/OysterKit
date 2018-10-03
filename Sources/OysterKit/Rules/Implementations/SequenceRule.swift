@@ -24,7 +24,26 @@
 
 import Foundation
 
+public struct SequenceTest : Testable {
+    public let sequence : [RuleType]
+    
+    public init(_ elements:[RuleType]) {
+        sequence = elements
+    }
+    
+    public func test(with lexer: LexicalAnalyzer, for ir: IntermediateRepresentation) throws {
+        for rule in sequence {
+            _ = try rule.evaluate(lexer: lexer, ir: ir)
+        }
+    }
+    
+    public var matchDescription: String {
+        return sequence.map({$0.description}).joined(separator: " ")
+    }
+}
+
 public final class SequenceRule : Rule {
+    
     public var behaviour: Behaviour
     public var annotations: RuleAnnotations
     public var sequence : [Rule]
@@ -54,6 +73,8 @@ public final class SequenceRule : Rule {
 
         return behaviour.describe(match:"(\(match))", annotatedWith: annotations)
     }
+
+
     
     /// An abreviated description of the rule
     public var shortDescription: String{
