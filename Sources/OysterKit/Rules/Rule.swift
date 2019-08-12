@@ -92,7 +92,7 @@ public protocol Rule : CustomStringConvertible{
 /// A set of standard properties and functions for all `Rule`s
 public extension Rule{
     /// The user specified (in an annotation) error associated with the rule
-    public var error : String? {
+    var error : String? {
         guard let value = self[RuleAnnotation.error] else {
             return nil
         }
@@ -105,7 +105,7 @@ public extension Rule{
     }
     
     /// Returns the value of the specific `RuleAnnotationValue` identified by `annotation` if present
-    public subscript(annotation:RuleAnnotation)->RuleAnnotationValue?{
+    subscript(annotation:RuleAnnotation)->RuleAnnotationValue?{
         return annotations[annotation]
     }
 }
@@ -126,12 +126,12 @@ public typealias Test = (LexicalAnalyzer, IntermediateRepresentation) throws -> 
 public extension Rule {
     
     /// `true` if the rule creates ndoes, false otherwise
-    public var structural : Bool {
+    var structural : Bool {
         return behaviour.token != nil
     }
     
     /// `true` if the rule creates ndoes, false otherwise
-    public var skipping : Bool {
+    var skipping : Bool {
         if case .skipping = behaviour.kind {
             return true
         }
@@ -139,7 +139,7 @@ public extension Rule {
     }
     
     /// `true` if the rule creates ndoes, false otherwise
-    public var scanning : Bool {
+    var scanning : Bool {
         if case .scanning = behaviour.kind {
             return true
         }
@@ -153,7 +153,7 @@ public extension Rule {
      - Parameter ir: The intermediate representation to use
      - Returns: The match result
     */
-    public func match(with lexer: LexicalAnalyzer, for ir: IntermediateRepresentation) throws {
+    func match(with lexer: LexicalAnalyzer, for ir: IntermediateRepresentation) throws {
         // Log entrance
         do {
             try evaluate(test,using: lexer, and: ir)
@@ -172,7 +172,7 @@ public extension Rule {
      - Parameter ir: The intermediate representation to use
      - Returns: The match result
      */
-    public func evaluate(_ matcher:@escaping Test, using lexer:LexicalAnalyzer, and ir:IntermediateRepresentation) throws {
+    func evaluate(_ matcher:@escaping Test, using lexer:LexicalAnalyzer, and ir:IntermediateRepresentation) throws {
         //Prepare for any lookahead by putting a fake IR in place if is lookahead
         //as well as taking an additional mark to ensure position will always be
         //where it was

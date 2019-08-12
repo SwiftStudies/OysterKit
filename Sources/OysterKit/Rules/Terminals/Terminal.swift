@@ -41,20 +41,20 @@ public protocol Terminal : Rule {
 
 public extension Terminal {
     
-    public func test(with lexer: LexicalAnalyzer, for ir: IntermediateRepresentation) throws {
+    func test(with lexer: LexicalAnalyzer, for ir: IntermediateRepresentation) throws {
         try test(lexer: lexer, producing: behaviour.token)
     }
     
-    public var shortDescription: String {
+    var shortDescription: String {
         return behaviour.describe(match: matchDescription, requiresScanningPrefix: false, annotatedWith: annotations)
     }
     
     
-    public var behaviour: Behaviour {
+    var behaviour: Behaviour {
         return Behaviour(.scanning, cardinality: .one, negated: false, lookahead: false)
     }
     
-    public var annotations: RuleAnnotations {
+    var annotations: RuleAnnotations {
         return [:]
     }
 }

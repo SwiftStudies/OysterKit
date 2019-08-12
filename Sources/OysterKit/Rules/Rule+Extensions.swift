@@ -49,7 +49,7 @@ public extension Rule {
      - Parameter annotations: The desired annotations
      - Returns: A new instance of the rule with the specified annotations
      */
-    public func annotatedWith(_ annotations:RuleAnnotations)->Rule{
+    func annotatedWith(_ annotations:RuleAnnotations)->Rule{
         var resultantRule : Rule = self
         var filterOut = [RuleAnnotation]()
         
@@ -97,7 +97,7 @@ public extension Rule {
      - Parameter cardinality: The desired cardinalitiy
      - Returns: The new rule instance
      */
-    public func require(_ cardinality:Cardinality)->Rule{
+    func require(_ cardinality:Cardinality)->Rule{
         return newBehaviour(cardinality: cardinality)
     }
 }
@@ -124,7 +124,7 @@ public extension Rule{
      
      - Returns: A new version of the rule
      */
-    public func lookahead()->Rule{
+    func lookahead()->Rule{
         return rule(with: Behaviour(.scanning, cardinality: behaviour.cardinality, negated: behaviour.negate, lookahead: true), annotations: annotations)
     }
 
@@ -137,7 +137,7 @@ public extension Rule{
      
      - Returns: A new version of the rule
      */
-    public func negate()->Rule{
+    func negate()->Rule{
         return rule(with: Behaviour(behaviour.kind, cardinality: behaviour.cardinality, negated: true, lookahead: behaviour.lookahead), annotations: annotations)
     }
     
@@ -149,7 +149,7 @@ public extension Rule{
      
      - Returns: A new version of the rule
      */
-    public func skip()->Rule{
+    func skip()->Rule{
         return rule(with: Behaviour(.skipping, cardinality: behaviour.cardinality, negated: behaviour.negate, lookahead: behaviour.lookahead), annotations: annotations)
     }
     
@@ -161,11 +161,11 @@ public extension Rule{
      
      - Returns: A new version of the rule
      */
-    public func scan()->Rule{
+    func scan()->Rule{
         return rule(with: Behaviour(.scanning, cardinality: behaviour.cardinality, negated: behaviour.negate, lookahead: behaviour.lookahead), annotations: annotations)
     }
     
-    public func reference(_ kind:Behaviour.Kind, annotations: RuleAnnotations? = nil)->Rule{
+    func reference(_ kind:Behaviour.Kind, annotations: RuleAnnotations? = nil)->Rule{
         #warning("If I am already a reference I should wrap myself in a sequence and return that")
         let reference = ReferenceRule(Behaviour(.scanning, cardinality: .one, negated: false, lookahead: false), and: annotations ?? [:], for: self)
         

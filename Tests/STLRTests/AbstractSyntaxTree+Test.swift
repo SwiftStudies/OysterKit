@@ -26,7 +26,7 @@ import Foundation
 import OysterKit
 
 public extension HomogenousTree {
-    public func nodeAtPath(_ path: [String])->HomogenousTree?{
+    func nodeAtPath(_ path: [String])->HomogenousTree?{
         guard let nextNode = path.first else {
             return self
         }
@@ -40,11 +40,11 @@ public extension HomogenousTree {
         return nil
     }
     
-    public func isSet(annotation: RuleAnnotation)->Bool{
+    func isSet(annotation: RuleAnnotation)->Bool{
         return annotations.filter({$0.key == annotation}).count == 1
     }
     
-    public func value(annotation: RuleAnnotation)->RuleAnnotationValue?{
+    func value(annotation: RuleAnnotation)->RuleAnnotationValue?{
         return annotations.filter({$0.key == annotation}).first?.value
     }
 

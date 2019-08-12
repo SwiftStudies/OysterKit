@@ -78,7 +78,7 @@ public extension CausalErrorType {
      - Parameter description: The text being searched for
      - Returns: True if it contains the message, false if not
      */
-    public func hasCause(description:String)->Bool{
+    func hasCause(description:String)->Bool{
         if message.contains(description){
             return true
         }

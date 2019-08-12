@@ -32,7 +32,7 @@ public extension String {
      - Returns: `nil` if compilation failed
     */
     @available(*,deprecated,message: "Use .dynamicRule(Behaviour.Kind) instead")
-    public func  dynamicRule(token:TokenType)->Rule? {
+    func  dynamicRule(token:TokenType)->Rule? {
         return try? dynamicRule(Behaviour.Kind.structural(token: token))
     }
     
@@ -42,7 +42,7 @@ public extension String {
      - Parameter kind: The kind of the rule
      - Returns: `nil` if compilation failed
      */
-    public func dynamicRule(_ kind:Behaviour.Kind) throws ->Rule{
+    func dynamicRule(_ kind:Behaviour.Kind) throws ->Rule{
         let compiled = try STLR.build("grammar Dynamic\n_ = \(self)")
 
         

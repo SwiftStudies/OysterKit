@@ -54,7 +54,7 @@ public extension Collection where Iterator.Element == (key:RuleAnnotation,value:
     /// Creates a new collection of RuleAnnotations where the merged annotations override those in
     /// this object
     /// - Parameter with: The annotations which will add to or override those already in the dictionary
-    public func merge(with incoming:RuleAnnotations)->RuleAnnotations{
+    func merge(with incoming:RuleAnnotations)->RuleAnnotations{
         var merged = self as! RuleAnnotations
         for annotation in incoming {
             merged[annotation.key] = annotation.value
@@ -64,7 +64,7 @@ public extension Collection where Iterator.Element == (key:RuleAnnotation,value:
     }
     
     /// A description in STLR format of the `RuleAnnotations`
-    public var stlrDescription : String {
+    var stlrDescription : String {
         var result = ""
         for tuple in self {
             result += "@\(tuple.0)"
@@ -82,7 +82,7 @@ public extension Collection where Iterator.Element == (key:RuleAnnotation,value:
 public extension Dictionary where Key == RuleAnnotation, Value == RuleAnnotationValue {
     
     /// Any annotated error message, or nil if not set
-    public var error : String? {
+    var error : String? {
         if let error = self[.error] {
             if case let .string(message) = error {
                 return message
@@ -92,7 +92,7 @@ public extension Dictionary where Key == RuleAnnotation, Value == RuleAnnotation
     }
     
     /// Any annotated error message, or nil if not set
-    public var token : String? {
+    var token : String? {
         if let token = self[.token] {
             if case let .string(label) = token {
                 return label
@@ -102,7 +102,7 @@ public extension Dictionary where Key == RuleAnnotation, Value == RuleAnnotation
     }
     
     /// True if the annotations included the pinned annotation
-    public var pinned : Bool {
+    var pinned : Bool {
         if let value = self[.pinned] {
             if case .set = value {
                 return true
@@ -112,7 +112,7 @@ public extension Dictionary where Key == RuleAnnotation, Value == RuleAnnotation
     }
     
     /// True if the annotations include the void annotation
-    public var void : Bool {
+    var void : Bool {
         if let value = self[.void] {
             if case .set = value {
                 return true
@@ -122,7 +122,7 @@ public extension Dictionary where Key == RuleAnnotation, Value == RuleAnnotation
     }
     
     /// True if the annotations include the transient annotation
-    public var transient : Bool {
+    var transient : Bool {
         if let value = self[.transient] {
             if case .set = value {
                 return true

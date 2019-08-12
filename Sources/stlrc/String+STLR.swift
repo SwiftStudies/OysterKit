@@ -8,7 +8,7 @@
 import Foundation
 
 public extension String {
-    public var canonicalPath : String {
+    var canonicalPath : String {
         
         return NSString(string:"\(hasPrefix(".") || hasPrefix("/") || hasPrefix("~") ? "" : "./")\(self)").expandingTildeInPath + (hasSuffix("/") ? "/" : "")
     }

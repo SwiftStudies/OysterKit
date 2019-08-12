@@ -28,6 +28,6 @@ import Foundation
 public extension STLR.Grammar{
     
     /// Optimizes the grammar using the optimizers registered by `register(optimizer:STLROptimizer)`
-    public func optimize(){
+    func optimize(){
     }
 }

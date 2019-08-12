@@ -52,12 +52,12 @@ public extension STLR{
      
      - Parameter optimizer: The optimizer
     */
-    public static func register(optimizer:STLROptimizer){
+    static func register(optimizer:STLROptimizer){
         optmizers.append(optimizer)
     }
     
     /// Removes all registered optimizers
-    public static func removeAllOptimizations(){
+    static func removeAllOptimizations(){
         optmizers.removeAll()
     }
 }

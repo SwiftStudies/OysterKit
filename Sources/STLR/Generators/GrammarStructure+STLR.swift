@@ -521,11 +521,11 @@ public class GrammarStructure {
 
 fileprivate extension Array where Element == GrammarStructure.Node {
     
-    fileprivate subscript(_ name:String)->GrammarStructure.Node? {
+    subscript(_ name:String)->GrammarStructure.Node? {
         return self.filter({$0.name == name}).first
     }
     
-    fileprivate func consolidate(accessLevel:String)->[Element]{
+    func consolidate(accessLevel:String)->[Element]{
         var existingFields = [String : GrammarStructure.Node]()
         
         for child in self {

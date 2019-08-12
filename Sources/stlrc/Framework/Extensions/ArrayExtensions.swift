@@ -16,7 +16,7 @@ extension Array {
 }
 
 public extension Array where Element == Option {
-    public subscript(optionNamed name:String)->Option?{
+    subscript(optionNamed name:String)->Option?{
         for option in self {
             if option.longForm == name {
                 return option

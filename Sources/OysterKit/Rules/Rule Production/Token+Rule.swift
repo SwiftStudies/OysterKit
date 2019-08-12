@@ -31,7 +31,7 @@ public extension TokenType {
      - Parameter rule: The rule (or thing that can become a rule)
      - Returns: A rule
     */
-    public func from(_ rule:Rule)->Rule{
+    func from(_ rule:Rule)->Rule{
         let intermediate = rule.rule(with: Behaviour(.structural(token: self), cardinality: rule.behaviour.cardinality, negated: rule.behaviour.negate, lookahead: rule.behaviour.lookahead), annotations: rule.annotations)
         
         if intermediate.behaviour.negate {
@@ -50,7 +50,7 @@ public extension Rule {
      - Parameter rule: The rule (or thing that can become a rule)
      - Returns: A rule
      */
-    public func parse(as token:TokenType)->Rule{
+    func parse(as token:TokenType)->Rule{
         return token.from(self)
     }
 }

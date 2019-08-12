@@ -146,7 +146,7 @@ public extension STLR.Grammar {
         return nil
     }
     
-    public func defined(identifier:String)->Bool{
+    func defined(identifier:String)->Bool{
         for rule in rules {
             if rule.identifier == identifier {
                 return true
@@ -206,14 +206,14 @@ public extension STLR.Grammar {
     }
     
     /// All rules, including those defined inline
-    public var allRules : STLR.Rules {
+    var allRules : STLR.Rules {
         var all = STLR.Rules()
         all.append(contentsOf: rules)
         all.append(contentsOf: inlinedRules)
         return all
     }
     
-    public subscript(_ identifier:String)->STLR.Rule{
+    subscript(_ identifier:String)->STLR.Rule{
         for rule in rules {
             if rule.identifier == identifier {
                 return rule
@@ -239,17 +239,17 @@ public extension STLR.Grammar {
         }
     }
     
-    public func isLeftHandRecursive(identifier:String)->Bool{
+    func isLeftHandRecursive(identifier:String)->Bool{
         var closedList = [String]()
         return self[identifier].expression.references(identifier, grammar: self, closedList: &closedList)
     }
     
-    public func isDirectLeftHandRecursive(identifier:String)->Bool{
+    func isDirectLeftHandRecursive(identifier:String)->Bool{
         var closedList = [String]()
         return self[identifier].expression.directlyReferences(identifier, grammar: self, closedList: &closedList)
     }
     
-    public func isRoot(identifier:String)->Bool{
+    func isRoot(identifier:String)->Bool{
         var closedList = [String]()
         for rule in rules {
             if rule.identifier != identifier && rule.expression.references(identifier, grammar: self, closedList: &closedList){
@@ -259,7 +259,7 @@ public extension STLR.Grammar {
         return true
     }
 
-    public func validate(rule:STLR.Rule) throws {
+    func validate(rule:STLR.Rule) throws {
         if isDirectLeftHandRecursive(identifier: rule.identifier){
             throw ProcessingError.interpretation(message: "\(rule.identifier) is directly left hand recursive (references itself without moving scan head forward)", causes: [])
         }
@@ -269,23 +269,23 @@ public extension STLR.Grammar {
 
 public extension STLR.Rule {
     /// True if the rule is skipping
-    public var isVoid : Bool {
+    var isVoid : Bool {
         return void != nil || (annotations?.void ?? false)
     }
     
     /// True if it is a scanning rule
-    public var isTransient : Bool {
+    var isTransient : Bool {
         return transient != nil || (annotations?.transient ?? false)
     }
     
-    public var type : String? {
+    var type : String? {
         return annotations?.type
     }
 }
 
 public extension STLR.Quantifier {
     /// The minimum number of matches required to satisfy the quantifier
-    public var minimumMatches : Int {
+    var minimumMatches : Int {
         switch self {
         case .star, .questionMark:
             return 0
@@ -297,7 +297,7 @@ public extension STLR.Quantifier {
     }
     
     /// The maximum number of matches required to satisfy the quantifier
-    public var maximumMatches : Int? {
+    var maximumMatches : Int? {
         switch self {
         case .questionMark:
             return 1
@@ -335,7 +335,7 @@ public extension STLR.Expression {
         }
     }
     
-    public func directlyReferences(_ identifier:String, grammar:STLR.Grammar, closedList:inout [String])->Bool {
+    func directlyReferences(_ identifier:String, grammar:STLR.Grammar, closedList:inout [String])->Bool {
         for element in elements {
             if element.directlyReferences(identifier, grammar: grammar, closedList: &closedList){
                 return true
@@ -350,7 +350,7 @@ public extension STLR.Expression {
     }
 
     
-    public func references(_ identifier:String, grammar:STLR.Grammar, closedList: inout [String])->Bool {
+    func references(_ identifier:String, grammar:STLR.Grammar, closedList: inout [String])->Bool {
         for element in elements {
             if element.references(identifier, grammar: grammar, closedList: &closedList){
                 return true
@@ -363,32 +363,32 @@ public extension STLR.Expression {
 public extension STLR.Element {
 
     /// The annotations defined as `RuleAnnotations`
-    public var ruleAnnotations : RuleAnnotations {
+    var ruleAnnotations : RuleAnnotations {
         return annotations?.ruleAnnotations ?? [:]
     }
     
     /// True if the element is skipping
-    public var isVoid : Bool {
+    var isVoid : Bool {
         return void != nil || (annotations?.void ?? false)
     }
     
     /// True if it is a scanning element
-    public var isTransient : Bool {
+    var isTransient : Bool {
         return transient != nil || (annotations?.transient ?? false)
     }
     
     /// True if the element is lookahead
-    public var isLookahead : Bool {
+    var isLookahead : Bool {
         return lookahead != nil
     }
     
     /// True if the element is negated
-    public var isNegated : Bool {
+    var isNegated : Bool {
         return negated != nil
     }
     
     /// Returns the token name (if any) of the element
-    public var token : TokenType? {
+    var token : TokenType? {
         if case let Behaviour.Kind.structural(token) = kind {
             return token
         }
@@ -397,7 +397,7 @@ public extension STLR.Element {
     
     
     /// The `Kind` of the rule
-    public var kind : Behaviour.Kind {
+    var kind : Behaviour.Kind {
         if isVoid {
             return .skipping
         } else if isTransient {
@@ -415,7 +415,7 @@ public extension STLR.Element {
     }
     
     /// The `Cardinality` of the match
-    public var cardinality : Cardinality {
+    var cardinality : Cardinality {
         guard let quantifier = quantifier else {
             return .one
         }
@@ -433,7 +433,7 @@ public extension STLR.Element {
     }
     
     /// The `Behaviour` of the rule
-    public var behaviour : Behaviour {
+    var behaviour : Behaviour {
         return Behaviour(kind, cardinality: cardinality, negated: isNegated, lookahead: isLookahead)
     }
     
@@ -460,7 +460,7 @@ public extension STLR.Element {
      - Parameter grammar: The grammar both the identifier and this element is in
      - Returns: `true` if the identifier could be referenced before the scan head has moved
     */
-    public func directlyReferences(_ identifier:String, grammar:STLR.Grammar)->Bool{
+    func directlyReferences(_ identifier:String, grammar:STLR.Grammar)->Bool{
         var closedList = [String]()
         return directlyReferences(identifier, grammar: grammar, closedList: &closedList)
     }
@@ -617,7 +617,7 @@ internal extension STLR.Label {
 
 internal extension Array where Element == STLR.Annotation {
     /// The annotations on the element with any that would be captured in `Behaviour` removed (@token, @transient, @void)
-    internal var unfilteredRuleAnnotationsForTesting : RuleAnnotations {        
+    var unfilteredRuleAnnotationsForTesting : RuleAnnotations {        
         var ruleAnnotations = [RuleAnnotation : RuleAnnotationValue]()
         for annotation in self {
             ruleAnnotations[annotation.ruleAnnotation]  = annotation.ruleAnnotationValue
@@ -638,7 +638,7 @@ public extension Array where Element == STLR.Annotation {
     }
     
     /// The annotations on the element with any that would be captured in `Behaviour` removed (@token, @transient, @void)
-    public var ruleAnnotations : RuleAnnotations {
+    var ruleAnnotations : RuleAnnotations {
         var ruleAnnotations = [RuleAnnotation : RuleAnnotationValue]()
         for annotation in filter({!$0.label.isBehavioural}){
             ruleAnnotations[annotation.ruleAnnotation]  = annotation.ruleAnnotationValue
@@ -647,7 +647,7 @@ public extension Array where Element == STLR.Annotation {
     }
     
     /// The token if any specified in the annotations
-    public var token : String? {
+    var token : String? {
         guard let tokenAnnotationValue = self[RuleAnnotation.token] else {
             return nil
         }
@@ -662,15 +662,15 @@ public extension Array where Element == STLR.Annotation {
     }
     
     /// `true` if the annotations include @void
-    public var void : Bool {
+    var void : Bool {
         return self[RuleAnnotation.void] != nil
     }
     
     /// `true` if the annotations include @transient
-    public var transient : Bool {
+    var transient : Bool {
         return self[RuleAnnotation.transient] != nil
     }
-    public var type : String? {
+    var type : String? {
         if let typeAnnotationValue = self[RuleAnnotation.type] {
             if case let RuleAnnotationValue.string(value) =  typeAnnotationValue {
                 return value

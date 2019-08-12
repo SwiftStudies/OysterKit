@@ -12,7 +12,7 @@ public protocol Optioned {
 }
 
 public extension Optioned {
-    public subscript<O:Option>(optionCalled longForm:String)->O?{
+    subscript<O:Option>(optionCalled longForm:String)->O?{
         for option in options {
             if option.longForm == longForm {
                 return option as? O
@@ -110,7 +110,7 @@ public final class Flag : Option {
 }
 
 internal extension String {
-    internal func substring(_ range:CountableRange<Int>)->Substring{
+    func substring(_ range:CountableRange<Int>)->Substring{
         let first = index(startIndex, offsetBy: range.startIndex)
         let last = index(first, offsetBy: range.upperBound-range.lowerBound)
         

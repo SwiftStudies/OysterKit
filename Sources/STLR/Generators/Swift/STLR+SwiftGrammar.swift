@@ -34,7 +34,7 @@ public extension STLR {
      - Parameter colors: A dictionary of colors that can be used by syntax coloring engines
      - Returns: A `String` containing the Swift source or `nil` if an error occured.
      */
-    public func swift(in file:TextFile){
+    func swift(in file:TextFile){
         let grammarName = grammar.scopeName
         
         file.print("internal enum \(grammarName)Tokens : Int, TokenType, CaseIterable, Equatable {").indent()

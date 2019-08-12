@@ -77,7 +77,7 @@ public extension DecodeableAbstractSyntaxTree{
      -Parameter index: The index of the desired child
      -Returns: The child node
      */
-    public subscript(key codingKey: CodingKey) -> DecodeableAbstractSyntaxTree? {
+    subscript(key codingKey: CodingKey) -> DecodeableAbstractSyntaxTree? {
         for child in contents {
             if child.key.stringValue == codingKey.stringValue {
                 return child
@@ -92,7 +92,7 @@ public extension DecodeableAbstractSyntaxTree{
      -Parameter index: The index of the desired child
      -Returns: The child node
      */
-    public subscript(_ name: String) -> DecodeableAbstractSyntaxTree? {
+    subscript(_ name: String) -> DecodeableAbstractSyntaxTree? {
         for child in contents {
             if child.key.stringValue == name {
                 return child
@@ -108,7 +108,7 @@ public extension DecodeableAbstractSyntaxTree{
      -Parameter key: The key of the desired child
      -Returns: The child node, or `nil` if not found
      */
-    public subscript(_ index: Int) -> DecodeableAbstractSyntaxTree {
+    subscript(_ index: Int) -> DecodeableAbstractSyntaxTree {
         return contents[index]
     }
 }
@@ -1089,7 +1089,7 @@ fileprivate struct _STLRUnkeyedDecodingContainer : UnkeyedDecodingContainer {
 
 fileprivate extension _ParsingDecoder {
     /// Returns the given value unboxed from a container.
-    fileprivate func unbox(_ value: Any, as type: Bool.Type) throws -> Bool? {
+    func unbox(_ value: Any, as type: Bool.Type) throws -> Bool? {
         guard !(value is NSNull) else { return nil }
         
         guard let number = value as? NSNumber else {
@@ -1107,7 +1107,7 @@ fileprivate extension _ParsingDecoder {
         return number.boolValue
     }
     
-    fileprivate func unbox(_ value: Any, as type: Int.Type) throws -> Int? {
+    func unbox(_ value: Any, as type: Int.Type) throws -> Int? {
         guard !(value is NSNull) else { return nil }
         
         guard let number = value as? NSNumber else {
@@ -1122,7 +1122,7 @@ fileprivate extension _ParsingDecoder {
         return int
     }
     
-    fileprivate func unbox(_ value: Any, as type: Int8.Type) throws -> Int8? {
+    func unbox(_ value: Any, as type: Int8.Type) throws -> Int8? {
         guard !(value is NSNull) else { return nil }
         
         guard let number = value as? NSNumber else {
@@ -1137,7 +1137,7 @@ fileprivate extension _ParsingDecoder {
         return int8
     }
     
-    fileprivate func unbox(_ value: Any, as type: Int16.Type) throws -> Int16? {
+    func unbox(_ value: Any, as type: Int16.Type) throws -> Int16? {
         guard !(value is NSNull) else { return nil }
         
         guard let number = value as? NSNumber else {
@@ -1152,7 +1152,7 @@ fileprivate extension _ParsingDecoder {
         return int16
     }
     
-    fileprivate func unbox(_ value: Any, as type: Int32.Type) throws -> Int32? {
+    func unbox(_ value: Any, as type: Int32.Type) throws -> Int32? {
         guard !(value is NSNull) else { return nil }
         
         guard let number = value as? NSNumber else {
@@ -1167,7 +1167,7 @@ fileprivate extension _ParsingDecoder {
         return int32
     }
     
-    fileprivate func unbox(_ value: Any, as type: Int64.Type) throws -> Int64? {
+    func unbox(_ value: Any, as type: Int64.Type) throws -> Int64? {
         guard !(value is NSNull) else { return nil }
         
         guard let number = value as? NSNumber else {
@@ -1182,7 +1182,7 @@ fileprivate extension _ParsingDecoder {
         return int64
     }
     
-    fileprivate func unbox(_ value: Any, as type: UInt.Type) throws -> UInt? {
+    func unbox(_ value: Any, as type: UInt.Type) throws -> UInt? {
         guard !(value is NSNull) else { return nil }
         
         guard let number = value as? NSNumber else {
@@ -1197,7 +1197,7 @@ fileprivate extension _ParsingDecoder {
         return uint
     }
     
-    fileprivate func unbox(_ value: Any, as type: UInt8.Type) throws -> UInt8? {
+    func unbox(_ value: Any, as type: UInt8.Type) throws -> UInt8? {
         guard !(value is NSNull) else { return nil }
         
         guard let number = value as? NSNumber else {
@@ -1212,7 +1212,7 @@ fileprivate extension _ParsingDecoder {
         return uint8
     }
     
-    fileprivate func unbox(_ value: Any, as type: UInt16.Type) throws -> UInt16? {
+    func unbox(_ value: Any, as type: UInt16.Type) throws -> UInt16? {
         guard !(value is NSNull) else { return nil }
         
         guard let number = value as? NSNumber else {
@@ -1227,7 +1227,7 @@ fileprivate extension _ParsingDecoder {
         return uint16
     }
     
-    fileprivate func unbox(_ value: Any, as type: UInt32.Type) throws -> UInt32? {
+    func unbox(_ value: Any, as type: UInt32.Type) throws -> UInt32? {
         guard !(value is NSNull) else { return nil }
         
         guard let number = value as? NSNumber else {
@@ -1242,7 +1242,7 @@ fileprivate extension _ParsingDecoder {
         return uint32
     }
     
-    fileprivate func unbox(_ value: Any, as type: UInt64.Type) throws -> UInt64? {
+    func unbox(_ value: Any, as type: UInt64.Type) throws -> UInt64? {
         guard !(value is NSNull) else { return nil }
         
         guard let number = value as? NSNumber else {
@@ -1257,7 +1257,7 @@ fileprivate extension _ParsingDecoder {
         return uint64
     }
     
-    fileprivate func unbox(_ value: Any, as type: Float.Type) throws -> Float? {
+    func unbox(_ value: Any, as type: Float.Type) throws -> Float? {
         guard !(value is NSNull) else { return nil }
         
         if let number = value as? NSNumber {
@@ -1292,7 +1292,7 @@ fileprivate extension _ParsingDecoder {
         throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "Expected \(type) but got \(value)"))
     }
     
-    fileprivate func unbox(_ value: Any, as type: Double.Type) throws -> Double? {
+    func unbox(_ value: Any, as type: Double.Type) throws -> Double? {
         guard !(value is NSNull) else { return nil }
         
         if let number = value as? NSNumber {
@@ -1317,7 +1317,7 @@ fileprivate extension _ParsingDecoder {
         throw DecodingError.typeMismatch(type, DecodingError.Context(codingPath: codingPath, debugDescription: "Expected \(type) but got \(value)"))
     }
     
-    fileprivate func unbox(_ value: Any, as type: String.Type) throws -> String? {
+    func unbox(_ value: Any, as type: String.Type) throws -> String? {
         guard !(value is NSNull) else { return nil }
         
         guard let string = value as? String else {
@@ -1327,7 +1327,7 @@ fileprivate extension _ParsingDecoder {
         return string
     }
     
-    fileprivate func unbox(_ value: Any, as type: Date.Type) throws -> Date? {
+    func unbox(_ value: Any, as type: Date.Type) throws -> Date? {
         guard !(value is NSNull) else { return nil }
         
 //        switch self.options.dateDecodingStrategy {
@@ -1375,7 +1375,7 @@ fileprivate extension _ParsingDecoder {
 
     }
     
-    fileprivate func unbox(_ value: Any, as type: Data.Type) throws -> Data? {
+    func unbox(_ value: Any, as type: Data.Type) throws -> Data? {
         guard !(value is NSNull) else { return nil }
         
         guard let string = value as? String else {
@@ -1389,7 +1389,7 @@ fileprivate extension _ParsingDecoder {
         return data
     }
     
-    fileprivate func unbox(_ value: Any, as type: Decimal.Type) throws -> Decimal? {
+    func unbox(_ value: Any, as type: Decimal.Type) throws -> Decimal? {
         guard !(value is NSNull) else { return nil }
         
         // On Darwin we get (value as? Decimal) since JSONSerialization can produce NSDecimalNumber values.
@@ -1398,7 +1398,7 @@ fileprivate extension _ParsingDecoder {
         return Decimal(doubleValue)
     }
     
-    fileprivate func unbox<T : Decodable>(_ value: Any, as type: T.Type) throws -> T? {
+    func unbox<T : Decodable>(_ value: Any, as type: T.Type) throws -> T? {
         let decoded: T
         if T.self == Date.self {
             guard let date = try self.unbox(value, as: Date.self) else { return nil }

@@ -8,7 +8,7 @@
 import Foundation
 
 public extension FileManager{
-    public func isDirectory(_ url:URL)->Bool{
+    func isDirectory(_ url:URL)->Bool{
         var isDirectory : ObjCBool = false
         
         let _ = fileExists(atPath: url.path, isDirectory: &isDirectory)

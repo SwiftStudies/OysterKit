@@ -29,6 +29,6 @@ import OysterKit
 public extension STLR{
     
     /// Validates the AST throwing an exception if validation fails
-    public func validate() throws{
+    func validate() throws{
     }
 }

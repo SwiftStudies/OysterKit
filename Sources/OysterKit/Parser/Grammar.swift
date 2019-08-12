@@ -67,7 +67,7 @@ public extension Grammar {
      - Parameter source: The source to parse
      - Returns: An iterable stream of tokens
      **/
-    public func tokenize(_ source:String)->TokenStream{
+    func tokenize(_ source:String)->TokenStream{
         return TokenStream(source, using: self)
     }
     
@@ -93,7 +93,7 @@ public extension Grammar {
      - Parameter source: The source to parse with the `Grammar`
      - Returns: A `HomogenousTree`
      **/
-    public func parse(_ source:String) throws ->HomogenousTree{
+    func parse(_ source:String) throws ->HomogenousTree{
         return try AbstractSyntaxTreeConstructor(with: source).build(using: self)
     }
     
@@ -113,7 +113,7 @@ public extension Grammar {
      - Parameter type: The `Decodable` type that should be created
      - Returns: The populated type
      **/
-    public func build<T : Decodable>(_ source:String,as type: T.Type) throws -> T{
+    func build<T : Decodable>(_ source:String,as type: T.Type) throws -> T{
         return try ParsingDecoder().decode(T.self, using: parse(source))
     }
 }

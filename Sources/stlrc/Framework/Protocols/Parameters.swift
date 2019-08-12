@@ -63,14 +63,14 @@ public extension ParameterType {
         return Parameter(definition: PrarameterDefinition(type: self, requiredCardinality: cardinality))
     }
     
-    public func between(_ min:Int, and max:Int)->Parameter{
+    func between(_ min:Int, and max:Int)->Parameter{
         return parameter(withCardinality: Cardinality.range(min..<max))
     }
     
-    public func multiple(optional:Bool)->Parameter{
+    func multiple(optional:Bool)->Parameter{
         return parameter(withCardinality: Cardinality.multiple(optional: optional))
     }
-    public func one(optional:Bool)->Parameter{
+    func one(optional:Bool)->Parameter{
         return parameter(withCardinality: Cardinality.one(optional: optional))
     }
 }

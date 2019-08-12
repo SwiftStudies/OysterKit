@@ -27,7 +27,7 @@ import Foundation
 /// An extension to any `Node` to provide an implementation to satisfy `CustomStringConvertable`
 public extension Node {
     /// A human readable description of the `Node`
-    public var description: String {
+    var description: String {
         return "\(token)"
     }
 }
@@ -37,7 +37,7 @@ public extension Collection where Iterator.Element : Node {
     /**
      Returns the combined range of all `Node`s in the `Collection` essentially setting the `lowerBound` to the lowest of all range, and upperBound to the highest of all ranges.
     */
-    public var combinedRange : Range<String.UnicodeScalarView.Index> {
+    var combinedRange : Range<String.UnicodeScalarView.Index> {
         let finalRange = reduce(first!.range, { (rangeSoFar, nextChild) -> Range<String.UnicodeScalarView.Index> in
             let lowerBound = rangeSoFar.lowerBound < nextChild.range.lowerBound ? rangeSoFar.lowerBound : nextChild.range.lowerBound
             let upperBound = rangeSoFar.upperBound > nextChild.range.upperBound ? rangeSoFar.upperBound : nextChild.range.upperBound
