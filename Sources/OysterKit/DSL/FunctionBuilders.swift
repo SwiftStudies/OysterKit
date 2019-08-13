@@ -27,20 +27,16 @@
 
 import Foundation
 
-@_functionBuilder struct RuleBuilder {
-    static func buildBlock(_ rules:Rule...) -> [Rule] {
+@_functionBuilder public struct RuleBuilder {
+    static public func buildBlock(_ rules:Rule...) -> [Rule] {
         return rules
-    }
-    
-    static func buildBlock(_ rule:Rule) -> [Rule] {
-        return [rule]
-    }
+    }    
 }
 
 /// Constructs a `SequenceRule` from an array of rules
 ///
 /// - Parameter makeRules: The block that will generate a single rule which requires all of the rules returned to be supplied in sequence
-func sequence(@RuleBuilder makeRules:()->[Rule]) -> Rule {
+public func sequence(@RuleBuilder makeRules:()->[Rule]) -> Rule {
     return SequenceRule(
         Behaviour(.scanning,
                   cardinality: .one,
@@ -54,7 +50,7 @@ func sequence(@RuleBuilder makeRules:()->[Rule]) -> Rule {
 /// Constructs a `ChoiceRule` from an array of `Rule`s
 ///
 /// - Parameter makeRules: The block that will generate an array of `Rule`s, any one of which can satisfy the generated `Rule` (evaluated in order)
-func oneOf(@RuleBuilder makeRules:()->[Rule]) -> Rule {
+public func oneOf(@RuleBuilder makeRules:()->[Rule]) -> Rule {
     return ChoiceRule(
         Behaviour(
             .scanning,
@@ -68,13 +64,6 @@ func oneOf(@RuleBuilder makeRules:()->[Rule]) -> Rule {
 
 /// Creates a grammar from an array of `Rule`s
 /// - Parameter makeRules: The block that will generate the array of `Rule` and turn it into a grammar
-func grammar(@RuleBuilder makeRules:()->[Rule]) -> Grammar {
-    return makeRules()
-}
-
-
-/// Creates a new rule which makes the `Rule` returned by the supplied block optional (one or zero)
-/// - Parameter makeRule: The block to generate the `Rule`
-func optionally(@RuleBuilder makeRule:()->Rule) -> Rule {
-    return makeRule().require(.zeroOrOne)
+public func grammar(@RuleBuilder makeRule:()->Rule) -> Grammar {
+    return [makeRule()]
 }
