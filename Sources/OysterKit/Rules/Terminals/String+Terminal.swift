@@ -37,4 +37,10 @@ extension String : Terminal {
             throw ProcessingError.scanning(message: "Failed to match \(token == nil ? "\(self)" : "\(token!)")", position: lexer.index, causes: [error])
         }
     }
+    
+    /// Returns the `Character` of the string. Must be a single character string
+    public var char : Character {
+        assert(self.count == 1,"String must comprise of a single Character")
+        return Character(self)
+    }
 }
